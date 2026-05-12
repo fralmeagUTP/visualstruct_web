@@ -1,0 +1,25 @@
+﻿{% extends "base.html" %}
+{% block title %}Ayuda Jerarquica{% endblock %}
+{% block content %}
+<section>
+  <h2>{{ module_help.title }}</h2>
+  <p>{{ module_help.description }}</p>
+  <h3>Recomendaciones</h3>
+  <ul>
+    {% for tip in module_help.tips %}
+    <li>{{ tip }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Estructuras disponibles</h3>
+  <ul>
+    {% for structure in structures %}
+    <li>
+      <a class="link" href="{{ url_for('help.hierarchical_structure_help', structure_id=structure.id) }}">
+        {{ structure.name }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+﻿{% extends "base.html" %}
+{% block title %}Inicio | Visualizador de Estructuras{% endblock %}
+{% block content %}
+<section class="hero">
+  <h2>Proyecto Didactico</h2>
+  <p>
+    Esta aplicacion permite explorar estructuras de datos mediante una interfaz visual.
+    En esta version estan disponibles los modulos secuencial, jerarquico, grafos y tablas hash.
+  </p>
+  <div class="actions">
+    <a class="btn" href="{{ url_for('sequential.sequential_index') }}">Explorar modulo de estructuras secuenciales</a>
+    <a class="btn" href="{{ url_for('hierarchical.hierarchical_index') }}">Explorar modulo de estructuras jerarquicas</a>
+    <a class="btn" href="{{ url_for('graph.graph_index') }}">Explorar modulo de grafos</a>
+    <a class="btn" href="{{ url_for('hash.hash_index') }}">Explorar modulo de tablas hash</a>
+  </div>
+</section>
+{% endblock %}

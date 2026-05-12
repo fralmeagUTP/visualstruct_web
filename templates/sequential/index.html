@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Módulo Secuencial{% endblock %}
+{% block content %}
+<section>
+  <h2>Módulo de Estructuras Secuenciales</h2>
+  <p>Selecciona una estructura para ejecutar operaciones y ver su estado.</p>
+  <div class="cards">
+    {% for structure in structures %}
+    <article class="card">
+      <h3>{{ structure.name }}</h3>
+      <p>{{ structure.description }}</p>
+      <a class="btn" href="{{ url_for('sequential.structure_page', structure_id=structure.id) }}">Abrir</a>
+      <a class="link" href="{{ url_for('help.structure_help', structure_id=structure.id) }}">Ayuda específica</a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

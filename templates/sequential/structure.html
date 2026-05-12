@@ -1,0 +1,56 @@
+﻿{% extends "base.html" %}
+{% block title %}{{ model.name }} | Modulo Secuencial{% endblock %}
+{% block content %}
+<section class="structure-layout">
+  <div class="panel">
+    <h2>{{ model.name }}</h2>
+    <p>{{ model.description }}</p>
+    <h4>Estructura del TAD</h4>
+    <pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
+
+    <form id="operation-form"
+          data-operate-url="{{ url_for('sequential.operate_structure', structure_id=model.id) }}"
+          data-reset-url="{{ url_for('sequential.reset_structure', structure_id=model.id) }}">
+      <label for="operation-select">Operacion</label>
+      <select id="operation-select" name="operation" required></select>
+      <div id="operation-inputs"></div>
+    </form>
+
+    <div class="actions">
+      <button class="btn" id="seq-sim-play" type="button">Reproducir</button>
+      <button class="btn secondary" id="reset-button" type="button">Reiniciar</button>
+    </div>
+    <h4>Ejecucion paso a paso</h4>
+    <div class="actions">
+      <button class="btn secondary" id="seq-sim-prev" type="button">Anterior paso</button>
+      <button class="btn" id="seq-sim-step" type="button">Siguiente paso</button>
+    </div>
+    <p id="seq-sim-counter" class="sim-counter">Paso: 0/0</p>
+    <p id="seq-sim-status" class="message"></p>
+
+    <div id="message-box" class="message" aria-live="polite"></div>
+    <p>
+      <a class="link" href="{{ url_for('help.structure_help', structure_id=model.id) }}">
+        Ver ayuda de {{ model.name }}
+      </a>
+    </p>
+  </div>
+
+  <div class="panel">
+    <h3>Estado visual</h3>
+    <div id="visual-state"></div>
+    <h4>Notas didacticas</h4>
+    <p>{{ help_data.summary }}</p>
+    <h4 id="op-pseudocode-title">{{ (model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocodigo") }}: {{ model.operations[0].label if model.operations else "" }}</h4>
+    <pre id="op-pseudocode" class="didactic-code">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Contenido didactico no disponible para esta operacion." }}</pre>
+    <h4>Historial de ejecucion</h4>
+    <ol id="action-history" class="didactic-history"></ol>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  window.SEQ_VIEW_MODEL = {{ model | tojson }};
+</script>
+{% endblock %}
+
