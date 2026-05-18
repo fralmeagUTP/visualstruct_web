@@ -1,13 +1,13 @@
 # Visualizador Web de Estructuras de Datos
 
-Aplicacion web didactica en Flask para practicar TAD con visualizacion interactiva y soporte de codigo C real cuando existe cobertura.
+Aplicacion web didactica en Flask para practicar TAD con visualizacion interactiva y modo interprete de codigo C basado en los TAD nuevos de `docs/tads_C`.
 
-Ultima actualizacion documental: **2026-05-12**.
+Ultima actualizacion documental: **2026-05-18**.
 
 ## Estado actual del proyecto
 
-- Tests: `150 passed, 4 skipped`.
-- Cobertura global: `89%` sobre `app/`.
+- Tests: `274 passed, 0 skipped`.
+- Cobertura global: `85%` sobre `app/` (ejecucion sin exclusiones).
 - Entorno verificado: Python `3.10.5` (Windows).
 
 Resultados obtenidos con:
@@ -49,21 +49,53 @@ Prioriza snippets reales desde `docs/tads_C` para:
 
 - todas las secuenciales,
 - todas las jerarquicas,
-- grafo.
+- grafo,
+- hash (`hash_table`).
 
 Comportamiento en UI:
 
 - `Estructura del TAD`: definiciones C.
 - `Codigo C: <Operacion>`: funcion C asociada.
 - `Historial`: renderizado didactico como `main`.
-- `Ejecucion paso a paso`: controles didacticos en este orden:
+- `Ejecucion paso a paso`:
+  - secuencial/jerarquico/hash: controles en este orden:
   - fila superior: `Reproducir` y `Reiniciar`,
   - fila inferior: `Anterior paso` y `Siguiente paso`.
+  - grafo: la simulacion esta en `Paso 3` con `Reproducir`, `Anterior paso` y `Siguiente paso`.
+  - grafo: `Siguiente paso` avanza linea a linea y `Accion actual` clasifica el paso (`Evaluando condicion` o `Aplicando cambio`).
+  - todos los modulos: checkbox `Interpretar codigo paso a paso`:
+    - activado: reproduce la traza completa.
+    - desactivado: aplica solo el resultado final.
+  - grafo en modo rapido: el resultado final visual debe ser equivalente al ultimo paso del modo interpretado
+    (mismos nodos/aristas resaltados para recorrido, camino minimo o MST).
+  - grafo en modo rapido: se ocultan controles de navegacion por paso (`Anterior`, `Siguiente`, velocidad, contador y accion actual).
 
 Fallback:
 
-- `app/services/pseudocode_service.py` para estructuras sin cobertura C.
-- `hash_table` usa modo didactico/pseudocodigo.
+- `app/services/pseudocode_service.py` queda como respaldo didactico cuando no existe mapeo C para una operacion puntual.
+
+Compatibilidad:
+
+- La app y la suite estan alineadas al contrato de los TAD nuevos (sin compatibilidad con nombres legacy como `rn_*` o `struct Abb`).
+
+## Especificacion didactica de simulacion visual
+
+La app debe comportarse como un **interprete grafico de codigo C** y no como una reproduccion lineal de lineas.
+
+Criterios obligatorios:
+
+- La simulacion debe respetar el flujo de control real del codigo C (`if`, `else`, `while`, `for`, `switch`): solo se animan ramas ejecutadas.
+- Cada operacion mutante debe mostrar fases visuales del metodo:
+  - estado inicial,
+  - creacion de estructura temporal (por ejemplo `aux`),
+  - enlace/asignacion intermedia (por ejemplo `aux->sgte = ...`),
+  - reasignacion a la estructura original (por ejemplo `*p = aux`),
+  - estado final confirmado.
+- Cuando el metodo use nodos o punteros temporales, estos deben renderizarse en un bloque separado y con etiquetas de paso.
+- El resaltado del codigo C debe avanzar sincronizado con la animacion del estado.
+- La consola `printf` debe reflejar las salidas efectivamente ejecutadas en la ruta de control actual.
+- El historial en `main` debe mantenerse coherente con la ejecucion y con el estado visual final.
+- Esta especificacion aplica a todos los modulos y solo sobre TAD nuevos de `docs/tads_C`.
 
 ## Reglas de entrada
 
@@ -98,6 +130,7 @@ Contrato comun de adapter:
 - `GET /sequential/`, `POST /sequential/<id>/operate`, `POST /sequential/<id>/reset`.
 - `GET /hierarchical/`, `POST /hierarchical/<id>/operate`, `POST /hierarchical/<id>/reset`.
 - `GET /graph/`, `POST /graph/<id>/operate`, `POST /graph/<id>/reset`.
+- `GET /graph/<id>/<phase>` para fases del modulo de grafos (`construccion`, `recorridos`, `camino-minimo`, `expansion-minima`).
 - `GET /hash/`, `POST /hash/<id>/operate`, `POST /hash/<id>/reset`.
 - `GET /help/*` ayudas por modulo y por estructura.
 

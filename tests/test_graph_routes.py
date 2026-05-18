@@ -7,7 +7,7 @@ def test_graph_module_page_loads(client) -> None:
     """Graph module index should be reachable."""
     response = client.get("/graph/")
     assert response.status_code == 200
-    assert b"Modulo de Grafos" in response.data
+    assert "Módulo de Grafos".encode("utf-8") in response.data
 
 
 def test_graph_structure_page_loads(client) -> None:
@@ -17,6 +17,28 @@ def test_graph_structure_page_loads(client) -> None:
     assert b"Estado visual" in response.data
     assert "Codigo C:".encode("utf-8") in response.data
     assert "grafo_insertar_vertice".encode("utf-8") in response.data
+
+
+def test_graph_phase_pages_load(client) -> None:
+    """Each graph learning phase should render in its own route."""
+    for phase in ("construccion", "recorridos", "camino-minimo", "expansion-minima"):
+        response = client.get(f"/graph/graph/{phase}")
+        assert response.status_code == 200
+        assert b"Estado visual" in response.data
+
+
+def test_graph_phase_didactic_notes_are_specific(client) -> None:
+    """Didactic note should change per graph phase."""
+    expected = {
+        "construccion": "Construccion del grafo",
+        "recorridos": "Recorridos: exploran el grafo",
+        "camino-minimo": "Camino minimo",
+        "expansion-minima": "Arbol de expansion minima",
+    }
+    for phase, fragment in expected.items():
+        response = client.get(f"/graph/graph/{phase}")
+        assert response.status_code == 200
+        assert fragment.encode("utf-8") in response.data
 
 
 def test_create_directed_and_undirected_via_route(client) -> None:
@@ -62,6 +84,18 @@ def test_insert_remove_vertex_and_edge_via_route(client) -> None:
         json={"operation": "remove_vertex", "payload": {"vertex": "1"}},
     )
     assert remove_vertex.status_code == 200
+
+
+def test_generate_random_graph_via_route(client) -> None:
+    """Route should build a random graph from vertex count only."""
+    response = client.post(
+        "/graph/graph/operate",
+        json={"operation": "generate_random_graph", "payload": {"vertices_count": "7"}},
+    )
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["visual_state"]["metadata"]["vertices_count"] == 7
+    assert data["visual_state"]["metadata"]["edges_count"] >= 6
 
 
 def test_queries_and_algorithms_via_route(client) -> None:

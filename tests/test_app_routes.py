@@ -69,7 +69,7 @@ def test_red_black_page_shows_c_code_panel(client) -> None:
     response = client.get("/hierarchical/red_black")
     assert response.status_code == 200
     assert "Codigo C:".encode("utf-8") in response.data
-    assert "rn_insertar".encode("utf-8") in response.data
+    assert "rbt_insertar".encode("utf-8") in response.data
 
 
 def test_binary_heap_page_shows_c_code_panel(client) -> None:
@@ -113,6 +113,7 @@ def test_sequential_page_renders_interpreter_controls(client) -> None:
     assert b"seq-sim-step" in response.data
     assert b"reset-button" in response.data
     assert b"seq-sim-counter" in response.data
+    assert b"seq-step-toggle" in response.data
 
 
 def test_hierarchical_page_renders_interpreter_controls(client) -> None:
@@ -124,6 +125,7 @@ def test_hierarchical_page_renders_interpreter_controls(client) -> None:
     assert b"hier-sim-step" in response.data
     assert b"reset-button" in response.data
     assert b"hier-sim-counter" in response.data
+    assert b"hier-step-toggle" in response.data
 
 
 def test_hash_page_renders_interpreter_controls(client) -> None:
@@ -135,6 +137,7 @@ def test_hash_page_renders_interpreter_controls(client) -> None:
     assert b"hash-sim-step" in response.data
     assert b"hash-reset-button" in response.data
     assert b"hash-sim-counter" in response.data
+    assert b"hash-step-toggle" in response.data
 
 
 def test_graph_page_renders_interpreter_counter(client) -> None:
@@ -142,3 +145,4 @@ def test_graph_page_renders_interpreter_counter(client) -> None:
     response = client.get("/graph/graph")
     assert response.status_code == 200
     assert b"graph-sim-counter" in response.data
+    assert b"graph-step-toggle" in response.data

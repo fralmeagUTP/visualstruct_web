@@ -19,7 +19,7 @@ class GraphStructureService:
     _REGISTRY: dict[str, dict[str, Any]] = {
         "graph": {
             "name": "Grafo",
-            "description": "Grafo dirigido o no dirigido con recorridos y algoritmos clasicos.",
+            "description": "Grafo dirigido o no dirigido con recorridos y algoritmos clásicos.",
             "adapter": GraphAdapter,
         }
     }
@@ -36,9 +36,9 @@ class GraphStructureService:
                 "record": "/* Estructura en C no disponible temporalmente. */",
                 "operations": {},
                 "default_operation": (
-                    "/* Codigo C no disponible para esta operacion en docs/tads_C. */"
+                    "/* Código C no disponible para esta operación en docs/tads_C. */"
                 ),
-                "code_title": "Codigo C",
+                "code_title": "Código C",
             }
         return PseudocodeService.get_structure_data(structure_id)
 
@@ -111,7 +111,7 @@ class GraphStructureService:
             return message
         if isinstance(error, TADError):
             return str(error)
-        return "Ocurrio un error inesperado durante la operacion."
+        return "Ocurrió un error inesperado durante la operación."
 
     @staticmethod
     def get_view_model(structure_id: str, history: list[dict[str, Any]]) -> dict[str, Any]:
@@ -144,7 +144,7 @@ class GraphStructureService:
         operation_meta = next((item for item in operations if item["name"] == operation_name), None)
 
         if operation_meta is None:
-            message = "La operacion solicitada no esta soportada por esta estructura."
+            message = "La operación solicitada no está soportada por esta estructura."
             trace = ExecutionTraceService.build_trace(
                 structure_id=structure_id,
                 operation_name=operation_name,
@@ -194,7 +194,7 @@ class GraphStructureService:
             valid_history.append({"operation": operation_name, "payload": deepcopy(payload)})
 
         after_state = adapter.to_visual_state()
-        message = result.get("message", "Operacion ejecutada correctamente.")
+        message = result.get("message", "Operación ejecutada correctamente.")
         trace = ExecutionTraceService.build_trace(
             structure_id=structure_id,
             operation_name=operation_name,

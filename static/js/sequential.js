@@ -40,6 +40,56 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+function toCStringLiteral(text) {
+  return String(text || "")
+    .replaceAll("\\", "\\\\")
+    .replaceAll('"', '\\"')
+    .replaceAll("\r", "")
+    .replaceAll("\n", "\\n");
+}
+
+function decodeCStringLiteral(text) {
+  return String(text || "")
+    .replaceAll("\\\\", "\u0000")
+    .replaceAll("\\n", "\n")
+    .replaceAll("\\t", "\t")
+    .replaceAll('\\"', '"')
+    .replaceAll("\\r", "")
+    .replaceAll("\u0000", "\\");
+}
+
+function extractPrintfMessagesFromLine(lineText) {
+  const source = String(lineText || "");
+  const regex = /printf\s*\(\s*"((?:\\.|[^"\\])*)"/g;
+  const messages = [];
+  let match = regex.exec(source);
+  while (match) {
+    const decoded = decodeCStringLiteral(match[1]).replace(/\n+$/g, "").trim();
+    if (decoded) {
+      messages.push(decoded);
+    }
+    match = regex.exec(source);
+  }
+  return messages;
+}
+
+function hasPrintfFormatSpecifier(text) {
+  return /%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]/.test(String(text || ""));
+}
+
+function renderPrintfConsole(consoleEl, lines, fallbackText) {
+  if (!consoleEl) {
+    return;
+  }
+  const safeLines = Array.isArray(lines) ? lines : [];
+  const hasOutput = safeLines.length > 0;
+  const rows = hasOutput
+    ? safeLines.map((line) => `<div class="console-line">${escapeHtml(line)}</div>`).join("")
+    : `<div class="console-line muted">${escapeHtml(fallbackText || "(sin salida printf en esta ruta)")}</div>`;
+  consoleEl.innerHTML = rows;
+  consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
 const C_KEYWORDS = new Set([
   "if", "else", "for", "while", "do", "switch", "case", "default", "break",
   "continue", "return", "sizeof", "typedef", "struct", "enum", "union",
@@ -222,7 +272,13 @@ function isExecutableLine(text, codeTitle) {
   if (!line) {
     return false;
   }
-  if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*") || line.startsWith("*/")) {
+  if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*/")) {
+    return false;
+  }
+  if (line === "*" || (line.startsWith("*") && line.length > 1 && /\s/.test(line[1]))) {
+    return false;
+  }
+  if (line === "{" || line === "}") {
     return false;
   }
   if (String(codeTitle || "").toLowerCase().includes("codigo c") && line.startsWith("#")) {
@@ -477,7 +533,8 @@ async function simulateDidacticExecution(context) {
     }
   });
 
-  const stepDelayMs = 190;
+  const speed = Math.min(4, Math.max(0.25, Number(context?.playbackSpeed) || 1));
+  const stepDelayMs = Math.max(20, Math.round(190 / speed));
   for (let i = 0; i < steps.length; i += 1) {
     if (typeof context?.onStep === "function") {
       context.onStep(i, steps.length, {
@@ -592,17 +649,28 @@ function drawCircularLoop(visualContainer) {
 
 function renderLinearWithHeadTail(state, circular, hint) {
   const items = state.items || [];
-  if (!items.length) {
+  const simulation = hint && hint.simulation ? hint.simulation : null;
+  const hasTempNode = Boolean(
+    simulation
+    && (
+      (simulation.tempNodeValue !== undefined && simulation.tempNodeValue !== null)
+      || (simulation.tempDetachedValue !== undefined && simulation.tempDetachedValue !== null)
+    ),
+  );
+  if (!items.length && !hasTempNode) {
     return '<p class="viz-empty">Estructura vacia.</p>';
   }
 
-  const simulation = hint && hint.simulation ? hint.simulation : null;
   const activeIndices = new Set(simulation && simulation.activeIndices ? simulation.activeIndices : []);
   const visitedIndices = new Set(simulation && simulation.visitedIndices ? simulation.visitedIndices : []);
   const pendingIndices = new Set(simulation && simulation.pendingIndices ? simulation.pendingIndices : []);
+  const commitIndices = new Set(simulation && simulation.commitIndices ? simulation.commitIndices : []);
   const suppressDefaultBadges = Boolean(simulation && simulation.suppressDefaultBadges);
 
   let html = `<div class="viz-row-wrap${circular ? " circular-wrap" : ""}">`;
+  if (simulation && simulation.opLabel) {
+    html += `<div class="viz-op-label">${escapeHtml(simulation.opLabel)}</div>`;
+  }
   if (circular) {
     html += '<span class="viz-pointer head">HEAD</span>';
     html += '<span class="viz-pointer tail">COLA</span>';
@@ -632,18 +700,44 @@ function renderLinearWithHeadTail(state, circular, hint) {
     if (pendingIndices.has(index)) {
       simClasses.push("sim-pending");
     }
+    if (commitIndices.has(index)) {
+      simClasses.push("sim-commit");
+    }
     html += `<div class="viz-node${isHead ? " is-head" : ""}${simClasses.length ? ` ${simClasses.join(" ")}` : ""}">${value}${badges.join("")}</div>`;
     if (!isTail) {
       html += '<div class="viz-arrow">&rarr;</div>';
     }
   });
 
-  if (!circular) {
+  if (!circular && items.length) {
     html += '<div class="viz-arrow">&rarr;</div><div class="viz-row-label null">NULL</div>';
+  } else if (!circular && !items.length) {
+    html += '<div class="viz-row-label null">NULL</div>';
   }
   html += "</div>";
   if (circular && items.length > 1) {
     html += '<div class="viz-loop-host"></div>';
+  }
+  if (hasTempNode) {
+    html += '<div class="viz-temp-node-wrap">';
+    if (simulation.tempNodeValue !== undefined && simulation.tempNodeValue !== null) {
+      html += `<div class="viz-temp-node-title">${escapeHtml(simulation.tempNodeTitle || "nodo aux")}</div>`;
+      html += nodeBox(escapeHtml(simulation.tempNodeValue), { className: "sim-pending" });
+      if (Number.isInteger(simulation.tempLinkTargetIndex)) {
+        const targetText = simulation.tempLinkTargetIndex >= 0
+          ? `ENLACE -> nodo[${simulation.tempLinkTargetIndex}]`
+          : "ENLACE -> NULL";
+        html += `<div class="viz-temp-link">${escapeHtml(targetText)}</div>`;
+      }
+    }
+    if (simulation.tempDetachedValue !== undefined && simulation.tempDetachedValue !== null) {
+      html += `<div class="viz-temp-node-title">${escapeHtml(simulation.tempDetachedTitle || "nodo removido")}</div>`;
+      html += nodeBox(escapeHtml(simulation.tempDetachedValue), { className: "sim-active sim-detached" });
+    }
+    if (simulation.tempActionLabel) {
+      html += `<div class="viz-temp-note">${escapeHtml(simulation.tempActionLabel)}</div>`;
+    }
+    html += "</div>";
   }
   html += "</div>";
   return html;
@@ -730,8 +824,31 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
     if (value === null) {
       return frames;
     }
-    frames.push(makeLinkedListFrame(currentState, baseValues, { activeIndices: baseValues.length ? [0] : [] }));
-    frames.push(makeLinkedListFrame(currentState, [value, ...baseValues], { activeIndices: [0], pendingIndices: [0] }));
+    const nextValues = [value, ...baseValues];
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      activeIndices: baseValues.length ? [0] : [],
+      opLabel: "Estado inicial",
+    }));
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      tempNodeValue: value,
+      opLabel: `1) Se crea nodo aux con valor ${value}`,
+    }));
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      tempNodeValue: value,
+      tempLinkTargetIndex: baseValues.length ? 0 : -1,
+      activeIndices: baseValues.length ? [0] : [],
+      opLabel: "2) aux->sgte = *l",
+    }));
+    frames.push(makeLinkedListFrame(currentState, nextValues, {
+      activeIndices: [0],
+      pendingIndices: [0],
+      commitIndices: [0],
+      opLabel: "3) *l = aux (actualiza HEAD)",
+    }));
+    frames.push(makeLinkedListFrame(currentState, nextValues, {
+      activeIndices: [0],
+      opLabel: "Nodo insertado al inicio",
+    }));
     return frames;
   }
 
@@ -741,24 +858,60 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
       return frames;
     }
     if (!baseValues.length) {
-      frames.push(makeLinkedListFrame(currentState, [value], { activeIndices: [0], pendingIndices: [0] }));
+      frames.push(makeLinkedListFrame(currentState, baseValues, { opLabel: "Estado inicial (lista vacia)" }));
+      frames.push(makeLinkedListFrame(currentState, baseValues, {
+        tempNodeValue: value,
+        opLabel: `1) Se crea nodo aux con valor ${value}`,
+      }));
+      frames.push(makeLinkedListFrame(currentState, [value], {
+        activeIndices: [0],
+        pendingIndices: [0],
+        commitIndices: [0],
+        opLabel: "2) *l = aux",
+      }));
       return frames;
     }
     const visited = [];
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      activeIndices: [0],
+      opLabel: "Estado inicial",
+    }));
     for (let i = 0; i < baseValues.length; i += 1) {
       visited.push(i);
-      frames.push(makeLinkedListFrame(currentState, baseValues, { activeIndices: [i], visitedIndices: visited.slice(0, -1) }));
+      frames.push(makeLinkedListFrame(currentState, baseValues, {
+        activeIndices: [i],
+        visitedIndices: visited.slice(0, -1),
+        opLabel: `Buscando nodo final (paso ${i + 1})`,
+      }));
     }
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      tempNodeValue: value,
+      opLabel: `1) Se crea nodo aux con valor ${value}`,
+      visitedIndices: baseValues.map((_, i) => i),
+    }));
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      tempNodeValue: value,
+      tempLinkTargetIndex: baseValues.length - 1,
+      activeIndices: [baseValues.length - 1],
+      visitedIndices: baseValues.slice(0, -1).map((_, i) => i),
+      opLabel: "2) ultimo->sgte = aux",
+    }));
     const nextValues = [...baseValues, value];
     frames.push(makeLinkedListFrame(currentState, nextValues, {
       activeIndices: [nextValues.length - 1],
       pendingIndices: [nextValues.length - 1],
+      commitIndices: [nextValues.length - 1],
       visitedIndices: baseValues.map((_, i) => i),
+      opLabel: "Nodo insertado al final",
     }));
     return frames;
   }
 
-  if (operationName === "insertar_posicion") {
+  if (
+    operationName === "lista_insertar_elemento"
+    || operationName === "insertar_elemento"
+    || operationName === "insertar_posicion"
+  ) {
     const value = toIntOrNull(payload.value);
     const posUi = toIntOrNull(payload.position);
     if (value === null || posUi === null) {
@@ -772,7 +925,18 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
     }
     const nextValues = baseValues.slice();
     nextValues.splice(idx, 0, value);
-    frames.push(makeLinkedListFrame(currentState, nextValues, { activeIndices: [idx], pendingIndices: [idx], visitedIndices: visited }));
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      tempNodeValue: value,
+      opLabel: `1) Se crea nodo aux con valor ${value}`,
+      visitedIndices: visited,
+    }));
+    frames.push(makeLinkedListFrame(currentState, nextValues, {
+      activeIndices: [idx],
+      pendingIndices: [idx],
+      commitIndices: [idx],
+      visitedIndices: visited,
+      opLabel: "2) Reasignacion de enlaces en la posicion objetivo",
+    }));
     return frames;
   }
 
@@ -789,27 +953,144 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
   }
 
   if (operationName === "eliminar_inicio" && baseValues.length) {
-    frames.push(makeLinkedListFrame(currentState, baseValues, { activeIndices: [0] }));
-    frames.push(makeLinkedListFrame(currentState, baseValues.slice(1), {}));
+    const removed = baseValues[0];
+    const remaining = baseValues.slice(1);
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      activeIndices: [0],
+      pendingIndices: [0],
+      opLabel: "Estado inicial",
+    }));
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      tempDetachedValue: removed,
+      tempDetachedTitle: "aux = *l",
+      activeIndices: [0],
+      opLabel: "1) aux = *l",
+    }));
+    frames.push(makeLinkedListFrame(currentState, remaining, {
+      commitIndices: remaining.length ? [0] : [],
+      tempDetachedValue: removed,
+      tempDetachedTitle: "nodo removido",
+      opLabel: "2) *l = aux->sgte",
+    }));
+    frames.push(makeLinkedListFrame(currentState, remaining, {
+      opLabel: "3) free(aux)",
+      tempActionLabel: "Memoria del nodo removido liberada.",
+    }));
     return frames;
   }
 
   if (operationName === "eliminar_final" && baseValues.length) {
+    if (baseValues.length === 1) {
+      const removed = baseValues[0];
+      frames.push(makeLinkedListFrame(currentState, baseValues, {
+        activeIndices: [0],
+        opLabel: "Estado inicial",
+      }));
+      frames.push(makeLinkedListFrame(currentState, [], {
+        tempDetachedValue: removed,
+        tempDetachedTitle: "nodo removido",
+        opLabel: "1) *l = NULL",
+      }));
+      frames.push(makeLinkedListFrame(currentState, [], {
+        opLabel: "2) free(aux)",
+        tempActionLabel: "Memoria del nodo removido liberada.",
+      }));
+      return frames;
+    }
     const visited = [];
     for (let i = 0; i < baseValues.length; i += 1) {
       visited.push(i);
-      frames.push(makeLinkedListFrame(currentState, baseValues, { activeIndices: [i], visitedIndices: visited.slice(0, -1) }));
+      frames.push(makeLinkedListFrame(currentState, baseValues, {
+        activeIndices: [i],
+        visitedIndices: visited.slice(0, -1),
+        opLabel: `Buscando ultimo nodo (paso ${i + 1})`,
+      }));
     }
-    frames.push(makeLinkedListFrame(currentState, baseValues.slice(0, -1), {}));
+    const removed = baseValues[baseValues.length - 1];
+    const remaining = baseValues.slice(0, -1);
+    frames.push(makeLinkedListFrame(currentState, baseValues, {
+      tempDetachedValue: removed,
+      tempDetachedTitle: "nodo removido",
+      activeIndices: [baseValues.length - 2],
+      opLabel: "1) prev->sgte = NULL",
+    }));
+    frames.push(makeLinkedListFrame(currentState, remaining, {
+      activeIndices: [remaining.length - 1],
+      commitIndices: [remaining.length - 1],
+      tempDetachedValue: removed,
+      tempDetachedTitle: "nodo removido",
+      opLabel: "2) Reasignacion del ultimo enlace",
+    }));
+    frames.push(makeLinkedListFrame(currentState, remaining, {
+      opLabel: "3) free(aux)",
+      tempActionLabel: "Memoria del nodo removido liberada.",
+    }));
     return frames;
   }
 
-  if (operationName === "buscar_posiciones" && baseValues.length) {
+  if ((operationName === "buscar_elemento" || operationName === "buscar_posiciones") && baseValues.length) {
     const visited = [];
     for (let i = 0; i < baseValues.length; i += 1) {
       visited.push(i);
       frames.push(makeLinkedListFrame(currentState, baseValues, { activeIndices: [i], visitedIndices: visited.slice(0, -1) }));
     }
+    return frames;
+  }
+
+  if (operationName === "eliminar_elemento" && baseValues.length) {
+    const value = toIntOrNull(payload.value);
+    if (value === null) {
+      return frames;
+    }
+    const index = baseValues.findIndex((item) => Number(item) === Number(value));
+    const visited = [];
+    for (let i = 0; i < baseValues.length; i += 1) {
+      visited.push(i);
+      frames.push(makeLinkedListFrame(currentState, baseValues, {
+        activeIndices: [i],
+        visitedIndices: visited.slice(0, -1),
+        opLabel: `Buscando valor ${value}`,
+      }));
+      if (i === index) {
+        break;
+      }
+    }
+    if (index >= 0) {
+      const remaining = baseValues.slice(0, index).concat(baseValues.slice(index + 1));
+      frames.push(makeLinkedListFrame(currentState, remaining, {
+        commitIndices: index < remaining.length ? [index] : [],
+        tempDetachedValue: value,
+        tempDetachedTitle: "nodo removido",
+        opLabel: "Reasignacion de enlaces (nodo removido)",
+      }));
+      frames.push(makeLinkedListFrame(currentState, remaining, {
+        commitIndices: index < remaining.length ? [index] : [],
+        opLabel: "Estado final tras free(p)",
+      }));
+    }
+    return frames;
+  }
+
+  if (operationName === "eliminar_repetidos" && baseValues.length) {
+    const value = toIntOrNull(payload.value);
+    if (value === null) {
+      return frames;
+    }
+    const visited = [];
+    for (let i = 0; i < baseValues.length; i += 1) {
+      visited.push(i);
+      frames.push(makeLinkedListFrame(currentState, baseValues, {
+        activeIndices: [i],
+        visitedIndices: visited.slice(0, -1),
+        opLabel: `Buscando repeticiones de ${value}`,
+      }));
+    }
+    const remaining = baseValues.filter((item) => Number(item) !== Number(value));
+    frames.push(makeLinkedListFrame(currentState, remaining, {
+      tempDetachedValue: value,
+      tempDetachedTitle: "valor eliminado",
+      opLabel: "Eliminacion de todas las ocurrencias",
+    }));
     return frames;
   }
 
@@ -825,21 +1106,69 @@ function buildStackSimulationFrames(currentState, operationName, payload) {
     if (value === null) {
       return frames;
     }
-    frames.push(makeStackFrame(currentState, baseValues, { activeIndices: baseValues.length ? [0] : [] }));
-    frames.push(makeStackFrame(currentState, [value, ...baseValues], {
+    const nextValues = [value, ...baseValues];
+    frames.push(makeStackFrame(currentState, baseValues, {
+      activeIndices: baseValues.length ? [0] : [],
+      opLabel: "Estado inicial",
+    }));
+    frames.push(makeStackFrame(currentState, baseValues, {
+      tempNodeValue: value,
+      opLabel: `1) Se crea nodo aux con valor ${value}`,
+    }));
+    frames.push(makeStackFrame(currentState, baseValues, {
+      tempNodeValue: value,
+      tempLinkTargetIndex: baseValues.length ? 0 : -1,
+      activeIndices: baseValues.length ? [0] : [],
+      opLabel: "2) aux->sgte = *p",
+    }));
+    frames.push(makeStackFrame(currentState, nextValues, {
       activeIndices: [0],
       pendingIndices: [0],
+      commitIndices: [0],
+      tempNodeValue: value,
+      tempNodeTitle: "aux (integrado)",
+      tempActionLabel: "El nodo temporal ahora forma parte de la pila.",
+      opLabel: "3) *p = aux (actualiza TOPE)",
     }));
-    frames.push(makeStackFrame(currentState, [value, ...baseValues], {
+    frames.push(makeStackFrame(currentState, nextValues, {
       activeIndices: [0],
+      commitIndices: [0],
+      opLabel: "Estado final: nodo insertado en el TOPE",
     }));
     return frames;
   }
 
   if (operationName === "desapilar" && baseValues.length) {
-    frames.push(makeStackFrame(currentState, baseValues, { activeIndices: [0], pendingIndices: [0] }));
-    frames.push(makeStackFrame(currentState, baseValues, { activeIndices: [0] }));
-    frames.push(makeStackFrame(currentState, baseValues.slice(1), {}));
+    const removed = baseValues[0];
+    const remaining = baseValues.slice(1);
+    frames.push(makeStackFrame(currentState, baseValues, {
+      activeIndices: [0],
+      pendingIndices: [0],
+      opLabel: "Estado inicial",
+    }));
+    frames.push(makeStackFrame(currentState, baseValues, {
+      activeIndices: [0],
+      tempDetachedValue: removed,
+      tempDetachedTitle: "aux = *p",
+      opLabel: "1) aux = *p",
+    }));
+    frames.push(makeStackFrame(currentState, remaining, {
+      commitIndices: remaining.length ? [0] : [],
+      tempDetachedValue: removed,
+      tempDetachedTitle: "nodo removido",
+      opLabel: "2) *p = aux->sgte",
+    }));
+    frames.push(makeStackFrame(currentState, remaining, {
+      tempActionLabel: "3) free(aux)",
+      tempDetachedValue: removed,
+      tempDetachedTitle: "nodo removido",
+      opLabel: "Memoria del nodo removido liberada",
+    }));
+    frames.push(makeStackFrame(currentState, remaining, {
+      activeIndices: remaining.length ? [0] : [],
+      commitIndices: remaining.length ? [0] : [],
+      opLabel: "Estado final tras desapilar",
+    }));
     return frames;
   }
 
@@ -872,25 +1201,96 @@ function buildQueueSimulationFrames(currentState, operationName, payload) {
     if (value === null) {
       return frames;
     }
+    const nextValues = [...baseValues, value];
     if (baseValues.length) {
-      frames.push(makeQueueFrame(currentState, baseValues, { activeIndices: [baseValues.length - 1] }));
+      frames.push(makeQueueFrame(currentState, baseValues, {
+        activeIndices: [baseValues.length - 1],
+        opLabel: "Estado inicial (ATRAS actual)",
+      }));
     } else {
-      frames.push(makeQueueFrame(currentState, baseValues, {}));
+      frames.push(makeQueueFrame(currentState, baseValues, {
+        opLabel: "Estado inicial (cola vacia)",
+      }));
     }
-    frames.push(makeQueueFrame(currentState, [...baseValues, value], {
+    frames.push(makeQueueFrame(currentState, baseValues, {
+      tempNodeValue: value,
+      opLabel: `1) Se crea nodo aux con valor ${value}`,
+    }));
+    if (baseValues.length) {
+      frames.push(makeQueueFrame(currentState, baseValues, {
+        tempNodeValue: value,
+        tempLinkTargetIndex: baseValues.length - 1,
+        activeIndices: [baseValues.length - 1],
+        opLabel: "2) q->atras->sgte = aux",
+      }));
+    } else {
+      frames.push(makeQueueFrame(currentState, nextValues, {
+        activeIndices: [0],
+        pendingIndices: [0],
+        commitIndices: [0],
+        tempNodeValue: value,
+        tempNodeTitle: "aux (integrado)",
+        opLabel: "2) q->delante = aux",
+      }));
+      frames.push(makeQueueFrame(currentState, nextValues, {
+        activeIndices: [0],
+        commitIndices: [0],
+        opLabel: "3) q->atras = aux",
+      }));
+      frames.push(makeQueueFrame(currentState, nextValues, {
+        activeIndices: [0],
+        commitIndices: [0],
+        opLabel: "Estado final: primer nodo encolado",
+      }));
+      return frames;
+    }
+    frames.push(makeQueueFrame(currentState, nextValues, {
       activeIndices: [baseValues.length],
       pendingIndices: [baseValues.length],
+      commitIndices: [baseValues.length],
+      tempNodeValue: value,
+      tempNodeTitle: "aux (integrado)",
+      opLabel: "3) q->atras = aux",
     }));
-    frames.push(makeQueueFrame(currentState, [...baseValues, value], {
+    frames.push(makeQueueFrame(currentState, nextValues, {
       activeIndices: [baseValues.length],
+      commitIndices: [baseValues.length],
+      opLabel: "Estado final: nodo agregado al final de la cola",
     }));
     return frames;
   }
 
   if (operationName === "desencolar" && baseValues.length) {
-    frames.push(makeQueueFrame(currentState, baseValues, { activeIndices: [0], pendingIndices: [0] }));
-    frames.push(makeQueueFrame(currentState, baseValues, { activeIndices: [0] }));
-    frames.push(makeQueueFrame(currentState, baseValues.slice(1), {}));
+    const removed = baseValues[0];
+    const remaining = baseValues.slice(1);
+    frames.push(makeQueueFrame(currentState, baseValues, {
+      activeIndices: [0],
+      pendingIndices: [0],
+      opLabel: "Estado inicial",
+    }));
+    frames.push(makeQueueFrame(currentState, baseValues, {
+      activeIndices: [0],
+      tempDetachedValue: removed,
+      tempDetachedTitle: "aux = q->delante",
+      opLabel: "1) aux = q->delante",
+    }));
+    frames.push(makeQueueFrame(currentState, remaining, {
+      commitIndices: remaining.length ? [0] : [],
+      tempDetachedValue: removed,
+      tempDetachedTitle: "nodo removido",
+      opLabel: "2) q->delante = aux->sgte",
+    }));
+    frames.push(makeQueueFrame(currentState, remaining, {
+      tempActionLabel: "3) free(aux)",
+      tempDetachedValue: removed,
+      tempDetachedTitle: "nodo removido",
+      opLabel: "Memoria del nodo removido liberada",
+    }));
+    frames.push(makeQueueFrame(currentState, remaining, {
+      activeIndices: remaining.length ? [0] : [],
+      commitIndices: remaining.length ? [0] : [],
+      opLabel: "Estado final tras desencolar",
+    }));
     return frames;
   }
 
@@ -992,27 +1392,37 @@ function buildPriorityQueueSimulationFrames(currentState, operationName, payload
 function resolveStackFrameByLine(operationName, lineText, frames) {
   const line = String(lineText || "").toLowerCase();
   if (!frames.length) {
-    return 0;
+    return -1;
   }
 
   if (operationName === "apilar") {
-    if (line.includes("pila->tope = aux")) {
+    if (line.includes("*p = aux")) {
+      return Math.min(3, frames.length - 1);
+    }
+    if (line.includes("aux->sgte = *p")) {
       return Math.min(2, frames.length - 1);
     }
-    if (line.includes("aux->sgte = pila->tope") || line.includes("aux->nro") || line.includes("malloc")) {
+    if (line.includes("if (aux == null)") || line.includes("if (aux==null)")) {
       return Math.min(1, frames.length - 1);
     }
-    return 0;
+    if (line.includes("aux->nro") || line.includes("malloc")) {
+      return Math.min(1, frames.length - 1);
+    }
+    // Fallback al mapeo proporcional por paso para no volver al estado inicial
+    // en lineas de cierre (p. ej. "}") al final de la traza.
+    return -1;
   }
 
   if (operationName === "desapilar") {
-    if (line.includes("free(aux)") || line.includes("pila->tope = aux->sgte")) {
-      return Math.min(2, frames.length - 1);
+    if (line.includes("free(aux)") || line.includes("*p = aux->sgte")) {
+      return line.includes("free(aux)")
+        ? Math.min(3, frames.length - 1)
+        : Math.min(2, frames.length - 1);
     }
-    if (line.includes("*valor = aux->nro") || line.includes("aux = pila->tope")) {
+    if (line.includes("int num = aux->nro") || line.includes("aux = *p")) {
       return Math.min(1, frames.length - 1);
     }
-    return 0;
+    return -1;
   }
 
   if (operationName === "cima") {
@@ -1023,7 +1433,7 @@ function resolveStackFrameByLine(operationName, lineText, frames) {
     return -1;
   }
 
-  return 0;
+  return -1;
 }
 
 function resolveQueueFrameByLine(operationName, lineText, frames) {
@@ -1033,28 +1443,45 @@ function resolveQueueFrameByLine(operationName, lineText, frames) {
   }
 
   if (operationName === "encolar") {
-    if (line.includes("cola->atras = aux")) {
+    if (line.includes("q->atras = aux")) {
+      return Math.min(3, frames.length - 1);
+    }
+    if (
+      line.includes("q->atras->sgte = aux")
+      || line.includes("q->delante = aux")
+    ) {
       return Math.min(2, frames.length - 1);
     }
     if (
-      line.includes("cola->atras->sgte = aux")
-      || line.includes("aux->sgte = null")
+      line.includes("if (aux == null)")
+      || line.includes("if (aux==null)")
+      || line.includes("if (q->delante == null)")
+      || line.includes("if (q->delante==null)")
+      || line === "else {"
+      || line === "else"
+    ) {
+      return Math.min(1, frames.length - 1);
+    }
+    if (
+      line.includes("aux->sgte = null")
       || line.includes("aux->nro")
       || line.includes("malloc")
     ) {
       return Math.min(1, frames.length - 1);
     }
-    return 0;
+    return -1;
   }
 
   if (operationName === "desencolar") {
-    if (line.includes("free(aux)") || line.includes("cola->delante = aux->sgte")) {
-      return Math.min(2, frames.length - 1);
+    if (line.includes("free(aux)") || line.includes("q->delante = aux->sgte")) {
+      return line.includes("free(aux)")
+        ? Math.min(3, frames.length - 1)
+        : Math.min(2, frames.length - 1);
     }
-    if (line.includes("*valor = aux->nro") || line.includes("aux = cola->delante")) {
+    if (line.includes("int num = aux->nro") || line.includes("aux = q->delante")) {
       return Math.min(1, frames.length - 1);
     }
-    return 0;
+    return -1;
   }
 
   if (operationName === "frente") {
@@ -1066,7 +1493,7 @@ function resolveQueueFrameByLine(operationName, lineText, frames) {
   if (operationName === "limpiar") {
     return -1;
   }
-  return 0;
+  return -1;
 }
 
 function resolvePriorityQueueFrameByLine(operationName, lineText, frames) {
@@ -1088,7 +1515,7 @@ function resolvePriorityQueueFrameByLine(operationName, lineText, frames) {
     ) {
       return Math.min(1, frames.length - 1);
     }
-    return 0;
+    return -1;
   }
 
   if (operationName === "desencolar") {
@@ -1096,9 +1523,9 @@ function resolvePriorityQueueFrameByLine(operationName, lineText, frames) {
       return Math.min(frames.length - 1, Math.max(0, frames.length - 1));
     }
     if (line.includes("while (actual != null)") || line.includes("actual = actual->sgte") || line.includes("actual->prioridad < objetivo->prioridad")) {
-      return Math.min(1, frames.length - 1);
+      return Math.min(Math.max(1, frames.length - 2), frames.length - 1);
     }
-    return 0;
+    return -1;
   }
 
   if (operationName === "frente") {
@@ -1107,12 +1534,41 @@ function resolvePriorityQueueFrameByLine(operationName, lineText, frames) {
   if (operationName === "limpiar") {
     return -1;
   }
-  return 0;
+  return -1;
+}
+
+function resolveLinkedListFrameByLine(operationName, lineText, frames) {
+  const line = String(lineText || "").toLowerCase();
+  if (!frames.length) {
+    return -1;
+  }
+
+  if (operationName === "eliminar_elemento") {
+    if (line.includes("free(")) {
+      return Math.max(0, frames.length - 1);
+    }
+    if (
+      line.includes("ant->sgte = p->sgte")
+      || line.includes("*lista = p->sgte")
+      || line.includes("*l = aux->sgte")
+    ) {
+      return Math.max(0, frames.length - 2);
+    }
+    return -1;
+  }
+
+  return -1;
 }
 
 function resolveFrameIndexForStep(modelId, operationName, stepIndex, totalSteps, frames, stepMeta) {
   if (!frames.length) {
     return -1;
+  }
+  if (modelId === "linked_list") {
+    const mapped = resolveLinkedListFrameByLine(operationName, stepMeta?.lineText || "", frames);
+    if (mapped >= 0) {
+      return mapped;
+    }
   }
   if (modelId === "stack") {
     const mapped = resolveStackFrameByLine(operationName, stepMeta?.lineText || "", frames);
@@ -1157,17 +1613,27 @@ function buildSequentialVisualFrames(modelId, visualState, operationName, payloa
 
 function renderQueue(state, hint) {
   const items = state.items || [];
-  if (!items.length) {
+  const simulation = hint && hint.simulation ? hint.simulation : null;
+  const hasTempNode = simulation && simulation.tempNodeValue !== undefined && simulation.tempNodeValue !== null;
+  const hasDetachedNode = simulation && simulation.tempDetachedValue !== undefined && simulation.tempDetachedValue !== null;
+  if (!items.length && !hasTempNode && !hasDetachedNode) {
     return '<p class="viz-empty">Cola vacia.</p>';
   }
 
-  const simulation = hint && hint.simulation ? hint.simulation : null;
   const activeIndices = new Set(simulation && simulation.activeIndices ? simulation.activeIndices : []);
   const visitedIndices = new Set(simulation && simulation.visitedIndices ? simulation.visitedIndices : []);
   const pendingIndices = new Set(simulation && simulation.pendingIndices ? simulation.pendingIndices : []);
+  const commitIndices = new Set(simulation && simulation.commitIndices ? simulation.commitIndices : []);
   const suppressDefaultBadges = Boolean(simulation && simulation.suppressDefaultBadges);
+  const tempNodeValue = hasTempNode ? simulation.tempNodeValue : null;
+  const tempLinkTargetIndex =
+    simulation && Number.isInteger(simulation.tempLinkTargetIndex) ? simulation.tempLinkTargetIndex : null;
 
-  let html = '<div class="viz-row-wrap queue-wrap"><div class="viz-row-label front">FRONT</div><div class="viz-row">';
+  let html = '<div class="viz-row-wrap queue-wrap">';
+  if (simulation && simulation.opLabel) {
+    html += `<div class="viz-op-label">${escapeHtml(simulation.opLabel)}</div>`;
+  }
+  html += '<div class="viz-row-label front">FRONT</div><div class="viz-row">';
   items.forEach((item, index) => {
     const isFront = index === 0;
     const isBack = index === items.length - 1;
@@ -1179,6 +1645,9 @@ function renderQueue(state, hint) {
     }
     if (pendingIndices.has(index)) {
       simClasses.push("sim-pending");
+    }
+    if (commitIndices.has(index)) {
+      simClasses.push("sim-commit");
     }
     let className = simClasses.join(" ");
     if (isFront || isBack) {
@@ -1193,7 +1662,32 @@ function renderQueue(state, hint) {
       html += '<div class="viz-arrow">&rarr;</div>';
     }
   });
+  if (!items.length) {
+    html += '<div class="viz-row-label null">NULL</div>';
+  }
   html += '</div><div class="viz-row-tail"><span class="viz-row-label back">BACK</span></div>';
+  if (hasTempNode || hasDetachedNode || (simulation && simulation.tempActionLabel)) {
+    html += '<div class="viz-temp-node-wrap">';
+    if (hasTempNode) {
+      html += `<div class="viz-temp-node-title">${escapeHtml(simulation.tempNodeTitle || "nodo aux")}</div>`;
+      html += nodeBox(escapeHtml(tempNodeValue), { className: "sim-pending" });
+      if (tempLinkTargetIndex !== null) {
+        const targetText =
+          tempLinkTargetIndex >= 0 && tempLinkTargetIndex < items.length
+            ? `ENLACE -> nodo[${tempLinkTargetIndex}]`
+            : "ENLACE -> NULL";
+        html += `<div class="viz-temp-link">${escapeHtml(targetText)}</div>`;
+      }
+    }
+    if (hasDetachedNode) {
+      html += `<div class="viz-temp-node-title">${escapeHtml(simulation.tempDetachedTitle || "nodo removido")}</div>`;
+      html += nodeBox(escapeHtml(simulation.tempDetachedValue), { className: "sim-active sim-detached" });
+    }
+    if (simulation && simulation.tempActionLabel) {
+      html += `<div class="viz-temp-note">${escapeHtml(simulation.tempActionLabel)}</div>`;
+    }
+    html += "</div>";
+  }
   if (hint && hint.operation === "desencolar" && hint.result) {
     html += `<div class="viz-out">OUT: ${escapeHtml(hint.result)}</div>`;
   }
@@ -1262,17 +1756,27 @@ function renderPriorityQueue(state, hint) {
 
 function renderStack(state, hint) {
   const items = state.items || [];
-  if (!items.length) {
+  const simulation = hint && hint.simulation ? hint.simulation : null;
+  const hasTempNode = simulation && simulation.tempNodeValue !== undefined && simulation.tempNodeValue !== null;
+  const hasDetachedNode = simulation && simulation.tempDetachedValue !== undefined && simulation.tempDetachedValue !== null;
+  if (!items.length && !hasTempNode && !hasDetachedNode) {
     return '<p class="viz-empty">Pila vacia.</p>';
   }
 
-  const simulation = hint && hint.simulation ? hint.simulation : null;
   const activeIndices = new Set(simulation && simulation.activeIndices ? simulation.activeIndices : []);
   const visitedIndices = new Set(simulation && simulation.visitedIndices ? simulation.visitedIndices : []);
   const pendingIndices = new Set(simulation && simulation.pendingIndices ? simulation.pendingIndices : []);
+  const commitIndices = new Set(simulation && simulation.commitIndices ? simulation.commitIndices : []);
   const suppressDefaultBadges = Boolean(simulation && simulation.suppressDefaultBadges);
+  const tempNodeValue = hasTempNode ? simulation.tempNodeValue : null;
+  const tempLinkTargetIndex =
+    simulation && Number.isInteger(simulation.tempLinkTargetIndex) ? simulation.tempLinkTargetIndex : null;
 
-  let html = '<div class="viz-stack-wrap"><div class="viz-row-label top">TOPE</div><div class="viz-stack">';
+  let html = '<div class="viz-stack-wrap">';
+  if (simulation && simulation.opLabel) {
+    html += `<div class="viz-op-label">${escapeHtml(simulation.opLabel)}</div>`;
+  }
+  html += '<div class="viz-row-label top">TOPE</div><div class="viz-stack">';
   items.forEach((item, index) => {
     const isTop = index === 0;
     const value = escapeHtml(item.value);
@@ -1284,6 +1788,9 @@ function renderStack(state, hint) {
     }
     if (pendingIndices.has(index)) {
       simClasses.push("sim-pending");
+    }
+    if (commitIndices.has(index)) {
+      simClasses.push("sim-commit");
     }
     const className = `${isTop ? "is-top" : ""}${simClasses.length ? ` ${simClasses.join(" ")}` : ""}`.trim();
     let badge = "";
@@ -1297,6 +1804,28 @@ function renderStack(state, hint) {
   });
   html += '<div class="viz-stack-down">&darr;</div><div class="viz-stack-null">NULL</div>';
   html += "</div>";
+  if (hasTempNode || hasDetachedNode || (simulation && simulation.tempActionLabel)) {
+    html += '<div class="viz-temp-node-wrap">';
+    if (hasTempNode) {
+      html += `<div class="viz-temp-node-title">${escapeHtml(simulation.tempNodeTitle || "nodo aux")}</div>`;
+      html += nodeBox(escapeHtml(tempNodeValue), { className: "sim-pending" });
+      if (tempLinkTargetIndex !== null) {
+        const targetText =
+          tempLinkTargetIndex >= 0 && tempLinkTargetIndex < items.length
+            ? "ENLACE -> TOPE"
+            : "ENLACE -> NULL";
+        html += `<div class="viz-temp-link">${escapeHtml(targetText)}</div>`;
+      }
+    }
+    if (hasDetachedNode) {
+      html += `<div class="viz-temp-node-title">${escapeHtml(simulation.tempDetachedTitle || "nodo removido")}</div>`;
+      html += nodeBox(escapeHtml(simulation.tempDetachedValue), { className: "sim-active sim-detached" });
+    }
+    if (simulation && simulation.tempActionLabel) {
+      html += `<div class="viz-temp-note">${escapeHtml(simulation.tempActionLabel)}</div>`;
+    }
+    html += "</div>";
+  }
   if (hint && hint.operation === "desapilar" && hint.result) {
     html += `<div class="viz-out">OUT: ${escapeHtml(hint.result)}</div>`;
   }
@@ -1427,6 +1956,12 @@ function renderVisualState(structureId, state, container, hint) {
 function showMessage(text, success) {
   const box = byId("message-box");
   if (!box) {
+    return;
+  }
+  const hasPrintfConsole = Boolean(byId("seq-printf-console"));
+  if (success && hasPrintfConsole) {
+    box.textContent = "";
+    box.className = "message";
     return;
   }
   box.textContent = text || "";
@@ -1581,12 +2116,12 @@ function buildOrderedArgs(item, operationCatalog, structureId) {
 
 function buildMainDeclarationLines(structureId) {
   const mappings = {
-    stack: ["Pila pila;", "pila_inicializar(&pila);"],
-    queue: ["Cola cola;", "cola_inicializar(&cola);"],
+    stack: ["ptrPila pila = NULL;"],
+    queue: ["struct Cola cola = { .delante = NULL, .atras = NULL };"],
     priority_queue: ["ColaPrioridad cp;", "cp_inicializar(&cp);"],
-    linked_list: ["Lista lista;", "lista_inicializar(&lista);"],
-    circular_list: ["ListaCircular lc;", "ListaCircular_Inicializar(&lc);"],
-    sublist: ["SubLista sublista;", "SubLista_Inicializar(&sublista);"],
+    linked_list: ["Tlista lista = NULL;"],
+    circular_list: ["ListaCircular lc;", "lcir_inicializar(&lc);"],
+    sublist: ["Nodo *sublista = NULL;", "sublista_inicializar(&sublista);"],
   };
   return mappings[structureId] || ["// Declarar e inicializar el TAD seleccionado"];
 }
@@ -1629,6 +2164,7 @@ function renderActionHistory(history, container, structureId, operationCatalog) 
     const args = buildOrderedArgs(item, operationCatalog, structureId).join(", ");
     const call = `${fn}(${args});`;
     codeLines.push(`    ${call}`);
+    codeLines.push(`    printf("${toCStringLiteral(item.result || "Operacion aplicada.")}\\n");`);
     codeLines.push(`    // ${item.result || "Operacion aplicada."}`);
   });
 
@@ -1663,6 +2199,10 @@ function initStructurePage(model) {
   const simPrevButton = byId("seq-sim-prev");
   const simStepButton = byId("seq-sim-step");
   const simStatus = byId("seq-sim-status");
+  const stepToggle = byId("seq-step-toggle");
+  const speedSlider = byId("seq-speed-slider");
+  const speedValue = byId("seq-speed-value");
+  const printfConsole = byId("seq-printf-console");
 
   if (!form || !operationSelect || !inputsContainer || !visualContainer) {
     return;
@@ -1676,16 +2216,121 @@ function initStructurePage(model) {
   const operationLabel = new Map(operations.map((op) => [op.name, op.label]));
   const operationCatalog = new Map(operations.map((op) => [op.name, op]));
   const actionHistory = [];
+  const consoleState = {
+    trace: null,
+    fallbackMessage: "",
+  };
+  const visualTraceState = {
+    operationName: "",
+    payload: {},
+    frames: [],
+    totalSteps: 0,
+  };
+  let playbackSpeed = 1;
+  let playbackSpeedSetting = 0;
+
+  function speedSettingToMultiplier(setting) {
+    return Math.pow(2, setting);
+  }
+
+  function setPlaybackSpeed(value) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) {
+      return;
+    }
+    playbackSpeedSetting = Math.min(2, Math.max(-2, parsed));
+    playbackSpeed = speedSettingToMultiplier(playbackSpeedSetting);
+    if (speedValue) {
+      const signed = playbackSpeedSetting >= 0
+        ? `+${playbackSpeedSetting.toFixed(2)}x`
+        : `${playbackSpeedSetting.toFixed(2)}x`;
+      speedValue.textContent = `${signed} (${playbackSpeed.toFixed(2)}x real)`;
+    }
+    if (tracePlayer && typeof tracePlayer.setSpeed === "function") {
+      tracePlayer.setSpeed(playbackSpeed);
+    }
+  }
+  function collectPrintfConsoleLines(trace, cursor) {
+    if (!trace || !Array.isArray(trace.steps) || cursor < 0) {
+      return [];
+    }
+    const limit = Math.min(cursor, trace.steps.length - 1);
+    const out = [];
+    for (let i = 0; i <= limit; i += 1) {
+      const step = trace.steps[i] || {};
+      const rawMessages = extractPrintfMessagesFromLine(step.line_text);
+      rawMessages.forEach((msg) => {
+        // Evita ruido visual de formatos printf no resueltos (ej. "%d", "%s").
+        if (hasPrintfFormatSpecifier(msg)) {
+          return;
+        }
+        out.push(`[printf] ${msg}`);
+      });
+    }
+    // Refleja el printf del main al finalizar la simulacion de la operacion.
+    if (limit >= trace.steps.length - 1) {
+      const finalMessage = String(trace.message || "").trim();
+      if (finalMessage) {
+        const formatted = `[printf] ${finalMessage}`;
+        if (!out.includes(formatted)) {
+          out.push(formatted);
+        }
+      }
+    }
+    return out;
+  }
+  function refreshPrintfConsole(cursor) {
+    const lines = collectPrintfConsoleLines(consoleState.trace, cursor);
+    const fallback = consoleState.fallbackMessage || "(sin salida printf en esta ruta)";
+    renderPrintfConsole(printfConsole, lines, fallback);
+  }
   const tracePlayer = window.InterpreterRuntime
     ? window.InterpreterRuntime.createTracePlayer({
       codeElement: byId("op-pseudocode"),
       statusElement: simStatus,
       counterElement: byId("seq-sim-counter"),
-      renderState: (stateSnapshot) => {
+      renderState: (stateSnapshot, stepMeta) => {
+        const hasFrames = Array.isArray(visualTraceState.frames) && visualTraceState.frames.length > 0;
+        if (hasFrames && stepMeta && Number.isInteger(stepMeta.step_index)) {
+          const frameIndex = resolveFrameIndexForStep(
+            model.id,
+            visualTraceState.operationName,
+            stepMeta.step_index,
+            visualTraceState.totalSteps || 0,
+            visualTraceState.frames,
+            { lineText: stepMeta.line_text || "" },
+          );
+          if (frameIndex >= 0 && frameIndex < visualTraceState.frames.length) {
+            const frame = visualTraceState.frames[frameIndex];
+            renderVisualState(model.id, frame.state, visualContainer, {
+              operation: visualTraceState.operationName,
+              simulation: frame.simulation,
+            });
+            return;
+          }
+        }
         renderVisualState(model.id, stateSnapshot, visualContainer, null);
+      },
+      onCursorChange: (event) => {
+        const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
+        traceCursor = cursor;
+        traceTotalSteps = event && event.trace && Array.isArray(event.trace.steps)
+          ? event.trace.steps.length
+          : 0;
+        refreshPrintfConsole(cursor);
+        setSimulationButtonsEnabled();
       },
     })
     : null;
+
+  if (speedSlider) {
+    setPlaybackSpeed(speedSlider.value);
+    speedSlider.addEventListener("input", () => {
+      setPlaybackSpeed(speedSlider.value);
+    });
+  } else {
+    setPlaybackSpeed(0);
+  }
 
   visibleOperations.forEach((operation) => {
     const option = document.createElement("option");
@@ -1718,9 +2363,17 @@ function initStructurePage(model) {
     );
   });
   renderActionHistory(actionHistory, historyBox, model.id, operationCatalog);
+  refreshPrintfConsole(-1);
 
   let pendingExecution = false;
   let traceSelectionKey = "";
+  let traceCursor = -1;
+  let traceTotalSteps = 0;
+  let lockStepUntilInput = false;
+
+  function isStepByStepEnabled() {
+    return !stepToggle || Boolean(stepToggle.checked);
+  }
 
   function isCurrentSelectionValid() {
     const current = operations.find((item) => item.name === operationSelect.value);
@@ -1743,23 +2396,45 @@ function initStructurePage(model) {
   }
 
   function setSimulationButtonsEnabled() {
+    const stepMode = isStepByStepEnabled();
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const busy = pendingExecution;
     const canExecute = isCurrentSelectionValid();
+    const runtimeCursor = tracePlayer && typeof tracePlayer.getCursor === "function"
+      ? tracePlayer.getCursor()
+      : traceCursor;
+    const runtimeTotalSteps = tracePlayer && typeof tracePlayer.getTotalSteps === "function"
+      ? tracePlayer.getTotalSteps()
+      : traceTotalSteps;
+    const hasProgress = hasTrace && runtimeCursor >= 0;
+    const atEnd = hasTrace && runtimeTotalSteps > 0 && runtimeCursor >= runtimeTotalSteps - 1;
     if (simPlayButton) {
       simPlayButton.disabled = busy || !canExecute;
     }
     if (simPrevButton) {
-      simPrevButton.disabled = busy || !hasTrace;
+      simPrevButton.disabled = busy || !stepMode || !hasProgress;
     }
     if (simStepButton) {
-      simStepButton.disabled = busy || !canExecute;
+      simStepButton.disabled = busy || !stepMode || !canExecute || (hasTrace && atEnd) || lockStepUntilInput;
+    }
+    if (speedSlider) {
+      speedSlider.disabled = busy || !stepMode;
     }
   }
 
   function invalidateTrace(message) {
     traceSelectionKey = "";
+    traceCursor = -1;
+    traceTotalSteps = 0;
+    lockStepUntilInput = false;
+    consoleState.trace = null;
+    consoleState.fallbackMessage = "";
+    visualTraceState.operationName = "";
+    visualTraceState.payload = {};
+    visualTraceState.frames = [];
+    visualTraceState.totalSteps = 0;
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    refreshPrintfConsole(-1);
     setSimulationButtonsEnabled();
   }
 
@@ -1796,11 +2471,34 @@ function initStructurePage(model) {
       showMessage(data.message, Boolean(data.success));
       updateDidacticPanel(model, current.name);
 
-      if (data.execution_trace && tracePlayer) {
+      const finalOnly = Boolean(options && options.finalOnly);
+      const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
+      if (hasExecutionTrace) {
+        lockStepUntilInput = false;
+        visualTraceState.operationName = current.name;
+        visualTraceState.payload = { ...payload };
+        visualTraceState.frames = buildSequentialVisualFrames(
+          model.id,
+          model.visual_state,
+          current.name,
+          payload,
+        );
+        visualTraceState.totalSteps = Array.isArray(data.execution_trace.steps)
+          ? data.execution_trace.steps.length
+          : 0;
+        consoleState.trace = data.execution_trace;
+        consoleState.fallbackMessage = "";
         tracePlayer.loadTrace(data.execution_trace);
         traceSelectionKey = selectionKey;
       } else {
-        const allowFallbackPlayback = !(options && options.allowFallbackPlayback === false);
+        visualTraceState.operationName = "";
+        visualTraceState.payload = {};
+        visualTraceState.frames = [];
+        visualTraceState.totalSteps = 0;
+        consoleState.trace = null;
+        consoleState.fallbackMessage = data.message || "(sin salida printf en esta ruta)";
+        refreshPrintfConsole(-1);
+        const allowFallbackPlayback = !(options && options.allowFallbackPlayback === false) && !finalOnly;
         if (allowFallbackPlayback) {
           const visualFrames = buildSequentialVisualFrames(
             model.id,
@@ -1812,6 +2510,7 @@ function initStructurePage(model) {
             operation: current.name,
             payload,
             sizeBefore: Number(model?.visual_state?.size || 0),
+            playbackSpeed,
             onStep: (stepIndex, totalSteps, stepMeta) => {
               if (!visualFrames.length) {
                 return;
@@ -1854,13 +2553,16 @@ function initStructurePage(model) {
       renderActionHistory(actionHistory, historyBox, model.id, operationCatalog);
       if (data.visual_state) {
         model.visual_state = data.visual_state;
-        if (!(data.execution_trace && tracePlayer)) {
+        if (!hasExecutionTrace) {
           renderVisualState(model.id, data.visual_state, visualContainer, {
             operation: current.name,
             payload,
             result: data.result,
             result_priority: data.result_priority,
           });
+          if (simStatus && finalOnly) {
+            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
+          }
         }
       }
       return data;
@@ -1910,6 +2612,19 @@ function initStructurePage(model) {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!isStepByStepEnabled()) {
+      const current = operationCatalog.get(operationSelect.value);
+      if (!current) {
+        return;
+      }
+      const payload = collectPayload(current);
+      const selectionKey = buildSelectionKey(current, payload);
+      await executeOperationAndLoadTrace(current, payload, selectionKey, {
+        finalOnly: true,
+        allowFallbackPlayback: false,
+      });
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: true });
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
@@ -1929,9 +2644,23 @@ function initStructurePage(model) {
       renderVisualState(model.id, data.visual_state, visualContainer, null);
     }
     invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+    refreshPrintfConsole(-1);
   });
 
   simPlayButton?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      const current = operationCatalog.get(operationSelect.value);
+      if (!current) {
+        return;
+      }
+      const payload = collectPayload(current);
+      const selectionKey = buildSelectionKey(current, payload);
+      await executeOperationAndLoadTrace(current, payload, selectionKey, {
+        finalOnly: true,
+        allowFallbackPlayback: false,
+      });
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: true });
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
@@ -1940,15 +2669,37 @@ function initStructurePage(model) {
   });
 
   simPrevButton?.addEventListener("click", () => {
-    tracePlayer?.prev();
+    if (!isStepByStepEnabled()) {
+      return;
+    }
+    const moved = tracePlayer?.prev();
+    if (moved) {
+      lockStepUntilInput = false;
+    }
+    setSimulationButtonsEnabled();
   });
 
   simStepButton?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: false });
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
-    await tracePlayer.step();
+    const advanced = await tracePlayer.step();
+    if (advanced && tracePlayer.isAtEnd()) {
+      lockStepUntilInput = true;
+      setSimulationButtonsEnabled();
+    }
+  });
+
+  stepToggle?.addEventListener("change", () => {
+    invalidateTrace(
+      isStepByStepEnabled()
+        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
+        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
+    );
   });
 
 }

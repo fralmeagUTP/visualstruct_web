@@ -22,17 +22,17 @@ class StackAdapter(BaseAdapter):
         if operation_name == "apilar":
             valor = self._require_int(payload, "value", "valor")
             self._structure.apilar(valor)
-            return {"message": f"Se apilÃ³ '{valor}' correctamente."}
+            return {"message": f"Se apiló '{valor}' correctamente."}
         if operation_name == "desapilar":
             valor = self._structure.desapilar()
-            return {"message": f"Se desapilÃ³ '{valor}' desde el tope.", "result": valor}
+            return {"message": f"Se desapiló '{valor}' desde el tope.", "result": valor}
         if operation_name == "cima":
             valor = self._structure.cima()
             return {"message": f"La cima actual es '{valor}'.", "result": valor}
         if operation_name == "limpiar":
             self._structure.limpiar()
-            return {"message": "La pila se limpiÃ³ correctamente."}
-        raise ValueError(f"OperaciÃ³n no soportada: {operation_name}.")
+            return {"message": "La pila se limpió correctamente."}
+        raise ValueError(f"Operación no soportada: {operation_name}.")
 
     def to_visual_state(self) -> dict[str, Any]:
         items = self._structure.a_lista()

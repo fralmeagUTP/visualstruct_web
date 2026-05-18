@@ -1,18 +1,79 @@
 {% extends "base.html" %}
-{% block title %}Modulo Grafos{% endblock %}
+{% block title %}Módulo Grafos{% endblock %}
 {% block content %}
 <section>
-  <h2>Modulo de Grafos</h2>
-  <p>Selecciona una estructura para crear grafos y ejecutar recorridos/algoritmos.</p>
-  <div class="cards">
-    {% for structure in structures %}
-    <article class="card">
-      <h3>{{ structure.name }}</h3>
-      <p>{{ structure.description }}</p>
-      <a class="btn" href="{{ url_for('graph.structure_page', structure_id=structure.id) }}">Abrir</a>
-      <a class="link" href="{{ url_for('help.graph_structure_help', structure_id=structure.id) }}">Ayuda especifica</a>
+  <h2>Módulo de Grafos</h2>
+  <p>Selecciona el flujo de trabajo. Primero construyes el grafo y luego ejecutas algoritmos.</p>
+  {% if structures %}
+  {% set graph = structures[0] %}
+  <div class="cards graph-menu-cards">
+    <article class="card card-with-image graph-menu-card">
+      <div class="card-illustration">
+        <img
+          src="{{ url_for('main.asset_file', filename='ConstruirGrafo.png') }}"
+          alt="Ilustración de construcción de grafo"
+          loading="lazy"
+          onerror="this.closest('.card-illustration').style.display='none';"
+        >
+      </div>
+      <h3>Construir grafo</h3>
+      <p>Crea o reinicia el tipo de grafo y administra vértices/aristas.</p>
+      <div class="graph-menu-actions">
+        <a class="btn" href="{{ url_for('graph.structure_phase_page', structure_id=graph.id, phase='construccion') }}">Abrir construcción</a>
+        <a class="link" href="{{ url_for('help.graph_structure_help', structure_id=graph.id) }}">Ayuda específica</a>
+      </div>
     </article>
-    {% endfor %}
+    <article class="card card-with-image graph-menu-card">
+      <div class="card-illustration">
+        <img
+          src="{{ url_for('main.asset_file', filename='Recorridos.png') }}"
+          alt="Ilustración de recorridos en grafos"
+          loading="lazy"
+          onerror="this.closest('.card-illustration').style.display='none';"
+        >
+      </div>
+      <h3>Recorridos</h3>
+      <p>Ejecuta BFS o DFS sobre el grafo actual y visualiza el orden de visita.</p>
+      <div class="graph-menu-actions">
+        <a class="btn" href="{{ url_for('graph.structure_phase_page', structure_id=graph.id, phase='recorridos') }}">Abrir recorridos</a>
+        <a class="link" href="{{ url_for('help.graph_structure_help', structure_id=graph.id) }}">Ayuda específica</a>
+      </div>
+    </article>
+    <article class="card card-with-image graph-menu-card">
+      <div class="card-illustration">
+        <img
+          src="{{ url_for('main.asset_file', filename='CaminoMinimo.png') }}"
+          alt="Ilustración de camino mínimo"
+          loading="lazy"
+          onerror="this.closest('.card-illustration').style.display='none';"
+        >
+      </div>
+      <h3>Camino mínimo</h3>
+      <p>Calcula rutas mínimas con Dijkstra o Bellman-Ford.</p>
+      <div class="graph-menu-actions">
+        <a class="btn" href="{{ url_for('graph.structure_phase_page', structure_id=graph.id, phase='camino-minimo') }}">Abrir caminos</a>
+        <a class="link" href="{{ url_for('help.graph_structure_help', structure_id=graph.id) }}">Ayuda específica</a>
+      </div>
+    </article>
+    <article class="card card-with-image graph-menu-card">
+      <div class="card-illustration">
+        <img
+          src="{{ url_for('main.asset_file', filename='MST.png') }}"
+          alt="Ilustración de árbol de expansión mínima"
+          loading="lazy"
+          onerror="this.closest('.card-illustration').style.display='none';"
+        >
+      </div>
+      <h3>Árbol de expansión mínima</h3>
+      <p>Ejecuta Prim o Kruskal en grafos no dirigidos.</p>
+      <div class="graph-menu-actions">
+        <a class="btn" href="{{ url_for('graph.structure_phase_page', structure_id=graph.id, phase='expansion-minima') }}">Abrir AEM</a>
+        <a class="link" href="{{ url_for('help.graph_structure_help', structure_id=graph.id) }}">Ayuda específica</a>
+      </div>
+    </article>
   </div>
+  {% else %}
+  <p>No hay estructuras de grafo disponibles.</p>
+  {% endif %}
 </section>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import random
 from typing import Any
 
 from app.adapters.base_adapter import BaseAdapter
@@ -119,6 +120,86 @@ class GraphAdapter(BaseAdapter):
             return self._set_result(
                 operation_name,
                 {"message": f"Grafo creado correctamente ({'dirigido' if directed else 'no dirigido'})."},
+            )
+
+        if operation_name == "generate_random_graph":
+            vertices_count = BaseAdapter._require_int(payload, "vertices_count", "cantidad de vertices")
+            if vertices_count <= 0:
+                raise ValueError("La cantidad de vertices debe ser mayor que 0.")
+            if vertices_count > 200:
+                raise ValueError("La cantidad de vertices no puede ser mayor a 200.")
+
+            directed = self.graph.dirigido
+            seed_value = payload.get("seed")
+            if seed_value is None or str(seed_value).strip() == "":
+                seed = random.randint(1, 999_999_999)
+                payload["seed"] = seed
+            else:
+                seed = BaseAdapter._require_int(payload, "seed", "semilla")
+            rng = random.Random(seed)
+
+            self._graph = Grafo(dirigido=directed)
+            vertices = list(range(1, vertices_count + 1))
+            for vertex in vertices:
+                self.graph.insertar_vertice(vertex)
+
+            if vertices_count > 1:
+                shuffled = vertices[:]
+                rng.shuffle(shuffled)
+                for index in range(1, len(shuffled)):
+                    current = shuffled[index]
+                    parent = shuffled[rng.randrange(0, index)]
+                    weight = rng.randint(1, 20)
+                    self.graph.insertar_arista(parent, current, weight)
+
+            max_edges = (
+                vertices_count * (vertices_count - 1)
+                if directed
+                else (vertices_count * (vertices_count - 1)) // 2
+            )
+            min_edges = max(0, vertices_count - 1)
+            extra_capacity = max(0, max_edges - min_edges)
+            extra_edges_target = rng.randint(0, min(extra_capacity, max(1, vertices_count)))
+
+            existing_keys: set[tuple[int, int]] = set()
+            for origin, target, _weight in self.graph.aristas():
+                o = int(origin)
+                t = int(target)
+                if directed:
+                    existing_keys.add((o, t))
+                else:
+                    existing_keys.add((min(o, t), max(o, t)))
+
+            attempts = 0
+            max_attempts = max(30, extra_edges_target * 20)
+            while extra_edges_target > 0 and attempts < max_attempts:
+                attempts += 1
+                origin = rng.choice(vertices)
+                target = rng.choice(vertices)
+                if origin == target:
+                    continue
+                key = (origin, target) if directed else (min(origin, target), max(origin, target))
+                if key in existing_keys:
+                    continue
+                weight = rng.randint(1, 20)
+                self.graph.insertar_arista(origin, target, weight)
+                existing_keys.add(key)
+                extra_edges_target -= 1
+
+            result_edges = self.graph.cantidad_aristas()
+            return self._set_result(
+                operation_name,
+                {
+                    "message": (
+                        f"Se genero un grafo aleatorio con {vertices_count} vertices y "
+                        f"{result_edges} aristas (semilla {seed})."
+                    ),
+                    "result": {
+                        "vertices_count": vertices_count,
+                        "edges_count": result_edges,
+                        "seed": seed,
+                    },
+                },
             )
 
         if operation_name == "insert_vertex":
@@ -370,6 +451,18 @@ class GraphAdapter(BaseAdapter):
                             {"value": "false", "label": "No dirigido"},
                             {"value": "true", "label": "Dirigido"},
                         ],
+                    }
+                ],
+            },
+            {
+                "name": "generate_random_graph",
+                "label": "Generar grafo aleatorio",
+                "mutates": True,
+                "inputs": [
+                    {
+                        "name": "vertices_count",
+                        "label": "Cantidad de vertices",
+                        "type": "number",
                     }
                 ],
             },

@@ -1,13 +1,24 @@
 ﻿{% extends "base.html" %}
-{% block title %}Ayuda {{ help_data.title }}{% endblock %}
+{% block title %}Ayuda | {{ help_data.title }}{% endblock %}
 {% block content %}
 <section>
   <h2>{{ help_data.title }}</h2>
-  <p>{{ help_data.summary }}</p>
+  <h3>Descripcion del TAD</h3>
+  <p>{{ help_data.tad_description }}</p>
+
+  <h3>Controles de ejecucion paso a paso</h3>
+  <ul>
+    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra toda la traza; desactivado aplica solo el resultado final.</li>
+    <li>Botones de ejecucion: <strong>Reproducir</strong> y <strong>Reiniciar</strong>.</li>
+    <li>Navegacion por traza: <strong>Anterior paso</strong> y <strong>Siguiente paso</strong>.</li>
+    <li><strong>Velocidad de simulacion</strong>: slider de <strong>-2x</strong> a <strong>+2x</strong> (0.00x = 1.00x real).</li>
+    <li>En modo rapido (checkbox desactivado), el resultado visual final debe coincidir con el ultimo estado de la traza interpretada.</li>
+    <li>Al llegar al ultimo paso, <strong>Siguiente paso</strong> se bloquea hasta cambiar entradas/operacion; <strong>Anterior paso</strong> se habilita solo cuando ya avanzaste.</li>
+  </ul>
 
   <h3>Operaciones soportadas</h3>
   <ul>
-    {% for operation in help_data.supported_operations %}
+    {% for operation in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
     <li>{{ operation }}</li>
     {% endfor %}
   </ul>
@@ -30,6 +41,7 @@
   {% if help_data.c_methods %}
     {% for method in help_data.c_methods %}
     <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
+    <p>{{ method.explanation }}</p>
     <pre class="didactic-code">{{ method.code }}</pre>
     {% endfor %}
   {% else %}
@@ -37,8 +49,8 @@
   {% endif %}
 
   <p>
-    <a class="link" href="{{ url_for('hash.structure_page', structure_id=structure_id) }}">
-      Volver al visualizador
+    <a class="btn" href="{{ url_for('hash.structure_page', structure_id=structure_id) }}">
+      Ir a la visualizacion
     </a>
   </p>
 </section>

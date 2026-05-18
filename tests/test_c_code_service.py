@@ -10,8 +10,8 @@ def test_linked_list_c_code_data_loaded() -> None:
     data = CCodeService.get_structure_data("linked_list")
     assert data is not None
     assert data["code_title"] == "Codigo C"
-    assert "struct nodo" in data["record"]
-    assert "typedef struct" in data["record"]
+    assert "typedef struct NodoLista" in data["record"]
+    assert "Tlista" in data["record"]
     assert "insertar_inicio" in data["operations"]
     assert "lista_insertar_inicio" in data["operations"]["insertar_inicio"]
 
@@ -21,10 +21,10 @@ def test_stack_c_code_data_loaded() -> None:
     data = CCodeService.get_structure_data("stack")
     assert data is not None
     assert data["code_title"] == "Codigo C"
-    assert "struct nodo" in data["record"]
-    assert "typedef struct" in data["record"]
+    assert "typedef struct NodoPila" in data["record"]
+    assert "ptrPila" in data["record"]
     assert "apilar" in data["operations"]
-    assert "pila_push" in data["operations"]["apilar"]
+    assert "pila_apilar" in data["operations"]["apilar"]
 
 
 def test_queue_c_code_data_loaded() -> None:
@@ -32,8 +32,8 @@ def test_queue_c_code_data_loaded() -> None:
     data = CCodeService.get_structure_data("queue")
     assert data is not None
     assert data["code_title"] == "Codigo C"
-    assert "struct nodo" in data["record"]
-    assert "typedef struct" in data["record"]
+    assert "struct NodoCola" in data["record"]
+    assert "struct Cola" in data["record"]
     assert "encolar" in data["operations"]
     assert "cola_encolar" in data["operations"]["encolar"]
 
@@ -65,8 +65,8 @@ def test_sublist_c_code_data_loaded() -> None:
     data = CCodeService.get_structure_data("sublist")
     assert data is not None
     assert data["code_title"] == "Codigo C"
-    assert "typedef struct sublista" in data["record"]
-    assert "typedef struct nodo" in data["record"]
+    assert "typedef struct Sublista" in data["record"]
+    assert "typedef struct Nodo" in data["record"]
     assert "insertar_padre" in data["operations"]
     assert "sublista_insertar_padre_final" in data["operations"]["insertar_padre"]
 
@@ -76,8 +76,8 @@ def test_abb_c_code_data_loaded() -> None:
     data = CCodeService.get_structure_data("abb")
     assert data is not None
     assert data["code_title"] == "Codigo C"
-    assert "struct Abb" in data["record"]
-    assert "NodoAbb" in data["record"]
+    assert "typedef struct ABBNodo" in data["record"]
+    assert "ABBNodo" in data["record"]
     assert "insertar" in data["operations"]
     assert "abb_insertar" in data["operations"]["insertar"]
 
@@ -87,8 +87,8 @@ def test_avl_c_code_data_loaded() -> None:
     data = CCodeService.get_structure_data("avl")
     assert data is not None
     assert data["code_title"] == "Codigo C"
-    assert "struct Avl" in data["record"]
-    assert "NodoAvl" in data["record"]
+    assert "typedef struct nodoAVL" in data["record"]
+    assert "typedef nodoAVL* AVL;" in data["record"]
     assert "insertar" in data["operations"]
     assert "avl_insertar" in data["operations"]["insertar"]
 
@@ -98,10 +98,10 @@ def test_red_black_c_code_data_loaded() -> None:
     data = CCodeService.get_structure_data("red_black")
     assert data is not None
     assert data["code_title"] == "Codigo C"
-    assert "struct RojoNegro" in data["record"]
-    assert "NodoRN" in data["record"]
+    assert "typedef struct nodoRBT" in data["record"]
+    assert "typedef struct nodoRBT *RBT;" in data["record"]
     assert "insertar" in data["operations"]
-    assert "rn_insertar" in data["operations"]["insertar"]
+    assert "rbt_insertar" in data["operations"]["insertar"]
 
 
 def test_binary_heap_c_code_data_loaded() -> None:
@@ -120,17 +120,14 @@ def test_graph_c_code_data_loaded() -> None:
     data = CCodeService.get_structure_data("graph")
     assert data is not None
     assert data["code_title"] == "Codigo C"
-    assert "GrafoArista" in data["record"]
-    assert "struct Grafo" in data["record"]
-    assert "typedef struct NodoArista" in data["record"]
-    assert "typedef struct NodoVertice" in data["record"]
+    assert "typedef struct NodoV" in data["record"]
+    assert "typedef struct NodoA" in data["record"]
+    assert "typedef struct nodoGrafo" in data["record"]
+    assert "typedef struct Conjunto" in data["record"]
     assert "insert_vertex" in data["operations"]
     assert "grafo_insertar_vertice" in data["operations"]["insert_vertex"]
-    assert data["record"].count("} GrafoArista;") == 1
-    assert data["record"].count("} GrafoRecorrido;") == 1
-    assert data["record"].count("} GrafoCamino;") == 1
-    assert data["record"].count("} NodoArista;") == 1
-    assert data["record"].count("} NodoVertice;") == 1
+    assert data["record"].count("} *ListaVertice;") == 1
+    assert data["record"].count("} *ListaArco;") == 1
 
 
 def test_hash_table_c_code_data_loaded() -> None:

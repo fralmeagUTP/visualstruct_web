@@ -1,4 +1,4 @@
-"""Didactic help content for hash-table module."""
+﻿"""Didactic help content for hash-table module."""
 
 from __future__ import annotations
 
@@ -11,20 +11,25 @@ class HashHelpService:
     _MODULE_HELP = {
         "title": "Ayuda del modulo de tablas hash",
         "description": (
-            "El modulo de tablas hash permite gestionar pares clave-valor "
-            "y observar buckets, colisiones y redimensionamiento automatico."
+            "Este modulo permite interpretar operaciones de tabla hash sobre codigo C real: "
+            "insercion, consulta y eliminacion se reflejan en buckets, colisiones y "
+            "eventos de redimensionamiento durante la simulacion."
         ),
         "tips": [
-            "Crea la tabla con capacidad positiva antes de insertar.",
-            "Observa el factor de carga para anticipar redimensionamientos.",
-            "Compara busqueda, contiene y eliminacion en claves existentes/no existentes.",
+            "Inicializa la tabla con capacidad valida antes de operar.",
+            "Usa Reproducir para visualizar el flujo completo y Siguiente/Anterior paso para analizar cada linea.",
+            "Monitorea factor de carga, colisiones por bucket y rehash cuando cambie la capacidad.",
         ],
     }
 
     _STRUCTURE_HELP: dict[str, dict[str, Any]] = {
         "hash_table": {
             "title": "Tabla Hash",
-            "summary": "Hash con encadenamiento separado y resize cuando el factor de carga supera 0.75.",
+            "summary": (
+                "Tabla hash con encadenamiento separado por buckets y redimensionamiento automatico "
+                "cuando el factor de carga supera el umbral. En la animacion sigue el calculo del "
+                "indice hash, el manejo de colisiones y el rehash de claves tras cambios de capacidad."
+            ),
             "supported_operations": [
                 "create_table",
                 "insert",

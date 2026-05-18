@@ -26,6 +26,19 @@ def test_insert_and_remove_vertex() -> None:
     assert adapter.to_visual_state()["metadata"]["vertices_count"] == 0
 
 
+def test_generate_random_graph_by_vertices_count() -> None:
+    """Random graph generation should honor requested vertex count."""
+    adapter = GraphAdapter()
+    payload = {"vertices_count": "8"}
+    result = adapter.execute("generate_random_graph", payload)
+    state = adapter.to_visual_state()
+
+    assert state["metadata"]["vertices_count"] == 8
+    assert state["metadata"]["edges_count"] >= 7
+    assert "seed" in payload
+    assert result["result"]["vertices_count"] == 8
+
+
 def test_insert_and_remove_edge() -> None:
     """Edge insertion and deletion should update metadata."""
     adapter = GraphAdapter()
@@ -85,6 +98,7 @@ def test_dijkstra_and_negative_weight_block() -> None:
 def test_bellman_ford_execution() -> None:
     """Bellman-Ford should handle negative weights."""
     adapter = GraphAdapter()
+    adapter.execute("create_graph", {"directed": "true"})
     adapter.execute("insert_edge", {"origin": "1", "target": "2", "weight": "4"})
     adapter.execute("insert_edge", {"origin": "2", "target": "3", "weight": "-1"})
 
@@ -93,6 +107,24 @@ def test_bellman_ford_execution() -> None:
     assert result["has_negative_cycle"] is False
     assert result["path"] == [1, 2, 3]
     assert result["distance_to_destination"] == 3.0
+
+
+def test_bellman_ford_undirected_uses_both_edge_directions() -> None:
+    """In undirected graphs Bellman-Ford must relax both directions of each edge."""
+    adapter = GraphAdapter()
+    # Grafo no dirigido por defecto. Se agregan aristas en una orientacion
+    # que no coincide con la ruta mas corta desde 1 hasta 4 si solo se relajara
+    # la direccion cargada en `aristas()` deduplicada.
+    adapter.execute("insert_edge", {"origin": "5", "target": "3", "weight": "1"})
+    adapter.execute("insert_edge", {"origin": "1", "target": "3", "weight": "2"})
+    adapter.execute("insert_edge", {"origin": "5", "target": "4", "weight": "5"})
+    adapter.execute("insert_edge", {"origin": "1", "target": "2", "weight": "8"})
+    adapter.execute("insert_edge", {"origin": "2", "target": "5", "weight": "13"})
+
+    result = adapter.execute("run_bellman_ford", {"start": "1", "end": "4"})["result"]
+    assert result["has_negative_cycle"] is False
+    assert result["path"] == [1, 3, 5, 4]
+    assert result["distance_to_destination"] == 8.0
 
 
 def test_prim_and_kruskal_constraints_and_union_find_flag() -> None:

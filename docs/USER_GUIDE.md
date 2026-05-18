@@ -1,6 +1,6 @@
 # Manual de Usuario
 
-Ultima actualizacion: **2026-05-12**.
+Ultima actualizacion: **2026-05-18**.
 
 ## 1. Objetivo
 
@@ -8,7 +8,7 @@ El Visualizador Web de Estructuras de Datos permite practicar TAD mediante:
 
 - operaciones interactivas,
 - visualizacion del estado interno,
-- apoyo didactico con codigo C real o pseudocodigo.
+- apoyo didactico con codigo C real de los TAD nuevos (`docs/tads_C`) y fallback de pseudocodigo cuando aplique.
 
 Modulos disponibles:
 
@@ -68,7 +68,7 @@ Barra superior:
 
 ## 5.1 Controles de ejecucion paso a paso
 
-En los paneles de simulacion se usa el texto `Ejecucion paso a paso` y los controles se muestran asi:
+En secuencial, jerarquico y hash los controles se muestran asi:
 
 - fila superior: `Reproducir`, `Reiniciar`.
 - fila inferior: `Anterior paso`, `Siguiente paso`.
@@ -79,6 +79,22 @@ Comportamiento esperado:
 - `Anterior paso`: retrocede una linea/paso en la traza.
 - `Siguiente paso`: avanza una linea/paso en la traza.
 - `Reiniciar`: limpia el estado de la estructura actual.
+
+En grafos:
+
+- la simulacion esta integrada en `Paso 3: Ejecutar algoritmo`;
+- controles: `Reproducir`, `Anterior paso`, `Siguiente paso`;
+- `Siguiente paso` avanza linea a linea la traza del algoritmo;
+- `Accion actual` indica `Evaluando condicion` o `Aplicando cambio`.
+
+Checkbox comun en todos los modulos:
+
+- `Interpretar codigo paso a paso` activado: reproduce la traza completa.
+- `Interpretar codigo paso a paso` desactivado: aplica solo el resultado final.
+- En grafos, el resultado final en modo rapido debe coincidir con el ultimo estado visual del modo interpretado
+  (mismos resaltados de recorrido, camino minimo o expansion minima).
+- En grafos, al desactivar el checkbox se ocultan los controles de navegacion por paso
+  (`Anterior paso`, `Siguiente paso`, velocidad, contador y accion actual).
 
 ## 6. Modo interprete C
 
@@ -93,8 +109,28 @@ Cuando aplica:
 - `Estructura del TAD` muestra el `record` C.
 - `Codigo C: <Operacion>` muestra funciones C por operacion.
 - El historial se presenta como programa principal (`main`) coherente con la sesion.
+- `hash_table` tambien usa contrato C (por ejemplo `th_insertar`, `th_buscar`, `th_estadisticas`).
 
-Para `hash_table` se usa principalmente pseudocodigo didactico.
+La app no mantiene compatibilidad con nombres legacy de TAD anteriores.
+
+## 6.1 Especificacion obligatoria de simulacion didactica
+
+La simulacion debe representar visualmente la ejecucion real del metodo en C y el efecto sobre la estructura de datos.
+
+Reglas de cumplimiento:
+
+1. El interprete visual debe respetar estructuras de control (`if/else`, ciclos y retornos tempranos); no debe ejecutar ni animar ramas no tomadas.
+2. En operaciones mutantes, la animacion debe mostrar al menos estas etapas:
+   - estado inicial,
+   - creacion de estructura temporal (ej. nodo `aux`),
+   - asignaciones intermedias de punteros/enlaces,
+   - reasignacion a la estructura principal,
+   - estado final.
+3. Las estructuras temporales deben verse como elementos separados de la estructura principal hasta el paso de reasignacion.
+4. La linea activa de `Codigo C` y el estado visual deben permanecer sincronizados en cada paso.
+5. La `Consola C (printf)` debe mostrar los mensajes de la ruta realmente ejecutada.
+6. El `Programa principal (main)` del historial debe ser consistente con las operaciones ejecutadas y con el estado final mostrado.
+7. Esta especificacion aplica a toda la app y unicamente a los TAD nuevos ubicados en `docs/tads_C`.
 
 ## 7. Reglas de entrada
 
@@ -148,6 +184,8 @@ Recomendaciones:
 
 - Prim y Kruskal solo aplican a grafos no dirigidos.
 - Dijkstra no acepta pesos negativos; para ese caso usar Bellman-Ford.
+- Usa el flujo visual 1) tipo de grafo, 2) construir/editar, 3) ejecutar y depurar paso a paso.
+- Si desactivas la interpretacion paso a paso, `Reproducir` aplica directamente el resultado final del algoritmo.
 
 ### 8.4 Hash
 

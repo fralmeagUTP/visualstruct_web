@@ -98,19 +98,25 @@ class PseudocodeService:
             "operations": {
                 "insertar_inicio": "Crear nodo\nnodo.siguiente = cabeza\ncabeza = nodo\nActualizar tam",
                 "insertar_final": "Crear nodo\ncola.siguiente = nodo\ncola = nodo\nActualizar tam",
-                "insertar_posicion": (
-                    "Validar posicionUI >= 1\n"
-                    "pos = posicionUI - 1\n"
-                    "Insertar en indice pos"
+                "insertar_elemento": (
+                    "Validar posicion >= 1\n"
+                    "desplazamiento = AntesDespues()  // -1 antes, 0 despues\n"
+                    "Recorrer hasta (posicion + desplazamiento)\n"
+                    "Enlazar nuevo nodo"
                 ),
-                "eliminar_inicio": "Si tam == 0: Error\nret = cabeza\ncabeza = cabeza.siguiente\nRetornar ret",
-                "eliminar_final": "Si tam == 0: Error\nBuscar penultimo\nRetornar cola",
-                "eliminar_posicion": "pos = posicionUI - 1\nValidar rango\nEliminar nodo en pos",
-                "eliminar_primero": "Recorrer\nEliminar primera coincidencia de valor",
-                "buscar_posiciones": "Recorrer\nGuardar posiciones (base 1) donde valor coincide",
-                "invertir": "Invertir punteros uno a uno",
-                "primero": "Retornar cabeza.valor",
-                "ultimo": "Retornar cola.valor",
+                "lista_insertar_elemento": (
+                    "Validar posicion >= 1\n"
+                    "desplazamiento = lista_insertar_antes_despues()  // interno del TAD\n"
+                    "Recorrer hasta (posicion + desplazamiento)\n"
+                    "Enlazar nuevo nodo"
+                ),
+                "buscar_elemento": "Recorrer\nImprimir posiciones (base 1) donde valor coincide",
+                "mostrar": "Recorrer\nImprimir indice y valor de cada nodo",
+                "eliminar_elemento": "Recorrer\nEliminar primera coincidencia de valor",
+                "eliminar_repetidos": "Recorrer\nEliminar todas las coincidencias de valor",
+                "insertar_posicion": "Compatibilidad legacy: usar insertar_elemento",
+                "eliminar_primero": "Compatibilidad legacy: usar eliminar_elemento",
+                "buscar_posiciones": "Compatibilidad legacy: usar buscar_elemento",
                 "limpiar": "cabeza = NULO\ncola = NULO\ntam = 0",
             },
         },
@@ -316,6 +322,12 @@ class PseudocodeService:
         "final": "Final()",
         "insertar_inicio": "InsertarInicio(valor)",
         "insertar_final": "InsertarFinal(valor)",
+        "insertar_elemento": "InsertarElemento(valor, posicion, relativo)",
+        "lista_insertar_elemento": "ListaInsertarElemento(valor, posicion)",
+        "buscar_elemento": "BuscarElemento(valor)",
+        "mostrar": "Mostrar()",
+        "eliminar_elemento": "EliminarElemento(valor)",
+        "eliminar_repetidos": "EliminarRepetidos(valor)",
         "insertar_posicion": "InsertarPosicion(valor, posicionUI)",
         "eliminar_inicio": "EliminarInicio()",
         "eliminar_final": "EliminarFinal()",

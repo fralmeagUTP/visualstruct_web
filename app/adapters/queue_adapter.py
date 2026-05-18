@@ -22,10 +22,10 @@ class QueueAdapter(BaseAdapter):
         if operation_name == "encolar":
             valor = self._require_int(payload, "value", "valor")
             self._structure.encolar(valor)
-            return {"message": f"Se encolÃ³ '{valor}' correctamente."}
+            return {"message": f"Se encoló '{valor}' correctamente."}
         if operation_name == "desencolar":
             valor = self._structure.desencolar()
-            return {"message": f"Se desencolÃ³ '{valor}' desde el frente.", "result": valor}
+            return {"message": f"Se desencoló '{valor}' desde el frente.", "result": valor}
         if operation_name == "frente":
             valor = self._structure.frente()
             return {"message": f"El frente actual es '{valor}'.", "result": valor}
@@ -34,8 +34,8 @@ class QueueAdapter(BaseAdapter):
             return {"message": f"El valor al final es '{valor}'.", "result": valor}
         if operation_name == "limpiar":
             self._structure.limpiar()
-            return {"message": "La cola se limpiÃ³ correctamente."}
-        raise ValueError(f"OperaciÃ³n no soportada: {operation_name}.")
+            return {"message": "La cola se limpió correctamente."}
+        raise ValueError(f"Operación no soportada: {operation_name}.")
 
     def to_visual_state(self) -> dict[str, Any]:
         items = self._structure.a_lista()

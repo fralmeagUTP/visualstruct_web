@@ -7,7 +7,7 @@ from .exceptions import (
     TADError,
     VerticeNoEncontradoError,
 )
-from .grafo import Grafo
+from .tad_wrappers import Grafo
 from .union_find import UnionFind
 
 __all__ = [

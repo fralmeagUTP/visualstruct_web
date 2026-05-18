@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 
+from app.services.execution_trace_service import ExecutionTraceService
+
 
 def _assert_execution_trace_payload(data: dict) -> None:
     trace = data.get("execution_trace")
@@ -167,7 +169,45 @@ def test_graph_algorithm_trace_includes_semantic_debug_steps(client) -> None:
         and step["debug"]["graph_progress"].get("mode") == "traversal"
         for step in debug_steps
     )
+    assert "grafo_bfs" in data["execution_trace"]["source_code"]
+    normalized_lines = [str(step.get("line_text", "")).strip().lower() for step in steps]
+    assert "while (cola.delante != null) {" in normalized_lines
+    assert "while (suces != null) {" in normalized_lines
 
+
+def test_graph_dfs_trace_includes_recursive_subroutine_source_and_calls(client) -> None:
+    for vertex in ("1", "2", "3", "4"):
+        response = client.post(
+            "/graph/graph/operate",
+            json={"operation": "insert_vertex", "payload": {"vertex": vertex}},
+        )
+        assert response.status_code == 200
+        assert response.get_json()["success"] is True
+
+    for payload in (
+        {"origin": "1", "target": "2", "weight": "1"},
+        {"origin": "2", "target": "4", "weight": "1"},
+        {"origin": "1", "target": "3", "weight": "1"},
+    ):
+        response = client.post(
+            "/graph/graph/operate",
+            json={"operation": "insert_edge", "payload": payload},
+        )
+        assert response.status_code == 200
+        assert response.get_json()["success"] is True
+
+    response = client.post(
+        "/graph/graph/operate",
+        json={"operation": "run_dfs", "payload": {"start": "1"}},
+    )
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["success"] is True
+    assert "grafo_dfs_recursivo" in data["execution_trace"]["source_code"]
+
+    normalized_lines = [str(step.get("line_text", "")).strip().lower() for step in data["execution_trace"]["steps"]]
+    assert "grafo_dfs_recursivo(g, inicio, &recorrido);" in normalized_lines
+    assert normalized_lines.count("grafo_dfs_recursivo(g, suces->dato, recorrido);") >= 2
 
 def test_stack_stepwise_change_happens_on_mutation_line(client) -> None:
     response = client.post(
@@ -190,9 +230,13 @@ def test_stack_stepwise_change_happens_on_mutation_line(client) -> None:
         previous_size = current_size
 
     assert first_change is not None
-    line_text = str(first_change.get("line_text", ""))
-    assert "=" in line_text
-    assert "return" not in line_text.lower()
+    trace = data["execution_trace"]
+    assert "pila_apilar" in trace["source_code"]
+    normalized_lines = [str(step.get("line_text", "")).strip().lower() for step in steps]
+    assert "*p = aux;" in normalized_lines
+    assert any("aux->nro = valor;" in line for line in normalized_lines)
+    assert "*" not in normalized_lines
+    assert not any(line == "return false;" for line in normalized_lines)
 
 
 def test_stack_success_trace_skips_defensive_return_false_lines(client) -> None:
@@ -205,6 +249,54 @@ def test_stack_success_trace_skips_defensive_return_false_lines(client) -> None:
     assert data["success"] is True
     lines = [str(step.get("line_text", "")).strip().lower() for step in data["execution_trace"]["steps"]]
     assert "return false;" not in lines
+    assert not any("error: pila no inicializada" in line for line in lines)
+    assert not any("error: no se pudo asignar memoria" in line for line in lines)
+
+
+def test_linked_list_trace_stops_after_return_in_insertar_elemento(client) -> None:
+    warmup = client.post(
+        "/sequential/linked_list/operate",
+        json={"operation": "insertar_final", "payload": {"value": "10"}},
+    )
+    assert warmup.status_code == 200
+    assert warmup.get_json()["success"] is True
+
+    response = client.post(
+        "/sequential/linked_list/operate",
+        json={"operation": "lista_insertar_elemento", "payload": {"value": "8", "position": "1"}},
+    )
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["success"] is True
+
+    lines = [str(step.get("line_text", "")).strip().lower() for step in data["execution_trace"]["steps"]]
+    assert not any("error...posicion no encontrada" in line for line in lines)
+    assert "free(q);" not in lines
+
+
+def test_control_flow_filter_keeps_only_taken_error_branch() -> None:
+    lines = [
+        "int cola_desencolar(struct Cola *q) {",
+        "if (q == NULL || q->delante == NULL) {",
+        '    printf("Cola vacía. No se puede desencolar.\\n");',
+        "    return -1;  // Valor de error",
+        "}",
+        "struct NodoCola *aux = q->delante;",
+        "int num = aux->nro;",
+        "q->delante = aux->sgte;",
+    ]
+    executable = list(range(len(lines)))
+    filtered = ExecutionTraceService._filter_trace_lines_by_control_flow(
+        lines=lines,
+        executable_indexes=executable,
+        success=False,
+        message="Cola vacía. No se puede desencolar.",
+    )
+    filtered_lines = [lines[idx].strip().lower() for idx in filtered]
+    assert 'printf("cola vacía. no se puede desencolar.\\n");' in filtered_lines
+    assert "return -1;  // valor de error" in filtered_lines
+    assert "int num = aux->nro;" not in filtered_lines
+    assert "q->delante = aux->sgte;" not in filtered_lines
 
 
 def test_dijkstra_trace_includes_fine_grained_debug_stages(client) -> None:
@@ -242,6 +334,12 @@ def test_dijkstra_trace_includes_fine_grained_debug_stages(client) -> None:
     assert "extract_min" in stages
     assert "relax_edge" in stages
     assert "update_distance" in stages
+    assert "grafo_dijkstra" in data["execution_trace"]["source_code"]
+    normalized_lines = [str(step.get("line_text", "")).strip().lower() for step in data["execution_trace"]["steps"]]
+    outer_for_count = normalized_lines.count("for (i = 0; i < n; i++) {")
+    inner_for_count = normalized_lines.count("for (j = 0; j < n; j++) {")
+    assert outer_for_count >= 2
+    assert inner_for_count >= 1
 
 
 def test_bellman_ford_negative_cycle_trace_includes_detection_stage(client) -> None:

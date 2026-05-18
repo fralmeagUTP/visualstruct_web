@@ -32,47 +32,52 @@ def _live_server_url():
         thread.join(timeout=5)
 
 
+def _wait_status_contains(page, selector: str, expected: str, timeout_ms: int = 15000) -> None:
+    page.wait_for_function(
+        "(args) => (document.querySelector(args.sel)?.textContent || '').includes(args.txt)",
+        arg={"sel": selector, "txt": expected},
+        timeout=timeout_ms,
+    )
+
+
 def test_playwright_hierarchical_red_black_null_and_history_sync() -> None:
     """Hierarchical page should render NULL leaves and synchronized C main history."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
 
     with _live_server_url() as base_url:
-        try:
-            with playwright_mod.sync_playwright() as p:
-                browser = p.chromium.launch(headless=True)
-                page = browser.new_page()
-                page.goto(f"{base_url}/hierarchical/red_black", wait_until="networkidle")
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/hierarchical/red_black", wait_until="networkidle")
 
-                for value in ["10", "5", "15"]:
-                    page.fill("#h-field-value", value)
-                    page.click("#operation-form button[type='submit']")
-                    page.wait_for_timeout(220)
+            for value in ["10", "5", "15"]:
+                page.fill("#h-field-value", value)
+                page.click("#hier-sim-play")
+                _wait_status_contains(page, "#hier-sim-status", "Simulacion completada")
 
-                page.wait_for_selector(".viz-tree-svg", timeout=5000)
+            page.wait_for_selector(".viz-tree-svg", timeout=5000)
 
-                null_count = page.evaluate("() => document.querySelectorAll('.viz-tree-text.nil').length")
-                assert int(null_count) > 0
+            null_count = page.evaluate("() => document.querySelectorAll('.viz-tree-text.nil').length")
+            assert int(null_count) > 0
 
-                nil_class_ok = page.evaluate(
-                    "() => !!document.querySelector('.viz-tree-node.nil.black')",
-                )
-                assert bool(nil_class_ok) is True
+            nil_class_ok = page.evaluate(
+                "() => !!document.querySelector('.viz-tree-node.nil.black')",
+            )
+            assert bool(nil_class_ok) is True
 
-                code_text = page.text_content("#op-pseudocode") or ""
-                assert "rn_insertar" in code_text
+            code_text = page.text_content("#op-pseudocode") or ""
+            assert "rbt_insertar" in code_text
 
-                history_text = page.text_content("#action-history") or ""
-                assert "Programa principal (main)" in history_text
-                assert "rn_insertar(arbol, 15);" in history_text
+            history_text = page.text_content("#action-history") or ""
+            assert "Programa principal (main)" in history_text
+            assert "rbt_insertar(&arbol, 15);" in history_text
 
-                tad_scrollable = page.evaluate(
-                    "() => { const el = document.querySelector('#tad-record'); return el && el.scrollHeight > el.clientHeight; }",
-                )
-                assert bool(tad_scrollable) is True
+            tad_record_ok = page.evaluate(
+                "() => { const el = document.querySelector('#tad-record'); return !!el && (el.textContent || '').trim().length > 20; }",
+            )
+            assert bool(tad_record_ok) is True
 
-                browser.close()
-        except Exception as error:  # pragma: no cover - environment dependent
-            pytest.skip(f"Playwright no disponible en este entorno: {error}")
+            browser.close()
 
 
 def test_playwright_graph_code_panel_scroll_and_history_sync() -> None:
@@ -80,41 +85,37 @@ def test_playwright_graph_code_panel_scroll_and_history_sync() -> None:
     playwright_mod = pytest.importorskip("playwright.sync_api")
 
     with _live_server_url() as base_url:
-        try:
-            with playwright_mod.sync_playwright() as p:
-                browser = p.chromium.launch(headless=True)
-                page = browser.new_page()
-                page.goto(f"{base_url}/graph/graph", wait_until="networkidle")
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/graph/graph", wait_until="networkidle")
 
-                page.select_option("#graph-operation-select", "insert_vertex")
-                page.wait_for_selector("#g-op-field-vertex", timeout=5000)
-                page.fill("#g-op-field-vertex", "30")
-                page.select_option("#graph-run-mode", "operation")
-                page.click("#graph-sim-play")
-                page.wait_for_timeout(200)
+            page.select_option("#graph-operation-select", "insert_vertex")
+            page.wait_for_selector("#g-op-field-vertex", timeout=5000)
+            page.fill("#g-op-field-vertex", "30")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-message-box", "vertice")
 
-                page.fill("#g-op-field-vertex", "40")
-                page.click("#graph-sim-play")
-                page.wait_for_timeout(200)
+            page.fill("#g-op-field-vertex", "40")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-message-box", "vertice")
 
-                code_title = page.text_content("#op-pseudocode-title") or ""
-                assert "Codigo C" in code_title
+            code_title = page.text_content("#op-pseudocode-title") or ""
+            assert "Codigo C" in code_title
 
-                code_text = page.text_content("#op-pseudocode") or ""
-                assert "grafo_insertar_vertice" in code_text
+            code_text = page.text_content("#op-pseudocode") or ""
+            assert "grafo_insertar_vertice" in code_text
 
-                history_text = page.text_content("#action-history") or ""
-                assert "Programa principal (main)" in history_text
-                assert "grafo_insertar_vertice" in history_text
+            history_text = page.text_content("#action-history") or ""
+            assert "Programa principal (main)" in history_text
+            assert "grafo_insertar_vertice" in history_text
 
-                panel_scrollable = page.evaluate(
-                    "() => { const el = document.querySelector('#op-pseudocode'); return el && el.scrollHeight >= el.clientHeight; }",
-                )
-                assert bool(panel_scrollable) is True
+            panel_scrollable = page.evaluate(
+                "() => { const el = document.querySelector('#op-pseudocode'); return el && el.scrollHeight >= el.clientHeight; }",
+            )
+            assert bool(panel_scrollable) is True
 
-                browser.close()
-        except Exception as error:  # pragma: no cover - environment dependent
-            pytest.skip(f"Playwright no disponible en este entorno: {error}")
+            browser.close()
 
 
 def test_playwright_sequential_interpreter_controls_workflow() -> None:
@@ -122,36 +123,25 @@ def test_playwright_sequential_interpreter_controls_workflow() -> None:
     playwright_mod = pytest.importorskip("playwright.sync_api")
 
     with _live_server_url() as base_url:
-        try:
-            with playwright_mod.sync_playwright() as p:
-                browser = p.chromium.launch(headless=True)
-                page = browser.new_page()
-                page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
 
-                page.fill("#field-value", "21")
-                page.click("#seq-sim-play")
-                page.wait_for_timeout(260)
+            page.fill("#field-value", "21")
+            page.click("#seq-sim-play")
+            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
 
-                seq_status = page.locator("#seq-sim-status")
-                assert "Simulacion completada" in ((seq_status.text_content() or ""))
+            page.click("#reset-button")
+            _wait_status_contains(page, "#seq-sim-status", "Usa Reproducir o Siguiente paso para ejecutar.")
 
-                page.click("#seq-sim-reset")
-                page.wait_for_timeout(180)
-                assert "Simulacion reiniciada" in ((seq_status.text_content() or ""))
+            page.click("#seq-sim-step")
+            _wait_status_contains(page, "#seq-sim-counter", "Paso: 1/")
 
-                page.click("#seq-sim-step")
-                page.wait_for_timeout(180)
-                assert "Paso 1/" in ((seq_status.text_content() or ""))
+            page.click("#seq-sim-prev")
+            _wait_status_contains(page, "#seq-sim-counter", "Paso: 0/")
 
-                page.click("#seq-sim-play")
-                page.wait_for_timeout(250)
-                page.click("#seq-sim-pause")
-                page.wait_for_timeout(100)
-                assert "Simulacion pausada" in ((seq_status.text_content() or ""))
-
-                browser.close()
-        except Exception as error:  # pragma: no cover - environment dependent
-            pytest.skip(f"Playwright no disponible en este entorno: {error}")
+            browser.close()
 
 
 def test_playwright_hash_interpreter_controls_workflow() -> None:
@@ -159,37 +149,86 @@ def test_playwright_hash_interpreter_controls_workflow() -> None:
     playwright_mod = pytest.importorskip("playwright.sync_api")
 
     with _live_server_url() as base_url:
-        try:
-            with playwright_mod.sync_playwright() as p:
-                browser = p.chromium.launch(headless=True)
-                page = browser.new_page()
-                page.goto(f"{base_url}/hash/hash_table", wait_until="networkidle")
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/hash/hash_table", wait_until="networkidle")
 
-                page.select_option("#hash-operation-select", "insert")
-                page.wait_for_timeout(120)
-                page.fill("#hash-field-key", "K1")
-                page.fill("#hash-field-value", "V1")
-                page.click("#hash-sim-play")
-                page.wait_for_timeout(280)
+            page.select_option("#hash-operation-select", "insert")
+            page.wait_for_selector("#hash-field-key", timeout=5000)
+            page.fill("#hash-field-key", "K1")
+            page.fill("#hash-field-value", "V1")
+            page.click("#hash-sim-play")
+            _wait_status_contains(page, "#hash-sim-status", "Simulacion completada")
 
-                hash_status = page.locator("#hash-sim-status")
-                assert "Simulacion completada" in ((hash_status.text_content() or ""))
+            page.click("#hash-reset-button")
+            _wait_status_contains(page, "#hash-sim-status", "Usa Reproducir o Siguiente paso para ejecutar.")
 
-                page.click("#hash-sim-reset")
-                page.wait_for_timeout(160)
-                assert "Simulacion reiniciada" in ((hash_status.text_content() or ""))
+            page.click("#hash-sim-step")
+            _wait_status_contains(page, "#hash-sim-counter", "Paso: 1/")
 
-                page.click("#hash-sim-step")
-                page.wait_for_timeout(160)
-                assert "Paso 1/" in ((hash_status.text_content() or ""))
+            page.click("#hash-sim-prev")
+            _wait_status_contains(page, "#hash-sim-counter", "Paso: 0/")
 
-                page.click("#hash-sim-play")
-                page.wait_for_timeout(240)
-                page.click("#hash-sim-pause")
-                page.wait_for_timeout(100)
-                assert "Simulacion pausada" in ((hash_status.text_content() or ""))
+            browser.close()
 
-                browser.close()
-        except Exception as error:  # pragma: no cover - environment dependent
-            pytest.skip(f"Playwright no disponible en este entorno: {error}")
+
+def test_playwright_graph_fast_mode_executes_algorithms_without_step_trace() -> None:
+    """Graph fast mode (step toggle off) must apply final result on algorithm phases."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+
+            # 1) Build a base graph in construction phase.
+            page.goto(f"{base_url}/graph/graph/construccion", wait_until="networkidle")
+            for value in ["1", "2", "3", "4"]:
+                page.select_option("#graph-operation-select", "insert_vertex")
+                page.wait_for_selector("#g-op-field-vertex", timeout=5000)
+                page.fill("#g-op-field-vertex", value)
+                page.click("#graph-sim-play")
+                _wait_status_contains(page, "#graph-message-box", "vertice")
+
+            for origin, target, weight in [("1", "2", "3"), ("2", "3", "2"), ("3", "4", "4"), ("1", "4", "15")]:
+                page.select_option("#graph-operation-select", "insert_edge")
+                page.wait_for_selector("#g-op-field-origin", timeout=5000)
+                page.fill("#g-op-field-origin", origin)
+                page.fill("#g-op-field-target", target)
+                page.fill("#g-op-field-weight", weight)
+                page.click("#graph-sim-play")
+                _wait_status_contains(page, "#graph-message-box", "arista")
+
+            # 2) Traversals phase (BFS) in fast mode.
+            page.goto(f"{base_url}/graph/graph/recorridos", wait_until="networkidle")
+            page.uncheck("#graph-step-toggle")
+            page.select_option("#graph-algorithm-select", "run_bfs")
+            page.fill("#g-alg-field-start", "1")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-sim-status", "Modo rapido")
+            _wait_status_contains(page, "#graph-message-box", "BFS")
+            result_text = page.text_content("#graph-visual-state") or ""
+            assert ("Recorrido" in result_text) or ("BFS" in result_text)
+
+            # 3) Shortest path phase (Dijkstra) in fast mode.
+            page.goto(f"{base_url}/graph/graph/camino-minimo", wait_until="networkidle")
+            page.uncheck("#graph-step-toggle")
+            page.select_option("#graph-algorithm-select", "run_dijkstra")
+            page.fill("#g-alg-field-start", "1")
+            page.fill("#g-alg-field-end", "4")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-sim-status", "Modo rapido")
+            _wait_status_contains(page, "#graph-message-box", "Dijkstra")
+
+            # 4) MST phase (Prim) in fast mode.
+            page.goto(f"{base_url}/graph/graph/expansion-minima", wait_until="networkidle")
+            page.uncheck("#graph-step-toggle")
+            page.select_option("#graph-algorithm-select", "run_prim")
+            page.fill("#g-alg-field-start", "1")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-sim-status", "Modo rapido")
+            _wait_status_contains(page, "#graph-message-box", "Prim")
+
+            browser.close()
 

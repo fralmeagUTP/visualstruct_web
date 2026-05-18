@@ -33,8 +33,8 @@ class PriorityQueueAdapter(BaseAdapter):
             self._next_order += 1
             return {
                 "message": (
-                    f"Se encolÃ³ '{valor}' con prioridad {prioridad} "
-                    "(menor nÃºmero = mayor prioridad)."
+                    f"Se encoló '{valor}' con prioridad {prioridad} "
+                    "(menor número = mayor prioridad)."
                 )
             }
         if operation_name == "desencolar":
@@ -42,9 +42,9 @@ class PriorityQueueAdapter(BaseAdapter):
             removed_priority = self._remove_highest_priority_ordered_item(valor)
             return {
                 "message": (
-                    f"Se atendiÃ³ '{valor}' desde la cola de prioridad."
+                    f"Se atendió '{valor}' desde la cola de prioridad."
                     if removed_priority is None
-                    else f"Se atendiÃ³ '{valor}' con prioridad {removed_priority}."
+                    else f"Se atendió '{valor}' con prioridad {removed_priority}."
                 ),
                 "result": valor,
                 "result_priority": removed_priority,
@@ -62,8 +62,8 @@ class PriorityQueueAdapter(BaseAdapter):
         if operation_name == "limpiar":
             self._structure.limpiar()
             self._ordered_items.clear()
-            return {"message": "La cola de prioridad se limpiÃ³ correctamente."}
-        raise ValueError(f"OperaciÃ³n no soportada: {operation_name}.")
+            return {"message": "La cola de prioridad se limpió correctamente."}
+        raise ValueError(f"Operación no soportada: {operation_name}.")
 
     def to_visual_state(self) -> dict[str, Any]:
         items = list(self._ordered_items)

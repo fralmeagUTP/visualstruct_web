@@ -13,6 +13,55 @@ function hashEscape(value) {
     .replaceAll("'", "&#39;");
 }
 
+function hashToCStringLiteral(text) {
+  return String(text || "")
+    .replaceAll("\\", "\\\\")
+    .replaceAll('"', '\\"')
+    .replaceAll("\r", "")
+    .replaceAll("\n", "\\n");
+}
+
+function hashDecodeCStringLiteral(text) {
+  return String(text || "")
+    .replaceAll("\\\\", "\u0000")
+    .replaceAll("\\n", "\n")
+    .replaceAll("\\t", "\t")
+    .replaceAll('\\"', '"')
+    .replaceAll("\\r", "")
+    .replaceAll("\u0000", "\\");
+}
+
+function hashExtractPrintfMessagesFromLine(lineText) {
+  const source = String(lineText || "");
+  const regex = /printf\s*\(\s*"((?:\\.|[^"\\])*)"/g;
+  const messages = [];
+  let match = regex.exec(source);
+  while (match) {
+    const decoded = hashDecodeCStringLiteral(match[1]).replace(/\n+$/g, "").trim();
+    if (decoded) {
+      messages.push(decoded);
+    }
+    match = regex.exec(source);
+  }
+  return messages;
+}
+
+function hashHasPrintfFormatSpecifier(text) {
+  return /%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]/.test(String(text || ""));
+}
+
+function renderHashPrintfConsole(consoleEl, lines, fallbackText) {
+  if (!consoleEl) {
+    return;
+  }
+  const safeLines = Array.isArray(lines) ? lines : [];
+  const html = safeLines.length
+    ? safeLines.map((line) => `<div class="console-line">${hashEscape(line)}</div>`).join("")
+    : `<div class="console-line muted">${hashEscape(fallbackText || "(sin salida printf en esta ruta)")}</div>`;
+  consoleEl.innerHTML = html;
+  consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
 function buildHashOperationInputs(operation, container) {
   container.innerHTML = "";
   if (!operation || !operation.inputs) {
@@ -177,20 +226,99 @@ function getHashSubroutineName(model, operationName, fallback) {
   return extractHashSubroutineName(pseudoCode, fallback || operationName || "Operacion");
 }
 
-function createHashHistoryEntry(subroutine, payloadText, resultText) {
+function createHashHistoryEntry(subroutine, payloadText, resultText, operationName, payloadRaw) {
   return {
     subroutine: subroutine || "Operacion",
     payload: payloadText || "-",
     result: resultText || "-",
+    operation: operationName || "",
+    payloadRaw: payloadRaw && typeof payloadRaw === "object" ? { ...payloadRaw } : {},
   };
 }
 
-function renderHashHistory(history, container) {
+function hashMainCallForEntry(entry, index) {
+  const payload = entry && entry.payloadRaw && typeof entry.payloadRaw === "object" ? entry.payloadRaw : {};
+  const key = Object.prototype.hasOwnProperty.call(payload, "key") ? String(payload.key).trim() : "";
+  const value = Object.prototype.hasOwnProperty.call(payload, "value") ? String(payload.value).trim() : "";
+  const capacity = Object.prototype.hasOwnProperty.call(payload, "capacity") ? String(payload.capacity).trim() : "";
+
+  if (entry.operation === "create_table") {
+    return `th_inicializar(&tabla, ${capacity || "17"});`;
+  }
+  if (entry.operation === "insert") {
+    return `bool ok_${index} = th_insertar(&tabla, ${key || "0"}, ${value || "0"});`;
+  }
+  if (entry.operation === "get") {
+    return `int valor_${index} = 0; bool ok_${index} = th_buscar(&tabla, ${key || "0"}, &valor_${index});`;
+  }
+  if (entry.operation === "contains") {
+    return `bool existe_${index} = th_contiene(&tabla, ${key || "0"});`;
+  }
+  if (entry.operation === "remove") {
+    return `bool eliminado_${index} = th_eliminar(&tabla, ${key || "0"});`;
+  }
+  if (entry.operation === "keys" || entry.operation === "values" || entry.operation === "items") {
+    return `char buffer_${index}[2048]; th_formatear(&tabla, buffer_${index}, sizeof(buffer_${index}));`;
+  }
+  if (entry.operation === "stats") {
+    return `THEstadisticas stats_${index} = th_estadisticas(&tabla);`;
+  }
+  if (entry.operation === "clear") {
+    return "th_vaciar(&tabla);";
+  }
+  return `${entry.subroutine || "Operacion"}();`;
+}
+
+function buildHashMainCode(history) {
+  const lines = [];
+  lines.push("int main(void) {");
+  lines.push("    TablaHash tabla;");
+  lines.push("    th_inicializar(&tabla, 17);");
+  lines.push("");
+  lines.push("    // Historial de ejecucion del usuario");
+  history.forEach((entry, index) => {
+    if (!entry || typeof entry === "string") {
+      return;
+    }
+    lines.push(`    ${hashMainCallForEntry(entry, index + 1)}`);
+    lines.push(`    printf("${hashToCStringLiteral(entry.result || "Operacion aplicada.")}\\n");`);
+    lines.push(`    // ${entry.result || "Operacion aplicada."}`);
+  });
+  lines.push("    // Al finalizar el programa:");
+  lines.push("    // th_destruir(&tabla);");
+  lines.push("    return 0;");
+  lines.push("}");
+  return lines.join("\n");
+}
+
+function renderHashHistory(history, container, didactic) {
   if (!container) {
     return;
   }
   if (!history.length) {
     container.innerHTML = "<li class=\"didactic-history-item empty\">Sin acciones ejecutadas.</li>";
+    return;
+  }
+  const codeTitle = didactic && didactic.code_title ? String(didactic.code_title) : "";
+  if (codeTitle.toLowerCase().includes("codigo c")) {
+    const code = buildHashMainCode(history);
+    const tmp = document.createElement("pre");
+    if (window.InterpreterRuntime) {
+      window.InterpreterRuntime.renderCode(tmp, code, codeTitle);
+      container.innerHTML = (
+        "<li class=\"didactic-history-item history-main-wrap\">" +
+        "<div class=\"didactic-history-head\">Programa principal (main)</div>" +
+        `<pre class="didactic-code didactic-history-main">${tmp.innerHTML}</pre>` +
+        "</li>"
+      );
+      return;
+    }
+    container.innerHTML = (
+      "<li class=\"didactic-history-item history-main-wrap\">" +
+      "<div class=\"didactic-history-head\">Programa principal (main)</div>" +
+      `<pre class="didactic-code didactic-history-main">${hashEscape(code)}</pre>` +
+      "</li>"
+    );
     return;
   }
   container.innerHTML = history.map((item, index) => {
@@ -222,7 +350,9 @@ function initHashPage(model) {
   const simPlayButton = hashById("hash-sim-play");
   const simPrevButton = hashById("hash-sim-prev");
   const simStepButton = hashById("hash-sim-step");
+  const stepToggle = hashById("hash-step-toggle");
   const simStatus = hashById("hash-sim-status");
+  const printfConsole = hashById("hash-printf-console");
 
   if (!form || !operationSelect || !inputsContainer || !visualContainer) {
     return;
@@ -233,6 +363,42 @@ function initHashPage(model) {
   let visualState = model.visual_state;
   const operationLabel = new Map(operations.map((op) => [op.name, op.label]));
   const actionHistory = [];
+  const consoleState = {
+    trace: null,
+    fallbackMessage: "",
+  };
+  function collectHashPrintfLines(trace, cursor) {
+    if (!trace || !Array.isArray(trace.steps) || cursor < 0) {
+      return [];
+    }
+    const limit = Math.min(cursor, trace.steps.length - 1);
+    const out = [];
+    for (let i = 0; i <= limit; i += 1) {
+      const step = trace.steps[i] || {};
+      const messages = hashExtractPrintfMessagesFromLine(step.line_text);
+      messages.forEach((msg) => {
+        // Evita mostrar literales de formato sin resolver (ej. "%d", "%s").
+        if (hashHasPrintfFormatSpecifier(msg)) {
+          return;
+        }
+        out.push(`[printf] ${msg}`);
+      });
+    }
+    if (limit >= trace.steps.length - 1) {
+      const finalMessage = String(trace.message || "").trim();
+      if (finalMessage) {
+        const formatted = `[printf] ${finalMessage}`;
+        if (!out.includes(formatted)) {
+          out.push(formatted);
+        }
+      }
+    }
+    return out;
+  }
+  function refreshHashPrintfConsole(cursor) {
+    const lines = collectHashPrintfLines(consoleState.trace, cursor);
+    renderHashPrintfConsole(printfConsole, lines, consoleState.fallbackMessage || "(sin salida printf en esta ruta)");
+  }
   const tracePlayer = window.InterpreterRuntime
     ? window.InterpreterRuntime.createTracePlayer({
       codeElement: hashById("op-pseudocode"),
@@ -241,6 +407,10 @@ function initHashPage(model) {
       renderState: (stateSnapshot) => {
         visualState = stateSnapshot;
         renderHashState(visualState, visualContainer);
+      },
+      onCursorChange: (event) => {
+        const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
+        refreshHashPrintfConsole(cursor);
       },
     })
     : null;
@@ -261,10 +431,13 @@ function initHashPage(model) {
     const label = operationLabel.get(opName) || opName;
     const subroutine = getHashSubroutineName(model, opName, label);
     const payloadText = summarizeHashPayload(step.payload || {});
-    actionHistory.push(createHashHistoryEntry(subroutine, payloadText || "-", "Operacion aplicada."));
+    actionHistory.push(
+      createHashHistoryEntry(subroutine, payloadText || "-", "Operacion aplicada.", opName, step.payload || {}),
+    );
   });
-  renderHashHistory(actionHistory, historyBox);
+  renderHashHistory(actionHistory, historyBox, model.didactic);
   renderHashState(visualState, visualContainer);
+  refreshHashPrintfConsole(-1);
 
   function isCurrentSelectionValid() {
     const current = operations.find((item) => item.name === operationSelect.value);
@@ -286,7 +459,12 @@ function initHashPage(model) {
     });
   }
 
+  function isStepByStepEnabled() {
+    return !stepToggle || Boolean(stepToggle.checked);
+  }
+
   function setSimulationButtonsEnabled() {
+    const stepMode = isStepByStepEnabled();
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const busy = pendingExecution;
     const canExecute = isCurrentSelectionValid();
@@ -294,16 +472,19 @@ function initHashPage(model) {
       simPlayButton.disabled = busy || !canExecute;
     }
     if (simPrevButton) {
-      simPrevButton.disabled = busy || !hasTrace;
+      simPrevButton.disabled = busy || !stepMode || !hasTrace;
     }
     if (simStepButton) {
-      simStepButton.disabled = busy || !canExecute;
+      simStepButton.disabled = busy || !stepMode || !canExecute;
     }
   }
 
   function invalidateTrace(message) {
     traceSelectionKey = "";
+    consoleState.trace = null;
+    consoleState.fallbackMessage = "";
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    refreshHashPrintfConsole(-1);
     setSimulationButtonsEnabled();
   }
 
@@ -320,7 +501,7 @@ function initHashPage(model) {
     return `${current.name}::${JSON.stringify(payload)}`;
   }
 
-  async function executeOperationAndLoadTrace(current, payload, selectionKey) {
+  async function executeOperationAndLoadTrace(current, payload, selectionKey, options) {
     pendingExecution = true;
     setSimulationButtonsEnabled();
     if (resetButton) {
@@ -337,23 +518,34 @@ function initHashPage(model) {
       showHashMessage(data.message, Boolean(data.success));
       updateHashDidacticPanel(model, current.name);
 
-      const hasExecutionTrace = Boolean(data.execution_trace && tracePlayer);
+      const finalOnly = Boolean(options && options.finalOnly);
+      const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
       if (hasExecutionTrace) {
+        consoleState.trace = data.execution_trace;
+        consoleState.fallbackMessage = "";
         tracePlayer.loadTrace(data.execution_trace);
         traceSelectionKey = selectionKey;
       } else {
+        consoleState.trace = null;
+        consoleState.fallbackMessage = data.message || "(sin salida printf en esta ruta)";
+        refreshHashPrintfConsole(-1);
         traceSelectionKey = "";
       }
       const payloadText = summarizeHashPayload(payload);
       const subroutine = getHashSubroutineName(model, current.name, current.label);
-      actionHistory.push(createHashHistoryEntry(subroutine, payloadText || "-", data.message));
-      renderHashHistory(actionHistory, historyBox);
+      actionHistory.push(
+        createHashHistoryEntry(subroutine, payloadText || "-", data.message, current.name, payload),
+      );
+      renderHashHistory(actionHistory, historyBox, model.didactic);
 
       if (data.visual_state) {
         visualState = data.visual_state;
         model.visual_state = data.visual_state;
         if (!hasExecutionTrace) {
           renderHashState(visualState, visualContainer);
+          if (simStatus && finalOnly) {
+            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
+          }
         }
       }
       return data;
@@ -402,6 +594,16 @@ function initHashPage(model) {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!isStepByStepEnabled()) {
+      const current = operations.find((item) => item.name === operationSelect.value);
+      if (!current) {
+        return;
+      }
+      const payload = collectPayload(current);
+      const selectionKey = buildSelectionKey(current, payload);
+      await executeOperationAndLoadTrace(current, payload, selectionKey, { finalOnly: true });
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
@@ -415,7 +617,7 @@ function initHashPage(model) {
     showHashMessage(data.message, Boolean(data.success));
     updateHashDidacticPanel(model, selected ? selected.name : "");
     actionHistory.length = 0;
-    renderHashHistory(actionHistory, historyBox);
+    renderHashHistory(actionHistory, historyBox, model.didactic);
     if (data.visual_state) {
       visualState = data.visual_state;
       model.visual_state = data.visual_state;
@@ -425,6 +627,16 @@ function initHashPage(model) {
   });
 
   simPlayButton?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      const current = operations.find((item) => item.name === operationSelect.value);
+      if (!current) {
+        return;
+      }
+      const payload = collectPayload(current);
+      const selectionKey = buildSelectionKey(current, payload);
+      await executeOperationAndLoadTrace(current, payload, selectionKey, { finalOnly: true });
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
@@ -433,15 +645,29 @@ function initHashPage(model) {
   });
 
   simPrevButton?.addEventListener("click", () => {
+    if (!isStepByStepEnabled()) {
+      return;
+    }
     tracePlayer?.prev();
   });
 
   simStepButton?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
     await tracePlayer.step();
+  });
+
+  stepToggle?.addEventListener("change", () => {
+    invalidateTrace(
+      isStepByStepEnabled()
+        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
+        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
+    );
   });
 
 }

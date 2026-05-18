@@ -1,4 +1,4 @@
-"""Didactic service that exposes C source snippets for selected TADs."""
+﻿"""Didactic service that exposes C source snippets for selected TADs."""
 
 from __future__ import annotations
 
@@ -15,14 +15,16 @@ class CCodeService:
     _LINKED_LIST_OPERATION_MAP: dict[str, str] = {
         "insertar_inicio": "lista_insertar_inicio",
         "insertar_final": "lista_insertar_final",
-        "insertar_posicion": "lista_insertar_posicion",
-        "eliminar_primero": "lista_eliminar_primero",
-        "buscar_posiciones": "lista_buscar_posiciones",
-        "invertir": "lista_invertir",
+        "lista_insertar_elemento": "lista_insertar_elemento",
+        "insertar_elemento": "lista_insertar_elemento",
+        "buscar_elemento": "lista_buscar_elemento",
+        "mostrar": "lista_mostrar",
+        "eliminar_elemento": "lista_eliminar_elemento",
+        "eliminar_repetidos": "lista_eliminar_repetidos",
     }
     _STACK_OPERATION_MAP: dict[str, str] = {
-        "apilar": "pila_push",
-        "desapilar": "pila_pop",
+        "apilar": "pila_apilar",
+        "desapilar": "pila_desapilar",
     }
     _QUEUE_OPERATION_MAP: dict[str, str] = {
         "encolar": "cola_encolar",
@@ -48,33 +50,25 @@ class CCodeService:
     _ABB_OPERATION_MAP: dict[str, str] = {
         "insertar": "abb_insertar",
         "eliminar": "abb_eliminar",
-        "buscar": "abb_contiene",
-        "minimo": "abb_minimo",
-        "maximo": "abb_maximo",
+        "buscar": "abb_buscar",
+        "minimo": "abb_encontrarMinimo",
+        "maximo": "abb_encontrarMaximo",
         "altura": "abb_altura",
-        "contar_hojas": "abb_contar_hojas",
-        "inorden": "abb_recorrer_inorden",
-        "preorden": "abb_recorrer_preorden",
-        "postorden": "abb_recorrer_postorden",
-        "validar": "abb_es_valido",
+        "inorden": "abb_inorden",
+        "preorden": "abb_preorden",
+        "postorden": "abb_postorden",
     }
     _AVL_OPERATION_MAP: dict[str, str] = {
         "insertar": "avl_insertar",
         "eliminar": "avl_eliminar",
-        "buscar": "avl_contiene",
+        "buscar": "avl_buscar",
         "minimo": "avl_minimo",
-        "maximo": "avl_maximo",
         "altura": "avl_altura",
-        "inorden": "avl_recorrer_inorden",
-        "validar": "avl_es_valido",
     }
     _RED_BLACK_OPERATION_MAP: dict[str, str] = {
-        "insertar": "rn_insertar",
-        "eliminar": "rn_eliminar",
-        "buscar": "rn_contiene",
-        "inorden": "rn_recorrer_inorden",
-        "altura": "rn_altura",
-        "validar": "rn_es_valido",
+        "insertar": "rbt_insertar",
+        "eliminar": "rbt_eliminar",
+        "buscar": "rbt_buscar",
     }
     _BINARY_HEAP_OPERATION_MAP: dict[str, str] = {
         "insertar": "monticulo_insertar",
@@ -84,14 +78,14 @@ class CCodeService:
     _GRAPH_OPERATION_MAP: dict[str, str] = {
         "insert_vertex": "grafo_insertar_vertice",
         "remove_vertex": "grafo_eliminar_vertice",
-        "insert_edge": "grafo_insertar_arista",
-        "remove_edge": "grafo_eliminar_arista",
+        "insert_edge": "grafo_insertar_arco",
+        "remove_edge": "grafo_eliminar_arco",
         "exists_vertex": "grafo_existe_vertice",
-        "exists_edge": "grafo_existe_arista",
+        "exists_edge": "grafo_existe_arco",
         "neighbors": "grafo_sucesores",
-        "edge_weight": "grafo_obtener_peso",
-        "list_vertices": "grafo_obtener_vertices",
-        "list_edges": "grafo_obtener_aristas",
+        "edge_weight": "grafo_costo_arco",
+        "list_vertices": "grafo_vertices",
+        "list_edges": "grafo_arcos",
         "run_bfs": "grafo_bfs",
         "run_dfs": "grafo_dfs",
         "run_dijkstra": "grafo_dijkstra",
@@ -140,8 +134,8 @@ class CCodeService:
     @classmethod
     def _build_linked_list_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for linked list."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "lista.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "lista.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_lista.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_lista.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._LINKED_LIST_OPERATION_MAP.items():
@@ -149,23 +143,24 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        init_fn = cls._extract_function_with_comment(c_text, "lista_inicializar")
-        destroy_fn = cls._extract_function_with_comment(c_text, "lista_destruir")
-        if init_fn and destroy_fn:
-            operation_code["limpiar"] = (
-                f"{destroy_fn}\n\n"
-                "/* Reinicio recomendado del TAD luego de liberar nodos */\n"
-                f"{init_fn}"
-            )
-        elif destroy_fn:
-            operation_code["limpiar"] = destroy_fn
+        operation_code["insertar_posicion"] = operation_code.get("insertar_elemento", "")
+        operation_code["insertar_elemento"] = operation_code.get("lista_insertar_elemento", "")
+        operation_code["eliminar_primero"] = operation_code.get("eliminar_elemento", "")
+        operation_code["buscar_posiciones"] = operation_code.get("buscar_elemento", "")
+        operation_code["limpiar"] = (
+            "/* Liberacion completa para dejar lista vacia. */\n"
+            "while (*lista != NULL) {\n"
+            "    int head = (*lista)->nro;\n"
+            "    lista_eliminar_elemento(lista, head);\n"
+            "}"
+        )
 
         structure_text = cls._extract_linked_list_structure(h_text, c_text)
         return {
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/lista.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_lista.c."
             ),
             "code_title": "Codigo C",
         }
@@ -173,8 +168,8 @@ class CCodeService:
     @classmethod
     def _build_stack_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for stack."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "pila.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "pila.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_pila.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_pila.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._STACK_OPERATION_MAP.items():
@@ -209,7 +204,7 @@ class CCodeService:
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/pila.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_pila.c."
             ),
             "code_title": "Codigo C",
         }
@@ -217,8 +212,8 @@ class CCodeService:
     @classmethod
     def _build_queue_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for queue."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "cola.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "cola.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_cola.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_cola.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._QUEUE_OPERATION_MAP.items():
@@ -262,7 +257,7 @@ class CCodeService:
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/cola.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_cola.c."
             ),
             "code_title": "Codigo C",
         }
@@ -270,8 +265,8 @@ class CCodeService:
     @classmethod
     def _build_priority_queue_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for priority queue."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "cola_prioridad.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "cola_prioridad.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_cola_prioridad.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_cola_prioridad.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._PRIORITY_QUEUE_OPERATION_MAP.items():
@@ -306,7 +301,7 @@ class CCodeService:
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/cola_prioridad.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_cola_prioridad.c."
             ),
             "code_title": "Codigo C",
         }
@@ -314,8 +309,8 @@ class CCodeService:
     @classmethod
     def _build_circular_list_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for circular linked list."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "lista_circular.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "lista_circular.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_lista_circular.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_lista_circular.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._CIRCULAR_LIST_OPERATION_MAP.items():
@@ -349,7 +344,7 @@ class CCodeService:
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/lista_circular.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_lista_circular.c."
             ),
             "code_title": "Codigo C",
         }
@@ -357,8 +352,8 @@ class CCodeService:
     @classmethod
     def _build_sublist_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for sublist."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "sublista.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "sublista.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_sublista.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_sublista.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._SUBLIST_OPERATION_MAP.items():
@@ -392,7 +387,7 @@ class CCodeService:
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/sublista.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_sublista.c."
             ),
             "code_title": "Codigo C",
         }
@@ -400,8 +395,8 @@ class CCodeService:
     @classmethod
     def _build_abb_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for ABB."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "abb.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "abb.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_abb.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_abb.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._ABB_OPERATION_MAP.items():
@@ -409,16 +404,44 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        clear_fn = cls._extract_function_with_comment(c_text, "abb_limpiar")
+        clear_fn = cls._extract_function_with_comment(c_text, "abb_liberarArbol")
         if clear_fn:
             operation_code["limpiar"] = clear_fn
+        operation_code["contar_hojas"] = (
+            "int abb_contarHojas(ABBNodo* nodo) {\n"
+            "    if (nodo == NULL) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    if (nodo->izquierdo == NULL && nodo->derecho == NULL) {\n"
+            "        return 1;\n"
+            "    }\n"
+            "    return abb_contarHojas(nodo->izquierdo) + abb_contarHojas(nodo->derecho);\n"
+            "}"
+        )
+        operation_code["validar"] = (
+            "int abb_validar_rango(ABBNodo* nodo, int minimo, int maximo) {\n"
+            "    if (nodo == NULL) {\n"
+            "        return 1;\n"
+            "    }\n"
+            "    if (nodo->valor <= minimo || nodo->valor >= maximo) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    if (!abb_validar_rango(nodo->izquierdo, minimo, nodo->valor)) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    if (!abb_validar_rango(nodo->derecho, nodo->valor, maximo)) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    return 1;\n"
+            "}"
+        )
 
         structure_text = cls._extract_abb_structure(h_text, c_text)
         return {
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/abb.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_abb.c."
             ),
             "code_title": "Codigo C",
         }
@@ -426,8 +449,8 @@ class CCodeService:
     @classmethod
     def _build_avl_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for AVL."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "avl.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "avl.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_avl.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_avl.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._AVL_OPERATION_MAP.items():
@@ -435,16 +458,55 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        clear_fn = cls._extract_function_with_comment(c_text, "avl_vaciar")
+        clear_fn = cls._extract_function_with_comment(c_text, "avl_liberarAVL")
         if clear_fn:
             operation_code["limpiar"] = clear_fn
+        operation_code.setdefault(
+            "maximo",
+            "AVL avl_maximo(AVL raiz) {\n"
+            "    AVL aux = raiz;\n"
+            "    while (aux != NULL && aux->der != NULL) {\n"
+            "        aux = aux->der;\n"
+            "    }\n"
+            "    return aux;\n"
+            "}",
+        )
+        operation_code.setdefault(
+            "inorden",
+            "void avl_inorden(AVL nodo) {\n"
+            "    if (nodo != NULL) {\n"
+            "        avl_inorden(nodo->izq);\n"
+            "        printf(\"%d \", nodo->nro);\n"
+            "        avl_inorden(nodo->der);\n"
+            "    }\n"
+            "}",
+        )
+        operation_code.setdefault(
+            "validar",
+            "int avl_validar_fes(AVL nodo) {\n"
+            "    if (nodo == NULL) {\n"
+            "        return 1;\n"
+            "    }\n"
+            "    int fe = avl_altura(nodo->der) - avl_altura(nodo->izq);\n"
+            "    if (fe < -1 || fe > 1) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    if (!avl_validar_fes(nodo->izq)) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    if (!avl_validar_fes(nodo->der)) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    return 1;\n"
+            "}",
+        )
 
         structure_text = cls._extract_avl_structure(h_text, c_text)
         return {
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/avl.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_avl.c."
             ),
             "code_title": "Codigo C",
         }
@@ -452,8 +514,13 @@ class CCodeService:
     @classmethod
     def _build_red_black_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for red-black tree."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "rojo_negro.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "rojo_negro.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_rojo_negro.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_rojo_negro.h")
+        # Fallback defensivo para repos que aun tengan nombres legacy.
+        if not c_text:
+            c_text = cls._safe_read(cls._DOCS_TADS_C / "rojo_negro.c")
+        if not h_text:
+            h_text = cls._safe_read(cls._DOCS_TADS_C / "rojo_negro.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._RED_BLACK_OPERATION_MAP.items():
@@ -461,16 +528,80 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        clear_fn = cls._extract_function_with_comment(c_text, "rn_limpiar")
+        # Para la simulacion didactica de insercion RN se requiere visualizar
+        # tambien las subrutinas llamadas (casos y rotaciones).
+        insert_helpers: list[str] = []
+        for helper_name in (
+            "rbt_abuelo",
+            "rbt_tio",
+            "rbt_rotar_dcha",
+            "rbt_rotar_izda",
+            "rbt_insercion_caso5",
+            "rbt_insercion_caso4",
+            "rbt_insercion_caso3",
+            "rbt_insercion_caso2",
+            "rbt_insercion_caso1",
+            "rbt_insertar",
+        ):
+            helper_snippet = cls._extract_function_with_comment(c_text, helper_name)
+            if helper_snippet:
+                insert_helpers.append(helper_snippet)
+        if insert_helpers:
+            operation_code["insertar"] = "\n\n".join(insert_helpers)
+
+        clear_fn = cls._extract_function_with_comment(c_text, "rbt_liberar")
         if clear_fn:
             operation_code["limpiar"] = clear_fn
+        operation_code.setdefault(
+            "inorden",
+            "void rbt_inorden(RBT nodo) {\n"
+            "    if (nodo == NULL) {\n"
+            "        return;\n"
+            "    }\n"
+            "    rbt_inorden(nodo->rbt_izq);\n"
+            "    printf(\"%d \", nodo->rbt_dato);\n"
+            "    rbt_inorden(nodo->rbt_der);\n"
+            "}",
+        )
+        operation_code.setdefault(
+            "altura",
+            "int rbt_altura(RBT nodo) {\n"
+            "    if (nodo == NULL) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    int altIzq = rbt_altura(nodo->rbt_izq);\n"
+            "    int altDer = rbt_altura(nodo->rbt_der);\n"
+            "    return (altIzq > altDer ? altIzq : altDer) + 1;\n"
+            "}",
+        )
+        operation_code.setdefault(
+            "validar",
+            "int rbt_validar(RBT raiz) {\n"
+            "    if (raiz == NULL) {\n"
+            "        return 1;\n"
+            "    }\n"
+            "    if (raiz->rbt_color == ROJO) {\n"
+            "        if ((raiz->rbt_izq != NULL && raiz->rbt_izq->rbt_color == ROJO) ||\n"
+            "            (raiz->rbt_der != NULL && raiz->rbt_der->rbt_color == ROJO)) {\n"
+            "            return 0;\n"
+            "        }\n"
+            "    }\n"
+            "    if (!rbt_validar(raiz->rbt_izq)) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    if (!rbt_validar(raiz->rbt_der)) {\n"
+            "        return 0;\n"
+            "    }\n"
+            "    return 1;\n"
+            "}",
+        )
 
         structure_text = cls._extract_red_black_structure(h_text, c_text)
         return {
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/rojo_negro.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_rojo_negro.c."
             ),
             "code_title": "Codigo C",
         }
@@ -478,8 +609,8 @@ class CCodeService:
     @classmethod
     def _build_binary_heap_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for binary heap."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "monticulo_binario.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "monticulo_binario.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_monticulo_binario.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_monticulo_binario.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._BINARY_HEAP_OPERATION_MAP.items():
@@ -512,7 +643,7 @@ class CCodeService:
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/monticulo_binario.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_monticulo_binario.c."
             ),
             "code_title": "Codigo C",
         }
@@ -520,8 +651,8 @@ class CCodeService:
     @classmethod
     def _build_graph_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for graph TAD."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "grafo.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "grafo.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_grafo.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_grafo.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._GRAPH_OPERATION_MAP.items():
@@ -529,25 +660,28 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
+        # Para DFS se muestra tambien la subrutina recursiva llamada para
+        # mantener coherencia con la interpretacion paso a paso.
+        dfs_wrapper = cls._extract_function_with_comment(c_text, "grafo_dfs")
+        dfs_recursive = cls._extract_function_with_comment(c_text, "grafo_dfs_recursivo")
+        if dfs_wrapper and dfs_recursive:
+            operation_code["run_dfs"] = f"{dfs_wrapper}\n\n{dfs_recursive}"
+
         create_fn = cls._extract_function_with_comment(c_text, "grafo_crear")
-        destroy_fn = cls._extract_function_with_comment(c_text, "grafo_destruir")
         if create_fn:
             operation_code["create_graph"] = create_fn
-        if destroy_fn and create_fn:
-            operation_code["clear_graph"] = (
-                f"{destroy_fn}\n\n"
-                "/* Reinicio recomendado del TAD en modo no dirigido por defecto */\n"
-                "Grafo *grafo = grafo_crear(false);"
-            )
-        elif destroy_fn:
-            operation_code["clear_graph"] = destroy_fn
+        operation_code["clear_graph"] = (
+            "/* El TAD nuevo de grafo devuelve estructura por valor. */\n"
+            "/* Reinicio didactico: */\n"
+            "g = grafo_crear();"
+        )
 
         structure_text = cls._extract_graph_structure(h_text, c_text)
         return {
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/grafo.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_grafo.c."
             ),
             "code_title": "Codigo C",
         }
@@ -555,8 +689,8 @@ class CCodeService:
     @classmethod
     def _build_hash_table_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for hash table TAD."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "tabla_hash.c")
-        h_text = cls._safe_read(cls._DOCS_TADS_C / "tabla_hash.h")
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_tabla_hash.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_tabla_hash.h")
 
         operation_code: dict[str, str] = {}
         for operation_name, function_name in cls._HASH_TABLE_OPERATION_MAP.items():
@@ -603,7 +737,7 @@ class CCodeService:
             "record": structure_text,
             "operations": operation_code,
             "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/tabla_hash.c."
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_tabla_hash.c."
             ),
             "code_title": "Codigo C",
         }
@@ -621,6 +755,10 @@ class CCodeService:
         nodo_match = re.search(r"struct\s+nodo\s*\{[\s\S]*?\};", source_text)
         lista_match = re.search(r"typedef\s+struct\s*\{[\s\S]*?\}\s*Lista\s*;", header_text)
         alias_match = re.search(r"typedef\s+struct\s+nodo\s+Nodo\s*;", header_text)
+        nodo_new_match = re.search(
+            r"typedef\s+struct\s+NodoLista\s*\{[\s\S]*?\}\s*\*?\s*Tlista\s*;",
+            header_text,
+        )
 
         blocks: list[str] = []
         if nodo_match:
@@ -629,6 +767,8 @@ class CCodeService:
             blocks.append(alias_match.group(0).strip())
         if lista_match:
             blocks.append(lista_match.group(0).strip())
+        if nodo_new_match:
+            blocks.append(nodo_new_match.group(0).strip())
 
         if blocks:
             return "\n\n".join(blocks)
@@ -640,6 +780,10 @@ class CCodeService:
         nodo_match = re.search(r"struct\s+nodo\s*\{[\s\S]*?\};", source_text)
         alias_match = re.search(r"typedef\s+struct\s+nodo\s+Nodo\s*;", header_text)
         pila_match = re.search(r"typedef\s+struct\s*\{[\s\S]*?\}\s*Pila\s*;", header_text)
+        nodo_new_match = re.search(
+            r"typedef\s+struct\s+NodoPila\s*\{[\s\S]*?\}\s*\*?\s*ptrPila\s*;",
+            header_text,
+        )
 
         blocks: list[str] = []
         if nodo_match:
@@ -648,6 +792,8 @@ class CCodeService:
             blocks.append(alias_match.group(0).strip())
         if pila_match:
             blocks.append(pila_match.group(0).strip())
+        if nodo_new_match:
+            blocks.append(nodo_new_match.group(0).strip())
 
         if blocks:
             return "\n\n".join(blocks)
@@ -659,6 +805,8 @@ class CCodeService:
         nodo_match = re.search(r"struct\s+nodo\s*\{[\s\S]*?\};", source_text)
         alias_match = re.search(r"typedef\s+struct\s+nodo\s+Nodo\s*;", header_text)
         cola_match = re.search(r"typedef\s+struct\s*\{[\s\S]*?\}\s*Cola\s*;", header_text)
+        nodo_new_match = re.search(r"struct\s+NodoCola\s*\{[\s\S]*?\};", header_text)
+        cola_new_match = re.search(r"struct\s+Cola\s*\{[\s\S]*?\};", header_text)
 
         blocks: list[str] = []
         if nodo_match:
@@ -667,6 +815,10 @@ class CCodeService:
             blocks.append(alias_match.group(0).strip())
         if cola_match:
             blocks.append(cola_match.group(0).strip())
+        if nodo_new_match:
+            blocks.append(nodo_new_match.group(0).strip())
+        if cola_new_match:
+            blocks.append(cola_new_match.group(0).strip())
 
         if blocks:
             return "\n\n".join(blocks)
@@ -724,12 +876,24 @@ class CCodeService:
             r"typedef\s+struct\s+nodo\s*\{[\s\S]*?\}\s*Nodo\s*;",
             header_text,
         )
+        child_new_match = re.search(
+            r"typedef\s+struct\s+Sublista\s*\{[\s\S]*?\}\s*Sublista\s*;",
+            header_text,
+        )
+        parent_new_match = re.search(
+            r"typedef\s+struct\s+Nodo\s*\{[\s\S]*?\}\s*Nodo\s*;",
+            header_text,
+        )
 
         blocks: list[str] = []
         if child_match:
             blocks.append(child_match.group(0).strip())
         if parent_match:
             blocks.append(parent_match.group(0).strip())
+        if child_new_match:
+            blocks.append(child_new_match.group(0).strip())
+        if parent_new_match:
+            blocks.append(parent_new_match.group(0).strip())
 
         if blocks:
             return "\n\n".join(blocks)
@@ -744,6 +908,10 @@ class CCodeService:
         )
         internal_match = re.search(r"struct\s+Abb\s*\{[\s\S]*?\};", source_text)
         opaque_match = re.search(r"typedef\s+struct\s+Abb\s+Abb\s*;", header_text)
+        nodo_new_match = re.search(
+            r"typedef\s+struct\s+ABBNodo\s*\{[\s\S]*?\}\s*ABBNodo\s*;",
+            header_text,
+        )
 
         blocks: list[str] = []
         if nodo_match:
@@ -752,6 +920,8 @@ class CCodeService:
             blocks.append(internal_match.group(0).strip())
         if opaque_match:
             blocks.append(opaque_match.group(0).strip())
+        if nodo_new_match:
+            blocks.append(nodo_new_match.group(0).strip())
 
         if blocks:
             return "\n\n".join(blocks)
@@ -766,6 +936,11 @@ class CCodeService:
         )
         internal_match = re.search(r"struct\s+Avl\s*\{[\s\S]*?\};", source_text)
         opaque_match = re.search(r"typedef\s+struct\s+Avl\s+Avl\s*;", header_text)
+        nodo_new_match = re.search(
+            r"typedef\s+struct\s+nodoAVL\s*\{[\s\S]*?\}\s*nodoAVL\s*;",
+            header_text,
+        )
+        alias_new_match = re.search(r"typedef\s+nodoAVL\s*\*\s*AVL\s*;", header_text)
 
         blocks: list[str] = []
         if nodo_match:
@@ -774,6 +949,10 @@ class CCodeService:
             blocks.append(internal_match.group(0).strip())
         if opaque_match:
             blocks.append(opaque_match.group(0).strip())
+        if nodo_new_match:
+            blocks.append(nodo_new_match.group(0).strip())
+        if alias_new_match:
+            blocks.append(alias_new_match.group(0).strip())
 
         if blocks:
             return "\n\n".join(blocks)
@@ -788,6 +967,14 @@ class CCodeService:
         )
         internal_match = re.search(r"struct\s+RojoNegro\s*\{[\s\S]*?\};", source_text)
         opaque_match = re.search(r"typedef\s+struct\s+RojoNegro\s+RojoNegro\s*;", header_text)
+        nodo_new_match = re.search(
+            r"typedef\s+struct\s+nodoRBT\s*\{[\s\S]*?\}\s*nodoRBT\s*;",
+            header_text,
+        )
+        alias_new_match = re.search(
+            r"typedef\s+struct\s+nodoRBT\s*\*\s*RBT\s*;",
+            header_text,
+        )
 
         blocks: list[str] = []
         if nodo_match:
@@ -796,6 +983,10 @@ class CCodeService:
             blocks.append(internal_match.group(0).strip())
         if opaque_match:
             blocks.append(opaque_match.group(0).strip())
+        if nodo_new_match:
+            blocks.append(nodo_new_match.group(0).strip())
+        if alias_new_match:
+            blocks.append(alias_new_match.group(0).strip())
 
         if blocks:
             return "\n\n".join(blocks)
@@ -833,6 +1024,10 @@ class CCodeService:
         camino_block = CCodeService._extract_named_typedef_struct(header_text, "GrafoCamino")
         opaque_match = re.search(r"typedef\s+struct\s+Grafo\s+Grafo\s*;", header_text)
         internal_match = re.search(r"struct\s+Grafo\s*\{[\s\S]*?\};", source_text)
+        nodo_v_new = re.search(r"typedef\s+struct\s+NodoV\s*\{[\s\S]*?\}\s*\*ListaVertice\s*;", header_text)
+        nodo_a_new = re.search(r"typedef\s+struct\s+NodoA\s*\{[\s\S]*?\}\s*\*ListaArco\s*;", header_text)
+        grafo_new = re.search(r"typedef\s+struct\s+nodoGrafo\s*\{[\s\S]*?\}\s*Grafo\s*;", header_text)
+        conjunto_new = re.search(r"typedef\s+struct\s+Conjunto\s*\{[\s\S]*?\}\s*Conjunto\s*;", header_text)
 
         blocks: list[str] = []
         if nodo_arista_block:
@@ -849,6 +1044,14 @@ class CCodeService:
             blocks.append(opaque_match.group(0).strip())
         if internal_match:
             blocks.append(internal_match.group(0).strip())
+        if nodo_v_new:
+            blocks.append(nodo_v_new.group(0).strip())
+        if nodo_a_new:
+            blocks.append(nodo_a_new.group(0).strip())
+        if grafo_new:
+            blocks.append(grafo_new.group(0).strip())
+        if conjunto_new:
+            blocks.append(conjunto_new.group(0).strip())
 
         if blocks:
             return "\n\n".join(blocks)
@@ -954,3 +1157,4 @@ class CCodeService:
 
         block = source_text[open_start:close_end].strip()
         return block
+

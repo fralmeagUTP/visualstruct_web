@@ -1,4 +1,4 @@
-"""Didactic help content for graph structures."""
+﻿"""Didactic help content for graph structures."""
 
 from __future__ import annotations
 
@@ -11,23 +11,33 @@ class GraphHelpService:
     _MODULE_HELP = {
         "title": "Ayuda del modulo de grafos",
         "description": (
-            "El modulo de grafos permite crear grafos dirigidos y no dirigidos, "
-            "insertar vertices/aristas y ejecutar algoritmos clasicos sobre el TAD real."
+            "Este modulo separa construccion y algoritmos para interpretar codigo C de grafos "
+            "de forma didactica: primero se modela el grafo y luego se simulan recorridos, "
+            "caminos minimos y expansion minima paso a paso o en modo rapido de resultado final."
         ),
         "tips": [
-            "Crea el grafo dirigido/no dirigido antes de probar Prim o Kruskal.",
-            "Si hay pesos negativos, usa Bellman-Ford en lugar de Dijkstra.",
-            "Compara BFS y DFS desde el mismo vertice inicial.",
+            "Flujo sugerido: define tipo de grafo, crea vertices/aristas y despues ejecuta el algoritmo.",
+            "Usa Reproducir para la traza completa y Siguiente/Anterior paso para validar condiciones y actualizaciones.",
+            "Si desactivas 'Interpretar codigo paso a paso', Reproducir aplica directamente el estado final.",
+            "El resultado visual final en modo rapido debe coincidir con el ultimo estado de la traza interpretada.",
+            "Interpreta el estado visual junto con 'Accion actual' para distinguir exploracion, relajacion y cierre.",
+            "Con pesos negativos usa Bellman-Ford; para no dirigidos ponderados compara Prim y Kruskal.",
+            "Ejecuta BFS y DFS desde el mismo origen para contrastar ordenes de visita.",
         ],
     }
 
     _STRUCTURE_HELP: dict[str, dict[str, Any]] = {
         "graph": {
             "title": "Grafo",
-            "summary": "Representacion por lista de adyacencia con recorridos y caminos minimos.",
+            "summary": (
+                "Representacion por lista de adyacencia para grafos dirigidos o no dirigidos, con peso opcional. "
+                "La simulacion interpreta el codigo C por subrutinas y muestra visualmente recorridos, "
+                "relajacion de aristas, rutas minimas y expansion minima segun el algoritmo seleccionado."
+            ),
             "supported_operations": [
                 "create_graph",
                 "insert_vertex",
+                "generate_random_graph",
                 "remove_vertex",
                 "insert_edge",
                 "remove_edge",

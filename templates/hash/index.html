@@ -4,9 +4,22 @@
 <section>
   <h2>Modulo de Tablas Hash</h2>
   <p>Selecciona la estructura para trabajar con pares clave-valor y visualizar colisiones.</p>
+  {% set structure_images = {
+    "hash_table": "TablaHash.png"
+  } %}
   <div class="cards">
     {% for structure in structures %}
-    <article class="card">
+    <article class="card card-with-image">
+      {% if structure.id in structure_images %}
+      <div class="card-illustration">
+        <img
+          src="{{ url_for('main.asset_file', filename=structure_images[structure.id]) }}"
+          alt="Ilustracion de {{ structure.name }}"
+          loading="lazy"
+          onerror="this.closest('.card-illustration').style.display='none';"
+        >
+      </div>
+      {% endif %}
       <h3>{{ structure.name }}</h3>
       <p>{{ structure.description }}</p>
       <a class="btn" href="{{ url_for('hash.structure_page', structure_id=structure.id) }}">Abrir</a>

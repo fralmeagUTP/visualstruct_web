@@ -1,6 +1,6 @@
 ﻿# Plan de Mejora: Cobertura y Deprecaciones
 
-Fecha base: **12 de mayo de 2026**
+Fecha base: **15 de mayo de 2026**
 
 ## 1. Objetivo
 
@@ -12,8 +12,8 @@ Mantener y mejorar la calidad tecnica mediante:
 
 ## 2. Estado actual
 
-- Suite: `150 passed, 4 skipped`.
-- Cobertura global: `89%`.
+- Suite: `154 passed, 4 skipped`.
+- Cobertura global: `74%` (medicion sin exclusiones sobre `app/`).
 - Backend de sesion recomendado: `cachelib` (local) o `redis` (produccion).
 
 ## 3. Estado por fases
@@ -32,7 +32,7 @@ Mantener y mejorar la calidad tecnica mediante:
 ### Fase C - Cobertura grafos y adapters
 
 - Mejoras fuertes en dominio de grafos y adapters: **completada**.
-- Meta global `>=88%`: **cumplida** (`89%`).
+- Meta global `>=88%`: **pendiente** en la medicion actual (`74%`).
 
 ### Fase D - Regresiones modo interprete C
 
@@ -53,7 +53,7 @@ Pendientes operativos:
 ## 4. Criterios de aceptacion vigentes
 
 - `pytest` en verde: **cumplido**.
-- Cobertura >=88%: **cumplido**.
+- Cobertura >=88%: **pendiente**.
 - Riesgos principales por deprecaciones de sesion: **mitigados**.
 - Regresiones criticas del modo interprete C: **cubiertas**.
 

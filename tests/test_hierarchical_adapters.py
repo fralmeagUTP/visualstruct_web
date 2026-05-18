@@ -29,6 +29,18 @@ def test_avl_adapter_balance_validation() -> None:
     assert state["height"] >= 1
 
 
+def test_avl_adapter_uses_fe_contract_right_minus_left() -> None:
+    """AVL visual FE must follow C contract: FE = altura(der) - altura(izq)."""
+    adapter = AVLAdapter()
+    for value in ["60", "50", "70", "80"]:
+        adapter.execute("insertar", {"value": value})
+    state = adapter.to_visual_state()
+    root = state["root"]
+    assert root["value"] == 60
+    assert root["balance_factor"] == 1
+    assert root["right"]["balance_factor"] == 1
+
+
 def test_red_black_adapter_validate() -> None:
     """Red-black adapter should validate after operations."""
     adapter = RedBlackAdapter()

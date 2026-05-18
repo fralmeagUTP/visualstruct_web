@@ -3,16 +3,27 @@
 {% block content %}
 <section>
   <h2>{{ help_data.title }}</h2>
-  <p>{{ help_data.summary }}</p>
+  <h3>Descripcion del TAD</h3>
+  <p>{{ help_data.tad_description }}</p>
 
-  <h3>Operaciones soportadas por el TAD actual</h3>
+  <h3>Controles de ejecucion paso a paso</h3>
   <ul>
-    {% for op in help_data.supported_operations %}
+    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra toda la traza; desactivado aplica solo el resultado final.</li>
+    <li>Botones de ejecucion: <strong>Reproducir</strong> y <strong>Reiniciar</strong>.</li>
+    <li>Navegacion por traza: <strong>Anterior paso</strong> y <strong>Siguiente paso</strong>.</li>
+    <li><strong>Velocidad de simulacion</strong>: slider de <strong>-2x</strong> a <strong>+2x</strong> (0.00x = 1.00x real).</li>
+    <li>En modo rapido (checkbox desactivado), el resultado visual final debe coincidir con el ultimo estado de la traza interpretada.</li>
+    <li>Al llegar al ultimo paso, <strong>Siguiente paso</strong> se bloquea hasta cambiar entradas/operacion; <strong>Anterior paso</strong> se habilita solo cuando ya avanzaste.</li>
+  </ul>
+
+  <h3>Operaciones soportadas</h3>
+  <ul>
+    {% for op in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
     <li>{{ op }}</li>
     {% endfor %}
   </ul>
 
-  <h3>Operaciones pendientes (no existen en TAD)</h3>
+  <h3>Operaciones pendientes / restricciones</h3>
   {% if help_data.pending_operations %}
   <ul>
     {% for item in help_data.pending_operations %}
@@ -30,6 +41,7 @@
   {% if help_data.c_methods %}
     {% for method in help_data.c_methods %}
     <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
+    <p>{{ method.explanation }}</p>
     <pre class="didactic-code">{{ method.code }}</pre>
     {% endfor %}
   {% else %}

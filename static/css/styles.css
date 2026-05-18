@@ -122,6 +122,31 @@ section {
   margin-top: 0;
 }
 
+.card-with-image .card-illustration {
+  width: 100%;
+  height: 148px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #eee3d1 0%, #e9dcc7 100%);
+}
+
+.card-with-image .card-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.08);
+  transform-origin: center;
+  display: block;
+}
+
+.hierarchical-card .card-illustration img,
+.graph-menu-card.card-with-image .card-illustration img {
+  transform: scale(1.28);
+}
+
 .btn {
   display: inline-block;
   background: var(--accent);
@@ -151,6 +176,38 @@ section {
   margin-top: 0.8rem;
   display: flex;
   gap: 0.6rem;
+}
+
+.sim-toggle-control {
+  margin-top: 0.5rem;
+}
+
+.sim-toggle-control label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.sim-speed-control {
+  margin-top: 0.7rem;
+}
+
+.sim-speed-control label {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+}
+
+.sim-speed-control input[type="range"] {
+  width: 100%;
+  padding: 0;
+}
+
+.sim-speed-value {
+  margin: 0.25rem 0 0;
+  color: #355064;
+  font-size: 0.88rem;
 }
 
 .structure-layout {
@@ -197,6 +254,94 @@ select {
   color: var(--error);
 }
 
+.console-panel {
+  margin-top: 0.9rem;
+  padding: 0.75rem;
+  border: 1px solid #e2d6c3;
+  border-radius: 12px;
+  background: #f8f4ec;
+}
+
+.console-panel h4 {
+  margin: 0 0 0.55rem;
+}
+
+.console-monitor {
+  width: 100%;
+  border: 1px solid #3f4f66;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #060d19;
+  box-shadow:
+    0 8px 18px rgba(7, 18, 35, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.console-monitor-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #34435a;
+  background: linear-gradient(180deg, #213047 0%, #172334 100%);
+}
+
+.console-monitor-bar .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.console-monitor-bar .dot.red {
+  background: #ea4335;
+}
+
+.console-monitor-bar .dot.yellow {
+  background: #fbbc05;
+}
+
+.console-monitor-bar .dot.green {
+  background: #34a853;
+}
+
+.console-monitor-bar .title {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #d5dde7;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+}
+
+.console-screen {
+  margin: 0;
+  padding: 0.75rem;
+  min-height: 210px;
+  max-height: 290px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #8ef7a2;
+  background: radial-gradient(circle at 50% 0%, #0f1d31 0%, #060f1f 62%);
+}
+
+.console-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.console-line::before {
+  content: ">";
+  color: #42d67f;
+  margin-right: 0.45rem;
+}
+
+.console-line.muted {
+  color: #9aa8bd;
+}
+
 #visual-state {
   width: 100%;
   max-width: 100%;
@@ -236,6 +381,19 @@ select {
 .viz-stage {
   width: max-content;
   min-width: 100%;
+  margin: 0 auto;
+}
+
+.viz-stage-center {
+  width: max-content;
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.viz-graph-svg {
+  display: block;
+  margin: 0 auto;
 }
 
 .viz-meta {
@@ -329,10 +487,28 @@ select {
   box-shadow: 0 0 0 2px rgba(209, 122, 34, 0.28) inset;
 }
 
+.viz-node.sim-commit {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.25);
+  animation: simCommit 0.75s ease-in-out;
+}
+
 .viz-arrow {
   color: #1a5e9f;
   font-weight: 700;
   margin: 0 0.1rem;
+}
+
+.viz-op-label {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #dcb77d;
+  background: #fff2df;
+  color: #7f4e10;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.86rem;
 }
 
 .viz-row-label {
@@ -456,6 +632,50 @@ select {
   font-family: "Consolas", "Courier New", monospace;
   text-align: center;
   line-height: 1.1;
+}
+
+.viz-temp-node-wrap {
+  margin-top: 0.55rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px dashed #b8c6d3;
+  border-radius: 8px;
+  background: #f8fbff;
+  width: fit-content;
+}
+
+.viz-temp-node-title {
+  margin-bottom: 0.3rem;
+  color: #1d4d7a;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.viz-temp-node-wrap .viz-node {
+  min-width: 120px;
+  animation: tempNodePop 0.5s ease-out;
+}
+
+.viz-temp-node-wrap .viz-node.sim-detached {
+  background: #ffe8e2;
+  border-color: #d16f56;
+}
+
+.viz-temp-link {
+  margin-top: 0.28rem;
+  color: #0f5a4d;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  animation: tempLinkBlink 0.8s ease-in-out;
+}
+
+.viz-temp-note {
+  margin-top: 0.28rem;
+  color: #5b4f3f;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .viz-sublist {
@@ -715,6 +935,17 @@ select {
   animation: simPulse 0.9s ease-in-out infinite alternate;
 }
 
+.viz-tree-node.sim-imbalanced {
+  fill: #ffe0cf;
+  stroke: #c63e17;
+  stroke-width: 3.6;
+}
+
+#visual-state.sim-trace-complete .viz-tree-node.sim-active,
+#visual-state.sim-trace-complete .viz-array-chip.sim-active {
+  animation: none;
+}
+
 .viz-tree-node.rot-cw,
 .viz-tree-node.rot-ccw {
   transform-box: fill-box;
@@ -828,6 +1059,16 @@ select {
   font-weight: 700;
 }
 
+.viz-rotation-live {
+  margin: 0.35rem 0 0.35rem;
+  color: #7c2d12;
+  background: #fff1e6;
+  border: 1px solid #f2b17f;
+  border-radius: 8px;
+  padding: 0.32rem 0.55rem;
+  font-weight: 700;
+}
+
 .viz-traversals {
   margin-top: 0.8rem;
   padding-top: 0.5rem;
@@ -845,6 +1086,46 @@ select {
   font-size: 0.92rem;
 }
 
+.viz-sim-note ul {
+  margin: 0.3rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.viz-sim-note li {
+  margin: 0.15rem 0;
+}
+
+.viz-rn-timeline {
+  margin: 0.35rem 0 0.75rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #c8d6e4;
+  border-radius: 10px;
+  background: #f7fbff;
+  color: #22455f;
+  font-size: 0.9rem;
+}
+
+.viz-rn-timeline ol {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+  max-height: 170px;
+  overflow: auto;
+}
+
+.viz-rn-timeline li {
+  margin: 0.2rem 0;
+}
+
+.viz-rn-timeline li.is-current {
+  background: #e6f0fa;
+  border-radius: 6px;
+  padding: 0.12rem 0.25rem;
+}
+
+.viz-rn-timeline .rn-stage {
+  font-weight: 700;
+}
+
 .viz-path-steps p {
   margin: 0.15rem 0;
   font-family: "Consolas", "Courier New", monospace;
@@ -856,6 +1137,38 @@ select {
   }
   to {
     transform: scale(1.06);
+  }
+}
+
+@keyframes simCommit {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.07);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes tempNodePop {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tempLinkBlink {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
@@ -889,12 +1202,135 @@ select {
   font-size: 0.92rem;
 }
 
+.graph-phase-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.35rem 0 0.8rem;
+}
+
+.graph-phase-link {
+  display: inline-block;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid #c9d7e6;
+  border-radius: 999px;
+  background: #edf5fd;
+  color: #1b4d78;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.graph-phase-link:hover {
+  background: #dfeeff;
+}
+
+.graph-phase-link.active {
+  border-color: #1f6d74;
+  background: #1f6d74;
+  color: #fff;
+}
+
+.graph-menu-cards {
+  margin-top: 0.75rem;
+}
+
+.graph-menu-card {
+  position: relative;
+  border-color: #d5c8b5;
+  background: linear-gradient(180deg, #fffdf9 0%, #fff9f0 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.graph-menu-badge {
+  display: inline-block;
+  margin-bottom: 0.4rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid #c7d7e7;
+  background: #edf5fd;
+  color: #1b4d78;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.graph-menu-card p {
+  margin-bottom: 0.4rem;
+}
+
+.graph-menu-actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.graph-menu-actions .btn {
+  margin-top: 0.25rem;
+}
+
+.home-module-cards {
+  margin-top: 1rem;
+}
+
+.home-module-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-module-card .card-illustration {
+  height: 162px;
+  background: #e8dcc8;
+  border-color: #d0bea5;
+}
+
+.home-module-card .card-illustration img {
+  transform: scale(1.2);
+  object-position: center center;
+}
+
+.home-module-card h3 {
+  margin-bottom: 0.35rem;
+}
+
+.home-module-card p {
+  margin-top: 0;
+  margin-bottom: 0.45rem;
+}
+
+.home-module-actions {
+  margin-top: auto;
+}
+
+.graph-left-panel .console-panel {
+  margin-top: 1rem;
+}
+
+.structure-layout > .graph-left-panel {
+  width: 320px;
+  min-width: 320px;
+}
+
+.graph-anchor {
+  display: block;
+  position: relative;
+  top: -0.2rem;
+}
+
 .graph-step-box {
   margin: 0.7rem 0;
   padding: 0.65rem;
   border: 1px solid #e2d7c5;
   border-radius: 10px;
   background: #fffdf8;
+}
+
+.graph-phase-hidden {
+  display: none;
 }
 
 .graph-step-box h4 {
@@ -906,6 +1342,32 @@ select {
   margin: 0 0 0.45rem;
   color: #51636f;
   font-size: 0.88rem;
+}
+
+.graph-preset-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.graph-preset-btn {
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem 0.55rem;
+}
+
+.graph-sim-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.graph-sim-actions .btn {
+  width: 100%;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.15;
+  padding: 0.52rem 0.45rem;
 }
 
 .didactic-code {
@@ -924,6 +1386,11 @@ select {
 
 .didactic-code-compact {
   max-height: 220px;
+  overflow: auto;
+}
+
+.didactic-code-scroll {
+  max-height: 360px;
   overflow: auto;
 }
 

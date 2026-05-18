@@ -58,6 +58,14 @@ def test_linked_list_rejects_zero_position() -> None:
         adapter.execute("insertar_posicion", {"value": "5", "position": "0"})
 
 
+def test_linked_list_new_contract_lista_insertar_elemento_inputs() -> None:
+    """`lista_insertar_elemento` should expose only value+position in the visible contract."""
+    adapter = LinkedListAdapter()
+    op = next(item for item in adapter.get_supported_operations() if item["name"] == "lista_insertar_elemento")
+    input_names = [field["name"] for field in op["inputs"]]
+    assert input_names == ["value", "position"]
+
+
 def test_sequential_adapters_reject_non_integer_value() -> None:
     """Adapters with node values should reject non-integer input."""
     stack = StackAdapter()

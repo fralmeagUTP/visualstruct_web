@@ -1,5 +1,8 @@
 "use strict";
 
+// Control temporal de UI: mantener oculta la linea de tiempo RN.
+const H_SHOW_RN_TIMELINE = false;
+
 function hById(id) {
   return document.getElementById(id);
 }
@@ -11,6 +14,73 @@ function hEscape(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function hToCStringLiteral(text) {
+  return String(text || "")
+    .replaceAll("\\", "\\\\")
+    .replaceAll('"', '\\"')
+    .replaceAll("\r", "")
+    .replaceAll("\n", "\\n");
+}
+
+function hDecodeCStringLiteral(text) {
+  return String(text || "")
+    .replaceAll("\\\\", "\u0000")
+    .replaceAll("\\n", "\n")
+    .replaceAll("\\t", "\t")
+    .replaceAll('\\"', '"')
+    .replaceAll("\\r", "")
+    .replaceAll("\u0000", "\\");
+}
+
+function hExtractPrintfMessagesFromLine(lineText) {
+  const source = String(lineText || "");
+  const regex = /printf\s*\(\s*"((?:\\.|[^"\\])*)"/g;
+  const messages = [];
+  let match = regex.exec(source);
+  while (match) {
+    const decoded = hDecodeCStringLiteral(match[1]).replace(/\n+$/g, "").trim();
+    if (decoded) {
+      messages.push(decoded);
+    }
+    match = regex.exec(source);
+  }
+  return messages;
+}
+
+function hHasPrintfFormatSpecifier(text) {
+  return /%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]/.test(String(text || ""));
+}
+
+function hIsOnlyPrintfSpecifier(text) {
+  return /^%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]$/.test(String(text || "").trim());
+}
+
+function hGetTraversalResultValuesFromTrace(trace) {
+  const op = String(trace && trace.operation_name ? trace.operation_name : "").toLowerCase();
+  if (!["inorden", "preorden", "postorden"].includes(op)) {
+    return [];
+  }
+  const result = trace
+    && trace.final_state
+    && trace.final_state.last_result
+    && Array.isArray(trace.final_state.last_result.result)
+    ? trace.final_state.last_result.result
+    : [];
+  return result.map((value) => String(value));
+}
+
+function renderHierPrintfConsole(consoleEl, lines, fallbackText) {
+  if (!consoleEl) {
+    return;
+  }
+  const safeLines = Array.isArray(lines) ? lines : [];
+  const html = safeLines.length
+    ? safeLines.map((line) => `<div class="console-line">${hEscape(line)}</div>`).join("")
+    : `<div class="console-line muted">${hEscape(fallbackText || "(sin salida printf en esta ruta)")}</div>`;
+  consoleEl.innerHTML = html;
+  consoleEl.scrollTop = consoleEl.scrollHeight;
 }
 
 const H_C_KEYWORDS = new Set([
@@ -217,7 +287,8 @@ function flattenTree(root) {
 
     const leftHeight = node.left && node.left.height !== undefined && node.left.height !== null ? Number(node.left.height) : 0;
     const rightHeight = node.right && node.right.height !== undefined && node.right.height !== null ? Number(node.right.height) : 0;
-    const inferredBalance = leftHeight - rightHeight;
+    // Contrato TAD C para AVL: FE = der - izq
+    const inferredBalance = rightHeight - leftHeight;
 
     const currentNode = {
       id,
@@ -242,6 +313,171 @@ function flattenTree(root) {
   return nodes;
 }
 
+function rbBuildNodeIndex(root, parentKey = null, acc = new Map()) {
+  if (!root) {
+    return acc;
+  }
+  const key = String(root.value);
+  acc.set(key, {
+    key,
+    value: root.value,
+    color: String(root.color || "BLACK"),
+    parentKey,
+    leftKey: root.left ? String(root.left.value) : null,
+    rightKey: root.right ? String(root.right.value) : null,
+  });
+  rbBuildNodeIndex(root.left, key, acc);
+  rbBuildNodeIndex(root.right, key, acc);
+  return acc;
+}
+
+function rbAnalyzeRules(root) {
+  if (!root) {
+    return {
+      rootBlack: true,
+      redRedPairs: [],
+      blackHeightOk: true,
+    };
+  }
+
+  const redRedPairs = [];
+
+  function walk(node) {
+    if (!node) {
+      return { ok: true, blackHeight: 1, isRed: false };
+    }
+
+    const left = walk(node.left);
+    const right = walk(node.right);
+    const color = String(node.color || "BLACK");
+    const isRed = color === "RED";
+
+    if (isRed) {
+      if (left.isRed) {
+        redRedPairs.push(`${node.value}-${node.left.value}`);
+      }
+      if (right.isRed) {
+        redRedPairs.push(`${node.value}-${node.right.value}`);
+      }
+    }
+
+    const selfBlack = isRed ? 0 : 1;
+    const blackHeight = Math.max(left.blackHeight, right.blackHeight) + selfBlack;
+    const ok = left.ok && right.ok && left.blackHeight === right.blackHeight;
+    return { ok, blackHeight, isRed };
+  }
+
+  const rootColor = String(root.color || "BLACK");
+  const walked = walk(root);
+  return {
+    rootBlack: rootColor === "BLACK",
+    redRedPairs,
+    blackHeightOk: walked.ok,
+  };
+}
+
+function rbDidacticDelta(stepMeta, compareState) {
+  if (!stepMeta || !stepMeta.state_snapshot || !stepMeta.state_after) {
+    return compareState;
+  }
+  const beforeRoot = stepMeta.state_snapshot.root || null;
+  const afterRoot = stepMeta.state_after.root || null;
+  if (!beforeRoot && !afterRoot) {
+    return compareState;
+  }
+
+  const beforeMap = rbBuildNodeIndex(beforeRoot);
+  const afterMap = rbBuildNodeIndex(afterRoot);
+  const events = [];
+  const recolored = [];
+  const reparented = [];
+
+  afterMap.forEach((afterNode, key) => {
+    const beforeNode = beforeMap.get(key);
+    if (beforeNode && beforeNode.color !== afterNode.color) {
+      recolored.push(`${key}: ${beforeNode.color} -> ${afterNode.color}`);
+    }
+    if (beforeNode && beforeNode.parentKey !== afterNode.parentKey) {
+      reparented.push(String(key));
+    }
+  });
+
+  if (recolored.length) {
+    events.push(`Recoloracion: ${recolored.join(", ")}.`);
+  }
+  if (reparented.length >= 2) {
+    events.push(`Rotacion detectada (cambio estructural en: ${reparented.join(", ")}).`);
+  }
+
+  const beforeRules = rbAnalyzeRules(beforeRoot);
+  const afterRules = rbAnalyzeRules(afterRoot);
+  if (beforeRules.redRedPairs.length && !afterRules.redRedPairs.length) {
+    events.push("Se resolvio conflicto rojo-rojo.");
+  } else if (afterRules.redRedPairs.length) {
+    events.push(`Conflicto rojo-rojo activo en: ${afterRules.redRedPairs.join(", ")}.`);
+  }
+  if (!afterRules.rootBlack) {
+    events.push("Advertencia: la raiz debe ser negra.");
+  }
+  if (!afterRules.blackHeightOk) {
+    events.push("Advertencia: altura negra inconsistente entre caminos.");
+  }
+
+  const next = compareState ? { ...compareState } : {};
+  next.rnEvents = events;
+  if (events.length) {
+    next.rotationMessage = next.rotationMessage || events[0];
+  }
+  const active = Array.isArray(next.activeKeys) ? [...next.activeKeys] : [];
+  recolored.forEach((item) => {
+    const key = item.split(":", 1)[0].trim();
+    if (key && !active.includes(key)) {
+      active.push(key);
+    }
+  });
+  next.activeKeys = active;
+  return next;
+}
+
+function rbStageLabel(stage) {
+  const value = String(stage || "").trim().toLowerCase();
+  if (!value) {
+    return "Ejecucion";
+  }
+  const labels = {
+    search: "Busqueda",
+    apply: "Aplicacion",
+    pre_fixup: "Pre-fixup",
+    fixup: "Fixup",
+    post_fixup: "Post-fixup",
+    result: "Resultado",
+    start: "Inicio",
+    progress: "Progreso",
+    end: "Fin",
+    single: "Paso unico",
+  };
+  return labels[value] || value;
+}
+
+function rbTimelineEntryFromStep(step) {
+  const debug = step && typeof step.debug === "object" ? step.debug : null;
+  const stage = rbStageLabel(debug && debug.stage ? debug.stage : step && step.phase ? step.phase : "");
+  const baseNote = debug && debug.note ? String(debug.note).trim() : "";
+  const lineText = step && step.line_text ? String(step.line_text).trim() : "";
+  const entry = {
+    stage,
+    note: baseNote || (lineText ? `Linea C: ${lineText}` : "Paso del algoritmo."),
+  };
+  return entry;
+}
+
+function rbBuildTimelineFromTrace(trace) {
+  if (!trace || !Array.isArray(trace.steps)) {
+    return [];
+  }
+  return trace.steps.map((step) => rbTimelineEntryFromStep(step));
+}
+
 function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -253,7 +489,13 @@ function isHierExecutableLine(text, codeTitle) {
   if (!line) {
     return false;
   }
-  if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*") || line.startsWith("*/")) {
+  if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*/")) {
+    return false;
+  }
+  if (line === "*" || (line.startsWith("*") && line.length > 1 && /\s/.test(line[1]))) {
+    return false;
+  }
+  if (line === "{" || line === "}") {
     return false;
   }
   if (String(codeTitle || "").toLowerCase().includes("codigo c") && line.startsWith("#")) {
@@ -519,7 +761,8 @@ async function simulateHierDidacticExecution(context) {
     }
   });
 
-  const stepDelayMs = 180;
+  const speed = Math.min(4, Math.max(0.25, Number(context?.playbackSpeed) || 1));
+  const stepDelayMs = Math.max(20, Math.round(180 / speed));
   for (let i = 0; i < steps.length; i += 1) {
     const current = steps[i];
     current.classList.add("sim-active");
@@ -534,7 +777,7 @@ async function simulateHierDidacticExecution(context) {
   const last = steps[steps.length - 1];
   last.classList.remove("sim-active");
   last.classList.add("sim-done");
-  await sleep(120);
+  await sleep(Math.max(20, Math.round(120 / speed)));
 
   lines.forEach((lineElement) => {
     lineElement.classList.remove("sim-active");
@@ -813,6 +1056,8 @@ function comparisonHighlight(compareState) {
   const highlights = {
     visitedKeys: new Set(),
     activeKeys: new Set(),
+    unbalancedKeys: new Set(),
+    rotationMessage: "",
   };
 
   if (!compareState) {
@@ -823,6 +1068,12 @@ function comparisonHighlight(compareState) {
     compareState.activeKeys.forEach((key) => {
       highlights.activeKeys.add(String(key));
     });
+  }
+  if (compareState.unbalancedKey !== undefined && compareState.unbalancedKey !== null) {
+    highlights.unbalancedKeys.add(String(compareState.unbalancedKey));
+  }
+  if (compareState.rotationMessage) {
+    highlights.rotationMessage = String(compareState.rotationMessage);
   }
 
   if (Array.isArray(compareState.pathKeys) && compareState.index >= 0) {
@@ -1010,6 +1261,9 @@ function drawTreeSvgFromNodes(nodes, options = {}) {
     if (compare.activeKeys.has(node.key)) {
       nodeClass += " sim-active";
     }
+    if (compare.unbalancedKeys.has(node.key)) {
+      nodeClass += " sim-imbalanced";
+    }
     nodeClass += getRotationNodeClass(node.key, options.rotationHint);
 
     svg += `<circle cx="${node.x + offsetX}" cy="${node.y}" r="24" class="${nodeClass}" />`;
@@ -1164,6 +1418,9 @@ function renderTreeTransitionSvg(transitionData, options = {}) {
     }
     if (compare.activeKeys.has(node.key)) {
       nodeClass += " sim-active";
+    }
+    if (compare.unbalancedKeys.has(node.key)) {
+      nodeClass += " sim-imbalanced";
     }
     nodeClass += getRotationNodeClass(node.key, options.rotationHint);
 
@@ -1410,9 +1667,33 @@ function renderHierState(
   }
   if (modelId === "avl") {
     html += "<div class=\"viz-meta\">Regla AVL: cada nodo debe tener fe en {-1, 0, 1}.</div>";
+    if (compareState && compareState.rotationMessage) {
+      html += `<div class="viz-rotation-live">${hEscape(compareState.rotationMessage)}</div>`;
+    }
     const rotationText = rotationHintText(rotationTextHint);
     if (rotationText) {
       html += `<div class="viz-rotation-note">${hEscape(rotationText)}</div>`;
+    }
+  }
+  if (modelId === "red_black") {
+    html += "<div class=\"viz-meta\">Reglas RN: raiz negra, sin rojos consecutivos y misma altura negra en todos los caminos.</div>";
+    if (compareState && Array.isArray(compareState.rnEvents) && compareState.rnEvents.length) {
+      html += "<div class=\"viz-sim-note\"><strong>Cambios por reglas RN:</strong><ul>";
+      compareState.rnEvents.forEach((eventText) => {
+        html += `<li>${hEscape(eventText)}</li>`;
+      });
+      html += "</ul></div>";
+    }
+    if (H_SHOW_RN_TIMELINE && compareState && Array.isArray(compareState.rnTimeline) && compareState.rnTimeline.length) {
+      const currentIndex = Number.isInteger(compareState.rnTimelineIndex) ? compareState.rnTimelineIndex : -1;
+      html += "<div class=\"viz-rn-timeline\"><strong>Linea de tiempo RN (paso a paso)</strong><ol>";
+      compareState.rnTimeline.forEach((entry, idx) => {
+        const stage = entry && entry.stage ? String(entry.stage) : "Ejecucion";
+        const note = entry && entry.note ? String(entry.note) : "Paso del algoritmo.";
+        const cls = idx === currentIndex ? " class=\"is-current\"" : "";
+        html += `<li${cls}><span class=\"rn-stage\">${hEscape(stage)}:</span> ${hEscape(note)}</li>`;
+      });
+      html += "</ol></div>";
     }
   }
 
@@ -1514,14 +1795,31 @@ function getHierSubroutineName(model, operationName, fallback) {
   return extractHierSubroutineName(pseudoCode, fallback || operationName || "Operacion");
 }
 
-function createHierHistoryEntry(subroutine, payloadText, resultText, operationName, payloadRaw) {
+function createHierHistoryEntry(subroutine, payloadText, resultText, operationName, payloadRaw, options) {
+  const opts = options && typeof options === "object" ? options : {};
+  const normalizedResult = resultText || "-";
   return {
     subroutine: subroutine || "Operacion",
     payload: payloadText || "-",
-    result: resultText || "-",
+    result: normalizedResult,
+    finalResult: normalizedResult,
+    pendingTrace: Boolean(opts.pendingTrace),
     operation: operationName || "",
     payloadRaw: payloadRaw && typeof payloadRaw === "object" ? { ...payloadRaw } : {},
   };
+}
+
+function getHierEntryVisibleResult(entry) {
+  if (!entry || typeof entry === "string") {
+    return "";
+  }
+  if (entry.pendingTrace) {
+    return "";
+  }
+  const finalResult = Object.prototype.hasOwnProperty.call(entry, "finalResult")
+    ? entry.finalResult
+    : entry.result;
+  return String(finalResult || "").trim();
 }
 
 function abbMainCallForEntry(entry, index) {
@@ -1529,40 +1827,40 @@ function abbMainCallForEntry(entry, index) {
   const value = Object.prototype.hasOwnProperty.call(payload, "value") ? String(payload.value).trim() : "";
 
   if (entry.operation === "insertar") {
-    return `abb_insertar(arbol, ${value || "0"});`;
+    return `arbol = abb_insertar(arbol, ${value || "0"});`;
   }
   if (entry.operation === "eliminar") {
-    return `abb_eliminar(arbol, ${value || "0"});`;
+    return `arbol = abb_eliminar(arbol, ${value || "0"});`;
   }
   if (entry.operation === "buscar") {
-    return `int encontrado_${index} = abb_contiene(arbol, ${value || "0"});`;
+    return `ABBNodo *encontrado_${index} = abb_buscar(arbol, ${value || "0"});`;
   }
   if (entry.operation === "minimo") {
-    return `int minimo_${index}; abb_minimo(arbol, &minimo_${index});`;
+    return `ABBNodo *minimo_${index} = abb_encontrarMinimo(arbol);`;
   }
   if (entry.operation === "maximo") {
-    return `int maximo_${index}; abb_maximo(arbol, &maximo_${index});`;
+    return `ABBNodo *maximo_${index} = abb_encontrarMaximo(arbol);`;
   }
   if (entry.operation === "altura") {
     return `int altura_${index} = abb_altura(arbol);`;
   }
   if (entry.operation === "contar_hojas") {
-    return `size_t hojas_${index} = abb_contar_hojas(arbol);`;
+    return `int niveles_${index} = abb_contarNiveles(arbol);`;
   }
   if (entry.operation === "inorden") {
-    return "abb_recorrer_inorden(arbol, visitar, NULL);";
+    return "abb_inorden(arbol);";
   }
   if (entry.operation === "preorden") {
-    return "abb_recorrer_preorden(arbol, visitar, NULL);";
+    return "abb_preorden(arbol);";
   }
   if (entry.operation === "postorden") {
-    return "abb_recorrer_postorden(arbol, visitar, NULL);";
+    return "abb_postorden(arbol);";
   }
   if (entry.operation === "validar") {
-    return `int valido_${index} = abb_es_valido(arbol);`;
+    return "/* El TAD nuevo no expone abb_es_valido(). */";
   }
   if (entry.operation === "limpiar") {
-    return "abb_limpiar(arbol);";
+    return "abb_liberarArbol(arbol); arbol = NULL;";
   }
   return `${entry.subroutine || "Operacion"}();`;
 }
@@ -1572,31 +1870,31 @@ function avlMainCallForEntry(entry, index) {
   const value = Object.prototype.hasOwnProperty.call(payload, "value") ? String(payload.value).trim() : "";
 
   if (entry.operation === "insertar") {
-    return `AvlResultado res_${index} = avl_insertar(arbol, ${value || "0"});`;
+    return `avl_insertar(&arbol, ${value || "0"});`;
   }
   if (entry.operation === "eliminar") {
-    return `AvlResultado res_${index} = avl_eliminar(arbol, ${value || "0"});`;
+    return `avl_eliminar(&arbol, ${value || "0"});`;
   }
   if (entry.operation === "buscar") {
-    return `int encontrado_${index} = avl_contiene(arbol, ${value || "0"});`;
+    return `AVL encontrado_${index} = avl_buscar(arbol, ${value || "0"});`;
   }
   if (entry.operation === "minimo") {
-    return `int minimo_${index}; avl_minimo(arbol, &minimo_${index});`;
+    return `AVL minimo_${index} = avl_minimo(arbol);`;
   }
   if (entry.operation === "maximo") {
-    return `int maximo_${index}; avl_maximo(arbol, &maximo_${index});`;
+    return "/* El TAD nuevo no expone avl_maximo(). */";
   }
   if (entry.operation === "altura") {
     return `int altura_${index} = avl_altura(arbol);`;
   }
   if (entry.operation === "inorden") {
-    return "avl_recorrer_inorden(arbol, visitar, NULL);";
+    return "avl_verArbol(arbol, 0);";
   }
   if (entry.operation === "validar") {
-    return `int valido_${index} = avl_es_valido(arbol);`;
+    return "/* El TAD nuevo no expone avl_es_valido(). */";
   }
   if (entry.operation === "limpiar") {
-    return "avl_vaciar(arbol);";
+    return "avl_liberarAVL(arbol); arbol = NULL;";
   }
   return `${entry.subroutine || "Operacion"}();`;
 }
@@ -1606,25 +1904,25 @@ function redBlackMainCallForEntry(entry, index) {
   const value = Object.prototype.hasOwnProperty.call(payload, "value") ? String(payload.value).trim() : "";
 
   if (entry.operation === "insertar") {
-    return `RNResultado res_${index} = rn_insertar(arbol, ${value || "0"});`;
+    return `rbt_insertar(&arbol, ${value || "0"});`;
   }
   if (entry.operation === "eliminar") {
-    return `RNResultado res_${index} = rn_eliminar(arbol, ${value || "0"});`;
+    return `rbt_eliminar(&arbol, ${value || "0"});`;
   }
   if (entry.operation === "buscar") {
-    return `int encontrado_${index} = rn_contiene(arbol, ${value || "0"});`;
+    return `RBT encontrado_${index} = rbt_buscar(arbol, ${value || "0"});`;
   }
   if (entry.operation === "inorden") {
-    return "rn_recorrer_inorden(arbol, visitar, NULL);";
+    return "rbt_verArbol(arbol, 0);";
   }
   if (entry.operation === "altura") {
-    return `int altura_${index} = rn_altura(arbol);`;
+    return "/* El TAD nuevo no expone rbt_altura(). */";
   }
   if (entry.operation === "validar") {
-    return `int valido_${index} = rn_es_valido(arbol);`;
+    return "/* El TAD nuevo no expone rbt_es_valido(). */";
   }
   if (entry.operation === "limpiar") {
-    return `RNResultado res_${index} = rn_limpiar(arbol);`;
+    return "rbt_liberar(arbol); arbol = NULL;";
   }
   return `${entry.subroutine || "Operacion"}();`;
 }
@@ -1657,14 +1955,11 @@ function buildHierMainCode(modelId, history) {
   lines.push("    // Declaracion de la estructura");
 
   if (modelId === "abb") {
-    lines.push("    Abb *arbol = abb_crear();");
-    lines.push("    if (arbol == NULL) { return 1; }");
+    lines.push("    ABBNodo *arbol = NULL;");
   } else if (modelId === "avl") {
-    lines.push("    Avl *arbol = avl_crear();");
-    lines.push("    if (arbol == NULL) { return 1; }");
+    lines.push("    AVL arbol = NULL;");
   } else if (modelId === "red_black") {
-    lines.push("    RojoNegro *arbol = rn_crear();");
-    lines.push("    if (arbol == NULL) { return 1; }");
+    lines.push("    RBT arbol = NULL;");
   } else if (modelId === "binary_heap") {
     lines.push("    MonticuloBinario monticulo;");
     lines.push("    monticulo_inicializar(&monticulo, MONTICULO_MIN, 10);");
@@ -1689,20 +1984,22 @@ function buildHierMainCode(modelId, history) {
       call = binaryHeapMainCallForEntry(entry, index + 1);
     }
     lines.push(`    ${call}`);
-    if (entry.result) {
-      lines.push(`    // ${String(entry.result)}`);
+    const visibleResult = getHierEntryVisibleResult(entry);
+    if (visibleResult) {
+      lines.push(`    printf("${hToCStringLiteral(visibleResult)}\\n");`);
+      lines.push(`    // ${visibleResult}`);
     }
   });
 
   if (modelId === "abb") {
     lines.push("    // Al finalizar el programa:");
-    lines.push("    // abb_destruir(&arbol);");
+    lines.push("    // abb_liberarArbol(arbol);");
   } else if (modelId === "avl") {
     lines.push("    // Al finalizar el programa:");
-    lines.push("    // avl_destruir(arbol);");
+    lines.push("    // avl_liberarAVL(arbol);");
   } else if (modelId === "red_black") {
     lines.push("    // Al finalizar el programa:");
-    lines.push("    // rn_destruir(arbol);");
+    lines.push("    // rbt_liberar(arbol);");
   } else if (modelId === "binary_heap") {
     lines.push("    // Al finalizar el programa:");
     lines.push("    // monticulo_destruir(&monticulo);");
@@ -1747,7 +2044,7 @@ function renderHierHistory(history, container, modelId, didactic) {
       "<li class=\"didactic-history-item\">" +
       `<div class="didactic-history-head">Paso ${index + 1}: ${hEscape(item.subroutine || "Operacion")}</div>` +
       `<div class="didactic-history-line"><span class="k">Entrada:</span> ${hEscape(item.payload || "-")}</div>` +
-      `<div class="didactic-history-line"><span class="k">Salida:</span> ${hEscape(item.result || "-")}</div>` +
+      `<div class="didactic-history-line"><span class="k">Salida:</span> ${hEscape(getHierEntryVisibleResult(item) || "(en ejecucion)")}</div>` +
       "</li>"
     );
   }).join("");
@@ -1764,6 +2061,10 @@ function initHierPage(model) {
   const simPrevButton = hById("hier-sim-prev");
   const simStepButton = hById("hier-sim-step");
   const simStatus = hById("hier-sim-status");
+  const stepToggle = hById("hier-step-toggle");
+  const speedSlider = hById("hier-speed-slider");
+  const speedValue = hById("hier-speed-value");
+  const printfConsole = hById("hier-printf-console");
 
   if (!form || !operationSelect || !inputsContainer || !visualContainer) {
     return;
@@ -1773,6 +2074,10 @@ function initHierPage(model) {
     modelId: model.id,
     visualState: model.visual_state,
     lastExecution: null,
+    pendingExecution: null,
+    rnTimeline: [],
+    rnTimelineIndex: -1,
+    traceAtEnd: false,
     compareState: null,
     rotationVisualHint: null,
     rotationTextHint: null,
@@ -1788,9 +2093,106 @@ function initHierPage(model) {
   };
 
   const operations = model.operations || [];
+  let playbackSpeed = 1;
+  let playbackSpeedSetting = 0;
+
+  function speedSettingToMultiplier(setting) {
+    return Math.pow(2, setting);
+  }
+
+  function setPlaybackSpeed(value) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) {
+      return;
+    }
+    playbackSpeedSetting = Math.min(2, Math.max(-2, parsed));
+    playbackSpeed = speedSettingToMultiplier(playbackSpeedSetting);
+    if (speedValue) {
+      const signed = playbackSpeedSetting >= 0
+        ? `+${playbackSpeedSetting.toFixed(2)}x`
+        : `${playbackSpeedSetting.toFixed(2)}x`;
+      speedValue.textContent = `${signed} (${playbackSpeed.toFixed(2)}x real)`;
+    }
+    if (tracePlayer && typeof tracePlayer.setSpeed === "function") {
+      tracePlayer.setSpeed(playbackSpeed);
+    }
+  }
+
+  function scaledDelay(ms) {
+    const base = Number(ms);
+    if (!Number.isFinite(base)) {
+      return 20;
+    }
+    return Math.max(20, Math.round(base / playbackSpeed));
+  }
   let selected = operations[0] || null;
   const operationLabel = new Map(operations.map((op) => [op.name, op.label]));
   const actionHistory = [];
+  const consoleState = {
+    trace: null,
+    fallbackMessage: "",
+  };
+
+  function finalizePendingHistoryEntry() {
+    if (!actionHistory.length) {
+      return false;
+    }
+    const last = actionHistory[actionHistory.length - 1];
+    if (!last || typeof last === "string" || !last.pendingTrace) {
+      return false;
+    }
+    last.pendingTrace = false;
+    last.result = last.finalResult || last.result || "-";
+    renderHierHistory(actionHistory, historyBox, pageState.modelId, model.didactic);
+    return true;
+  }
+
+  function collectHierPrintfLines(trace, cursor) {
+    if (!trace || !Array.isArray(trace.steps) || cursor < 0) {
+      return [];
+    }
+    const limit = Math.min(cursor, trace.steps.length - 1);
+    const out = [];
+    const traversalValues = hGetTraversalResultValuesFromTrace(trace);
+    let traversalValueIndex = 0;
+    for (let i = 0; i <= limit; i += 1) {
+      const step = trace.steps[i] || {};
+      const messages = hExtractPrintfMessagesFromLine(step.line_text);
+      messages.forEach((msg) => {
+        // En recorridos recursivos del ABB, traducir `printf("%d ", ...)`
+        // a valores concretos visitados, evitando mostrar el literal "%d".
+        if (hHasPrintfFormatSpecifier(msg)) {
+          if (hIsOnlyPrintfSpecifier(msg) && traversalValueIndex < traversalValues.length) {
+            out.push(`[printf] ${traversalValues[traversalValueIndex]}`);
+            traversalValueIndex += 1;
+            return;
+          }
+          // Si no podemos resolver el formato a un valor, omitimos ese ruido visual.
+          return;
+        }
+        out.push(`[printf] ${msg}`);
+      });
+    }
+    if (limit >= trace.steps.length - 1) {
+      const finalMessage = String(trace.message || "").trim();
+      if (finalMessage) {
+        const formatted = `[printf] ${finalMessage}`;
+        if (!out.includes(formatted)) {
+          out.push(formatted);
+        }
+      }
+    }
+    return out;
+  }
+
+  function refreshHierPrintfConsole(cursor) {
+    const lines = collectHierPrintfLines(consoleState.trace, cursor);
+    renderHierPrintfConsole(
+      printfConsole,
+      lines,
+      consoleState.fallbackMessage || "(sin salida printf en esta ruta)",
+    );
+  }
 
   operations.forEach((operation) => {
     const option = document.createElement("option");
@@ -1839,9 +2241,27 @@ function initHierPage(model) {
             pathKeys: stepMeta.debug.path_keys.map((item) => String(item)),
             index: Number(stepMeta.debug.path_index),
             activeKeys,
+            unbalancedKey: (
+              stepMeta.debug.unbalanced_key !== undefined && stepMeta.debug.unbalanced_key !== null
+            ) ? String(stepMeta.debug.unbalanced_key) : null,
+            rotationMessage: String(stepMeta.debug.rotation_message || "").trim(),
           };
+          if (pageState.modelId === "red_black") {
+            pageState.compareState = rbDidacticDelta(stepMeta, pageState.compareState);
+          }
         } else {
           pageState.compareState = null;
+          if (pageState.modelId === "red_black") {
+            pageState.compareState = rbDidacticDelta(stepMeta, pageState.compareState);
+          }
+        }
+        if (pageState.modelId === "red_black" && pageState.compareState) {
+          pageState.compareState.rnTimeline = Array.isArray(pageState.rnTimeline)
+            ? pageState.rnTimeline
+            : [];
+          pageState.compareState.rnTimelineIndex = Number.isInteger(stepMeta && stepMeta.step_index)
+            ? Number(stepMeta.step_index)
+            : -1;
         }
         pageState.rotationVisualHint = null;
         pageState.rotationTextHint = (
@@ -1851,8 +2271,39 @@ function initHierPage(model) {
         ) ? stepMeta.debug.rotation_hint : null;
         repaint();
       },
+      onCursorChange: (event) => {
+        const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
+        const total = event && event.trace && Array.isArray(event.trace.steps)
+          ? event.trace.steps.length
+          : 0;
+        pageState.traceAtEnd = total > 0 && cursor >= total - 1;
+        if (pageState.traceAtEnd) {
+          if (pageState.pendingExecution) {
+            pageState.lastExecution = pageState.pendingExecution;
+            pageState.pendingExecution = null;
+          }
+          // Al finalizar la simulacion se limpia el resaltado didactico
+          // para dejar el estado final del arbol en su color base.
+          pageState.compareState = null;
+          finalizePendingHistoryEntry();
+        }
+        if (pageState.modelId === "red_black") {
+          pageState.rnTimelineIndex = cursor;
+        }
+        repaint();
+        refreshHierPrintfConsole(cursor);
+        setSimulationButtonsEnabled();
+      },
     })
     : null;
+  if (speedSlider) {
+    setPlaybackSpeed(speedSlider.value);
+    speedSlider.addEventListener("input", () => {
+      setPlaybackSpeed(speedSlider.value);
+    });
+  } else {
+    setPlaybackSpeed(0);
+  }
   let pendingExecution = false;
   let traceSelectionKey = "";
 
@@ -1871,6 +2322,9 @@ function initHierPage(model) {
   }
 
   function repaint() {
+    if (visualContainer) {
+      visualContainer.classList.toggle("sim-trace-complete", Boolean(pageState.traceAtEnd));
+    }
     const transitionData = pageState.treeTransition.active ? pageState.treeTransition.data : null;
     renderHierState(
       pageState.modelId,
@@ -1905,24 +2359,48 @@ function initHierPage(model) {
     });
   }
 
+  function isStepByStepEnabled() {
+    return !stepToggle || Boolean(stepToggle.checked);
+  }
+
   function setSimulationButtonsEnabled() {
+    const stepMode = isStepByStepEnabled();
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const busy = pendingExecution;
     const canExecute = isCurrentSelectionValid();
+    const cursor = tracePlayer && typeof tracePlayer.getCursor === "function"
+      ? tracePlayer.getCursor()
+      : -1;
+    const total = tracePlayer && typeof tracePlayer.getTotalSteps === "function"
+      ? tracePlayer.getTotalSteps()
+      : 0;
+    const atEnd = hasTrace && total > 0 && cursor >= total - 1;
     if (simPlayButton) {
       simPlayButton.disabled = busy || !canExecute;
     }
     if (simPrevButton) {
-      simPrevButton.disabled = busy || !hasTrace;
+      simPrevButton.disabled = busy || !stepMode || !hasTrace || cursor < 0;
     }
     if (simStepButton) {
-      simStepButton.disabled = busy || !canExecute;
+      simStepButton.disabled = busy || !stepMode || !canExecute || (hasTrace && atEnd);
+    }
+    if (speedSlider) {
+      speedSlider.disabled = busy || !stepMode;
     }
   }
 
   function invalidateTrace(message) {
+    finalizePendingHistoryEntry();
     traceSelectionKey = "";
+    consoleState.trace = null;
+    consoleState.fallbackMessage = "";
+    pageState.traceAtEnd = false;
+    pageState.pendingExecution = null;
+    pageState.rnTimeline = [];
+    pageState.rnTimelineIndex = -1;
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    repaint();
+    refreshHierPrintfConsole(-1);
     setSimulationButtonsEnabled();
   }
 
@@ -1950,7 +2428,7 @@ function initHierPage(model) {
     pageState.treeTransition.data = transitionData;
     pageState.rotationVisualHint = rotationHint || null;
 
-    const duration = 700;
+    const duration = Math.max(180, scaledDelay(700));
     const startTs = performance.now();
 
     function tick(now) {
@@ -2012,7 +2490,7 @@ function initHierPage(model) {
     for (let index = 0; index < pathKeys.length; index += 1) {
       pageState.compareState.index = index;
       repaint();
-      await sleep(380);
+      await sleep(scaledDelay(380));
     }
   }
 
@@ -2027,15 +2505,16 @@ function initHierPage(model) {
     for (let index = 0; index < frames.length; index += 1) {
       pageState.heapAnimation.frame = frames[index];
       repaint();
-      await sleep(340);
+      await sleep(scaledDelay(340));
     }
 
-    await sleep(120);
+    await sleep(scaledDelay(120));
     stopHeapAnimation();
     repaint();
   }
 
   repaint();
+  refreshHierPrintfConsole(-1);
   invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
 
   operationSelect.addEventListener("change", () => {
@@ -2049,7 +2528,7 @@ function initHierPage(model) {
     invalidateTrace("Entradas cambiadas. Ejecuta nuevamente.");
   });
 
-  async function executeOperationAndLoadTrace(current, payload, selectionKey) {
+  async function executeOperationAndLoadTrace(current, payload, selectionKey, options) {
     pendingExecution = true;
     setSimulationButtonsEnabled();
     if (resetButton) {
@@ -2099,23 +2578,49 @@ function initHierPage(model) {
       const data = await response.json();
       showHierMessage(data.message, Boolean(data.success));
       updateHierDidacticPanel(model, current.name);
-      const hasExecutionTrace = Boolean(data.execution_trace && tracePlayer);
+      const finalOnly = Boolean(options && options.finalOnly);
+      const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
       if (hasExecutionTrace) {
+        consoleState.trace = data.execution_trace;
+        consoleState.fallbackMessage = "";
+        if (pageState.modelId === "red_black") {
+          pageState.rnTimeline = rbBuildTimelineFromTrace(data.execution_trace);
+          pageState.rnTimelineIndex = -1;
+        }
         tracePlayer.loadTrace(data.execution_trace);
+        const firstStep = data.execution_trace
+          && Array.isArray(data.execution_trace.steps)
+          && data.execution_trace.steps.length
+          ? data.execution_trace.steps[0]
+          : null;
+        if (firstStep && firstStep.state_snapshot) {
+          pageState.visualState = firstStep.state_snapshot;
+          pageState.compareState = null;
+          pageState.rotationVisualHint = null;
+          pageState.rotationTextHint = null;
+          pageState.traceAtEnd = false;
+          repaint();
+        }
         traceSelectionKey = selectionKey;
       } else {
-        await simulateHierDidacticExecution({
-          modelId: pageState.modelId,
-          operation: current.name,
-          payload,
-          sizeBefore: Number(pageState?.visualState?.size || 0),
-          comparePath,
-          compareFound,
-          compareDirections,
-          success: Boolean(data.success),
-          result: data.result,
-          message: data.message,
-        });
+        consoleState.trace = null;
+        consoleState.fallbackMessage = data.message || "(sin salida printf en esta ruta)";
+        refreshHierPrintfConsole(-1);
+        if (!finalOnly) {
+          await simulateHierDidacticExecution({
+            modelId: pageState.modelId,
+            operation: current.name,
+            payload,
+            sizeBefore: Number(pageState?.visualState?.size || 0),
+            comparePath,
+            compareFound,
+            compareDirections,
+            success: Boolean(data.success),
+            result: data.result,
+            message: data.message,
+            playbackSpeed,
+          });
+        }
         traceSelectionKey = "";
       }
       const payloadText = summarizeHierPayload(payload);
@@ -2127,32 +2632,50 @@ function initHierPage(model) {
           data.message,
           current.name,
           payload,
+          { pendingTrace: hasExecutionTrace },
         ),
       );
       renderHierHistory(actionHistory, historyBox, pageState.modelId, model.didactic);
       if (data.visual_state) {
         model.visual_state = data.visual_state;
-        const effectiveRotationHint = data.success ? rotationHint : null;
+        let traceRotationHint = null;
+        if (data.execution_trace && Array.isArray(data.execution_trace.steps)) {
+          const stepWithRotation = data.execution_trace.steps.find(
+            (step) => step && step.debug && step.debug.rotation_hint,
+          );
+          traceRotationHint = stepWithRotation && stepWithRotation.debug
+            ? stepWithRotation.debug.rotation_hint
+            : null;
+        }
+        const effectiveRotationHint = data.success ? (traceRotationHint || rotationHint) : null;
         const execution = {
           operation: current.name,
           result: data.result,
           rotation_hint: effectiveRotationHint,
         };
         if (hasExecutionTrace) {
-          pageState.lastExecution = execution;
-          pageState.rotationTextHint = execution.rotation_hint || null;
+          pageState.pendingExecution = execution;
+          pageState.lastExecution = null;
+          pageState.rotationTextHint = null;
           pageState.rotationVisualHint = null;
         }
-        if (!data.execution_trace) {
+        if (!hasExecutionTrace) {
           if (comparePath.length) {
-            await animateComparison(comparePath);
+            if (!finalOnly) {
+              await animateComparison(comparePath);
+            }
           }
           if (data.success && heapFrames.length) {
-            await animateHeapFrames(heapFrames);
+            if (!finalOnly) {
+              await animateHeapFrames(heapFrames);
+            }
           }
         }
         if (!hasExecutionTrace) {
           applyState(data.visual_state, execution);
+          if (simStatus && finalOnly) {
+            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
+          }
         }
       }
       return data;
@@ -2188,6 +2711,16 @@ function initHierPage(model) {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!isStepByStepEnabled()) {
+      const current = operations.find((op) => op.name === operationSelect.value);
+      if (!current) {
+        return;
+      }
+      const payload = collectPayload(current);
+      const selectionKey = buildSelectionKey(current, payload);
+      await executeOperationAndLoadTrace(current, payload, selectionKey, { finalOnly: true });
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
@@ -2212,6 +2745,16 @@ function initHierPage(model) {
   });
 
   simPlayButton?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      const current = operations.find((op) => op.name === operationSelect.value);
+      if (!current) {
+        return;
+      }
+      const payload = collectPayload(current);
+      const selectionKey = buildSelectionKey(current, payload);
+      await executeOperationAndLoadTrace(current, payload, selectionKey, { finalOnly: true });
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
@@ -2220,15 +2763,29 @@ function initHierPage(model) {
   });
 
   simPrevButton?.addEventListener("click", () => {
+    if (!isStepByStepEnabled()) {
+      return;
+    }
     tracePlayer?.prev();
   });
 
   simStepButton?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      return;
+    }
     const ready = await ensureTraceForCurrentSelection();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
     await tracePlayer.step();
+  });
+
+  stepToggle?.addEventListener("change", () => {
+    invalidateTrace(
+      isStepByStepEnabled()
+        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
+        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
+    );
   });
 
 }

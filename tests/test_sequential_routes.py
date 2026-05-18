@@ -17,31 +17,31 @@ def test_linked_list_methods_via_route(client) -> None:
 
     insert_pos = client.post(
         "/sequential/linked_list/operate",
-        json={"operation": "insertar_posicion", "payload": {"value": "7", "position": "2"}},
+        json={"operation": "lista_insertar_elemento", "payload": {"value": "7", "position": "2"}},
     )
     assert insert_pos.status_code == 200
-    assert [item["value"] for item in insert_pos.get_json()["visual_state"]["items"]] == [5, 7, 10]
+    assert [item["value"] for item in insert_pos.get_json()["visual_state"]["items"]] == [5, 10, 7]
 
     search = client.post(
         "/sequential/linked_list/operate",
         json={"operation": "buscar_posiciones", "payload": {"value": "7"}},
     )
     assert search.status_code == 200
-    assert search.get_json()["result"] == [2]
+    assert search.get_json()["result"] == [3]
 
     remove_pos = client.post(
         "/sequential/linked_list/operate",
         json={"operation": "eliminar_posicion", "payload": {"position": "3"}},
     )
     assert remove_pos.status_code == 200
-    assert remove_pos.get_json()["result"] == 10
+    assert remove_pos.get_json()["result"] == 7
 
     remove_first = client.post(
         "/sequential/linked_list/operate",
         json={"operation": "eliminar_primero", "payload": {"value": "5"}},
     )
     assert remove_first.status_code == 200
-    assert [item["value"] for item in remove_first.get_json()["visual_state"]["items"]] == [7]
+    assert [item["value"] for item in remove_first.get_json()["visual_state"]["items"]] == [10]
     assert remove_first.get_json()["visual_state"]["size"] == 1
 
 
@@ -264,7 +264,7 @@ def test_sequential_routes_validation_errors(client) -> None:
 
     invalid_position = client.post(
         "/sequential/linked_list/operate",
-        json={"operation": "insertar_posicion", "payload": {"value": "9", "position": "0"}},
+        json={"operation": "lista_insertar_elemento", "payload": {"value": "9", "position": "0"}},
     )
     assert invalid_position.status_code == 400
     assert invalid_position.get_json()["success"] is False

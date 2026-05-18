@@ -4,6 +4,15 @@
 <section>
   <h2>{{ module_help.title }}</h2>
   <p>{{ module_help.description }}</p>
+  <p><strong>Contrato activo:</strong> solo TAD nuevos en <code>docs/tads_C</code>.</p>
+
+  <h3>Como usar esta ayuda</h3>
+  <ul>
+    <li>Revisa recomendaciones y luego abre una estructura.</li>
+    <li>Usa el checkbox <strong>Interpretar codigo paso a paso</strong> para alternar entre traza completa y resultado final.</li>
+    <li>En la vista de estructura usa Ejecucion paso a paso para analizar la traza cuando el checkbox este activado.</li>
+    <li>Vuelve al visualizador para practicar cada operacion.</li>
+  </ul>
   <h3>Recomendaciones</h3>
   <ul>
     {% for tip in module_help.tips %}

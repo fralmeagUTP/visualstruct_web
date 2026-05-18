@@ -13,6 +13,55 @@ function gEscape(value) {
     .replaceAll("'", "&#39;");
 }
 
+function gToCStringLiteral(text) {
+  return String(text || "")
+    .replaceAll("\\", "\\\\")
+    .replaceAll('"', '\\"')
+    .replaceAll("\r", "")
+    .replaceAll("\n", "\\n");
+}
+
+function gDecodeCStringLiteral(text) {
+  return String(text || "")
+    .replaceAll("\\\\", "\u0000")
+    .replaceAll("\\n", "\n")
+    .replaceAll("\\t", "\t")
+    .replaceAll('\\"', '"')
+    .replaceAll("\\r", "")
+    .replaceAll("\u0000", "\\");
+}
+
+function gExtractPrintfMessagesFromLine(lineText) {
+  const source = String(lineText || "");
+  const regex = /printf\s*\(\s*"((?:\\.|[^"\\])*)"/g;
+  const messages = [];
+  let match = regex.exec(source);
+  while (match) {
+    const decoded = gDecodeCStringLiteral(match[1]).replace(/\n+$/g, "").trim();
+    if (decoded) {
+      messages.push(decoded);
+    }
+    match = regex.exec(source);
+  }
+  return messages;
+}
+
+function gHasPrintfFormatSpecifier(text) {
+  return /%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]/.test(String(text || ""));
+}
+
+function renderGraphPrintfConsole(consoleEl, lines, fallbackText) {
+  if (!consoleEl) {
+    return;
+  }
+  const safeLines = Array.isArray(lines) ? lines : [];
+  const html = safeLines.length
+    ? safeLines.map((line) => `<div class="console-line">${gEscape(line)}</div>`).join("")
+    : `<div class="console-line muted">${gEscape(fallbackText || "(sin salida printf en esta ruta)")}</div>`;
+  consoleEl.innerHTML = html;
+  consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
 const G_C_KEYWORDS = new Set([
   "if", "else", "for", "while", "do", "switch", "case", "default", "break",
   "continue", "return", "sizeof", "typedef", "struct", "enum", "union",
@@ -461,7 +510,7 @@ function renderGraphSvg(state, simulation, traceDebug) {
   const edges = Array.isArray(state.edges) ? state.edges : [];
 
   if (!nodes.length) {
-    return "<p class=\"viz-empty\">Grafo vacio. Crea vertices para iniciar.</p>";
+    return "<p class=\"viz-empty\">Grafo vacío. Crea vértices para iniciar.</p>";
   }
 
   const nodeRadius = 26;
@@ -582,14 +631,14 @@ function formatGraphResult(state) {
   const result = state.last_result ? state.last_result.result : null;
 
   if (operationName === "run_dijkstra" && result && typeof result === "object") {
-    return formatShortestPathResult(state, result, "Ruta minima (Dijkstra)");
+    return formatShortestPathResult(state, result, "Ruta mínima (Dijkstra)");
   }
 
   if (operationName === "run_bellman_ford" && result && typeof result === "object") {
     if (result.has_negative_cycle) {
-      return "<p><strong>Bellman-Ford:</strong> Se detecto ciclo negativo. No se garantiza ruta minima.</p>";
+      return "<p><strong>Bellman-Ford:</strong> Se detectó ciclo negativo. No se garantiza ruta mínima.</p>";
     }
-    return formatShortestPathResult(state, result, "Ruta minima (Bellman-Ford)");
+    return formatShortestPathResult(state, result, "Ruta mínima (Bellman-Ford)");
   }
 
   if ((operationName === "run_bfs" || operationName === "run_dfs") && Array.isArray(result)) {
@@ -611,6 +660,20 @@ function formatGraphResult(state) {
     return html;
   }
 
+  if (operationName === "generate_random_graph" && result && typeof result === "object") {
+    const verticesCount = result.vertices_count ?? "-";
+    const edgesCount = result.edges_count ?? "-";
+    const seed = result.seed ?? "-";
+    return (
+      "<p><strong>Resultado:</strong> Grafo aleatorio generado correctamente.</p>" +
+      "<div class=\"viz-path-steps\">" +
+      `<p>Vertices creados: ${gEscape(verticesCount)}</p>` +
+      `<p>Aristas generadas: ${gEscape(edgesCount)}</p>` +
+      `<p>Semilla usada: ${gEscape(seed)}</p>` +
+      "</div>"
+    );
+  }
+
   return `<p><strong>Resultado:</strong> ${gEscape(JSON.stringify(result))}</p>`;
 }
 
@@ -625,8 +688,8 @@ function renderGraphState(state, container, simulation, traceDebug) {
 
   let html = "";
   html += "<div class=\"viz-canvas\">";
-  html += `<div class=\"viz-meta\"><strong>Grafo</strong> | Tipo: ${graphType} | Ponderado: ${weighted} | Vertices: ${metadata.vertices_count ?? 0} | Aristas: ${metadata.edges_count ?? 0}</div>`;
-  html += `<div class=\"viz-stage\">${renderGraphSvg(state, simulation, traceDebug)}</div>`;
+  html += `<div class=\"viz-meta\"><strong>Grafo</strong> | Tipo: ${graphType} | Ponderado: ${weighted} | Vértices: ${metadata.vertices_count ?? 0} | Aristas: ${metadata.edges_count ?? 0}</div>`;
+  html += `<div class=\"viz-stage\"><div class="viz-stage-center">${renderGraphSvg(state, simulation, traceDebug)}</div></div>`;
 
   if (state.last_result && state.last_result.result !== undefined) {
     html += `<div class=\"viz-traversals\">${formatGraphResult(state)}</div>`;
@@ -637,6 +700,23 @@ function renderGraphState(state, container, simulation, traceDebug) {
 
   html += "</div>";
   container.innerHTML = html;
+  centerGraphViewport(container);
+}
+
+function centerGraphViewport(container) {
+  if (!container) {
+    return;
+  }
+  const stage = container.querySelector(".viz-stage");
+  if (!stage) {
+    return;
+  }
+  window.requestAnimationFrame(() => {
+    const stageWidth = Math.max(stage.scrollWidth, stage.clientWidth);
+    const maxLeft = Math.max(0, stageWidth - container.clientWidth);
+    container.scrollLeft = Math.round(maxLeft / 2);
+    container.scrollTop = 0;
+  });
 }
 
 function showGraphMessage(message, success) {
@@ -659,7 +739,7 @@ function updateGraphDidacticPanel(model, operationName) {
   const didactic = model && model.didactic ? model.didactic : {};
   const opMap = didactic.operations || {};
   const codeTitle = didactic.code_title || "Seudocodigo";
-  const fallback = didactic.default_operation || "Seudocodigo no disponible para esta operacion.";
+  const fallback = didactic.default_operation || "Seudocódigo no disponible para esta operación.";
   const selectedOp = operationName || "";
   const selectedMeta = (model.operations || []).find((item) => item.name === selectedOp);
   const selectedLabel = selectedMeta ? selectedMeta.label : selectedOp;
@@ -695,12 +775,12 @@ function getGraphSubroutineName(model, operationName, fallback) {
   const didactic = model && model.didactic ? model.didactic : {};
   const opMap = didactic.operations || {};
   const pseudoCode = opMap[operationName] || "";
-  return extractGraphSubroutineName(pseudoCode, fallback || operationName || "Operacion");
+  return extractGraphSubroutineName(pseudoCode, fallback || operationName || "Operación");
 }
 
 function createGraphHistoryEntry(subroutine, payloadText, resultText, operationName, payloadRaw) {
   return {
-    subroutine: subroutine || "Operacion",
+    subroutine: subroutine || "Operación",
     payload: payloadText || "-",
     result: resultText || "-",
     operation: operationName || "",
@@ -719,68 +799,66 @@ function graphMainCallForEntry(entry, index) {
   const end = Object.prototype.hasOwnProperty.call(payload, "end") ? String(payload.end).trim() : "";
 
   if (entry.operation === "create_graph") {
-    return `grafo_destruir(&grafo); dirigido = ${directed ? "true" : "false"}; grafo = grafo_crear(dirigido);`;
+    return `/* TAD nuevo: reinicio del grafo (dirigido=${directed ? "true" : "false"} didáctico). */ g = grafo_crear();`;
   }
   if (entry.operation === "insert_vertex") {
-    return `GrafoEstado st_${index} = grafo_insertar_vertice(grafo, ${vertex || "0"});`;
+    return `g = grafo_insertar_vertice(g, ${vertex || "0"});`;
   }
   if (entry.operation === "remove_vertex") {
-    return `GrafoEstado st_${index} = grafo_eliminar_vertice(grafo, ${vertex || "0"});`;
+    return `g = grafo_eliminar_vertice(g, ${vertex || "0"});`;
   }
   if (entry.operation === "insert_edge") {
-    return `GrafoEstado st_${index} = grafo_insertar_arista(grafo, ${origin || "0"}, ${target || "0"}, ${weight || "1"});`;
+    return `g = grafo_insertar_arco(g, ${origin || "0"}, ${target || "0"}, ${weight || "1"});`;
   }
   if (entry.operation === "remove_edge") {
-    return `GrafoEstado st_${index} = grafo_eliminar_arista(grafo, ${origin || "0"}, ${target || "0"});`;
+    return `g = grafo_eliminar_arco(g, ${origin || "0"}, ${target || "0"});`;
   }
   if (entry.operation === "exists_vertex") {
-    return `bool existe_${index} = grafo_existe_vertice(grafo, ${vertex || "0"});`;
+    return `int existe_${index} = grafo_existe_vertice(g, ${vertex || "0"});`;
   }
   if (entry.operation === "exists_edge") {
-    return `bool existe_${index} = grafo_existe_arista(grafo, ${origin || "0"}, ${target || "0"});`;
+    return `int existe_${index} = grafo_existe_arco(g, ${origin || "0"}, ${target || "0"});`;
   }
   if (entry.operation === "neighbors") {
-    return `int *vecinos_${index} = NULL; size_t cant_${index} = 0; GrafoEstado st_${index} = grafo_sucesores(grafo, ${vertex || "0"}, &vecinos_${index}, &cant_${index}); if (st_${index} == GRAFO_OK) { free(vecinos_${index}); }`;
+    return `ListaVertice vecinos_${index} = grafo_sucesores(g, ${vertex || "0"});`;
   }
   if (entry.operation === "edge_weight") {
-    return `int peso_${index} = 0; GrafoEstado st_${index} = grafo_obtener_peso(grafo, ${origin || "0"}, ${target || "0"}, &peso_${index});`;
+    return `int peso_${index} = grafo_costo_arco(g, ${origin || "0"}, ${target || "0"});`;
   }
   if (entry.operation === "list_vertices") {
-    return `int *vertices_${index} = NULL; size_t cant_${index} = 0; GrafoEstado st_${index} = grafo_obtener_vertices(grafo, &vertices_${index}, &cant_${index}); if (st_${index} == GRAFO_OK) { free(vertices_${index}); }`;
+    return `ListaVertice vertices_${index} = grafo_vertices(g);`;
   }
   if (entry.operation === "list_edges") {
-    return `GrafoArista *aristas_${index} = NULL; size_t cant_${index} = 0; GrafoEstado st_${index} = grafo_obtener_aristas(grafo, &aristas_${index}, &cant_${index}); if (st_${index} == GRAFO_OK) { free(aristas_${index}); }`;
+    return `ListaArco arcos_${index} = grafo_arcos(g);`;
   }
   if (entry.operation === "run_bfs") {
-    return `GrafoRecorrido rec_${index} = grafo_bfs(grafo, ${start || "0"}); grafo_liberar_recorrido(&rec_${index});`;
+    return `ListaVertice rec_${index} = grafo_bfs(g, ${start || "0"});`;
   }
   if (entry.operation === "run_dfs") {
-    return `GrafoRecorrido rec_${index} = grafo_dfs(grafo, ${start || "0"}); grafo_liberar_recorrido(&rec_${index});`;
+    return `ListaVertice rec_${index} = grafo_dfs(g, ${start || "0"});`;
   }
   if (entry.operation === "run_dijkstra") {
-    return `GrafoCamino cam_${index} = grafo_dijkstra(grafo, ${start || "0"}, ${end || "0"}); grafo_liberar_camino(&cam_${index});`;
+    return `ListaArco camino_${index} = grafo_dijkstra(g, ${start || "0"}, ${end || "0"});`;
   }
   if (entry.operation === "run_bellman_ford") {
-    return `GrafoCamino cam_${index} = grafo_bellman_ford(grafo, ${start || "0"}, ${end || "0"}); grafo_liberar_camino(&cam_${index});`;
+    return `ListaArco camino_${index} = grafo_bellman_ford(g, ${start || "0"}, ${end || "0"});`;
   }
   if (entry.operation === "run_prim") {
-    return `GrafoCamino mst_${index} = grafo_prim(grafo, ${start || "0"}); grafo_liberar_camino(&mst_${index});`;
+    return `ListaArco mst_${index} = grafo_prim(g, ${start || "0"});`;
   }
   if (entry.operation === "run_kruskal") {
-    return `GrafoCamino mst_${index} = grafo_kruskal(grafo); grafo_liberar_camino(&mst_${index});`;
+    return `ListaArco mst_${index} = grafo_kruskal(g);`;
   }
   if (entry.operation === "clear_graph") {
-    return "grafo_destruir(&grafo); grafo = grafo_crear(dirigido);";
+    return "g = grafo_crear();";
   }
-  return `${entry.subroutine || "Operacion"}();`;
+  return `${entry.subroutine || "Operación"}();`;
 }
 
 function buildGraphMainCode(history) {
   const lines = [];
   lines.push("int main(void) {");
-  lines.push("    bool dirigido = false;");
-  lines.push("    Grafo *grafo = grafo_crear(dirigido);");
-  lines.push("    if (grafo == NULL) { return 1; }");
+  lines.push("    Grafo g = grafo_crear();");
   lines.push("");
   lines.push("    // Historial de ejecucion del usuario");
   history.forEach((entry, index) => {
@@ -789,11 +867,10 @@ function buildGraphMainCode(history) {
     }
     lines.push(`    ${graphMainCallForEntry(entry, index + 1)}`);
     if (entry.result) {
+      lines.push(`    printf("${gToCStringLiteral(String(entry.result))}\\n");`);
       lines.push(`    // ${String(entry.result)}`);
     }
   });
-  lines.push("    // Al finalizar el programa:");
-  lines.push("    // grafo_destruir(&grafo);");
   lines.push("    return 0;");
   lines.push("}");
   return lines.join("\n");
@@ -830,7 +907,7 @@ function renderGraphHistory(history, container, didactic) {
     }
     return (
       "<li class=\"didactic-history-item\">" +
-      `<div class="didactic-history-head">Paso ${index + 1}: ${gEscape(item.subroutine || "Operacion")}</div>` +
+      `<div class="didactic-history-head">Paso ${index + 1}: ${gEscape(item.subroutine || "Operación")}</div>` +
       `<div class="didactic-history-line"><span class="k">Entrada:</span> ${gEscape(item.payload || "-")}</div>` +
       `<div class="didactic-history-line"><span class="k">Salida:</span> ${gEscape(item.result || "-")}</div>` +
       "</li>"
@@ -853,6 +930,41 @@ function showSimulationStatus(message) {
     return;
   }
   box.textContent = message || "";
+}
+
+function classifyGraphStepKind(stepMeta) {
+  if (!stepMeta || typeof stepMeta !== "object") {
+    return "Acción actual: -";
+  }
+  const lineText = String(stepMeta.line_text || "").trim().toLowerCase();
+  if (!lineText) {
+    return "Acción actual: -";
+  }
+
+  if (
+    lineText.startsWith("if ")
+    || lineText.startsWith("if(")
+    || lineText.startsWith("else if")
+    || lineText.startsWith("while ")
+    || lineText.startsWith("while(")
+    || lineText.startsWith("for ")
+    || lineText.startsWith("for(")
+    || lineText.startsWith("switch ")
+    || lineText.startsWith("switch(")
+    || lineText.startsWith("case ")
+  ) {
+    return "Acción actual: Evaluando condición";
+  }
+
+  return "Acción actual: Aplicando cambio";
+}
+
+function updateGraphStepKind(stepMeta) {
+  const element = gById("graph-sim-step-kind");
+  if (!element) {
+    return;
+  }
+  element.textContent = classifyGraphStepKind(stepMeta);
 }
 
 function setSimulationControlsEnabled(enabled) {
@@ -900,15 +1012,22 @@ function initGraphPage(model) {
   const createButton = gById("graph-create-button");
   const operationSelect = gById("graph-operation-select");
   const operationInputs = gById("graph-operation-inputs");
+  const operationRunButton = gById("graph-op-run");
   const algorithmSelect = gById("graph-algorithm-select");
   const algorithmInputs = gById("graph-algorithm-inputs");
   const runModeSelect = gById("graph-run-mode");
-  const simSpeed = gById("graph-sim-speed");
   const simPlay = gById("graph-sim-play");
   const simPrev = gById("graph-sim-prev");
   const simStep = gById("graph-sim-step");
+  const simStatus = gById("graph-sim-status");
+  const stepToggle = gById("graph-step-toggle");
+  const speedSlider = gById("graph-speed-slider");
+  const speedValue = gById("graph-speed-value");
   const visualState = gById("graph-visual-state");
   const historyBox = gById("action-history");
+  const printfConsole = gById("graph-printf-console");
+  const didacticNote = gById("graph-didactic-note");
+  const presetButtons = Array.from(document.querySelectorAll(".graph-preset-btn"));
 
   if (!controls || !visualState || !operationSelect || !algorithmSelect) {
     return;
@@ -921,15 +1040,155 @@ function initGraphPage(model) {
     lastTraceOperation: "",
     pendingExecution: false,
     traceSelectionKey: "",
+    consoleTrace: null,
+    consoleFallbackMessage: "",
+    traceCursor: -1,
+    traceTotalSteps: 0,
+    lockStepUntilInput: false,
+    finalTraceDebug: null,
   };
+
+  let playbackSpeed = 1;
+  let playbackSpeedSetting = 0;
+
+  function isStepByStepEnabled() {
+    return !stepToggle || Boolean(stepToggle.checked);
+  }
+
+  function updateStepModePanelVisibility() {
+    const stepMode = isStepByStepEnabled();
+    const actionRow = simPrev ? simPrev.closest(".graph-sim-actions") : null;
+    const speedPanel = speedSlider ? speedSlider.closest(".sim-speed-control") : null;
+    const heading = actionRow ? actionRow.previousElementSibling : null;
+    const counter = gById("graph-sim-counter");
+    const stepKind = gById("graph-sim-step-kind");
+    [heading, actionRow, speedPanel, counter, stepKind].forEach((element) => {
+      if (!element) {
+        return;
+      }
+      element.style.display = stepMode ? "" : "none";
+    });
+  }
+
+  function speedSettingToMultiplier(setting) {
+    return Math.pow(2, setting);
+  }
+
+  function setPlaybackSpeed(value) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) {
+      return;
+    }
+    playbackSpeedSetting = Math.min(2, Math.max(-2, parsed));
+    playbackSpeed = speedSettingToMultiplier(playbackSpeedSetting);
+    if (speedValue) {
+      const signed = playbackSpeedSetting >= 0
+        ? `+${playbackSpeedSetting.toFixed(2)}x`
+        : `${playbackSpeedSetting.toFixed(2)}x`;
+      speedValue.textContent = `${signed} (${playbackSpeed.toFixed(2)}x real)`;
+    }
+    if (tracePlayer && typeof tracePlayer.setSpeed === "function") {
+      tracePlayer.setSpeed(playbackSpeed);
+    }
+  }
+
+  function collectGraphPrintfLines(trace, cursor) {
+    if (!trace || !Array.isArray(trace.steps) || cursor < 0) {
+      return [];
+    }
+    const limit = Math.min(cursor, trace.steps.length - 1);
+    const out = [];
+    for (let i = 0; i <= limit; i += 1) {
+      const step = trace.steps[i] || {};
+      const messages = gExtractPrintfMessagesFromLine(step.line_text);
+      messages.forEach((msg) => {
+        // Evita mostrar literales de formato sin resolver (ej. "%d", "%s").
+        if (gHasPrintfFormatSpecifier(msg)) {
+          return;
+        }
+        out.push(`[printf] ${msg}`);
+      });
+    }
+    if (limit >= trace.steps.length - 1) {
+      const finalMessage = String(trace.message || "").trim();
+      if (finalMessage) {
+        const formatted = `[printf] ${finalMessage}`;
+        if (!out.includes(formatted)) {
+          out.push(formatted);
+        }
+      }
+    }
+    return out;
+  }
+
+  function refreshGraphPrintfConsole(cursor) {
+    const lines = collectGraphPrintfLines(pageState.consoleTrace, cursor);
+    renderGraphPrintfConsole(
+      printfConsole,
+      lines,
+      pageState.consoleFallbackMessage || "(sin salida printf en esta ruta)",
+    );
+  }
+
+  function parseJsonArray(rawValue) {
+    if (!rawValue) {
+      return [];
+    }
+    try {
+      const parsed = JSON.parse(String(rawValue));
+      return Array.isArray(parsed) ? parsed.map((item) => String(item)) : [];
+    } catch (_error) {
+      return [];
+    }
+  }
+
+  const allowedOperations = new Set(parseJsonArray(controls.dataset.allowedOperations));
+  const allowedAlgorithms = new Set(parseJsonArray(controls.dataset.allowedAlgorithms));
+  const activePhase = String(controls.dataset.activePhase || "construccion").trim() || "construccion";
+  const phaseRunMode = String(controls.dataset.phaseRunMode || "operation").trim().toLowerCase();
+  const defaultAlgorithm = String(controls.dataset.defaultAlgorithm || "").trim();
+  const didacticNotesByPhase =
+    window.GRAPH_DIDACTIC_NOTES && typeof window.GRAPH_DIDACTIC_NOTES === "object"
+      ? window.GRAPH_DIDACTIC_NOTES
+      : {};
+  const fallbackDidacticNote = didacticNote ? String(didacticNote.textContent || "").trim() : "";
 
   const allOperations = model.operations || [];
   const operationLabel = new Map(allOperations.map((op) => [op.name, op.label]));
-  const operationList = allOperations.filter((op) => !op.name.startsWith("run_") && op.name !== "create_graph");
-  const algorithmList = allOperations.filter((op) => op.name.startsWith("run_"));
+  const operationList = allOperations.filter(
+    (op) =>
+      !op.name.startsWith("run_") &&
+      op.name !== "create_graph" &&
+      (allowedOperations.size === 0 || allowedOperations.has(op.name)),
+  );
+  const algorithmList = allOperations.filter(
+    (op) => op.name.startsWith("run_") && (allowedAlgorithms.size === 0 || allowedAlgorithms.has(op.name)),
+  );
 
   let selectedOperation = operationList[0] || null;
-  let selectedAlgorithm = algorithmList[0] || null;
+  let selectedAlgorithm = algorithmList.find((op) => op.name === defaultAlgorithm) || algorithmList[0] || null;
+  let activeRunMode = phaseRunMode === "algorithm" ? "algorithm" : "operation";
+
+  function resolveDidacticNote(operationName, mode) {
+    const phaseNotes = didacticNotesByPhase[activePhase] || {};
+    const operationBucket = mode === "algorithm"
+      ? (phaseNotes.algorithms || {})
+      : (phaseNotes.operations || {});
+    if (operationName && Object.prototype.hasOwnProperty.call(operationBucket, operationName)) {
+      return String(operationBucket[operationName] || "").trim();
+    }
+    if (typeof phaseNotes.default === "string" && phaseNotes.default.trim()) {
+      return phaseNotes.default.trim();
+    }
+    return fallbackDidacticNote;
+  }
+
+  function refreshDidacticNote(operationName, mode) {
+    if (!didacticNote) {
+      return;
+    }
+    didacticNote.textContent = resolveDidacticNote(operationName, mode);
+  }
 
   operationList.forEach((item) => {
     const option = document.createElement("option");
@@ -945,9 +1204,18 @@ function initGraphPage(model) {
     algorithmSelect.appendChild(option);
   });
 
+  operationSelect.disabled = operationList.length === 0;
+  algorithmSelect.disabled = algorithmList.length === 0;
+
   buildGraphInputs(selectedOperation, operationInputs, "g-op-field");
   buildGraphInputs(selectedAlgorithm, algorithmInputs, "g-alg-field");
-  updateGraphDidacticPanel(model, selectedOperation ? selectedOperation.name : "");
+  if (activeRunMode === "algorithm") {
+    updateGraphDidacticPanel(model, selectedAlgorithm ? selectedAlgorithm.name : "");
+    refreshDidacticNote(selectedAlgorithm ? selectedAlgorithm.name : "", "algorithm");
+  } else {
+    updateGraphDidacticPanel(model, selectedOperation ? selectedOperation.name : "");
+    refreshDidacticNote(selectedOperation ? selectedOperation.name : "", "operation");
+  }
   (model.history || []).forEach((step) => {
     const opName = String(step.operation || "");
     const label = operationLabel.get(opName) || opName;
@@ -957,7 +1225,7 @@ function initGraphPage(model) {
       createGraphHistoryEntry(
         subroutine,
         payloadText || "-",
-        "Operacion aplicada.",
+        "Operación aplicada.",
         opName,
         step.payload || {},
       ),
@@ -978,44 +1246,93 @@ function initGraphPage(model) {
         pageState.graphState = stateSnapshot;
         pageState.simulation = buildSimulationFromState(stateSnapshot);
         renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null);
+        updateGraphStepKind(stepMeta || null);
       },
-      defaultDelayMs: simSpeed ? Number(simSpeed.value) : 900,
+      onCursorChange: (event) => {
+        const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
+        pageState.traceCursor = cursor;
+        pageState.traceTotalSteps = event && event.trace && Array.isArray(event.trace.steps)
+          ? event.trace.steps.length
+          : 0;
+        refreshGraphPrintfConsole(cursor);
+        setSimulationButtonsState();
+      },
+      defaultDelayMs: 900,
     })
     : null;
 
+  if (speedSlider) {
+    setPlaybackSpeed(speedSlider.value);
+    speedSlider.addEventListener("input", () => {
+      setPlaybackSpeed(speedSlider.value);
+    });
+  } else {
+    setPlaybackSpeed(0);
+  }
+
   function getRunMode() {
     if (!runModeSelect) {
-      return "operation";
+      return activeRunMode;
     }
     return runModeSelect.value === "algorithm" ? "algorithm" : "operation";
   }
 
   function setRunMode(mode) {
+    activeRunMode = mode === "algorithm" ? "algorithm" : "operation";
     if (!runModeSelect) {
       return;
     }
-    runModeSelect.value = mode === "algorithm" ? "algorithm" : "operation";
+    runModeSelect.value = activeRunMode;
   }
 
+  setRunMode(activeRunMode);
+
   function setSimulationButtonsState() {
+    updateStepModePanelVisibility();
+    const stepMode = isStepByStepEnabled();
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const busy = Boolean(pageState.pendingExecution);
-    const canExecute = canExecuteCurrentTarget();
+    const canExecute = stepMode
+      ? canExecuteCurrentTarget()
+      : isTargetSelectionValid(resolveFastModeTarget());
+    const canExecuteOperation = canExecuteSelectedOperation();
+    const cursor = tracePlayer && typeof tracePlayer.getCursor === "function"
+      ? tracePlayer.getCursor()
+      : pageState.traceCursor;
+    const total = tracePlayer && typeof tracePlayer.getTotalSteps === "function"
+      ? tracePlayer.getTotalSteps()
+      : pageState.traceTotalSteps;
+    const atEnd = hasTrace && total > 0 && cursor >= total - 1;
+    const hasProgress = hasTrace && cursor >= 0;
     if (simPlay) {
       simPlay.disabled = busy || !canExecute;
     }
     if (simPrev) {
-      simPrev.disabled = busy || !hasTrace;
+      simPrev.disabled = busy || !stepMode || !hasProgress;
     }
     if (simStep) {
-      simStep.disabled = busy || !canExecute;
+      simStep.disabled = busy || !stepMode || !canExecute || atEnd || pageState.lockStepUntilInput;
+    }
+    if (speedSlider) {
+      speedSlider.disabled = busy || !stepMode;
+    }
+    if (operationRunButton) {
+      operationRunButton.disabled = busy || !canExecuteOperation;
     }
   }
 
   function invalidateTrace(message) {
+    pageState.finalTraceDebug = null;
     pageState.traceSelectionKey = "";
     pageState.lastTraceOperation = "";
+    pageState.traceCursor = -1;
+    pageState.traceTotalSteps = 0;
+    pageState.lockStepUntilInput = false;
+    pageState.consoleTrace = null;
+    pageState.consoleFallbackMessage = "";
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    updateGraphStepKind(null);
+    refreshGraphPrintfConsole(-1);
     setSimulationButtonsState();
   }
 
@@ -1071,6 +1388,48 @@ function initGraphPage(model) {
     return isTargetSelectionValid(target);
   }
 
+  function resolveFastModeTarget() {
+    let target = getTargetSelection();
+    if (isTargetSelectionValid(target)) {
+      return target;
+    }
+
+    if (activePhase !== "construccion" && selectedAlgorithm) {
+      const algorithmTarget = {
+        mode: "algorithm",
+        operation: selectedAlgorithm,
+        payload: collectPayload(selectedAlgorithm, "g-alg-field"),
+      };
+      if (isTargetSelectionValid(algorithmTarget)) {
+        return algorithmTarget;
+      }
+    }
+
+    if (selectedOperation) {
+      const operationTarget = {
+        mode: "operation",
+        operation: selectedOperation,
+        payload: collectPayload(selectedOperation, "g-op-field"),
+      };
+      if (isTargetSelectionValid(operationTarget)) {
+        return operationTarget;
+      }
+    }
+    return target;
+  }
+
+  function canExecuteSelectedOperation() {
+    if (!selectedOperation) {
+      return false;
+    }
+    const target = {
+      mode: "operation",
+      operation: selectedOperation,
+      payload: collectPayload(selectedOperation, "g-op-field"),
+    };
+    return isTargetSelectionValid(target);
+  }
+
   function refreshSimulationStatus() {
     if (tracePlayer && tracePlayer.hasTrace()) {
       setSimulationButtonsState();
@@ -1083,18 +1442,71 @@ function initGraphPage(model) {
     }
     setSimulationButtonsState();
     if (pageState.simulation.index < 0) {
-      showSimulationStatus(`Simulacion lista: ${pageState.simulation.steps.length} pasos. Pulsa Reproducir o Siguiente paso.`);
+      showSimulationStatus(`Simulación lista: ${pageState.simulation.steps.length} pasos. Pulsa Reproducir o Siguiente paso.`);
       return;
     }
     showSimulationStatus(describeSimulationStep(pageState.simulation));
   }
 
+  function pickAlgorithm(algorithmName) {
+    if (!algorithmName) {
+      return;
+    }
+    const found = algorithmList.find((op) => op.name === algorithmName);
+    if (!found) {
+      return;
+    }
+    selectedAlgorithm = found;
+    if (algorithmSelect) {
+      algorithmSelect.value = found.name;
+    }
+    buildGraphInputs(selectedAlgorithm, algorithmInputs, "g-alg-field");
+    updateGraphDidacticPanel(model, selectedAlgorithm.name);
+    setRunMode("algorithm");
+    refreshDidacticNote(selectedAlgorithm.name, "algorithm");
+    invalidateTrace("Algoritmo cambiado. Ejecuta nuevamente.");
+  }
+
+  function focusGraphSectionByHash() {
+    const hash = String(window.location.hash || "").replace("#", "").trim().toLowerCase();
+    if (!hash) {
+      return;
+    }
+
+    if (hash === "builder") {
+      setRunMode("operation");
+      const target = gById("builder");
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (hash === "traversals") {
+      pickAlgorithm("run_bfs");
+      const target = gById("traversals");
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (hash === "shortest-path") {
+      pickAlgorithm("run_dijkstra");
+      const target = gById("traversals");
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (hash === "mst") {
+      pickAlgorithm("run_prim");
+      const target = gById("traversals");
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
   function repaint() {
-    renderGraphState(pageState.graphState, visualState, pageState.simulation);
+    renderGraphState(pageState.graphState, visualState, pageState.simulation, pageState.finalTraceDebug);
     refreshSimulationStatus();
   }
 
-  async function executeTargetAndLoadTrace(target, selectionKey) {
+  async function executeTargetAndLoadTrace(target, selectionKey, options) {
     pageState.pendingExecution = true;
     setSimulationButtonsState();
     if (createButton) {
@@ -1107,6 +1519,7 @@ function initGraphPage(model) {
       const data = await executeGraphOperation(controls, operationName, payload);
       showGraphMessage(data.message, Boolean(data.success));
       updateGraphDidacticPanel(model, operationName);
+      refreshDidacticNote(operationName, target.mode);
 
       const payloadText = summarizeGraphPayload(payload);
       const label = operationLabel.get(operationName) || operationName;
@@ -1122,25 +1535,53 @@ function initGraphPage(model) {
       );
       renderGraphHistory(pageState.actionHistory, historyBox, model.didactic);
 
-      const hasExecutionTrace = Boolean(data.execution_trace && tracePlayer);
+      const finalOnly = Boolean(options && options.finalOnly);
+      const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
       if (hasExecutionTrace) {
+        pageState.finalTraceDebug = null;
+        pageState.lockStepUntilInput = false;
+        pageState.consoleTrace = data.execution_trace;
+        pageState.consoleFallbackMessage = "";
         tracePlayer.loadTrace(data.execution_trace);
         pageState.lastTraceOperation = String(data.execution_trace.operation_name || "");
         pageState.traceSelectionKey = selectionKey;
       } else {
         pageState.lastTraceOperation = "";
         pageState.traceSelectionKey = "";
+        pageState.finalTraceDebug = null;
+        if (finalOnly && data.execution_trace && Array.isArray(data.execution_trace.steps)) {
+          pageState.consoleTrace = data.execution_trace;
+          pageState.consoleFallbackMessage = data.message || "(sin salida printf en esta ruta)";
+          const finalCursor = data.execution_trace.steps.length ? data.execution_trace.steps.length - 1 : -1;
+          refreshGraphPrintfConsole(finalCursor);
+          if (finalCursor >= 0) {
+            const finalStep = data.execution_trace.steps[finalCursor] || null;
+            if (finalStep && finalStep.debug) {
+              pageState.finalTraceDebug = finalStep.debug;
+            }
+          }
+        } else {
+          pageState.consoleTrace = null;
+          pageState.consoleFallbackMessage = data.message || "(sin salida printf en esta ruta)";
+          refreshGraphPrintfConsole(-1);
+        }
       }
 
-      if (data.visual_state) {
-        model.visual_state = data.visual_state;
+      const finalVisualState = finalOnly
+        ? resolveFinalGraphStateFromTrace(data.execution_trace, data.visual_state)
+        : data.visual_state;
+      if (finalVisualState) {
+        model.visual_state = finalVisualState;
         if (!hasExecutionTrace) {
-          applyNewGraphState(data.visual_state);
+          applyNewGraphState(finalVisualState);
+          if (simStatus && finalOnly) {
+            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
+          }
         }
       }
       return data;
     } catch (_error) {
-      showGraphMessage("No fue posible completar la operacion.", false);
+      showGraphMessage("No fue posible completar la operación.", false);
       return null;
     } finally {
       pageState.pendingExecution = false;
@@ -1154,7 +1595,7 @@ function initGraphPage(model) {
   async function ensureTraceForCurrentTarget() {
     const target = getTargetSelection();
     if (!target) {
-      showSimulationStatus("Selecciona una accion valida.");
+      showSimulationStatus("Selecciona una acción válida.");
       return null;
     }
     const selectionKey = buildSelectionKey(target.mode, target.operation.name, target.payload);
@@ -1173,10 +1614,55 @@ function initGraphPage(model) {
     stopSimulationTimer(pageState.simulation);
     pageState.graphState = newState;
     pageState.simulation = buildSimulationFromState(newState);
+    updateGraphStepKind(null);
     repaint();
     if (modeSelect) {
       modeSelect.value = newState.directed ? "true" : "false";
     }
+  }
+
+  function resolveFinalGraphStateFromTrace(executionTrace, fallbackState) {
+    if (!executionTrace || !Array.isArray(executionTrace.steps) || !executionTrace.steps.length) {
+      return fallbackState;
+    }
+    let traceState = null;
+    for (let index = executionTrace.steps.length - 1; index >= 0; index -= 1) {
+      const step = executionTrace.steps[index] || {};
+      if (step && step.state_after) {
+        traceState = step.state_after;
+        break;
+      }
+      if (step && step.state_snapshot) {
+        traceState = step.state_snapshot;
+        break;
+      }
+    }
+    if (!traceState) {
+      return fallbackState;
+    }
+
+    const merged = { ...(traceState || {}) };
+    const fallback = fallbackState && typeof fallbackState === "object" ? fallbackState : null;
+
+    // Preserve algorithm outcome metadata so final fast render highlights
+    // traversal/path/MST exactly like trace-complete mode.
+    if (!merged.last_result && fallback && fallback.last_result) {
+      merged.last_result = fallback.last_result;
+    }
+    if (!merged.last_operation && fallback && fallback.last_operation) {
+      merged.last_operation = fallback.last_operation;
+    }
+    if (!merged.metadata && fallback && fallback.metadata) {
+      merged.metadata = fallback.metadata;
+    }
+    if (merged.directed === undefined && fallback && fallback.directed !== undefined) {
+      merged.directed = fallback.directed;
+    }
+    if (merged.weighted === undefined && fallback && fallback.weighted !== undefined) {
+      merged.weighted = fallback.weighted;
+    }
+
+    return merged;
   }
 
   function stepForward() {
@@ -1186,7 +1672,7 @@ function initGraphPage(model) {
     }
     if (pageState.simulation.index >= pageState.simulation.steps.length - 1) {
       stopSimulationTimer(pageState.simulation);
-      showSimulationStatus(`Simulacion completada en ${pageState.simulation.steps.length} pasos.`);
+      showSimulationStatus(`Simulación completada en ${pageState.simulation.steps.length} pasos.`);
       return false;
     }
 
@@ -1197,14 +1683,14 @@ function initGraphPage(model) {
 
   function startSimulation() {
     if (!pageState.simulation || !pageState.simulation.steps.length) {
-      showSimulationStatus("No se puede iniciar: ejecuta un algoritmo para generar una simulacion.");
+      showSimulationStatus("No se puede iniciar: ejecuta un algoritmo para generar una simulación.");
       return;
     }
 
     stopSimulationTimer(pageState.simulation);
     pageState.simulation.running = true;
 
-    const speed = simSpeed ? Number(simSpeed.value) : 900;
+    const speed = speedSlider ? Number(speedSlider.value) : 900;
     pageState.simulation.speedMs = Number.isFinite(speed) && speed > 0 ? speed : 900;
 
     if (pageState.simulation.index >= pageState.simulation.steps.length - 1) {
@@ -1229,12 +1715,12 @@ function initGraphPage(model) {
       return;
     }
     stopSimulationTimer(pageState.simulation);
-    showSimulationStatus("Simulacion pausada.");
+    showSimulationStatus("Simulación pausada.");
   }
 
   function resetSimulation() {
     if (!pageState.simulation || !pageState.simulation.steps.length) {
-      showSimulationStatus("No hay simulacion activa para reiniciar.");
+      showSimulationStatus("No hay simulación activa para reiniciar.");
       return;
     }
     stopSimulationTimer(pageState.simulation);
@@ -1247,7 +1733,8 @@ function initGraphPage(model) {
     buildGraphInputs(selectedOperation, operationInputs, "g-op-field");
     updateGraphDidacticPanel(model, selectedOperation ? selectedOperation.name : "");
     setRunMode("operation");
-    invalidateTrace("Operacion cambiada. Ejecuta nuevamente.");
+    refreshDidacticNote(selectedOperation ? selectedOperation.name : "", "operation");
+    invalidateTrace("Operación cambiada. Ejecuta nuevamente.");
   });
 
   algorithmSelect.addEventListener("change", () => {
@@ -1255,12 +1742,24 @@ function initGraphPage(model) {
     buildGraphInputs(selectedAlgorithm, algorithmInputs, "g-alg-field");
     updateGraphDidacticPanel(model, selectedAlgorithm ? selectedAlgorithm.name : "");
     setRunMode("algorithm");
+    refreshDidacticNote(selectedAlgorithm ? selectedAlgorithm.name : "", "algorithm");
     invalidateTrace("Algoritmo cambiado. Ejecuta nuevamente.");
+  });
+
+  presetButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const algorithmName = String(button.getAttribute("data-graph-algorithm") || "").trim();
+      const anchor = String(button.getAttribute("data-graph-anchor") || "").trim();
+      pickAlgorithm(algorithmName);
+      if (anchor) {
+        window.location.hash = anchor;
+      }
+    });
   });
 
   operationInputs?.addEventListener("input", () => {
     setRunMode("operation");
-    invalidateTrace("Entradas de operacion cambiadas. Ejecuta nuevamente.");
+    invalidateTrace("Entradas de operación cambiadas. Ejecuta nuevamente.");
   });
 
   algorithmInputs?.addEventListener("input", () => {
@@ -1269,18 +1768,32 @@ function initGraphPage(model) {
   });
 
   runModeSelect?.addEventListener("change", () => {
+    activeRunMode = runModeSelect.value === "algorithm" ? "algorithm" : "operation";
+    if (activeRunMode === "algorithm") {
+      refreshDidacticNote(selectedAlgorithm ? selectedAlgorithm.name : "", "algorithm");
+    } else {
+      refreshDidacticNote(selectedOperation ? selectedOperation.name : "", "operation");
+    }
     invalidateTrace("Modo cambiado. Ejecuta nuevamente.");
   });
 
   createButton?.addEventListener("click", async () => {
     const directedValue = modeSelect ? modeSelect.value : "false";
-    const data = await executeGraphOperation(controls, "create_graph", { directed: directedValue });
+      const data = await executeGraphOperation(controls, "create_graph", { directed: directedValue });
     showGraphMessage(data.message, Boolean(data.success));
     updateGraphDidacticPanel(model, "create_graph");
-    if (data.execution_trace && tracePlayer) {
+    refreshDidacticNote("create_graph", "operation");
+    if (isStepByStepEnabled() && data.execution_trace && tracePlayer) {
+      pageState.lockStepUntilInput = false;
+      pageState.consoleTrace = data.execution_trace;
+      pageState.consoleFallbackMessage = "";
       tracePlayer.loadTrace(data.execution_trace);
       pageState.lastTraceOperation = String(data.execution_trace.operation_name || "");
       pageState.traceSelectionKey = "";
+    } else {
+      pageState.consoleTrace = null;
+      pageState.consoleFallbackMessage = data.message || "(sin salida printf en esta ruta)";
+      refreshGraphPrintfConsole(-1);
     }
     const createSubroutine = getGraphSubroutineName(model, "create_graph", "Crear/Recrear grafo");
     pageState.actionHistory.push(
@@ -1301,28 +1814,97 @@ function initGraphPage(model) {
     setSimulationButtonsState();
   });
 
-  simStep?.addEventListener("click", async () => {
-    const ready = await ensureTraceForCurrentTarget();
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
+  operationRunButton?.addEventListener("click", async () => {
+    if (!selectedOperation) {
+      showSimulationStatus("Selecciona una operación válida.");
       return;
     }
-    await tracePlayer.step();
-  });
-
-  simPrev?.addEventListener("click", () => {
-    tracePlayer?.prev();
-  });
-
-  simPlay?.addEventListener("click", async () => {
-    const ready = await ensureTraceForCurrentTarget();
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
+    setRunMode("operation");
+    const target = {
+      mode: "operation",
+      operation: selectedOperation,
+      payload: collectPayload(selectedOperation, "g-op-field"),
+    };
+    if (!isTargetSelectionValid(target)) {
+      showSimulationStatus("Completa los campos de la operación.");
+      setSimulationButtonsState();
+      return;
+    }
+    const selectionKey = buildSelectionKey(target.mode, target.operation.name, target.payload);
+    const data = await executeTargetAndLoadTrace(
+      target,
+      selectionKey,
+      !isStepByStepEnabled() ? { finalOnly: true } : undefined,
+    );
+    if (!data || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
     await tracePlayer.playFromStart();
   });
 
+  simStep?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      return;
+    }
+    const ready = await ensureTraceForCurrentTarget();
+    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
+      return;
+    }
+    const advanced = await tracePlayer.step();
+    if (advanced && tracePlayer.isAtEnd()) {
+      pageState.lockStepUntilInput = true;
+      setSimulationButtonsState();
+    }
+  });
+
+  simPrev?.addEventListener("click", () => {
+    if (!isStepByStepEnabled()) {
+      return;
+    }
+    const moved = tracePlayer?.prev();
+    if (moved) {
+      pageState.lockStepUntilInput = false;
+    }
+    setSimulationButtonsState();
+  });
+
+  simPlay?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      const target = resolveFastModeTarget();
+      if (!target || !isTargetSelectionValid(target)) {
+        showSimulationStatus("Completa las entradas para ejecutar.");
+        setSimulationButtonsState();
+        return;
+      }
+      const selectionKey = buildSelectionKey(target.mode, target.operation.name, target.payload);
+      await executeTargetAndLoadTrace(target, selectionKey, { finalOnly: true });
+      return;
+    }
+    const ready = await ensureTraceForCurrentTarget();
+    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
+      return;
+    }
+    await tracePlayer.playFromStart();
+    if (tracePlayer.isAtEnd()) {
+      pageState.lockStepUntilInput = true;
+      setSimulationButtonsState();
+    }
+  });
+
+  stepToggle?.addEventListener("change", () => {
+    updateStepModePanelVisibility();
+    invalidateTrace(
+      isStepByStepEnabled()
+        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
+        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
+    );
+  });
+
+  updateStepModePanelVisibility();
   invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+  refreshGraphPrintfConsole(-1);
   refreshSimulationStatus();
+  focusGraphSectionByHash();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -63,7 +63,8 @@ class AVLAdapter(BaseAdapter):
             return None
         left_height = self._node_height(node.izquierdo)
         right_height = self._node_height(node.derecho)
-        balance_factor = left_height - right_height
+        # Contrato TAD C: FE = altura(der) - altura(izq)
+        balance_factor = right_height - left_height
         return {
             "value": node.dato,
             "height": node.altura,

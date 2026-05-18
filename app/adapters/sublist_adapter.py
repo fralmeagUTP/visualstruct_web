@@ -22,33 +22,33 @@ class SublistAdapter(BaseAdapter):
         if operation_name == "insertar_padre":
             valor = self._require_int(payload, "parent", "padre")
             self._structure.insertar_padre(valor)
-            return {"message": f"Se insertÃ³ el padre '{valor}'."}
+            return {"message": f"Se insertó el padre '{valor}'."}
         if operation_name == "insertar_hijo":
             padre = self._require_int(payload, "parent", "padre")
             hijo = self._require_int(payload, "child", "hijo")
             self._structure.insertar_hijo(padre, hijo)
-            return {"message": f"Se insertÃ³ el hijo '{hijo}' para el padre '{padre}'."}
+            return {"message": f"Se insertó el hijo '{hijo}' para el padre '{padre}'."}
         if operation_name == "eliminar_padre":
             padre = self._require_int(payload, "parent", "padre")
             eliminado = self._structure.eliminar_padre(padre)
             if eliminado:
-                return {"message": f"Se eliminÃ³ el padre '{padre}' con su sublista."}
-            return {"message": f"No se encontrÃ³ el padre '{padre}' para eliminar."}
+                return {"message": f"Se eliminó el padre '{padre}' con su sublista."}
+            return {"message": f"No se encontró el padre '{padre}' para eliminar."}
         if operation_name == "eliminar_hijo":
             padre = self._require_int(payload, "parent", "padre")
             hijo = self._require_int(payload, "child", "hijo")
             eliminado = self._structure.eliminar_hijo(padre, hijo)
             if eliminado:
-                return {"message": f"Se eliminÃ³ el hijo '{hijo}' del padre '{padre}'."}
-            return {"message": f"No se encontrÃ³ el hijo '{hijo}' para el padre '{padre}'."}
+                return {"message": f"Se eliminó el hijo '{hijo}' del padre '{padre}'."}
+            return {"message": f"No se encontró el hijo '{hijo}' para el padre '{padre}'."}
         if operation_name == "hijos_de":
             padre = self._require_int(payload, "parent", "padre")
             hijos = self._structure.hijos_de(padre)
             return {"message": f"Hijos de '{padre}': {hijos}.", "result": hijos}
         if operation_name == "limpiar":
             self._structure.limpiar()
-            return {"message": "La estructura sublista se limpiÃ³ correctamente."}
-        raise ValueError(f"OperaciÃ³n no soportada: {operation_name}.")
+            return {"message": "La estructura sublista se limpió correctamente."}
+        raise ValueError(f"Operación no soportada: {operation_name}.")
 
     def to_visual_state(self) -> dict[str, Any]:
         data = self._structure.a_diccionario()

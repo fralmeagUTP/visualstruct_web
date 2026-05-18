@@ -1,4 +1,4 @@
-"""Didactic help content for hierarchical structures."""
+﻿"""Didactic help content for hierarchical structures."""
 
 from __future__ import annotations
 
@@ -11,21 +11,25 @@ class HierarchicalHelpService:
     _MODULE_HELP = {
         "title": "Ayuda del modulo jerarquico",
         "description": (
-            "Las estructuras jerarquicas organizan datos en niveles. "
-            "En este modulo puedes ejecutar operaciones reales y verificar "
-            "propiedades de orden y balanceo en cada paso."
+            "Este modulo permite estudiar arboles como interprete visual de codigo C: "
+            "la simulacion muestra comparaciones, inserciones/eliminaciones y ajustes "
+            "de balance en el mismo orden en que se ejecutan las subrutinas."
         ),
         "tips": [
-            "Inserta varios valores y compara inorden entre ABB, AVL y Rojo-Negro.",
-            "Después de insertar o eliminar, revisa siempre la validación del árbol.",
-            "En montículo, compara la forma de arreglo con su forma de árbol.",
+            "Ejecuta primero Reproducir para entender el flujo global y luego depura con Siguiente/Anterior paso.",
+            "En ABB/AVL revisa la ruta de comparaciones; en AVL/Rojo-Negro verifica el momento exacto del rebalanceo.",
+            "Despues de cada mutacion confirma validacion, recorridos y coherencia del arbol final.",
         ],
     }
 
     _STRUCTURE_HELP: dict[str, dict[str, Any]] = {
         "abb": {
             "title": "ABB",
-            "summary": "Árbol binario de búsqueda sin duplicados.",
+            "summary": (
+                "Arbol binario de busqueda sin duplicados: todo valor menor va al subarbol izquierdo "
+                "y todo valor mayor al derecho. En la simulacion revisa la ruta de comparaciones y "
+                "confirma que la propiedad de orden se preserve despues de cada insercion o eliminacion."
+            ),
             "supported_operations": [
                 "insertar",
                 "eliminar",
@@ -44,7 +48,11 @@ class HierarchicalHelpService:
         },
         "avl": {
             "title": "AVL",
-            "summary": "Árbol auto-balanceado con factor de balance en [-1, 1].",
+            "summary": (
+                "Arbol AVL auto-balanceado: mantiene factor de equilibrio por nodo en el rango [-1, 1]. "
+                "La animacion debe mostrar deteccion del nodo desbalanceado y aplicacion de rotaciones "
+                "(LL, RR, LR, RL) sincronizadas con la linea C que se interpreta."
+            ),
             "supported_operations": [
                 "insertar",
                 "eliminar",
@@ -57,12 +65,16 @@ class HierarchicalHelpService:
                 "limpiar",
             ],
             "pending_operations": [
-                "El TAD no expone información textual de rotaciones realizadas.",
+                "El TAD no expone informacion textual de rotaciones realizadas.",
             ],
         },
         "red_black": {
             "title": "Rojo-Negro",
-            "summary": "Árbol balanceado por coloración rojo/negro.",
+            "summary": (
+                "Arbol balanceado por reglas de color (rojo/negro) que limitan la altura. "
+                "Durante la simulacion observa recoloreos y rotaciones para mantener raiz negra, "
+                "sin rojos consecutivos y con altura negra consistente entre caminos."
+            ),
             "supported_operations": [
                 "insertar",
                 "eliminar",
@@ -77,8 +89,12 @@ class HierarchicalHelpService:
             ],
         },
         "binary_heap": {
-            "title": "Montículo Binario",
-            "summary": "Min-heap con representación interna en arreglo.",
+            "title": "Monticulo Binario",
+            "summary": (
+                "Min-heap representado en arreglo y visualizado tambien como arbol casi completo. "
+                "En cada operacion identifica los intercambios ascendentes/descendentes que restauran "
+                "la propiedad: todo padre debe ser menor o igual que sus hijos."
+            ),
             "supported_operations": [
                 "insertar",
                 "extraer_raiz",
@@ -87,7 +103,7 @@ class HierarchicalHelpService:
                 "limpiar",
             ],
             "pending_operations": [
-                "No existe en el TAD una operación pública para cambiar a max-heap en caliente.",
+                "No existe en el TAD una operacion publica para cambiar a max-heap en caliente.",
             ],
         },
     }
