@@ -50,6 +50,44 @@ function hashHasPrintfFormatSpecifier(text) {
   return /%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]/.test(String(text || ""));
 }
 
+function hashNormalizeDidacticText(text) {
+  return String(text || "").replace(/\s+/g, " ").trim();
+}
+
+function hashPushUniqueConsoleLine(lines, line) {
+  const normalized = hashNormalizeDidacticText(line);
+  if (!normalized) {
+    return;
+  }
+  if (lines.length && hashNormalizeDidacticText(lines[lines.length - 1]) === normalized) {
+    return;
+  }
+  lines.push(line);
+}
+
+function hashBuildHistoryEntrySignature(entry) {
+  if (!entry || typeof entry === "string") {
+    return "";
+  }
+  const subroutine = hashNormalizeDidacticText(entry.subroutine);
+  const payload = hashNormalizeDidacticText(entry.payload);
+  const result = hashNormalizeDidacticText(entry.result);
+  const operation = hashNormalizeDidacticText(entry.operation);
+  return `${subroutine}|${payload}|${result}|${operation}`;
+}
+
+function hashPushUniqueHistoryEntry(history, entry) {
+  if (!Array.isArray(history) || !entry) {
+    return false;
+  }
+  const last = history.length ? history[history.length - 1] : null;
+  if (hashBuildHistoryEntrySignature(last) === hashBuildHistoryEntrySignature(entry)) {
+    return false;
+  }
+  history.push(entry);
+  return true;
+}
+
 function renderHashPrintfConsole(consoleEl, lines, fallbackText) {
   if (!consoleEl) {
     return;
@@ -381,16 +419,13 @@ function initHashPage(model) {
         if (hashHasPrintfFormatSpecifier(msg)) {
           return;
         }
-        out.push(`[printf] ${msg}`);
+        hashPushUniqueConsoleLine(out, `[printf] ${msg}`);
       });
     }
     if (limit >= trace.steps.length - 1) {
       const finalMessage = String(trace.message || "").trim();
       if (finalMessage) {
-        const formatted = `[printf] ${finalMessage}`;
-        if (!out.includes(formatted)) {
-          out.push(formatted);
-        }
+        hashPushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
       }
     }
     return out;
@@ -431,7 +466,8 @@ function initHashPage(model) {
     const label = operationLabel.get(opName) || opName;
     const subroutine = getHashSubroutineName(model, opName, label);
     const payloadText = summarizeHashPayload(step.payload || {});
-    actionHistory.push(
+    hashPushUniqueHistoryEntry(
+      actionHistory,
       createHashHistoryEntry(subroutine, payloadText || "-", "Operacion aplicada.", opName, step.payload || {}),
     );
   });
@@ -533,7 +569,8 @@ function initHashPage(model) {
       }
       const payloadText = summarizeHashPayload(payload);
       const subroutine = getHashSubroutineName(model, current.name, current.label);
-      actionHistory.push(
+      hashPushUniqueHistoryEntry(
+        actionHistory,
         createHashHistoryEntry(subroutine, payloadText || "-", data.message, current.name, payload),
       );
       renderHashHistory(actionHistory, historyBox, model.didactic);

@@ -172,3 +172,28 @@ Resultado:
 
 - `tests/test_ui_playwright_e2e.py` + `tests/test_sequential_routes.py`: `15 passed`
 - `tests/test_ui_playwright_e2e.py` + `tests/test_app_routes.py` + `tests/test_sorting_routes.py`: `29 passed`
+
+## 12. Depuracion de Mensajes (2026-05-21)
+
+Cambios adicionales verificados:
+
+- Se elimino redundancia consecutiva de mensajes en `Consola C (printf)` para:
+  - `sequential.js`
+  - `hierarchical.js`
+  - `hash.js`
+  - `graph.js`
+  - `sorting.js`
+- Se elimino redundancia consecutiva de entradas en historial de ejecucion para los mismos modulos.
+- Se mantuvo la semantica de resultados y de trazas; solo cambia la presentacion de mensajes repetidos.
+
+Pruebas ejecutadas:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest tests\test_sequential_routes.py tests\test_hierarchical_routes.py tests\test_hash_routes.py tests\test_graph_routes.py tests\test_sorting_routes.py tests\test_execution_trace_contract.py tests\test_sorting_trace.py
+.\.venv\Scripts\python.exe -m pytest tests\test_graph_routes.py tests\test_execution_trace_contract.py
+```
+
+Resultado:
+
+- Suite focalizada de rutas + trazas: `51 passed`
+- Verificacion adicional grafos + contrato de traza: `26 passed`

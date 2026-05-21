@@ -57,6 +57,47 @@ function hIsOnlyPrintfSpecifier(text) {
   return /^%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]$/.test(String(text || "").trim());
 }
 
+function hNormalizeDidacticText(text) {
+  return String(text || "").replace(/\s+/g, " ").trim();
+}
+
+function hPushUniqueConsoleLine(lines, line) {
+  const normalized = hNormalizeDidacticText(line);
+  if (!normalized) {
+    return;
+  }
+  if (lines.length && hNormalizeDidacticText(lines[lines.length - 1]) === normalized) {
+    return;
+  }
+  lines.push(line);
+}
+
+function hBuildHistoryEntrySignature(entry) {
+  if (!entry || typeof entry === "string") {
+    return "";
+  }
+  const subroutine = hNormalizeDidacticText(entry.subroutine);
+  const payload = hNormalizeDidacticText(entry.payload);
+  const resultSource = Object.prototype.hasOwnProperty.call(entry, "finalResult")
+    ? entry.finalResult
+    : entry.result;
+  const result = hNormalizeDidacticText(resultSource);
+  const operation = hNormalizeDidacticText(entry.operation);
+  return `${subroutine}|${payload}|${result}|${operation}`;
+}
+
+function hPushUniqueHistoryEntry(history, entry) {
+  if (!Array.isArray(history) || !entry) {
+    return false;
+  }
+  const last = history.length ? history[history.length - 1] : null;
+  if (hBuildHistoryEntrySignature(last) === hBuildHistoryEntrySignature(entry)) {
+    return false;
+  }
+  history.push(entry);
+  return true;
+}
+
 function hGetTraversalResultValuesFromTrace(trace) {
   const op = String(trace && trace.operation_name ? trace.operation_name : "").toLowerCase();
   if (!["inorden", "preorden", "postorden"].includes(op)) {
@@ -2163,23 +2204,20 @@ function initHierPage(model) {
         // a valores concretos visitados, evitando mostrar el literal "%d".
         if (hHasPrintfFormatSpecifier(msg)) {
           if (hIsOnlyPrintfSpecifier(msg) && traversalValueIndex < traversalValues.length) {
-            out.push(`[printf] ${traversalValues[traversalValueIndex]}`);
+            hPushUniqueConsoleLine(out, `[printf] ${traversalValues[traversalValueIndex]}`);
             traversalValueIndex += 1;
             return;
           }
           // Si no podemos resolver el formato a un valor, omitimos ese ruido visual.
           return;
         }
-        out.push(`[printf] ${msg}`);
+        hPushUniqueConsoleLine(out, `[printf] ${msg}`);
       });
     }
     if (limit >= trace.steps.length - 1) {
       const finalMessage = String(trace.message || "").trim();
       if (finalMessage) {
-        const formatted = `[printf] ${finalMessage}`;
-        if (!out.includes(formatted)) {
-          out.push(formatted);
-        }
+        hPushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
       }
     }
     return out;
@@ -2208,7 +2246,8 @@ function initHierPage(model) {
     const label = operationLabel.get(opName) || opName;
     const subroutine = getHierSubroutineName(model, opName, label);
     const payloadText = summarizeHierPayload(step.payload || {});
-    actionHistory.push(
+    hPushUniqueHistoryEntry(
+      actionHistory,
       createHierHistoryEntry(
         subroutine,
         payloadText || "-",
@@ -2625,7 +2664,8 @@ function initHierPage(model) {
       }
       const payloadText = summarizeHierPayload(payload);
       const subroutine = getHierSubroutineName(model, current.name, current.label);
-      actionHistory.push(
+      hPushUniqueHistoryEntry(
+        actionHistory,
         createHierHistoryEntry(
           subroutine,
           payloadText || "-",

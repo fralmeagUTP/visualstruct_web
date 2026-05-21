@@ -50,6 +50,44 @@ function gHasPrintfFormatSpecifier(text) {
   return /%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]/.test(String(text || ""));
 }
 
+function gNormalizeDidacticText(text) {
+  return String(text || "").replace(/\s+/g, " ").trim();
+}
+
+function gPushUniqueConsoleLine(lines, line) {
+  const normalized = gNormalizeDidacticText(line);
+  if (!normalized) {
+    return;
+  }
+  if (lines.length && gNormalizeDidacticText(lines[lines.length - 1]) === normalized) {
+    return;
+  }
+  lines.push(line);
+}
+
+function gBuildHistoryEntrySignature(entry) {
+  if (!entry || typeof entry === "string") {
+    return "";
+  }
+  const subroutine = gNormalizeDidacticText(entry.subroutine);
+  const payload = gNormalizeDidacticText(entry.payload);
+  const result = gNormalizeDidacticText(entry.result);
+  const operation = gNormalizeDidacticText(entry.operation);
+  return `${subroutine}|${payload}|${result}|${operation}`;
+}
+
+function gPushUniqueHistoryEntry(history, entry) {
+  if (!Array.isArray(history) || !entry) {
+    return false;
+  }
+  const last = history.length ? history[history.length - 1] : null;
+  if (gBuildHistoryEntrySignature(last) === gBuildHistoryEntrySignature(entry)) {
+    return false;
+  }
+  history.push(entry);
+  return true;
+}
+
 function renderGraphPrintfConsole(consoleEl, lines, fallbackText) {
   if (!consoleEl) {
     return;
@@ -1106,16 +1144,13 @@ function initGraphPage(model) {
         if (gHasPrintfFormatSpecifier(msg)) {
           return;
         }
-        out.push(`[printf] ${msg}`);
+        gPushUniqueConsoleLine(out, `[printf] ${msg}`);
       });
     }
     if (limit >= trace.steps.length - 1) {
       const finalMessage = String(trace.message || "").trim();
       if (finalMessage) {
-        const formatted = `[printf] ${finalMessage}`;
-        if (!out.includes(formatted)) {
-          out.push(formatted);
-        }
+        gPushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
       }
     }
     return out;
@@ -1221,7 +1256,8 @@ function initGraphPage(model) {
     const label = operationLabel.get(opName) || opName;
     const subroutine = getGraphSubroutineName(model, opName, label);
     const payloadText = summarizeGraphPayload(step.payload || {});
-    pageState.actionHistory.push(
+    gPushUniqueHistoryEntry(
+      pageState.actionHistory,
       createGraphHistoryEntry(
         subroutine,
         payloadText || "-",
@@ -1524,7 +1560,8 @@ function initGraphPage(model) {
       const payloadText = summarizeGraphPayload(payload);
       const label = operationLabel.get(operationName) || operationName;
       const subroutine = getGraphSubroutineName(model, operationName, label);
-      pageState.actionHistory.push(
+      gPushUniqueHistoryEntry(
+        pageState.actionHistory,
         createGraphHistoryEntry(
           subroutine,
           payloadText || "-",
@@ -1796,7 +1833,8 @@ function initGraphPage(model) {
       refreshGraphPrintfConsole(-1);
     }
     const createSubroutine = getGraphSubroutineName(model, "create_graph", "Crear/Recrear grafo");
-    pageState.actionHistory.push(
+    gPushUniqueHistoryEntry(
+      pageState.actionHistory,
       createGraphHistoryEntry(
         createSubroutine,
         `directed=${directedValue}`,

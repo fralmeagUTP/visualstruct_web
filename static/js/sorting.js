@@ -13,6 +13,42 @@ function sEscape(value) {
     .replaceAll("'", "&#39;");
 }
 
+function sNormalizeDidacticText(text) {
+  return String(text || "").replace(/\s+/g, " ").trim();
+}
+
+function sPushUniqueConsoleLine(lines, line) {
+  const normalized = sNormalizeDidacticText(line);
+  if (!normalized) {
+    return;
+  }
+  if (lines.length && sNormalizeDidacticText(lines[lines.length - 1]) === normalized) {
+    return;
+  }
+  lines.push(line);
+}
+
+function sBuildHistoryEntrySignature(entry) {
+  if (!entry || typeof entry !== "object") {
+    return "";
+  }
+  const title = sNormalizeDidacticText(entry.title);
+  const message = sNormalizeDidacticText(entry.message);
+  return `${title}|${message}`;
+}
+
+function sPushUniqueHistoryEntry(history, entry) {
+  if (!Array.isArray(history) || !entry) {
+    return false;
+  }
+  const last = history.length ? history[history.length - 1] : null;
+  if (sBuildHistoryEntrySignature(last) === sBuildHistoryEntrySignature(entry)) {
+    return false;
+  }
+  history.push(entry);
+  return true;
+}
+
 function renderSortingVisualState(state, container) {
   if (!container || !state) {
     return;
@@ -179,7 +215,7 @@ function initSortingPage(model) {
       const step = trace.steps[idx] || {};
       const debug = step.debug && step.debug.note ? step.debug.note : step.line_text;
       if (debug && String(debug).trim()) {
-        lines.push(`[printf] ${String(debug).trim()}`);
+        sPushUniqueConsoleLine(lines, `[printf] ${String(debug).trim()}`);
       }
     }
     return lines.slice(-8);
@@ -242,7 +278,7 @@ function initSortingPage(model) {
     if (data.success) {
       model.visual_state = data.visual_state;
       renderSortingVisualState(model.visual_state, visualContainer);
-      history.push({ title: "Crear arreglo", message: data.message });
+      sPushUniqueHistoryEntry(history, { title: "Crear arreglo", message: data.message });
       renderSortingHistory(history, historyBox);
       tracePlayer?.clear("Arreglo creado. Ejecuta Reproducir.");
       renderSortingConsole(consoleBox, []);
@@ -259,7 +295,7 @@ function initSortingPage(model) {
     if (data.success) {
       model.visual_state = data.visual_state;
       renderSortingVisualState(model.visual_state, visualContainer);
-      history.push({ title: "Generar aleatorio", message: data.message });
+      sPushUniqueHistoryEntry(history, { title: "Generar aleatorio", message: data.message });
       renderSortingHistory(history, historyBox);
       tracePlayer?.clear("Arreglo generado. Ejecuta Reproducir.");
       renderSortingConsole(consoleBox, []);
@@ -283,7 +319,7 @@ function initSortingPage(model) {
     if (!data.success) {
       return;
     }
-    history.push({ title: "Ejecutar", message: data.message });
+    sPushUniqueHistoryEntry(history, { title: "Ejecutar", message: data.message });
     renderSortingHistory(history, historyBox);
     model.visual_state = data.visual_state;
     if (finalOnly) {

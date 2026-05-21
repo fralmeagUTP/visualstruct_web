@@ -2,7 +2,7 @@
 
 Aplicacion web didactica en Flask para practicar TAD con visualizacion interactiva y modo interprete de codigo C basado en los TAD nuevos de `docs/tads_C`.
 
-Version actual: **v0.2.1**  
+Version actual: **v0.2.2**  
 Ultima actualizacion documental: **2026-05-21**.
 
 ## Estado actual del proyecto
@@ -73,6 +73,8 @@ Comportamiento en UI:
     - activado: reproduce la traza completa.
     - desactivado: aplica solo el resultado final.
     - cuando esta desactivado, `Anterior paso` y `Siguiente paso` quedan deshabilitados.
+  - consola C e historial tecnico:
+    - se evita repetir mensajes consecutivos equivalentes para reducir redundancia visual.
   - en estructuras secuenciales, al finalizar la simulacion queda visible solo la estructura final
     (sin bloques temporales `aux`).
   - grafo en modo rapido: el resultado final visual debe ser equivalente al ultimo paso del modo interpretado
@@ -104,6 +106,7 @@ Criterios obligatorios:
 - Cuando el metodo use nodos o punteros temporales, estos deben renderizarse en un bloque separado y con etiquetas de paso.
 - El resaltado del codigo C debe avanzar sincronizado con la animacion del estado.
 - La consola `printf` debe reflejar las salidas efectivamente ejecutadas en la ruta de control actual.
+- La consola `printf` y el historial tecnico deben minimizar mensajes redundantes consecutivos.
 - El historial en `main` debe mantenerse coherente con la ejecucion y con el estado visual final.
 - Esta especificacion aplica a todos los modulos y solo sobre TAD nuevos de `docs/tads_C`.
 

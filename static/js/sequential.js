@@ -77,6 +77,44 @@ function hasPrintfFormatSpecifier(text) {
   return /%[-+0-9.#hljztL]*[diuoxXfFeEgGaAcsp]/.test(String(text || ""));
 }
 
+function normalizeDidacticText(text) {
+  return String(text || "").replace(/\s+/g, " ").trim();
+}
+
+function pushUniqueConsoleLine(lines, line) {
+  const normalized = normalizeDidacticText(line);
+  if (!normalized) {
+    return;
+  }
+  if (lines.length && normalizeDidacticText(lines[lines.length - 1]) === normalized) {
+    return;
+  }
+  lines.push(line);
+}
+
+function buildHistoryEntrySignature(entry) {
+  if (!entry || typeof entry === "string") {
+    return "";
+  }
+  const subroutine = normalizeDidacticText(entry.subroutine);
+  const payload = normalizeDidacticText(entry.payload);
+  const result = normalizeDidacticText(entry.result);
+  const operation = normalizeDidacticText(entry.operation);
+  return `${subroutine}|${payload}|${result}|${operation}`;
+}
+
+function pushUniqueHistoryEntry(history, entry) {
+  if (!Array.isArray(history) || !entry) {
+    return false;
+  }
+  const last = history.length ? history[history.length - 1] : null;
+  if (buildHistoryEntrySignature(last) === buildHistoryEntrySignature(entry)) {
+    return false;
+  }
+  history.push(entry);
+  return true;
+}
+
 function renderPrintfConsole(consoleEl, lines, fallbackText) {
   if (!consoleEl) {
     return;
@@ -2271,17 +2309,14 @@ function initStructurePage(model) {
         if (hasPrintfFormatSpecifier(msg)) {
           return;
         }
-        out.push(`[printf] ${msg}`);
+        pushUniqueConsoleLine(out, `[printf] ${msg}`);
       });
     }
     // Refleja el printf del main al finalizar la simulacion de la operacion.
     if (limit >= trace.steps.length - 1) {
       const finalMessage = String(trace.message || "").trim();
       if (finalMessage) {
-        const formatted = `[printf] ${finalMessage}`;
-        if (!out.includes(formatted)) {
-          out.push(formatted);
-        }
+        pushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
       }
     }
     return out;
@@ -2359,7 +2394,8 @@ function initStructurePage(model) {
     const label = operationLabel.get(opName) || opName;
     const subroutine = getSubroutineName(model, opName, label);
     const payloadText = summarizePayload(step.payload || {});
-    actionHistory.push(
+    pushUniqueHistoryEntry(
+      actionHistory,
       createHistoryEntry(
         subroutine,
         payloadText || "-",
@@ -2548,7 +2584,8 @@ function initStructurePage(model) {
 
       const payloadText = summarizePayload(payload);
       const subroutine = getSubroutineName(model, current.name, current.label);
-      actionHistory.push(
+      pushUniqueHistoryEntry(
+        actionHistory,
         createHistoryEntry(
           subroutine,
           payloadText || "-",

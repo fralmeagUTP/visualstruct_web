@@ -1,6 +1,6 @@
 # Manual de Usuario
 
-Ultima actualizacion: **2026-05-18**.
+Ultima actualizacion: **2026-05-21**.
 
 ## 1. Objetivo
 
@@ -91,6 +91,7 @@ Checkbox comun en todos los modulos:
 
 - `Interpretar codigo paso a paso` activado: reproduce la traza completa.
 - `Interpretar codigo paso a paso` desactivado: aplica solo el resultado final.
+- Con el checkbox desactivado, `Anterior paso` y `Siguiente paso` quedan deshabilitados.
 - En grafos, el resultado final en modo rapido debe coincidir con el ultimo estado visual del modo interpretado
   (mismos resaltados de recorrido, camino minimo o expansion minima).
 - En grafos, al desactivar el checkbox se ocultan los controles de navegacion por paso
@@ -128,8 +129,8 @@ Reglas de cumplimiento:
    - estado final.
 3. Las estructuras temporales deben verse como elementos separados de la estructura principal hasta el paso de reasignacion.
 4. La linea activa de `Codigo C` y el estado visual deben permanecer sincronizados en cada paso.
-5. La `Consola C (printf)` debe mostrar los mensajes de la ruta realmente ejecutada.
-6. El `Programa principal (main)` del historial debe ser consistente con las operaciones ejecutadas y con el estado final mostrado.
+5. La `Consola C (printf)` debe mostrar los mensajes de la ruta realmente ejecutada, evitando duplicados consecutivos.
+6. El `Programa principal (main)` del historial debe ser consistente con las operaciones ejecutadas, con el estado final mostrado y sin redundancia consecutiva innecesaria.
 7. Esta especificacion aplica a toda la app y unicamente a los TAD nuevos ubicados en `docs/tads_C`.
 
 ## 7. Reglas de entrada
