@@ -21,7 +21,7 @@ Validar de forma integral la calidad funcional, tecnica y de regresion de la app
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Resultado: **274 passed**.
+Resultado: **285 passed**.
 
 2. Suite con cobertura:
 
@@ -29,17 +29,17 @@ Resultado: **274 passed**.
 .\.venv\Scripts\python.exe -m pytest --cov=app --cov-report=term-missing
 ```
 
-Resultado: **274 passed**, cobertura global **85%**.
+Resultado: **285 passed**, cobertura global **83%**.
 
 ## 3. Resumen global
 
-- Items recolectados: `274`
-- Exitosos: `274`
+- Items recolectados: `285`
+- Exitosos: `285`
 - Fallidos: `0`
 - Omitidos: `0`
-- Cobertura total (`app/`): **85%** (`8697` lineas, `1307` no cubiertas)
+- Cobertura total (`app/`): **83%** (`9350` lineas, `1550` no cubiertas)
 
-Incluye `tests/test_ui_playwright_e2e.py` ejecutado y aprobado en la corrida integral.
+Incluye `tests/test_ui_playwright_e2e.py` y pruebas del nuevo modulo de ordenamiento ejecutadas y aprobadas.
 
 ## 4. Cobertura por areas (observacion ejecutiva)
 
@@ -93,7 +93,7 @@ Incluye `tests/test_ui_playwright_e2e.py` ejecutado y aprobado en la corrida int
 ## 6. Riesgos tecnicos pendientes
 
 1. Cobertura baja en implementaciones de dominio puro (`tad_grafo.py`, `tad_tabla_hash.py`, `tad_monticulo_binario.py` jerarquico).
-2. `pseudocode_service.py` mantiene rutas de fallback no ejercitadas completamente.
+2. `pseudocode_service.py` y el nuevo dominio de ordenamiento mantienen rutas de fallback/ramos no ejercitados completamente.
 3. Rutas de error menos frecuentes en `hierarchical_routes.py` y `graph_routes.py` aun con margen de mejora.
 
 ## 7. Recomendaciones inmediatas
@@ -118,5 +118,34 @@ Opcional (solo UI E2E):
 
 ## 9. Veredicto
 
-El estado actual es **estable y consistente** con los TAD nuevos: la suite completa pasa (`274/274`) y la cobertura global sube a `85%`.  
-Queda trabajo puntual de cobertura en implementaciones de dominio de grafos/hash/monticulo jerarquico y en rutas de error menos frecuentes.
+El estado actual es **estable y consistente** con los TAD nuevos: la suite completa pasa (`285/285`) con integracion del modulo de ordenamiento.  
+Queda trabajo puntual de cobertura en implementaciones de dominio de grafos/hash/monticulo jerarquico, ordenamiento y rutas de error menos frecuentes.
+
+## 10. Modo Solo Visualizacion (MVP didactico)
+
+Fecha de verificacion: `2026-05-21`.
+
+Cambios verificados:
+
+- Switch global visible en layout base: `Mostrar codigo y detalles tecnicos`.
+- Modo por defecto en primera carga: `visual`.
+- Cambio a `full` sin recarga y persistencia por `localStorage`.
+- Persistencia al navegar entre modulos y al recargar.
+- Ocultamiento/visualizacion de bloques tecnicos (`didactic-technical`) en:
+  - secuencial
+  - jerarquico
+  - grafos
+  - hash
+  - sorting
+
+Pruebas ejecutadas para este alcance:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest tests\test_app_routes.py tests\test_sorting_routes.py
+.\.venv\Scripts\python.exe -m pytest tests\test_ui_playwright_e2e.py
+```
+
+Resultado:
+
+- `tests/test_app_routes.py` + `tests/test_sorting_routes.py`: `23 passed`
+- `tests/test_ui_playwright_e2e.py`: `6 passed`

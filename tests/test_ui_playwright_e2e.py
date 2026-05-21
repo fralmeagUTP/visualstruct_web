@@ -40,6 +40,14 @@ def _wait_status_contains(page, selector: str, expected: str, timeout_ms: int = 
     )
 
 
+def _wait_didactic_mode(page, mode: str, timeout_ms: int = 15000) -> None:
+    page.wait_for_function(
+        "(expected) => document.documentElement.getAttribute('data-didactic-mode') === expected",
+        arg=mode,
+        timeout=timeout_ms,
+    )
+
+
 def test_playwright_hierarchical_red_black_null_and_history_sync() -> None:
     """Hierarchical page should render NULL leaves and synchronized C main history."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
@@ -114,6 +122,68 @@ def test_playwright_graph_code_panel_scroll_and_history_sync() -> None:
                 "() => { const el = document.querySelector('#op-pseudocode'); return el && el.scrollHeight >= el.clientHeight; }",
             )
             assert bool(panel_scrollable) is True
+
+            browser.close()
+
+
+def test_playwright_global_didactic_switch_visual_default_and_persistence() -> None:
+    """Global didactic switch should default to visual and persist across navigation/reload."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+
+            _wait_didactic_mode(page, "visual")
+            assert page.is_checked("#didactic-mode-switch") is False
+
+            hidden_on_visual = page.evaluate(
+                "() => {"
+                " const blocks = Array.from(document.querySelectorAll('.didactic-technical'));"
+                " if (!blocks.length) return false;"
+                " return blocks.every((el) => {"
+                "   const s = window.getComputedStyle(el);"
+                "   return s.maxHeight === '0px' && s.opacity === '0';"
+                " });"
+                "}",
+            )
+            assert bool(hidden_on_visual) is True
+
+            initial_url = page.url
+            page.check("#didactic-mode-switch")
+            _wait_didactic_mode(page, "full")
+            assert page.url == initial_url
+            page.wait_for_function(
+                "() => {"
+                " const el = document.querySelector('.didactic-technical');"
+                " if (!el) return false;"
+                " const s = window.getComputedStyle(el);"
+                " return s.maxHeight !== '0px' && s.opacity !== '0';"
+                "}",
+                timeout=15000,
+            )
+
+            visible_on_full = page.evaluate(
+                "() => {"
+                " const blocks = Array.from(document.querySelectorAll('.didactic-technical'));"
+                " if (!blocks.length) return false;"
+                " return blocks.every((el) => {"
+                "   const s = window.getComputedStyle(el);"
+                "   return s.maxHeight !== '0px' && s.opacity !== '0';"
+                " });"
+                "}",
+            )
+            assert bool(visible_on_full) is True
+
+            page.goto(f"{base_url}/hash/hash_table", wait_until='networkidle')
+            _wait_didactic_mode(page, "full")
+            assert page.is_checked("#didactic-mode-switch") is True
+
+            page.reload(wait_until="networkidle")
+            _wait_didactic_mode(page, "full")
+            assert page.is_checked("#didactic-mode-switch") is True
 
             browser.close()
 

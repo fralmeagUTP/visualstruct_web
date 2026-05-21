@@ -10,6 +10,14 @@ def test_homepage_loads(client) -> None:
     assert "Visualizador Web de Estructuras de Datos".encode("utf-8") in response.data
 
 
+def test_global_didactic_switch_is_rendered_in_layout(client) -> None:
+    """Base layout should include global didactic mode switch."""
+    response = client.get("/sequential/stack")
+    assert response.status_code == 200
+    assert b"didactic-mode-switch" in response.data
+    assert "Mostrar codigo y detalles tecnicos".encode("utf-8") in response.data
+
+
 def test_sequential_index_loads(client) -> None:
     """Sequential index should return cards."""
     response = client.get("/sequential/")
@@ -146,3 +154,13 @@ def test_graph_page_renders_interpreter_counter(client) -> None:
     assert response.status_code == 200
     assert b"graph-sim-counter" in response.data
     assert b"graph-step-toggle" in response.data
+
+
+def test_sorting_page_renders_interpreter_controls(client) -> None:
+    """Sorting visualizer page should include interpreter controls."""
+    response = client.get("/sorting/visualizador")
+    assert response.status_code == 200
+    assert b"sorting-sim-play" in response.data
+    assert b"sorting-sim-prev" in response.data
+    assert b"sorting-sim-step" in response.data
+    assert b"sorting-step-toggle" in response.data
