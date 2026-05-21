@@ -81,6 +81,19 @@
     return null;
   }
 
+  function setExportControlsVisibility(visible) {
+    const exportControls = document.getElementById("export-jpg-controls");
+    if (!(exportControls instanceof HTMLElement)) {
+      return;
+    }
+    exportControls.style.display = visible ? "inline-flex" : "none";
+  }
+
+  function refreshExportControlsVisibility() {
+    const target = resolveVisualExportTarget();
+    setExportControlsVisibility(Boolean(target));
+  }
+
   function resolveExportDimensions(target) {
     const rect = target.getBoundingClientRect();
     const width = Math.max(
@@ -302,10 +315,34 @@
     if (!(exportButton instanceof HTMLButtonElement)) {
       return;
     }
+    refreshExportControlsVisibility();
+
+    let visibilityFrame = 0;
+    const requestVisibilityRefresh = () => {
+      if (visibilityFrame) {
+        return;
+      }
+      visibilityFrame = window.requestAnimationFrame(() => {
+        visibilityFrame = 0;
+        refreshExportControlsVisibility();
+      });
+    };
+
+    const observer = new MutationObserver(requestVisibilityRefresh);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "class", "hidden"],
+    });
+
+    window.addEventListener("resize", requestVisibilityRefresh);
+
     exportButton.addEventListener("click", async () => {
       const target = resolveVisualExportTarget();
       if (!target) {
         window.alert("No hay un estado visual activo para exportar.");
+        refreshExportControlsVisibility();
         return;
       }
       const originalText = exportButton.textContent || "Exportar JPG";
@@ -339,6 +376,7 @@
           scaleSelect.disabled = false;
         }
         exportButton.textContent = originalText;
+        refreshExportControlsVisibility();
       }
     });
   }

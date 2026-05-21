@@ -2,7 +2,7 @@
 
 Aplicacion web didactica en Flask para practicar TAD con visualizacion interactiva y modo interprete de codigo C basado en los TAD nuevos de `docs/tads_C`.
 
-Version actual: **v0.2.4**  
+Version actual: **v0.2.5**  
 Ultima actualizacion documental: **2026-05-21**.
 
 ## Estado actual del proyecto

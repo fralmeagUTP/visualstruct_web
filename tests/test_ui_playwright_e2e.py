@@ -188,6 +188,38 @@ def test_playwright_global_didactic_switch_visual_default_and_persistence() -> N
             browser.close()
 
 
+def test_playwright_export_controls_hidden_when_page_has_no_visual_target() -> None:
+    """Export JPG controls should hide on pages without an exportable visual panel."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+
+            page.goto(f"{base_url}/", wait_until="networkidle")
+            export_hidden = page.evaluate(
+                "() => {"
+                " const box = document.querySelector('#export-jpg-controls');"
+                " if (!box) return false;"
+                " return window.getComputedStyle(box).display === 'none';"
+                "}",
+            )
+            assert bool(export_hidden) is True
+
+            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+            export_visible = page.evaluate(
+                "() => {"
+                " const box = document.querySelector('#export-jpg-controls');"
+                " if (!box) return false;"
+                " return window.getComputedStyle(box).display !== 'none';"
+                "}",
+            )
+            assert bool(export_visible) is True
+
+            browser.close()
+
+
 def test_playwright_sequential_interpreter_controls_workflow() -> None:
     """Sequential page should support play/pause/step/reset interpreter controls."""
     playwright_mod = pytest.importorskip("playwright.sync_api")

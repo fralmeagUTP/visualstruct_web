@@ -101,6 +101,13 @@ body {
   justify-content: flex-end;
 }
 
+.nav-export-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
 .nav-export-option {
   display: inline-flex;
   align-items: center;
@@ -1750,6 +1757,10 @@ html[data-didactic-mode="visual"] .didactic-technical {
   }
 
   .nav-tools {
+    justify-content: flex-start;
+  }
+
+  .nav-export-controls {
     justify-content: flex-start;
   }
 
