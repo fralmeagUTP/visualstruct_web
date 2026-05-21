@@ -3,12 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function applyDidacticModeEarly() {
+      const storageKey = "didactic-mode";
+      const allowedModes = { visual: true, full: true };
+      let mode = "visual";
+      try {
+        const storedMode = window.localStorage.getItem(storageKey);
+        if (storedMode && allowedModes[storedMode]) {
+          mode = storedMode;
+        }
+      } catch (error) {
+        mode = "visual";
+      }
+      document.documentElement.setAttribute("data-didactic-mode", mode);
+    }());
+  </script>
   <title>{% block title %}Visualizador Web de Estructuras{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css', v='20260516w') }}">
 </head>
 <body>
   {% include '_header.html' %}
   {% include '_navbar.html' %}
+  <section class="didactic-mode-toolbar">
+    <div class="container didactic-mode-toolbar-inner">
+      <label class="didactic-mode-switch" for="didactic-mode-switch">
+        <input id="didactic-mode-switch" type="checkbox" aria-label="Mostrar codigo y detalles tecnicos">
+        <span>Mostrar codigo y detalles tecnicos</span>
+      </label>
+    </div>
+  </section>
   <main class="container">
     {% block content %}{% endblock %}
   </main>
@@ -18,6 +42,7 @@
   <script src="{{ url_for('static', filename='js/hierarchical.js', v='20260516d') }}" defer></script>
   <script src="{{ url_for('static', filename='js/graph.js', v='20260516f') }}" defer></script>
   <script src="{{ url_for('static', filename='js/hash.js', v='20260516d') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/sorting.js', v='20260518b') }}" defer></script>
   <script src="{{ url_for('static', filename='js/help_code_highlight.js', v='20260518a') }}" defer></script>
   {% block scripts %}{% endblock %}
 </body>

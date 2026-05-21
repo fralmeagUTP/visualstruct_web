@@ -1,6 +1,60 @@
 "use strict";
 
 (function bootstrapInterpreterRuntime(globalScope) {
+  const DIDACTIC_MODE_STORAGE_KEY = "didactic-mode";
+  const DIDACTIC_MODE_VISUAL = "visual";
+  const DIDACTIC_MODE_FULL = "full";
+
+  function normalizeDidacticMode(rawMode) {
+    return rawMode === DIDACTIC_MODE_FULL ? DIDACTIC_MODE_FULL : DIDACTIC_MODE_VISUAL;
+  }
+
+  function readDidacticMode() {
+    try {
+      return normalizeDidacticMode(window.localStorage.getItem(DIDACTIC_MODE_STORAGE_KEY));
+    } catch (error) {
+      return DIDACTIC_MODE_VISUAL;
+    }
+  }
+
+  function persistDidacticMode(mode) {
+    try {
+      window.localStorage.setItem(DIDACTIC_MODE_STORAGE_KEY, normalizeDidacticMode(mode));
+    } catch (error) {
+      // Ignore localStorage failures (private mode or blocked storage).
+    }
+  }
+
+  function applyDidacticMode(mode) {
+    const nextMode = normalizeDidacticMode(mode);
+    document.documentElement.setAttribute("data-didactic-mode", nextMode);
+    const modeSwitch = document.getElementById("didactic-mode-switch");
+    if (modeSwitch instanceof HTMLInputElement) {
+      modeSwitch.checked = nextMode === DIDACTIC_MODE_FULL;
+    }
+    return nextMode;
+  }
+
+  function initDidacticModeSwitch() {
+    const modeSwitch = document.getElementById("didactic-mode-switch");
+    const mode = applyDidacticMode(readDidacticMode());
+    persistDidacticMode(mode);
+    if (!(modeSwitch instanceof HTMLInputElement)) {
+      return;
+    }
+    modeSwitch.addEventListener("change", () => {
+      const nextMode = modeSwitch.checked ? DIDACTIC_MODE_FULL : DIDACTIC_MODE_VISUAL;
+      applyDidacticMode(nextMode);
+      persistDidacticMode(nextMode);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDidacticModeSwitch, { once: true });
+  } else {
+    initDidacticModeSwitch();
+  }
+
   function escapeHtml(value) {
     return String(value)
       .replaceAll("&", "&amp;")
