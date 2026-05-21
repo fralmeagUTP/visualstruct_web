@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}{{ model.name }} | Ordenamiento{% endblock %}
+{% block content %}
+<section class="structure-layout">
+  <div class="panel">
+    <h2>{{ model.name }}</h2>
+    <p>{{ model.description }}</p>
+    <div class="didactic-technical">
+      <h4>Estructura del TAD</h4>
+      <pre id="sorting-tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
+    </div>
+
+    <div id="sorting-controls"
+         data-create-url="{{ url_for('sorting_api.api_create_array') }}"
+         data-random-url="{{ url_for('sorting_api.api_random_array') }}"
+         data-algorithm-url="{{ url_for('sorting_api.api_select_algorithm') }}"
+         data-run-url="{{ url_for('sorting_api.api_run') }}"
+         data-step-url="{{ url_for('sorting_api.api_step') }}"
+         data-state-url="{{ url_for('sorting_api.api_state') }}"
+         data-reset-url="{{ url_for('sorting_api.api_reset') }}">
+      <label for="sorting-manual-values">Arreglo manual (csv)</label>
+      <input id="sorting-manual-values" type="text" placeholder="5, 3, 8, 1">
+      <div class="actions">
+        <button class="btn secondary" id="sorting-create-array" type="button">Crear arreglo</button>
+      </div>
+
+      <label for="sorting-random-size">Cantidad aleatoria</label>
+      <input id="sorting-random-size" type="number" min="1" max="80" value="10">
+      <label for="sorting-random-min">Minimo</label>
+      <input id="sorting-random-min" type="number" value="-20">
+      <label for="sorting-random-max">Maximo</label>
+      <input id="sorting-random-max" type="number" value="50">
+      <div class="actions">
+        <button class="btn secondary" id="sorting-random-array" type="button">Generar aleatorio</button>
+      </div>
+
+      <label for="sorting-algorithm">Algoritmo</label>
+      <select id="sorting-algorithm"></select>
+
+      <div class="actions">
+        <button class="btn" id="sorting-sim-play" type="button">Reproducir</button>
+        <button class="btn secondary" id="sorting-reset" type="button">Reiniciar</button>
+      </div>
+      <div class="sim-toggle-control">
+        <label for="sorting-step-toggle">
+          <input id="sorting-step-toggle" type="checkbox" checked>
+          Interpretar codigo paso a paso
+        </label>
+      </div>
+      <h4>Ejecucion paso a paso</h4>
+      <div class="actions">
+        <button class="btn secondary" id="sorting-sim-prev" type="button">Anterior paso</button>
+        <button class="btn" id="sorting-sim-step" type="button">Siguiente paso</button>
+      </div>
+      <div class="sim-speed-control">
+        <label for="sorting-speed-slider">Velocidad de simulacion</label>
+        <input id="sorting-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
+        <p class="sim-speed-value">Actual: <span id="sorting-speed-value">+0.00x (1.00x real)</span></p>
+      </div>
+      <p id="sorting-sim-counter" class="sim-counter">Paso: 0/0</p>
+      <p id="sorting-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
+    </div>
+
+    <div id="sorting-message-box" class="message" aria-live="polite"></div>
+    <p>
+      <a class="link" href="{{ url_for('help.sorting_structure_help', structure_id=model.id) }}">
+        Ver ayuda de {{ model.name }}
+      </a>
+    </p>
+    <section class="console-panel didactic-technical">
+      <h4>Consola C (printf)</h4>
+      <div class="console-monitor">
+        <div class="console-monitor-bar">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="title">terminal</span>
+        </div>
+        <pre id="sorting-printf-console" class="console-screen" aria-live="polite"></pre>
+      </div>
+    </section>
+  </div>
+
+  <div class="panel">
+    <h3>Estado visual</h3>
+    <div id="sorting-visual-state"></div>
+    <h4>Notas didacticas</h4>
+    <p>{{ help_data.summary }}</p>
+    <div class="didactic-technical">
+      <h4 id="sorting-code-title">{{ (model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocodigo") }}: {{ model.algorithms[0].label if model.algorithms else "" }}</h4>
+      <pre id="sorting-code" class="didactic-code didactic-code-scroll">{{ model.didactic.operations.get(model.algorithms[0].id, model.didactic.default_operation) if model.algorithms and model.didactic else "Contenido didactico no disponible." }}</pre>
+    </div>
+    <div class="didactic-technical">
+      <h4>Historial de ejecucion</h4>
+      <ol id="sorting-action-history" class="didactic-history"></ol>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  window.SORTING_VIEW_MODEL = {{ model | tojson }};
+</script>
+{% endblock %}
