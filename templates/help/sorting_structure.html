@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Ayuda | {{ help_data.title }}{% endblock %}
+{% block content %}
+<section>
+  <h2>{{ help_data.title }}</h2>
+  <h3>Descripcion del TAD</h3>
+  <p>{{ help_data.tad_description }}</p>
+
+  <h3>Controles de ejecucion paso a paso</h3>
+  <ul>
+    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra traza completa; desactivado aplica resultado final.</li>
+    <li>Controles disponibles: <strong>Reproducir</strong>, <strong>Anterior paso</strong>, <strong>Siguiente paso</strong>, <strong>Reiniciar</strong>.</li>
+    <li>Velocidad de simulacion: slider de <strong>-2x</strong> a <strong>+2x</strong>.</li>
+    <li>El resultado final del modo rapido debe coincidir con el ultimo paso del modo interpretado.</li>
+  </ul>
+
+  <h3>Operaciones soportadas</h3>
+  <ul>
+    {% for op in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
+    <li>{{ op }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Pendientes / discrepancias</h3>
+  {% if help_data.pending_operations %}
+  <ul>
+    {% for item in help_data.pending_operations %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No hay pendientes registrados.</p>
+  {% endif %}
+
+  <h3>Estructura del TAD en C</h3>
+  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre>
+
+  <h3>Metodos del TAD en C</h3>
+  {% if help_data.c_methods %}
+    {% for method in help_data.c_methods %}
+    <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
+    <p>{{ method.explanation }}</p>
+    <pre class="didactic-code">{{ method.code }}</pre>
+    {% endfor %}
+  {% else %}
+  <p>No hay metodos C documentados para esta estructura.</p>
+  {% endif %}
+
+  <p>
+    <a class="btn" href="{{ url_for('sorting.sorting_view') }}">Ir a la visualizacion</a>
+  </p>
+</section>
+{% endblock %}
+

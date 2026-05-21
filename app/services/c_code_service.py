@@ -101,6 +101,23 @@ class CCodeService:
         "remove": "th_eliminar",
         "clear": "th_vaciar",
     }
+    _SORTING_OPERATION_MAP: dict[str, str] = {
+        "intercambio": "ordenar_intercambio",
+        "seleccion": "ordenar_seleccion",
+        "insercion": "ordenar_insercion",
+        "burbuja": "ordenar_burbuja",
+        "shell": "ordenar_shell",
+        "quicksort": "ordenar_quicksort",
+        "mergesort": "ordenar_mergesort",
+        "heapsort": "ordenar_heapsort",
+        "counting_sort": "ordenar_counting_sort",
+        "binsort": "ordenar_binsort",
+        "radixsort": "ordenar_radixsort",
+        "imprimir_arreglo": "imprimir_arreglo",
+        "copiar_arreglo": "copiar_arreglo",
+        "probar_algoritmo_void": "probar_algoritmo_void",
+        "probar_algoritmo_int": "probar_algoritmo_int",
+    }
 
     @classmethod
     def get_structure_data(cls, structure_id: str) -> dict[str, Any] | None:
@@ -129,6 +146,8 @@ class CCodeService:
             return cls._build_graph_data()
         if structure_id == "hash_table":
             return cls._build_hash_table_data()
+        if structure_id == "sorting_array":
+            return cls._build_sorting_data()
         return None
 
     @classmethod
@@ -742,6 +761,28 @@ class CCodeService:
             "code_title": "Codigo C",
         }
 
+    @classmethod
+    def _build_sorting_data(cls) -> dict[str, Any]:
+        """Build didactic C-code payload for sorting methods."""
+        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_ordenamiento.c")
+        h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_ordenamiento.h")
+
+        operation_code: dict[str, str] = {}
+        for operation_name, function_name in cls._SORTING_OPERATION_MAP.items():
+            snippet = cls._extract_function_with_comment(c_text, function_name)
+            if snippet:
+                operation_code[operation_name] = snippet
+
+        structure_text = cls._extract_sorting_structure(h_text)
+        return {
+            "record": structure_text,
+            "operations": operation_code,
+            "default_operation": (
+                "Codigo C no disponible para esta operacion en docs/tads_C/tad_ordenamiento.c."
+            ),
+            "code_title": "Codigo C",
+        }
+
     @staticmethod
     def _safe_read(path: Path) -> str:
         """Read a UTF-8 text file with replacement for invalid bytes."""
@@ -1075,6 +1116,26 @@ class CCodeService:
         if blocks:
             return "\n\n".join(blocks)
         return "Estructura en C no encontrada para TablaHash."
+
+    @staticmethod
+    def _extract_sorting_structure(header_text: str) -> str:
+        """Extract C declarations/constants that describe sorting module contract."""
+        ok_match = re.search(r"#define\s+ORDENAMIENTO_OK\s+\d+", header_text)
+        err_match = re.search(r"#define\s+ORDENAMIENTO_ERROR\s+\d+", header_text)
+        api_block = re.search(
+            r"void\s+imprimir_arreglo[\s\S]*?void\s+probar_algoritmo_int\s*\([^;]*\)\s*;",
+            header_text,
+        )
+        blocks: list[str] = []
+        if ok_match:
+            blocks.append(ok_match.group(0).strip())
+        if err_match:
+            blocks.append(err_match.group(0).strip())
+        if api_block:
+            blocks.append(api_block.group(0).strip())
+        if blocks:
+            return "\n\n".join(blocks)
+        return "Contrato de ordenamiento en C no encontrado."
 
     @classmethod
     def _extract_function_with_comment(cls, source_text: str, function_name: str) -> str:

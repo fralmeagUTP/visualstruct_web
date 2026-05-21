@@ -20,6 +20,7 @@ from app.routes.hierarchical_routes import hierarchical_bp
 from app.routes.help_routes import help_bp
 from app.routes.main_routes import main_bp
 from app.routes.sequential_routes import sequential_bp
+from app.routes.sorting_routes import sorting_api_bp, sorting_bp
 
 
 def create_app(config_class: type[Config] = Config) -> Flask:
@@ -40,6 +41,8 @@ def create_app(config_class: type[Config] = Config) -> Flask:
     app.register_blueprint(hierarchical_bp)
     app.register_blueprint(graph_bp)
     app.register_blueprint(hash_bp)
+    app.register_blueprint(sorting_bp)
+    app.register_blueprint(sorting_api_bp)
     app.register_blueprint(help_bp)
 
     return app

@@ -5,9 +5,25 @@
   <h2>Proyecto Didactico</h2>
   <p>
     Esta aplicacion permite explorar estructuras de datos mediante una interfaz visual.
-    En esta version estan disponibles los modulos secuencial, jerarquico, grafos y tablas hash.
+    En esta version estan disponibles los modulos secuencial, jerarquico, ordenamiento, grafos y tablas hash.
   </p>
   <div class="cards home-module-cards">
+    <article class="card card-with-image home-module-card">
+      <div class="card-illustration">
+        <img
+          src="{{ url_for('main.asset_file', filename='ordenamiento.png') }}"
+          alt="Modulo de metodos de ordenamiento"
+          loading="lazy"
+          onerror="this.closest('.card-illustration').style.display='none';"
+        >
+      </div>
+      <h3>Metodos de Ordenamiento</h3>
+      <p>Comparaciones, intercambios y trazas paso a paso sobre arreglos.</p>
+      <div class="home-module-actions">
+        <a class="btn" href="{{ url_for('sorting.sorting_view') }}">Explorar modulo</a>
+      </div>
+    </article>
+
     <article class="card card-with-image home-module-card">
       <div class="card-illustration">
         <img
@@ -68,7 +84,7 @@
       <h3>Tablas Hash</h3>
       <p>Manejo de colisiones, busqueda y redimensionamiento.</p>
       <div class="home-module-actions">
-        <a class="btn" href="{{ url_for('hash.hash_index') }}">Explorar modulo</a>
+        <a class="btn" href="{{ url_for('hash.structure_page', structure_id='hash_table') }}">Explorar modulo</a>
       </div>
     </article>
   </div>

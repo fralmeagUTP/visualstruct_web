@@ -32,6 +32,8 @@ def test_docs_tads_c_contains_only_new_tad_c_and_h_files() -> None:
             "tad_lista_circular.h",
             "tad_monticulo_binario.c",
             "tad_monticulo_binario.h",
+            "tad_ordenamiento.c",
+            "tad_ordenamiento.h",
             "tad_pila.c",
             "tad_pila.h",
             "tad_rojo_negro.c",

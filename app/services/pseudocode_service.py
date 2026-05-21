@@ -21,6 +21,7 @@ class PseudocodeService:
         "red_black": {"valor": "int"},
         "graph": {"destino": "int"},
         "hash_table": {"clave": "string", "valor": "string"},
+        "sorting_array": {"values": "int[]"},
     }
 
     _DATA: dict[str, dict[str, Any]] = {
@@ -309,6 +310,27 @@ class PseudocodeService:
                 "clear": "Vaciar buckets y reset size",
             },
         },
+        "sorting_array": {
+            "record": (
+                "Registro ArregloOrdenamiento\n"
+                "  items : Arreglo<int>\n"
+                "  n : Entero\n"
+                "FinRegistro"
+            ),
+            "operations": {
+                "intercambio": "Para i:0..n-2\n  Para j:i+1..n-1\n    Si a[i] > a[j]: swap(a[i], a[j])",
+                "seleccion": "Para i:0..n-2\n  min=i\n  Para j:i+1..n-1\n    Si a[j] < a[min]: min=j\n  swap(a[i], a[min])",
+                "insercion": "Para i:1..n-1\n  clave=a[i]\n  mover mayores a derecha\n  insertar clave",
+                "burbuja": "Para pasada:0..n-2\n  comparar adyacentes\n  romper si no hay swaps",
+                "shell": "gap=n/2\nMientras gap>0:\n  insercion por gap\n  gap/=2",
+                "quicksort": "Particionar por pivote\nOrdenar recursivamente subrangos",
+                "mergesort": "Dividir recursivamente\nFusionar subarreglos ordenados",
+                "heapsort": "Construir max-heap\nExtraer raiz al final y reheapify",
+                "counting_sort": "Contar ocurrencias por rango\nReconstruir arreglo",
+                "binsort": "Delegar en counting_sort",
+                "radixsort": "Ordenar por digitos LSD\nSeparar negativos/no negativos",
+            },
+        },
     }
 
     _SIGNATURES: dict[str, str] = {
@@ -383,6 +405,17 @@ class PseudocodeService:
         "items": "Items()",
         "stats": "Stats()",
         "clear": "LimpiarTabla()",
+        "intercambio": "OrdenarIntercambio(arreglo, n)",
+        "seleccion": "OrdenarSeleccion(arreglo, n)",
+        "insercion": "OrdenarInsercion(arreglo, n)",
+        "burbuja": "OrdenarBurbuja(arreglo, n)",
+        "shell": "OrdenarShell(arreglo, n)",
+        "quicksort": "OrdenarQuicksort(arreglo, n)",
+        "mergesort": "OrdenarMergesort(arreglo, n)",
+        "heapsort": "OrdenarHeapsort(arreglo, n)",
+        "counting_sort": "OrdenarCountingSort(arreglo, n)",
+        "binsort": "OrdenarBinsort(arreglo, n)",
+        "radixsort": "OrdenarRadixsort(arreglo, n)",
     }
 
     _PHRASE_TO_CALL: dict[str, str] = {

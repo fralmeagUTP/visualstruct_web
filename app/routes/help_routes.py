@@ -14,6 +14,8 @@ from app.services.graph_structure_service import GraphStructureService
 from app.services.hierarchical_help_service import HierarchicalHelpService
 from app.services.hierarchical_structure_service import HierarchicalStructureService
 from app.services.help_service import HelpService
+from app.services.sorting_help_service import SortingHelpService
+from app.services.sorting_structure_service import SortingStructureService
 from app.services.c_code_service import CCodeService
 from app.services.structure_service import StructureService
 
@@ -68,6 +70,10 @@ _TAD_INTRODUCTIONS: dict[str, str] = {
     "hash_table": (
         "La Tabla Hash mapea claves a buckets mediante una funcion hash. "
         "La simulacion muestra colisiones, encadenamiento y eventos de rehash al crecer la carga."
+    ),
+    "sorting_array": (
+        "El modulo de ordenamiento opera sobre arreglos de enteros y compara metodos clasicos del TAD C. "
+        "La ejecucion didactica muestra comparaciones, intercambios/movimientos, pivote, rangos activos y auxiliares."
     ),
 }
 
@@ -136,6 +142,21 @@ _METHOD_EXPLANATIONS: dict[str, str] = {
     "items": "Devuelve pares clave-valor para inspeccion completa del contenido.",
     "stats": "Calcula metricas de carga, buckets usados y colisiones para diagnostico.",
     "clear": "Limpia la tabla completa y reinicia su estado interno.",
+    "intercambio": "Compara pares (i,j) y permuta cuando detecta desorden en el arreglo.",
+    "seleccion": "Busca el minimo del tramo no ordenado y lo ubica en la posicion actual.",
+    "insercion": "Inserta cada clave en su posicion desplazando elementos mayores a la derecha.",
+    "burbuja": "Compara adyacentes y mueve los mayores al final en cada pasada.",
+    "shell": "Aplica insercion con gaps decrecientes hasta converger en gap=1.",
+    "quicksort": "Particiona por pivote central y ordena recursivamente subrangos.",
+    "mergesort": "Divide recursivamente y fusiona subarreglos con un auxiliar.",
+    "heapsort": "Construye max-heap y extrae la raiz para ordenar in-place.",
+    "counting_sort": "Cuenta ocurrencias por valor y reconstruye el arreglo ordenado.",
+    "binsort": "Delega en counting sort segun implementacion del TAD C.",
+    "radixsort": "Ordena por digitos en base 10, separando negativos y no negativos.",
+    "imprimir_arreglo": "Imprime el arreglo completo con formato de lista.",
+    "copiar_arreglo": "Copia un arreglo origen en un destino con validaciones basicas.",
+    "probar_algoritmo_void": "Ejecuta y muestra algoritmos que no retornan estado (void).",
+    "probar_algoritmo_int": "Ejecuta y muestra algoritmos que retornan ORDENAMIENTO_OK/ERROR.",
 }
 
 
@@ -358,6 +379,26 @@ def hash_structure_help(structure_id: str) -> str:
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(
         "help/hash_structure.html",
+        help_data=data,
+        structure_id=structure_id,
+    )
+
+
+@help_bp.get("/sorting")
+def sorting_help() -> str:
+    """Render sorting module help page."""
+    module_help = SortingHelpService.get_module_help()
+    structures = SortingStructureService.list_structures()
+    return render_template("help/sorting.html", module_help=module_help, structures=structures)
+
+
+@help_bp.get("/sorting/<structure_id>")
+def sorting_structure_help(structure_id: str) -> str:
+    """Render one sorting structure help page."""
+    data = SortingHelpService.get_structure_help(structure_id)
+    data = _enrich_help_with_c_code(data, structure_id)
+    return render_template(
+        "help/sorting_structure.html",
         help_data=data,
         structure_id=structure_id,
     )
