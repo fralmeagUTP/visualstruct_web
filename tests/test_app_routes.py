@@ -10,12 +10,33 @@ def test_homepage_loads(client) -> None:
     assert "Visualizador Web de Estructuras de Datos".encode("utf-8") in response.data
 
 
+def test_user_manual_route_loads(client) -> None:
+    """User manual page should be available as part of didactic help."""
+    response = client.get("/help/manual")
+    assert response.status_code == 200
+    assert "Manual de uso de la app".encode("utf-8") in response.data
+    assert "Que es esta app".encode("utf-8") in response.data
+
+
 def test_global_didactic_switch_is_rendered_in_layout(client) -> None:
     """Base layout should include global didactic mode switch."""
     response = client.get("/sequential/stack")
     assert response.status_code == 200
     assert b"didactic-mode-switch" in response.data
     assert "Mostrar codigo y detalles tecnicos".encode("utf-8") in response.data
+    assert "/help/manual".encode("utf-8") in response.data
+
+
+def test_global_export_jpg_controls_are_rendered_in_layout(client) -> None:
+    """Base layout should include export JPG controls and options."""
+    response = client.get("/sequential/stack")
+    assert response.status_code == 200
+    assert b"export-visual-jpg-btn" in response.data
+    assert b"export-jpg-quality" in response.data
+    assert b"export-jpg-scale" in response.data
+    assert "Exportar JPG".encode("utf-8") in response.data
+    assert "Calidad".encode("utf-8") in response.data
+    assert "Escala".encode("utf-8") in response.data
 
 
 def test_sequential_index_loads(client) -> None:
@@ -164,3 +185,11 @@ def test_sorting_page_renders_interpreter_controls(client) -> None:
     assert b"sorting-sim-prev" in response.data
     assert b"sorting-sim-step" in response.data
     assert b"sorting-step-toggle" in response.data
+
+
+def test_help_module_pages_reference_user_manual(client) -> None:
+    """Module help pages should guide first-time users to the user manual."""
+    for path in ("/help/sequential", "/help/hierarchical", "/help/graph", "/help/hash", "/help/sorting"):
+        response = client.get(path)
+        assert response.status_code == 200
+        assert "/help/manual".encode("utf-8") in response.data

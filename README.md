@@ -2,7 +2,7 @@
 
 Aplicacion web didactica en Flask para practicar TAD con visualizacion interactiva y modo interprete de codigo C basado en los TAD nuevos de `docs/tads_C`.
 
-Version actual: **v0.2.2**  
+Version actual: **v0.2.3**  
 Ultima actualizacion documental: **2026-05-21**.
 
 ## Estado actual del proyecto
@@ -81,6 +81,8 @@ Comportamiento en UI:
     (mismos nodos/aristas resaltados para recorrido, camino minimo o MST).
   - grafo en modo rapido: se ocultan controles de navegacion por paso (`Anterior`, `Siguiente`, velocidad, contador y accion actual).
   - el control global `Mostrar codigo y detalles tecnicos` se ubica en la misma fila del menu superior.
+  - boton global `Exportar JPG` en la misma fila del menu superior para descargar el estado visual actual.
+  - el exportador permite elegir `Calidad` (`Media`, `Alta`, `Maxima`) y `Escala` (`1x`, `2x`, `3x`).
 
 Fallback:
 
@@ -205,3 +207,4 @@ python -m waitress --host=0.0.0.0 --port=5050 wsgi:app
 - [docs/TEST_REPORT.md](docs/TEST_REPORT.md)
 - [docs/COVERAGE_DEPRECATION_PLAN.md](docs/COVERAGE_DEPRECATION_PLAN.md)
 - `docs/tads_C/` (referencia C)
+- Manual didactico en la app: `GET /help/manual`

@@ -160,6 +160,12 @@ _METHOD_EXPLANATIONS: dict[str, str] = {
 }
 
 
+@help_bp.get("/manual")
+def user_manual() -> str:
+    """Render a didactic user manual for the whole application."""
+    return render_template("help/manual.html")
+
+
 def _normalize_operation_name(operation_label: str) -> str:
     """Normalize operation labels to operation ids used in C-code maps."""
     return str(operation_label).split("(", 1)[0].strip()

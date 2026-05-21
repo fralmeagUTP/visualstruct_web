@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Manual de uso{% endblock %}
+{% block content %}
+<section>
+  <h2>Manual de uso de la app</h2>
+  <p>
+    Esta app es un visualizador didactico de estructuras de datos y algoritmos.
+    Combina operaciones reales, interpretacion paso a paso del codigo C y una vista visual
+    para que el usuario comprenda <strong>que hace cada metodo</strong>, <strong>como cambia el estado</strong>
+    y <strong>por que ocurre ese resultado</strong>.
+  </p>
+
+  <h3>Que es esta app</h3>
+  <ul>
+    <li>Una herramienta educativa para practicar TAD y algoritmos.</li>
+    <li>Un entorno de simulacion donde el estado visual sigue la logica del metodo ejecutado.</li>
+    <li>Un apoyo para clase, autoestudio, laboratorios y evaluaciones practicas.</li>
+  </ul>
+
+  <h3>Para que sirve</h3>
+  <ul>
+    <li>Entender estructuras secuenciales, jerarquicas, grafos, hash y ordenamiento.</li>
+    <li>Comparar ejecucion paso a paso vs ejecucion rapida (solo resultado final).</li>
+    <li>Relacionar entradas, salidas, consola C e historial tecnico con el estado visual final.</li>
+    <li>Exportar evidencias visuales en JPG para informes o actividades.</li>
+  </ul>
+
+  <h3>Que se puede hacer</h3>
+  <ul>
+    <li>Ejecutar operaciones sobre cada estructura (insertar, eliminar, buscar, recorrer, etc.).</li>
+    <li>Simular linea por linea con controles de reproduccion y navegacion por pasos.</li>
+    <li>Ver codigo C, consola C (printf) e historial tecnico cuando el modo tecnico esta activo.</li>
+    <li>Cambiar entre modo visual y modo completo con el switch global.</li>
+    <li>Exportar el estado visual actual con boton <strong>Exportar JPG</strong> (calidad y escala configurables).</li>
+  </ul>
+
+  <h3>Como funciona (flujo recomendado)</h3>
+  <ol>
+    <li>Selecciona un modulo en la barra superior.</li>
+    <li>Elige estructura, operacion y completa entradas.</li>
+    <li>Decide el modo de ejecucion:
+      <ul>
+        <li><strong>Interpretar codigo paso a paso</strong> activado: recorre la traza completa.</li>
+        <li><strong>Interpretar codigo paso a paso</strong> desactivado: aplica resultado final.</li>
+      </ul>
+    </li>
+    <li>Pulsa <strong>Reproducir</strong> o avanza con <strong>Siguiente paso</strong>.</li>
+    <li>Valida mensaje funcional, estado visual y (si corresponde) consola/historial.</li>
+    <li>Si necesitas evidencia, usa <strong>Exportar JPG</strong>.</li>
+  </ol>
+
+  <h3>Modos didacticos</h3>
+  <ul>
+    <li><strong>Modo visual (por defecto):</strong> reduce carga cognitiva inicial y muestra la parte esencial de interaccion y resultado.</li>
+    <li><strong>Modo completo:</strong> muestra codigo C, consola C y detalle tecnico para analisis profundo.</li>
+  </ul>
+
+  <h3>Como leer la salida de la app</h3>
+  <ul>
+    <li><strong>Estado visual:</strong> representa la estructura/algoritmo en el paso actual o final.</li>
+    <li><strong>Mensaje:</strong> confirma resultado funcional (exito/error de la operacion).</li>
+    <li><strong>Consola C:</strong> muestra salidas printf relevantes de la ruta ejecutada.</li>
+    <li><strong>Historial tecnico:</strong> resume operaciones y resultados en secuencia de ejecucion.</li>
+  </ul>
+
+  <h3>Recomendaciones para usuarios nuevos</h3>
+  <ul>
+    <li>Empieza por Pila o Cola en el modulo secuencial.</li>
+    <li>Activa modo paso a paso para observar cambios de punteros y estados intermedios.</li>
+    <li>Luego practica ABB/AVL para comprender comparaciones y balanceo.</li>
+    <li>En grafos, sigue el flujo: construccion -> recorrido/camino minimo/MST.</li>
+    <li>Usa exportacion JPG para registrar resultados de cada practica.</li>
+  </ul>
+
+  <h3>Accesos rapidos de ayuda</h3>
+  <ul>
+    <li><a class="link" href="{{ url_for('help.sequential_help') }}">Ayuda modulo secuencial</a></li>
+    <li><a class="link" href="{{ url_for('help.hierarchical_help') }}">Ayuda modulo jerarquico</a></li>
+    <li><a class="link" href="{{ url_for('help.graph_help') }}">Ayuda modulo grafos</a></li>
+    <li><a class="link" href="{{ url_for('help.hash_help') }}">Ayuda modulo hash</a></li>
+    <li><a class="link" href="{{ url_for('help.sorting_help') }}">Ayuda modulo ordenamiento</a></li>
+  </ul>
+</section>
+{% endblock %}

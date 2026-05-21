@@ -46,11 +46,19 @@ http://127.0.0.1:5050/
 Barra superior:
 
 - Inicio
+- Manual de uso
 - Modulo Secuencial
 - Modulo Jerarquico
 - Modulo Grafos
 - Modulo Hash
 - Secciones de ayuda
+- `Mostrar codigo y detalles tecnicos`
+- `Exportar JPG` (descarga el panel de estado visual activo del modulo actual)
+- `Calidad` y `Escala` para definir compresion y resolucion del JPG exportado.
+
+Acceso directo al manual:
+
+- `http://127.0.0.1:5050/help/manual`
 
 ## 5. Flujo de uso
 

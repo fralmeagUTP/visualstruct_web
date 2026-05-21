@@ -14,7 +14,7 @@ def test_healthz_contract(client) -> None:
 
 def test_assets_route_serves_known_file(client) -> None:
     """Assets endpoint should serve files from project assets directory."""
-    response = client.get("/assets/logo_UTP.png")
+    response = client.get("/assets/logo_UTP.jpg")
     assert response.status_code == 200
     assert response.data
 

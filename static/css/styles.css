@@ -93,6 +93,33 @@ body {
   flex: 0 0 auto;
 }
 
+.nav-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav-export-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #23425a;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.nav-export-option select {
+  border: 1px solid #b7a88d;
+  border-radius: 6px;
+  background: #f9f3ea;
+  color: #23425a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.14rem 0.3rem;
+}
+
 .nav-links {
   display: flex;
   flex-wrap: wrap;
@@ -133,6 +160,32 @@ body {
 .didactic-mode-switch input[type="checkbox"]:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.nav-export-btn {
+  border: 1px solid #145f65;
+  border-radius: 8px;
+  background: #e7f5f3;
+  color: #0a4e53;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.1;
+  padding: 0.33rem 0.62rem;
+  cursor: pointer;
+}
+
+.nav-export-btn:hover {
+  background: #d8efec;
+}
+
+.nav-export-btn:focus-visible {
+  outline: 2px solid #145f65;
+  outline-offset: 1px;
+}
+
+.nav-export-btn:disabled {
+  opacity: 0.65;
+  cursor: progress;
 }
 
 .site-nav .container {
@@ -1694,6 +1747,14 @@ html[data-didactic-mode="visual"] .didactic-technical {
 
   .didactic-mode-switch {
     font-size: 0.86rem;
+  }
+
+  .nav-tools {
+    justify-content: flex-start;
+  }
+
+  .nav-export-option {
+    font-size: 0.76rem;
   }
 
   .site-header-content {

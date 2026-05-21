@@ -2,15 +2,35 @@
   <div class="container nav-row">
     <div class="nav-links">
       <a href="{{ url_for('main.index') }}">Inicio</a>
+      <a href="{{ url_for('help.user_manual') }}">Manual de uso</a>
       <a href="{{ url_for('sorting.sorting_view') }}">Ordenamiento</a>
       <a href="{{ url_for('sequential.sequential_index') }}">Estructuras Secuenciales</a>
       <a href="{{ url_for('hierarchical.hierarchical_index') }}">Estructuras Jerarquicas</a>
       <a href="{{ url_for('graph.graph_index') }}">Grafos</a>
       <a href="{{ url_for('hash.structure_page', structure_id='hash_table') }}">Tablas Hash</a>
     </div>
-    <label class="didactic-mode-switch nav-didactic-switch" for="didactic-mode-switch">
-      <input id="didactic-mode-switch" type="checkbox" aria-label="Mostrar codigo y detalles tecnicos">
-      <span>Mostrar codigo y detalles tecnicos</span>
-    </label>
+    <div class="nav-tools">
+      <label class="nav-export-option" for="export-jpg-quality">
+        Calidad
+        <select id="export-jpg-quality" aria-label="Calidad de exportacion JPG">
+          <option value="0.80">Media</option>
+          <option value="0.92" selected>Alta</option>
+          <option value="1.00">Maxima</option>
+        </select>
+      </label>
+      <label class="nav-export-option" for="export-jpg-scale">
+        Escala
+        <select id="export-jpg-scale" aria-label="Escala de exportacion JPG">
+          <option value="1">1x</option>
+          <option value="2" selected>2x</option>
+          <option value="3">3x</option>
+        </select>
+      </label>
+      <label class="didactic-mode-switch nav-didactic-switch" for="didactic-mode-switch">
+        <input id="didactic-mode-switch" type="checkbox" aria-label="Mostrar codigo y detalles tecnicos">
+        <span>Mostrar codigo y detalles tecnicos</span>
+      </label>
+      <button id="export-visual-jpg-btn" class="nav-export-btn" type="button">Exportar JPG</button>
+    </div>
   </div>
 </nav>

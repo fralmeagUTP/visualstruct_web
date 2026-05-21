@@ -4,6 +4,16 @@
   const DIDACTIC_MODE_STORAGE_KEY = "didactic-mode";
   const DIDACTIC_MODE_VISUAL = "visual";
   const DIDACTIC_MODE_FULL = "full";
+  const EXPORT_JPG_TARGET_IDS = [
+    "graph-visual-state",
+    "sorting-visual-state",
+    "hash-visual-state",
+    "visual-state",
+  ];
+  const EXPORT_JPG_MIN_QUALITY = 0.5;
+  const EXPORT_JPG_MAX_QUALITY = 1;
+  const EXPORT_JPG_MIN_SCALE = 1;
+  const EXPORT_JPG_MAX_SCALE = 3;
 
   function normalizeDidacticMode(rawMode) {
     return rawMode === DIDACTIC_MODE_FULL ? DIDACTIC_MODE_FULL : DIDACTIC_MODE_VISUAL;
@@ -49,10 +59,299 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initDidacticModeSwitch, { once: true });
-  } else {
+  function isElementVisible(element) {
+    if (!element) {
+      return false;
+    }
+    const style = window.getComputedStyle(element);
+    if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0) {
+      return false;
+    }
+    const rect = element.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0;
+  }
+
+  function resolveVisualExportTarget() {
+    for (let i = 0; i < EXPORT_JPG_TARGET_IDS.length; i += 1) {
+      const candidate = document.getElementById(EXPORT_JPG_TARGET_IDS[i]);
+      if (candidate && isElementVisible(candidate)) {
+        return candidate;
+      }
+    }
+    return null;
+  }
+
+  function resolveExportDimensions(target) {
+    const rect = target.getBoundingClientRect();
+    const width = Math.max(
+      1,
+      Math.round(
+        Math.max(
+          rect.width || 0,
+          target.scrollWidth || 0,
+          target.clientWidth || 0,
+          target.offsetWidth || 0,
+        ),
+      ),
+    );
+    const height = Math.max(
+      1,
+      Math.round(
+        Math.max(
+          rect.height || 0,
+          target.scrollHeight || 0,
+          target.clientHeight || 0,
+          target.offsetHeight || 0,
+        ),
+      ),
+    );
+    return { width, height };
+  }
+
+  function applyInlineComputedStyles(sourceRoot, clonedRoot) {
+    if (!sourceRoot || !clonedRoot) {
+      return;
+    }
+    const sourceNodes = [sourceRoot, ...Array.from(sourceRoot.querySelectorAll("*"))];
+    const clonedNodes = [clonedRoot, ...Array.from(clonedRoot.querySelectorAll("*"))];
+    const count = Math.min(sourceNodes.length, clonedNodes.length);
+    for (let i = 0; i < count; i += 1) {
+      const sourceNode = sourceNodes[i];
+      const clonedNode = clonedNodes[i];
+      if (!(sourceNode instanceof Element) || !(clonedNode instanceof Element)) {
+        continue;
+      }
+      const computed = window.getComputedStyle(sourceNode);
+      let styleText = "";
+      for (let j = 0; j < computed.length; j += 1) {
+        const prop = computed[j];
+        styleText += `${prop}:${computed.getPropertyValue(prop)};`;
+      }
+      clonedNode.setAttribute("style", styleText);
+    }
+  }
+
+  function replaceClonedCanvasWithImages(sourceRoot, clonedRoot) {
+    const sourceCanvasList = Array.from(sourceRoot.querySelectorAll("canvas"));
+    const clonedCanvasList = Array.from(clonedRoot.querySelectorAll("canvas"));
+    const count = Math.min(sourceCanvasList.length, clonedCanvasList.length);
+    for (let i = 0; i < count; i += 1) {
+      const sourceCanvas = sourceCanvasList[i];
+      const clonedCanvas = clonedCanvasList[i];
+      if (!(sourceCanvas instanceof HTMLCanvasElement) || !(clonedCanvas instanceof HTMLCanvasElement)) {
+        continue;
+      }
+      let imageUrl = "";
+      try {
+        imageUrl = sourceCanvas.toDataURL("image/png");
+      } catch (error) {
+        imageUrl = "";
+      }
+      if (!imageUrl) {
+        continue;
+      }
+      const img = document.createElement("img");
+      img.src = imageUrl;
+      img.alt = "";
+      img.width = sourceCanvas.width || sourceCanvas.clientWidth || 0;
+      img.height = sourceCanvas.height || sourceCanvas.clientHeight || 0;
+      img.style.width = `${sourceCanvas.clientWidth}px`;
+      img.style.height = `${sourceCanvas.clientHeight}px`;
+      clonedCanvas.replaceWith(img);
+    }
+  }
+
+  function toSvgForeignObjectMarkup(contentHtml, width, height) {
+    return (
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+      `<foreignObject x="0" y="0" width="100%" height="100%">` +
+      `<div xmlns="http://www.w3.org/1999/xhtml">${contentHtml}</div>` +
+      "</foreignObject></svg>"
+    );
+  }
+
+  function normalizeExportQuality(rawValue) {
+    const parsed = Number(rawValue);
+    if (!Number.isFinite(parsed)) {
+      return 0.92;
+    }
+    return Math.min(EXPORT_JPG_MAX_QUALITY, Math.max(EXPORT_JPG_MIN_QUALITY, parsed));
+  }
+
+  function normalizeExportScale(rawValue) {
+    const parsed = Number(rawValue);
+    if (!Number.isFinite(parsed)) {
+      return 2;
+    }
+    return Math.min(EXPORT_JPG_MAX_SCALE, Math.max(EXPORT_JPG_MIN_SCALE, Math.round(parsed)));
+  }
+
+  function drawImageToJpegDataUrl(image, width, height, quality, scale) {
+    const canvas = document.createElement("canvas");
+    const targetScale = normalizeExportScale(scale);
+    canvas.width = Math.max(1, Math.round(width * targetScale));
+    canvas.height = Math.max(1, Math.round(height * targetScale));
+    const context = canvas.getContext("2d");
+    if (!context) {
+      throw new Error("No se pudo crear contexto 2D.");
+    }
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/jpeg", normalizeExportQuality(quality));
+  }
+
+  function loadImageFromSource(src) {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error("No se pudo cargar la imagen SVG intermedia."));
+      image.src = src;
+    });
+  }
+
+  async function renderSvgMarkupToJpegDataUrl(svgMarkup, width, height, quality, scale) {
+    const blob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
+    const objectUrl = URL.createObjectURL(blob);
+    const dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgMarkup)}`;
+    const sources = [objectUrl, dataUrl];
+    let lastError = null;
+
+    for (let index = 0; index < sources.length; index += 1) {
+      const source = sources[index];
+      try {
+        const image = await loadImageFromSource(source);
+        const jpegDataUrl = drawImageToJpegDataUrl(image, width, height, quality, scale);
+        URL.revokeObjectURL(objectUrl);
+        return jpegDataUrl;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    URL.revokeObjectURL(objectUrl);
+    throw lastError || new Error("No se pudo rasterizar la visualizacion.");
+  }
+
+  async function exportVisualStateAsJpg(options) {
+    const target = options && options.target ? options.target : resolveVisualExportTarget();
+    if (!target) {
+      throw new Error("No hay un panel visual disponible para exportar.");
+    }
+
+    const { width, height } = resolveExportDimensions(target);
+
+    const cloned = target.cloneNode(true);
+    if (!(cloned instanceof HTMLElement)) {
+      throw new Error("No se pudo clonar el panel visual.");
+    }
+
+    applyInlineComputedStyles(target, cloned);
+    replaceClonedCanvasWithImages(target, cloned);
+
+    // Importante: anular clipping del contenedor original (scroll/max-height)
+    // para capturar el contenido completo de la visualizacion.
+    cloned.style.margin = "0";
+    cloned.style.width = `${width}px`;
+    cloned.style.height = `${height}px`;
+    cloned.style.maxWidth = "none";
+    cloned.style.maxHeight = "none";
+    cloned.style.overflow = "visible";
+    cloned.style.overflowX = "visible";
+    cloned.style.overflowY = "visible";
+    cloned.style.boxSizing = "border-box";
+
+    const wrapper = document.createElement("div");
+    wrapper.style.background = "#ffffff";
+    wrapper.style.width = `${width}px`;
+    wrapper.style.height = `${height}px`;
+    wrapper.style.padding = "0";
+    wrapper.style.margin = "0";
+    wrapper.style.overflow = "hidden";
+    wrapper.appendChild(cloned);
+
+    const markup = toSvgForeignObjectMarkup(wrapper.outerHTML, width, height);
+    const quality = normalizeExportQuality(options && options.quality);
+    const scale = normalizeExportScale(options && options.scale);
+    const dataUrl = await renderSvgMarkupToJpegDataUrl(markup, width, height, quality, scale);
+    return {
+      dataUrl,
+      width,
+      height,
+      scale,
+      quality,
+      suggestedName: `${target.id || "visual"}-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.jpg`,
+    };
+  }
+
+  function triggerDataUrlDownload(dataUrl, fileName) {
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = fileName || "visualizacion.jpg";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
+  function initExportJpgButton() {
+    const exportButton = document.getElementById("export-visual-jpg-btn");
+    const qualitySelect = document.getElementById("export-jpg-quality");
+    const scaleSelect = document.getElementById("export-jpg-scale");
+    if (!(exportButton instanceof HTMLButtonElement)) {
+      return;
+    }
+    exportButton.addEventListener("click", async () => {
+      const target = resolveVisualExportTarget();
+      if (!target) {
+        window.alert("No hay un estado visual activo para exportar.");
+        return;
+      }
+      const originalText = exportButton.textContent || "Exportar JPG";
+      exportButton.disabled = true;
+      if (qualitySelect instanceof HTMLSelectElement) {
+        qualitySelect.disabled = true;
+      }
+      if (scaleSelect instanceof HTMLSelectElement) {
+        scaleSelect.disabled = true;
+      }
+      exportButton.textContent = "Exportando...";
+      try {
+        const selectedQuality = qualitySelect instanceof HTMLSelectElement ? qualitySelect.value : 0.92;
+        const selectedScale = scaleSelect instanceof HTMLSelectElement ? scaleSelect.value : 2;
+        const result = await exportVisualStateAsJpg({
+          target,
+          quality: selectedQuality,
+          scale: selectedScale,
+        });
+        triggerDataUrlDownload(result.dataUrl, result.suggestedName);
+      } catch (error) {
+        // Exponer detalle en consola para facilitar depuracion del navegador/entorno.
+        console.error("Export JPG error:", error);
+        window.alert("No fue posible exportar la visualizacion en JPG.");
+      } finally {
+        exportButton.disabled = false;
+        if (qualitySelect instanceof HTMLSelectElement) {
+          qualitySelect.disabled = false;
+        }
+        if (scaleSelect instanceof HTMLSelectElement) {
+          scaleSelect.disabled = false;
+        }
+        exportButton.textContent = originalText;
+      }
+    });
+  }
+
+  function initGlobalUiControls() {
     initDidacticModeSwitch();
+    initExportJpgButton();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initGlobalUiControls, { once: true });
+  } else {
+    initGlobalUiControls();
   }
 
   function escapeHtml(value) {
@@ -646,5 +945,6 @@
     renderCode,
     createTracePlayer,
     playExecutionTrace,
+    exportVisualStateAsJpg,
   };
 }(window));

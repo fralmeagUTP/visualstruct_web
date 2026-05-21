@@ -343,3 +343,96 @@ def test_playwright_graph_fast_mode_executes_algorithms_without_step_trace() -> 
 
             browser.close()
 
+
+def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> None:
+    """Graph JPG export should include full scrollable canvas and algorithm result summary."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+
+            page.goto(f"{base_url}/graph/graph/construccion", wait_until="networkidle")
+            page.check("#didactic-mode-switch")
+            _wait_didactic_mode(page, "full")
+
+            for value in [str(v) for v in range(1, 11)]:
+                page.select_option("#graph-operation-select", "insert_vertex")
+                page.wait_for_selector("#g-op-field-vertex", timeout=5000)
+                page.fill("#g-op-field-vertex", value)
+                page.click("#graph-sim-play")
+                _wait_status_contains(page, "#graph-message-box", "vertice")
+
+            ring_edges = [
+                ("1", "2", "4"),
+                ("2", "3", "7"),
+                ("3", "4", "6"),
+                ("4", "5", "3"),
+                ("5", "6", "2"),
+                ("6", "7", "5"),
+                ("7", "8", "8"),
+                ("8", "9", "1"),
+                ("9", "10", "9"),
+                ("10", "1", "10"),
+            ]
+            extra_edges = [("1", "6", "11"), ("2", "7", "12"), ("3", "8", "13"), ("4", "9", "14")]
+
+            for origin, target, weight in ring_edges + extra_edges:
+                page.select_option("#graph-operation-select", "insert_edge")
+                page.wait_for_selector("#g-op-field-origin", timeout=5000)
+                page.fill("#g-op-field-origin", origin)
+                page.fill("#g-op-field-target", target)
+                page.fill("#g-op-field-weight", weight)
+                page.click("#graph-sim-play")
+                _wait_status_contains(page, "#graph-message-box", "arista")
+
+            page.goto(f"{base_url}/graph/graph/expansion-minima", wait_until="networkidle")
+            page.uncheck("#graph-step-toggle")
+            page.select_option("#graph-algorithm-select", "run_prim")
+            page.fill("#g-alg-field-start", "1")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-sim-status", "Modo rapido")
+
+            result_text = page.text_content("#graph-visual-state") or ""
+            assert "MST por Prim" in result_text
+            assert "Peso total" in result_text
+
+            export_meta = page.evaluate(
+                """
+                async () => {
+                  const target = document.querySelector('#graph-visual-state');
+                  const before = {
+                    clientWidth: target.clientWidth,
+                    clientHeight: target.clientHeight,
+                    scrollWidth: target.scrollWidth,
+                    scrollHeight: target.scrollHeight,
+                  };
+                  const result = await window.InterpreterRuntime.exportVisualStateAsJpg({
+                    target,
+                    quality: 0.92,
+                    scale: 1,
+                  });
+                  return {
+                    before,
+                    exported: {
+                      width: result.width,
+                      height: result.height,
+                      scale: result.scale,
+                      quality: result.quality,
+                      dataPrefix: String(result.dataUrl || '').slice(0, 32),
+                      dataLength: String(result.dataUrl || '').length,
+                    },
+                  };
+                }
+                """,
+            )
+
+            assert int(export_meta["before"]["scrollWidth"]) > int(export_meta["before"]["clientWidth"])
+            assert int(export_meta["exported"]["width"]) >= int(export_meta["before"]["scrollWidth"])
+            assert int(export_meta["exported"]["height"]) >= int(export_meta["before"]["scrollHeight"])
+            assert str(export_meta["exported"]["dataPrefix"]).startswith("data:image/jpeg;base64,")
+            assert int(export_meta["exported"]["dataLength"]) > 5000
+
+            browser.close()
+
