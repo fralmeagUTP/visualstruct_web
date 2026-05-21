@@ -8,8 +8,10 @@
     <p class="graph-guide">
       Flujo recomendado: define el tipo de grafo, construye vértices/aristas y luego ejecuta el algoritmo.
     </p>
-    <h4>Estructura del TAD</h4>
-    <pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
+    <div class="didactic-technical">
+      <h4>Estructura del TAD</h4>
+      <pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
+    </div>
 
     <nav class="graph-phase-nav" aria-label="Fases del módulo de grafos">
       {% for phase_key in graph_phase_order %}
@@ -127,7 +129,7 @@
         Ver ayuda de {{ model.name }}
       </a>
     </p>
-    <section class="console-panel">
+    <section class="console-panel didactic-technical">
       <h4>Consola C (printf)</h4>
       <div class="console-monitor">
         <div class="console-monitor-bar">
@@ -147,10 +149,14 @@
     <div id="graph-visual-state"></div>
     <h4>Notas didacticas</h4>
     <p id="graph-didactic-note">{{ graph_phase_note }}</p>
-    <h4 id="op-pseudocode-title">{{ model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocódigo" }}: {{ model.operations[0].label if model.operations else "" }}</h4>
-    <pre id="op-pseudocode" class="didactic-code didactic-code-scroll">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Contenido didáctico no disponible para esta operación." }}</pre>
-    <h4>Historial de ejecución</h4>
-    <ol id="action-history" class="didactic-history"></ol>
+    <div class="didactic-technical">
+      <h4 id="op-pseudocode-title">{{ model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocódigo" }}: {{ model.operations[0].label if model.operations else "" }}</h4>
+      <pre id="op-pseudocode" class="didactic-code didactic-code-scroll">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Contenido didáctico no disponible para esta operación." }}</pre>
+    </div>
+    <div class="didactic-technical">
+      <h4>Historial de ejecución</h4>
+      <ol id="action-history" class="didactic-history"></ol>
+    </div>
   </div>
 </section>
 {% endblock %}
