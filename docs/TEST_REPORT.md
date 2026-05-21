@@ -149,3 +149,26 @@ Resultado:
 
 - `tests/test_app_routes.py` + `tests/test_sorting_routes.py`: `23 passed`
 - `tests/test_ui_playwright_e2e.py`: `6 passed`
+
+## 11. Ajustes UX finales (2026-05-21)
+
+Cambios adicionales verificados:
+
+- El switch global `Mostrar codigo y detalles tecnicos` se movio a la misma fila del menu superior.
+- Cuando `Interpretar codigo paso a paso` esta desactivado:
+  - `Anterior paso` y `Siguiente paso` quedan deshabilitados.
+  - se mantiene solo ejecucion en modo rapido.
+- Al finalizar simulaciones secuenciales (lista, pila, cola, cola de prioridad),
+  la vista final muestra solo la estructura resultante, sin bloque temporal `aux`.
+
+Pruebas ejecutadas:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest tests\test_ui_playwright_e2e.py tests\test_sequential_routes.py
+.\.venv\Scripts\python.exe -m pytest tests\test_ui_playwright_e2e.py tests\test_app_routes.py tests\test_sorting_routes.py
+```
+
+Resultado:
+
+- `tests/test_ui_playwright_e2e.py` + `tests/test_sequential_routes.py`: `15 passed`
+- `tests/test_ui_playwright_e2e.py` + `tests/test_app_routes.py` + `tests/test_sorting_routes.py`: `29 passed`

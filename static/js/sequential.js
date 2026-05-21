@@ -1564,6 +1564,13 @@ function resolveFrameIndexForStep(modelId, operationName, stepIndex, totalSteps,
   if (!frames.length) {
     return -1;
   }
+  if (
+    (modelId === "linked_list" || modelId === "stack" || modelId === "queue" || modelId === "priority_queue")
+    && totalSteps > 0
+    && stepIndex >= totalSteps - 1
+  ) {
+    return frames.length - 1;
+  }
   if (modelId === "linked_list") {
     const mapped = resolveLinkedListFrameByLine(operationName, stepMeta?.lineText || "", frames);
     if (mapped >= 0) {

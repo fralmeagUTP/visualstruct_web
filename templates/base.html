@@ -25,14 +25,6 @@
 <body>
   {% include '_header.html' %}
   {% include '_navbar.html' %}
-  <section class="didactic-mode-toolbar">
-    <div class="container didactic-mode-toolbar-inner">
-      <label class="didactic-mode-switch" for="didactic-mode-switch">
-        <input id="didactic-mode-switch" type="checkbox" aria-label="Mostrar codigo y detalles tecnicos">
-        <span>Mostrar codigo y detalles tecnicos</span>
-      </label>
-    </div>
-  </section>
   <main class="container">
     {% block content %}{% endblock %}
   </main>

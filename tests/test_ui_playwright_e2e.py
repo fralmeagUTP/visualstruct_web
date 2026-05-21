@@ -201,8 +201,16 @@ def test_playwright_sequential_interpreter_controls_workflow() -> None:
             _wait_didactic_mode(page, "full")
 
             page.fill("#field-value", "21")
+            page.uncheck("#seq-step-toggle")
+            assert page.is_disabled("#seq-sim-prev") is True
+            assert page.is_disabled("#seq-sim-step") is True
+
+            page.check("#seq-step-toggle")
+            assert page.is_disabled("#seq-sim-step") is False
             page.click("#seq-sim-play")
             _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            visual_text = page.text_content("#visual-state") or ""
+            assert "aux (integrado)" not in visual_text
 
             page.click("#reset-button")
             _wait_status_contains(page, "#seq-sim-status", "Usa Reproducir o Siguiente paso para ejecutar.")
@@ -212,6 +220,33 @@ def test_playwright_sequential_interpreter_controls_workflow() -> None:
 
             page.click("#seq-sim-prev")
             _wait_status_contains(page, "#seq-sim-counter", "Paso: 0/")
+
+            browser.close()
+
+
+def test_playwright_queue_final_view_hides_aux_temporary_node() -> None:
+    """Queue simulation final step should show only queue structure without aux temporary block."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/sequential/queue", wait_until="networkidle")
+            page.check("#didactic-mode-switch")
+            _wait_didactic_mode(page, "full")
+
+            page.select_option("#operation-select", "encolar")
+            page.fill("#field-value", "8")
+            page.click("#seq-sim-play")
+            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+
+            page.fill("#field-value", "6")
+            page.click("#seq-sim-play")
+            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+
+            visual_text = page.text_content("#visual-state") or ""
+            assert "aux (integrado)" not in visual_text
 
             browser.close()
 

@@ -1,9 +1,16 @@
-﻿<nav class="site-nav">
-  <div class="container nav-links">
-    <a href="{{ url_for('main.index') }}">Inicio</a>
-    <a href="{{ url_for('sequential.sequential_index') }}">Estructuras Secuenciales</a>
-    <a href="{{ url_for('hierarchical.hierarchical_index') }}">Estructuras Jerarquicas</a>
-    <a href="{{ url_for('graph.graph_index') }}">Grafos</a>
-    <a href="{{ url_for('hash.hash_index') }}">Tablas Hash</a>
+<nav class="site-nav">
+  <div class="container nav-row">
+    <div class="nav-links">
+      <a href="{{ url_for('main.index') }}">Inicio</a>
+      <a href="{{ url_for('sorting.sorting_view') }}">Ordenamiento</a>
+      <a href="{{ url_for('sequential.sequential_index') }}">Estructuras Secuenciales</a>
+      <a href="{{ url_for('hierarchical.hierarchical_index') }}">Estructuras Jerarquicas</a>
+      <a href="{{ url_for('graph.graph_index') }}">Grafos</a>
+      <a href="{{ url_for('hash.structure_page', structure_id='hash_table') }}">Tablas Hash</a>
+    </div>
+    <label class="didactic-mode-switch nav-didactic-switch" for="didactic-mode-switch">
+      <input id="didactic-mode-switch" type="checkbox" aria-label="Mostrar codigo y detalles tecnicos">
+      <span>Mostrar codigo y detalles tecnicos</span>
+    </label>
   </div>
 </nav>

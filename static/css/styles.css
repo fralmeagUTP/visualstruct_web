@@ -81,15 +81,22 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-.didactic-mode-toolbar {
-  background: #fbf2e5;
-  border-bottom: 1px solid var(--border);
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  padding: 0.6rem 0;
 }
 
-.didactic-mode-toolbar-inner {
+.nav-didactic-switch {
+  flex: 0 0 auto;
+}
+
+.nav-links {
   display: flex;
-  justify-content: flex-end;
-  padding: 0.5rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .didactic-mode-switch {
@@ -128,10 +135,8 @@ body {
   cursor: not-allowed;
 }
 
-.nav-links {
-  display: flex;
-  gap: 1rem;
-  padding: 0.7rem 0;
+.site-nav .container {
+  justify-content: flex-end;
 }
 
 .nav-links a {
@@ -207,6 +212,12 @@ section {
 
 .btn:hover {
   filter: brightness(1.06);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
 }
 
 .btn.secondary {
@@ -1675,8 +1686,10 @@ html[data-didactic-mode="visual"] .didactic-technical {
 }
 
 @media (max-width: 880px) {
-  .didactic-mode-toolbar-inner {
-    justify-content: flex-start;
+  .nav-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
   }
 
   .didactic-mode-switch {
@@ -1703,7 +1716,7 @@ html[data-didactic-mode="visual"] .didactic-technical {
   }
 
   .nav-links {
-    flex-wrap: wrap;
+    gap: 0.75rem;
   }
 }
 

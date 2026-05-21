@@ -2,12 +2,13 @@
 
 Aplicacion web didactica en Flask para practicar TAD con visualizacion interactiva y modo interprete de codigo C basado en los TAD nuevos de `docs/tads_C`.
 
-Ultima actualizacion documental: **2026-05-18**.
+Version actual: **v0.2.1**  
+Ultima actualizacion documental: **2026-05-21**.
 
 ## Estado actual del proyecto
 
-- Tests: `274 passed, 0 skipped`.
-- Cobertura global: `85%` sobre `app/` (ejecucion sin exclusiones).
+- Tests: `285 passed, 0 skipped`.
+- Cobertura global: `83%` sobre `app/` (ejecucion sin exclusiones).
 - Entorno verificado: Python `3.10.5` (Windows).
 
 Resultados obtenidos con:
@@ -43,6 +44,10 @@ Resultados obtenidos con:
 
 - Tabla hash (`hash_table`)
 
+### Ordenamiento
+
+- Arreglo de ordenamiento (`sorting_array`)
+
 ## Modo interprete C
 
 Prioriza snippets reales desde `docs/tads_C` para:
@@ -50,7 +55,8 @@ Prioriza snippets reales desde `docs/tads_C` para:
 - todas las secuenciales,
 - todas las jerarquicas,
 - grafo,
-- hash (`hash_table`).
+- hash (`hash_table`),
+- ordenamiento (`sorting_array`).
 
 Comportamiento en UI:
 
@@ -66,9 +72,13 @@ Comportamiento en UI:
   - todos los modulos: checkbox `Interpretar codigo paso a paso`:
     - activado: reproduce la traza completa.
     - desactivado: aplica solo el resultado final.
+    - cuando esta desactivado, `Anterior paso` y `Siguiente paso` quedan deshabilitados.
+  - en estructuras secuenciales, al finalizar la simulacion queda visible solo la estructura final
+    (sin bloques temporales `aux`).
   - grafo en modo rapido: el resultado final visual debe ser equivalente al ultimo paso del modo interpretado
     (mismos nodos/aristas resaltados para recorrido, camino minimo o MST).
   - grafo en modo rapido: se ocultan controles de navegacion por paso (`Anterior`, `Siguiente`, velocidad, contador y accion actual).
+  - el control global `Mostrar codigo y detalles tecnicos` se ubica en la misma fila del menu superior.
 
 Fallback:
 
@@ -132,6 +142,9 @@ Contrato comun de adapter:
 - `GET /graph/`, `POST /graph/<id>/operate`, `POST /graph/<id>/reset`.
 - `GET /graph/<id>/<phase>` para fases del modulo de grafos (`construccion`, `recorridos`, `camino-minimo`, `expansion-minima`).
 - `GET /hash/`, `POST /hash/<id>/operate`, `POST /hash/<id>/reset`.
+- `GET /sorting/`, `GET /sorting/visualizador`.
+- `POST /api/ordenamiento/create-array`, `/random-array`, `/algorithm`, `/run`, `/step`, `/reset`.
+- `GET /api/ordenamiento/state`.
 - `GET /help/*` ayudas por modulo y por estructura.
 
 ## Ejecucion local
