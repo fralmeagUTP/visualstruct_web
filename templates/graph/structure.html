@@ -52,25 +52,27 @@
         <div class="actions">
           <button class="btn" id="graph-sim-play" type="button">Reproducir</button>
         </div>
-        <div class="sim-toggle-control">
-          <label for="graph-step-toggle">
-            <input id="graph-step-toggle" type="checkbox" checked>
-            Interpretar codigo paso a paso
-          </label>
+        <div class="didactic-technical">
+          <div class="sim-toggle-control">
+            <label for="graph-step-toggle">
+              <input id="graph-step-toggle" type="checkbox" checked>
+              Interpretar codigo paso a paso
+            </label>
+          </div>
+          <h4>Ejecución paso a paso</h4>
+          <div class="actions graph-sim-actions">
+            <button class="btn secondary" id="graph-sim-prev" type="button">Anterior paso</button>
+            <button class="btn" id="graph-sim-step" type="button">Siguiente paso</button>
+          </div>
+          <div class="sim-speed-control">
+            <label for="graph-speed-slider">Velocidad de simulacion</label>
+            <input id="graph-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
+            <p class="sim-speed-value">Actual: <span id="graph-speed-value">+0.00x (1.00x real)</span></p>
+          </div>
+          <p id="graph-sim-counter" class="sim-counter">Paso: 0/0</p>
+          <p id="graph-sim-step-kind" class="sim-counter">Acción actual: -</p>
+          <p id="graph-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
         </div>
-        <h4>Ejecución paso a paso</h4>
-        <div class="actions graph-sim-actions">
-          <button class="btn secondary" id="graph-sim-prev" type="button">Anterior paso</button>
-          <button class="btn" id="graph-sim-step" type="button">Siguiente paso</button>
-        </div>
-        <div class="sim-speed-control">
-          <label for="graph-speed-slider">Velocidad de simulacion</label>
-          <input id="graph-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
-          <p class="sim-speed-value">Actual: <span id="graph-speed-value">+0.00x (1.00x real)</span></p>
-        </div>
-        <p id="graph-sim-counter" class="sim-counter">Paso: 0/0</p>
-        <p id="graph-sim-step-kind" class="sim-counter">Acción actual: -</p>
-        <p id="graph-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
         {% endif %}
       </div>
 
@@ -100,25 +102,27 @@
         <div class="actions">
           <button class="btn" id="graph-sim-play" type="button">Reproducir</button>
         </div>
-        <div class="sim-toggle-control">
-          <label for="graph-step-toggle">
-            <input id="graph-step-toggle" type="checkbox" checked>
-            Interpretar codigo paso a paso
-          </label>
+        <div class="didactic-technical">
+          <div class="sim-toggle-control">
+            <label for="graph-step-toggle">
+              <input id="graph-step-toggle" type="checkbox" checked>
+              Interpretar codigo paso a paso
+            </label>
+          </div>
+          <h4>Ejecución paso a paso</h4>
+          <div class="actions graph-sim-actions">
+            <button class="btn secondary" id="graph-sim-prev" type="button">Anterior paso</button>
+            <button class="btn" id="graph-sim-step" type="button">Siguiente paso</button>
+          </div>
+          <div class="sim-speed-control">
+            <label for="graph-speed-slider">Velocidad de simulacion</label>
+            <input id="graph-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
+            <p class="sim-speed-value">Actual: <span id="graph-speed-value">+0.00x (1.00x real)</span></p>
+          </div>
+          <p id="graph-sim-counter" class="sim-counter">Paso: 0/0</p>
+          <p id="graph-sim-step-kind" class="sim-counter">Acción actual: -</p>
+          <p id="graph-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
         </div>
-        <h4>Ejecución paso a paso</h4>
-        <div class="actions graph-sim-actions">
-          <button class="btn secondary" id="graph-sim-prev" type="button">Anterior paso</button>
-          <button class="btn" id="graph-sim-step" type="button">Siguiente paso</button>
-        </div>
-        <div class="sim-speed-control">
-          <label for="graph-speed-slider">Velocidad de simulacion</label>
-          <input id="graph-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
-          <p class="sim-speed-value">Actual: <span id="graph-speed-value">+0.00x (1.00x real)</span></p>
-        </div>
-        <p id="graph-sim-counter" class="sim-counter">Paso: 0/0</p>
-        <p id="graph-sim-step-kind" class="sim-counter">Acción actual: -</p>
-        <p id="graph-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
         {% endif %}
       </div>
     </div>

@@ -197,6 +197,8 @@ def test_playwright_sequential_interpreter_controls_workflow() -> None:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
             page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+            page.check("#didactic-mode-switch")
+            _wait_didactic_mode(page, "full")
 
             page.fill("#field-value", "21")
             page.click("#seq-sim-play")
@@ -223,6 +225,8 @@ def test_playwright_hash_interpreter_controls_workflow() -> None:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
             page.goto(f"{base_url}/hash/hash_table", wait_until="networkidle")
+            page.check("#didactic-mode-switch")
+            _wait_didactic_mode(page, "full")
 
             page.select_option("#hash-operation-select", "insert")
             page.wait_for_selector("#hash-field-key", timeout=5000)
@@ -254,6 +258,8 @@ def test_playwright_graph_fast_mode_executes_algorithms_without_step_trace() -> 
 
             # 1) Build a base graph in construction phase.
             page.goto(f"{base_url}/graph/graph/construccion", wait_until="networkidle")
+            page.check("#didactic-mode-switch")
+            _wait_didactic_mode(page, "full")
             for value in ["1", "2", "3", "4"]:
                 page.select_option("#graph-operation-select", "insert_vertex")
                 page.wait_for_selector("#g-op-field-vertex", timeout=5000)

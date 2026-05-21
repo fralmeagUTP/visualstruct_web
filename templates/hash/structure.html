@@ -22,19 +22,21 @@
       <button class="btn" id="hash-sim-play" type="button">Reproducir</button>
       <button class="btn secondary" id="hash-reset-button" type="button">Reiniciar</button>
     </div>
-    <div class="sim-toggle-control">
-      <label for="hash-step-toggle">
-        <input id="hash-step-toggle" type="checkbox" checked>
-        Interpretar codigo paso a paso
-      </label>
+    <div class="didactic-technical">
+      <div class="sim-toggle-control">
+        <label for="hash-step-toggle">
+          <input id="hash-step-toggle" type="checkbox" checked>
+          Interpretar codigo paso a paso
+        </label>
+      </div>
+      <h4>Ejecucion paso a paso</h4>
+      <div class="actions">
+        <button class="btn secondary" id="hash-sim-prev" type="button">Anterior paso</button>
+        <button class="btn" id="hash-sim-step" type="button">Siguiente paso</button>
+      </div>
+      <p id="hash-sim-counter" class="sim-counter">Paso: 0/0</p>
+      <p id="hash-sim-status" class="message"></p>
     </div>
-    <h4>Ejecucion paso a paso</h4>
-    <div class="actions">
-      <button class="btn secondary" id="hash-sim-prev" type="button">Anterior paso</button>
-      <button class="btn" id="hash-sim-step" type="button">Siguiente paso</button>
-    </div>
-    <p id="hash-sim-counter" class="sim-counter">Paso: 0/0</p>
-    <p id="hash-sim-status" class="message"></p>
 
     <div id="hash-message-box" class="message" aria-live="polite"></div>
     <p>

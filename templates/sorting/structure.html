@@ -41,24 +41,26 @@
         <button class="btn" id="sorting-sim-play" type="button">Reproducir</button>
         <button class="btn secondary" id="sorting-reset" type="button">Reiniciar</button>
       </div>
-      <div class="sim-toggle-control">
-        <label for="sorting-step-toggle">
-          <input id="sorting-step-toggle" type="checkbox" checked>
-          Interpretar codigo paso a paso
-        </label>
+      <div class="didactic-technical">
+        <div class="sim-toggle-control">
+          <label for="sorting-step-toggle">
+            <input id="sorting-step-toggle" type="checkbox" checked>
+            Interpretar codigo paso a paso
+          </label>
+        </div>
+        <h4>Ejecucion paso a paso</h4>
+        <div class="actions">
+          <button class="btn secondary" id="sorting-sim-prev" type="button">Anterior paso</button>
+          <button class="btn" id="sorting-sim-step" type="button">Siguiente paso</button>
+        </div>
+        <div class="sim-speed-control">
+          <label for="sorting-speed-slider">Velocidad de simulacion</label>
+          <input id="sorting-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
+          <p class="sim-speed-value">Actual: <span id="sorting-speed-value">+0.00x (1.00x real)</span></p>
+        </div>
+        <p id="sorting-sim-counter" class="sim-counter">Paso: 0/0</p>
+        <p id="sorting-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
       </div>
-      <h4>Ejecucion paso a paso</h4>
-      <div class="actions">
-        <button class="btn secondary" id="sorting-sim-prev" type="button">Anterior paso</button>
-        <button class="btn" id="sorting-sim-step" type="button">Siguiente paso</button>
-      </div>
-      <div class="sim-speed-control">
-        <label for="sorting-speed-slider">Velocidad de simulacion</label>
-        <input id="sorting-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
-        <p class="sim-speed-value">Actual: <span id="sorting-speed-value">+0.00x (1.00x real)</span></p>
-      </div>
-      <p id="sorting-sim-counter" class="sim-counter">Paso: 0/0</p>
-      <p id="sorting-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
     </div>
 
     <div id="sorting-message-box" class="message" aria-live="polite"></div>
