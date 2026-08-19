@@ -13,7 +13,8 @@ try:
 except ImportError:  # pragma: no cover - fallback for minimal environments
     Session = None
 
-from app.config import Config
+from app.config import Config, DEVELOPMENT_SECRET_KEY, validate_configuration
+from app.services.checkpoint_policy import CheckpointPolicy
 from app.routes.hash_routes import hash_bp
 from app.routes.graph_routes import graph_bp
 from app.routes.hierarchical_routes import hierarchical_bp
@@ -33,6 +34,15 @@ def create_app(config_class: type[Config] = Config) -> Flask:
         static_url_path="/static",
     )
     app.config.from_object(config_class)
+    validate_configuration(app.config)
+    if (
+        app.config["APP_ENV"] == "development"
+        and app.config.get("SECRET_KEY") == DEVELOPMENT_SECRET_KEY
+    ):
+        app.logger.warning(
+            "Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar."
+        )
+    app.extensions["checkpoint_policy"] = CheckpointPolicy.from_config(app.config)
     _configure_session_backend(app)
     _configure_proxy_headers(app)
 
@@ -86,12 +96,13 @@ def _configure_session_backend(app: Flask) -> None:
 
 def _configure_proxy_headers(app: Flask) -> None:
     """Apply ProxyFix when app runs behind reverse proxy."""
-    if not app.config.get("ENABLE_PROXY_FIX", True):
+    if not app.config.get("ENABLE_PROXY_FIX", False):
         return
+    trusted_proxy_count = int(app.config["TRUSTED_PROXY_COUNT"])
     app.wsgi_app = ProxyFix(
         app.wsgi_app,
-        x_for=1,
-        x_proto=1,
-        x_host=1,
-        x_port=1,
+        x_for=trusted_proxy_count,
+        x_proto=trusted_proxy_count,
+        x_host=trusted_proxy_count,
+        x_port=trusted_proxy_count,
     )

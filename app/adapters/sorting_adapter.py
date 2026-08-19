@@ -5,6 +5,8 @@ from __future__ import annotations
 import random
 from typing import Any
 
+from app.services.trace.engine import TraceEngine
+
 from app.adapters.base_adapter import BaseAdapter
 from app.domain.sorting import SORTING_ALGORITHMS, SortingExecutionError, SortingInterpreter
 
@@ -204,6 +206,7 @@ class SortingAdapter(BaseAdapter):
             "status": "success",
             "message": "Ordenamiento finalizado.",
         }
+        execution_steps[-1]["state_after"] = final_state
         self._array = list(final_state["items"])
         self._last_trace = {
             "structure_id": "sorting",
@@ -217,6 +220,7 @@ class SortingAdapter(BaseAdapter):
             "steps": execution_steps,
             "final_state": final_state,
         }
+        TraceEngine.validate_legacy_trace(self._last_trace)
         self._last_result = {
             "mode": mode,
             "algorithm": self._algorithm_id,
@@ -356,4 +360,3 @@ class SortingAdapter(BaseAdapter):
             },
             {"name": "reset", "label": "Reiniciar", "mutates": True, "inputs": []},
         ]
-

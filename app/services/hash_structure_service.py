@@ -7,6 +7,7 @@ from typing import Any
 
 from app.adapters.base_adapter import BaseAdapter
 from app.adapters.hash_table_adapter import HashTableAdapter
+from app.services.observability import observe_replay
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
@@ -60,6 +61,7 @@ class HashStructureService:
         return adapter_class()
 
     @staticmethod
+    @observe_replay
     def _rebuild_adapter(
         structure_id: str,
         history: list[dict[str, Any]],

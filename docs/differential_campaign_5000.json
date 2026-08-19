@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-08-19T05:03:16.553959+00:00",
+  "base_seed": 20260819,
+  "sequence_length": 5,
+  "sequences_per_family": 1000,
+  "total_sequences": 5000,
+  "divergences": 0,
+  "duration_seconds": 71.594,
+  "families": {
+    "sequential": {
+      "sequences": 1000,
+      "divergences": 0,
+      "structures": {
+        "stack": 167,
+        "queue": 167,
+        "linked_list": 167,
+        "circular_list": 167,
+        "priority_queue": 166,
+        "sublist": 166
+      },
+      "duration_seconds": 13.114
+    },
+    "hierarchical": {
+      "sequences": 1000,
+      "divergences": 0,
+      "structures": {
+        "binary_heap": 250,
+        "abb": 250,
+        "avl": 250,
+        "red_black": 250
+      },
+      "duration_seconds": 12.442
+    },
+    "graph": {
+      "sequences": 1000,
+      "divergences": 0,
+      "structures": {
+        "graph": 1000
+      },
+      "duration_seconds": 11.874
+    },
+    "hash": {
+      "sequences": 1000,
+      "divergences": 0,
+      "structures": {
+        "hash_table": 1000
+      },
+      "duration_seconds": 11.673
+    },
+    "sorting": {
+      "sequences": 1000,
+      "divergences": 0,
+      "structures": {
+        "sorting": 1000
+      },
+      "duration_seconds": 15.792
+    }
+  }
+}

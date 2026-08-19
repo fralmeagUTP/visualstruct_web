@@ -1,199 +1,130 @@
-# Informe de Testeo Integral
+# Informe de pruebas y calidad
 
-Fecha: **18 de mayo de 2026**  
+Fecha: **19 de agosto de 2026**
 Proyecto: `Web_VisualEstruct`
+Entorno local de referencia: Python `3.10.5`, Windows 10.
 
-## 1. Objetivo
+## 1. Resultado funcional
 
-Validar de forma integral la calidad funcional, tecnica y de regresion de la app:
+La regresión completa, incluyendo las nueve pruebas E2E con Chromium, finalizó con:
 
-- dominio y adaptadores por modulo,
-- rutas Flask y contratos de API,
-- motor de interpretacion y simulacion visual,
-- consistencia con TAD nuevos en `docs/tads_C`,
-- pruebas E2E de interfaz.
+```text
+530 passed
+```
 
-## 2. Ejecuciones realizadas
-
-1. Suite completa:
+Comando reproducible:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Resultado: **285 passed**.
-
-2. Suite con cobertura:
+Las pruebas E2E también pueden ejecutarse en su job independiente:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest --cov=app --cov-report=term-missing
+.\.venv\Scripts\playwright.exe install chromium
+.\.venv\Scripts\python.exe -m pytest -q -m e2e
 ```
 
-Resultado: **285 passed**, cobertura global **83%**.
+El workflow `.github/workflows/e2e-playwright.yml` instala el navegador y sus dependencias en Linux.
 
-## 3. Resumen global
+## 2. Cobertura y gates
 
-- Items recolectados: `285`
-- Exitosos: `285`
-- Fallidos: `0`
-- Omitidos: `0`
-- Cobertura total (`app/`): **83%** (`9350` lineas, `1550` no cubiertas)
+La medicion instrumentada, excluyendo E2E y pruebas temporizadas, obtuvo:
 
-Incluye `tests/test_ui_playwright_e2e.py` y pruebas del nuevo modulo de ordenamiento ejecutadas y aprobadas.
+```text
+518 passed, 11 deselected
+Cobertura global: 89%
+```
 
-## 4. Cobertura por areas (observacion ejecutiva)
+Los gates vigentes son:
 
-### Cobertura alta (>= 90%)
-
-- Inicializacion app y rutas base: `app/__init__.py` `100%`, `app/routes/main_routes.py` `100%`
-- Servicios clave:
-  - `app/services/structure_service.py` `100%`
-  - `app/services/c_code_service.py` `90%`
-  - `app/services/graph_help_service.py` `100%`
-- Adaptadores:
-  - `app/adapters/graph_adapter.py` `93%`
-  - `app/adapters/hash_table_adapter.py` `94%`
-  - `app/adapters/priority_queue_adapter.py` `100%`
-- Wrappers de dominio:
-  - `app/domain/sequential/tad_wrappers.py` `89%` (frontera alta-media)
-  - `app/domain/graph/tad_wrappers.py` `97%`
-  - `app/domain/hierarchical/tad_wrappers.py` `93%`
-
-### Cobertura media (70% a 89%)
-
-- Rutas:
-  - `app/routes/sequential_routes.py` `87%`
-  - `app/routes/graph_routes.py` `84%`
-  - `app/routes/hash_routes.py` `83%`
-  - `app/routes/hierarchical_routes.py` `71%`
-- Servicios:
-  - `app/services/graph_structure_service.py` `87%`
-  - `app/services/hierarchical_structure_service.py` `82%`
-- TAD jerarquicos puntuales:
-  - `app/domain/hierarchical/tad_abb.py` `75%`
-  - `app/domain/hierarchical/tad_avl.py` `70%`
-
-### Cobertura baja (< 70%)
-
-- `app/domain/graph/tad_grafo.py`: `49%`
-- `app/domain/hash/tad_tabla_hash.py`: `59%`
-- `app/domain/hierarchical/tad_monticulo_binario.py`: `59%`
-- `app/services/pseudocode_service.py`: `67%`
-
-## 5. Verificacion funcional destacada
-
-- Interpretacion paso a paso validada en modulos secuencial, jerarquico, grafos y hash.
-- Modo rapido validado:
-  - checkbox desactivado aplica resultado final.
-  - en grafos, el resultado visual final coincide con el ultimo estado de la traza (recorrido/camino/MST).
-- Ayuda y contenidos C validados con pruebas de soporte (`test_help_c_content.py`).
-- Migracion a TAD nuevos verificada por pruebas de remocion legacy:
-  - secuencial, jerarquico, grafos y hash.
-
-## 6. Riesgos tecnicos pendientes
-
-1. Cobertura baja en implementaciones de dominio puro (`tad_grafo.py`, `tad_tabla_hash.py`, `tad_monticulo_binario.py` jerarquico).
-2. `pseudocode_service.py` y el nuevo dominio de ordenamiento mantienen rutas de fallback/ramos no ejercitados completamente.
-3. Rutas de error menos frecuentes en `hierarchical_routes.py` y `graph_routes.py` aun con margen de mejora.
-
-## 7. Recomendaciones inmediatas
-
-1. Agregar pruebas unitarias directas de dominio para `app/domain/graph/tad_grafo.py` cubriendo mas ramas de errores y casos extremos.
-2. Ampliar pruebas de hash de bajo nivel para colisiones, redimensionamiento y borrados encadenados en `tad_tabla_hash.py`.
-3. Incorporar pruebas especificas de rutas de fallo (payload invalido, ids inexistentes) para subir cobertura de blueprints.
-4. Mantener la corrida E2E de Playwright en CI para proteger regresiones de UX en modo rapido/paso a paso.
-
-## 8. Comandos de reproduccion
+| Componente | Medido | Minimo |
+|---|---:|---:|
+| Global `app/` | 89% | 83% |
+| `domain/sorting/tad_ordenamiento.py` | 100% | 85% |
+| `domain/graph/tad_grafo.py` | 100% | 85% |
+| `domain/hash/tad_tabla_hash.py` | 99% | 85% |
+| `domain/hierarchical/tad_monticulo_binario.py` | 99% | 85% |
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe -m pytest --cov=app --cov-report=term-missing
+.\.venv\Scripts\python.exe -m pytest -m "not e2e and not performance" --cov=app --cov-report=term-missing --cov-report=json:coverage.json
+.\.venv\Scripts\python.exe scripts\check_coverage_gates.py --report coverage.json
 ```
 
-Opcional (solo UI E2E):
+El verificador falla si baja la cobertura global, un componente critico queda bajo 85% o falta
+del reporte.
+
+## 3. Conformidad C y seguridad de memoria
+
+Existen harnesses no interactivos para los 13 TAD. La conformidad estricta compila con C17,
+warnings como error y compara estados canonicos C/Python.
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest tests\test_ui_playwright_e2e.py -q
+.\.venv\Scripts\python.exe scripts\check_c_conformance.py
 ```
 
-## 9. Veredicto
+La CI Linux mantiene dos jobs independientes:
 
-El estado actual es **estable y consistente** con los TAD nuevos: la suite completa pasa (`285/285`) con integracion del modulo de ordenamiento.  
-Queda trabajo puntual de cobertura en implementaciones de dominio de grafos/hash/monticulo jerarquico, ordenamiento y rutas de error menos frecuentes.
+- `c17-conformance`: compilacion y escenarios diferenciales estrictos.
+- `sanitizers`: AddressSanitizer y UndefinedBehaviorSanitizer.
 
-## 10. Modo Solo Visualizacion (MVP didactico)
+Los 13 harnesses pasaron C17 estricto en Windows. En Linux sobre Docker se ejecutaron, para cada
+TAD, pases independientes de AddressSanitizer y UndefinedBehaviorSanitizer sin diagnósticos. Los
+pases separados evitan una interferencia observada entre ambos runtimes bajo Docker Desktop.
 
-Fecha de verificacion: `2026-05-21`.
+La campaña diferencial reproducible ejecutó 1.000 secuencias por cada una de las cinco familias
+(5.000 en total, semilla base `20260819`, longitud 5) y obtuvo cero divergencias. Reporte:
+`docs/differential_campaign_5000.json`.
 
-Cambios verificados:
+## 4. Checkpoints y rendimiento
 
-- Switch global visible en layout base: `Mostrar codigo y detalles tecnicos`.
-- Modo por defecto en primera carga: `visual`.
-- Cambio a `full` sin recarga y persistencia por `localStorage`.
-- Persistencia al navegar entre modulos y al recargar.
-- Ocultamiento/visualizacion de bloques tecnicos (`didactic-technical`) en:
-  - secuencial
-  - jerarquico
-  - grafos
-  - hash
-  - sorting
+Se verificaron formato versionado, SHA-256 determinista, compatibilidad, corrupcion, truncado,
+offset invalido, importacion parcial y fallback a replay completo. Las sesiones antiguas con una
+lista de operaciones se migran a un registro versionado sin perder eventos.
 
-Pruebas ejecutadas para este alcance:
+Benchmark de reconstruccion, 20 iteraciones y 300 operaciones por familia:
 
-```powershell
-.\.venv\Scripts\python.exe -m pytest tests\test_app_routes.py tests\test_sorting_routes.py
-.\.venv\Scripts\python.exe -m pytest tests\test_ui_playwright_e2e.py
-```
+| Familia | p95 |
+|---|---:|
+| Secuencial | 1.349 ms |
+| Arboles | 45.109 ms |
+| Grafos | 23.900 ms |
+| Hash | 47.882 ms |
+| Ordenamiento | 1.637 ms |
 
-Resultado:
+Todas cumplen el presupuesto p95 menor a `200 ms`. La medicion usa checkpoint ausente y replay
+completo, el peor caso seguro. Reporte: `docs/checkpoint_reconstruction_benchmark.json`.
 
-- `tests/test_app_routes.py` + `tests/test_sorting_routes.py`: `23 passed`
-- `tests/test_ui_playwright_e2e.py`: `6 passed`
+## 5. Configuracion y observabilidad
 
-## 11. Ajustes UX finales (2026-05-21)
+El arranque valida `APP_ENV`, host, puerto, sesiones, cookies, checkpoints y proxies. En
+produccion rechaza la clave de desarrollo, cookies inseguras sin override explicito, DEBUG/TESTING
+y ProxyFix sin conteo de saltos confiables.
 
-Cambios adicionales verificados:
+El logger `visualstruct.operations` emite JSON para:
 
-- El switch global `Mostrar codigo y detalles tecnicos` se movio a la misma fila del menu superior.
-- Cuando `Interpretar codigo paso a paso` esta desactivado:
-  - `Anterior paso` y `Siguiente paso` quedan deshabilitados.
-  - se mantiene solo ejecucion en modo rapido.
-- Al finalizar simulaciones secuenciales (lista, pila, cola, cola de prioridad),
-  la vista final muestra solo la estructura resultante, sin bloque temporal `aux`.
+- validacion de trazas: duracion, estrategia y cantidad de pasos;
+- replay: duracion, operaciones recibidas y operaciones validas;
+- reconstruccion: uso/fallback de checkpoint, motivo categorico y operaciones pendientes.
 
-Pruebas ejecutadas:
+Las pruebas verifican que estos eventos no contienen estados, historiales, cookies, secretos ni
+payloads de usuario.
 
-```powershell
-.\.venv\Scripts\python.exe -m pytest tests\test_ui_playwright_e2e.py tests\test_sequential_routes.py
-.\.venv\Scripts\python.exe -m pytest tests\test_ui_playwright_e2e.py tests\test_app_routes.py tests\test_sorting_routes.py
-```
+## 6. Topologia de CI
 
-Resultado:
+| Job | Responsabilidad |
+|---|---|
+| `unit-integration` | Suite Python y gates de cobertura |
+| `e2e` | Interfaz real con Chromium/Playwright |
+| `c17-conformance` | Los 13 harnesses y conformidad C17 |
+| `sanitizers` | ASan y UBSan en Linux |
 
-- `tests/test_ui_playwright_e2e.py` + `tests/test_sequential_routes.py`: `15 passed`
-- `tests/test_ui_playwright_e2e.py` + `tests/test_app_routes.py` + `tests/test_sorting_routes.py`: `29 passed`
+Pruebas estaticas protegen la separacion de jobs y sus comandos criticos.
 
-## 12. Depuracion de Mensajes (2026-05-21)
+## 7. Veredicto
 
-Cambios adicionales verificados:
-
-- Se elimino redundancia consecutiva de mensajes en `Consola C (printf)` para:
-  - `sequential.js`
-  - `hierarchical.js`
-  - `hash.js`
-  - `graph.js`
-  - `sorting.js`
-- Se elimino redundancia consecutiva de entradas en historial de ejecucion para los mismos modulos.
-- Se mantuvo la semantica de resultados y de trazas; solo cambia la presentacion de mensajes repetidos.
-
-Pruebas ejecutadas:
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest tests\test_sequential_routes.py tests\test_hierarchical_routes.py tests\test_hash_routes.py tests\test_graph_routes.py tests\test_sorting_routes.py tests\test_execution_trace_contract.py tests\test_sorting_trace.py
-.\.venv\Scripts\python.exe -m pytest tests\test_graph_routes.py tests\test_execution_trace_contract.py
-```
-
-Resultado:
-
-- Suite focalizada de rutas + trazas: `51 passed`
-- Verificacion adicional grafos + contrato de traza: `26 passed`
+El incremento `harden-trace-conformance-and-state` mantiene la regresión Python en verde,
+eleva los cuatro componentes criticos sobre su gate, agrega conformidad C reproducible y endurece
+configuración, checkpoints y observabilidad. La fase 7 queda verificada: suite completa con
+Chromium, cobertura, 5.000 secuencias diferenciales, 13 TAD con C17/ASan/UBSan, migración de
+sesiones anteriores a checkpoints y validación estricta de OpenSpec.

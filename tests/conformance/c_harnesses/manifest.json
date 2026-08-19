@@ -1,0 +1,18 @@
+{
+  "schema": "visualestruct-c-harnesses/v1",
+  "structures": {
+    "linked_list": "linked_list_harness.c",
+    "stack": "stack_harness.c",
+    "queue": "queue_harness.c",
+    "priority_queue": "priority_queue_harness.c",
+    "circular_list": "circular_list_harness.c",
+    "sublist": "sublist_harness.c",
+    "abb": "abb_harness.c",
+    "avl": "avl_harness.c",
+    "red_black": "red_black_harness.c",
+    "binary_heap": "binary_heap_harness.c",
+    "graph": "graph_harness.c",
+    "hash_table": "hash_table_harness.c",
+    "sorting": "sorting_harness.c"
+  }
+}

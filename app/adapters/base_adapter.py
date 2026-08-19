@@ -3,11 +3,21 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, ClassVar
+
+
+class AdapterStateError(ValueError):
+    """Base error raised when an adapter state cannot be imported."""
+
+
+class AdapterStateVersionError(AdapterStateError):
+    """Raised when serialized state targets another adapter version."""
 
 
 class BaseAdapter(ABC):
     """Common contract for every sequential structure adapter."""
+
+    STATE_VERSION: ClassVar[str] = "1"
 
     @abstractmethod
     def create(self) -> None:
@@ -28,6 +38,33 @@ class BaseAdapter(ABC):
     @abstractmethod
     def get_supported_operations(self) -> list[dict[str, Any]]:
         """Return operation metadata for the dynamic panel."""
+
+    def export_state(self) -> dict[str, Any]:
+        """Export the adapter-owned payload used by a session checkpoint.
+
+        Implementations must return data accepted by ``import_state`` and made
+        exclusively of JSON-compatible values. Visual state is deliberately
+        not used as the persistence contract because presentation fields may
+        evolve independently.
+        """
+        raise NotImplementedError(
+            f"{type(self).__name__} no implementa exportacion de estado."
+        )
+
+    def import_state(self, state: dict[str, Any]) -> None:
+        """Replace current state atomically from an exported payload.
+
+        Implementations must validate the complete payload before mutating the
+        adapter and raise ``AdapterStateError`` for malformed input.
+        """
+        raise NotImplementedError(
+            f"{type(self).__name__} no implementa importacion de estado."
+        )
+
+    @classmethod
+    def adapter_version(cls) -> str:
+        """Return the stable version used for checkpoint compatibility."""
+        return cls.STATE_VERSION
 
     @staticmethod
     def _require_text(payload: dict[str, Any], key: str, label: str) -> str:

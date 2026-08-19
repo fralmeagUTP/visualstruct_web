@@ -10,6 +10,7 @@ from app.adapters.abb_adapter import ABBAdapter
 from app.adapters.avl_adapter import AVLAdapter
 from app.adapters.binary_heap_adapter import BinaryHeapAdapter
 from app.adapters.red_black_adapter import RedBlackAdapter
+from app.services.observability import observe_replay
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
@@ -82,6 +83,7 @@ class HierarchicalStructureService:
         return adapter_class()
 
     @staticmethod
+    @observe_replay
     def _rebuild_adapter(
         structure_id: str,
         history: list[dict[str, Any]],

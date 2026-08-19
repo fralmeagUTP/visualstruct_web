@@ -217,8 +217,13 @@ def test_configure_session_backend_cachelib_and_redis_and_proxy(monkeypatch: pyt
 
     proxy_on_app = Flask("proxy-on")
     proxy_on_app.config.from_object(Config)
+    proxy_on_app.config.update(ENABLE_PROXY_FIX=True, TRUSTED_PROXY_COUNT=1)
     app_module._configure_proxy_headers(proxy_on_app)
     assert isinstance(proxy_on_app.wsgi_app, ProxyFix)
+    assert proxy_on_app.wsgi_app.x_for == 1
+    assert proxy_on_app.wsgi_app.x_proto == 1
+    assert proxy_on_app.wsgi_app.x_host == 1
+    assert proxy_on_app.wsgi_app.x_port == 1
 
 
 def test_configure_session_backend_without_flask_session_logs_warning(
