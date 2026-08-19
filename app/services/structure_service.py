@@ -12,6 +12,7 @@ from app.adapters.priority_queue_adapter import PriorityQueueAdapter
 from app.adapters.queue_adapter import QueueAdapter
 from app.adapters.stack_adapter import StackAdapter
 from app.adapters.sublist_adapter import SublistAdapter
+from app.services.observability import observe_replay
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
@@ -96,6 +97,7 @@ class StructureService:
         return adapter_class()
 
     @staticmethod
+    @observe_replay
     def _rebuild_adapter(
         structure_id: str,
         history: list[dict[str, Any]],

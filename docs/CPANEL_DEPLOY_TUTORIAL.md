@@ -145,9 +145,11 @@ pip install -r /home/ur5cxigur1qs/visualstruct/requirements.txt
 
 En cPanel, agrega estas variables en la Python App:
 
+- `APP_ENV` = `production`
 - `FLASK_SECRET_KEY` = clave larga y aleatoria
 - `SESSION_COOKIE_SECURE` = `true`
 - `ENABLE_PROXY_FIX` = `true`
+- `TRUSTED_PROXY_COUNT` = cantidad exacta de proxies confiables (normalmente `1`, confirmar con el proveedor)
 - `SESSION_TYPE` = `cachelib`
 - `SESSION_CACHE_DIR` = `/home/ur5cxigur1qs/visualstruct/.flask_session`
 - `SESSION_COOKIE_SAMESITE` = `Lax`
@@ -157,6 +159,18 @@ Generar clave segura:
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(64))"
 ```
+
+No reutilices `dev-secret-key-change-me`: la aplicacion rechaza esa clave cuando
+`APP_ENV=production`. Tampoco habilites `ENABLE_PROXY_FIX` sin `TRUSTED_PROXY_COUNT`, porque
+confiar saltos de mas permite falsificar headers `X-Forwarded-*`. Si cPanel no termina HTTPS,
+revisa la topologia antes de cambiar `SESSION_COOKIE_SECURE`; el override
+`ALLOW_INSECURE_COOKIES_IN_PRODUCTION=true` debe limitarse a una red HTTP controlada.
+
+Configuracion opcional de checkpoints (desactivada inicialmente):
+
+- `ENABLE_CHECKPOINTS` = `false`
+- `CHECKPOINT_INTERVAL` = `50`
+- `CHECKPOINT_MAX_PER_STRUCTURE` = `1`
 
 ---
 

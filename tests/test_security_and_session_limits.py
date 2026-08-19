@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from time import perf_counter
 
+import pytest
+
 
 def test_healthz_contract(client) -> None:
     """Health endpoint should keep a stable liveness contract."""
@@ -46,7 +48,8 @@ def test_session_history_is_trimmed_to_configured_max(client, app) -> None:
 
     with client.session_transaction() as sess:
         histories = sess.get("sequential_histories", {})
-        stack_history = histories.get("stack", [])
+        stack_record = histories.get("stack", {})
+        stack_history = stack_record.get("history", [])
 
     assert len(stack_history) == 3
     payload_values = [step["payload"]["value"] for step in stack_history]
@@ -71,8 +74,11 @@ def test_session_histories_are_isolated_by_module_namespace(client) -> None:
 
     assert "stack" in histories
     assert "hierarchical::abb" in histories
+    assert histories["stack"]["schema_version"] == 1
+    assert histories["hierarchical::abb"]["schema_version"] == 1
 
 
+@pytest.mark.performance
 def test_graph_bfs_performance_smoke(client) -> None:
     """Smoke performance check: BFS on a moderate graph should finish quickly."""
     client.post(

@@ -3,20 +3,39 @@
 Aplicacion web didactica en Flask para practicar TAD con visualizacion interactiva y modo interprete de codigo C basado en los TAD nuevos de `docs/tads_C`.
 
 Version actual: **v0.2.5**  
-Ultima actualizacion documental: **2026-05-21**.
+Ultima actualizacion documental: **2026-08-18**.
 
 ## Estado actual del proyecto
 
-- Tests: `285 passed, 0 skipped`.
-- Cobertura global: `83%` sobre `app/` (ejecucion sin exclusiones).
+- Suite completa con Chromium: `530 passed`.
+- Cobertura global medida: `89%` sobre `app/`; gate minimo: `83%`.
+- Componentes criticos: ordenamiento y grafo `100%`; hash y monticulo jerarquico `99%`.
 - Entorno verificado: Python `3.10.5` (Windows).
 
 Resultados obtenidos con:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe -m pytest --cov=app --cov-report=term-missing
+.\.venv\Scripts\python.exe -m pytest -q tests -m "not e2e"
+.\.venv\Scripts\python.exe -m pytest -m "not e2e and not performance" --cov=app --cov-report=json:coverage.json
+.\.venv\Scripts\python.exe scripts\check_coverage_gates.py --report coverage.json
 ```
+
+Para ejecutar rápidamente la suite sin navegador:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q -m "not e2e"
+```
+
+Las pruebas E2E requieren Chromium de Playwright. Su preparación y ejecución local son:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install playwright
+.\.venv\Scripts\playwright.exe install chromium
+.\.venv\Scripts\python.exe -m pytest -q -m e2e
+```
+
+Un error `BrowserType.launch: Executable doesn't exist` indica que falta instalar el navegador;
+no constituye por sí mismo una regresión funcional de la aplicación.
 
 ## Modulos y estructuras
 
@@ -136,6 +155,8 @@ Contrato comun de adapter:
 - `to_visual_state()`
 - `reset()`
 - `get_supported_operations()`
+- `export_state()` / `import_state(state)` para adapters compatibles con checkpoints
+- `adapter_version()` para validar compatibilidad del estado persistido
 
 ## Endpoints principales
 
@@ -183,17 +204,45 @@ Scripts disponibles:
 Variables relevantes:
 
 ```text
-FLASK_SECRET_KEY=una-clave-segura
+APP_ENV=production
+FLASK_SECRET_KEY=una-clave-larga-y-aleatoria
 FLASK_HOST=127.0.0.1
 FLASK_PORT=5050
 SESSION_TYPE=cachelib|redis
 SESSION_REDIS_URL=redis://host:6379/0
-SESSION_COOKIE_SECURE=true|false
+SESSION_COOKIE_SECURE=true
 SESSION_COOKIE_SAMESITE=Lax
 SESSION_LIFETIME_MINUTES=240
 SESSION_MAX_HISTORY=300
-ENABLE_PROXY_FIX=true
+ENABLE_PROXY_FIX=false
+TRUSTED_PROXY_COUNT=
+ENABLE_CHECKPOINTS=false
+CHECKPOINT_INTERVAL=50
+CHECKPOINT_MAX_PER_STRUCTURE=1
 ```
+
+Si el despliegue usa proxy reverso, configura `ENABLE_PROXY_FIX=true` y
+`TRUSTED_PROXY_COUNT` con el numero exacto de saltos confiables. La app rechaza el arranque si
+se habilita ProxyFix sin ese conteo. En produccion tambien rechaza la clave de desarrollo y
+cookies inseguras. El override `ALLOW_INSECURE_COOKIES_IN_PRODUCTION=true` existe solo para
+entornos HTTP controlados y no se recomienda para Internet.
+
+Los checkpoints permanecen desactivados por defecto. El historial de sesiones anteriores se
+migra automaticamente al formato versionado y conserva fallback a replay completo.
+
+## Calidad y conformidad
+
+La CI ejecuta jobs independientes para unitarias/integracion, E2E con Chromium, conformidad C17
+y sanitizers Linux (AddressSanitizer y UndefinedBehaviorSanitizer).
+
+```powershell
+.\.venv\Scripts\python.exe scripts\check_c_conformance.py
+.\.venv\Scripts\python.exe scripts\benchmark_checkpoint_reconstruction.py --iterations 20 --budget-ms 200
+```
+
+El runner C cubre los 13 TAD con `-std=c17` y warnings como error. El benchmark de 300
+operaciones usa replay completo como peor caso seguro; el mayor p95 medido fue `47.882 ms`, por
+debajo del presupuesto de `200 ms`.
 
 Ejecucion de ejemplo:
 

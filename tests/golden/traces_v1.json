@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "cases": {
+    "sequential": {
+      "step_count": 7,
+      "line_texts": [
+        "void pila_apilar(ptrPila *p, int valor) {",
+        "    if (p == NULL) {",
+        "    ptrPila aux = (ptrPila) malloc(sizeof(struct NodoPila));",
+        "    if (aux == NULL) {",
+        "    aux->nro = valor;",
+        "    aux->sgte = *p;",
+        "    *p = aux;"
+      ],
+      "final": {"size": 1, "values": [7]}
+    },
+    "tree": {
+      "step_count": 28,
+      "required_lines": ["void avl_insertar(AVL *raiz, int x) {", "                avl_RSD(raiz, padre);"],
+      "final": {"size": 3, "root": 20, "inorder": [10, 20, 30]}
+    },
+    "graph": {
+      "step_count": 9,
+      "required_lines": ["Grafo grafo_insertar_arco(Grafo g, int x, int y, int z) {", "    g.a = nuevo;"],
+      "final": {"vertices": 2, "edges": 1, "edge": ["1", "2", 3.0]}
+    },
+    "hash": {
+      "step_count": 13,
+      "required_lines": ["bool th_insertar(TablaHash *tabla, int clave, int valor) {", "    tabla->cantidad++;"],
+      "final": {"size": 1, "capacity": 5, "items": [["A", "1"]]}
+    },
+    "sorting": {
+      "step_count": 8,
+      "required_lines": ["\t\t\tif (arreglo[j] > arreglo[j + 1]) {", "\t\t\t\tintercambiar(&arreglo[j], &arreglo[j + 1]);"],
+      "final": {"items": [1, 2, 3], "algorithm": "burbuja"}
+    }
+  }
+}

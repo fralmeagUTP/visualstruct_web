@@ -15,6 +15,9 @@ from werkzeug.serving import make_server
 from app import create_app
 
 
+pytestmark = pytest.mark.e2e
+
+
 @contextmanager
 def _live_server_url():
     """Run Flask app in-process and yield base URL."""
