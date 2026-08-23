@@ -1,0 +1,19 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "ABB-001", "structure_id": "abb", "operation": "eliminar",
+  "input": {"before": [2, [1, null, null], [3, null, null]], "value": 2},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_abb.c:abb_eliminar", "state": {"shape": [2, [1, null, null], [3, null, null]]}},
+    {"step": 1, "layer": "c", "source_location": "docs/tads_C/tad_abb.c:nodo->valor=temp->valor", "state": {"shape": [3, [1, null, null], [3, null, null]]}},
+    {"step": 2, "layer": "c", "source_location": "docs/tads_C/tad_abb.c:recursive successor delete", "state": {"shape": [3, [1, null, null], null]}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "frontend", "source_location": "app/services/trace/strategies.py:TreeTraceStrategy", "state": {"shape": [2, [1, null, null], [3, null, null]]}},
+    {"step": 1, "layer": "frontend", "source_location": "app/services/trace/strategies.py:TreeTraceStrategy", "state": {"shape": [3, [1, null, null], null]}}
+  ],
+  "result": "failed", "severity": "high",
+  "discrepancy": "La traza visual omite el estado temporal donde el valor del sucesor ya fue copiado pero el nodo sucesor aún no ha sido eliminado.",
+  "probable_cause": "TreeTraceStrategy conmuta directamente entre before_state y after_state en un único mutation_boundary.",
+  "location": "app/services/trace/strategies.py:TreeTraceStrategy.build_boundaries",
+  "recommended_test": "Eliminar una raíz con dos hijos y exigir el snapshot duplicado tras nodo->valor=temp->valor antes de la eliminación recursiva.",
+  "suggested_fix": "Consumir snapshots de asignación y free del oráculo recursivo, preservando identidades lógicas distintas aunque temporalmente compartan valor. No se modifica código funcional durante esta auditoría."
+}

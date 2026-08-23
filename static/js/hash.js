@@ -413,20 +413,8 @@ function initHashPage(model) {
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
-      const messages = hashExtractPrintfMessagesFromLine(step.line_text);
-      messages.forEach((msg) => {
-        // Evita mostrar literales de formato sin resolver (ej. "%d", "%s").
-        if (hashHasPrintfFormatSpecifier(msg)) {
-          return;
-        }
-        hashPushUniqueConsoleLine(out, `[printf] ${msg}`);
-      });
-    }
-    if (limit >= trace.steps.length - 1) {
-      const finalMessage = String(trace.message || "").trim();
-      if (finalMessage) {
-        hashPushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
-      }
+      const emitted = Array.isArray(step.console) ? step.console : [];
+      emitted.forEach((line) => hashPushUniqueConsoleLine(out, line));
     }
     return out;
   }

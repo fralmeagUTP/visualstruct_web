@@ -1,0 +1,22 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "GRAPH-001",
+  "structure_id": "graph",
+  "operation": "insert_edge",
+  "input": {"operations": [["insert_edge", 1, 2, 5], ["insert_edge", 1, 2, 7]], "initial_vertices": []},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "tad_grafo.c:grafo_insertar_arco", "state": {"vertices": [], "edges": [[1, 2, 5]]}},
+    {"step": 1, "layer": "c", "source_location": "tad_grafo.c:grafo_insertar_arco", "state": {"vertices": [], "edges": [[1, 2, 5], [1, 2, 7]]}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "backend", "source_location": "app/domain/graph/tad_grafo.py:grafo_insertar_arco", "state": {"vertices": [1, 2], "edges": [[1, 2, 5]]}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/graph/tad_grafo.py:grafo_insertar_arco", "state": {"vertices": [1, 2], "edges": [[1, 2, 7]]}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "Python crea automáticamente los extremos ausentes y actualiza una arista repetida; el C enlaza cada arco sin validar extremos ni duplicados.",
+  "probable_cause": "La transcripción Python añadió normalización y reglas de integridad que no existen en grafo_insertar_vertice/grafo_insertar_arco del C.",
+  "location": "app/domain/graph/tad_grafo.py:grafo_insertar_vertice y grafo_insertar_arco",
+  "recommended_test": "Insertar un arco en grafo vacío y repetir el mismo par con otro peso; comparar vértices, cantidad, orden y pesos contra el harness C.",
+  "suggested_fix": "Definir un único contrato: o endurecer el C y mostrar ese nuevo C, o retirar la normalización Python. La visualización debe consumir exactamente el estado resultante del contrato elegido. No se modifica código funcional durante la auditoría."
+}

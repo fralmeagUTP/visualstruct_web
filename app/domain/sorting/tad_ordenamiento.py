@@ -19,6 +19,7 @@ SORTING_ALGORITHMS: list[dict[str, str]] = [
     {"id": "binsort", "label": "Binsort", "c_function": "ordenar_binsort"},
     {"id": "radixsort", "label": "Radix sort", "c_function": "ordenar_radixsort"},
 ]
+ORDENAMIENTO_RANGO_MAX = 1_000_000
 
 
 class SortingExecutionError(ValueError):
@@ -277,25 +278,29 @@ class SortingInterpreter:
             pivot_index=pivot_index,
         )
         while i <= j:
-            while self.values[i] < pivot:
+            while True:
                 self.metrics.comparisons += 1
                 self._record(
-                    f"Avanzar i ({i}) porque {self.values[i]} < pivote {pivot}.",
+                    f"Evaluar arreglo[{i}] < pivote {pivot}: {self.values[i] < pivot}.",
                     line_token="move_i",
                     comparing=[i, pivot_index],
                     active_range=[first, last],
                     pivot_index=pivot_index,
                 )
+                if not self.values[i] < pivot:
+                    break
                 i += 1
-            while self.values[j] > pivot:
+            while True:
                 self.metrics.comparisons += 1
                 self._record(
-                    f"Retroceder j ({j}) porque {self.values[j]} > pivote {pivot}.",
+                    f"Evaluar arreglo[{j}] > pivote {pivot}: {self.values[j] > pivot}.",
                     line_token="move_j",
                     comparing=[j, pivot_index],
                     active_range=[first, last],
                     pivot_index=pivot_index,
                 )
+                if not self.values[j] > pivot:
+                    break
                 j -= 1
             self.metrics.comparisons += 1
             if i <= j:
@@ -408,6 +413,10 @@ class SortingInterpreter:
         min_v = min(self.values)
         max_v = max(self.values)
         rng = max_v - min_v + 1
+        if rng > ORDENAMIENTO_RANGO_MAX:
+            raise SortingExecutionError(
+                f"El rango de conteo ({rng}) supera el máximo permitido ({ORDENAMIENTO_RANGO_MAX})."
+            )
         count = [0] * rng
         self._record(
             f"Inicializar arreglo de conteo con rango [{min_v}, {max_v}].",
@@ -516,4 +525,3 @@ class SortingInterpreter:
                 "message": last_action,
             },
         }
-

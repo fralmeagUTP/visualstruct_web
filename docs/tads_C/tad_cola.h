@@ -50,5 +50,6 @@ void cola_vaciar(struct Cola *q);
  * @return Valor en cola_frente, o -1 si la cola esta vacia.
  */
 int cola_frente(struct Cola q);
+int cola_final(struct Cola q);
 
 #endif

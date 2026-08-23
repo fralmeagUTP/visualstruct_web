@@ -2194,31 +2194,10 @@ function initHierPage(model) {
     }
     const limit = Math.min(cursor, trace.steps.length - 1);
     const out = [];
-    const traversalValues = hGetTraversalResultValuesFromTrace(trace);
-    let traversalValueIndex = 0;
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
-      const messages = hExtractPrintfMessagesFromLine(step.line_text);
-      messages.forEach((msg) => {
-        // En recorridos recursivos del ABB, traducir `printf("%d ", ...)`
-        // a valores concretos visitados, evitando mostrar el literal "%d".
-        if (hHasPrintfFormatSpecifier(msg)) {
-          if (hIsOnlyPrintfSpecifier(msg) && traversalValueIndex < traversalValues.length) {
-            hPushUniqueConsoleLine(out, `[printf] ${traversalValues[traversalValueIndex]}`);
-            traversalValueIndex += 1;
-            return;
-          }
-          // Si no podemos resolver el formato a un valor, omitimos ese ruido visual.
-          return;
-        }
-        hPushUniqueConsoleLine(out, `[printf] ${msg}`);
-      });
-    }
-    if (limit >= trace.steps.length - 1) {
-      const finalMessage = String(trace.message || "").trim();
-      if (finalMessage) {
-        hPushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
-      }
+      const emitted = Array.isArray(step.console) ? step.console : [];
+      emitted.forEach((line) => hPushUniqueConsoleLine(out, line));
     }
     return out;
   }

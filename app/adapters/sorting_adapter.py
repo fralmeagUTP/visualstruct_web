@@ -21,12 +21,12 @@ class SortingAdapter(BaseAdapter):
         "insercion": {"while_compare": "while (j > 0 && arreglo[j - 1] > clave)", "shift": "arreglo[j] = arreglo[j - 1];", "insert_key": "arreglo[j] = clave;"},
         "burbuja": {"compare": "if (arreglo[j] > arreglo[j + 1])", "swap": "intercambiar(&arreglo[j], &arreglo[j + 1])", "break": "if (!hubo_intercambio) break;"},
         "shell": {"gap": "for (intervalo = n / 2; intervalo > 0; intervalo /= 2)", "gap_compare": "while (j >= intervalo && arreglo[j - intervalo] > temporal)", "gap_shift": "arreglo[j] = arreglo[j - intervalo];", "gap_insert": "arreglo[j] = temporal;"},
-        "quicksort": {"pivot": "int i = primero, j = ultimo, pivote =", "partition_swap": "intercambiar(&arreglo[i], &arreglo[j]);"},
+        "quicksort": {"pivot": "int i = primero, j = ultimo, pivote =", "move_i": "while (arreglo[i] < pivote)", "move_j": "while (arreglo[j] > pivote)", "partition_swap": "intercambiar(&arreglo[i], &arreglo[j]);"},
         "mergesort": {"split": "mergesort_recursivo(arreglo, auxiliar, izquierda, medio);", "merge_compare": "if (arreglo[i] <= arreglo[j])", "merge_copy_back": "for (i = izquierda; i <= derecha; ++i) arreglo[i] = auxiliar[i];"},
         "heapsort": {"heap_compare": "if (izquierdo < n && arreglo[izquierdo] > arreglo[mayor])", "heap_swap": "intercambiar(&arreglo[raiz], &arreglo[mayor]);", "heap_extract": "intercambiar(&arreglo[0], &arreglo[i - 1]);"},
         "counting_sort": {"count_init": "conteo = (int *)calloc(rango, sizeof(int));", "count_fill": "++conteo[arreglo[i] - minimo];", "count_write": "while (conteo[i] > 0)"},
-        "binsort": {"binsort_delegate": "return ordenar_counting_sort(arreglo, n);"},
-        "radixsort": {"radix_split": "if (arreglo[i] < 0) negativos[cant_negativos++] = -arreglo[i];", "radix_digit": "counting_por_digito", "radix_merge": "for (i = cant_negativos; i > 0; --i) arreglo[indice++] = -negativos[i - 1];"},
+        "binsort": {"count_init": "conteo = (int *)calloc(rango, sizeof(int));", "count_fill": "++conteo[arreglo[i] - minimo];", "count_write": "while (conteo[i] > 0)", "binsort_delegate": "return ordenar_counting_sort(arreglo, n);"},
+        "radixsort": {"radix_split": "if (arreglo[i] < 0) negativos[cant_negativos++] = 0U - (uint32_t)arreglo[i];", "radix_digit": "counting_por_digito", "radix_merge": "uint32_t magnitud = negativos[i - 1];"},
     }
 
     def __init__(self) -> None:
@@ -175,6 +175,14 @@ class SortingAdapter(BaseAdapter):
         patterns = self._LINE_PATTERNS.get(self._algorithm_id, {})
         line_lookup = self._build_line_lookup(source_code, patterns)
         source_lines = str(source_code or "").replace("\r\n", "\n").split("\n")
+        line_lookup["entry"] = next(
+            (index for index, line in enumerate(source_lines) if f"ordenar_{self._algorithm_id}(" in line),
+            next((index for index, line in enumerate(source_lines) if "ordenar_" in line and "(" in line), None),
+        )
+        line_lookup["return"] = next(
+            (index for index in range(len(source_lines) - 1, -1, -1) if "return ORDENAMIENTO_OK" in source_lines[index]),
+            next((index for index in range(len(source_lines) - 1, -1, -1) if source_lines[index].strip()), line_lookup.get("entry")),
+        )
 
         execution_steps: list[dict[str, Any]] = []
         for idx, raw_step in enumerate(raw_steps):

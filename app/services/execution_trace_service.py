@@ -80,6 +80,7 @@ class ExecutionTraceService:
     _expand_recursive_abb_delete_indexes = staticmethod(TreeAlgorithmPlanner.expand_abb_delete)
     _expand_avl_insert_indexes = staticmethod(TreeAlgorithmPlanner.expand_avl_insert)
     _expand_rbt_insert_indexes = staticmethod(TreeAlgorithmPlanner.expand_rbt_insert)
+    _expand_rbt_delete_indexes = staticmethod(TreeAlgorithmPlanner.expand_rbt_delete)
     _expand_tree_extreme_indexes = staticmethod(TreeQueryPlanner.expand_extreme)
     _expand_recursive_bst_traversal_indexes = staticmethod(TreeQueryPlanner.expand_traversal)
     _expand_recursive_tree_metrics_indexes = staticmethod(TreeQueryPlanner.expand_metrics)
@@ -128,6 +129,7 @@ class ExecutionTraceService:
             and "abb_validar_" not in normalized_join
             and "void avl_insertar(" not in normalized_join
             and "void rbt_insertar(" not in normalized_join
+            and "void rbt_eliminar(" not in normalized_join
         ):
             return None
 
@@ -145,6 +147,12 @@ class ExecutionTraceService:
                 before_state=before_state,
                 payload=payload,
                 success=success,
+            )
+        if operation_name == "eliminar" and "void rbt_eliminar(" in normalized_join:
+            return ExecutionTraceService._expand_rbt_delete_indexes(
+                lines=lines,
+                before_state=before_state,
+                payload=payload,
             )
         if operation_name == "insertar" and "abb_insertar(" in normalized_join:
             return ExecutionTraceService._expand_recursive_abb_insert_indexes(
@@ -253,6 +261,7 @@ class ExecutionTraceService:
         success: bool,
         message: str,
         mutates: bool,
+        console_events: list[str] | None = None,
     ) -> dict[str, Any]:
         """Build one execution trace consumable by frontend animation runtimes."""
         source_code, code_title = ExecutionTraceService._get_operation_source(
@@ -374,6 +383,7 @@ class ExecutionTraceService:
                 step["phase"] = "progress" if not is_last else "end"
             if step_index < len(debug_steps) and isinstance(debug_steps[step_index], dict):
                 step["debug"] = debug_steps[step_index]
+            step["console"] = list(console_events or []) if is_last else []
             steps.append(step)
 
         if not steps:

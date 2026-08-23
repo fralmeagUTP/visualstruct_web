@@ -156,6 +156,21 @@ def sublista_formatear(lista: Nodo | None, destino: list[str] | None, capacidad:
         destino.append(texto)
 
 
-def sublista_destruir(lista: list[Nodo | None]) -> None:
+def sublista_destruir(lista: list[Nodo | None], eventos: list[dict] | None = None) -> None:
+    """Libera lógicamente hijos antes que su padre, igual que el C mostrado."""
+    actual = lista[0]
+    while actual is not None:
+        siguiente = actual.sgte
+        hijo = actual.sub
+        while hijo is not None:
+            hijo_siguiente = hijo.sgte
+            if eventos is not None:
+                eventos.append({"stage": "free_child", "parent_id": id(actual), "node_id": id(hijo), "value": hijo.nro})
+            hijo.sgte = None
+            hijo = hijo_siguiente
+        actual.sub = None
+        if eventos is not None:
+            eventos.append({"stage": "free_parent", "node_id": id(actual), "value": actual.nro})
+        actual.sgte = None
+        actual = siguiente
     lista[0] = None
-

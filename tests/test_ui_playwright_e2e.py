@@ -300,7 +300,7 @@ def test_playwright_hash_interpreter_controls_workflow() -> None:
 
             page.select_option("#hash-operation-select", "insert")
             page.wait_for_selector("#hash-field-key", timeout=5000)
-            page.fill("#hash-field-key", "K1")
+            page.fill("#hash-field-key", "1")
             page.fill("#hash-field-value", "V1")
             page.click("#hash-sim-play")
             _wait_status_contains(page, "#hash-sim-status", "Simulacion completada")

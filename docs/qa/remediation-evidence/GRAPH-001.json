@@ -1,0 +1,8 @@
+{
+  "schema": "didactic-remediation-evidence/v1",
+  "case_id": "GRAPH-001",
+  "status": "fixed",
+  "contract": "La inserción crea extremos ausentes y actualiza un arco repetido en C y Python.",
+  "tests": ["tests/test_graph_phase3_remediation.py::test_edge_auto_creates_endpoints_and_duplicate_updates_integer_weight"],
+  "gates": {"c17": "passed", "backend": "passed"}
+}

@@ -145,6 +145,24 @@ class GraphTracePlanner:
             destination = str(result.get("end")) if result.get("end") is not None else ""
             reachable = bool(result.get("reachable", False))
             has_negative_cycle = bool(result.get("has_negative_cycle", False))
+            node_ids = [str(node.get("id")) for node in (after_state.get("nodes") or []) if isinstance(node, dict)]
+            final_distances = {str(key): value for key, value in (result.get("distances") or {}).items()}
+            final_previous = {
+                str(key): (None if value is None else str(value))
+                for key, value in (result.get("previous") or {}).items()
+            }
+
+            def _progress(*, distances, previous, visited, selected=None, candidates=None, nodes=None, edges=None):
+                return {
+                    "mode": "shortest",
+                    "nodes": list(nodes or []),
+                    "edges": list(edges or []),
+                    "distances": deepcopy(distances),
+                    "previous": deepcopy(previous),
+                    "visited": list(visited),
+                    "selected": selected,
+                    "candidates": list(candidates or []),
+                }
 
             if operation_name == "run_bellman_ford" and has_negative_cycle:
                 timeline: list[dict[str, Any]] = []
@@ -152,7 +170,7 @@ class GraphTracePlanner:
                     {
                         "stage": "init",
                         "note": f"Iniciando Bellman-Ford desde {origin}.",
-                        "graph_progress": {"mode": "shortest", "nodes": [origin] if origin else [], "edges": []},
+                        "graph_progress": _progress(distances={node: (0.0 if node == origin else None) for node in node_ids}, previous={node: None for node in node_ids}, visited=[], nodes=[origin] if origin else []),
                     }
                 )
                 sample_edges = []
@@ -171,51 +189,55 @@ class GraphTracePlanner:
                         {
                             "stage": "relax_edge",
                             "note": f"Pasada {pass_index}: relajando {edge[0]} -> {edge[1]}.",
-                            "graph_progress": {
-                                "mode": "shortest",
-                                "nodes": [edge[0], edge[1]],
-                                "edges": [edge],
-                            },
+                            "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[], candidates=[edge[1]], nodes=[edge[0], edge[1]], edges=[edge]),
                         }
                     )
                 timeline.append(
                     {
                         "stage": "detect_negative_cycle",
                         "note": "Se detecto ciclo negativo: aun hay relajacion tras |V|-1 pasadas.",
-                        "graph_progress": {"mode": "shortest", "nodes": [], "edges": sample_edges},
+                        "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[], edges=sample_edges),
                     }
                 )
                 timeline.append(
                     {
                         "stage": "complete",
                         "note": "Bellman-Ford finalizo con ciclo negativo.",
-                        "graph_progress": {"mode": "shortest", "nodes": [], "edges": sample_edges},
+                        "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[], edges=sample_edges),
                     }
                 )
                 return _sample_timeline(timeline)
 
             if not path or not reachable:
+                initial_distances = {node: (0.0 if node == origin else None) for node in node_ids}
+                initial_previous = {node: None for node in node_ids}
                 timeline = [
                     {
                         "stage": "init",
                         "note": f"Iniciando desde {origin} y buscando ruta a {destination}.",
+                        "graph_progress": _progress(distances=initial_distances, previous=initial_previous, visited=[]),
                     },
                     {
                         "stage": "detect_unreachable",
                         "note": "No existe ruta entre inicio y destino.",
+                        "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[]),
                     },
                     {
                         "stage": "complete",
                         "note": "Ejecucion finalizada sin ruta alcanzable.",
+                        "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[]),
                     },
                 ]
                 return _sample_timeline(timeline)
 
+            distances = {node: (0.0 if node == origin else None) for node in node_ids}
+            previous = {node: None for node in node_ids}
+            visited: list[str] = []
             timeline = [
                 {
                     "stage": "init",
                     "note": f"Iniciando en {path[0]}.",
-                    "graph_progress": {"mode": "shortest", "nodes": [path[0]], "edges": []},
+                    "graph_progress": _progress(distances=distances, previous=previous, visited=visited, candidates=[path[0]], nodes=[path[0]]),
                 }
             ]
             for i in range(1, len(path)):
@@ -227,44 +249,34 @@ class GraphTracePlanner:
                     {
                         "stage": "extract_min",
                         "note": f"Extrayendo nodo candidato {from_node} de la cola de prioridad.",
-                        "graph_progress": {
-                            "mode": "shortest",
-                            "nodes": path[:i],
-                            "edges": [[path[j - 1], path[j]] for j in range(1, i)],
-                        },
+                        "graph_progress": _progress(distances=distances, previous=previous, visited=visited, selected=from_node, candidates=path[i:], nodes=path[:i]),
                     }
                 )
+                if from_node not in visited:
+                    visited.append(from_node)
                 timeline.append(
                     {
                         "stage": "relax_edge",
                         "note": f"Relajando arista {from_node} -> {to_node}.",
-                        "graph_progress": {
-                            "mode": "shortest",
-                            "nodes": prefix_nodes,
-                            "edges": prefix_edges,
-                        },
+                        "graph_progress": _progress(distances=distances, previous=previous, visited=visited, selected=from_node, candidates=[to_node], nodes=prefix_nodes, edges=prefix_edges),
                     }
                 )
+                distances[to_node] = final_distances.get(to_node)
+                previous[to_node] = from_node
                 timeline.append(
                     {
                         "stage": "update_distance",
                         "note": f"Actualizando distancia tentativa de {to_node}.",
-                        "graph_progress": {
-                            "mode": "shortest",
-                            "nodes": prefix_nodes,
-                            "edges": prefix_edges,
-                        },
+                        "graph_progress": _progress(distances=distances, previous=previous, visited=visited, selected=from_node, candidates=[to_node], nodes=prefix_nodes, edges=prefix_edges),
                     }
                 )
+            if path[-1] not in visited:
+                visited.append(path[-1])
             timeline.append(
                 {
                     "stage": "complete",
                     "note": f"Ruta minima consolidada hacia {path[-1]}.",
-                    "graph_progress": {
-                        "mode": "shortest",
-                        "nodes": path,
-                        "edges": [[path[j - 1], path[j]] for j in range(1, len(path))],
-                    },
+                    "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=visited, selected=path[-1], nodes=path, edges=[[path[j - 1], path[j]] for j in range(1, len(path))]),
                 }
             )
             return _sample_timeline(timeline)

@@ -12,14 +12,14 @@ class HashTableAdapter(BaseAdapter):
     """Adapt ``TablaHash`` to the common visualizer contract."""
 
     def __init__(self) -> None:
-        self._table: TablaHash[str, str] | None = None
+        self._table: TablaHash[int, str] | None = None
         self._last_operation: dict[str, Any] = {}
         self._last_result: dict[str, Any] | None = None
         self._last_resize_event: dict[str, Any] | None = None
         self.create()
 
     @property
-    def table(self) -> TablaHash[str, str]:
+    def table(self) -> TablaHash[int, str]:
         """Return a non-null table instance."""
         if self._table is None:
             self.create()
@@ -53,9 +53,9 @@ class HashTableAdapter(BaseAdapter):
         return capacidad
 
     @staticmethod
-    def _require_key(payload: dict[str, Any]) -> str:
+    def _require_key(payload: dict[str, Any]) -> int:
         """Validate key field."""
-        return BaseAdapter._require_text(payload, "key", "clave")
+        return BaseAdapter._require_int(payload, "key", "clave")
 
     @staticmethod
     def _require_value(payload: dict[str, Any]) -> str:
@@ -98,23 +98,13 @@ class HashTableAdapter(BaseAdapter):
 
             new_capacity = self.table.capacidad()
             resized = new_capacity != old_capacity
-            if resized:
-                self._last_resize_event = {
-                    "old_capacity": old_capacity,
-                    "new_capacity": new_capacity,
-                    "reason": "factor_carga_superior_a_0_75",
-                }
-            else:
-                self._last_resize_event = None
+            self._last_resize_event = None
 
             message = (
                 f"Se actualizo la clave '{key}' con el nuevo valor."
                 if existed_before
                 else f"Se inserto la clave '{key}' en la tabla hash."
             )
-            if resized:
-                message += f" Se redimensiono de {old_capacity} a {new_capacity}."
-
             return self._set_result(
                 operation_name,
                 {
@@ -260,7 +250,7 @@ class HashTableAdapter(BaseAdapter):
                 "label": "Insertar/Actualizar clave-valor",
                 "mutates": True,
                 "inputs": [
-                    {"name": "key", "label": "Clave", "type": "text"},
+                    {"name": "key", "label": "Clave", "type": "number"},
                     {"name": "value", "label": "Valor", "type": "text"},
                 ],
             },
@@ -268,19 +258,19 @@ class HashTableAdapter(BaseAdapter):
                 "name": "get",
                 "label": "Buscar clave",
                 "mutates": False,
-                "inputs": [{"name": "key", "label": "Clave", "type": "text"}],
+                "inputs": [{"name": "key", "label": "Clave", "type": "number"}],
             },
             {
                 "name": "contains",
                 "label": "Verificar existencia de clave",
                 "mutates": False,
-                "inputs": [{"name": "key", "label": "Clave", "type": "text"}],
+                "inputs": [{"name": "key", "label": "Clave", "type": "number"}],
             },
             {
                 "name": "remove",
                 "label": "Eliminar clave",
                 "mutates": True,
-                "inputs": [{"name": "key", "label": "Clave", "type": "text"}],
+                "inputs": [{"name": "key", "label": "Clave", "type": "number"}],
             },
             {"name": "keys", "label": "Listar claves", "mutates": False, "inputs": []},
             {"name": "values", "label": "Listar valores", "mutates": False, "inputs": []},

@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"TRACE-002","status":"fixed","contract":"Cada after debe coincidir profundamente con el before siguiente salvo evento rebase explícito.","tests":["tests/test_phase7_trace_contract_remediation.py::test_trace_requires_deep_continuity_or_explicit_rebase"],"gates":{"contract":"passed"}}

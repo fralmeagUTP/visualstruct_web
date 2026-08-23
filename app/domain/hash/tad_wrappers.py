@@ -32,7 +32,9 @@ class TablaHash(Generic[K, V]):
         self._sync_buckets_cache()
 
     def _indice(self, clave: K) -> int:
-        return hash(clave) % self.capacidad()
+        if isinstance(clave, bool) or not isinstance(clave, int):
+            raise ValueError("La clave debe ser un entero representable por el TAD C.")
+        return clave % self.capacidad()
 
     def _allocate_id_for_key(self, clave: K) -> int:
         if clave in self._key_to_id:
@@ -56,10 +58,7 @@ class TablaHash(Generic[K, V]):
         self._id_to_key[ident] = clave
         self._values_by_key[clave] = valor
 
-        if self.factor_carga() > 0.75:
-            self._redimensionar(self.capacidad() * 2 + 1)
-        else:
-            self._sync_buckets_cache()
+        self._sync_buckets_cache()
 
     def buscar(self, clave: K) -> V | None:
         if clave not in self._key_to_id:
@@ -112,21 +111,6 @@ class TablaHash(Generic[K, V]):
         self._key_to_id.clear()
         self._id_to_key.clear()
         self._values_by_key.clear()
-        self._sync_buckets_cache()
-
-    def _redimensionar(self, nueva_capacidad: int) -> None:
-        antiguos = list(self._values_by_key.items())
-        th_destruir(self._tabla)
-        th_inicializar(self._tabla, nueva_capacidad)
-        self._key_to_id.clear()
-        self._id_to_key.clear()
-        self._values_by_key.clear()
-        for clave, valor in antiguos:
-            ident = self._allocate_id_for_key(clave)
-            th_insertar(self._tabla, ident, ident)
-            self._key_to_id[clave] = ident
-            self._id_to_key[ident] = clave
-            self._values_by_key[clave] = valor
         self._sync_buckets_cache()
 
     def _sync_buckets_cache(self) -> None:

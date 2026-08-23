@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "GRAPH-004", "structure_id": "graph", "operation": "run_dijkstra",
+  "input": {"edges": [[1, 2, 1], [2, 3, 2], [1, 3, -5]], "start": 1, "end": 3},
+  "expected": [{"layer": "c", "source_location": "grafo_dijkstra:costo>=0", "state": {"path": [1, 2, 3], "cost": 3, "negative_edge": "ignored"}}],
+  "observed": [{"layer": "backend", "source_location": "Grafo._validar_pesos_no_negativos", "state": {"result": "error before algorithm"}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "El C omite aristas negativas durante la relajación; el backend rechaza el grafo completo antes de ejecutar Dijkstra.",
+  "probable_cause": "El wrapper añadió una precondición global que no existe en grafo_dijkstra.",
+  "location": "app/domain/graph/tad_wrappers.py:Grafo.dijkstra",
+  "recommended_test": "Combinar una ruta positiva válida con una arista negativa y contrastar error, ramas y camino contra C.",
+  "suggested_fix": "Unificar la política de pesos inválidos y reflejarla tanto en C como en la traza y la consola. No se modifica código funcional durante la auditoría."
+}

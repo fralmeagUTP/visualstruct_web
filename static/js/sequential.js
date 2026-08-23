@@ -617,7 +617,7 @@ function drawCircularLoop(visualContainer) {
   }
 
   const nodes = row.querySelectorAll(".viz-node");
-  if (nodes.length < 2) {
+  if (nodes.length < 1) {
     return;
   }
 
@@ -753,7 +753,7 @@ function renderLinearWithHeadTail(state, circular, hint) {
     html += '<div class="viz-row-label null">NULL</div>';
   }
   html += "</div>";
-  if (circular && items.length > 1) {
+  if (circular && items.length > 0) {
     html += '<div class="viz-loop-host"></div>';
   }
   if (hasTempNode) {
@@ -2303,21 +2303,8 @@ function initStructurePage(model) {
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
-      const rawMessages = extractPrintfMessagesFromLine(step.line_text);
-      rawMessages.forEach((msg) => {
-        // Evita ruido visual de formatos printf no resueltos (ej. "%d", "%s").
-        if (hasPrintfFormatSpecifier(msg)) {
-          return;
-        }
-        pushUniqueConsoleLine(out, `[printf] ${msg}`);
-      });
-    }
-    // Refleja el printf del main al finalizar la simulacion de la operacion.
-    if (limit >= trace.steps.length - 1) {
-      const finalMessage = String(trace.message || "").trim();
-      if (finalMessage) {
-        pushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
-      }
+      const emitted = Array.isArray(step.console) ? step.console : [];
+      emitted.forEach((line) => pushUniqueConsoleLine(out, line));
     }
     return out;
   }

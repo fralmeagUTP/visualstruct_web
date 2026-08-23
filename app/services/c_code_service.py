@@ -21,18 +21,31 @@ class CCodeService:
         "mostrar": "lista_mostrar",
         "eliminar_elemento": "lista_eliminar_elemento",
         "eliminar_repetidos": "lista_eliminar_repetidos",
+        "insertar_posicion": "lista_insertar_elemento",
+        "eliminar_primero": "lista_eliminar_inicio",
+        "buscar_posiciones": "lista_buscar_elemento",
+        "eliminar_inicio": "lista_eliminar_inicio",
+        "eliminar_final": "lista_eliminar_final",
+        "eliminar_posicion": "lista_eliminar_posicion",
+        "invertir": "lista_invertir",
+        "primero": "lista_primero",
+        "ultimo": "lista_ultimo",
     }
     _STACK_OPERATION_MAP: dict[str, str] = {
         "apilar": "pila_apilar",
         "desapilar": "pila_desapilar",
+        "cima": "pila_cima",
     }
     _QUEUE_OPERATION_MAP: dict[str, str] = {
         "encolar": "cola_encolar",
         "desencolar": "cola_desencolar",
+        "frente": "cola_frente",
+        "final": "cola_final",
     }
     _PRIORITY_QUEUE_OPERATION_MAP: dict[str, str] = {
         "encolar": "cp_encolar",
         "desencolar": "cp_desencolar",
+        "frente": "cp_frente",
     }
     _CIRCULAR_LIST_OPERATION_MAP: dict[str, str] = {
         "insertar_inicio": "lcir_insertar_inicio",
@@ -207,16 +220,6 @@ class CCodeService:
         elif destroy_fn:
             operation_code["limpiar"] = destroy_fn
 
-        # El TAD no expone `pila_cima`; se deja explícito para el estudiante.
-        operation_code["cima"] = (
-            "/* Este TAD en C no define una funcion directa para leer la cima. */\n"
-            "/* Para consulta didactica, se puede copiar 1 valor desde el tope: */\n"
-            "int cima;\n"
-            "int usados = pila_copiar_valores(&pila, &cima, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* cima contiene el valor del tope */\n"
-            "}"
-        )
 
         structure_text = cls._extract_stack_structure(h_text, c_text)
         return {
@@ -251,25 +254,6 @@ class CCodeService:
         elif clear_fn:
             operation_code["limpiar"] = clear_fn
 
-        operation_code["frente"] = (
-            "/* Este TAD en C no define una funcion directa cola_frente(). */\n"
-            "/* Consulta didactica del frente mediante copia de 1 valor: */\n"
-            "int frente;\n"
-            "int usados = cola_copiar_valores(&cola, &frente, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* frente contiene el valor del primer nodo */\n"
-            "}"
-        )
-        operation_code["final"] = (
-            "/* Este TAD en C no define una funcion directa cola_final(). */\n"
-            "/* Consulta didactica del final recorriendo copia temporal: */\n"
-            "int buffer[256];\n"
-            "int usados = cola_copiar_valores(&cola, buffer, 256);\n"
-            "if (usados > 0) {\n"
-            "    int final = buffer[usados - 1];\n"
-            "    /* final contiene el valor del ultimo nodo */\n"
-            "}"
-        )
 
         structure_text = cls._extract_queue_structure(h_text, c_text)
         return {
@@ -303,17 +287,6 @@ class CCodeService:
             )
         elif clear_fn:
             operation_code["limpiar"] = clear_fn
-
-        operation_code["frente"] = (
-            "/* Este TAD en C no define una funcion directa cp_frente(). */\n"
-            "/* Consulta didactica: copiar el primer item en orden actual de enlace. */\n"
-            "int valor;\n"
-            "int prioridad;\n"
-            "int usados = cp_copiar_items(&cola, &valor, &prioridad, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* valor y prioridad del primer nodo enlazado */\n"
-            "}"
-        )
 
         structure_text = cls._extract_priority_queue_structure(h_text, c_text)
         return {
@@ -637,6 +610,13 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
+        heapify_up = cls._extract_function_with_comment(c_text, "heapify_up")
+        heapify_down = cls._extract_function_with_comment(c_text, "heapify_down")
+        if heapify_up and operation_code.get("insertar"):
+            operation_code["insertar"] = f"{heapify_up}\n\n{operation_code['insertar']}"
+        if heapify_down and operation_code.get("extraer_raiz"):
+            operation_code["extraer_raiz"] = f"{heapify_down}\n\n{operation_code['extraer_raiz']}"
+
         init_fn = cls._extract_function_with_comment(c_text, "monticulo_inicializar")
         destroy_fn = cls._extract_function_with_comment(c_text, "monticulo_destruir")
         if init_fn and destroy_fn:
@@ -772,6 +752,15 @@ class CCodeService:
             snippet = cls._extract_function_with_comment(c_text, function_name)
             if snippet:
                 operation_code[operation_name] = snippet
+
+        merge_helper = cls._extract_function_with_comment(c_text, "mergesort_recursivo")
+        merge_step = cls._extract_function_with_comment(c_text, "mezclar")
+        if merge_helper and operation_code.get("mergesort"):
+            helpers = "\n\n".join(item for item in (merge_step, merge_helper) if item)
+            operation_code["mergesort"] = f"{helpers}\n\n{operation_code['mergesort']}"
+        counting_helper = cls._extract_function_with_comment(c_text, "ordenar_counting_sort")
+        if counting_helper and operation_code.get("binsort"):
+            operation_code["binsort"] = f"{counting_helper}\n\n{operation_code['binsort']}"
 
         structure_text = cls._extract_sorting_structure(h_text)
         return {

@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"AVL-001","status":"fixed","contract":"Las rotaciones dobles exponen el árbol intermedio y recalculan altura y factor de balance por frame.","tests":["tests/test_phase6_intermediate_states_remediation.py::test_avl_lr_exposes_first_rotation_with_recomputed_metadata"],"gates":{"backend":"passed","trace":"passed"}}

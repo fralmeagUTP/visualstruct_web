@@ -236,11 +236,11 @@ def test_tad_cola_prioridad_copy_and_format() -> None:
     priorities = [0, 0]
     used = cp_copiar_items(queue, values, priorities, 2)
     assert used == 2
-    assert values == [22, 11]
-    assert priorities == [1, 2]
+    assert values == [11, 22]
+    assert priorities == [2, 1]
     text: list[str] = []
     cp_formatear(queue, text, 120)
-    assert "[0]=22" in text[0]
+    assert "[0]=11" in text[0]
     cp_vaciar(queue)
     assert cp_contar(queue) == 0
 

@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"GRAPH-005","status":"fixed","contract":"Dijkstra y Bellman-Ford transportan por frame distancias, predecesores, visitados, selección y candidatos.","tests":["tests/test_phase7_trace_contract_remediation.py::test_shortest_path_frames_transport_algorithm_tables"],"gates":{"backend":"passed","trace":"passed"}}

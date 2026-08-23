@@ -122,13 +122,21 @@ class SequentialTraceStrategy(LegacyTraceStrategy):
     ) -> list[dict[str, Any]]:
         """Return one state boundary per step plus the initial boundary."""
         boundaries = total_steps + 1
-        sampled = self._sample(
-            self._transition_states(
-                list(before_state.get("items") or []),
-                list(after_state.get("items") or []),
-            ),
-            boundaries,
-        )
+        before_items = list(before_state.get("items") or [])
+        after_items = list(after_state.get("items") or [])
+        if before_state.get("kind") == "sublist" and not after_items:
+            working = deepcopy(before_items)
+            causal_states: list[list[Any]] = [deepcopy(working)]
+            while working:
+                while working[0].get("children"):
+                    working[0]["children"].pop(0)
+                    causal_states.append(deepcopy(working))
+                working.pop(0)
+                causal_states.append(deepcopy(working))
+            transition_states = causal_states
+        else:
+            transition_states = self._transition_states(before_items, after_items)
+        sampled = self._sample(transition_states, boundaries)
         progressive = self._align(sampled, boundaries, self._anchor(step_lines, total_steps))
         result: list[dict[str, Any]] = []
         for items in progressive:
@@ -141,6 +149,23 @@ class SequentialTraceStrategy(LegacyTraceStrategy):
             result.append(current)
         result[0] = deepcopy(before_state)
         result[-1] = deepcopy(after_state)
+        if any("pila_apilar(" in str(line) for line in step_lines):
+            before_items = list(before_state.get("items") or [])
+            after_items = list(after_state.get("items") or [])
+            value = after_items[0] if len(after_items) > len(before_items) else None
+            if isinstance(value, dict) and "value" in value:
+                value = value["value"]
+            temporary: dict[str, Any] = {"aux": {"allocated": False, "value": None, "next": None}}
+            for index, raw_line in enumerate(step_lines):
+                line = str(raw_line).strip()
+                if "malloc(" in line:
+                    temporary["aux"]["allocated"] = True
+                elif "aux->nro" in line:
+                    temporary["aux"]["value"] = value
+                elif "aux->sgte" in line:
+                    temporary["aux"]["next"] = "top" if before_items else "NULL"
+                if any(token in line for token in ("malloc(", "aux->nro", "aux->sgte")):
+                    result[index + 1]["temporaries"] = deepcopy(temporary)
         return result
 
 
@@ -167,18 +192,48 @@ class TreeTraceStrategy(LegacyTraceStrategy):
         step_lines: list[str],
     ) -> list[dict[str, Any]]:
         boundaries = total_steps + 1
-        raw_states = SequentialTraceStrategy._sample(
-            SequentialTraceStrategy._transition_states(
-                list(before_state.get("array") or []),
-                list(after_state.get("array") or []),
-            ),
-            boundaries,
-        )
-        arrays = SequentialTraceStrategy._align(
-            raw_states,
-            boundaries,
-            SequentialTraceStrategy._anchor(step_lines, total_steps),
-        )
+        before_values = list(before_state.get("array") or [])
+        after_values = list(after_state.get("array") or [])
+        raw_states: list[list[Any]]
+        if len(after_values) == len(before_values) + 1:
+            # Reproduce exactamente append + sift-up, no una interpolación del resultado.
+            pending = list(after_values)
+            for value in before_values:
+                pending.remove(value)
+            working = before_values + pending[:1]
+            raw_states = [before_values, deepcopy(working)]
+            index = len(working) - 1
+            while index > 0:
+                parent = (index - 1) // 2
+                if working[parent] <= working[index]:
+                    break
+                working[parent], working[index] = working[index], working[parent]
+                raw_states.append(deepcopy(working))
+                index = parent
+        elif len(after_values) + 1 == len(before_values) and before_values:
+            # Reproduce reemplazo por el último elemento + sift-down.
+            working = before_values[:-1]
+            raw_states = [before_values, deepcopy(working)]
+            if working:
+                working[0] = before_values[-1]
+                raw_states.append(deepcopy(working))
+                index = 0
+                while True:
+                    left, right = 2 * index + 1, 2 * index + 2
+                    best = index
+                    if left < len(working) and working[left] < working[best]:
+                        best = left
+                    if right < len(working) and working[right] < working[best]:
+                        best = right
+                    if best == index:
+                        break
+                    working[index], working[best] = working[best], working[index]
+                    raw_states.append(deepcopy(working))
+                    index = best
+        else:
+            raw_states = SequentialTraceStrategy._transition_states(before_values, after_values)
+        raw_states = SequentialTraceStrategy._sample(raw_states, boundaries)
+        arrays = raw_states
         result: list[dict[str, Any]] = []
         for array in arrays:
             values = array if isinstance(array, list) else []
@@ -265,7 +320,10 @@ class TreeTraceStrategy(LegacyTraceStrategy):
             elif "void rbt_insertar(" in joined:
                 patterns = ["*arbol = actual;", "padre->izq = actual;", "padre->der = actual;"]
         elif str(operation).lower() == "eliminar":
-            patterns = ["free(", "return temp;", "nodo->valor = temp->valor;", "nodo->derecho = abb_eliminar"]
+            if "void rbt_eliminar(" in joined:
+                patterns = ["if (*arbol) (*arbol)->rbt_color = negro;"]
+            else:
+                patterns = ["free(", "return temp;", "nodo->valor = temp->valor;", "nodo->derecho = abb_eliminar"]
         for pattern in patterns:
             needle = cls._normalized(pattern)
             for index, line in enumerate(normalized):
@@ -290,6 +348,32 @@ class TreeTraceStrategy(LegacyTraceStrategy):
         before_root = before_state.get("root") if isinstance(before_state.get("root"), dict) else None
         after_root = after_state.get("root") if isinstance(after_state.get("root"), dict) else None
 
+        if family == "abb" and operation_name == "eliminar" and target is not None:
+            target_node = self._find_node(before_root, target)
+            if isinstance(target_node, dict) and isinstance(target_node.get("left"), dict) and isinstance(target_node.get("right"), dict):
+                successor = target_node["right"]
+                while isinstance(successor.get("left"), dict):
+                    successor = successor["left"]
+                middle_root = deepcopy(before_root)
+                middle_target = self._find_node(middle_root, target)
+                assert middle_target is not None
+                middle_target["value"] = successor.get("value")
+                copy_index = next((i for i, line in enumerate(step_lines) if "nodo->valor = temp->valor" in self._normalized(line)), -1)
+                delete_index = next((i for i, line in enumerate(step_lines) if "nodo->derecho = abb_eliminar" in self._normalized(line)), -1)
+                if copy_index >= 0 and delete_index >= copy_index:
+                    middle = deepcopy(before_state)
+                    middle["root"] = middle_root
+                    result = []
+                    for index in range(boundaries):
+                        if index <= copy_index:
+                            result.append(deepcopy(before_state))
+                        elif index <= delete_index:
+                            result.append(deepcopy(middle))
+                        else:
+                            result.append(deepcopy(after_state))
+                    result[-1] = deepcopy(after_state)
+                    return result
+
         if family in {"avl", "red_black"} and operation_name == "insertar" and target is not None:
             source = self._find_node(after_root, target)
             template = (
@@ -298,6 +382,9 @@ class TreeTraceStrategy(LegacyTraceStrategy):
                 else self._template(source, target)
             )
             middle_root = self._insert(deepcopy(before_root), target, template)
+            if family == "avl":
+                self._refresh_avl_metadata(middle_root)
+            hint = self._rotation_hint(before_state, after_state, target) if family == "avl" else None
             marker = "rbt_insercion_caso1(" if family == "red_black" else "avl_r"
             transition_index = next(
                 (index for index, line in enumerate(step_lines) if marker in self._normalized(line)),
@@ -307,12 +394,29 @@ class TreeTraceStrategy(LegacyTraceStrategy):
             if transition_boundary > mutation_boundary and transition_boundary < boundaries:
                 middle = deepcopy(after_state)
                 middle["root"] = middle_root
+                first_rotation: dict[str, Any] | None = None
+                rotation_kind = str((hint or {}).get("type", "")).upper()
+                if family == "avl" and rotation_kind in {"LR", "RL"}:
+                    first_root = deepcopy(middle_root)
+                    child_value = self._number((hint or {}).get("child"))
+                    first_root = self._rotate_at(first_root, child_value, "left" if rotation_kind == "LR" else "right")
+                    self._refresh_avl_metadata(first_root)
+                    first_rotation = deepcopy(middle)
+                    first_rotation["root"] = first_root
+                if family == "red_black":
+                    return self._rbt_insert_boundaries(
+                        before_state, after_state, middle, step_lines, mutation_boundary
+                    )
                 result = [
                     deepcopy(before_state) if index < mutation_boundary
                     else deepcopy(middle) if index < transition_boundary
                     else deepcopy(after_state)
                     for index in range(boundaries)
                 ]
+                if first_rotation is not None:
+                    rotation_index = next((i for i, line in enumerate(step_lines) if "avl_rdd(" in self._normalized(line) or "avl_rdi(" in self._normalized(line)), -1)
+                    if rotation_index >= 0:
+                        result[rotation_index] = deepcopy(first_rotation)
                 result[0] = deepcopy(before_state)
                 result[-1] = deepcopy(after_state)
                 return result
@@ -324,6 +428,76 @@ class TreeTraceStrategy(LegacyTraceStrategy):
         result[0] = deepcopy(before_state)
         result[-1] = deepcopy(after_state)
         return result
+
+    @classmethod
+    def _rotate_at(cls, root: dict[str, Any] | None, target: Any, direction: str) -> dict[str, Any] | None:
+        if not isinstance(root, dict):
+            return root
+        if cls._number(root.get("value")) == target:
+            if direction == "left" and isinstance(root.get("right"), dict):
+                pivot = root["right"]
+                root["right"] = pivot.get("left")
+                pivot["left"] = root
+                return pivot
+            if direction == "right" and isinstance(root.get("left"), dict):
+                pivot = root["left"]
+                root["left"] = pivot.get("right")
+                pivot["right"] = root
+                return pivot
+        root["left"] = cls._rotate_at(root.get("left"), target, direction)
+        root["right"] = cls._rotate_at(root.get("right"), target, direction)
+        return root
+
+    @classmethod
+    def _refresh_avl_metadata(cls, node: dict[str, Any] | None) -> int:
+        if not isinstance(node, dict):
+            return 0
+        left = cls._refresh_avl_metadata(node.get("left"))
+        right = cls._refresh_avl_metadata(node.get("right"))
+        node["height"] = 1 + max(left, right)
+        node["balance_factor"] = right - left
+        return node["height"]
+
+    @classmethod
+    def _set_node_color(cls, root: dict[str, Any] | None, value: Any, color: str) -> None:
+        node = cls._find_node(root, value)
+        if node is not None:
+            node["color"] = color
+
+    @classmethod
+    def _rbt_insert_boundaries(cls, before, after, inserted, lines, mutation_boundary):
+        result = [deepcopy(before) for _ in range(len(lines) + 1)]
+        current = deepcopy(inserted)
+        for boundary in range(mutation_boundary, len(result)):
+            if boundary > mutation_boundary:
+                line = cls._normalized(lines[boundary - 1])
+                target = cls._number(next(iter(cls._path(current.get("root"), after.get("root", {}).get("value"))), None))
+                path = cls._path(current.get("root"), cls._find_inserted_value(before.get("root"), after.get("root")))
+                if "n->padre->rbt_color = negro" in line and len(path) >= 2:
+                    cls._set_node_color(current.get("root"), path[-2], "BLACK")
+                elif "t->rbt_color = negro" in line and len(path) >= 3:
+                    grand = cls._find_node(current.get("root"), path[-3])
+                    parent = cls._find_node(current.get("root"), path[-2])
+                    if grand and parent:
+                        uncle = grand.get("right") if grand.get("left") is parent else grand.get("left")
+                        if isinstance(uncle, dict): uncle["color"] = "BLACK"
+                elif "a->rbt_color = rojo" in line and len(path) >= 3:
+                    cls._set_node_color(current.get("root"), path[-3], "RED")
+                elif line.startswith("rbt_rotar_dcha(arbol, a)") and len(path) >= 3:
+                    current["root"] = cls._rotate_at(current.get("root"), cls._number(path[-3]), "right")
+                elif line.startswith("rbt_rotar_izda(arbol, a)") and len(path) >= 3:
+                    current["root"] = cls._rotate_at(current.get("root"), cls._number(path[-3]), "left")
+            result[boundary] = deepcopy(current)
+        result[0] = deepcopy(before)
+        result[-1] = deepcopy(after)
+        return result
+
+    @classmethod
+    def _find_inserted_value(cls, before_root, after_root):
+        before_values = set(cls._parent_map(before_root))
+        after_values = set(cls._parent_map(after_root))
+        difference = after_values - before_values
+        return next(iter(difference), None)
 
 
     @classmethod
@@ -446,6 +620,12 @@ class TreeTraceStrategy(LegacyTraceStrategy):
                     stage, note = "pre_fixup", "Nodo nuevo nace rojo antes del ajuste RN."
                 elif "rbt_insercion_caso1(" in line:
                     stage, active, note = "fixup", [str(path[-1])], "Aplicando fix-up Rojo-Negro (recoloreos/rotaciones)."
+                elif operation_name == "eliminar" and "free(z);" in line:
+                    stage, note = "unlink", "Liberando exactamente el nodo lógico z ya desenlazado."
+                    debug_ids = {"z": str(payload.get("value")), "y": "successor_or_z", "x": "replacement", "x_parent": "replacement_parent"}
+                elif operation_name == "eliminar" and "arreglareliminacion(" in line:
+                    stage, note = "delete_fixup", "Ejecutando fix-up RN sólo cuando el color eliminado era negro."
+                    debug_ids = {"z": str(payload.get("value")), "y": "removed_physical", "x": "replacement", "x_parent": "replacement_parent", "w": "sibling"}
                 elif "printf(" in line:
                     stage, note = "post_fixup", "Insercion Rojo-Negro completada."
             elif operation_name in {"minimo", "maximo"}:
@@ -461,6 +641,9 @@ class TreeTraceStrategy(LegacyTraceStrategy):
                 debug["active_keys"] = active
             if note:
                 debug["note"] = note
+            if family == "red_black" and operation_name == "eliminar" and "debug_ids" in locals():
+                debug["logical_nodes"] = deepcopy(debug_ids)
+                del debug_ids
             if hint and stage in {"pre_rebalance", "rebalance", "post_rebalance"}:
                 debug.update({"rotation_hint": deepcopy(hint), "unbalanced_key": str(pivot)})
                 message = self._rotation_message(hint)

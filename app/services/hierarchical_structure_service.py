@@ -228,6 +228,7 @@ class HierarchicalStructureService:
             success=True,
             message=message,
             mutates=bool(operation_meta.get("mutates", False)),
+            console_events=result.get("console") if isinstance(result.get("console"), list) else [],
         )
 
         return {

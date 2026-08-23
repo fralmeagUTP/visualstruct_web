@@ -1,0 +1,22 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "HASH-001",
+  "structure_id": "hash_table",
+  "operation": "insert",
+  "input": {"initial_capacity": 3, "entries": [["a", "1"], ["b", "2"], ["c", "3"]]},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_tabla_hash.c:75", "state": {"capacity": 3, "rehash": false}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/hash/tad_wrappers.py:59", "state": {"capacity": 3, "rehash": false}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_tabla_hash.c:75", "state": {"capacity": 3, "rehash": false}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/hash/tad_wrappers.py:59", "state": {"capacity": 7, "rehash": true}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "El backend redimensiona automáticamente al superar 0.75, pero el TAD C interpretado conserva una capacidad fija y no implementa rehash.",
+  "probable_cause": "La política _redimensionar fue añadida al wrapper Python sin una función o bloque C equivalente.",
+  "location": "app/domain/hash/tad_wrappers.py:_redimensionar; docs/tads_C/tad_tabla_hash.c:th_insertar",
+  "recommended_test": "Ejecutar tres inserciones con capacidad 3 y comparar capacidad y buckets del oráculo C, backend, traza y visualización después de cada inserción.",
+  "suggested_fix": "Definir una única semántica: implementar rehash en el TAD C y trazar sus pasos, o retirar el redimensionamiento automático del wrapper y de la visualización. No se modifica código funcional durante esta auditoría."
+}

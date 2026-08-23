@@ -79,7 +79,7 @@ def test_graph_trace_golden() -> None:
 def test_hash_trace_golden() -> None:
     response = _execute(HashStructureService, "hash_table", [
         ("create_table", {"capacity": 5}),
-        ("insert", {"key": "A", "value": "1"}),
+        ("insert", {"key": "1", "value": "1"}),
     ])
     _assert_trace("hash", response)
     state = response["visual_state"]
