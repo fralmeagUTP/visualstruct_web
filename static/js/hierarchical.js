@@ -7,6 +7,37 @@ function hById(id) {
   return document.getElementById(id);
 }
 
+function initHierResponsiveWorkspace() {
+  const workspace = document.querySelector(".hier-primary-workspace");
+  const tabs = Array.from(document.querySelectorAll("[data-hier-tab]"));
+  if (!workspace || !tabs.length) return;
+  let saved = "visual"; try { saved = sessionStorage.getItem("hier-active-tab") || "visual"; } catch (_error) { saved = "visual"; }
+  const activate = (name) => { const value = name === "code" ? "code" : "visual"; workspace.dataset.activeTab = value; tabs.forEach((tab) => { const active = tab.dataset.hierTab === value; tab.classList.toggle("is-active", active); tab.setAttribute("aria-selected", String(active)); }); try { sessionStorage.setItem("hier-active-tab", value); } catch (_error) { /* optional */ } };
+  tabs.forEach((tab) => tab.addEventListener("click", () => activate(tab.dataset.hierTab))); activate(saved);
+}
+
+function enhanceHierCodeNavigation(activeLine = null) {
+  const code = hById("op-pseudocode"); const list = hById("hier-function-list"); const hide = hById("hier-hide-comments");
+  if (!code || !list) return;
+  const raw = String(code.dataset.rawCode || code.textContent || ""); const rows = raw.replaceAll("\r\n", "\n").split("\n"); const functions = [];
+  const signature = /^\s*(?:static\s+)?(?:void|bool|int|size_t|AVL|RBT|ABBNodo\s*|MonticuloBinario\s*)\**\s*([A-Za-z_]\w*)\s*\(/;
+  rows.forEach((row,index) => { const match=row.match(signature); if(match && !["if","while","for","switch"].includes(match[1])) functions.push({name:match[1],line:index}); });
+  let block=false; code.querySelectorAll(".code-line").forEach((node,index) => { const value=String(rows[index]||"").trim(); const starts=value.startsWith("/*"); node.classList.toggle("is-code-comment",block||starts||value.startsWith("//")||value.startsWith("*")); if(starts&&!value.includes("*/"))block=true; if(block&&value.includes("*/"))block=false; }); code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));
+  const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0]; list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${hEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>'; list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>code.querySelector(`.code-line[data-line="${button.dataset.line}"]`)?.scrollIntoView({block:"center"})));
+}
+
+function renderHierPedagogy(frame, level) {
+  if (!frame) return;
+  const summary=hById("hier-pedagogy-summary"), path=hById("hier-path-view"), stack=hById("hier-stack-view"), invariant=hById("hier-invariant-view"), variables=hById("hier-variables-view"), memory=hById("hier-memory-view"), relations=hById("hier-relations-view");
+  if(summary)summary.innerHTML=`<strong>${hEscape(frame.phase?.label||frame.concept)}</strong>: ${hEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;
+  const condition=frame.condition; if(path)path.innerHTML=`Ruta: <code>${hEscape((frame.path?.keys||[]).join(" → ")||"—")}</code><br>Caso: <strong>${hEscape(frame.case||"—")}</strong>${condition?`<br><code>${hEscape(condition.substituted)}</code> ⇒ <strong>${hEscape(condition.result)}</strong> · rama ${hEscape(frame.executed_branch||"registrada")}`:""}${frame.adjustment?`<br>Ajuste: ${hEscape(frame.adjustment.message||frame.adjustment.type)}`:""}`;
+  if(stack)stack.innerHTML=(frame.call_stack||[]).map((call)=>`<div class="hier-stack-frame"><code>${hEscape(call.function)}</code> · profundidad ${hEscape(call.depth)}<br>raíz local: ${hEscape(call.local_root_address||call.local_root||"NULL")}<br>retorno: ${hEscape(call.return??"pendiente")} · ${hEscape(call.continuation)}</div>`).join("")||"Sin llamadas.";
+  const proof=(frame.invariant?.evidence_by_node_or_path||[]).slice(0,8); if(invariant)invariant.innerHTML=`<strong>${hEscape(frame.invariant?.symbol||"")} ${hEscape(frame.invariant?.name||"")}</strong><br>${hEscape(frame.invariant?.explanation||frame.invariant?.evidence||"")}<ul>${proof.map((item)=>`<li>${hEscape(JSON.stringify(item))}</li>`).join("")}</ul>`;
+  if(variables)variables.innerHTML=`<table><thead><tr><th>Tipo y variable</th><th>Anterior</th><th>Actual</th><th>Significado</th></tr></thead><tbody>${(frame.variables||[]).map((item)=>`<tr class="${item.changed?'is-changed':''}"><td><code>${hEscape(item.type)} ${hEscape(item.name)}</code></td><td>${hEscape(item.previous??"NULL")}</td><td>${hEscape(item.value??"NULL")}</td><td>${hEscape(item.meaning)}</td></tr>`).join("")}</tbody></table>`;
+  if(memory){const mem=frame.memory||{};memory.innerHTML=`Evento: <strong>${hEscape(mem.event||"none")}</strong><br>Reservados: ${hEscape((mem.allocated_objects||[]).map((item)=>item.address).join(", ")||"—")}<br>Liberados: ${hEscape((mem.freed_objects||[]).map((item)=>item.address).join(", ")||"—")}<br>Referencias colgantes: <strong>${(mem.dangling_references||[]).length}</strong>`;}
+  if(relations){const arr=frame.array||{};relations.innerHTML=frame.structure==="binary_heap"?`A[i] activo: ${hEscape(arr.active_index??"—")} · padre: ${hEscape(arr.parent_index??"—")} · hijos: ${hEscape((arr.child_indices||[]).join(", ")||"—")}<br><strong>El heap no es un ABB ni un arreglo totalmente ordenado:</strong> solo garantiza prioridad padre-hijos.`:`Límites: ${hEscape(frame.path?.bounds?.lower||"-∞")} … ${hEscape(frame.path?.bounds?.upper||"+∞")} · sucesor: ${hEscape(frame.path?.successor??"—")}<br>Retorno y reconexión: ${frame.return_propagation?.active?"activos":"sin cambio"}`;}
+}
+
 function hEscape(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -1805,6 +1836,7 @@ function updateHierDidacticPanel(model, operationName) {
   renderHierDidacticCode(recordBox, didactic.record || "Estructura no documentada.", codeTitle);
   pseudoTitle.textContent = selectedLabel ? `${codeTitle}: ${selectedLabel}` : codeTitle;
   renderHierDidacticCode(pseudoBox, opMap[selectedOp] || fallback, codeTitle);
+  enhanceHierCodeNavigation(null);
 }
 
 function summarizeHierPayload(payload) {
@@ -2106,6 +2138,16 @@ function initHierPage(model) {
   const speedSlider = hById("hier-speed-slider");
   const speedValue = hById("hier-speed-value");
   const printfConsole = hById("hier-printf-console");
+  const learningLevel = hById("hier-learning-level");
+  const guidedExample = hById("hier-guided-example");
+  const loadExampleButton = hById("hier-load-example");
+  const exampleLesson = hById("hier-example-lesson");
+  const restartExecutionButton = hById("hier-restart-execution");
+  const hideComments = hById("hier-hide-comments");
+  const prepareButton=hById("hier-prepare"), pauseButton=hById("hier-sim-pause"), homeButton=hById("hier-sim-home"), endButton=hById("hier-sim-end"), repeatButton=hById("hier-sim-repeat"), progressSlider=hById("hier-progress"), stepMetadata=hById("hier-step-metadata");
+  const predictionSelect=hById("hier-prediction"), checkPrediction=hById("hier-check-prediction"), hintButton=hById("hier-hint"), skipPrediction=hById("hier-skip-prediction"), predictionFeedback=hById("hier-prediction-feedback"), practiceMode=hById("hier-practice-mode"), practiceCover=hById("hier-practice-cover"), progressSummary=hById("hier-progress-summary"), resetProgress=hById("hier-reset-progress");
+  const compareSection=hById("hier-compare-title")?.closest("section"), compareKind=hById("hier-compare-kind"), compareValues=hById("hier-compare-values"), compareRun=hById("hier-compare-run"), compareProgress=hById("hier-compare-progress"), compareInput=hById("hier-compare-input"), compareGrid=hById("hier-compare-grid"), compareConclusion=hById("hier-compare-conclusion");
+  const exportImage=hById("hier-export-image"), exportSummary=hById("hier-export-summary"), announcer=hById("hier-accessible-announcer");
 
   if (!form || !operationSelect || !inputsContainer || !visualContainer) {
     return;
@@ -2136,6 +2178,16 @@ function initHierPage(model) {
   const operations = model.operations || [];
   let playbackSpeed = 1;
   let playbackSpeedSetting = 0;
+  let currentPedagogyFrame = null;
+  let traceCursor = -1;
+  const presentationKey = `hier-presentation:${model.id}`;
+  const conceptualProgressKey=`hier-concept-progress:${model.id}`;
+  function readConceptualProgress(){try{return JSON.parse(sessionStorage.getItem(conceptualProgressKey)||'{"attempts":0,"correct":0}') }catch(_error){return {attempts:0,correct:0};}}
+  let conceptualProgress=readConceptualProgress(), hintLevel=0;
+  let hierarchicalComparison=null;
+  function renderConceptualProgress(){if(progressSummary)progressSummary.textContent=`Progreso conceptual de esta sesión: ${conceptualProgress.correct} aciertos de ${conceptualProgress.attempts} intentos.`;try{sessionStorage.setItem(conceptualProgressKey,JSON.stringify(conceptualProgress));}catch(_error){/* optional */}}
+  function readPresentation() { try { return JSON.parse(sessionStorage.getItem(presentationKey) || "{}"); } catch (_error) { return {}; } }
+  function writePresentation(extra = {}) { const current=operations.find((op)=>op.name===operationSelect.value); try { sessionStorage.setItem(presentationKey,JSON.stringify({operation:operationSelect.value,payload:current?collectPayload(current):{},level:learningLevel?.value||"intermediate",cursor:traceCursor,...extra})); } catch(_error) { /* optional */ } }
 
   function speedSettingToMultiplier(setting) {
     return Math.pow(2, setting);
@@ -2218,7 +2270,14 @@ function initHierPage(model) {
     operationSelect.appendChild(option);
   });
 
+  const savedPresentation = readPresentation();
+  if (savedPresentation.operation) selected = operations.find((op)=>op.name===savedPresentation.operation) || selected;
+  if (selected) operationSelect.value = selected.name;
+  if (learningLevel) learningLevel.value = ["basic","intermediate","advanced"].includes(savedPresentation.level) ? savedPresentation.level : "intermediate";
+  (model.guided_examples||[]).forEach((example)=>{ const option=document.createElement("option"); option.value=example.id; option.textContent=example.label; guidedExample?.appendChild(option); });
+
   buildOperationInputs(selected, inputsContainer);
+  if(savedPresentation.payload&&selected)selected.inputs.forEach((field)=>{const input=hById(`h-field-${field.name}`);if(input&&Object.prototype.hasOwnProperty.call(savedPresentation.payload,field.name))input.value=savedPresentation.payload[field.name];});
   updateHierDidacticPanel(model, selected ? selected.name : "");
   (model.history || []).forEach((step) => {
     const opName = String(step.operation || "");
@@ -2264,14 +2323,8 @@ function initHierPage(model) {
             ) ? String(stepMeta.debug.unbalanced_key) : null,
             rotationMessage: String(stepMeta.debug.rotation_message || "").trim(),
           };
-          if (pageState.modelId === "red_black") {
-            pageState.compareState = rbDidacticDelta(stepMeta, pageState.compareState);
-          }
         } else {
           pageState.compareState = null;
-          if (pageState.modelId === "red_black") {
-            pageState.compareState = rbDidacticDelta(stepMeta, pageState.compareState);
-          }
         }
         if (pageState.modelId === "red_black" && pageState.compareState) {
           pageState.compareState.rnTimeline = Array.isArray(pageState.rnTimeline)
@@ -2282,15 +2335,13 @@ function initHierPage(model) {
             : -1;
         }
         pageState.rotationVisualHint = null;
-        pageState.rotationTextHint = (
-          stepMeta
-          && stepMeta.debug
-          && stepMeta.debug.rotation_hint
-        ) ? stepMeta.debug.rotation_hint : null;
+        pageState.rotationTextHint = stepMeta?.pedagogy?.adjustment || null;
+        if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderHierPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
         repaint();
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
+        traceCursor = cursor;
         const total = event && event.trace && Array.isArray(event.trace.steps)
           ? event.trace.steps.length
           : 0;
@@ -2310,6 +2361,10 @@ function initHierPage(model) {
         }
         repaint();
         refreshHierPrintfConsole(cursor);
+        const step=event?.step; enhanceHierCodeNavigation(Number.isInteger(step?.line_index)?step.line_index:null); writePresentation({cursor});
+        if(progressSlider){progressSlider.max=String(Math.max(0,total-1));progressSlider.value=String(Math.max(0,cursor));progressSlider.disabled=total===0;}
+        const pedagogy=step?.pedagogy; const frameCall=pedagogy?.call_stack?.at(-1); if(stepMetadata)stepMetadata.textContent=`Función: ${frameCall?.function||"—"} · Profundidad: ${frameCall?.depth??"—"} · Fase: ${pedagogy?.phase?.label||"—"} · Concepto: ${pedagogy?.concept||"—"}`;
+        const concealed=Boolean(practiceMode?.checked&&cursor>=0); if(practiceCover)practiceCover.hidden=!concealed; visualContainer.classList.toggle("hier-practice-hidden",concealed);
         setSimulationButtonsEnabled();
       },
     })
@@ -2322,6 +2377,10 @@ function initHierPage(model) {
   } else {
     setPlaybackSpeed(0);
   }
+  initHierResponsiveWorkspace();
+  hideComments?.addEventListener("change",()=>enhanceHierCodeNavigation(null));
+  restartExecutionButton?.addEventListener("click",()=>{tracePlayer?.reset();setSimulationButtonsEnabled();});
+  renderConceptualProgress();
   let pendingExecution = false;
   let traceSelectionKey = "";
 
@@ -2540,10 +2599,26 @@ function initHierPage(model) {
     buildOperationInputs(selected, inputsContainer);
     updateHierDidacticPanel(model, selected ? selected.name : "");
     invalidateTrace("Operacion cambiada. Ejecuta nuevamente.");
+    writePresentation({cursor:-1});
   });
 
   inputsContainer.addEventListener("input", () => {
     invalidateTrace("Entradas cambiadas. Ejecuta nuevamente.");
+    writePresentation({cursor:-1});
+  });
+
+  learningLevel?.addEventListener("change",()=>{renderHierPedagogy(currentPedagogyFrame,learningLevel.value);writePresentation();});
+  guidedExample?.addEventListener("change",()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample.value);if(exampleLesson)exampleLesson.textContent=example?example.lesson:"Los ejemplos construyen el estado mediante operaciones públicas reales.";});
+  loadExampleButton?.addEventListener("click",async()=>{
+    const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample?.value); if(!example){showHierMessage("Selecciona un ejemplo guiado.",false);return;}
+    pendingExecution=true;setSimulationButtonsEnabled();loadExampleButton.disabled=true;
+    try{
+      const resetResponse=await fetch(form.dataset.resetUrl,{method:"POST"}); const resetData=await resetResponse.json(); let lastState=resetData.visual_state||null;
+      for(const value of example.seed||[]){const response=await fetch(form.dataset.operateUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({operation:"insertar",payload:{value}})});const data=await response.json();if(!data.success)throw new Error(data.message||"No se pudo preparar el ejemplo.");lastState=data.visual_state;}
+      if(lastState){model.visual_state=lastState;pageState.visualState=lastState;repaint();}
+      selected=operations.find((op)=>op.name===example.operation)||selected;operationSelect.value=selected.name;buildOperationInputs(selected,inputsContainer);selected.inputs.forEach((field)=>{const input=hById(`h-field-${field.name}`);if(input&&Object.prototype.hasOwnProperty.call(example.payload||{},field.name))input.value=example.payload[field.name];});
+      actionHistory.length=0;(example.seed||[]).forEach((value)=>hPushUniqueHistoryEntry(actionHistory,createHierHistoryEntry(getHierSubroutineName(model,"insertar","Insertar"),`value=${value}`,"Preparación del ejemplo.","insertar",{value})));renderHierHistory(actionHistory,historyBox,pageState.modelId,model.didactic);updateHierDidacticPanel(model,selected.name);invalidateTrace("Ejemplo preparado. Reproduce la operación objetivo.");writePresentation({cursor:-1});showHierMessage(`Ejemplo preparado: ${example.lesson}`,true);
+    }catch(error){showHierMessage(error.message||"No fue posible preparar el ejemplo.",false);}finally{pendingExecution=false;loadExampleButton.disabled=false;setSimulationButtonsEnabled();}
   });
 
   async function executeOperationAndLoadTrace(current, payload, selectionKey, options) {
@@ -2558,34 +2633,6 @@ function initHierPage(model) {
     let compareDirections = [];
     let rotationHint = null;
     let heapFrames = [];
-    if (
-      isSearchLikeStructure(pageState.modelId)
-      && (current.name === "insertar" || current.name === "eliminar" || current.name === "buscar")
-    ) {
-      const targetValue = normalizeCompareValue(payload.value);
-      if (targetValue !== null) {
-        const compareRoot = model.visual_state && model.visual_state.root ? model.visual_state.root : pageState.visualState.root;
-        const compareResult = buildComparisonPath(compareRoot, targetValue);
-        comparePath = compareResult.pathKeys;
-        compareFound = Boolean(compareResult.found);
-        compareDirections = Array.isArray(compareResult.directions) ? compareResult.directions : [];
-        if (pageState.modelId === "avl" && current.name === "insertar") {
-          rotationHint = inferAvlInsertionRotation(compareRoot, targetValue);
-        }
-        if (pageState.modelId === "avl" && current.name === "eliminar") {
-          rotationHint = inferAvlDeletionRotation(compareRoot, targetValue);
-        }
-      }
-    }
-    if (pageState.modelId === "binary_heap") {
-      heapFrames = buildHeapOperationFrames(
-        current.name,
-        payload,
-        model.visual_state && Array.isArray(model.visual_state.array)
-          ? model.visual_state.array
-          : [],
-      );
-    }
     try {
       showHierMessage("Ejecutando subrutina...", true);
       const response = await fetch(form.dataset.operateUrl, {
@@ -2666,7 +2713,7 @@ function initHierPage(model) {
             ? stepWithRotation.debug.rotation_hint
             : null;
         }
-        const effectiveRotationHint = data.success ? (traceRotationHint || rotationHint) : null;
+        const effectiveRotationHint = data.success ? traceRotationHint : null;
         const execution = {
           operation: current.name,
           result: data.result,
@@ -2748,6 +2795,7 @@ function initHierPage(model) {
   });
 
   resetButton?.addEventListener("click", async () => {
+    if(!window.confirm("¿Restablecer el TAD jerárquico y borrar su historial de esta sesión?"))return;
     stopTreeTransition();
     stopHeapAnimation();
     const response = await fetch(form.dataset.resetUrl, { method: "POST" });
@@ -2798,6 +2846,28 @@ function initHierPage(model) {
     }
     await tracePlayer.step();
   });
+
+  prepareButton?.addEventListener("click",async()=>{const ready=await ensureTraceForCurrentSelection();if(ready){tracePlayer?.reset();showHierMessage("Ejecución preparada en el estado inicial.",true);}});
+  pauseButton?.addEventListener("click",()=>tracePlayer?.pause());
+  homeButton?.addEventListener("click",()=>tracePlayer?.seek(-1));
+  endButton?.addEventListener("click",()=>tracePlayer?.seek(tracePlayer.getTotalSteps()-1));
+  repeatButton?.addEventListener("click",async()=>{tracePlayer?.reset();await tracePlayer?.playFromStart();});
+  progressSlider?.addEventListener("input",()=>tracePlayer?.seek(Number(progressSlider.value)));
+  practiceMode?.addEventListener("change",()=>{const concealed=Boolean(practiceMode.checked&&traceCursor>=0);if(practiceCover)practiceCover.hidden=!concealed;visualContainer.classList.toggle("hier-practice-hidden",concealed);});
+  function expectedPrediction(frame){const adjustment=String(frame?.adjustment?.type||"").toUpperCase();if(["LL","RR","LR","RL"].includes(adjustment))return adjustment;if(frame?.concept==="recolor")return "recolor";if(frame?.concept==="swap")return "swap";if(frame?.executed_branch==="izquierda")return "left";if(frame?.executed_branch==="derecha")return "right";const value=String(frame?.case||"").toLowerCase();if(value.includes("hoja")||value.includes("leaf"))return "leaf";if(value.includes("dos")||value.includes("two"))return "two-children";if(value.includes("hijo")||value.includes("one"))return "one-child";return "none";}
+  checkPrediction?.addEventListener("click",()=>{if(!currentPedagogyFrame||!predictionSelect?.value){if(predictionFeedback)predictionFeedback.textContent="Prepara una traza y selecciona una predicción.";return;}const expected=expectedPrediction(currentPedagogyFrame);const correct=predictionSelect.value===expected;conceptualProgress.attempts+=1;if(correct)conceptualProgress.correct+=1;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent=correct?"Correcto: coincide con el frame ejecutado.":`Revisa condición, caso e invariante. La evidencia canónica indica: ${expected}.`;if(practiceCover)practiceCover.hidden=true;visualContainer.classList.remove("hier-practice-hidden");});
+  hintButton?.addEventListener("click",()=>{hintLevel=Math.min(3,hintLevel+1);const frame=currentPedagogyFrame;if(predictionFeedback)predictionFeedback.textContent=hintLevel===1?`Pista 1: observa el concepto «${frame?.concept||"—"}».`:hintLevel===2?`Pista 2: revisa la ruta ${frame?.path?.keys?.join(" → ")||"vacía"}.`:`Pista 3: el caso esperado se relaciona con «${expectedPrediction(frame)}».`;});
+  skipPrediction?.addEventListener("click",()=>{if(practiceCover)practiceCover.hidden=true;visualContainer.classList.remove("hier-practice-hidden");if(predictionFeedback)predictionFeedback.textContent="Continuaste sin responder; el intento no afecta tu progreso.";});
+  resetProgress?.addEventListener("click",()=>{conceptualProgress={attempts:0,correct:0};hintLevel=0;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent="Progreso conceptual reiniciado.";});
+  function compareStateSummary(side,step){const state=step?.state||side?.final_state||{};const traversal=state.traversals?.inorden||[];const array=state.array||[];return `<article class="hier-compare-card"><h4>${hEscape(side?.structure||"estructura")}</h4><p><strong>Paso:</strong> ${hEscape(step?.step??"final")} · insertado ${hEscape(step?.inserted??"—")}</p><p><strong>Altura:</strong> ${hEscape(step?.height??side?.height??"—")} · <strong>tamaño:</strong> ${hEscape(state.size??side?.size??"—")}</p><p><strong>Representación:</strong> <code>${hEscape((array.length?array:traversal).join(" → ")||"vacía")}</code></p><p><strong>Invariante:</strong> ${step?.validation??side?.validation?"✓ válido":"✗ inválido"}</p></article>`;}
+  function renderHierComparison(){if(!hierarchicalComparison||!compareGrid)return;if(hierarchicalComparison.kind==="traversals"){compareGrid.innerHTML=hierarchicalComparison.traversals.map((item)=>`<article class="hier-compare-card"><h4>${hEscape(item.name)}</h4><p>${hEscape(item.stack_rule)}</p><code>${hEscape(item.values.join(" → "))}</code></article>`).join("");}else{const cursor=Math.max(0,Number(compareProgress?.value||0));const leftStep=hierarchicalComparison.left.timeline[cursor]||hierarchicalComparison.left.timeline.at(-1);const rightStep=hierarchicalComparison.right.timeline[cursor]||hierarchicalComparison.right.timeline.at(-1);compareGrid.innerHTML=compareStateSummary(hierarchicalComparison.left,leftStep)+compareStateSummary(hierarchicalComparison.right,rightStep);}if(compareConclusion)compareConclusion.textContent=`${hierarchicalComparison.conclusion} Entrada, forma y estados de ambos lados se mantuvieron aislados.`;}
+  compareRun?.addEventListener("click",async()=>{const values=String(compareValues?.value||"").split(/[,\s]+/).filter(Boolean).map(Number);try{const response=await fetch(compareSection?.dataset.compareUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:compareKind?.value,values})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"No se pudo comparar.");hierarchicalComparison=data;if(compareInput)compareInput.textContent=`Entrada inmutable: [${data.input.join(", ")}]`;if(compareProgress){const count=data.left?.timeline?.length||1;compareProgress.max=String(Math.max(0,count-1));compareProgress.value="0";compareProgress.disabled=data.kind==="traversals";}renderHierComparison();if(announcer)announcer.textContent="Comparación jerárquica preparada.";}catch(error){if(compareConclusion)compareConclusion.textContent=error.message;}});
+  compareProgress?.addEventListener("input",renderHierComparison);
+  compareKind?.addEventListener("change",()=>{hierarchicalComparison=null;if(compareProgress)compareProgress.disabled=true;});
+  exportImage?.addEventListener("click",async()=>{try{const exported=await window.InterpreterRuntime.exportVisualStateAsJpg({target:hById("hier-visual-region"),quality:.9,scale:1});const link=document.createElement("a");link.href=exported.dataUrl;link.download=exported.suggestedName;link.click();}catch(error){showHierMessage(error.message||"No se pudo exportar la captura.",false);}});
+  exportSummary?.addEventListener("click",()=>{const current=operations.find((op)=>op.name===operationSelect.value);const summary={schema:"hierarchical-learning-summary/v1",structure:model.id,operation:operationSelect.value,payload:current?collectPayload(current):{},level:learningLevel?.value,cursor:tracePlayer?.getCursor()??-1,total_steps:tracePlayer?.getTotalSteps()??0,frame:currentPedagogyFrame,state:pageState.visualState,practice:conceptualProgress,comparison:hierarchicalComparison};const url=URL.createObjectURL(new Blob([JSON.stringify(summary,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download=`${model.id}-resumen.json`;link.click();URL.revokeObjectURL(url);});
+  document.addEventListener("keydown",async(event)=>{if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key==="ArrowLeft"){event.preventDefault();tracePlayer?.prev();}else if(event.key==="ArrowRight"){event.preventDefault();await tracePlayer?.step();}else if(event.key==="Home"){event.preventDefault();tracePlayer?.seek(-1);}else if(event.key==="End"){event.preventDefault();tracePlayer?.seek(tracePlayer.getTotalSteps()-1);}else if(event.key===" "){event.preventDefault();tracePlayer?.pause();}});
+  if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches&&speedSlider){speedSlider.value="-2";setPlaybackSpeed(speedSlider.value);}
 
   stepToggle?.addEventListener("change", () => {
     invalidateTrace(

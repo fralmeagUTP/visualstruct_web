@@ -54,7 +54,7 @@ def test_insert_update_search_contains_remove_via_route(client) -> None:
         json={"operation": "get", "payload": {"key": "1"}},
     )
     assert get_existing.status_code == 200
-    assert get_existing.get_json()["result"] == "2"
+    assert get_existing.get_json()["result"] == 2
 
     get_missing = client.post(
         "/hash/hash_table/operate",
@@ -92,21 +92,21 @@ def test_queries_stats_visual_collisions_fixed_capacity_and_clear_via_route(clie
     )
     client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "1", "value": "v1"}},
+        json={"operation": "insert", "payload": {"key": "1", "value": "10"}},
     )
     client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "4", "value": "v2"}},
+        json={"operation": "insert", "payload": {"key": "4", "value": "40"}},
     )
     third = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "7", "value": "v3"}},
+        json={"operation": "insert", "payload": {"key": "7", "value": "70"}},
     )
     assert third.status_code == 200
-    state_after_resize = third.get_json()["visual_state"]
-    assert state_after_resize["metadata"]["resized"] is False
-    assert state_after_resize["metadata"]["capacity"] == 3
-    assert state_after_resize["metadata"]["collisions"] == 2
+    state_after_insert = third.get_json()["visual_state"]
+    assert state_after_insert["metadata"]["capacity_policy"] == "fixed"
+    assert state_after_insert["metadata"]["capacity"] == 3
+    assert state_after_insert["metadata"]["collisions"] == 2
 
     keys = client.post("/hash/hash_table/operate", json={"operation": "keys", "payload": {}})
     values = client.post("/hash/hash_table/operate", json={"operation": "values", "payload": {}})
@@ -128,14 +128,14 @@ def test_hash_session_persistence_and_reset(client) -> None:
     """Hash history should persist in session and reset correctly."""
     client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "42", "value": "ok"}},
+        json={"operation": "insert", "payload": {"key": "42", "value": "420"}},
     )
     get_result = client.post(
         "/hash/hash_table/operate",
         json={"operation": "get", "payload": {"key": "42"}},
     )
     assert get_result.status_code == 200
-    assert get_result.get_json()["result"] == "ok"
+    assert get_result.get_json()["result"] == 420
 
     reset = client.post("/hash/hash_table/reset")
     assert reset.status_code == 200

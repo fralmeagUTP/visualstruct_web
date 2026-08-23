@@ -4,6 +4,46 @@ function byId(id) {
   return document.getElementById(id);
 }
 
+function initSequentialResponsiveWorkspace() {
+  const workspace = document.querySelector(".sequential-primary-workspace");
+  const tabs = Array.from(document.querySelectorAll("[data-seq-tab]"));
+  if (!workspace || !tabs.length) return;
+  let saved = "visual";
+  try { saved = window.sessionStorage.getItem("sequential-active-tab") || "visual"; } catch (_error) { saved = "visual"; }
+  const activate = (name) => {
+    const selected = name === "code" ? "code" : "visual";
+    workspace.dataset.activeTab = selected;
+    tabs.forEach((tab) => { const active = tab.dataset.seqTab === selected; tab.classList.toggle("is-active", active); tab.setAttribute("aria-selected", String(active)); });
+    try { window.sessionStorage.setItem("sequential-active-tab", selected); } catch (_error) { /* optional */ }
+  };
+  tabs.forEach((tab) => tab.addEventListener("click", () => activate(tab.dataset.seqTab)));
+  activate(saved);
+}
+
+function enhanceSequentialCodeNavigation(activeLine = null) {
+  const code = byId("op-pseudocode");
+  const list = byId("seq-function-list");
+  const hide = byId("seq-hide-comments");
+  if (!code || !list) return;
+  const raw = String(code.dataset.rawCode || code.textContent || "");
+  const rows = raw.replaceAll("\r\n", "\n").split("\n");
+  const functions = [];
+  const signature = /^\s*(?:static\s+)?(?:void|bool|int|size_t|ptr\w+|[A-Za-z_]\w*)\s+\**([A-Za-z_]\w*)\s*\(/;
+  rows.forEach((row, index) => { const match = row.match(signature); if (match && !["if", "while", "for", "switch"].includes(match[1])) functions.push({ name: match[1], line: index }); });
+  let inBlock = false;
+  code.querySelectorAll(".code-line").forEach((line, index) => {
+    const value = String(rows[index] || "").trim();
+    const starts = value.startsWith("/*");
+    line.classList.toggle("is-code-comment", inBlock || starts || value.startsWith("//") || value.startsWith("*"));
+    if (starts && !value.includes("*/")) inBlock = true;
+    if (inBlock && value.includes("*/")) inBlock = false;
+  });
+  code.classList.toggle("hide-code-comments", Boolean(hide?.checked));
+  const active = [...functions].reverse().find((item) => Number.isInteger(activeLine) && item.line <= activeLine) || functions[0];
+  list.innerHTML = functions.length ? functions.map((item) => `<li><button type="button" class="seq-function-link${active?.line === item.line ? " is-active" : ""}" data-line="${item.line}">${escapeHtml(item.name)}</button></li>`).join("") : '<li class="muted">Sin funciones detectadas</li>';
+  list.querySelectorAll(".seq-function-link").forEach((button) => button.addEventListener("click", () => code.querySelector(`.code-line[data-line="${button.dataset.line}"]`)?.scrollIntoView({ block: "center" })));
+}
+
 function renderOperationInputs(operation, container) {
   container.innerHTML = "";
   if (!operation || !operation.inputs) {
@@ -38,6 +78,50 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function sequentialValue(value) {
+  if (value === null || typeof value === "undefined") return "NULL";
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
+}
+
+function renderSequentialPedagogyFrame(frame, level) {
+  const summary = byId("seq-pedagogy-summary");
+  const conditionView = byId("seq-condition-view");
+  const variableView = byId("seq-variable-view");
+  const pointerView = byId("seq-pointer-view");
+  const heapView = byId("seq-heap-view");
+  const callView = byId("seq-call-view");
+  if (!frame) return;
+  const narration = frame.narration?.[level] || frame.narration?.intermediate || "";
+  if (summary) summary.innerHTML = `<strong>${escapeHtml(frame.phase?.label || frame.concept)}</strong>: ${escapeHtml(narration)}<br><small>Invariante: ${escapeHtml(frame.invariant?.text || "")}</small>`;
+  if (conditionView) {
+    const condition = frame.condition;
+    const loop = frame.loop;
+    conditionView.innerHTML = condition
+      ? `<code>${escapeHtml(condition.source)}</code><br>Sustitución: <code>${escapeHtml(condition.substituted)}</code><br>Resultado: <strong>${escapeHtml(sequentialValue(condition.result))}</strong><br>${escapeHtml(condition.consequence)}${loop?.active ? `<br>Ciclo: ${escapeHtml(loop.exit || "continúa")}` : ""}`
+      : "Sin condición en este frame.";
+  }
+  const table = (headers, rows) => `<table class="seq-data-table"><thead><tr>${headers.map((item) => `<th>${escapeHtml(item)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
+  if (variableView) {
+    const rows = (frame.variables || []).map((item) => `<tr><td><code>${escapeHtml(item.type)}</code></td><td>${escapeHtml(item.name)}</td><td>${escapeHtml(item.meaning)}</td><td>${escapeHtml(sequentialValue(item.previous))}</td><td>${escapeHtml(sequentialValue(item.value))}${item.changed ? " Δ" : ""}</td></tr>`);
+    variableView.innerHTML = rows.length ? table(["Tipo", "Nombre", "Significado", "Anterior", "Actual"], rows) : "Sin variables.";
+  }
+  if (pointerView) {
+    const rows = (frame.pointers || []).map((item) => `<tr><td><code>${escapeHtml(item.name)}</code></td><td>${escapeHtml(sequentialValue(item.previous_target))}</td><td>${escapeHtml(sequentialValue(item.target))}</td><td>${item.changed ? "reasignado" : escapeHtml(item.alias || "estable")}</td></tr>`);
+    pointerView.innerHTML = rows.length ? table(["Puntero", "Destino anterior", "Destino nuevo", "Relación"], rows) : "Sin punteros activos en esta línea.";
+  }
+  if (heapView) {
+    const transition = frame.heap_transition || {};
+    const live = (transition.after || frame.heap_objects || []).map((item) => `<span class="seq-memory-object"><code>${escapeHtml(item.address || item.id)}</code> ${escapeHtml(sequentialValue(item.fields))} · ${escapeHtml(item.status || "linked")}</span>`);
+    const freed = (transition.freed || []).map((item) => `<span class="seq-memory-object is-freed"><code>${escapeHtml(item.address || item.id)}</code> liberado</span>`);
+    heapView.innerHTML = `<strong>Evento: ${escapeHtml(transition.kind || "stable")}</strong><div>${[...live, ...freed].join("") || "No hay objetos alcanzables."}</div>`;
+  }
+  if (callView) {
+    const rows = (frame.call_stack || []).map((item) => `<tr><td><code>${escapeHtml(item.function)}</code></td><td>${escapeHtml(sequentialValue(item.parameters))}</td><td>${escapeHtml(sequentialValue(item.return))}</td><td>${escapeHtml(item.continuation)}</td></tr>`);
+    callView.innerHTML = rows.length ? table(["Función", "Parámetros", "Retorno", "Continuación"], rows) : "Sin llamadas.";
+  }
 }
 
 function toCStringLiteral(text) {
@@ -1998,6 +2082,59 @@ function renderVisualState(structureId, state, container, hint) {
   }
 }
 
+function appendSequentialSemanticOverlay(structureId, state, container, frame) {
+  if (!container || !frame) return;
+  const items = Array.isArray(state?.items) ? state.items : [];
+  const chips = [];
+  const pointerNames = (frame.pointers || []).filter((item) => item.changed || item.target !== null).map((item) => item.name);
+  if (structureId === "stack") {
+    chips.push(`TOP → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, "Regla: LIFO");
+    if (pointerNames.includes("aux")) chips.push("auxiliar activo");
+    if (frame.concept === "free") chips.push("nodo desconectado → free");
+  } else if (structureId === "queue") {
+    chips.push(`FRONT → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, `BACK → ${items.length ? sequentialValue(items[items.length - 1].value) : "NULL"}`, "Regla: FIFO");
+    chips.push(items.length === 0 ? "estado vacío" : items.length === 1 ? "estado unitario" : "estado múltiple");
+  } else if (structureId === "priority_queue") {
+    const priorities = items.map((item) => String(item.priority));
+    const tie = priorities.some((value, index) => priorities.indexOf(value) !== index);
+    chips.push("enlaces: orden de llegada", "selección: prioridad mínima");
+    if (frame.concept === "condition") chips.push("candidato evaluado en el recorrido");
+    if (Number.isInteger(state.out_index) && state.out_index >= 0) chips.push(`seleccionado: llegada #${state.out_index + 1}`);
+    if (tie) chips.push("empate → gana quien llegó antes");
+  } else if (structureId === "linked_list") {
+    chips.push(`HEAD → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, "cadena alcanzable → NULL");
+    pointerNames.filter((name) => ["actual", "anterior", "p", "q", "t"].includes(name)).forEach((name) => chips.push(`${name} visible`));
+    if (frame.concept === "link") chips.push("enlace anterior → enlace nuevo");
+  } else if (structureId === "circular_list") {
+    chips.push(`HEAD → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, items.length ? "TAIL.next → HEAD ↻" : "cierre vacío");
+    if (frame.loop?.active) chips.push("salida: volver al inicio");
+  } else if (structureId === "sublist") {
+    chips.push("propiedad: padre → hijos", "ramas no activas: sin cambios");
+    if (frame.variables?.some((item) => item.name === "parent")) chips.push(`rama activa: padre ${sequentialValue(frame.variables.find((item) => item.name === "parent")?.value)}`);
+  }
+  const strip = document.createElement("div");
+  strip.className = "seq-semantic-strip";
+  strip.innerHTML = chips.map((chip) => `<span class="seq-semantic-chip">${escapeHtml(chip)}</span>`).join("") + `<span class="seq-invariant-status">✓ Invariante: ${escapeHtml(frame.invariant?.text || "verificado")}</span>`;
+  container.querySelector(".viz-canvas")?.appendChild(strip);
+}
+
+const SEQUENTIAL_COMPARISONS = Object.freeze({
+  "stack-queue": { left: "Pila", right: "Cola", steps: [["Entrada común", "10, 20, 30", "10, 20, 30"], ["Extremo de extracción", "TOP = 30", "FRONT = 10"], ["Resultado", "sale 30 (LIFO)", "sale 10 (FIFO)"]], conclusion: "Con las mismas inserciones, la pila retira el último elemento y la cola retira el primero." },
+  "queue-priority": { left: "Cola", right: "Cola de prioridad", steps: [["Llegada inmutable", "10(P3), 20(P1), 30(P2)", "10(P3), 20(P1), 30(P2)"], ["Selección", "FRONT = 10", "candidato = 20(P1)"], ["Resultado", "sale 10 por llegada", "sale 20 por prioridad"]], conclusion: "La cola física conserva llegada en ambos lados; solo la política de selección cambia." },
+  "linear-circular": { left: "Lista lineal", right: "Lista circular", steps: [["Nodos", "10 → 20 → 30", "10 → 20 → 30"], ["Último enlace", "30 → NULL", "30 → HEAD"], ["Terminación", "actual == NULL", "actual == HEAD otra vez"]], conclusion: "La circularidad cambia el último enlace y obliga a terminar al volver al inicio." },
+  "list-sublist": { left: "Lista", right: "Sublista", steps: [["Datos", "P1 → P2", "P1(h11) → P2(h21)"], ["Cambio aislado", "insertar tras P1", "insertar h12 en P1"], ["Resultado", "cambia cadena principal", "P2 y sus hijos no cambian"]], conclusion: "La sublista añade propiedad padre-hijo y protege las ramas no seleccionadas." },
+});
+
+function renderSequentialComparison(kind, cursor, grid, conclusion) {
+  const source = SEQUENTIAL_COMPARISONS[kind] || SEQUENTIAL_COMPARISONS["stack-queue"];
+  // Las dos vistas reciben copias profundas; ninguna puede mutar la secuencia base congelada.
+  const left = structuredClone(source.steps); const right = structuredClone(source.steps);
+  const index = Math.max(0, Math.min(Number(cursor) || 0, source.steps.length - 1));
+  const row = source.steps[index];
+  grid.innerHTML = `<article class="seq-compare-card"><h4>${escapeHtml(source.left)}</h4><p><strong>${escapeHtml(row[0])}</strong></p><p class="seq-compare-sequence">${escapeHtml(left[index][1])}</p></article><article class="seq-compare-card"><h4>${escapeHtml(source.right)}</h4><p><strong>${escapeHtml(row[0])}</strong></p><p class="seq-compare-sequence">${escapeHtml(right[index][2])}</p></article>`;
+  conclusion.textContent = `Conclusión guiada: ${source.conclusion}`;
+}
+
 function showMessage(text, success) {
   const box = byId("message-box");
   if (!box) {
@@ -2032,6 +2169,7 @@ function updateDidacticPanel(model, operationName) {
   renderDidacticCode(recordBox, didactic.record || "Estructura no documentada.", codeTitle);
   pseudoTitle.textContent = selectedLabel ? `${codeTitle}: ${selectedLabel}` : codeTitle;
   renderDidacticCode(pseudoBox, opMap[selectedOp] || fallback, codeTitle);
+  enhanceSequentialCodeNavigation(null);
 }
 
 function summarizePayload(payload) {
@@ -2241,13 +2379,44 @@ function initStructurePage(model) {
   const visualContainer = byId("visual-state");
   const historyBox = byId("action-history");
   const simPlayButton = byId("seq-sim-play");
+  const simPrepareButton = byId("seq-sim-prepare");
+  const simPauseButton = byId("seq-sim-pause");
+  const simStartButton = byId("seq-sim-start");
   const simPrevButton = byId("seq-sim-prev");
   const simStepButton = byId("seq-sim-step");
+  const simEndButton = byId("seq-sim-end");
+  const simRepeatButton = byId("seq-sim-repeat");
   const simStatus = byId("seq-sim-status");
   const stepToggle = byId("seq-step-toggle");
   const speedSlider = byId("seq-speed-slider");
   const speedValue = byId("seq-speed-value");
   const printfConsole = byId("seq-printf-console");
+  const restartExecutionButton = byId("seq-restart-execution");
+  const hideComments = byId("seq-hide-comments");
+  const pedagogySummary = byId("seq-pedagogy-summary");
+  const learningLevel = byId("seq-learning-level");
+  const guidedExample = byId("seq-guided-example");
+  const loadExampleButton = byId("seq-load-example");
+  const exampleLesson = byId("seq-example-lesson");
+  const progressSlider = byId("seq-progress-slider");
+  const progressDetail = byId("seq-progress-detail");
+  const predictionsEnabled = byId("seq-predictions-enabled");
+  const practiceMode = byId("seq-practice-mode");
+  const predictionPanel = byId("seq-prediction-panel");
+  const predictionQuestion = byId("seq-prediction-question");
+  const predictionChoices = byId("seq-prediction-choices");
+  const predictionFeedback = byId("seq-prediction-feedback");
+  const predictionHint = byId("seq-prediction-hint");
+  const predictionSkip = byId("seq-prediction-skip");
+  const conceptProgressBox = byId("seq-concept-progress");
+  const resetLearningButton = byId("seq-reset-learning");
+  const compareKind = byId("seq-compare-kind");
+  const compareRun = byId("seq-compare-run");
+  const compareProgress = byId("seq-compare-progress");
+  const compareGrid = byId("seq-compare-grid");
+  const compareConclusion = byId("seq-compare-conclusion");
+  const exportImageButton = byId("seq-export-image");
+  const exportSummaryButton = byId("seq-export-summary");
 
   if (!form || !operationSelect || !inputsContainer || !visualContainer) {
     return;
@@ -2273,6 +2442,23 @@ function initStructurePage(model) {
   };
   let playbackSpeed = 1;
   let playbackSpeedSetting = 0;
+  let currentPedagogyFrame = null;
+  let predictionPendingIndex = -1;
+  let predictionHintLevel = 0;
+  const presentationKey = `sequential-presentation:${model.id}`;
+  const learningProgressKey = `sequential-learning-progress:${model.id}`;
+  function readLearningProgress() { try { return JSON.parse(window.sessionStorage.getItem(learningProgressKey) || '{"attempts":0,"correct":0,"concepts":{}}'); } catch (_error) { return { attempts: 0, correct: 0, concepts: {} }; } }
+  let learningProgress = readLearningProgress();
+  function renderLearningProgress() { if (conceptProgressBox) conceptProgressBox.textContent = `Progreso conceptual de esta sesión: ${learningProgress.correct}/${learningProgress.attempts} predicciones correctas · ${Object.keys(learningProgress.concepts || {}).length} conceptos practicados.`; }
+  function saveLearningProgress() { try { window.sessionStorage.setItem(learningProgressKey, JSON.stringify(learningProgress)); } catch (_error) { /* optional */ } renderLearningProgress(); }
+  function readPresentation() {
+    try { return JSON.parse(window.sessionStorage.getItem(presentationKey) || "{}"); } catch (_error) { return {}; }
+  }
+  function writePresentation(extra = {}) {
+    const current = operationCatalog.get(operationSelect.value);
+    const payload = current ? collectPayload(current) : {};
+    try { window.sessionStorage.setItem(presentationKey, JSON.stringify({ operation: operationSelect.value, payload, level: learningLevel?.value || "intermediate", cursor: traceCursor, ...extra })); } catch (_error) { /* optional */ }
+  }
 
   function speedSettingToMultiplier(setting) {
     return Math.pow(2, setting);
@@ -2319,26 +2505,9 @@ function initStructurePage(model) {
       statusElement: simStatus,
       counterElement: byId("seq-sim-counter"),
       renderState: (stateSnapshot, stepMeta) => {
-        const hasFrames = Array.isArray(visualTraceState.frames) && visualTraceState.frames.length > 0;
-        if (hasFrames && stepMeta && Number.isInteger(stepMeta.step_index)) {
-          const frameIndex = resolveFrameIndexForStep(
-            model.id,
-            visualTraceState.operationName,
-            stepMeta.step_index,
-            visualTraceState.totalSteps || 0,
-            visualTraceState.frames,
-            { lineText: stepMeta.line_text || "" },
-          );
-          if (frameIndex >= 0 && frameIndex < visualTraceState.frames.length) {
-            const frame = visualTraceState.frames[frameIndex];
-            renderVisualState(model.id, frame.state, visualContainer, {
-              operation: visualTraceState.operationName,
-              simulation: frame.simulation,
-            });
-            return;
-          }
-        }
+        // The backend frame is canonical. Never infer a visual frame from line ratios.
         renderVisualState(model.id, stateSnapshot, visualContainer, null);
+        appendSequentialSemanticOverlay(model.id, stateSnapshot, visualContainer, stepMeta?.pedagogy);
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
@@ -2347,6 +2516,12 @@ function initStructurePage(model) {
           ? event.trace.steps.length
           : 0;
         refreshPrintfConsole(cursor);
+        const step = event && event.step ? event.step : null;
+        enhanceSequentialCodeNavigation(step && Number.isInteger(step.line_index) ? step.line_index : null);
+        if (step && step.pedagogy) { currentPedagogyFrame = step.pedagogy; renderSequentialPedagogyFrame(currentPedagogyFrame, learningLevel?.value || "intermediate"); }
+        if (progressSlider) { progressSlider.max = String(traceTotalSteps); progressSlider.value = String(Math.max(0, cursor + 1)); progressSlider.disabled = traceTotalSteps === 0; }
+        if (progressDetail) progressDetail.textContent = `Paso ${Math.max(0, cursor + 1)} · ${step?.pedagogy?.call_stack?.[0]?.function || "sin función"} · ${step?.pedagogy?.phase?.label || "sin fase"} · ${step?.pedagogy?.concept || "sin concepto"}`;
+        writePresentation({ cursor });
         setSimulationButtonsEnabled();
       },
     })
@@ -2360,6 +2535,10 @@ function initStructurePage(model) {
   } else {
     setPlaybackSpeed(0);
   }
+  initSequentialResponsiveWorkspace();
+  renderLearningProgress();
+  hideComments?.addEventListener("change", () => enhanceSequentialCodeNavigation(null));
+  restartExecutionButton?.addEventListener("click", () => { tracePlayer?.reset(); setSimulationButtonsEnabled(); });
 
   visibleOperations.forEach((operation) => {
     const option = document.createElement("option");
@@ -2368,11 +2547,19 @@ function initStructurePage(model) {
     operationSelect.appendChild(option);
   });
   operationSelect.disabled = visibleOperations.length === 0;
+  const savedPresentation = readPresentation();
+  if (savedPresentation.operation && operationCatalog.has(savedPresentation.operation)) selected = operationCatalog.get(savedPresentation.operation);
   if (selected) {
     operationSelect.value = selected.name;
   }
 
+  if (learningLevel) learningLevel.value = ["basic", "intermediate", "advanced"].includes(savedPresentation.level) ? savedPresentation.level : "intermediate";
+  (model.guided_examples || []).forEach((example) => {
+    const option = document.createElement("option"); option.value = example.id; option.textContent = example.label; guidedExample?.appendChild(option);
+  });
+
   renderOperationInputs(selected, inputsContainer);
+  if (savedPresentation.payload && selected) selected.inputs.forEach((field) => { const input = byId(`field-${field.name}`); if (input && Object.prototype.hasOwnProperty.call(savedPresentation.payload, field.name)) input.value = savedPresentation.payload[field.name]; });
   updateDidacticPanel(model, selected ? selected.name : "");
   renderVisualState(model.id, model.visual_state, visualContainer, null);
 
@@ -2439,13 +2626,15 @@ function initStructurePage(model) {
     const hasProgress = hasTrace && runtimeCursor >= 0;
     const atEnd = hasTrace && runtimeTotalSteps > 0 && runtimeCursor >= runtimeTotalSteps - 1;
     if (simPlayButton) {
-      simPlayButton.disabled = busy || !canExecute;
+      simPlayButton.disabled = busy || !canExecute || predictionPendingIndex >= 0;
     }
+    [simPauseButton, simStartButton, simEndButton, simRepeatButton].forEach((button) => { if (button) button.disabled = busy || !hasTrace; });
+    if (simPrepareButton) simPrepareButton.disabled = busy || !canExecute;
     if (simPrevButton) {
       simPrevButton.disabled = busy || !stepMode || !hasProgress;
     }
     if (simStepButton) {
-      simStepButton.disabled = busy || !stepMode || !canExecute || (hasTrace && atEnd) || lockStepUntilInput;
+      simStepButton.disabled = busy || !stepMode || !canExecute || (hasTrace && atEnd) || lockStepUntilInput || predictionPendingIndex >= 0;
     }
     if (speedSlider) {
       speedSlider.disabled = busy || !stepMode;
@@ -2464,8 +2653,49 @@ function initStructurePage(model) {
     visualTraceState.frames = [];
     visualTraceState.totalSteps = 0;
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    predictionPendingIndex = -1; if (predictionPanel) predictionPanel.hidden = true;
     refreshPrintfConsole(-1);
     setSimulationButtonsEnabled();
+  }
+
+  function predictionForStep(step) {
+    const frame = step?.pedagogy;
+    if (!frame) return null;
+    const pointerChanged = (frame.pointers || []).some((item) => item.changed);
+    const extremeChanged = (frame.state_changes || []).some((item) => ["empty", "size", "items"].includes(item));
+    if (!["condition", "link", "free"].includes(frame.concept) && !pointerChanged && !extremeChanged) return null;
+    if (frame.concept === "condition") return { question: `¿La condición «${frame.condition?.substituted || frame.condition?.source}» resulta verdadera?`, expected: frame.condition?.result === true, hint: ["Observa los valores sustituidos.", "Compara ambos operandos de la condición.", `La ruta registrada ${frame.condition?.result ? "entra" : "no entra"} al cuerpo.`] };
+    const changes = (frame.state_changes || []).length > 0 || pointerChanged || frame.concept === "free";
+    const label = frame.concept === "free" ? "liberará y hará inalcanzable un nodo" : frame.concept === "link" ? "reasignará un enlace" : "cambiará un extremo o el tamaño";
+    return { question: `¿Esta instrucción ${label}?`, expected: changes, hint: ["Compara el estado anterior con el siguiente frame.", `Concepto actual: ${frame.concept}.`, changes ? "Sí existe una transición registrada." : "El estado observable permanece estable."] };
+  }
+
+  async function advancePendingPrediction(answered) {
+    if (predictionPendingIndex < 0) return;
+    predictionPendingIndex = -1; predictionHintLevel = 0;
+    if (predictionPanel && !answered) predictionPanel.hidden = true;
+    if (answered) predictionChoices?.querySelectorAll("button").forEach((button) => { button.disabled = true; });
+    const advanced = await tracePlayer?.step();
+    visualContainer.classList.remove("seq-practice-hidden");
+    if (advanced && tracePlayer.isAtEnd()) lockStepUntilInput = true;
+    if (!answered && simStatus) simStatus.textContent = "Continuaste sin responder; revisa la explicación del frame.";
+    setSimulationButtonsEnabled();
+  }
+
+  function requestPrediction(step, index) {
+    const prompt = predictionForStep(step);
+    if (!prompt || !predictionsEnabled?.checked) return false;
+    predictionPendingIndex = index; predictionHintLevel = 0; predictionPanel.hidden = false; predictionQuestion.textContent = prompt.question; predictionFeedback.textContent = "Selecciona una respuesta o continúa sin responder.";
+    predictionChoices.innerHTML = '<button class="btn" type="button" data-answer="true">Sí</button><button class="btn secondary" type="button" data-answer="false">No</button>';
+    if (practiceMode?.checked) visualContainer.classList.add("seq-practice-hidden");
+    predictionChoices.querySelectorAll("[data-answer]").forEach((button) => button.addEventListener("click", async () => {
+      const answer = button.dataset.answer === "true"; const correct = answer === prompt.expected;
+      learningProgress.attempts += 1; if (correct) learningProgress.correct += 1; learningProgress.concepts[step.pedagogy.concept] = (learningProgress.concepts[step.pedagogy.concept] || 0) + 1; saveLearningProgress();
+      predictionFeedback.textContent = correct ? "Correcto. Ahora observa el efecto real." : `No coincide. ${prompt.hint[2]}`;
+      await advancePendingPrediction(true);
+    }));
+    predictionHint.onclick = () => { predictionFeedback.textContent = prompt.hint[Math.min(predictionHintLevel, prompt.hint.length - 1)]; predictionHintLevel += 1; };
+    return true;
   }
 
   function collectPayload(current) {
@@ -2507,12 +2737,7 @@ function initStructurePage(model) {
         lockStepUntilInput = false;
         visualTraceState.operationName = current.name;
         visualTraceState.payload = { ...payload };
-        visualTraceState.frames = buildSequentialVisualFrames(
-          model.id,
-          model.visual_state,
-          current.name,
-          payload,
-        );
+        visualTraceState.frames = [];
         visualTraceState.totalSteps = Array.isArray(data.execution_trace.steps)
           ? data.execution_trace.steps.length
           : 0;
@@ -2528,42 +2753,7 @@ function initStructurePage(model) {
         consoleState.trace = null;
         consoleState.fallbackMessage = data.message || "(sin salida printf en esta ruta)";
         refreshPrintfConsole(-1);
-        const allowFallbackPlayback = !(options && options.allowFallbackPlayback === false) && !finalOnly;
-        if (allowFallbackPlayback) {
-          const visualFrames = buildSequentialVisualFrames(
-            model.id,
-            model.visual_state,
-            current.name,
-            payload,
-          );
-          await simulateDidacticExecution({
-            operation: current.name,
-            payload,
-            sizeBefore: Number(model?.visual_state?.size || 0),
-            playbackSpeed,
-            onStep: (stepIndex, totalSteps, stepMeta) => {
-              if (!visualFrames.length) {
-                return;
-              }
-              const frameIndex = resolveFrameIndexForStep(
-                model.id,
-                current.name,
-                stepIndex,
-                totalSteps,
-                visualFrames,
-                stepMeta,
-              );
-              if (frameIndex < 0) {
-                return;
-              }
-              const frame = visualFrames[frameIndex];
-              renderVisualState(model.id, frame.state, visualContainer, {
-                operation: current.name,
-                simulation: frame.simulation,
-              });
-            },
-          });
-        } else if (simStatus) {
+        if (simStatus && !finalOnly) {
           simStatus.textContent = "No hay traza paso a paso disponible para esta operacion.";
         }
         traceSelectionKey = "";
@@ -2635,10 +2825,42 @@ function initStructurePage(model) {
     renderOperationInputs(selected, inputsContainer);
     updateDidacticPanel(model, selected ? selected.name : "");
     invalidateTrace("Operacion cambiada. Ejecuta nuevamente.");
+    writePresentation({ cursor: -1 });
   });
 
   inputsContainer.addEventListener("input", () => {
     invalidateTrace("Entradas cambiadas. Ejecuta nuevamente.");
+    writePresentation({ cursor: -1 });
+  });
+
+  learningLevel?.addEventListener("change", () => {
+    renderSequentialPedagogyFrame(currentPedagogyFrame, learningLevel.value);
+    writePresentation();
+  });
+
+  guidedExample?.addEventListener("change", () => {
+    const example = (model.guided_examples || []).find((item) => item.id === guidedExample.value);
+    if (exampleLesson) exampleLesson.textContent = example ? example.lesson : "Los ejemplos usan las mismas operaciones públicas del TAD.";
+  });
+
+  loadExampleButton?.addEventListener("click", async () => {
+    const example = (model.guided_examples || []).find((item) => item.id === guidedExample?.value);
+    if (!example) { showMessage("Selecciona un ejemplo guiado.", false); return; }
+    pendingExecution = true; setSimulationButtonsEnabled(); loadExampleButton.disabled = true;
+    try {
+      await fetch(form.dataset.resetUrl, { method: "POST" });
+      let lastState = null;
+      for (const seed of example.seed || []) {
+        const response = await fetch(form.dataset.operateUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ operation: seed[0], payload: seed[1] || {} }) });
+        const data = await response.json(); if (!data.success) throw new Error(data.message || "No se pudo preparar el ejemplo."); lastState = data.visual_state;
+      }
+      if (lastState) { model.visual_state = lastState; renderVisualState(model.id, lastState, visualContainer, null); }
+      selected = operationCatalog.get(example.operation) || selected; operationSelect.value = selected.name; renderOperationInputs(selected, inputsContainer);
+      selected.inputs.forEach((field) => { const input = byId(`field-${field.name}`); if (input && Object.prototype.hasOwnProperty.call(example.payload || {}, field.name)) input.value = example.payload[field.name]; });
+      actionHistory.length = 0; (example.seed || []).forEach((seed) => pushUniqueHistoryEntry(actionHistory, createHistoryEntry(getSubroutineName(model, seed[0], operationLabel.get(seed[0]) || seed[0]), summarizePayload(seed[1] || {}) || "-", "Preparación del ejemplo.", seed[0], seed[1] || {}))); renderActionHistory(actionHistory, historyBox, model.id, operationCatalog);
+      updateDidacticPanel(model, selected.name); invalidateTrace("Ejemplo preparado. Reproduce la operación objetivo."); writePresentation({ cursor: -1 }); showMessage(`Ejemplo preparado: ${example.lesson}`, true);
+    } catch (error) { showMessage(error.message || "No fue posible preparar el ejemplo.", false); }
+    finally { pendingExecution = false; loadExampleButton.disabled = false; setSimulationButtonsEnabled(); }
   });
 
   form.addEventListener("submit", async (event) => {
@@ -2664,6 +2886,9 @@ function initStructurePage(model) {
   });
 
   resetButton?.addEventListener("click", async () => {
+    if (!window.confirm("¿Restablecer el TAD y borrar su historial de esta sesión?")) {
+      return;
+    }
     const response = await fetch(form.dataset.resetUrl, { method: "POST" });
     const data = await response.json();
     showMessage(data.message, Boolean(data.success));
@@ -2676,6 +2901,48 @@ function initStructurePage(model) {
     }
     invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
     refreshPrintfConsole(-1);
+  });
+
+  simPrepareButton?.addEventListener("click", async () => {
+    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: false });
+    if (ready && simStatus) simStatus.textContent = "Traza preparada. Predice o inicia la ejecución.";
+  });
+
+  simPauseButton?.addEventListener("click", () => { tracePlayer?.pause(); setSimulationButtonsEnabled(); });
+  simStartButton?.addEventListener("click", () => { tracePlayer?.seek(-1); lockStepUntilInput = false; setSimulationButtonsEnabled(); });
+  simEndButton?.addEventListener("click", async () => {
+    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: false });
+    if (!ready) return;
+    tracePlayer.seek(tracePlayer.getTotalSteps() - 1); lockStepUntilInput = true; setSimulationButtonsEnabled();
+  });
+  simRepeatButton?.addEventListener("click", async () => { if (tracePlayer?.hasTrace()) { lockStepUntilInput = false; await tracePlayer.playFromStart(); setSimulationButtonsEnabled(); } });
+  progressSlider?.addEventListener("input", () => { if (tracePlayer?.hasTrace()) { tracePlayer.seek(Number(progressSlider.value) - 1); lockStepUntilInput = tracePlayer.isAtEnd(); setSimulationButtonsEnabled(); } });
+  predictionSkip?.addEventListener("click", () => advancePendingPrediction(false));
+  resetLearningButton?.addEventListener("click", () => { learningProgress = { attempts: 0, correct: 0, concepts: {} }; saveLearningProgress(); });
+  practiceMode?.addEventListener("change", () => { if (!practiceMode.checked) visualContainer.classList.remove("seq-practice-hidden"); });
+  const refreshComparison = () => renderSequentialComparison(compareKind?.value, compareProgress?.value, compareGrid, compareConclusion);
+  compareRun?.addEventListener("click", refreshComparison);
+  compareProgress?.addEventListener("input", refreshComparison);
+  compareKind?.addEventListener("change", () => { if (compareProgress) compareProgress.value = "0"; refreshComparison(); });
+  exportImageButton?.addEventListener("click", async () => {
+    try { const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({ target: visualContainer, quality: 0.9, scale: 1 }); const link = document.createElement("a"); link.href = exported.dataUrl; link.download = exported.suggestedName; link.click(); }
+    catch (error) { showMessage(error.message || "No se pudo exportar la captura.", false); }
+  });
+  exportSummaryButton?.addEventListener("click", () => {
+    const current = operationCatalog.get(operationSelect.value);
+    const summary = { schema: "sequential-learning-summary/v1", structure: model.id, operation: operationSelect.value, payload: current ? collectPayload(current) : {}, level: learningLevel?.value, cursor: tracePlayer?.getCursor() ?? -1, total_steps: tracePlayer?.getTotalSteps() ?? 0, frame: currentPedagogyFrame, state: model.visual_state, practice: learningProgress, comparison: compareKind?.value };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(summary, null, 2)], { type: "application/json" })); const link = document.createElement("a"); link.href = url; link.download = `${model.id}-resumen.json`; link.click(); URL.revokeObjectURL(url);
+  });
+  document.addEventListener("keydown", async (event) => {
+    if (!event.altKey || event.ctrlKey || event.metaKey || ["INPUT", "SELECT", "TEXTAREA"].includes(event.target?.tagName)) return;
+    const key = event.key.toLowerCase();
+    if (key === "arrowright") { event.preventDefault(); simStepButton?.click(); }
+    else if (key === "arrowleft") { event.preventDefault(); tracePlayer?.prev(); }
+    else if (key === "home") { event.preventDefault(); tracePlayer?.seek(-1); }
+    else if (key === "end") { event.preventDefault(); if (tracePlayer?.hasTrace()) tracePlayer.seek(tracePlayer.getTotalSteps() - 1); }
+    else if (key === "p") { event.preventDefault(); tracePlayer?.pause(); }
+    else if (key === "r") { event.preventDefault(); if (tracePlayer?.hasTrace()) await tracePlayer.playFromStart(); }
+    setSimulationButtonsEnabled();
   });
 
   simPlayButton?.addEventListener("click", async () => {
@@ -2718,6 +2985,9 @@ function initStructurePage(model) {
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
+    const nextIndex = tracePlayer.getCursor() + 1;
+    const nextStep = consoleState.trace?.steps?.[nextIndex];
+    if (requestPrediction(nextStep, nextIndex)) { setSimulationButtonsEnabled(); return; }
     const advanced = await tracePlayer.step();
     if (advanced && tracePlayer.isAtEnd()) {
       lockStepUntilInput = true;

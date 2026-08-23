@@ -697,6 +697,21 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
+        hash_index = cls._extract_function_with_comment(c_text, "th_indice")
+        hash_search = cls._extract_function_with_comment(c_text, "th_buscar")
+        dependencies = {
+            "insert": (hash_index,),
+            "get": (hash_index,),
+            "contains": (hash_index, hash_search),
+            "remove": (hash_index,),
+        }
+        for operation_name, helpers in dependencies.items():
+            public_function = operation_code.get(operation_name)
+            if public_function:
+                operation_code[operation_name] = "\n\n".join(
+                    [public_function] + [snippet for snippet in helpers if snippet]
+                )
+
         operation_code["keys"] = (
             "/* Este TAD en C no expone un metodo que retorne solo claves como arreglo. */\n"
             "/* Se puede recorrer la tabla completa usando th_formatear. */\n"
@@ -723,8 +738,9 @@ class CCodeService:
 
         init_fn = cls._extract_function_with_comment(c_text, "th_inicializar")
         destroy_fn = cls._extract_function_with_comment(c_text, "th_destruir")
+        clear_fn = cls._extract_function_with_comment(c_text, "th_vaciar")
         if init_fn and destroy_fn:
-            operation_code["destroy_table"] = destroy_fn
+            operation_code["destroy_table"] = "\n\n".join([destroy_fn, clear_fn] if clear_fn else [destroy_fn])
             operation_code["clear_and_reinit"] = (
                 f"{destroy_fn}\n\n"
                 "/* Reinicio recomendado del TAD conservando una capacidad valida. */\n"
@@ -753,14 +769,35 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        merge_helper = cls._extract_function_with_comment(c_text, "mergesort_recursivo")
-        merge_step = cls._extract_function_with_comment(c_text, "mezclar")
-        if merge_helper and operation_code.get("mergesort"):
-            helpers = "\n\n".join(item for item in (merge_step, merge_helper) if item)
-            operation_code["mergesort"] = f"{helpers}\n\n{operation_code['mergesort']}"
-        counting_helper = cls._extract_function_with_comment(c_text, "ordenar_counting_sort")
-        if counting_helper and operation_code.get("binsort"):
-            operation_code["binsort"] = f"{counting_helper}\n\n{operation_code['binsort']}"
+        validation = cls._extract_function_with_comment(c_text, "arreglo_valido")
+        swap = cls._extract_function_with_comment(c_text, "intercambiar")
+        quick = cls._extract_function_with_comment(c_text, "quicksort_recursivo")
+        merge = cls._extract_function_with_comment(c_text, "mezclar")
+        merge_recursive = cls._extract_function_with_comment(c_text, "mergesort_recursivo")
+        heap = cls._extract_function_with_comment(c_text, "heapify")
+        min_max = cls._extract_function_with_comment(c_text, "obtener_minimo_maximo")
+        counting = cls._extract_function_with_comment(c_text, "ordenar_counting_sort")
+        radix_digit = cls._extract_function_with_comment(c_text, "counting_por_digito")
+
+        dependencies: dict[str, tuple[str, ...]] = {
+            "intercambio": (validation, swap),
+            "seleccion": (validation, swap),
+            "insercion": (validation,),
+            "burbuja": (validation, swap),
+            "shell": (validation,),
+            "quicksort": (validation, swap, quick),
+            "mergesort": (validation, merge, merge_recursive),
+            "heapsort": (validation, swap, heap),
+            "counting_sort": (validation, min_max),
+            "binsort": (validation, min_max, counting),
+            "radixsort": (validation, radix_digit),
+        }
+        for operation_name, helpers in dependencies.items():
+            public_function = operation_code.get(operation_name)
+            if public_function:
+                operation_code[operation_name] = "\n\n".join(
+                    [snippet for snippet in helpers if snippet] + [public_function]
+                )
 
         structure_text = cls._extract_sorting_structure(h_text)
         return {

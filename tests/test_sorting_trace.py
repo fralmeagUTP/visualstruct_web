@@ -22,6 +22,8 @@ def test_sorting_trace_contains_visual_snapshots(client) -> None:
     assert "state_after" in first
     assert "line_index" in first
     assert "metrics" in first["state_after"]
+    assert "trace_token" in first["state_after"]
+    assert "trace_action" in first["state_after"]
     trace = data["execution_trace"]
     assert trace["steps"][-1]["state_after"] == trace["final_state"]
     assert TraceStrategyRegistry.resolve(trace["structure_id"]).family == "sorting"

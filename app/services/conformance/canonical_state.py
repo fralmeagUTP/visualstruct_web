@@ -113,11 +113,16 @@ def _canonical_hash(state: dict[str, Any]) -> tuple[dict[str, Any], dict[str, bo
         for entry in bucket.get("entries", []):
             if isinstance(entry, dict):
                 key = entry.get("key")
+                value = entry.get("value")
                 try:
                     key = int(str(key).strip())
                 except (TypeError, ValueError):
                     pass
-                pairs.append([key, entry.get("value")])
+                try:
+                    value = int(str(value).strip())
+                except (TypeError, ValueError):
+                    pass
+                pairs.append([key, value])
     pairs.sort(key=lambda pair: (str(pair[0]), str(pair[1])))
     _assert_size(state, len(pairs))
     metadata = state.get("metadata", {})

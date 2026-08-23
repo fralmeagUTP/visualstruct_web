@@ -1,106 +1,54 @@
 {% extends "base.html" %}
 {% block title %}{{ model.name }} | Ordenamiento{% endblock %}
 {% block content %}
-<section class="structure-layout">
-  <div class="panel">
-    <h2>{{ model.name }}</h2>
-    <p>{{ model.description }}</p>
-    <div class="didactic-technical">
-      <h4>Estructura del TAD</h4>
-      <pre id="sorting-tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
+<article class="sorting-learning-shell" aria-labelledby="sorting-page-title">
+  <header class="sorting-learning-header"><div><p class="sorting-eyebrow">Laboratorio de algoritmos en C</p><h2 id="sorting-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div><div class="sorting-level-control"><label for="sorting-learning-level">Nivel didáctico</label><select id="sorting-learning-level"><option value="basic">Básico</option><option value="intermediate" selected>Intermedio</option><option value="advanced">Avanzado</option></select></div><a class="link" href="{{ url_for('help.sorting_structure_help', structure_id=model.id) }}">Abrir guía del método</a></header><div id="sorting-accessible-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+  <section class="sorting-learning-stage sorting-prepare" aria-labelledby="sorting-prepare-title">
+    <h3 id="sorting-prepare-title"><span>1</span> Preparar</h3>
+    <div id="sorting-controls" data-create-url="{{ url_for('sorting_api.api_create_array') }}" data-random-url="{{ url_for('sorting_api.api_random_array') }}" data-algorithm-url="{{ url_for('sorting_api.api_select_algorithm') }}" data-run-url="{{ url_for('sorting_api.api_run') }}" data-compare-url="{{ url_for('sorting_api.api_compare') }}" data-step-url="{{ url_for('sorting_api.api_step') }}" data-state-url="{{ url_for('sorting_api.api_state') }}" data-reset-url="{{ url_for('sorting_api.api_reset') }}">
+      <div class="sorting-control-grid">
+        <div class="sorting-field sorting-field-wide"><label for="sorting-manual-values">Arreglo manual (separado por comas)</label><input id="sorting-manual-values" type="text" placeholder="5, 3, 8, 1"><button class="btn secondary" id="sorting-create-array" type="button">Crear arreglo</button></div>
+        <div class="sorting-field"><label for="sorting-random-size">Cantidad <small>6–8 recomendado</small></label><input id="sorting-random-size" type="number" min="1" max="80" value="7" aria-describedby="sorting-size-help"><span id="sorting-size-help" class="sorting-field-help">Máximo técnico: 80</span></div>
+        <div class="sorting-field"><label for="sorting-random-min">Mínimo</label><input id="sorting-random-min" type="number" value="-20"></div>
+        <div class="sorting-field"><label for="sorting-random-max">Máximo</label><input id="sorting-random-max" type="number" value="50"></div>
+        <div class="sorting-field sorting-field-action"><button class="btn secondary" id="sorting-random-array" type="button">Generar aleatorio</button></div>
+        <div class="sorting-field"><label for="sorting-algorithm">Algoritmo</label><select id="sorting-algorithm"></select></div>
+        <div class="sorting-field sorting-field-wide"><label for="sorting-guided-example">Ejemplo guiado</label><div class="sorting-inline-field"><select id="sorting-guided-example"><option value="normal">Caso normal</option><option value="ordered">Ya ordenado</option><option value="reverse">Orden inverso</option><option value="duplicates">Valores duplicados</option><option value="signed">Positivos, cero y negativos</option><option value="best">Mejor caso orientativo</option><option value="worst">Peor caso orientativo</option></select><button class="btn secondary" id="sorting-load-example" type="button">Cargar ejemplo</button></div><span id="sorting-example-explanation" class="sorting-field-help">Observa comparaciones, decisiones y cambios de estado.</span></div>
+      </div>
+      <div id="sorting-message-box" class="message" aria-live="polite"></div>
     </div>
+  </section>
 
-    <div id="sorting-controls"
-         data-create-url="{{ url_for('sorting_api.api_create_array') }}"
-         data-random-url="{{ url_for('sorting_api.api_random_array') }}"
-         data-algorithm-url="{{ url_for('sorting_api.api_select_algorithm') }}"
-         data-run-url="{{ url_for('sorting_api.api_run') }}"
-         data-step-url="{{ url_for('sorting_api.api_step') }}"
-         data-state-url="{{ url_for('sorting_api.api_state') }}"
-         data-reset-url="{{ url_for('sorting_api.api_reset') }}">
-      <label for="sorting-manual-values">Arreglo manual (csv)</label>
-      <input id="sorting-manual-values" type="text" placeholder="5, 3, 8, 1">
-      <div class="actions">
-        <button class="btn secondary" id="sorting-create-array" type="button">Crear arreglo</button>
-      </div>
-
-      <label for="sorting-random-size">Cantidad aleatoria</label>
-      <input id="sorting-random-size" type="number" min="1" max="80" value="10">
-      <label for="sorting-random-min">Minimo</label>
-      <input id="sorting-random-min" type="number" value="-20">
-      <label for="sorting-random-max">Maximo</label>
-      <input id="sorting-random-max" type="number" value="50">
-      <div class="actions">
-        <button class="btn secondary" id="sorting-random-array" type="button">Generar aleatorio</button>
-      </div>
-
-      <label for="sorting-algorithm">Algoritmo</label>
-      <select id="sorting-algorithm"></select>
-
-      <div class="actions">
-        <button class="btn" id="sorting-sim-play" type="button">Reproducir</button>
-        <button class="btn secondary" id="sorting-reset" type="button">Reiniciar</button>
-      </div>
-      <div class="didactic-technical">
-        <div class="sim-toggle-control">
-          <label for="sorting-step-toggle">
-            <input id="sorting-step-toggle" type="checkbox" checked>
-            Interpretar codigo paso a paso
-          </label>
-        </div>
-        <h4>Ejecucion paso a paso</h4>
-        <div class="actions">
-          <button class="btn secondary" id="sorting-sim-prev" type="button">Anterior paso</button>
-          <button class="btn" id="sorting-sim-step" type="button">Siguiente paso</button>
-        </div>
-        <div class="sim-speed-control">
-          <label for="sorting-speed-slider">Velocidad de simulacion</label>
-          <input id="sorting-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
-          <p class="sim-speed-value">Actual: <span id="sorting-speed-value">+0.00x (1.00x real)</span></p>
-        </div>
-        <p id="sorting-sim-counter" class="sim-counter">Paso: 0/0</p>
-        <p id="sorting-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
-      </div>
-    </div>
-
-    <div id="sorting-message-box" class="message" aria-live="polite"></div>
-    <p>
-      <a class="link" href="{{ url_for('help.sorting_structure_help', structure_id=model.id) }}">
-        Ver ayuda de {{ model.name }}
-      </a>
-    </p>
-    <section class="console-panel didactic-technical">
-      <h4>Consola C (printf)</h4>
-      <div class="console-monitor">
-        <div class="console-monitor-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="title">terminal</span>
-        </div>
-        <pre id="sorting-printf-console" class="console-screen" aria-live="polite"></pre>
-      </div>
+  <nav class="sorting-mobile-tabs" aria-label="Vistas principales"><button type="button" class="sorting-tab is-active" data-sorting-tab="visual" aria-controls="sorting-visual-region" aria-selected="true">Visualización</button><button type="button" class="sorting-tab" data-sorting-tab="code" aria-controls="sorting-code-region" aria-selected="false">Código C</button></nav>
+  <div class="sorting-primary-workspace" data-active-tab="visual">
+    <section id="sorting-visual-region" class="sorting-learning-stage sorting-workspace-panel sorting-visualize" aria-labelledby="sorting-visual-title"><h3 id="sorting-visual-title"><span>2</span> Visualizar</h3><div id="sorting-visual-state"></div><section class="sorting-strategy-panel" aria-labelledby="sorting-strategy-title"><h4 id="sorting-strategy-title">Estrategia del método</h4><div id="sorting-strategy-view">Selecciona un algoritmo y prepara una entrada.</div></section><p class="sorting-legend"><strong>Leyenda:</strong> <span>C comparación</span> · <span>I intercambio</span> · <span>P pivote</span> · <span>✓ confirmado</span> · <span>A auxiliar</span></p></section>
+    <section id="sorting-code-region" class="sorting-learning-stage sorting-workspace-panel sorting-relate didactic-technical" aria-labelledby="sorting-code-title">
+      <div class="sorting-code-toolbar"><h3><span>4</span> Relacionar con C</h3><label><input id="sorting-hide-comments" type="checkbox"> Ocultar documentación extensa</label></div>
+      <div class="sorting-code-layout"><nav class="sorting-function-index" aria-label="Funciones del código C"><strong>Funciones</strong><ol id="sorting-function-list"></ol></nav><div class="sorting-code-pane"><h4 id="sorting-code-title">{{ (model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocódigo") }}: {{ model.algorithms[0].label if model.algorithms else "" }}</h4><pre id="sorting-code" class="didactic-code didactic-code-scroll">{{ model.didactic.operations.get(model.algorithms[0].id, model.didactic.default_operation) if model.algorithms and model.didactic else "Contenido didáctico no disponible." }}</pre></div></div>
     </section>
   </div>
 
-  <div class="panel">
-    <h3>Estado visual</h3>
-    <div id="sorting-visual-state"></div>
-    <h4>Notas didacticas</h4>
-    <p>{{ help_data.summary }}</p>
-    <div class="didactic-technical">
-      <h4 id="sorting-code-title">{{ (model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocodigo") }}: {{ model.algorithms[0].label if model.algorithms else "" }}</h4>
-      <pre id="sorting-code" class="didactic-code didactic-code-scroll">{{ model.didactic.operations.get(model.algorithms[0].id, model.didactic.default_operation) if model.algorithms and model.didactic else "Contenido didactico no disponible." }}</pre>
+  <section class="sorting-learning-stage sorting-understand" aria-labelledby="sorting-understand-title">
+    <h3 id="sorting-understand-title"><span>3</span> Comprender</h3>
+    <div class="sorting-playback-row" role="group" aria-label="Controles de reproducción"><button class="btn secondary" id="sorting-sim-prepare" type="button">Preparar</button><button class="btn" id="sorting-sim-play" type="button">Reproducir</button><button class="btn secondary" id="sorting-sim-pause" type="button">Pausar</button><button class="btn secondary" id="sorting-sim-start" type="button">Inicio</button><button class="btn secondary" id="sorting-sim-prev" type="button">Anterior</button><button class="btn" id="sorting-sim-step" type="button">Siguiente</button><button class="btn secondary" id="sorting-sim-end" type="button">Final</button><button class="btn secondary" id="sorting-sim-repeat" type="button">Repetir</button></div>
+    <div class="sorting-progress-wrap"><label for="sorting-progress">Navegación de la traza <span id="sorting-progress-label">Paso 0 · sin fase</span></label><input id="sorting-progress" type="range" min="0" max="0" value="0" disabled></div>
+    <div class="sorting-pedagogy-card" aria-live="polite"><p class="sorting-pedagogy-kicker" id="sorting-pedagogy-phase">Preparación</p><h4 id="sorting-pedagogy-objective">Selecciona datos y un algoritmo para comenzar.</h4><p id="sorting-pedagogy-narration">La explicación de cada paso aparecerá aquí.</p><div id="sorting-condition-view" class="sorting-condition-view"></div></div>
+    <section class="sorting-practice-panel"><div class="sorting-practice-toolbar"><label><input id="sorting-practice-mode" type="checkbox"> Modo práctica: predecir antes de revelar el siguiente frame</label><button class="btn secondary" id="sorting-progress-reset" type="button">Reiniciar progreso</button><span id="sorting-concept-progress">0 intentos · 0 aciertos</span></div><div id="sorting-prediction-card" class="sorting-prediction-card" hidden><h4>¿Qué ocurrirá en el siguiente paso?</h4><p id="sorting-prediction-prompt"></p><div class="sorting-prediction-actions"><button class="btn secondary" data-prediction="true" type="button">Sí / rama verdadera</button><button class="btn secondary" data-prediction="false" type="button">No / rama falsa</button><button class="btn secondary" id="sorting-prediction-skip" type="button">Continuar sin responder</button></div><details><summary>Pista 1</summary><p id="sorting-hint-one"></p></details><details><summary>Pista 2</summary><p id="sorting-hint-two"></p></details><p id="sorting-prediction-feedback" aria-live="polite"></p></div></section>
+    <div class="sorting-execution-details didactic-technical">
+      <section><h4>Variables C</h4><div class="sorting-table-wrap"><table class="sorting-detail-table"><thead><tr><th>Nombre</th><th>Tipo</th><th>Valor</th><th>Significado</th></tr></thead><tbody id="sorting-variable-table"><tr><td colspan="4">Sin frame activo.</td></tr></tbody></table></div></section>
+      <section><h4>Pila de llamadas</h4><ol id="sorting-call-stack" class="sorting-call-stack"><li>Sin llamadas activas.</li></ol></section>
+      <section><h4>Ciclo actual</h4><div id="sorting-loop-view" class="sorting-detail-card">Sin ciclo activo.</div></section>
+      <section><h4>Punteros y auxiliares</h4><div id="sorting-pointer-view" class="sorting-detail-card">Sin punteros activos.</div></section>
     </div>
-    <div class="didactic-technical">
-      <h4>Historial de ejecucion</h4>
-      <ol id="sorting-action-history" class="didactic-history"></ol>
-    </div>
-  </div>
-</section>
+    <div class="sorting-understand-grid didactic-technical"><label class="sim-toggle-control" for="sorting-step-toggle"><input id="sorting-step-toggle" type="checkbox" checked> Interpretar código paso a paso</label><div class="sim-speed-control"><label for="sorting-speed-slider">Velocidad pedagógica</label><input id="sorting-speed-slider" type="range" min="-2" max="2" step="0.25" value="0"><p class="sim-speed-value">Actual: <span id="sorting-speed-value">+0.00x (1.00x real)</span></p></div><div><p id="sorting-sim-counter" class="sim-counter">Paso: 0/0</p><p id="sorting-sim-status" class="message" aria-live="polite">Usa Preparar, Reproducir o Siguiente.</p></div></div>
+    <div class="sorting-reset-row"><button class="btn secondary" id="sorting-restart-execution" type="button">Reiniciar ejecución</button><button class="btn danger" id="sorting-reset" type="button">Restablecer datos</button></div>
+    <section class="console-panel didactic-technical"><h4>Consola C (printf)</h4><div class="console-monitor"><div class="console-monitor-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="title">terminal</span></div><pre id="sorting-printf-console" class="console-screen" aria-live="polite"></pre></div></section>
+  </section>
+
+  <section class="sorting-learning-stage sorting-reflect" aria-labelledby="sorting-reflect-title"><h3 id="sorting-reflect-title"><span>5</span> Reflexionar</h3><div class="sorting-invariant-card"><h4>Invariante del frame</h4><p id="sorting-invariant-text">Se mostrará al preparar la ejecución.</p></div><div class="sorting-analysis-grid"><section><h4>Métricas observadas en esta entrada</h4><div id="sorting-observed-metrics">Todavía no hay ejecución.</div></section><section><h4>Propiedades teóricas del método</h4><div id="sorting-theory-profile">Selecciona y ejecuta un algoritmo.</div><p class="sorting-field-help">La complejidad teórica no se deduce de una única entrada.</p></section></div>
+    <section class="sorting-comparator"><h4>Comparar dos algoritmos</h4><p>Ambos reciben copias de una única entrada inmutable.</p><div class="sorting-comparator-controls"><label>Algoritmo A<select id="sorting-compare-left"></select></label><label>Algoritmo B<select id="sorting-compare-right"></select></label><label>Sincronizar por<select id="sorting-compare-sync"><option value="step">Paso</option><option value="concept">Concepto</option></select></label><button class="btn" id="sorting-compare-run" type="button">Preparar comparación</button></div><p id="sorting-compare-input" class="sorting-field-help"></p><input id="sorting-compare-progress" type="range" min="0" max="0" value="0" disabled><div class="sorting-compare-grid"><article><h5 id="sorting-compare-left-title">Algoritmo A</h5><div id="sorting-compare-left-view"></div><div id="sorting-compare-left-analysis"></div></article><article><h5 id="sorting-compare-right-title">Algoritmo B</h5><div id="sorting-compare-right-view"></div><div id="sorting-compare-right-analysis"></div></article></div><div id="sorting-compare-conclusion" class="sorting-invariant-card">Una sola entrada permite observar diferencias, pero no demuestra por sí misma la complejidad general.</div></section>
+    <div class="sorting-export-row"><button class="btn secondary" id="sorting-export-image" type="button">Exportar captura JPG</button><button class="btn secondary" id="sorting-export-summary" type="button">Exportar resumen JSON</button></div><div class="sorting-reflect-grid"><div><h4>Pregunta guía</h4><p>{{ help_data.summary }}</p><p>Reproduce los ejemplos de mejor y peor caso desde la sección Preparar y contrasta las métricas.</p></div><div class="didactic-technical"><h4>Historial de ejecución</h4><ol id="sorting-action-history" class="didactic-history"></ol></div><details class="didactic-technical"><summary>Estructura del TAD</summary><pre id="sorting-tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre></details></div></section>
+</article>
 {% endblock %}
-{% block scripts %}
-<script>
-  window.SORTING_VIEW_MODEL = {{ model | tojson }};
-</script>
-{% endblock %}
+{% block scripts %}<script>window.SORTING_VIEW_MODEL = {{ model | tojson }};</script>{% endblock %}

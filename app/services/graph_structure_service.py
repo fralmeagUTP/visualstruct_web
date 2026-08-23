@@ -12,6 +12,7 @@ from app.domain.graph import PesoNegativoError, TADError, VerticeNoEncontradoErr
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
+from app.domain.graph.pedagogy import GRAPH_EDGE_POLICY, GRAPH_GUIDED_EXAMPLES
 
 
 class GraphStructureService:
@@ -129,6 +130,8 @@ class GraphStructureService:
             "visual_state": adapter.to_visual_state(),
             "didactic": didactic_data,
             "history": valid_history,
+            "guided_examples": deepcopy(GRAPH_GUIDED_EXAMPLES),
+            "edge_policy": deepcopy(GRAPH_EDGE_POLICY),
         }
 
     @staticmethod
@@ -217,3 +220,47 @@ class GraphStructureService:
             "history": valid_history,
             "execution_trace": trace,
         }
+
+    @staticmethod
+    def compare_algorithms(kind: str, graph_state: Any, start: Any = None, end: Any = None) -> dict[str, Any]:
+        """Run two algorithms on independent copies of one immutable graph snapshot."""
+        pairs = {
+            "bfs-dfs": ("run_bfs", "run_dfs"),
+            "dijkstra-bellman-ford": ("run_dijkstra", "run_bellman_ford"),
+            "prim-kruskal": ("run_prim", "run_kruskal"),
+        }
+        if kind not in pairs or not isinstance(graph_state, dict):
+            raise ValueError("Comparación de grafos no soportada.")
+        nodes = graph_state.get("nodes") or []
+        edges = graph_state.get("edges") or []
+        if not nodes or len(nodes) > 50 or len(edges) > 300:
+            raise ValueError("La comparación requiere entre 1 y 50 vértices y máximo 300 aristas.")
+        immutable = deepcopy({"directed": bool(graph_state.get("directed", False)), "nodes": nodes, "edges": edges})
+
+        def execute_copy(operation: str) -> dict[str, Any]:
+            adapter = GraphAdapter()
+            adapter.execute("create_graph", {"directed": immutable["directed"]})
+            for node in immutable["nodes"]:
+                adapter.execute("insert_vertex", {"vertex": node.get("id")})
+            for edge in immutable["edges"]:
+                adapter.execute("insert_edge", {"origin": edge.get("source"), "target": edge.get("target"), "weight": edge.get("weight", 1)})
+            payload: dict[str, Any] = {}
+            if operation in {"run_bfs", "run_dfs", "run_dijkstra", "run_bellman_ford", "run_prim"}:
+                payload["start"] = start if start not in (None, "") else immutable["nodes"][0].get("id")
+            if operation in {"run_dijkstra", "run_bellman_ford"}:
+                payload["end"] = end if end not in (None, "") else immutable["nodes"][-1].get("id")
+            outcome = adapter.execute(operation, payload).get("result")
+            if isinstance(outcome, list):
+                summary = {"order": outcome, "visited_count": len(outcome), "auxiliary": "FIFO" if operation == "run_bfs" else "pila/recursión"}
+            else:
+                summary = deepcopy(outcome or {})
+            return {"algorithm": operation, "payload": payload, "summary": summary, "final_state": deepcopy(adapter.to_visual_state())}
+
+        left_name, right_name = pairs[kind]
+        left, right = execute_copy(left_name), execute_copy(right_name)
+        conclusions = {
+            "bfs-dfs": "BFS usa FIFO y visita por niveles; DFS usa pila/recursión y profundiza antes de retroceder.",
+            "dijkstra-bellman-ford": "Dijkstra cierra mínimos con pesos no negativos; Bellman-Ford relaja por pasadas y admite pesos negativos.",
+            "prim-kruskal": "Prim crece desde una frontera; Kruskal ordena aristas y evita ciclos mediante Union-Find.",
+        }
+        return {"kind": kind, "input": immutable, "left": left, "right": right, "conclusion": conclusions[kind], "isolated": True}

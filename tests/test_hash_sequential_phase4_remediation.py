@@ -26,12 +26,12 @@ def test_hash_integer_index_is_stable_across_processes():
 def test_hash_capacity_is_fixed_and_collision_chain_survives_update_remove():
     adapter = HashTableAdapter()
     adapter.execute("create_table", {"capacity": 3})
-    for key, value in ((-2, "a"), (1, "b"), (4, "c")):
+    for key, value in ((-2, 20), (1, 10), (4, 40)):
         adapter.execute("insert", {"key": key, "value": value})
     assert adapter.table.capacidad() == 3
     assert adapter.to_visual_state()["metadata"]["collisions"] == 2
-    adapter.execute("insert", {"key": 1, "value": "actualizado"})
-    assert adapter.execute("get", {"key": 1})["result"] == "actualizado"
+    adapter.execute("insert", {"key": 1, "value": 99})
+    assert adapter.execute("get", {"key": 1})["result"] == 99
     assert adapter.execute("remove", {"key": -2})["result"] is True
     assert adapter.execute("contains", {"key": 4})["result"] is True
 
@@ -40,7 +40,7 @@ def test_hash_capacity_is_fixed_and_collision_chain_survives_update_remove():
 def test_hash_rejects_non_integer_keys(key):
     adapter = HashTableAdapter()
     with pytest.raises(ValueError):
-        adapter.execute("insert", {"key": key, "value": "x"})
+        adapter.execute("insert", {"key": key, "value": 1})
     assert adapter.table.tamano() == 0
 
 

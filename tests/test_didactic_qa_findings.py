@@ -25,9 +25,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_hash_001_backend_keeps_c_fixed_capacity() -> None:
-    table = TablaHash[int, str](capacidad=3)
+    table = TablaHash[int, int](capacidad=3)
     for key in (1, 4, 7):
-        table.insertar(key, str(key))
+        table.insertar(key, key)
     assert table.capacidad() == 3
 
     c_source = (ROOT / "docs/tads_C/tad_tabla_hash.c").read_text(encoding="utf-8")
@@ -40,7 +40,7 @@ def test_hash_001_backend_keeps_c_fixed_capacity() -> None:
 
 
 def test_hash_002_integer_bucket_mapping_matches_c_modulo() -> None:
-    table = TablaHash[int, str](17)
+    table = TablaHash[int, int](17)
     assert [table._indice(key) for key in (-18, -1, 0, 1, 18)] == [16, 16, 0, 1, 1]
     with pytest.raises(ValueError, match="entero"):
         table._indice("A")

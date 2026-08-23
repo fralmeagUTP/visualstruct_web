@@ -33,7 +33,7 @@ def test_insert_update_get_and_contains() -> None:
     contains_result = adapter.execute("contains", {"key": 1})["result"]
     missing_result = adapter.execute("get", {"key": 99})["result"]
 
-    assert get_result == "2"
+    assert get_result == 2
     assert contains_result is True
     assert missing_result is None
 
@@ -62,8 +62,8 @@ def test_keys_values_items_stats_and_clear() -> None:
     stats = adapter.execute("stats", {})["result"]
 
     assert set(keys) == {1, 2}
-    assert set(values) == {"1", "2"}
-    assert set(tuple(item) for item in items) == {(1, "1"), (2, "2")}
+    assert set(values) == {1, 2}
+    assert set(tuple(item) for item in items) == {(1, 1), (2, 2)}
     assert stats["size"] == 2
     assert stats["capacity"] >= 2
 
@@ -75,14 +75,14 @@ def test_keys_values_items_stats_and_clear() -> None:
 def test_to_visual_state_has_fixed_capacity_and_deterministic_collisions() -> None:
     adapter = HashTableAdapter()
     adapter.execute("create_table", {"capacity": "3"})
-    adapter.execute("insert", {"key": 1, "value": "v1"})
-    adapter.execute("insert", {"key": 4, "value": "v2"})
-    adapter.execute("insert", {"key": 7, "value": "v3"})
+    adapter.execute("insert", {"key": 1, "value": 10})
+    adapter.execute("insert", {"key": 4, "value": 40})
+    adapter.execute("insert", {"key": 7, "value": 70})
 
     state = adapter.to_visual_state()
     assert state["structure"] == "hash_table"
     assert "buckets" in state
     assert "metadata" in state
     assert state["metadata"]["capacity"] == 3
-    assert state["metadata"]["resized"] is False
+    assert state["metadata"]["capacity_policy"] == "fixed"
     assert state["metadata"]["collisions"] == 2

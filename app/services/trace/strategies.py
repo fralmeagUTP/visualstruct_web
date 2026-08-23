@@ -745,6 +745,8 @@ class HashTraceStrategy(LegacyTraceStrategy):
             current_buckets = deepcopy(buckets if isinstance(buckets, list) else [])
             size = 0
             collisions = 0
+            occupied = 0
+            chain_lengths: list[int] = []
             for bucket in current_buckets:
                 if not isinstance(bucket, dict):
                     continue
@@ -754,6 +756,8 @@ class HashTraceStrategy(LegacyTraceStrategy):
                 bucket["collisions"] = max(0, len(entries) - 1)
                 size += bucket["size"]
                 collisions += bucket["collisions"]
+                occupied += int(bucket["size"] > 0)
+                chain_lengths.append(bucket["size"])
             capacity = len(current_buckets) if current_buckets else int(after_metadata.get("capacity", 0))
             current = deepcopy(before_state)
             current["buckets"] = current_buckets
@@ -762,9 +766,12 @@ class HashTraceStrategy(LegacyTraceStrategy):
                 "capacity": capacity,
                 "load_factor": round(float(size) / float(capacity), 6) if capacity else 0.0,
                 "collisions": collisions,
+                "occupied_buckets": occupied,
+                "empty_buckets": max(0, capacity - occupied),
+                "max_chain_length": max(chain_lengths, default=0),
+                "chain_lengths": chain_lengths,
                 "is_empty": size == 0,
-                "resized": bool(after_metadata.get("resized", False)),
-                "resize_event": deepcopy(after_metadata.get("resize_event")),
+                "capacity_policy": "fixed",
             }
             for key in ("last_operation", "last_result"):
                 current[key] = deepcopy(after_state.get(key, current.get(key)))

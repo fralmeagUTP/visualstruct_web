@@ -13,6 +13,19 @@ from app.services.session_service import SessionService
 hash_bp = Blueprint("hash", __name__, url_prefix="/hash")
 
 
+@hash_bp.post("/compare-capacities")
+def compare_capacities() -> Any:
+    """Compare fixed capacities without changing the session table."""
+    body = request.get_json(silent=True) or {}
+    try:
+        result = HashStructureService.compare_capacities(
+            body.get("entries"), body.get("success_key"), body.get("absent_key"),
+        )
+    except (TypeError, ValueError) as error:
+        return jsonify({"success": False, "message": str(error)}), 400
+    return jsonify(result)
+
+
 @hash_bp.get("/")
 def hash_index() -> str:
     """Render hash structures cards page."""

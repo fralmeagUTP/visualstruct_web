@@ -136,7 +136,7 @@ Criterios obligatorios:
 - Secuencial/Jerarquico: `value`, `parent`, `child` y campos equivalentes se validan como enteros.
 - Grafos: `vertex`, `origin`, `target`, `start`, `end` enteros.
 - Grafos: `weight` numerico (entero o decimal).
-- Hash: `key` y `value` texto.
+- Hash: `key` y `value` enteros C (`INT_MIN` a `INT_MAX`); la capacidad es fija.
 
 ## Arquitectura
 

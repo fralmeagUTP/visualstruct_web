@@ -16,6 +16,7 @@ from app.services.observability import observe_replay
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
+from app.domain.sequential.pedagogy import SEQUENTIAL_GUIDED_EXAMPLES
 from app.domain.sequential import (
     ElementoNoEncontradoError,
     EstructuraVaciaError,
@@ -164,6 +165,7 @@ class StructureService:
             "visual_state": adapter.to_visual_state(),
             "didactic": StructureService._didactic_content(structure_id),
             "history": valid_history,
+            "guided_examples": deepcopy(SEQUENTIAL_GUIDED_EXAMPLES.get(structure_id, [])),
         }
 
     @staticmethod

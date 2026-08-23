@@ -116,6 +116,19 @@ class HelpService:
         },
     }
 
+    _PEDAGOGY = {
+        "stack": {"objective": "Predecir inserción y extracción LIFO.", "strategy": "Seguir TOP, aux y el enlace siguiente.", "invariant": "TOP es el único extremo; todos los nodos terminan en NULL.", "memory": "Cada apilar reserva; cada desapilar desconecta antes de liberar.", "errors": ["Confundir TOP con el fondo", "Usar aux después de free"]},
+        "queue": {"objective": "Explicar FIFO y las transiciones de extremos.", "strategy": "Seguir FRONT para salir y BACK para entrar.", "invariant": "Vacía implica FRONT == BACK == NULL.", "memory": "El nodo saliente se desconecta de FRONT antes de free.", "errors": ["Extraer por BACK", "No anular BACK al retirar el único nodo"]},
+        "priority_queue": {"objective": "Separar llegada, prioridad y desempate estable.", "strategy": "Conservar la cadena de llegada y recorrer candidatos.", "invariant": "El primer mínimo de prioridad es seleccionado.", "memory": "Solo el candidato elegido se desconecta y libera.", "errors": ["Dibujar la cadena físicamente ordenada", "Romper el empate por llegada"]},
+        "linked_list": {"objective": "Mantener la conectividad al buscar, insertar y eliminar.", "strategy": "Seguir HEAD, anterior y actual.", "invariant": "Cada nodo es alcanzable una vez desde HEAD y el último apunta a NULL.", "memory": "Guardar el enlace siguiente antes de liberar.", "errors": ["Perder HEAD", "Sobrescribir un enlace antes de conservar el resto"]},
+        "circular_list": {"objective": "Conservar el cierre y terminar recorridos seguros.", "strategy": "Seguir HEAD/TAIL y detectar la vuelta al inicio.", "invariant": "TAIL->next == HEAD cuando hay nodos.", "memory": "Actualizar el cierre antes de liberar el nodo retirado.", "errors": ["Esperar NULL en un recorrido", "Dejar TAIL apuntando a memoria liberada"]},
+        "sublist": {"objective": "Modificar una rama sin afectar a las demás.", "strategy": "Localizar primero el padre y luego recorrer sus hijos.", "invariant": "Cada hijo pertenece a un único padre.", "memory": "La liberación de una rama no autoriza liberar ramas vecinas.", "errors": ["Insertar un hijo sin padre", "Compartir enlaces entre ramas"]},
+    }
+
+    GLOSSARY = {
+        "Nodo": "Objeto dinámico con datos y uno o más enlaces.", "Enlace": "Campo puntero que conecta objetos.", "Alias": "Dos punteros que designan el mismo objeto.", "LIFO": "El último en entrar es el primero en salir.", "FIFO": "El primero en entrar es el primero en salir.", "Prioridad": "Criterio de selección independiente del orden físico.", "Circularidad": "El último enlace vuelve al inicio.", "malloc": "Reserva memoria; puede devolver NULL.", "free": "Libera una reserva que deja de ser válida.",
+    }
+
     @staticmethod
     def get_module_help() -> dict[str, Any]:
         """Return the didactic help for the sequential module."""
@@ -124,7 +137,7 @@ class HelpService:
     @staticmethod
     def get_structure_help(structure_id: str) -> dict[str, Any]:
         """Return help for a concrete structure id."""
-        return HelpService._STRUCTURE_HELP.get(
+        result = dict(HelpService._STRUCTURE_HELP.get(
             structure_id,
             {
                 "title": "Estructura no encontrada",
@@ -132,4 +145,7 @@ class HelpService:
                 "supported_operations": [],
                 "pending_operations": [],
             },
-        )
+        ))
+        result.update(HelpService._PEDAGOGY.get(structure_id, {}))
+        result["glossary"] = dict(HelpService.GLOSSARY)
+        return result

@@ -59,6 +59,18 @@ class GraphHelpService:
                 "Union-Find no tiene pagina independiente: se integra conceptualmente en Kruskal.",
                 "No se implementan algoritmos adicionales no expuestos por el TAD (por ejemplo, Floyd-Warshall).",
             ],
+            "learning_guide": {
+                "objective": "Interpretar cómo el código C transforma representación, auxiliares y propiedades del grafo en cada instrucción ejecutada.",
+                "strategy": "Predecir, avanzar un frame, contrastar la evidencia y explicar el invariante antes de continuar.",
+                "invariants": ["BFS descubre una sola vez y usa FIFO.", "DFS conserva una pila coherente.", "Dijkstra solo cierra mínimos con pesos no negativos.", "Bellman-Ford distingue inalcanzable de ciclo negativo alcanzable.", "Prim y Kruskal producen un árbol o bosque acíclico de peso mínimo."],
+                "memory": "Los vértices y enlaces muestran direcciones lógicas estables; malloc, NULL, desconexión y free se relacionan con el dibujo.",
+                "complexity": {"BFS/DFS": "O(V+E)", "Dijkstra": "O(V²+E) en el TAD didáctico", "Bellman-Ford": "O(VE)", "Prim": "O(VE)", "Kruskal": "O(E log E) más Union-Find"},
+                "applications": ["redes y conectividad", "rutas y costos", "dependencias", "diseño de redes mínimas"],
+                "common_errors": ["confundir menor número de aristas con menor peso", "usar Dijkstra con pesos negativos", "olvidar componentes desconectadas", "aceptar una arista que cierra ciclo"],
+            },
+            "glossary": {"adyacencia": "Relación directa entre dos vértices.", "frontera": "Candidatos todavía no incorporados.", "relajación": "Intento de mejorar una distancia mediante una arista.", "predecesor": "Vértice anterior usado para reconstruir una ruta.", "MST": "Árbol de expansión de peso total mínimo.", "Union-Find": "Estructura que mantiene componentes disjuntas."},
+            "teacher_guide": ["Solicitar una predicción antes de cada extracción o relajación.", "Comparar algoritmos con la misma entrada y pedir una conclusión causal.", "Usar contraejemplos: peso negativo, destino inalcanzable, ciclo y grafo desconectado.", "Evaluar la explicación del invariante, no solo el resultado final."],
+            "keyboard": ["Alt+→ siguiente", "Alt+← anterior", "Alt+Inicio inicio", "Alt+Fin final", "Alt+P pausar"],
         }
     }
 

@@ -32,8 +32,8 @@ _TAD_INTRODUCTIONS: dict[str, str] = {
         "y cada operacion debe preservar consistencia cuando la estructura pasa de vacia a no vacia y viceversa."
     ),
     "priority_queue": (
-        "La Cola de Prioridad atiende primero el elemento con mayor prioridad logica (segun contrato del TAD). "
-        "La interpretacion muestra comparaciones para ubicar el nuevo nodo en la posicion correcta."
+        "La Cola de Prioridad conserva físicamente el orden de llegada. Para atender, recorre esa cadena y "
+        "selecciona la mayor prioridad lógica (menor número); los empates se resuelven por llegada anterior."
     ),
     "linked_list": (
         "La Lista Enlazada representa una secuencia dinamica de nodos conectados por punteros. "

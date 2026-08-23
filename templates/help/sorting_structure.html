@@ -13,6 +13,16 @@
     <li>Velocidad de simulacion: slider de <strong>-2x</strong> a <strong>+2x</strong>.</li>
     <li>El resultado final del modo rapido debe coincidir con el ultimo paso del modo interpretado.</li>
   </ul>
+  <h3>Atajos de teclado</h3>
+  <ul><li><kbd>Alt</kbd> + <kbd>→</kbd>: siguiente.</li><li><kbd>Alt</kbd> + <kbd>←</kbd>: anterior.</li><li><kbd>Alt</kbd> + <kbd>Inicio</kbd>/<kbd>Fin</kbd>: inicio/final.</li><li><kbd>Alt</kbd> + <kbd>P</kbd>: pausar.</li><li><kbd>Alt</kbd> + <kbd>R</kbd>: reproducir o repetir.</li></ul>
+
+  <h3>Fichas por algoritmo</h3>
+  {% for algorithm in help_data.supported_algorithms %}
+  <article class="sorting-help-card"><h4>{{ algorithm.label }}</h4><p><strong>Objetivo:</strong> {{ algorithm.objective }}</p><p><strong>Estrategia:</strong> {{ algorithm.summary }}</p><p><strong>Invariante y dominio:</strong> {{ algorithm.mastery | join('; ') }}</p><p><strong>Error frecuente:</strong> {{ algorithm.common_error }}</p><p><strong>Complejidad:</strong> mejor {{ algorithm.theory.best }}, promedio {{ algorithm.theory.average }}, peor {{ algorithm.theory.worst }}; memoria {{ algorithm.theory.memory }}.</p></article>
+  {% endfor %}
+
+  <h3>Glosario contextual</h3>
+  <dl><dt>Pivote</dt><dd>Valor copiado que guía una partición de QuickSort.</dd><dt>Estabilidad</dt><dd>Conservación del orden relativo entre claves iguales.</dd><dt>In-place</dt><dd>Algoritmo que usa memoria auxiliar constante o no proporcional a la entrada.</dd><dt>Heap</dt><dd>Árbol completo representado en arreglo que mantiene una relación padre-hijos.</dd><dt>Bucket o urna</dt><dd>Grupo asociado a un valor o dígito durante una distribución.</dd><dt>Complejidad</dt><dd>Crecimiento teórico del trabajo o memoria al aumentar la entrada.</dd></dl>
 
   <h3>Operaciones soportadas</h3>
   <ul>
@@ -51,4 +61,3 @@
   </p>
 </section>
 {% endblock %}
-

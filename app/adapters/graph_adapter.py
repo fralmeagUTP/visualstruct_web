@@ -383,6 +383,7 @@ class GraphAdapter(BaseAdapter):
             result = {
                 "mst_edges": mst, "total_weight": total, "connected": connected,
                 "components_count": components, "kind": "mst" if connected else "minimum_spanning_forest",
+                "start": start_vertex,
             }
             return self._set_result(
                 operation_name,
