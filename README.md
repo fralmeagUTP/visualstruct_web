@@ -250,6 +250,34 @@ Ejecucion de ejemplo:
 python -m waitress --host=0.0.0.0 --port=5050 wsgi:app
 ```
 
+## Docker
+
+La aplicacion puede ejecutarse en un contenedor Linux con Waitress. El servicio
+incluye un volumen nombrado para las sesiones server-side y un health check en
+`/healthz`.
+
+```powershell
+Copy-Item .env.example .env
+# Reemplace FLASK_SECRET_KEY por un secreto largo y aleatorio en .env.
+docker compose up --build -d
+```
+
+Abrir `http://localhost:5050/`. Para comprobar su estado:
+
+```powershell
+docker compose ps
+docker compose logs -f visualstruct
+```
+
+Para detenerlo sin borrar las sesiones: `docker compose down`.
+Para eliminar tambien las sesiones persistidas: `docker compose down -v`.
+
+El archivo de ejemplo configura HTTP solo para pruebas locales. Detras de HTTPS,
+configure `SESSION_COOKIE_SECURE=true` y
+`ALLOW_INSECURE_COOKIES_IN_PRODUCTION=false`. Para escalar a varias replicas,
+reemplace el almacenamiento `cachelib` por Redis mediante `SESSION_TYPE=redis`
+y `SESSION_REDIS_URL`.
+
 ## Documentacion relacionada
 
 - [docs/USER_GUIDE.md](docs/USER_GUIDE.md)
