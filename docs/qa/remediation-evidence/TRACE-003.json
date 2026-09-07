@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"TRACE-003","status":"fixed","contract":"Toda línea resaltada se valida por rango y equivalencia normalizada contra source_code.","tests":["tests/test_phase7_trace_contract_remediation.py::test_trace_rejects_out_of_range_and_normalized_text_mismatch"],"gates":{"contract":"passed"}}

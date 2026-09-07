@@ -1,87 +1,26 @@
-﻿{% extends "base.html" %}
-{% block title %}{{ model.name }} | Modulo Secuencial{% endblock %}
+{% extends "base.html" %}
+{% block title %}{{ model.name }} | Módulo Secuencial{% endblock %}
 {% block content %}
-<section class="structure-layout">
-  <div class="panel">
-    <h2>{{ model.name }}</h2>
-    <p>{{ model.description }}</p>
-    <div class="didactic-technical">
-      <h4>Estructura del TAD</h4>
-      <pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
-    </div>
+<article class="sequential-learning-shell" aria-labelledby="seq-page-title">
+  <header class="sequential-learning-header"><div><p class="sorting-eyebrow">Laboratorio de memoria y punteros en C</p><h2 id="seq-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div><a class="link" href="{{ url_for('help.structure_help', structure_id=model.id) }}">Abrir guía de {{ model.name }}</a></header>
 
-    <form id="operation-form"
-          data-operate-url="{{ url_for('sequential.operate_structure', structure_id=model.id) }}"
-          data-reset-url="{{ url_for('sequential.reset_structure', structure_id=model.id) }}">
-      <label for="operation-select">Operacion</label>
-      <select id="operation-select" name="operation" required></select>
-      <div id="operation-inputs"></div>
-    </form>
+  <section class="sequential-stage seq-prepare" aria-labelledby="seq-prepare-title"><h3 id="seq-prepare-title"><span>1</span> Preparar</h3><form id="operation-form" data-operate-url="{{ url_for('sequential.operate_structure', structure_id=model.id) }}" data-reset-url="{{ url_for('sequential.reset_structure', structure_id=model.id) }}"><div class="seq-prepare-grid"><label for="operation-select">Operación<select id="operation-select" name="operation" required></select></label><div id="operation-inputs"></div><label for="seq-learning-level">Nivel de explicación<select id="seq-learning-level"><option value="basic">Básico</option><option value="intermediate" selected>Intermedio</option><option value="advanced">Avanzado</option></select></label><label for="seq-guided-example">Ejemplo guiado<select id="seq-guided-example"><option value="">Selecciona un caso</option></select></label><button class="btn secondary" id="seq-load-example" type="button">Preparar ejemplo</button></div></form><p id="seq-example-lesson" class="seq-example-lesson">Los ejemplos usan las mismas operaciones públicas del TAD.</p><div id="message-box" class="message" aria-live="polite"></div></section>
 
-    <div class="actions">
-      <button class="btn" id="seq-sim-play" type="button">Reproducir</button>
-      <button class="btn secondary" id="reset-button" type="button">Reiniciar</button>
-    </div>
-    <div class="didactic-technical">
-      <div class="sim-toggle-control">
-        <label for="seq-step-toggle">
-          <input id="seq-step-toggle" type="checkbox" checked>
-          Interpretar codigo paso a paso
-        </label>
-      </div>
-      <h4>Ejecucion paso a paso</h4>
-      <div class="actions">
-        <button class="btn secondary" id="seq-sim-prev" type="button">Anterior paso</button>
-        <button class="btn" id="seq-sim-step" type="button">Siguiente paso</button>
-      </div>
-      <div class="sim-speed-control">
-        <label for="seq-speed-slider">Velocidad de simulacion</label>
-        <input id="seq-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
-        <p class="sim-speed-value">Actual: <span id="seq-speed-value">+0.00x (1.00x real)</span></p>
-      </div>
-      <p id="seq-sim-counter" class="sim-counter">Paso: 0/0</p>
-      <p id="seq-sim-status" class="message"></p>
-    </div>
+  <section class="sequential-stage seq-predict" aria-labelledby="seq-predict-title"><h3 id="seq-predict-title"><span>2</span> Predecir</h3><p>Antes de ejecutar, identifica qué extremo, enlace o puntero debería cambiar y qué invariante debe conservarse.</p><div class="seq-practice-options"><label><input id="seq-predictions-enabled" type="checkbox" checked> Preguntas predictivas</label><label><input id="seq-practice-mode" type="checkbox"> Modo práctica: ocultar el siguiente estado</label></div><div id="seq-prediction-panel" class="seq-prediction-panel" hidden><strong id="seq-prediction-question"></strong><div id="seq-prediction-choices" class="actions"></div><p id="seq-prediction-feedback" aria-live="polite"></p><div class="actions"><button class="btn secondary" id="seq-prediction-hint" type="button">Pista</button><button class="btn secondary" id="seq-prediction-skip" type="button">Continuar sin responder</button></div></div><div id="seq-concept-progress" class="message">Progreso conceptual de esta sesión: 0 predicciones.</div><button class="btn secondary" id="seq-reset-learning" type="button">Reiniciar progreso conceptual</button></section>
 
-    <div id="message-box" class="message" aria-live="polite"></div>
-    <p>
-      <a class="link" href="{{ url_for('help.structure_help', structure_id=model.id) }}">
-        Ver ayuda de {{ model.name }}
-      </a>
-    </p>
-    <section class="console-panel didactic-technical">
-      <h4>Consola C (printf)</h4>
-      <div class="console-monitor">
-        <div class="console-monitor-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="title">terminal</span>
-        </div>
-        <pre id="seq-printf-console" class="console-screen" aria-live="polite"></pre>
-      </div>
-    </section>
+  <nav class="sequential-mobile-tabs" aria-label="Vistas principales"><button type="button" class="sequential-tab is-active" data-seq-tab="visual" aria-controls="seq-visual-region" aria-selected="true">Estado y memoria</button><button type="button" class="sequential-tab" data-seq-tab="code" aria-controls="seq-code-region" aria-selected="false">Código C</button></nav>
+  <div class="sequential-primary-workspace" data-active-tab="visual">
+    <section id="seq-visual-region" class="sequential-stage seq-visual" aria-labelledby="seq-visual-title"><h3 id="seq-visual-title"><span>3</span> Ejecutar y visualizar</h3><div id="visual-state" role="img" aria-label="Estado visual de {{ model.name }}"></div></section>
+    <section id="seq-code-region" class="sequential-stage seq-code didactic-technical" aria-labelledby="op-pseudocode-title"><div class="seq-code-toolbar"><h3><span>5</span> Relacionar con C</h3><label><input id="seq-hide-comments" type="checkbox"> Ocultar documentación extensa</label></div><div class="seq-code-layout"><nav class="seq-function-index" aria-label="Funciones del código C"><strong>Funciones</strong><ol id="seq-function-list"></ol></nav><div><h4 id="op-pseudocode-title">{{ (model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocódigo") }}: {{ model.operations[0].label if model.operations else "" }}</h4><pre id="op-pseudocode" class="didactic-code">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Contenido didáctico no disponible para esta operación." }}</pre></div></div></section>
   </div>
 
-  <div class="panel">
-    <h3>Estado visual</h3>
-    <div id="visual-state"></div>
-    <h4>Notas didacticas</h4>
-    <p>{{ help_data.summary }}</p>
-    <div class="didactic-technical">
-      <h4 id="op-pseudocode-title">{{ (model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocodigo") }}: {{ model.operations[0].label if model.operations else "" }}</h4>
-      <pre id="op-pseudocode" class="didactic-code">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Contenido didactico no disponible para esta operacion." }}</pre>
-    </div>
-    <div class="didactic-technical">
-      <h4>Historial de ejecucion</h4>
-      <ol id="action-history" class="didactic-history"></ol>
-    </div>
-  </div>
-</section>
-{% endblock %}
-{% block scripts %}
-<script>
-  window.SEQ_VIEW_MODEL = {{ model | tojson }};
-</script>
-{% endblock %}
+  <section class="sequential-stage seq-execute" aria-labelledby="seq-execute-title"><h3 id="seq-execute-title"><span>3</span> Controlar la ejecución</h3><div class="actions"><button class="btn secondary" id="seq-sim-prepare" type="button">Preparar</button><button class="btn" id="seq-sim-play" type="button">Reproducir</button><button class="btn secondary" id="seq-sim-pause" type="button">Pausar</button><button class="btn secondary" id="seq-sim-start" type="button">Inicio</button><button class="btn secondary" id="seq-sim-prev" type="button">Anterior</button><button class="btn" id="seq-sim-step" type="button">Siguiente</button><button class="btn secondary" id="seq-sim-end" type="button">Final</button><button class="btn secondary" id="seq-sim-repeat" type="button">Repetir</button><button class="btn secondary" id="seq-restart-execution" type="button">Reiniciar ejecución</button><button class="btn secondary" id="reset-button" type="button">Restablecer TAD</button></div><div class="didactic-technical"><label class="sim-toggle-control" for="seq-step-toggle"><input id="seq-step-toggle" type="checkbox" checked> Interpretar código paso a paso</label><div class="sim-speed-control"><label for="seq-speed-slider">Velocidad de simulación</label><input id="seq-speed-slider" type="range" min="-2" max="2" step="0.25" value="0"><p class="sim-speed-value">Actual: <span id="seq-speed-value">+0.00x (1.00x real)</span></p></div><label for="seq-progress-slider">Navegar por la traza</label><input id="seq-progress-slider" type="range" min="0" max="0" value="0" disabled><p id="seq-progress-detail" class="seq-progress-detail">Paso 0 · sin función · sin fase · sin concepto</p><p id="seq-sim-counter" class="sim-counter">Paso: 0/0</p><p id="seq-sim-status" class="message" aria-live="polite"></p></div></section>
 
+  <section class="sequential-stage seq-understand" aria-labelledby="seq-understand-title"><h3 id="seq-understand-title"><span>4</span> Comprender</h3><p>{{ help_data.summary }}</p><div id="seq-pedagogy-summary" class="seq-pedagogy-summary"><strong>Frame actual:</strong> prepara una operación para observar concepto, cambio e invariante.</div><div class="seq-c-semantics"><section><h4>Condición y ciclo</h4><div id="seq-condition-view" class="seq-data-panel">Sin condición en este frame.</div></section><section><h4>Variables C</h4><div id="seq-variable-view" class="seq-data-panel">Sin variables.</div></section><section><h4>Punteros y enlaces</h4><div id="seq-pointer-view" class="seq-data-panel">Sin cambios de punteros.</div></section><section><h4>Heap y memoria</h4><div id="seq-heap-view" class="seq-data-panel">Sin objetos reservados.</div></section><section><h4>Pila de llamadas</h4><div id="seq-call-view" class="seq-data-panel">Sin llamadas.</div></section></div></section>
+
+  <section class="sequential-stage seq-compare" aria-labelledby="seq-compare-title"><h3 id="seq-compare-title"><span>5</span> Comparar conceptos</h3><div class="seq-compare-toolbar"><label for="seq-compare-kind">Comparación<select id="seq-compare-kind"><option value="stack-queue">Pila vs cola</option><option value="queue-priority">Cola vs cola de prioridad</option><option value="linear-circular">Lista lineal vs circular</option><option value="list-sublist">Lista vs sublista</option></select></label><button class="btn" id="seq-compare-run" type="button">Preparar comparación aislada</button><label for="seq-compare-progress">Paso sincronizado<input id="seq-compare-progress" type="range" min="0" max="2" value="0"></label></div><div id="seq-compare-grid" class="seq-compare-grid" aria-live="polite"><p>Selecciona una comparación para trabajar sobre dos copias independientes de la misma secuencia.</p></div><p id="seq-compare-conclusion" class="seq-pedagogy-summary"></p></section>
+
+  <section class="sequential-stage seq-reflect" aria-labelledby="seq-reflect-title"><h3 id="seq-reflect-title"><span>6</span> Reflexionar</h3><div class="actions"><button class="btn secondary" id="seq-export-image" type="button" aria-label="Exportar captura de la visualización secuencial">Exportar captura JPG</button><button class="btn secondary" id="seq-export-summary" type="button" aria-label="Exportar resumen JSON de la ejecución">Exportar resumen</button></div><div class="seq-reflect-grid"><section class="console-panel didactic-technical"><h4>Consola C (printf)</h4><div class="console-monitor"><div class="console-monitor-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="title">terminal</span></div><pre id="seq-printf-console" class="console-screen" aria-live="polite"></pre></div></section><section class="didactic-technical"><h4>Historial de ejecución</h4><ol id="action-history" class="didactic-history"></ol></section><details class="didactic-technical"><summary>Estructura del TAD</summary><pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre></details></div></section>
+</article>
+{% endblock %}
+{% block scripts %}<script>window.SEQ_VIEW_MODEL = {{ model | tojson }};</script>{% endblock %}

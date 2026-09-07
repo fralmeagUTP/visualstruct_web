@@ -20,7 +20,7 @@
     }());
   </script>
   <title>{% block title %}Visualizador Web de Estructuras{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css', v='20260516w') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css', v='20260823b') }}">
 </head>
 <body>
   {% include '_header.html' %}
@@ -29,12 +29,12 @@
     {% block content %}{% endblock %}
   </main>
   {% include '_footer.html' %}
-  <script src="{{ url_for('static', filename='js/interpreter_runtime.js', v='20260521e') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/sequential.js', v='20260516x') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/interpreter_runtime.js', v='20260823a') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/sequential.js', v='20260823a') }}" defer></script>
   <script src="{{ url_for('static', filename='js/hierarchical.js', v='20260516d') }}" defer></script>
   <script src="{{ url_for('static', filename='js/graph.js', v='20260516f') }}" defer></script>
   <script src="{{ url_for('static', filename='js/hash.js', v='20260516d') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/sorting.js', v='20260518b') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/sorting.js', v='20260823j') }}" defer></script>
   <script src="{{ url_for('static', filename='js/help_code_highlight.js', v='20260518a') }}" defer></script>
   {% block scripts %}{% endblock %}
 </body>

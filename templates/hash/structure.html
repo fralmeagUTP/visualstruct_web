@@ -1,82 +1,18 @@
-﻿{% extends "base.html" %}
-{% block title %}{{ model.name }} | Modulo Hash{% endblock %}
+{% extends "base.html" %}
+{% block title %}{{ model.name }} | Módulo Hash{% endblock %}
 {% block content %}
-<section class="structure-layout">
-  <div class="panel">
-    <h2>{{ model.name }}</h2>
-    <p>{{ model.description }}</p>
-    <div class="didactic-technical">
-      <h4>Estructura del TAD</h4>
-      <pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
-    </div>
-
-    <form id="hash-operation-form"
-          data-operate-url="{{ url_for('hash.operate_structure', structure_id=model.id) }}"
-          data-reset-url="{{ url_for('hash.reset_structure', structure_id=model.id) }}">
-      <label for="hash-operation-select">Operacion</label>
-      <select id="hash-operation-select" name="operation" required></select>
-      <div id="hash-operation-inputs"></div>
-    </form>
-
-    <div class="actions">
-      <button class="btn" id="hash-sim-play" type="button">Reproducir</button>
-      <button class="btn secondary" id="hash-reset-button" type="button">Reiniciar</button>
-    </div>
-    <div class="didactic-technical">
-      <div class="sim-toggle-control">
-        <label for="hash-step-toggle">
-          <input id="hash-step-toggle" type="checkbox" checked>
-          Interpretar codigo paso a paso
-        </label>
-      </div>
-      <h4>Ejecucion paso a paso</h4>
-      <div class="actions">
-        <button class="btn secondary" id="hash-sim-prev" type="button">Anterior paso</button>
-        <button class="btn" id="hash-sim-step" type="button">Siguiente paso</button>
-      </div>
-      <p id="hash-sim-counter" class="sim-counter">Paso: 0/0</p>
-      <p id="hash-sim-status" class="message"></p>
-    </div>
-
-    <div id="hash-message-box" class="message" aria-live="polite"></div>
-    <p>
-      <a class="link" href="{{ url_for('help.hash_structure_help', structure_id=model.id) }}">
-        Ver ayuda de {{ model.name }}
-      </a>
-    </p>
-    <section class="console-panel didactic-technical">
-      <h4>Consola C (printf)</h4>
-      <div class="console-monitor">
-        <div class="console-monitor-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="title">terminal</span>
-        </div>
-        <pre id="hash-printf-console" class="console-screen" aria-live="polite"></pre>
-      </div>
-    </section>
-  </div>
-
-  <div class="panel">
-    <h3>Estado visual</h3>
-    <div id="hash-visual-state"></div>
-    <h4>Notas didacticas</h4>
-    <p>{{ help_data.summary }}</p>
-    <div class="didactic-technical">
-      <h4 id="op-pseudocode-title">{{ model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocodigo" }}: {{ model.operations[0].label if model.operations else "" }}</h4>
-      <pre id="op-pseudocode" class="didactic-code">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Seudocodigo no disponible para esta operacion." }}</pre>
-    </div>
-    <div class="didactic-technical">
-      <h4>Historial de ejecucion</h4>
-      <ol id="action-history" class="didactic-history"></ol>
-    </div>
-  </div>
-</section>
+<article class="hash-learning-shell" aria-labelledby="hash-page-title">
+  <header class="hier-learning-header"><div><p class="sorting-eyebrow">Laboratorio de hashing y memoria en C</p><h2 id="hash-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div><a class="link" href="{{ url_for('help.hash_structure_help', structure_id=model.id) }}">Abrir guía del módulo</a></header>
+  <section class="hash-stage" aria-labelledby="hash-prepare-title"><h3 id="hash-prepare-title"><span>1</span> Preparar</h3><p>Selecciona una operación, usa enteros y conserva la política de capacidad fija.</p>
+    <form id="hash-operation-form" data-operate-url="{{ url_for('hash.operate_structure', structure_id=model.id) }}" data-reset-url="{{ url_for('hash.reset_structure', structure_id=model.id) }}"><div class="graph-learning-options"><label for="hash-learning-level">Nivel<select id="hash-learning-level"><option value="basic">Básico</option><option value="intermediate" selected>Intermedio</option><option value="advanced">Avanzado</option></select></label><label for="hash-guided-example">Ejemplo guiado<select id="hash-guided-example"><option value="">Selecciona un caso</option></select></label><button class="btn secondary" id="hash-load-example" type="button">Preparar ejemplo</button></div><p id="hash-example-lesson">La capacidad permanece fija; reproducir no vuelve a preparar la entrada.</p><label for="hash-operation-select">Operación</label><select id="hash-operation-select" name="operation" required></select><div id="hash-operation-inputs"></div></form>
+    <div class="actions"><button class="btn" id="hash-sim-play" type="button">Reproducir</button><button class="btn secondary" id="hash-sim-pause" type="button">Pausar</button><button class="btn secondary" id="hash-sim-start" type="button">Inicio</button><button class="btn secondary" id="hash-reset-execution" type="button">Reiniciar ejecución</button><button class="btn secondary" id="hash-reset-button" type="button">Restablecer tabla</button></div><label><input id="hash-step-toggle" type="checkbox" checked> Interpretar código paso a paso</label><div class="actions"><button class="btn secondary" id="hash-sim-prev" type="button">Anterior paso</button><button class="btn" id="hash-sim-step" type="button">Siguiente paso</button><button class="btn secondary" id="hash-sim-end" type="button">Final</button><button class="btn secondary" id="hash-sim-repeat" type="button">Repetir</button></div><label for="hash-sim-progress">Progreso<input id="hash-sim-progress" type="range" min="0" max="0" value="0" disabled></label><p id="hash-sim-detail">Sin traza cargada.</p><p id="hash-sim-counter">Paso: 0/0</p><p id="hash-sim-status" class="message" aria-live="polite"></p><div id="hash-message-box" class="message" aria-live="polite"></div>
+  </section>
+  <section class="hash-stage" aria-labelledby="hash-predict-title"><h3 id="hash-predict-title"><span>2</span> Predecir</h3><p id="hash-prediction-prompt">Antes de ejecutar, predice un aspecto de la operación preparada.</p><div class="hash-prediction-controls"><label for="hash-prediction-kind">Predicción<select id="hash-prediction-kind"><option value="bucket">Bucket final</option><option value="collision">¿Habrá colisión?</option><option value="comparisons">Comparaciones</option><option value="link">Enlace modificado</option><option value="size">Cantidad final</option><option value="malloc">¿Se reserva memoria?</option><option value="free">¿Se libera memoria?</option></select></label><label for="hash-prediction-answer">Respuesta<input id="hash-prediction-answer" type="text" autocomplete="off"></label><button class="btn secondary" id="hash-check-prediction" type="button">Comprobar</button><button class="btn secondary" id="hash-prediction-hint" type="button">Pista</button><button class="btn secondary" id="hash-skip-prediction" type="button">Continuar sin responder</button><label><input id="hash-practice-mode" type="checkbox"> Modo práctica</label><button class="btn secondary" id="hash-reset-progress" type="button">Reiniciar progreso</button></div><p id="hash-prediction-feedback" class="message" aria-live="polite"></p></section>
+  <nav class="graph-mobile-tabs" aria-label="Vistas principales"><button type="button" class="hier-tab is-active" data-hash-tab="visual" aria-selected="true">Tabla</button><button type="button" class="hier-tab" data-hash-tab="code" aria-selected="false">Código C</button></nav>
+  <div class="hash-primary-workspace" data-active-tab="visual"><section id="hash-visual-region" class="hash-stage"><h3><span>3</span> Ejecutar</h3><div class="hash-view-toolbar" aria-label="Opciones de representación"><label for="hash-bucket-filter">Buckets<select id="hash-bucket-filter"><option value="all">Vista completa</option><option value="occupied">Solo ocupados</option></select></label><label><input id="hash-show-addresses" type="checkbox" checked> Direcciones y campos</label></div><h4>Estado visual</h4><div id="hash-minimap" class="hash-minimap" aria-label="Minimapa de ocupación"></div><div id="hash-visual-state"></div></section><section id="hash-code-region" class="hash-stage didactic-technical"><div class="hier-code-toolbar"><h3><span>5</span> Relacionar con C</h3><label><input id="hash-hide-comments" type="checkbox"> Ocultar documentación extensa</label></div><div class="hier-code-layout"><nav class="hier-function-index"><strong>Funciones</strong><ol id="hash-function-list"></ol></nav><div><h4 id="op-pseudocode-title">{{ model.didactic.code_title if model.didactic else "Código C" }}</h4><pre id="op-pseudocode" class="didactic-code didactic-code-scroll">{{ model.didactic.default_operation if model.didactic else "Código no disponible." }}</pre></div></div></section></div>
+  <section class="hash-stage" aria-labelledby="hash-understand-title"><h3 id="hash-understand-title"><span>4</span> Comprender</h3><p id="hash-pedagogy-summary">Prepara una operación para observar índice, cadena, punteros y memoria.</p><div class="hier-frame-grid"><section><h4>Función hash</h4><div id="hash-formula-view">Sin frame.</div></section><section><h4>Cadena activa</h4><div id="hash-chain-view">Sin cadena.</div></section><section><h4>Variables y punteros</h4><div id="hash-pointers-view">Sin punteros.</div></section><section><h4>Costo observado</h4><div id="hash-cost-view">Sin medición.</div></section><section><h4>Memoria</h4><div id="hash-memory-view">Sin transición.</div></section><section><h4>Invariante</h4><div id="hash-invariant-view">Sin verificación.</div></section></div></section>
+  <section class="hash-stage" id="hash-compare-controls" data-compare-url="{{ url_for('hash.compare_capacities') }}"><h3><span>6</span> Comparar capacidades</h3><p>La misma entrada inmutable se inserta en tres copias aisladas: capacidad 3, 7 y 17.</p><div class="hash-compare-toolbar"><label for="hash-compare-entries">Pares clave:valor<input id="hash-compare-entries" value="1:10, 4:40, 7:70" inputmode="text"></label><label for="hash-compare-success-key">Búsqueda exitosa<input id="hash-compare-success-key" value="1" type="number"></label><label for="hash-compare-absent-key">Búsqueda ausente<input id="hash-compare-absent-key" value="10" type="number"></label><button class="btn" id="hash-compare-run" type="button">Comparar copias aisladas</button><label for="hash-compare-progress">Inserción sincronizada<input id="hash-compare-progress" type="range" min="0" max="0" value="0" disabled></label></div><p id="hash-compare-input"></p><div id="hash-compare-grid" class="hash-compare-grid" aria-live="polite"><p>Prepara una comparación para observar distribución, colisiones, cadenas y costo de búsqueda.</p></div><p id="hash-compare-conclusion" class="seq-pedagogy-summary"></p></section>
+  <section class="hash-stage"><h3><span>7</span> Reflexionar</h3><div class="actions"><button class="btn secondary" id="hash-export-image" type="button">Exportar captura JPG</button><button class="btn secondary" id="hash-export-summary" type="button">Exportar resumen</button></div><p id="hash-accessible-announcer" class="sr-only" aria-live="polite"></p><div class="seq-reflect-grid"><section class="console-panel didactic-technical"><h4>Consola C (printf)</h4><pre id="hash-printf-console" class="console-screen" aria-live="polite"></pre></section><section class="didactic-technical"><h4>Historial C17</h4><ol id="action-history" class="didactic-history"></ol></section><details><summary>Estructura del TAD</summary><pre id="tad-record" class="didactic-code">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre></details></div></section>
+</article>
 {% endblock %}
-{% block scripts %}
-<script>
-  window.HASH_VIEW_MODEL = {{ model | tojson }};
-</script>
-{% endblock %}
-
+{% block scripts %}<script>window.HASH_VIEW_MODEL={{ model | tojson }};</script>{% endblock %}

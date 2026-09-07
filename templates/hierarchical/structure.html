@@ -1,87 +1,26 @@
-﻿{% extends "base.html" %}
-{% block title %}{{ model.name }} | Modulo Jerarquico{% endblock %}
+{% extends "base.html" %}
+{% block title %}{{ model.name }} | Módulo Jerárquico{% endblock %}
 {% block content %}
-<section class="structure-layout">
-  <div class="panel">
-    <h2>{{ model.name }}</h2>
-    <p>{{ model.description }}</p>
-    <div class="didactic-technical">
-      <h4>Estructura del TAD</h4>
-      <pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
-    </div>
+<article class="hier-learning-shell" aria-labelledby="hier-page-title">
+  <header class="hier-learning-header"><div><p class="sorting-eyebrow">Laboratorio de árboles y montículos en C</p><h2 id="hier-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div><a class="link" href="{{ url_for('help.hierarchical_structure_help', structure_id=model.id) }}">Abrir guía de {{ model.name }}</a></header>
 
-    <form id="operation-form"
-          data-operate-url="{{ url_for('hierarchical.operate_structure', structure_id=model.id) }}"
-          data-reset-url="{{ url_for('hierarchical.reset_structure', structure_id=model.id) }}">
-      <label for="operation-select">Operacion</label>
-      <select id="operation-select" name="operation" required></select>
-      <div id="operation-inputs"></div>
-    </form>
+  <section class="hier-stage" aria-labelledby="hier-prepare-title"><h3 id="hier-prepare-title"><span>1</span> Preparar</h3><form id="operation-form" data-operate-url="{{ url_for('hierarchical.operate_structure', structure_id=model.id) }}" data-reset-url="{{ url_for('hierarchical.reset_structure', structure_id=model.id) }}"><div class="hier-prepare-grid"><label for="operation-select">Operación<select id="operation-select" name="operation" required></select></label><div id="operation-inputs"></div><label for="hier-learning-level">Nivel de explicación<select id="hier-learning-level"><option value="basic">Básico</option><option value="intermediate" selected>Intermedio</option><option value="advanced">Avanzado</option></select></label><label for="hier-guided-example">Ejemplo guiado<select id="hier-guided-example"><option value="">Selecciona un caso</option></select></label><button class="btn secondary" id="hier-load-example" type="button">Preparar ejemplo</button></div></form><p id="hier-example-lesson">Los ejemplos construyen el estado mediante operaciones públicas reales.</p><div id="message-box" class="message" aria-live="polite"></div></section>
 
-    <div class="actions">
-      <button class="btn" id="hier-sim-play" type="button">Reproducir</button>
-      <button class="btn secondary" id="reset-button" type="button">Reiniciar</button>
-    </div>
-    <div class="didactic-technical">
-      <div class="sim-toggle-control">
-        <label for="hier-step-toggle">
-          <input id="hier-step-toggle" type="checkbox" checked>
-          Interpretar codigo paso a paso
-        </label>
-      </div>
-      <h4>Ejecucion paso a paso</h4>
-      <div class="actions">
-        <button class="btn secondary" id="hier-sim-prev" type="button">Anterior paso</button>
-        <button class="btn" id="hier-sim-step" type="button">Siguiente paso</button>
-      </div>
-      <div class="sim-speed-control">
-        <label for="hier-speed-slider">Velocidad de simulacion</label>
-        <input id="hier-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
-        <p class="sim-speed-value">Actual: <span id="hier-speed-value">+0.00x (1.00x real)</span></p>
-      </div>
-      <p id="hier-sim-counter" class="sim-counter">Paso: 0/0</p>
-      <p id="hier-sim-status" class="message"></p>
-    </div>
+  <section class="hier-stage" aria-labelledby="hier-predict-title"><h3 id="hier-predict-title"><span>2</span> Predecir</h3><p>Formula una hipótesis antes de revelar el siguiente frame canónico.</p><div class="hier-prediction-grid"><label>Predicción<select id="hier-prediction"><option value="">Elige una opción</option><option value="left">Rama izquierda</option><option value="right">Rama derecha</option><option value="leaf">Eliminar hoja</option><option value="one-child">Eliminar nodo con un hijo</option><option value="two-children">Eliminar nodo con dos hijos</option><option value="LL">Rotación LL</option><option value="RR">Rotación RR</option><option value="LR">Rotación LR</option><option value="RL">Rotación RL</option><option value="recolor">Recolorear</option><option value="swap">Intercambiar</option><option value="none">Sin ajuste</option></select></label><button id="hier-check-prediction" class="btn secondary" type="button">Comprobar predicción</button><button id="hier-hint" class="btn secondary" type="button">Solicitar pista</button><button id="hier-skip-prediction" class="btn secondary" type="button">Continuar sin responder</button><label><input id="hier-practice-mode" type="checkbox"> Modo práctica: ocultar siguiente estado</label><button id="hier-reset-progress" class="btn secondary" type="button">Reiniciar progreso conceptual</button></div><p id="hier-prediction-feedback" class="message" aria-live="polite"></p><p id="hier-progress-summary">Progreso conceptual de esta sesión: 0 aciertos de 0 intentos.</p></section>
 
-    <div id="message-box" class="message" aria-live="polite"></div>
-    <p>
-      <a class="link" href="{{ url_for('help.hierarchical_structure_help', structure_id=model.id) }}">
-        Ver ayuda de {{ model.name }}
-      </a>
-    </p>
-    <section class="console-panel didactic-technical">
-      <h4>Consola C (printf)</h4>
-      <div class="console-monitor">
-        <div class="console-monitor-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="title">terminal</span>
-        </div>
-        <pre id="hier-printf-console" class="console-screen" aria-live="polite"></pre>
-      </div>
-    </section>
+  <nav class="hier-mobile-tabs" aria-label="Vistas principales"><button type="button" class="hier-tab is-active" data-hier-tab="visual" aria-controls="hier-visual-region" aria-selected="true">Árbol o heap</button><button type="button" class="hier-tab" data-hier-tab="code" aria-controls="hier-code-region" aria-selected="false">Código C</button></nav>
+  <div class="hier-primary-workspace" data-active-tab="visual">
+    <section id="hier-visual-region" class="hier-stage" aria-labelledby="hier-visual-title"><h3 id="hier-visual-title"><span>3</span> Ejecutar y visualizar</h3><div id="visual-state" role="img" aria-label="Estado visual de {{ model.name }}"></div></section>
+    <section id="hier-code-region" class="hier-stage didactic-technical" aria-labelledby="op-pseudocode-title"><div class="hier-code-toolbar"><h3><span>5</span> Relacionar con C</h3><label><input id="hier-hide-comments" type="checkbox"> Ocultar documentación extensa</label></div><div class="hier-code-layout"><nav class="hier-function-index" aria-label="Funciones del código C"><strong>Funciones</strong><ol id="hier-function-list"></ol></nav><div><h4 id="op-pseudocode-title">{{ (model.didactic.code_title if model.didactic and model.didactic.code_title else "Código C") }}: {{ model.operations[0].label if model.operations else "" }}</h4><pre id="op-pseudocode" class="didactic-code">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Contenido didáctico no disponible." }}</pre></div></div></section>
   </div>
 
-  <div class="panel">
-    <h3>Estado visual</h3>
-    <div id="visual-state"></div>
-    <h4>Notas didacticas</h4>
-    <p>{{ help_data.summary }}</p>
-    <div class="didactic-technical">
-      <h4 id="op-pseudocode-title">{{ (model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocodigo") }}: {{ model.operations[0].label if model.operations else "" }}</h4>
-      <pre id="op-pseudocode" class="didactic-code">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Contenido didactico no disponible para esta operacion." }}</pre>
-    </div>
-    <div class="didactic-technical">
-      <h4>Historial de ejecucion</h4>
-      <ol id="action-history" class="didactic-history"></ol>
-    </div>
-  </div>
-</section>
-{% endblock %}
-{% block scripts %}
-<script>
-  window.HIER_VIEW_MODEL = {{ model | tojson }};
-</script>
-{% endblock %}
+  <section class="hier-stage" aria-labelledby="hier-control-title"><h3 id="hier-control-title"><span>3</span> Controlar la ejecución</h3><div class="actions"><button class="btn secondary" id="hier-prepare" type="button">Preparar</button><button class="btn" id="hier-sim-play" type="button">Reproducir</button><button class="btn secondary" id="hier-sim-pause" type="button">Pausar</button><button class="btn secondary" id="hier-sim-home" type="button">Inicio</button><button class="btn secondary" id="hier-sim-prev" type="button">Anterior</button><button class="btn" id="hier-sim-step" type="button">Siguiente</button><button class="btn secondary" id="hier-sim-end" type="button">Final</button><button class="btn secondary" id="hier-sim-repeat" type="button">Repetir</button><button class="btn secondary" id="hier-restart-execution" type="button">Reiniciar ejecución</button><button class="btn secondary" id="reset-button" type="button">Restablecer TAD</button></div><div class="didactic-technical"><label for="hier-step-toggle"><input id="hier-step-toggle" type="checkbox" checked> Interpretar código paso a paso</label><div class="sim-speed-control"><label for="hier-speed-slider">Velocidad</label><input id="hier-speed-slider" type="range" min="-2" max="2" step="0.25" value="0"><p>Actual: <span id="hier-speed-value">+0.00x (1.00x real)</span></p></div><label for="hier-progress">Progreso navegable</label><input id="hier-progress" type="range" min="0" max="0" value="0" disabled><p id="hier-step-metadata">Función: — · Profundidad: — · Fase: — · Concepto: —</p><p id="hier-sim-counter" class="sim-counter">Paso: 0/0</p><p id="hier-sim-status" class="message" aria-live="polite"></p></div></section>
 
+  <section class="hier-stage" aria-labelledby="hier-understand-title"><h3 id="hier-understand-title"><span>4</span> Comprender</h3><p>{{ help_data.summary }}</p><div id="hier-practice-cover" hidden>Predice antes de revelar el siguiente estado.</div><div id="hier-pedagogy-summary" class="seq-pedagogy-summary">Prepara una operación para observar ruta, caso e invariante.</div><div class="hier-frame-grid"><section><h4>Condición, ruta y caso</h4><div id="hier-path-view">Sin frame.</div></section><section><h4>Pila recursiva y retornos</h4><div id="hier-stack-view">Sin llamadas.</div></section><section><h4>Invariante y evidencia</h4><div id="hier-invariant-view">Sin verificación.</div></section><section><h4>Variables C</h4><div id="hier-variables-view">Sin variables.</div></section><section><h4>Memoria y enlaces</h4><div id="hier-memory-view">Sin transición de memoria.</div></section><section><h4>Relaciones estructurales</h4><div id="hier-relations-view">Sin relaciones.</div></section></div></section>
+
+  <section class="hier-stage" aria-labelledby="hier-compare-title" data-compare-url="{{ url_for('hierarchical.compare_structures') }}"><h3 id="hier-compare-title"><span>6</span> Comparar</h3><p>Ambos lados reciben copias independientes de la misma entrada inmutable.</p><div class="hier-compare-toolbar"><label for="hier-compare-kind">Comparación<select id="hier-compare-kind"><option value="abb-avl">ABB vs AVL</option><option value="avl-red-black">AVL vs rojo-negro</option><option value="abb-heap">ABB vs heap</option><option value="traversals">Inorden vs preorden vs postorden</option></select></label><label for="hier-compare-values">Entrada sin duplicados<input id="hier-compare-values" value="10, 20, 30, 40, 50" inputmode="numeric"></label><button class="btn" id="hier-compare-run" type="button">Ejecutar sobre copias aisladas</button><label for="hier-compare-progress">Paso sincronizado<input id="hier-compare-progress" type="range" min="0" max="0" value="0" disabled></label></div><p id="hier-compare-input"></p><div id="hier-compare-grid" class="hier-compare-grid" aria-live="polite"><p>Prepara una comparación para estudiar forma, altura, ajustes, costo e invariante.</p></div><p id="hier-compare-conclusion" class="seq-pedagogy-summary"></p></section>
+
+  <section class="hier-stage" aria-labelledby="hier-reflect-title"><h3 id="hier-reflect-title"><span>7</span> Reflexionar</h3><div class="actions"><button class="btn secondary" id="hier-export-image" type="button" aria-label="Exportar captura de la visualización jerárquica">Exportar captura JPG</button><button class="btn secondary" id="hier-export-summary" type="button" aria-label="Exportar resumen JSON de aprendizaje">Exportar resumen</button></div><p id="hier-accessible-announcer" class="sr-only" aria-live="polite"></p><div class="seq-reflect-grid"><section class="console-panel didactic-technical"><h4>Consola C (printf)</h4><div class="console-monitor"><div class="console-monitor-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="title">terminal</span></div><pre id="hier-printf-console" class="console-screen" aria-live="polite"></pre></div></section><section class="didactic-technical"><h4>Historial</h4><ol id="action-history" class="didactic-history"></ol></section><details class="didactic-technical"><summary>Estructura del TAD</summary><pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre></details></div></section>
+</article>
+{% endblock %}
+{% block scripts %}<script>window.HIER_VIEW_MODEL = {{ model | tojson }};</script>{% endblock %}

@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import re
 from typing import Any
 
 from app.services.trace.control_flow import ControlFlowPlanner
 from app.services.trace.graph_planner import GraphAlgorithmPlanner
 from app.services.trace.graph_trace_planner import GraphTracePlanner
+from app.services.trace.hash_planner import HashControlFlowPlanner
 from app.services.trace.tree_planner import TreeAlgorithmPlanner
 from app.services.trace.tree_query_planner import TreeQueryPlanner
 from app.services.trace.engine import TraceEngine
@@ -17,6 +19,36 @@ from app.services.trace.strategies import (
     SequentialTraceStrategy,
     TraceStrategyRegistry,
     TreeTraceStrategy,
+)
+from app.domain.sequential.pedagogy import (
+    SEQUENTIAL_FRAME_SCHEMA_VERSION,
+    SEQUENTIAL_LEARNING_CATALOG,
+    SEQUENTIAL_STRUCTURES,
+    build_sequential_frame,
+    sequential_frame_schema,
+    validate_sequential_frame,
+)
+from app.domain.hierarchical.pedagogy import (
+    HIERARCHICAL_FRAME_SCHEMA_VERSION,
+    HIERARCHICAL_LEARNING_CATALOG,
+    HIERARCHICAL_STRUCTURES,
+    build_hierarchical_frame,
+    hierarchical_frame_schema,
+    validate_hierarchical_frame,
+)
+from app.domain.graph.pedagogy import (
+    GRAPH_FRAME_SCHEMA_VERSION,
+    GRAPH_LEARNING_CATALOG,
+    build_graph_frame,
+    graph_frame_schema,
+    validate_graph_frame,
+)
+from app.domain.hash.pedagogy import (
+    HASH_FRAME_SCHEMA_VERSION,
+    HASH_LEARNING_CATALOG,
+    build_hash_frame,
+    hash_frame_schema,
+    validate_hash_frame,
 )
 
 
@@ -80,6 +112,7 @@ class ExecutionTraceService:
     _expand_recursive_abb_delete_indexes = staticmethod(TreeAlgorithmPlanner.expand_abb_delete)
     _expand_avl_insert_indexes = staticmethod(TreeAlgorithmPlanner.expand_avl_insert)
     _expand_rbt_insert_indexes = staticmethod(TreeAlgorithmPlanner.expand_rbt_insert)
+    _expand_rbt_delete_indexes = staticmethod(TreeAlgorithmPlanner.expand_rbt_delete)
     _expand_tree_extreme_indexes = staticmethod(TreeQueryPlanner.expand_extreme)
     _expand_recursive_bst_traversal_indexes = staticmethod(TreeQueryPlanner.expand_traversal)
     _expand_recursive_tree_metrics_indexes = staticmethod(TreeQueryPlanner.expand_metrics)
@@ -128,6 +161,7 @@ class ExecutionTraceService:
             and "abb_validar_" not in normalized_join
             and "void avl_insertar(" not in normalized_join
             and "void rbt_insertar(" not in normalized_join
+            and "void rbt_eliminar(" not in normalized_join
         ):
             return None
 
@@ -145,6 +179,12 @@ class ExecutionTraceService:
                 before_state=before_state,
                 payload=payload,
                 success=success,
+            )
+        if operation_name == "eliminar" and "void rbt_eliminar(" in normalized_join:
+            return ExecutionTraceService._expand_rbt_delete_indexes(
+                lines=lines,
+                before_state=before_state,
+                payload=payload,
             )
         if operation_name == "insertar" and "abb_insertar(" in normalized_join:
             return ExecutionTraceService._expand_recursive_abb_insert_indexes(
@@ -253,6 +293,7 @@ class ExecutionTraceService:
         success: bool,
         message: str,
         mutates: bool,
+        console_events: list[str] | None = None,
     ) -> dict[str, Any]:
         """Build one execution trace consumable by frontend animation runtimes."""
         source_code, code_title = ExecutionTraceService._get_operation_source(
@@ -283,7 +324,18 @@ class ExecutionTraceService:
                 payload=payload,
                 success=bool(success),
             )
-        if recursive_tree_indexes is not None:
+        hash_indexes = None
+        if state_kind == "hash_table":
+            hash_indexes = HashControlFlowPlanner.expand(
+                operation_name=operation_name,
+                lines=lines,
+                before_state=before_state,
+                payload=payload,
+                message=str(message),
+            )
+        if hash_indexes is not None:
+            executable_line_indexes = hash_indexes
+        elif recursive_tree_indexes is not None:
             executable_line_indexes = recursive_tree_indexes
         elif state_kind != "graph":
             executable_line_indexes = ExecutionTraceService._expand_generic_control_flow_indexes(
@@ -374,6 +426,7 @@ class ExecutionTraceService:
                 step["phase"] = "progress" if not is_last else "end"
             if step_index < len(debug_steps) and isinstance(debug_steps[step_index], dict):
                 step["debug"] = debug_steps[step_index]
+            step["console"] = list(console_events or []) if is_last else []
             steps.append(step)
 
         if not steps:
@@ -390,6 +443,96 @@ class ExecutionTraceService:
                 }
             ]
 
+        if structure_id in SEQUENTIAL_STRUCTURES:
+            for index, step in enumerate(steps):
+                pedagogical_step = dict(step)
+                line_index = int(step.get("line_index", 0))
+                current_function = operation_name
+                for source_row in reversed(lines[: line_index + 1]):
+                    function_match = re.search(r"\b([A-Za-z_]\w*)\s*\([^;]*\)\s*\{\s*$", source_row)
+                    if function_match and function_match.group(1) not in {"if", "while", "for", "switch"}:
+                        current_function = function_match.group(1)
+                        break
+                pedagogical_step["function_name"] = current_function
+                line_text = str(step.get("line_text") or "").lstrip()
+                if line_text.startswith(("if ", "if(", "while ", "while(")):
+                    next_index = steps[index + 1].get("line_index") if index + 1 < len(steps) else None
+                    expected_body = ExecutionTraceService._next_nonempty_line_index(lines, line_index + 1)
+                    pedagogical_step["condition_result"] = next_index == expected_body
+                pedagogical = build_sequential_frame(
+                    structure_id=structure_id,
+                    operation_name=operation_name,
+                    payload=payload,
+                    step=pedagogical_step,
+                    success=bool(success),
+                )
+                validate_sequential_frame(pedagogical, source_code=source_code)
+                step["pedagogy"] = pedagogical
+
+        if structure_id in HIERARCHICAL_STRUCTURES:
+            for index, step in enumerate(steps):
+                pedagogical_step = dict(step)
+                line_index = int(step.get("line_index", 0))
+                line_text = str(step.get("line_text") or "").lstrip()
+                if line_text.startswith(("if ", "if(", "while ", "while(")):
+                    next_index = steps[index + 1].get("line_index") if index + 1 < len(steps) else None
+                    expected_body = ExecutionTraceService._next_nonempty_line_index(lines, line_index + 1)
+                    pedagogical_step["condition_result"] = next_index == expected_body
+                frame = build_hierarchical_frame(
+                    structure_id=structure_id,
+                    operation_name=operation_name,
+                    payload=payload,
+                    step=pedagogical_step,
+                    source_lines=lines,
+                    success=bool(success),
+                )
+                validate_hierarchical_frame(frame, source_code=source_code)
+                step["pedagogy"] = frame
+
+        if structure_id == "graph":
+            for index, step in enumerate(steps):
+                pedagogical_step = dict(step)
+                line_index = int(step.get("line_index", 0))
+                line_text = str(step.get("line_text") or "").lstrip()
+                if line_text.startswith(("if ", "if(", "while ", "while(", "for ", "for(")):
+                    next_index = steps[index + 1].get("line_index") if index + 1 < len(steps) else None
+                    expected_body = ExecutionTraceService._next_nonempty_line_index(lines, line_index + 1)
+                    pedagogical_step["condition_result"] = next_index == expected_body
+                frame = build_graph_frame(operation_name=operation_name,payload=payload,step=pedagogical_step,source_lines=lines,success=bool(success))
+                validate_graph_frame(frame,source_code=source_code)
+                step["pedagogy"] = frame
+
+        if structure_id == "hash_table":
+            hash_visit_index = 0
+            hash_initial_state = deepcopy(steps[0].get("state_snapshot", before_state))
+            lifecycle_keys = [
+                int(entry.get("key"))
+                for bucket in hash_initial_state.get("buckets", [])
+                if isinstance(bucket, dict)
+                for entry in bucket.get("entries", [])
+                if isinstance(entry, dict)
+            ]
+            lifecycle_free_index = 0
+            for index, step in enumerate(steps):
+                pedagogical_step = dict(step)
+                pedagogical_step["hash_initial_state"] = hash_initial_state
+                line_index = int(step.get("line_index", 0))
+                line_text = str(step.get("line_text") or "").lstrip()
+                if line_text.startswith(("if ", "if(", "while ", "while(", "for ", "for(")):
+                    next_index = steps[index + 1].get("line_index") if index + 1 < len(steps) else None
+                    expected_body = ExecutionTraceService._next_nonempty_line_index(lines, line_index + 1)
+                    pedagogical_step["condition_result"] = next_index == expected_body
+                if "actual->clave == clave" in line_text or "actual = actual->siguiente" in line_text or "while (actual != NULL)" in line_text:
+                    pedagogical_step["hash_visit_index"] = hash_visit_index
+                if "actual = actual->siguiente" in line_text:
+                    hash_visit_index += 1
+                if "free(actual)" in line_text and operation_name in {"clear", "destroy_table"} and lifecycle_free_index < len(lifecycle_keys):
+                    pedagogical_step["hash_lifecycle_free_key"] = lifecycle_keys[lifecycle_free_index]
+                    lifecycle_free_index += 1
+                frame = build_hash_frame(operation_name=operation_name, payload=payload, step=pedagogical_step, source_lines=lines, success=bool(success))
+                validate_hash_frame(frame, source_code=source_code)
+                step["pedagogy"] = frame
+
         trace = {
             "structure_id": structure_id,
             "operation_name": operation_name,
@@ -402,5 +545,21 @@ class ExecutionTraceService:
             "steps": steps,
             "final_state": deepcopy(after_state),
         }
+        if structure_id in SEQUENTIAL_STRUCTURES:
+            trace["pedagogy_schema_version"] = SEQUENTIAL_FRAME_SCHEMA_VERSION
+            trace["pedagogy_schema"] = sequential_frame_schema()
+            trace["learning_profile"] = deepcopy(SEQUENTIAL_LEARNING_CATALOG[structure_id])
+        if structure_id in HIERARCHICAL_STRUCTURES:
+            trace["pedagogy_schema_version"] = HIERARCHICAL_FRAME_SCHEMA_VERSION
+            trace["pedagogy_schema"] = hierarchical_frame_schema()
+            trace["learning_profile"] = deepcopy(HIERARCHICAL_LEARNING_CATALOG[structure_id])
+        if structure_id == "graph":
+            trace["pedagogy_schema_version"] = GRAPH_FRAME_SCHEMA_VERSION
+            trace["pedagogy_schema"] = graph_frame_schema()
+            trace["learning_profile"] = deepcopy(GRAPH_LEARNING_CATALOG.get(operation_name,GRAPH_LEARNING_CATALOG["construction"]))
+        if structure_id == "hash_table":
+            trace["pedagogy_schema_version"] = HASH_FRAME_SCHEMA_VERSION
+            trace["pedagogy_schema"] = hash_frame_schema()
+            trace["learning_profile"] = deepcopy(HASH_LEARNING_CATALOG)
         TraceEngine.validate_legacy_trace(trace)
         return trace

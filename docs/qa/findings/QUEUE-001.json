@@ -1,0 +1,22 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "QUEUE-001",
+  "structure_id": "queue",
+  "operation": "frente/final",
+  "input": {"values_front_to_rear": [10, 20]},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_cola.c:122", "state": {"front_call": "cola_frente(cola)", "front": 10}},
+    {"step": 1, "layer": "c", "source_location": "docs/tads_C/tad_cola.h:Cola", "state": {"rear_expression": "cola.atras->nro", "rear": 20}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "frontend", "source_location": "app/services/c_code_service.py:253", "state": {"call": "cola_copiar_valores", "declared": false}},
+    {"step": 1, "layer": "frontend", "source_location": "app/services/c_code_service.py:263", "state": {"call": "cola_copiar_valores", "declared": false}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "El panel afirma que cola_frente no existe aunque está implementada, y tanto frente como final llaman cola_copiar_valores, símbolo inexistente que impide compilar los snippets.",
+  "probable_cause": "Los snippets derivados quedaron desactualizados respecto al TAD C y no se validan contra sus símbolos públicos.",
+  "location": "app/services/c_code_service.py:CCodeService._build_queue_data",
+  "recommended_test": "Compilar cada snippet contra tad_cola.h/c y exigir cola_frente para frente y una lectura segura de atras para final.",
+  "suggested_fix": "Extraer cola_frente directamente del C y añadir cola_final al TAD o mostrar una expresión válida con control de cola vacía. No se modifica código funcional durante esta auditoría."
+}

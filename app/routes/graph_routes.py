@@ -255,3 +255,16 @@ def reset_structure(structure_id: str) -> Any:
             "history": [],
         }
     )
+
+
+@graph_bp.post("/compare")
+def compare_algorithms() -> Any:
+    """Compare two algorithms over independent copies of a graph snapshot."""
+    body = request.get_json(silent=True) or {}
+    try:
+        result = GraphStructureService.compare_algorithms(
+            str(body.get("kind", "")), body.get("graph"), body.get("start"), body.get("end")
+        )
+    except ValueError as error:
+        return jsonify({"success": False, "message": str(error)}), 400
+    return jsonify({"success": True, **result})

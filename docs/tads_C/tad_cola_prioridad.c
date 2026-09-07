@@ -172,6 +172,21 @@ bool cp_desencolar(ColaPrioridad *cola, int *valor, int *prioridad) {
     return true;
 }
 
+bool cp_frente(const ColaPrioridad *cola, int *valor, int *prioridad) {
+    const CPNodo *actual;
+    const CPNodo *objetivo;
+    if (cola == NULL || cola->delante == NULL || valor == NULL || prioridad == NULL) return false;
+    objetivo = cola->delante;
+    actual = cola->delante->sgte;
+    while (actual != NULL) {
+        if (actual->prioridad < objetivo->prioridad) objetivo = actual;
+        actual = actual->sgte;
+    }
+    *valor = objetivo->valor;
+    *prioridad = objetivo->prioridad;
+    return true;
+}
+
 /**
  * @brief Indica si la cola de prioridad no contiene ningún elemento.
  *

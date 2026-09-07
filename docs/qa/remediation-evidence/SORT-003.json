@@ -1,0 +1,18 @@
+{
+  "schema": "didactic-remediation-evidence/v1",
+  "case_id": "SORT-003",
+  "status": "fixed_pending_linux_sanitizer_gate",
+  "changes": [
+    "Las magnitudes negativas se calculan con aritmética uint32_t definida.",
+    "INT_MIN se reconstruye sin conversión ni negación fuera de rango.",
+    "El exponente decimal evita overflow unsigned antes de multiplicarse."
+  ],
+  "regressions": [
+    "tests/test_radix_int_min_regression.py",
+    "tests/test_didactic_qa_findings.py::test_sort_003_radix_int_min_uses_defined_unsigned_magnitude"
+  ],
+  "c17_gate": "passed",
+  "python_fast_step_equivalence": "passed",
+  "asan_ubsan_linux": "pending_external_linux_runner",
+  "note": "MinGW no dispone de libasan/libubsan y la única distribución WSL instalada es docker-desktop sin bash. El workflow Ubuntu está configurado para ejecutar el gate."
+}

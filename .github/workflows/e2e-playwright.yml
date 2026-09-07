@@ -32,8 +32,12 @@ jobs:
 
       - name: Install Playwright browsers
         run: |
-          python -m playwright install --with-deps chromium
+          python -m playwright install --with-deps chromium firefox
 
       - name: Run Playwright E2E tests
         run: |
           python -m pytest -q tests/test_ui_playwright_e2e.py
+
+      - name: Run Firefox compatibility smoke tests
+        run: |
+          python -m pytest -q tests/test_playwright_firefox_smoke.py

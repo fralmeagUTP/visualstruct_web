@@ -69,15 +69,20 @@ class GraphAdapter(BaseAdapter):
         raise ValueError("El valor de 'dirigido' es invalido.")
 
     @staticmethod
-    def _parse_weight(payload: dict[str, Any], key: str = "weight") -> float:
-        """Parse edge weight as float, defaulting to 1.0."""
+    def _parse_weight(payload: dict[str, Any], key: str = "weight") -> int:
+        """Parse the integer weight represented by the C graph contract."""
         value = payload.get(key, 1)
         if value is None or str(value).strip() == "":
-            return 1.0
+            return 1
         try:
-            return float(value)
+            if isinstance(value, bool):
+                raise ValueError
+            parsed = int(value)
+            if float(value) != parsed:
+                raise ValueError
+            return parsed
         except (TypeError, ValueError) as error:
-            raise ValueError("El peso debe ser numerico.") from error
+            raise ValueError("El peso debe ser un entero representable por el TAD C.") from error
 
     def _set_result(self, name: str, result: dict[str, Any]) -> dict[str, Any]:
         """Persist successful result payload."""
@@ -373,13 +378,20 @@ class GraphAdapter(BaseAdapter):
         if operation_name == "run_prim":
             start_vertex = self._require_vertex(payload, "start", "inicio")
             mst, total = self.graph.prim(start_vertex)
-            result = {"mst_edges": mst, "total_weight": total}
+            components = self.graph.componentes_no_dirigidos()
+            connected = components <= 1
+            result = {
+                "mst_edges": mst, "total_weight": total, "connected": connected,
+                "components_count": components, "kind": "mst" if connected else "minimum_spanning_forest",
+                "start": start_vertex,
+            }
             return self._set_result(
                 operation_name,
                 {
                     "message": (
                         f"Prim desde '{start_vertex}' ejecutado. "
-                        f"Peso total del arbol de expansion minima: {total}."
+                        f"Peso total del {'arbol' if connected else 'bosque'} de expansion minima: {total}. "
+                        f"Componentes: {components}."
                     ),
                     "result": result,
                 },
@@ -387,10 +399,16 @@ class GraphAdapter(BaseAdapter):
 
         if operation_name == "run_kruskal":
             mst, total = self.graph.kruskal()
-            result = {"mst_edges": mst, "total_weight": total, "uses_union_find": True}
+            components = self.graph.componentes_no_dirigidos()
+            connected = components <= 1
+            result = {
+                "mst_edges": mst, "total_weight": total, "uses_union_find": True,
+                "connected": connected, "components_count": components,
+                "kind": "mst" if connected else "minimum_spanning_forest",
+            }
             return self._set_result(
                 operation_name,
-                {"message": f"Kruskal ejecutado. Peso total del arbol: {total}.", "result": result},
+                {"message": f"Kruskal ejecutado. Peso total del {'arbol' if connected else 'bosque'}: {total}. Componentes: {components}.", "result": result},
             )
 
         if operation_name == "clear_graph":

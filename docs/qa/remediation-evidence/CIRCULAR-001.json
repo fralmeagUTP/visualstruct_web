@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"CIRCULAR-001","status":"fixed","contract":"Una lista circular unitaria conserva y dibuja su autoenlace.","tests":["tests/test_phase6_intermediate_states_remediation.py::test_circular_single_node_renderer_keeps_self_link_contract"],"gates":{"frontend":"passed"}}

@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"SUBLIST-001","status":"fixed","contract":"Los padres duplicados se serializan como nodos separados con identidad lógica estable.","tests":["tests/test_phase6_intermediate_states_remediation.py::test_sublist_duplicate_identity_and_child_before_parent_destruction"],"gates":{"backend":"passed","visual_state":"passed"}}

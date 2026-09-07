@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"STACK-002","status":"fixed","contract":"Los snapshots transportan el nodo aux, su valor y el enlace previo antes de actualizar el tope.","tests":["tests/test_phase6_intermediate_states_remediation.py::test_stack_trace_transports_temporary_allocation_value_and_link"],"gates":{"backend":"passed","trace":"passed"}}

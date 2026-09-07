@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"RBT-001","status":"fixed","contract":"Cada recoloreo RN se aplica después de su asignación C causal, no al entrar al fix-up.","tests":["tests/test_phase6_intermediate_states_remediation.py::test_rbt_recolors_only_on_the_corresponding_c_assignments"],"gates":{"backend":"passed","trace":"passed"}}

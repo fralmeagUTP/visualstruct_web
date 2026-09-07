@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"ABB-001","status":"fixed","contract":"La copia del sucesor y su eliminación se visualizan como mutaciones causales separadas.","tests":["tests/test_phase6_intermediate_states_remediation.py::test_abb_successor_copy_precedes_successor_unlink"],"gates":{"backend":"passed","trace":"passed"}}

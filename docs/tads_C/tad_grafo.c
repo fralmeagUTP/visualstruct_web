@@ -70,6 +70,11 @@ Grafo grafo_crear(void) {
  * @return Grafo con el nuevo vértice
 */
 Grafo grafo_insertar_vertice(Grafo g, int x) {
+    ListaVertice actual = g.v;
+    while (actual != NULL) {
+        if (actual->dato == x) return g;
+        actual = actual->sig;
+    }
     ListaVertice nuevo = (ListaVertice)malloc(sizeof(struct NodoV));
     if (nuevo == NULL) return g;
     
@@ -90,6 +95,17 @@ Grafo grafo_insertar_vertice(Grafo g, int x) {
  * @return Grafo con el nuevo arco
  */
 Grafo grafo_insertar_arco(Grafo g, int x, int y, int z) {
+    ListaArco existente;
+    g = grafo_insertar_vertice(g, x);
+    g = grafo_insertar_vertice(g, y);
+    existente = g.a;
+    while (existente != NULL) {
+        if (existente->origen == x && existente->destino == y) {
+            existente->costo = z;
+            return g;
+        }
+        existente = existente->sig;
+    }
     ListaArco nuevo = (ListaArco)malloc(sizeof(struct NodoA));
     if (nuevo == NULL) return g;
     
@@ -568,6 +584,7 @@ ListaVertice grafo_bfs(Grafo g, int inicio) {
     g = grafo_desmarcar(g);
     struct Cola cola = {NULL, NULL};
     ListaVertice recorrido = NULL;
+    ListaVertice ultimo = NULL;
 
     // Verifica si el vértice de inicio existe
     ListaVertice v = g.v;
@@ -597,8 +614,10 @@ ListaVertice grafo_bfs(Grafo g, int inicio) {
 
         tmp->dato = actual;
         tmp->marcado = 0;
-        tmp->sig = recorrido;
-        recorrido = tmp;
+        tmp->sig = NULL;
+        if (recorrido == NULL) recorrido = tmp;
+        else ultimo->sig = tmp;
+        ultimo = tmp;
 
         // Explorar grafo_sucesores
         ListaVertice suces = grafo_sucesores(g, actual);
@@ -618,6 +637,15 @@ ListaVertice grafo_bfs(Grafo g, int inicio) {
 
 
 //----------------------------------------------------------------------------
+static void grafo_agregar_recorrido(ListaVertice *recorrido, ListaVertice nuevo) {
+    ListaVertice ultimo;
+    nuevo->sig = NULL;
+    if (*recorrido == NULL) { *recorrido = nuevo; return; }
+    ultimo = *recorrido;
+    while (ultimo->sig != NULL) ultimo = ultimo->sig;
+    ultimo->sig = nuevo;
+}
+
 void grafo_dfs_recursivo(Grafo g, int actual, ListaVertice *recorrido) {
     if (recorrido == NULL) {
         return;
@@ -630,8 +658,7 @@ void grafo_dfs_recursivo(Grafo g, int actual, ListaVertice *recorrido) {
 
     tmp->dato = actual;
     tmp->marcado = 0;
-    tmp->sig = *recorrido;
-    *recorrido = tmp;
+    grafo_agregar_recorrido(recorrido, tmp);
 
     ListaVertice suces = grafo_sucesores(g, actual);
     while (suces) {
@@ -655,6 +682,15 @@ ListaVertice grafo_dfs(Grafo g, int inicio) {
     return recorrido;
 }
 //--------------------------------------------------
+static int grafo_tiene_peso_negativo(Grafo g) {
+    ListaArco actual = g.a;
+    while (actual != NULL) {
+        if (actual->costo < 0) return 1;
+        actual = actual->sig;
+    }
+    return 0;
+}
+
 ListaArco grafo_dijkstra(Grafo g, int inicio, int llegada) {
     int n = grafo_orden(g);
     int *dist;
@@ -665,6 +701,9 @@ ListaArco grafo_dijkstra(Grafo g, int inicio, int llegada) {
     int idx_inicio;
     int idx_llegada;
     ListaArco camino = NULL;
+    if (grafo_tiene_peso_negativo(g)) {
+        return NULL;
+    }
 
     if (n <= 0) {
         return NULL;
@@ -718,9 +757,7 @@ ListaArco grafo_dijkstra(Grafo g, int inicio, int llegada) {
                 u = j;
             }
         }
-        if (u == -1) {
-            break;
-        }
+        if (u == -1) break;
         visitado[u] = 1;
 
         suces = grafo_sucesores(g, vertices[u]);
@@ -949,7 +986,8 @@ ListaArco grafo_prim(Grafo g, int inicio) {
             }
         }
         if (u == -1) {
-            break;
+            for (j = 0; j < n; j++) if (!visitado[j]) { u = j; costo[u] = 0; break; }
+            if (u == -1) break;
         }
         visitado[u] = 1;
 

@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <stdint.h>
 #include "tad_ordenamiento.h"
 
 
@@ -327,6 +328,7 @@ int ordenar_counting_sort(int arreglo[], size_t n) {
 	if (!arreglo_valido(arreglo, n)) return ORDENAMIENTO_ERROR;
 	if (!obtener_minimo_maximo(arreglo, n, &minimo, &maximo)) return ORDENAMIENTO_ERROR;
 	rango = (size_t)((long long)maximo - (long long)minimo + 1LL);
+	if (rango > ORDENAMIENTO_RANGO_MAX || rango > SIZE_MAX / sizeof(int)) return ORDENAMIENTO_ERROR;
 	conteo = (int *)calloc(rango, sizeof(int));
 	if (conteo == NULL) return ORDENAMIENTO_ERROR;
 	for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];
@@ -356,15 +358,15 @@ int ordenar_binsort(int arreglo[], size_t n) {
  * @param exp Potencia de 10 que representa el dígito a procesar.
  * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR si falló memoria.
  */
-static int counting_por_digito(int arreglo[], size_t n, int exp) {
-	int conteo[10] = {0}; int *salida; size_t i;
-	salida = (int *)malloc(n * sizeof(int));
+static int counting_por_digito(uint32_t arreglo[], size_t n, uint32_t exp) {
+	size_t conteo[10] = {0}; uint32_t *salida; size_t i;
+	salida = (uint32_t *)malloc(n * sizeof(uint32_t));
 	if (salida == NULL) return ORDENAMIENTO_ERROR;
 	for (i = 0; i < n; ++i) ++conteo[(arreglo[i] / exp) % 10];
 	for (i = 1; i < 10; ++i) conteo[i] += conteo[i - 1];
 	for (i = n; i > 0; --i) {
-		int valor = arreglo[i - 1];
-		int digito = (valor / exp) % 10;
+		uint32_t valor = arreglo[i - 1];
+		uint32_t digito = (valor / exp) % 10U;
 		salida[conteo[digito] - 1] = valor;
 		--conteo[digito];
 	}
@@ -384,30 +386,39 @@ static int counting_por_digito(int arreglo[], size_t n, int exp) {
  * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR si falló memoria.
  */
 int ordenar_radixsort(int arreglo[], size_t n) {
-	int *negativos, *positivos; size_t cant_negativos = 0, cant_positivos = 0, i, indice;
+	uint32_t *negativos, *positivos; size_t cant_negativos = 0, cant_positivos = 0, i, indice;
 	if (!arreglo_valido(arreglo, n)) return ORDENAMIENTO_ERROR;
-	negativos = (int *)malloc(n * sizeof(int));
-	positivos = (int *)malloc(n * sizeof(int));
+	negativos = (uint32_t *)malloc(n * sizeof(uint32_t));
+	positivos = (uint32_t *)malloc(n * sizeof(uint32_t));
 	if (negativos == NULL || positivos == NULL) { free(negativos); free(positivos); return ORDENAMIENTO_ERROR; }
 	for (i = 0; i < n; ++i) {
-		if (arreglo[i] < 0) negativos[cant_negativos++] = -arreglo[i];
-		else positivos[cant_positivos++] = arreglo[i];
+		if (arreglo[i] < 0) negativos[cant_negativos++] = 0U - (uint32_t)arreglo[i];
+		else positivos[cant_positivos++] = (uint32_t)arreglo[i];
 	}
 	if (cant_negativos > 0) {
-		int maximo = negativos[0], exp;
+		uint32_t maximo = negativos[0], exp = 1U;
 		for (i = 1; i < cant_negativos; ++i) if (negativos[i] > maximo) maximo = negativos[i];
-		for (exp = 1; maximo / exp > 0; exp *= 10)
+		for (;;) {
 			if (!counting_por_digito(negativos, cant_negativos, exp)) { free(negativos); free(positivos); return ORDENAMIENTO_ERROR; }
+			if (exp > maximo / 10U) break;
+			exp *= 10U;
+		}
 	}
 	if (cant_positivos > 0) {
-		int maximo = positivos[0], exp;
+		uint32_t maximo = positivos[0], exp = 1U;
 		for (i = 1; i < cant_positivos; ++i) if (positivos[i] > maximo) maximo = positivos[i];
-		for (exp = 1; maximo / exp > 0; exp *= 10)
+		if (maximo > 0U) for (;;) {
 			if (!counting_por_digito(positivos, cant_positivos, exp)) { free(negativos); free(positivos); return ORDENAMIENTO_ERROR; }
+			if (exp > maximo / 10U) break;
+			exp *= 10U;
+		}
 	}
 	indice = 0;
-	for (i = cant_negativos; i > 0; --i) arreglo[indice++] = -negativos[i - 1];
-	for (i = 0; i < cant_positivos; ++i) arreglo[indice++] = positivos[i];
+	for (i = cant_negativos; i > 0; --i) {
+		uint32_t magnitud = negativos[i - 1];
+		arreglo[indice++] = magnitud == (uint32_t)INT_MAX + 1U ? INT_MIN : -(int)magnitud;
+	}
+	for (i = 0; i < cant_positivos; ++i) arreglo[indice++] = (int)positivos[i];
 	free(negativos); free(positivos);
 	return ORDENAMIENTO_OK;
 }

@@ -17,6 +17,12 @@
   </ul>
 
   <h3>Operaciones soportadas</h3>
+  {% if help_data.learning_guide %}
+  <h3>Guía de aprendizaje</h3><p><strong>Objetivo:</strong> {{ help_data.learning_guide.objective }}</p><p><strong>Estrategia:</strong> {{ help_data.learning_guide.strategy }}</p><p><strong>Memoria C:</strong> {{ help_data.learning_guide.memory }}</p><h4>Invariantes</h4><ul>{% for item in help_data.learning_guide.invariants %}<li>{{ item }}</li>{% endfor %}</ul><h4>Complejidad</h4><ul>{% for name, cost in help_data.learning_guide.complexity.items() %}<li><strong>{{ name }}:</strong> {{ cost }}</li>{% endfor %}</ul><h4>Aplicaciones</h4><ul>{% for item in help_data.learning_guide.applications %}<li>{{ item }}</li>{% endfor %}</ul><h4>Errores frecuentes</h4><ul>{% for item in help_data.learning_guide.common_errors %}<li>{{ item }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if help_data.glossary %}<h3>Glosario</h3><dl>{% for term, meaning in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ meaning }}</dd>{% endfor %}</dl>{% endif %}
+  {% if help_data.teacher_guide %}<h3>Guía docente</h3><ul>{% for item in help_data.teacher_guide %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}
+  {% if help_data.keyboard %}<h3>Teclado</h3><ul>{% for item in help_data.keyboard %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}
   <ul>
     {% for operation in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
     <li>{{ operation }}</li>

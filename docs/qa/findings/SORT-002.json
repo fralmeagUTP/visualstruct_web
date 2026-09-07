@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "SORT-002", "structure_id": "sorting_array", "operation": "mergesort/binsort",
+  "input": {"values": [5, -1, 4, 2, 2, 0]},
+  "expected": [{"layer": "c", "source_location": "recursive/delegated subroutines", "state": "every visual mutation mapped to a displayed C line"}],
+  "observed": [{"layer": "trace", "source_location": "SortingAdapter._build_line_lookup", "state": {"mergesort_unmapped_steps": 21, "binsort_unmapped_steps": 15}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "MergeSort no carga sus auxiliares recursivos en el fragmento mostrado y Binsort anima Counting Sort después de una única línea delegada; la mayoría de frames carecen de línea C resaltable.",
+  "probable_cause": "CCodeService extrae sólo la función pública, mientras los patrones apuntan a funciones auxiliares ausentes del fragmento.",
+  "location": "app/services/c_code_service.py y app/adapters/sorting_adapter.py:_LINE_PATTERNS",
+  "recommended_test": "Para cada algoritmo exigir line_index válido en toda comparación, movimiento, swap, llamada recursiva y escritura auxiliar.",
+  "suggested_fix": "Incluir las subrutinas transitivamente llamadas y mapear cada token a su línea exacta. No se modifica código funcional durante la auditoría."
+}

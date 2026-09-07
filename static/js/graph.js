@@ -1,5 +1,22 @@
 "use strict";
 
+function renderGraphPedagogy(frame,level){
+  if(!frame)return;
+  const summary=gById("graph-pedagogy-summary"),representation=gById("graph-representation-view"),aux=gById("graph-auxiliary-view"),traversal=gById("graph-traversal-view"),table=gById("graph-table-view"),relaxation=gById("graph-relaxation-view"),condition=gById("graph-condition-view"),invariant=gById("graph-invariant-view");
+  if(summary)summary.innerHTML=`<strong>${gEscape(frame.phase?.label||frame.concept)}</strong>: ${gEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;
+  if(representation){const adjacency=frame.representation?.adjacency||{},degrees=frame.representation?.degrees||[];representation.innerHTML=`<p><strong>${frame.representation?.directed?"Arcos dirigidos (→)":"Aristas no dirigidas (—)"}</strong></p><ul>${Object.entries(adjacency).map(([vertex,items])=>`<li><code>${gEscape(vertex)}</code>: ${items.length?items.map((item)=>`${gEscape(item.vertex)}(${gEscape(item.weight)})`).join(", "):"∅"}</li>`).join("")}</ul><p>${degrees.map((item)=>frame.representation?.directed?`${gEscape(item.vertex)}: entrada ${item.in_degree}, salida ${item.out_degree}`:`${gEscape(item.vertex)}: grado ${item.degree}`).join(" · ")}</p><p>Reservados: ${frame.memory?.allocated?.length||0}; liberados: ${frame.memory?.freed?.length||0}; punteros colgantes: ${frame.memory?.dangling_references?.length||0}</p>`;}
+  if(aux)aux.innerHTML=`<strong>${gEscape(frame.auxiliary?.kind||"—")}</strong><br>Contenido: <code>${gEscape(JSON.stringify(frame.auxiliary?.items||[]))}</code><br>Seleccionado: ${gEscape(frame.auxiliary?.selected??"—")} · Iteración: ${gEscape(frame.auxiliary?.iteration??"—")}`;
+  if(traversal)traversal.innerHTML=`Árbol/bosque: <code>${gEscape(JSON.stringify(frame.traversal?.tree_edges||[]))}</code><br>Orden descubierto: <code>${gEscape(JSON.stringify(frame.traversal?.discovery_order||[]))}</code><br>Activo: ${gEscape(frame.traversal?.active??"—")}`;
+  if(table)table.innerHTML=`<table><thead><tr><th>Vértice</th><th>Estado</th><th>Distancia</th><th>Predecesor</th><th>Iteración</th></tr></thead><tbody>${(frame.vertices||[]).map((item)=>`<tr><td>${gEscape(item.id)}</td><td>${gEscape(item.status)}</td><td>${gEscape(item.distance??"∞")}</td><td>${gEscape(item.predecessor??"—")}</td><td>${gEscape(frame.auxiliary?.iteration??"—")}</td></tr>`).join("")}</tbody></table>`;
+  if(relaxation)relaxation.innerHTML=frame.relaxation?`<code>${gEscape(frame.relaxation.expression)}</code><br>${gEscape(frame.relaxation.old_distance??"∞")} &gt; ${gEscape(frame.relaxation.candidate??"∞")} ⇒ <strong>${frame.relaxation.success?"relajación exitosa":"sin cambio"}</strong><br>Nuevo valor: ${gEscape(frame.relaxation.new_distance??"∞")}; predecesor: ${gEscape(frame.relaxation.predecessor??"—")}`:"No se evalúa una relajación en este paso.";
+  if(condition)condition.innerHTML=frame.condition?`<code>${gEscape(frame.condition.substituted)}</code> ⇒ <strong>${gEscape(frame.condition.result)}</strong><br>${gEscape(frame.condition.consequence)}`:`Arista activa: ${gEscape(frame.active_edge?`${frame.active_edge.from} → ${frame.active_edge.to} (peso ${frame.active_edge.weight})`:"—")}`;
+  if(invariant)invariant.innerHTML=`<strong>${gEscape(frame.invariant?.symbol||"")} ${gEscape(frame.invariant?.name||"")}</strong><br>${gEscape(frame.invariant?.evidence||"")}`;
+}
+
+function enhanceGraphCodeNavigation(activeLine=null){const code=gById("op-pseudocode"),list=gById("graph-function-list"),hide=gById("graph-hide-comments");if(!code||!list)return;const raw=String(code.dataset.rawCode||code.textContent||"");const rows=raw.replaceAll("\r\n","\n").split("\n"),functions=[];rows.forEach((row,index)=>{const match=row.match(/^\s*(?:static\s+)?(?:void|bool|int|double|size_t|Grafo|Lista\w*)\s*\**\s*([A-Za-z_]\w*)\s*\(/);if(match&&!['if','for','while','switch'].includes(match[1]))functions.push({name:match[1],line:index});});let block=false;code.querySelectorAll(".code-line").forEach((node,index)=>{const value=String(rows[index]||"").trim(),starts=value.startsWith("/*");node.classList.toggle("is-code-comment",block||starts||value.startsWith("//")||value.startsWith("*"));if(starts&&!value.includes("*/"))block=true;if(block&&value.includes("*/"))block=false;});const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0];list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${gEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>';list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>code.querySelector(`.code-line[data-line="${button.dataset.line}"]`)?.scrollIntoView({block:"center"})));code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));}
+
+function initGraphResponsiveWorkspace(){const workspace=document.querySelector(".graph-primary-workspace"),tabs=[...document.querySelectorAll("[data-graph-tab]")];if(!workspace||!tabs.length)return;let saved="visual";try{saved=sessionStorage.getItem("graph-active-tab")||"visual";}catch(_error){/* optional */}const activate=(name)=>{const value=name==="code"?"code":"visual";workspace.dataset.activeTab=value;tabs.forEach((tab)=>{const active=tab.dataset.graphTab===value;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));});try{sessionStorage.setItem("graph-active-tab",value);}catch(_error){/* optional */}};tabs.forEach((tab)=>tab.addEventListener("click",()=>activate(tab.dataset.graphTab)));activate(saved);}
+
 function gById(id) {
   return document.getElementById(id);
 }
@@ -1066,6 +1083,12 @@ function initGraphPage(model) {
   const printfConsole = gById("graph-printf-console");
   const didacticNote = gById("graph-didactic-note");
   const presetButtons = Array.from(document.querySelectorAll(".graph-preset-btn"));
+  const learningLevel=gById("graph-learning-level"),guidedExample=gById("graph-guided-example"),loadExample=gById("graph-load-example"),exampleLesson=gById("graph-example-lesson"),restartExecution=gById("graph-restart-execution"),resetGraph=gById("graph-reset-button"),hideComments=gById("graph-hide-comments");
+  const prepareButton=gById("graph-prepare"),pauseButton=gById("graph-sim-pause"),homeButton=gById("graph-sim-home"),endButton=gById("graph-sim-end"),repeatButton=gById("graph-sim-repeat"),progressSlider=gById("graph-progress"),stepMetadata=gById("graph-step-metadata");
+  const predictionSelect=gById("graph-prediction"),checkPrediction=gById("graph-check-prediction"),hintButton=gById("graph-prediction-hint"),skipPrediction=gById("graph-skip-prediction"),predictionFeedback=gById("graph-prediction-feedback"),practiceMode=gById("graph-practice-mode"),practiceCover=gById("graph-practice-cover"),progressSummary=gById("graph-progress-summary"),resetProgress=gById("graph-reset-progress");
+  const compareKind=gById("graph-compare-kind"),compareStart=gById("graph-compare-start"),compareEnd=gById("graph-compare-end"),compareRun=gById("graph-compare-run"),compareProgress=gById("graph-compare-progress"),compareInput=gById("graph-compare-input"),compareGrid=gById("graph-compare-grid"),compareConclusion=gById("graph-compare-conclusion");
+  const exportImage=gById("graph-export-image"),exportSummary=gById("graph-export-summary"),announcer=gById("graph-accessible-announcer");
+  const activePhase = String(controls?.dataset.activePhase || "construccion").trim() || "construccion";
 
   if (!controls || !visualState || !operationSelect || !algorithmSelect) {
     return;
@@ -1088,6 +1111,12 @@ function initGraphPage(model) {
 
   let playbackSpeed = 1;
   let playbackSpeedSetting = 0;
+  let currentPedagogyFrame=null;
+  let comparisonResult=null;let hintLevel=0;
+  const conceptualProgress={attempts:0,correct:0};
+  const presentationKey=`graph-presentation:${activePhase}`;
+  function readGraphPresentation(){try{return JSON.parse(sessionStorage.getItem(presentationKey)||"{}");}catch(_error){return {};}}
+  function writeGraphPresentation(){try{sessionStorage.setItem(presentationKey,JSON.stringify({level:learningLevel?.value||"intermediate",cursor:pageState.traceCursor,phase:activePhase,operation:selectedOperation?.name,algorithm:selectedAlgorithm?.name}));}catch(_error){/* optional */}}
 
   function isStepByStepEnabled() {
     return !stepToggle || Boolean(stepToggle.checked);
@@ -1138,20 +1167,8 @@ function initGraphPage(model) {
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
-      const messages = gExtractPrintfMessagesFromLine(step.line_text);
-      messages.forEach((msg) => {
-        // Evita mostrar literales de formato sin resolver (ej. "%d", "%s").
-        if (gHasPrintfFormatSpecifier(msg)) {
-          return;
-        }
-        gPushUniqueConsoleLine(out, `[printf] ${msg}`);
-      });
-    }
-    if (limit >= trace.steps.length - 1) {
-      const finalMessage = String(trace.message || "").trim();
-      if (finalMessage) {
-        gPushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
-      }
+      const emitted = Array.isArray(step.console) ? step.console : [];
+      emitted.forEach((line) => gPushUniqueConsoleLine(out, line));
     }
     return out;
   }
@@ -1179,7 +1196,6 @@ function initGraphPage(model) {
 
   const allowedOperations = new Set(parseJsonArray(controls.dataset.allowedOperations));
   const allowedAlgorithms = new Set(parseJsonArray(controls.dataset.allowedAlgorithms));
-  const activePhase = String(controls.dataset.activePhase || "construccion").trim() || "construccion";
   const phaseRunMode = String(controls.dataset.phaseRunMode || "operation").trim().toLowerCase();
   const defaultAlgorithm = String(controls.dataset.defaultAlgorithm || "").trim();
   const didacticNotesByPhase =
@@ -1202,6 +1218,8 @@ function initGraphPage(model) {
 
   let selectedOperation = operationList[0] || null;
   let selectedAlgorithm = algorithmList.find((op) => op.name === defaultAlgorithm) || algorithmList[0] || null;
+  const savedPresentation=readGraphPresentation();if(learningLevel)learningLevel.value=["basic","intermediate","advanced"].includes(savedPresentation.level)?savedPresentation.level:"intermediate";(model.guided_examples||[]).forEach((example)=>{const option=document.createElement("option");option.value=example.id;option.textContent=example.label;guidedExample?.appendChild(option);});
+  initGraphResponsiveWorkspace();hideComments?.addEventListener("change",()=>enhanceGraphCodeNavigation(null));learningLevel?.addEventListener("change",()=>{renderGraphPedagogy(currentPedagogyFrame,learningLevel.value);writeGraphPresentation();});guidedExample?.addEventListener("change",()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample.value);if(exampleLesson)exampleLesson.textContent=example?example.lesson:"El ejemplo se construye mediante operaciones públicas y no cambia al reproducir.";});
   let activeRunMode = phaseRunMode === "algorithm" ? "algorithm" : "operation";
 
   function resolveDidacticNote(operationName, mode) {
@@ -1280,8 +1298,9 @@ function initGraphPage(model) {
       counterElement: gById("graph-sim-counter"),
       renderState: (stateSnapshot, stepMeta) => {
         pageState.graphState = stateSnapshot;
-        pageState.simulation = buildSimulationFromState(stateSnapshot);
+        pageState.simulation = null;
         renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null);
+        if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
         updateGraphStepKind(stepMeta || null);
       },
       onCursorChange: (event) => {
@@ -1291,6 +1310,11 @@ function initGraphPage(model) {
           ? event.trace.steps.length
           : 0;
         refreshGraphPrintfConsole(cursor);
+        const step=event?.step;enhanceGraphCodeNavigation(Number.isInteger(step?.line_index)?step.line_index:null);writeGraphPresentation();
+        if(progressSlider){progressSlider.max=String(Math.max(0,pageState.traceTotalSteps-1));progressSlider.value=String(Math.max(0,cursor));progressSlider.disabled=pageState.traceTotalSteps===0;}
+        if(stepMetadata){const frame=step?.pedagogy||{};const edge=frame.active_edge?`${frame.active_edge.from}→${frame.active_edge.to}`:"—";stepMetadata.textContent=`Función: ${frame.call_stack?.[0]?.function||"—"} · Fase: ${frame.phase?.label||"—"} · Concepto: ${frame.concept||"—"} · Vértice: ${frame.auxiliary?.selected??"—"} · Arista: ${edge}`;}
+        const concealed=Boolean(practiceMode?.checked&&cursor>=0);if(practiceCover)practiceCover.hidden=!concealed;visualState.classList.toggle("graph-practice-hidden",concealed);
+        if(announcer&&step?.pedagogy)announcer.textContent=`Paso ${cursor+1}. ${step.pedagogy.narration?.basic||step.pedagogy.phase?.label||""}`;
         setSimulationButtonsState();
       },
       defaultDelayMs: 900,
@@ -1650,7 +1674,7 @@ function initGraphPage(model) {
   function applyNewGraphState(newState) {
     stopSimulationTimer(pageState.simulation);
     pageState.graphState = newState;
-    pageState.simulation = buildSimulationFromState(newState);
+    pageState.simulation = null;
     updateGraphStepKind(null);
     repaint();
     if (modeSelect) {
@@ -1814,6 +1838,10 @@ function initGraphPage(model) {
     invalidateTrace("Modo cambiado. Ejecuta nuevamente.");
   });
 
+  restartExecution?.addEventListener("click",()=>{tracePlayer?.reset();setSimulationButtonsState();});
+  resetGraph?.addEventListener("click",async()=>{if(!window.confirm("¿Restablecer el grafo y borrar su historial de esta sesión?"))return;const response=await fetch(controls.dataset.resetUrl,{method:"POST"});const data=await response.json();pageState.actionHistory.length=0;renderGraphHistory(pageState.actionHistory,historyBox,model.didactic);if(data.visual_state){model.visual_state=data.visual_state;applyNewGraphState(data.visual_state);}invalidateTrace("Grafo restablecido.");showGraphMessage(data.message,Boolean(data.success));});
+  loadExample?.addEventListener("click",async()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample?.value);if(!example){showGraphMessage("Selecciona un ejemplo guiado.",false);return;}loadExample.disabled=true;try{const labelMap=new Map((example.vertices||[]).map((value,index)=>[String(value),index+1]));const resolve=(value)=>labelMap.get(String(value))??value;let data=await executeGraphOperation(controls,"create_graph",{directed:Boolean(example.directed)});if(!data.success)throw new Error(data.message);for(const vertex of example.vertices||[]){data=await executeGraphOperation(controls,"insert_vertex",{vertex:resolve(vertex)});if(!data.success)throw new Error(data.message);}for(const edge of example.edges||[]){data=await executeGraphOperation(controls,"insert_edge",{origin:resolve(edge[0]),target:resolve(edge[1]),weight:edge[2]});if(!data.success)throw new Error(data.message);}if(data.visual_state){model.visual_state=data.visual_state;applyNewGraphState(data.visual_state);}const mappedPayload={};Object.entries(example.payload||{}).forEach(([key,value])=>{mappedPayload[key]=resolve(value);});selectedAlgorithm=algorithmList.find((item)=>item.name===example.operation)||selectedAlgorithm;if(selectedAlgorithm){algorithmSelect.value=selectedAlgorithm.name;buildGraphInputs(selectedAlgorithm,algorithmInputs,"g-alg-field");selectedAlgorithm.inputs.forEach((field)=>{const input=gById(`g-alg-field-${field.name}`);if(input&&Object.prototype.hasOwnProperty.call(mappedPayload,field.name))input.value=mappedPayload[field.name];});setRunMode("algorithm");updateGraphDidacticPanel(model,selectedAlgorithm.name);}pageState.actionHistory.length=0;invalidateTrace("Ejemplo preparado. Reproduce la operación objetivo.");writeGraphPresentation();showGraphMessage(`Ejemplo preparado: ${example.lesson}`,true);}catch(error){showGraphMessage(error.message||"No se pudo preparar el ejemplo.",false);}finally{loadExample.disabled=false;}});
+
   createButton?.addEventListener("click", async () => {
     const directedValue = modeSelect ? modeSelect.value : "false";
       const data = await executeGraphOperation(controls, "create_graph", { directed: directedValue });
@@ -1879,6 +1907,29 @@ function initGraphPage(model) {
     }
     await tracePlayer.playFromStart();
   });
+
+  function renderConceptualProgress(){if(progressSummary)progressSummary.textContent=`Progreso conceptual de esta sesión: ${conceptualProgress.correct} aciertos de ${conceptualProgress.attempts} intentos.`;}
+  function revealPractice(){if(practiceCover)practiceCover.hidden=true;visualState.classList.remove("graph-practice-hidden");}
+  function expectedGraphPrediction(frame){const concept=String(frame?.concept||"");const stage=String(frame?.case||"");if(concept==="extract"||stage==="extract_min")return "extract";if(concept==="discover"||stage==="visit")return "discover";if(stage==="update_distance")return "predecessor";if(concept==="relax"||stage==="relax_edge")return frame?.relaxation?.success===false?"none":"relax";if(concept==="accept"||["accept_edge","union","expand_mst"].includes(stage))return "accept";if(concept==="reject"||stage==="reject_edge")return "reject";if(concept==="negative_cycle"||stage==="detect_negative_cycle")return "negative_cycle";return "none";}
+  checkPrediction?.addEventListener("click",()=>{if(!currentPedagogyFrame||!predictionSelect?.value){if(predictionFeedback)predictionFeedback.textContent="Prepara una traza y selecciona una predicción.";return;}const expected=expectedGraphPrediction(currentPedagogyFrame),correct=predictionSelect.value===expected;conceptualProgress.attempts+=1;if(correct)conceptualProgress.correct+=1;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent=correct?"Correcto: coincide con la decisión ejecutada.":`Revisa el auxiliar, la condición y el invariante. Evidencia: ${expected}.`;hintLevel=0;revealPractice();});
+  hintButton?.addEventListener("click",()=>{hintLevel=Math.min(3,hintLevel+1);const hints=["Observa qué estructura auxiliar cambia.",`El concepto del frame es «${currentPedagogyFrame?.concept||"aún no disponible"}».`,`La decisión esperada es ${expectedGraphPrediction(currentPedagogyFrame)}.`];if(predictionFeedback)predictionFeedback.textContent=hints[hintLevel-1];});
+  skipPrediction?.addEventListener("click",()=>{revealPractice();if(predictionFeedback)predictionFeedback.textContent="Continuaste sin responder; no se registra intento.";});
+  practiceMode?.addEventListener("change",()=>{const concealed=Boolean(practiceMode.checked&&pageState.traceCursor>=0);if(practiceCover)practiceCover.hidden=!concealed;visualState.classList.toggle("graph-practice-hidden",concealed);});
+  resetProgress?.addEventListener("click",()=>{conceptualProgress.attempts=0;conceptualProgress.correct=0;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent="Progreso conceptual reiniciado.";});
+  prepareButton?.addEventListener("click",async()=>{const ready=await ensureTraceForCurrentTarget();if(ready)tracePlayer?.reset();});
+  pauseButton?.addEventListener("click",()=>tracePlayer?.pause());
+  homeButton?.addEventListener("click",()=>tracePlayer?.reset());
+  endButton?.addEventListener("click",()=>{if(tracePlayer?.hasTrace())tracePlayer.seek(Math.max(0,tracePlayer.getTotalSteps()-1));});
+  repeatButton?.addEventListener("click",async()=>{if(tracePlayer?.hasTrace())await tracePlayer.playFromStart();});
+  progressSlider?.addEventListener("input",()=>{if(tracePlayer?.hasTrace())tracePlayer.seek(Number(progressSlider.value));});
+
+  function comparisonCard(side){const summary=side?.summary||{};const constraint=side?.algorithm==="run_dijkstra"?"pesos no negativos":side?.algorithm?.includes("bellman")?"admite negativos":side?.algorithm?.includes("prim")||side?.algorithm?.includes("kruskal")?"grafo no dirigido":"componente alcanzable";return `<article class="hier-compare-card"><h4>${gEscape(side?.algorithm||"algoritmo")}</h4><p><strong>Auxiliar/estrategia:</strong> ${gEscape(summary.auxiliary||constraint)}</p><p><strong>Resultado:</strong> <code>${gEscape(JSON.stringify(summary.order||summary.path||summary.mst_edges||summary))}</code></p><p><strong>Costo:</strong> ${gEscape(summary.distance_to_destination??summary.total_weight??"según V+E")}</p><p><strong>Restricción:</strong> ${gEscape(constraint)}</p><p><strong>Invariante:</strong> ${summary.has_negative_cycle?"ciclo negativo detectado":"✓ conservado"}</p></article>`;}
+  function renderComparison(){if(!comparisonResult||!compareGrid)return;compareGrid.innerHTML=comparisonCard(comparisonResult.left)+comparisonCard(comparisonResult.right);if(compareInput)compareInput.textContent=`Entrada inmutable: ${comparisonResult.input.nodes.length} vértices, ${comparisonResult.input.edges.length} aristas. Concepto ${Number(compareProgress?.value||0)+1}/4.`;if(compareConclusion)compareConclusion.textContent=`${comparisonResult.conclusion} Estado auxiliar, costo, restricción e invariante se calculan sobre copias aisladas.`;}
+  compareRun?.addEventListener("click",async()=>{const response=await fetch(controls.dataset.compareUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:compareKind?.value,graph:model.visual_state,start:compareStart?.value,end:compareEnd?.value})});const data=await response.json();if(!response.ok||!data.success){if(compareConclusion)compareConclusion.textContent=data.message||"No se pudo comparar.";return;}comparisonResult=data;renderComparison();});
+  compareProgress?.addEventListener("input",renderComparison);
+  exportImage?.addEventListener("click",async()=>{try{const result=await window.InterpreterRuntime.exportVisualStateAsJpg({target:visualState,quality:.92,scale:2});const link=document.createElement("a");link.href=result.dataUrl;link.download=result.suggestedName;link.click();if(announcer)announcer.textContent="Captura JPG exportada.";}catch(_error){if(announcer)announcer.textContent="No fue posible exportar la captura.";}});
+  exportSummary?.addEventListener("click",()=>{const report={module:"graph",phase:activePhase,algorithm:selectedAlgorithm?.name||selectedOperation?.name,cursor:pageState.traceCursor,total_steps:pageState.traceTotalSteps,progress:{...conceptualProgress},frame:currentPedagogyFrame,comparison:comparisonResult};const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download="graph-learning-summary.json";link.click();URL.revokeObjectURL(link.href);if(announcer)announcer.textContent="Resumen de aprendizaje exportado.";});
+  document.addEventListener("keydown",(event)=>{if(!event.altKey)return;if(event.key==="ArrowRight"){event.preventDefault();simStep?.click();}else if(event.key==="ArrowLeft"){event.preventDefault();simPrev?.click();}else if(event.key==="Home"){event.preventDefault();homeButton?.click();}else if(event.key==="End"){event.preventDefault();endButton?.click();}else if(event.key.toLowerCase()==="p"){event.preventDefault();pauseButton?.click();}});
 
   simStep?.addEventListener("click", async () => {
     if (!isStepByStepEnabled()) {

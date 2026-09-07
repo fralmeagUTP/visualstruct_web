@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+from copy import deepcopy
 
 
 class HierarchicalHelpService:
@@ -108,6 +109,16 @@ class HierarchicalHelpService:
         },
     }
 
+    _PEDAGOGY = {
+        "abb": {"objective":"Decidir la rama y justificar los tres casos de eliminación.","strategy":"Comparar, descender recursivamente y reconectar el subárbol retornado.","invariant":"izquierdo < nodo < derecho en todos los nodos.","memory":"Cada nodo se reserva con malloc y se libera al eliminar o limpiar.","complexity":"O(h); promedio O(log n), peor O(n).","errors":["Confundir ABB con árbol balanceado.","Olvidar reconectar el retorno recursivo."]},
+        "avl": {"objective":"Relacionar altura y FE con LL, RR, LR y RL.","strategy":"Operar como ABB, actualizar alturas y reparar el primer desequilibrio.","invariant":"Orden ABB y |FE| ≤ 1 por nodo.","memory":"Las rotaciones cambian enlaces; no crean ni destruyen nodos.","complexity":"Búsqueda, inserción y eliminación O(log n).","errors":["Rotar según el valor sin calcular FE.","No actualizar alturas después de rotar."]},
+        "red_black": {"objective":"Justificar recoloreos y rotaciones con padre, abuelo y tío.","strategy":"Insertar como ABB y ejecutar casos de reparación hasta la raíz.","invariant":"Raíz negra, sin rojo-rojo y black-height uniforme.","memory":"Los NIL son centinelas negros; el color no sustituye los enlaces.","complexity":"Búsqueda, inserción y eliminación O(log n).","errors":["Evaluar solo el color del nodo.","Usar color sin equivalente textual."]},
+        "binary_heap": {"objective":"Predecir ascenso, descenso e intercambio mediante índices.","strategy":"Mantener forma completa en arreglo y reparar prioridad padre-hijos.","invariant":"A[parent(i)] ≤ A[i] para todo i > 0.","memory":"El arreglo representa niveles; no usa enlaces de búsqueda.","complexity":"Raíz O(1), insertar y extraer O(log n).","errors":["Tratar el heap como ABB.","Esperar que el arreglo esté totalmente ordenado."]},
+    }
+    GLOSSARY = {
+        "Raíz":"Nodo sin padre.","Hoja":"Nodo sin hijos.","Altura":"Longitud del camino máximo hacia una hoja.","Profundidad":"Distancia desde la raíz.","FE":"Diferencia de alturas entre subárboles.","Rotación":"Cambio local de enlaces que conserva el orden.","Recoloreo":"Cambio de colores para reparar reglas rojo-negro.","Black-height":"Cantidad de nodos negros por camino hasta NIL.","Heapify":"Proceso de restaurar la propiedad de heap.",
+    }
+
     @staticmethod
     def get_module_help() -> dict[str, Any]:
         """Return the didactic help for hierarchical module."""
@@ -116,7 +127,7 @@ class HierarchicalHelpService:
     @staticmethod
     def get_structure_help(structure_id: str) -> dict[str, Any]:
         """Return help for one hierarchical structure."""
-        return HierarchicalHelpService._STRUCTURE_HELP.get(
+        result=deepcopy(HierarchicalHelpService._STRUCTURE_HELP.get(
             structure_id,
             {
                 "title": "Estructura no encontrada",
@@ -124,4 +135,7 @@ class HierarchicalHelpService:
                 "supported_operations": [],
                 "pending_operations": [],
             },
-        )
+        ))
+        result["pedagogy"]=deepcopy(HierarchicalHelpService._PEDAGOGY.get(structure_id,{}))
+        result["glossary"]=deepcopy(HierarchicalHelpService.GLOSSARY)
+        return result

@@ -1,0 +1,23 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "GRAPH-002",
+  "structure_id": "graph",
+  "operation": "create_graph/insert_edge",
+  "input": {"directed": false, "edge": [1, 2, 2.75]},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "tad_grafo.h:Grafo", "state": {"directed": true, "weight_type": "int"}},
+    {"step": 1, "layer": "c", "source_location": "tad_grafo.c:grafo_insertar_arco", "state": {"edge": [1, 2, 2]}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "frontend", "source_location": "GraphAdapter.create_graph", "state": {"directed": false}},
+    {"step": 1, "layer": "console", "source_location": "GraphAdapter.insert_edge", "state": {"reported_weight": 2.75}},
+    {"step": 2, "layer": "visual", "source_location": "GraphAdapter.to_visual_state", "state": {"edge": [1, 2, 2.0]}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "La aplicación ofrece grafos no dirigidos y pesos decimales sobre un C exclusivamente dirigido con costo int; además, la consola conserva 2.75 mientras el estado interno/visual lo trunca a 2.0.",
+  "probable_cause": "GraphAdapter amplió el contrato con dirigido y float, pero el wrapper convierte el peso mediante int(w) antes de llamar a la transcripción del TAD C.",
+  "location": "app/adapters/graph_adapter.py y app/domain/graph/tad_wrappers.py:Grafo.insertar_arista",
+  "recommended_test": "Crear dirigido/no dirigido e insertar pesos 2.75, negativos y extremos; exigir igualdad entre mensaje, historial, estado interno, visual y parámetro int del C.",
+  "suggested_fix": "Restringir la UI al contrato C o extender formalmente el TAD C con dirección y un tipo de peso coherente; nunca informar el valor previo a la conversión como si hubiera sido almacenado. No se modifica código funcional durante la auditoría."
+}

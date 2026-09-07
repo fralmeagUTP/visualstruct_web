@@ -90,6 +90,21 @@ def api_run() -> tuple[Any, int]:
     return _execute("run", payload)
 
 
+@sorting_api_bp.post("/compare")
+def api_compare() -> tuple[Any, int]:
+    """Compare two algorithms without mutating the session history."""
+    body = request.get_json(silent=True) or {}
+    try:
+        result = SortingStructureService.compare_algorithms(
+            values=body.get("values", ""),
+            left_algorithm=str(body.get("left_algorithm", "")),
+            right_algorithm=str(body.get("right_algorithm", "")),
+        )
+    except (ValueError, TypeError) as error:
+        return jsonify({"success": False, "message": str(error)}), 400
+    return jsonify(result), 200
+
+
 @sorting_api_bp.post("/step")
 def api_step() -> tuple[Any, int]:
     body = request.get_json(silent=True) or {}
@@ -134,4 +149,3 @@ def api_reset() -> tuple[Any, int]:
         ),
         200,
     )
-

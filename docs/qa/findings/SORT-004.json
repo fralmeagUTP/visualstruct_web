@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "SORT-004", "structure_id": "sorting_array", "operation": "counting_sort/binsort",
+  "input": {"values": [-2147483648, 2147483647]},
+  "expected": [{"layer": "application", "state": {"result": "bounded validation error"}}],
+  "observed": [{"layer": "c", "state": {"requested_count_entries": 4294967296}}, {"layer": "backend", "state": {"allocation": "Python list of same range"}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "El tamaño del arreglo está limitado, pero la amplitud del rango no; dos valores pueden solicitar miles de millones de contadores y agotar memoria.",
+  "probable_cause": "Counting/Binsort calculan max-min+1 sin un límite didáctico ni selección alternativa por densidad.",
+  "location": "docs/tads_C/tad_ordenamiento.c:ordenar_counting_sort y app/domain/sorting/tad_ordenamiento.py:_run_counting_sort",
+  "recommended_test": "Probar rangos extremos en proceso aislado y exigir rechazo previo sin intentar reservar memoria proporcional al rango.",
+  "suggested_fix": "Validar rango máximo antes de calloc/list allocation y devolver un error reproducible mostrado en consola. No se modifica código funcional durante la auditoría."
+}

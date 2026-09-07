@@ -5,6 +5,9 @@
   <h2>{{ help_data.title }}</h2>
   <h3>Descripcion del TAD</h3>
   <p>{{ help_data.tad_description }}</p>
+  <div class="seq-c-semantics"><section><h3>Objetivo</h3><p>{{ help_data.objective }}</p></section><section><h3>Estrategia</h3><p>{{ help_data.strategy }}</p></section><section><h3>Invariante</h3><p>{{ help_data.invariant }}</p></section><section><h3>Memoria dinámica</h3><p>{{ help_data.memory }}</p></section></div>
+  <h3>Errores frecuentes</h3><ul>{% for error in help_data.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+  <details><summary>Glosario contextual</summary><dl>{% for term, definition in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ definition }}</dd>{% endfor %}</dl></details>
 
   <h3>Controles de ejecucion paso a paso</h3>
   <ul>

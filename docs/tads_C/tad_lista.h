@@ -64,5 +64,11 @@ void lista_eliminar_elemento(Tlista *lista, int valor);
  * @param[in] valor Valor a eliminar.
  */
 void lista_eliminar_repetidos(Tlista *lista, int valor);
+int lista_eliminar_inicio(Tlista *lista, int *valor);
+int lista_eliminar_final(Tlista *lista, int *valor);
+int lista_eliminar_posicion(Tlista *lista, int posicion, int *valor);
+void lista_invertir(Tlista *lista);
+int lista_primero(Tlista lista, int *valor);
+int lista_ultimo(Tlista lista, int *valor);
 
 #endif

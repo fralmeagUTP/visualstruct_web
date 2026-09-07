@@ -154,7 +154,8 @@ class Grafo(Generic[V]):
                 if candidato is None or c < candidato[2]:
                     candidato = (o, d, c)
             if candidato is None:
-                break
+                visitados.add(next(v for v in self._g._vertices if v not in visitados))
+                continue
             o, d, c = candidato
             mst.append(candidato)
             total += c
@@ -199,6 +200,24 @@ class Grafo(Generic[V]):
 
     def cantidad_aristas(self) -> int:
         return len(self.aristas())
+
+    def componentes_no_dirigidos(self) -> int:
+        """Count weak components using the same undirected projection as MST."""
+        pendientes = set(self._g._vertices)
+        componentes = 0
+        adyacentes: dict[int, set[int]] = {v: set() for v in self._g._vertices}
+        for origen, destino, _ in self._g._arcos:
+            if origen in adyacentes and destino in adyacentes:
+                adyacentes[origen].add(destino)
+                adyacentes[destino].add(origen)
+        while pendientes:
+            componentes += 1
+            pila = [pendientes.pop()]
+            while pila:
+                for vecino in adyacentes[pila.pop()] & pendientes:
+                    pendientes.remove(vecino)
+                    pila.append(vecino)
+        return componentes
 
     def _validar_vertice(self, vertice: V) -> None:
         value = int(vertice)

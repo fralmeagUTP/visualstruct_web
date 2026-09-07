@@ -264,6 +264,21 @@ class ConformanceRunner:
                 return json.loads(line)
         raise ConformanceRunnerError("el harness no emitió estado canónico")
 
+    @staticmethod
+    def _normalize_c_state(structure_id: str, state: dict[str, Any]) -> dict[str, Any]:
+        """Normalize harness JSON scalars to the public C-backed adapter contract."""
+        if structure_id != "hash_table":
+            return state
+        normalized = dict(state)
+        payload = dict(normalized.get("state") or {})
+        pairs: list[list[Any]] = []
+        for pair in payload.get("pairs") or []:
+            if isinstance(pair, list) and len(pair) == 2:
+                pairs.append([int(pair[0]), int(pair[1])])
+        payload["pairs"] = pairs
+        normalized["state"] = payload
+        return normalized
+
     def compare(self, structure_id: str, operations: list[ScenarioOperation]) -> ConformanceResult:
         normalized_id = str(structure_id).strip().lower()
         if normalized_id not in SPECS:
@@ -281,7 +296,7 @@ class ConformanceRunner:
             completed = subprocess.run([str(executable), *arguments], capture_output=True, text=True, check=False)
             if completed.returncode != 0:
                 raise ConformanceRunnerError(f"falló escenario C de {normalized_id}: {completed.stderr.strip()}")
-            c_state = self._canonical_c_output(completed.stdout)
+            c_state = self._normalize_c_state(normalized_id, self._canonical_c_output(completed.stdout))
 
         return ConformanceResult(
             structure_id=normalized_id,
@@ -377,7 +392,7 @@ class CompiledConformanceRunner(ConformanceRunner):
             raise ConformanceRunnerError(
                 f"falló escenario C de {normalized_id}: {completed.stderr.strip()}"
             )
-        c_state = self._canonical_c_output(completed.stdout)
+        c_state = self._normalize_c_state(normalized_id, self._canonical_c_output(completed.stdout))
         return ConformanceResult(
             structure_id=normalized_id,
             equivalent=c_state.get("state") == python_state.get("state"),
