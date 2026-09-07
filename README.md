@@ -272,11 +272,13 @@ docker compose logs -f visualstruct
 Para detenerlo sin borrar las sesiones: `docker compose down`.
 Para eliminar tambien las sesiones persistidas: `docker compose down -v`.
 
-El archivo de ejemplo configura HTTP solo para pruebas locales. Detras de HTTPS,
+El archivo de ejemplo configura HTTP solo para pruebas locales. Para un despliegue
+detras de Traefik con HTTPS, use el archivo adicional `compose.vps.yaml` y
 configure `SESSION_COOKIE_SECURE=true` y
-`ALLOW_INSECURE_COOKIES_IN_PRODUCTION=false`. Para escalar a varias replicas,
-reemplace el almacenamiento `cachelib` por Redis mediante `SESSION_TYPE=redis`
-y `SESSION_REDIS_URL`.
+`ALLOW_INSECURE_COOKIES_IN_PRODUCTION=false`. El VPS debe tener la red externa
+`red` y un Traefik con el resolvedor `letsencrypt`. Para escalar a varias
+replicas, reemplace el almacenamiento `cachelib` por Redis mediante
+`SESSION_TYPE=redis` y `SESSION_REDIS_URL`.
 
 ## Documentacion relacionada
 
