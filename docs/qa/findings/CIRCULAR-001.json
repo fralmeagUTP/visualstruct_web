@@ -1,0 +1,22 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "CIRCULAR-001",
+  "structure_id": "circular_list",
+  "operation": "insertar_inicio/insertar_final",
+  "input": {"before": [], "value": 7},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_lista_circular.c:lcir_insertar_inicio", "state": {"items": [7], "tail_next": "head", "self_loop": true}},
+    {"step": 1, "layer": "frontend", "source_location": "static/js/sequential.js:drawCircularLoop", "state": {"items": [7], "tail_next": "head", "self_loop": true}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_lista_circular.c:lcir_insertar_inicio", "state": {"items": [7], "tail_next": "head", "self_loop": true}},
+    {"step": 1, "layer": "frontend", "source_location": "static/js/sequential.js:drawCircularLoop", "state": {"items": [7], "loop_drawn": false}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "El renderer no dibuja el autoenlace del único nodo aunque C establece nuevo->sgte = nuevo; visualmente la estructura deja de parecer circular.",
+  "probable_cause": "drawCircularLoop retorna cuando nodes.length < 2 y renderLinearWithHeadTail solo crea el host del lazo con más de un item.",
+  "location": "static/js/sequential.js:drawCircularLoop; renderLinearWithHeadTail",
+  "recommended_test": "Insertar el primer nodo y comprobar mediante DOM/SVG que existe una flecha desde el nodo hacia sí mismo; repetir tras eliminar hasta quedar uno.",
+  "suggested_fix": "Dibujar un arco de autoenlace para un nodo y mantener las etiquetas HEAD/COLA sobre la misma entidad lógica. No se modifica código funcional durante esta auditoría."
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "didactic-visual-integration/v1",
+  "generated_at": "2026-08-23",
+  "status": "passed",
+  "limits": {"max_trace_bytes": 1000000, "max_latency_ms": 2000, "session_max_history": 300},
+  "summary": {"structures": 13, "max_observed_trace_bytes": 54318, "max_observed_latency_ms": 52.676},
+  "measurements": [
+    {"structure_id":"abb","latency_ms":6.290,"trace_bytes":5690,"steps":7},
+    {"structure_id":"avl","latency_ms":30.025,"trace_bytes":31074,"steps":29},
+    {"structure_id":"binary_heap","latency_ms":12.285,"trace_bytes":9963,"steps":14},
+    {"structure_id":"circular_list","latency_ms":5.812,"trace_bytes":5348,"steps":11},
+    {"structure_id":"graph","latency_ms":38.610,"trace_bytes":20749,"steps":18},
+    {"structure_id":"hash_table","latency_ms":47.165,"trace_bytes":43639,"steps":13},
+    {"structure_id":"linked_list","latency_ms":9.643,"trace_bytes":3830,"steps":8},
+    {"structure_id":"priority_queue","latency_ms":4.353,"trace_bytes":6418,"steps":10},
+    {"structure_id":"queue","latency_ms":4.220,"trace_bytes":4415,"steps":9},
+    {"structure_id":"red_black","latency_ms":52.676,"trace_bytes":54318,"steps":53},
+    {"structure_id":"sorting","latency_ms":21.048,"trace_bytes":17430,"steps":13},
+    {"structure_id":"stack","latency_ms":3.355,"trace_bytes":3933,"steps":7},
+    {"structure_id":"sublist","latency_ms":5.868,"trace_bytes":5705,"steps":11}
+  ],
+  "gates": {
+    "source_causality_13_tads":"passed",
+    "temporaries_identity_links_colors_ranges_auxiliaries":"passed",
+    "reversible_playback":"passed",
+    "fast_step_backend_c_final_equivalence":"passed",
+    "trace_and_session_limits":"passed"
+  },
+  "tests": ["tests/test_phase8_visual_integration.py", "tests/test_ui_playwright_e2e.py"]
+}

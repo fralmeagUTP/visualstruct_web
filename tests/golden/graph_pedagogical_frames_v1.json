@@ -1,0 +1,17 @@
+{
+  "schema": "graph-pedagogical-frame/v1",
+  "fixtures": {
+    "discover": {"line": "visitado[v] = true;", "stage": "visit", "concept": "discover"},
+    "extract": {"line": "u = cola_extraer(&cola);", "stage": "extract_min", "concept": "extract"},
+    "examine": {"line": "for (Arista *a = u->ady; a; a = a->sig)", "stage": "relax_edge", "concept": "examine"},
+    "backtracking": {"line": "return;", "stage": "backtrack", "concept": "return"},
+    "relax": {"line": "dist[v] = dist[u] + peso;", "stage": "update_distance", "concept": "relax"},
+    "close": {"line": "cerrado[u] = true;", "stage": "complete", "concept": "return"},
+    "negative_cycle": {"line": "if (dist[u] + peso < dist[v])", "stage": "detect_negative_cycle", "concept": "negative_cycle"},
+    "frontier": {"line": "candidato = minimo(frontera);", "stage": "select_edge", "concept": "consider"},
+    "find": {"line": "ru = find(u);", "stage": "find", "concept": "find"},
+    "union": {"line": "union_sets(ru, rv);", "stage": "union", "concept": "union"},
+    "accept": {"line": "mst_agregar(a);", "stage": "accept_edge", "concept": "accept"},
+    "reject": {"line": "continue;", "stage": "reject_edge", "concept": "reject"}
+  }
+}

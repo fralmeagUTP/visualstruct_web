@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"SORT-001","status":"fixed","contract":"Quicksort emite cada evaluación verdadera y falsa de los ciclos internos.","tests":["tests/test_phase7_trace_contract_remediation.py::test_quicksort_emits_true_and_false_condition_evaluations"],"gates":{"backend":"passed","trace":"passed"}}

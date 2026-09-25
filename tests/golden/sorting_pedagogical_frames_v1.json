@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "fixtures": {
+    "call": {"line_token": "entry", "concept": "call"},
+    "return": {"line_token": "return", "concept": "return"},
+    "condition_true_false": {"line_token": "while_compare", "concept": "condition"},
+    "loop": {"line_token": "gap", "concept": "phase"},
+    "recursion": {"line_token": "split", "concept": "call"},
+    "pointer_assignment": {"line_token": "swap_assign_a", "concept": "assignment"}
+  }
+}

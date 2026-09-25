@@ -33,19 +33,8 @@ def cp_encolar(cola: ColaPrioridad, valor: int, prioridad: int) -> bool:
         cola.cantidad = 1
         return True
 
-    if prioridad < cola.delante.prioridad:
-        nuevo.sgte = cola.delante
-        cola.delante = nuevo
-        cola.cantidad += 1
-        return True
-
-    actual = cola.delante
-    while actual.sgte is not None and actual.sgte.prioridad <= prioridad:
-        actual = actual.sgte
-    nuevo.sgte = actual.sgte
-    actual.sgte = nuevo
-    if nuevo.sgte is None:
-        cola.atras = nuevo
+    cola.atras.sgte = nuevo
+    cola.atras = nuevo
     cola.cantidad += 1
     return True
 
@@ -54,12 +43,41 @@ def cp_desencolar(cola: ColaPrioridad, valor: list[int] | None, prioridad: list[
     if cola.delante is None:
         return False
     nodo = cola.delante
-    cola.delante = nodo.sgte
+    anterior: CPNodo | None = None
+    actual = cola.delante
+    anterior_actual: CPNodo | None = None
+    while actual is not None:
+        if actual.prioridad < nodo.prioridad:
+            nodo = actual
+            anterior = anterior_actual
+        anterior_actual = actual
+        actual = actual.sgte
+    if anterior is None:
+        cola.delante = nodo.sgte
+    else:
+        anterior.sgte = nodo.sgte
+    if cola.atras is nodo:
+        cola.atras = anterior
     if cola.delante is None:
         cola.atras = None
     cola.cantidad -= 1
     _set_out(valor, nodo.valor)
     _set_out(prioridad, nodo.prioridad)
+    return True
+
+
+def cp_frente(cola: ColaPrioridad, valor: list[int] | None, prioridad: list[int] | None) -> bool:
+    """Return the same stable candidate as dequeue without unlinking it."""
+    if cola.delante is None:
+        return False
+    candidato = cola.delante
+    actual = cola.delante.sgte
+    while actual is not None:
+        if actual.prioridad < candidato.prioridad:
+            candidato = actual
+        actual = actual.sgte
+    _set_out(valor, candidato.valor)
+    _set_out(prioridad, candidato.prioridad)
     return True
 
 
@@ -125,4 +143,3 @@ def _set_index(target: list[int] | None, index: int, value: int) -> None:
         target[index] = value
     else:
         target.append(value)
-

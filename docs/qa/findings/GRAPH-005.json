@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "GRAPH-005", "structure_id": "graph", "operation": "run_dijkstra/run_bellman_ford",
+  "input": {"path": [1, 2, 3], "weights": [4, 1]},
+  "expected": [{"layer": "c", "source_location": "relaxation loops", "state": {"temporaries": ["dist", "prev", "visitado", "u", "v", "nueva_dist"]}}],
+  "observed": [{"layer": "frontend", "source_location": "GraphTracePlanner", "state": {"graph_progress": ["nodes", "edges"], "temporary_tables": "absent"}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "La traza resalta una ruta derivada del resultado final, pero no muestra distancias tentativas, predecesores, visitados ni el efecto real de cada relajación.",
+  "probable_cause": "GraphTracePlanner muestrea una línea temporal sintética basada en path y no en snapshots de los vectores C.",
+  "location": "app/services/trace/graph_trace_planner.py:_build_graph_debug_steps",
+  "recommended_test": "Exigir tablas dist/prev/visitado después de cada relajación y compararlas con el oráculo para Dijkstra y Bellman-Ford, incluido ciclo negativo.",
+  "suggested_fix": "Transportar eventos de inicialización, selección y relajación del harness con sus vectores canónicos. No se modifica código funcional durante la auditoría."
+}

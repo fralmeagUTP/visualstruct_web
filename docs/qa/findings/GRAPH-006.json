@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "GRAPH-006", "structure_id": "graph", "operation": "run_prim/run_kruskal",
+  "input": {"vertices": [1, 2, 3, 4], "edges": [[1, 2, 1], [2, 3, 2]], "disconnected": true},
+  "expected": [{"layer": "c", "source_location": "grafo_prim/grafo_kruskal", "state": {"result_edges": 2, "directed_guard": false}}],
+  "observed": [{"layer": "backend", "source_location": "Grafo.prim/kruskal", "state": {"result_edges": 2, "connected_status": "absent", "directed": "rejected"}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "El backend bloquea grafos dirigidos aunque el C ejecuta ambos algoritmos sin esa guarda; en desconectados devuelve un bosque parcial pero lo presenta como árbol sin advertir que no abarca todos los vértices.",
+  "probable_cause": "Las restricciones del wrapper no forman parte del C y el resultado público carece de connected/components/spanning.",
+  "location": "app/domain/graph/tad_wrappers.py y app/adapters/graph_adapter.py",
+  "recommended_test": "Ejecutar Prim/Kruskal en dirigido y desconectado; exigir cobertura V-1 o una clasificación explícita como bosque parcial.",
+  "suggested_fix": "Formalizar la guarda en C y exponer conectividad/componentes; visualizar candidatos, visitados y union-find por instrucción. No se modifica código funcional durante la auditoría."
+}

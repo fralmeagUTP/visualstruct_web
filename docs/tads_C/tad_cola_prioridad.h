@@ -22,6 +22,7 @@ typedef struct {
 void cp_inicializar(ColaPrioridad *cola);
 bool cp_encolar(ColaPrioridad *cola, int valor, int prioridad);
 bool cp_desencolar(ColaPrioridad *cola, int *valor, int *prioridad);
+bool cp_frente(const ColaPrioridad *cola, int *valor, int *prioridad);
 bool cp_vacia(const ColaPrioridad *cola);
 int cp_contar(const ColaPrioridad *cola);
 int cp_copiar_items(const ColaPrioridad *cola, int *valores, int *prioridades, int capacidad);

@@ -1,82 +1,82 @@
-﻿{% extends "base.html" %}
-{% block title %}{{ model.name }} | Modulo Hash{% endblock %}
+{% extends "base.html" %}
+{% block title %}{{ model.name }} | Módulo Hash{% endblock %}
 {% block content %}
-<section class="structure-layout">
-  <div class="panel">
-    <h2>{{ model.name }}</h2>
-    <p>{{ model.description }}</p>
-    <div class="didactic-technical">
-      <h4>Estructura del TAD</h4>
-      <pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
-    </div>
+<article class="hash-learning-shell hash-workspace" aria-labelledby="hash-page-title">
+  <header class="hier-learning-header">
+    <div><p class="sorting-eyebrow">Laboratorio de hashing y memoria en C</p><h2 id="hash-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div>
+    <a class="link" href="{{ url_for('help.hash_structure_help', structure_id=model.id) }}">Abrir guía del módulo</a>
+  </header>
 
-    <form id="hash-operation-form"
-          data-operate-url="{{ url_for('hash.operate_structure', structure_id=model.id) }}"
-          data-reset-url="{{ url_for('hash.reset_structure', structure_id=model.id) }}">
-      <label for="hash-operation-select">Operacion</label>
-      <select id="hash-operation-select" name="operation" required></select>
-      <div id="hash-operation-inputs"></div>
-    </form>
-
-    <div class="actions">
-      <button class="btn" id="hash-sim-play" type="button">Reproducir</button>
-      <button class="btn secondary" id="hash-reset-button" type="button">Reiniciar</button>
-    </div>
-    <div class="didactic-technical">
-      <div class="sim-toggle-control">
-        <label for="hash-step-toggle">
-          <input id="hash-step-toggle" type="checkbox" checked>
-          Interpretar codigo paso a paso
-        </label>
-      </div>
-      <h4>Ejecucion paso a paso</h4>
-      <div class="actions">
-        <button class="btn secondary" id="hash-sim-prev" type="button">Anterior paso</button>
-        <button class="btn" id="hash-sim-step" type="button">Siguiente paso</button>
-      </div>
-      <p id="hash-sim-counter" class="sim-counter">Paso: 0/0</p>
-      <p id="hash-sim-status" class="message"></p>
-    </div>
-
-    <div id="hash-message-box" class="message" aria-live="polite"></div>
-    <p>
-      <a class="link" href="{{ url_for('help.hash_structure_help', structure_id=model.id) }}">
-        Ver ayuda de {{ model.name }}
-      </a>
-    </p>
-    <section class="console-panel didactic-technical">
-      <h4>Consola C (printf)</h4>
-      <div class="console-monitor">
-        <div class="console-monitor-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="title">terminal</span>
+  <section class="hash-stage hash-control-stage" aria-labelledby="hash-prepare-title">
+    <h3 id="hash-prepare-title"><span>1</span> Preparar y controlar la ejecución</h3>
+    <p class="hash-stage-intro">Configura la llamada C y elige si deseas completarla o recorrer sus instrucciones.</p>
+    <form id="hash-operation-form" data-operate-url="{{ url_for('hash.operate_structure', structure_id=model.id) }}" data-reset-url="{{ url_for('hash.reset_structure', structure_id=model.id) }}">
+      <div class="hash-control-grid">
+        <label for="hash-operation-select">Operación<select id="hash-operation-select" name="operation" required></select></label>
+        <div id="hash-operation-inputs" class="hash-operation-inputs"></div>
+        <div class="hash-execution-controls" aria-label="Controles de ejecución">
+          <button class="btn" id="hash-sim-play" type="button">Ejecutar operación</button>
+          <button class="btn secondary" id="hash-sim-step" type="button">Paso a paso</button>
+          <span id="hash-step-navigation" class="hash-step-navigation" hidden>
+            <button class="btn secondary" id="hash-sim-prev" type="button">Anterior</button>
+            <button class="btn" id="hash-sim-next" type="button">Siguiente</button>
+          </span>
+          <button class="btn secondary" id="hash-reset-button" type="button">Restablecer tabla</button>
         </div>
-        <pre id="hash-printf-console" class="console-screen" aria-live="polite"></pre>
+      </div>
+    </form>
+    <p id="hash-sim-counter" class="hash-step-counter">Paso: 0/0</p>
+    <p id="hash-sim-detail" class="hash-step-detail">Sin traza cargada.</p>
+    <p id="hash-sim-status" class="message" aria-live="polite"></p>
+    <div id="hash-message-box" class="message" aria-live="polite"></div>
+  </section>
+
+  <nav class="hash-mobile-tabs" aria-label="Vistas principales">
+    <button type="button" class="hier-tab is-active" data-hash-tab="visual" aria-selected="true">Tabla</button>
+    <button type="button" class="hier-tab" data-hash-tab="code" aria-selected="false">Código C</button>
+  </nav>
+  <div class="hash-primary-workspace" data-active-tab="visual">
+    <section id="hash-visual-region" class="hash-stage hash-visual-stage" aria-labelledby="hash-visual-title">
+      <h3 id="hash-visual-title"><span>2</span> Visualizar y ejecutar</h3>
+      <div class="hash-view-toolbar" aria-label="Opciones de representación">
+        <label for="hash-bucket-filter">Buckets<select id="hash-bucket-filter"><option value="all">Vista completa</option><option value="occupied">Solo ocupados</option></select></label>
+        <label><input id="hash-show-addresses" type="checkbox" checked> Direcciones y campos</label>
+      </div>
+      <h4>Estado visual</h4>
+      <div id="hash-minimap" class="hash-minimap" aria-label="Minimapa de ocupación"></div>
+      <div id="hash-visual-state"></div>
+    </section>
+    <section id="hash-code-region" class="hash-stage didactic-technical hash-code-stage" aria-labelledby="hash-code-title">
+      <div class="hash-code-toolbar"><h3 id="hash-code-title"><span>3</span> Relacionar con código C</h3><label><input id="hash-hide-comments" type="checkbox"> Ocultar documentación extensa</label></div>
+      <div class="hash-code-layout">
+        <nav class="hash-function-index" aria-label="Funciones C"><strong>Funciones</strong><ol id="hash-function-list"></ol></nav>
+        <div class="hash-code-content"><h4 id="op-pseudocode-title">{{ model.didactic.code_title if model.didactic else "Código C" }}</h4><pre id="op-pseudocode" class="didactic-code didactic-code-scroll">{{ model.didactic.default_operation if model.didactic else "Código no disponible." }}</pre></div>
       </div>
     </section>
   </div>
 
-  <div class="panel">
-    <h3>Estado visual</h3>
-    <div id="hash-visual-state"></div>
-    <h4>Notas didacticas</h4>
-    <p>{{ help_data.summary }}</p>
-    <div class="didactic-technical">
-      <h4 id="op-pseudocode-title">{{ model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocodigo" }}: {{ model.operations[0].label if model.operations else "" }}</h4>
-      <pre id="op-pseudocode" class="didactic-code">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Seudocodigo no disponible para esta operacion." }}</pre>
+  <details class="hash-stage hash-collapsible" open>
+    <summary><span>4</span> Comprender <small>Fórmula, cadena, punteros, costo y memoria del paso activo</small></summary>
+    <div class="hash-collapsible-content">
+      <p id="hash-pedagogy-summary">Prepara una operación para observar índice, cadena, punteros y memoria.</p>
+      <div class="hier-frame-grid">
+        <section><h4>Función hash</h4><div id="hash-formula-view">Sin frame.</div></section><section><h4>Cadena activa</h4><div id="hash-chain-view">Sin cadena.</div></section><section><h4>Variables y punteros</h4><div id="hash-pointers-view">Sin punteros.</div></section><section><h4>Costo observado</h4><div id="hash-cost-view">Sin medición.</div></section><section><h4>Memoria</h4><div id="hash-memory-view">Sin transición.</div></section><section><h4>Invariante</h4><div id="hash-invariant-view">Sin verificación.</div></section>
+      </div>
     </div>
-    <div class="didactic-technical">
-      <h4>Historial de ejecucion</h4>
-      <ol id="action-history" class="didactic-history"></ol>
-    </div>
-  </div>
-</section>
-{% endblock %}
-{% block scripts %}
-<script>
-  window.HASH_VIEW_MODEL = {{ model | tojson }};
-</script>
-{% endblock %}
+  </details>
 
+  <details class="hash-stage hash-collapsible">
+    <summary><span>5</span> Resultados de la ejecución <small>Consola C, historial y estructura del TAD</small></summary>
+    <div class="hash-collapsible-content">
+      <div class="actions"><button class="btn secondary" id="hash-export-image" type="button">Exportar captura JPG</button><button class="btn secondary" id="hash-export-summary" type="button">Exportar resumen</button></div>
+      <p id="hash-accessible-announcer" class="sr-only" aria-live="polite"></p>
+      <div class="hash-results-grid">
+        <section class="console-panel didactic-technical"><h4>Consola C (printf)</h4><pre id="hash-printf-console" class="console-screen" aria-live="polite"></pre></section>
+        <section class="didactic-technical"><h4>Historial C17</h4><ol id="action-history" class="didactic-history"></ol></section>
+        <section class="didactic-technical"><h4>Estructura del TAD</h4><pre id="tad-record" class="didactic-code">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre></section>
+      </div>
+    </div>
+  </details>
+</article>
+{% endblock %}
+{% block scripts %}<script>window.HASH_VIEW_MODEL={{ model | tojson }};</script>{% endblock %}

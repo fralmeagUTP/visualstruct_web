@@ -1,0 +1,26 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "HEAP-001",
+  "structure_id": "binary_heap",
+  "operation": "insertar",
+  "input": {"before": [2, 5, 3], "value": 1},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_monticulo_binario.c:150", "state": {"values": [2, 5, 3]}},
+    {"step": 1, "layer": "c", "source_location": "docs/tads_C/tad_monticulo_binario.c:163", "state": {"values": [2, 5, 3, 1]}},
+    {"step": 2, "layer": "c", "source_location": "docs/tads_C/tad_monticulo_binario.c:113", "state": {"values": [2, 1, 3, 5]}},
+    {"step": 3, "layer": "c", "source_location": "docs/tads_C/tad_monticulo_binario.c:113", "state": {"values": [1, 2, 3, 5]}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "frontend", "source_location": "app/services/trace/strategies.py:162", "state": {"values": [2, 5, 3]}},
+    {"step": 1, "layer": "frontend", "source_location": "app/services/trace/strategies.py:162", "state": {"values": [2, 5, 3]}},
+    {"step": 2, "layer": "frontend", "source_location": "app/services/trace/strategies.py:162", "state": {"values": [2, 5, 3]}},
+    {"step": 3, "layer": "frontend", "source_location": "app/services/trace/strategies.py:162", "state": {"values": [1, 2, 3, 5]}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "El modo paso a paso omite el append temporal y los intercambios de sift-up; congela el heap y salta al estado final.",
+  "probable_cause": "TreeTraceStrategy reutiliza una transición genérica basada en SequenceMatcher en lugar de consumir estados emitidos por las instrucciones del heap.",
+  "location": "app/services/trace/strategies.py:TreeTraceStrategy.build_heap_boundaries",
+  "recommended_test": "Insertar 1 sobre [2,5,3] y exigir exactamente [2,5,3,1], [2,1,3,5] y [1,2,3,5], con árbol reconstruido en cada límite.",
+  "suggested_fix": "Generar eventos de append, comparación e intercambio desde monticulo_insertar/heapify_up y hacer que la visualización consuma esos snapshots en orden. No se modifica código funcional durante esta auditoría."
+}

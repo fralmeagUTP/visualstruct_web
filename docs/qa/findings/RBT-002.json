@@ -1,0 +1,24 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "RBT-002",
+  "structure_id": "red_black",
+  "operation": "eliminar",
+  "input": {"sequence": [7, 3, 18, 10, 22, 8, 11, 26], "remove": 3},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "tad_rojo_negro.c:search loop", "state": {"visited": [7, 3]}},
+    {"step": 1, "layer": "c", "source_location": "tad_rojo_negro.c:if(z->izq==NULL)", "state": {"branch": "x=z->der"}},
+    {"step": 2, "layer": "c", "source_location": "tad_rojo_negro.c:arreglarEliminacion", "state": "fix-up cases in causal order"}
+  ],
+  "observed": [
+    {"step": 0, "layer": "trace", "source_location": "tree deletion planner", "state": {"search_condition_evaluations": 9}},
+    {"step": 1, "layer": "trace", "source_location": "tree deletion planner", "state": {"branch": "x=z->izq"}},
+    {"step": 2, "layer": "frontend", "source_location": "TreeTraceStrategy:free(z)", "state": "final tree applied before fix-up lines"}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "La traza de eliminación inventa iteraciones, selecciona una rama incompatible con el nodo hoja real y aplica el estado final en free(z), antes de representar el fix-up.",
+  "probable_cause": "La expansión genérica de eliminación no simula el modelo RN ni los punteros z, y, x, x_parent y w; las fronteras visuales sólo conocen before/after.",
+  "location": "app/services/trace/tree_planner.py y app/services/trace/strategies.py",
+  "recommended_test": "Eliminar la hoja negra 3 de la secuencia indicada y comparar ruta, rama, hermano, recoloreos y rotaciones evento por evento contra el harness C.",
+  "suggested_fix": "Implementar un planificador específico de eliminación RN respaldado por snapshots del oráculo y mantener identidades lógicas para z, y, x, x_parent y w. No se modifica código funcional durante la auditoría."
+}

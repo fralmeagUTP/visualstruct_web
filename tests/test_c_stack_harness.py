@@ -53,7 +53,7 @@ def test_stack_harness_emits_canonical_state(tmp_path: Path) -> None:
         ("avl", "avl_harness.c", "tad_avl.c", ["insert", "30", "insert", "20", "insert", "10"], {"inorder": [10, 20, 30], "preorder": [20, 10, 30], "shape": [20, [10, None, None], [30, None, None]], "size": 3}),
         ("red_black", "red_black_harness.c", "tad_rojo_negro.c", ["insert", "10", "insert", "20", "insert", "30"], {"inorder": [10, 20, 30], "preorder": [20, 10, 30], "shape": [20, [10, None, None], [30, None, None]], "size": 3}),
         ("graph", "graph_harness.c", "tad_grafo.c", ["add_vertex", "2", "add_vertex", "1", "add_edge", "1", "2", "7"], {"directed": True, "vertices": ["1", "2"], "edges": [["1", "2", 7]]}),
-        ("hash_table", "hash_table_harness.c", "tad_tabla_hash.c", ["put", "2", "20", "put", "1", "10", "put", "2", "22"], {"pairs": [["1", "10"], ["2", "22"]], "size": 2, "capacity": 17}),
+        ("hash_table", "hash_table_harness.c", "tad_tabla_hash.c", ["put", "2", "20", "put", "1", "10", "put", "2", "22"], {"pairs": [[1, "10"], [2, "22"]], "size": 2, "capacity": 17}),
     ],
 )
 def test_additional_harnesses_emit_canonical_state(

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "fixtures": {
+    "index": {"line": "int indice = th_indice(tabla, clave);", "concept": "hash"},
+    "negative_normalization": {"line": "if (indice < 0) {", "concept": "condition"},
+    "collision_compare": {"line": "if (actual->clave == clave) {", "concept": "compare"},
+    "update": {"line": "actual->valor = valor;", "concept": "update"},
+    "advance": {"line": "actual = actual->siguiente;", "concept": "advance"},
+    "allocate": {"line": "THNodo *nuevo = (THNodo *)malloc(sizeof(THNodo));", "concept": "allocate"},
+    "link": {"line": "tabla->buckets[indice] = nuevo;", "concept": "link"},
+    "free": {"line": "free(actual);", "concept": "free"},
+    "return": {"line": "return true;", "concept": "return"}
+  }
+}

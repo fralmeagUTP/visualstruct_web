@@ -220,3 +220,63 @@ void lista_eliminar_repetidos(Tlista *lista, int valor) {
     }
     printf("\n\n Valores eliminados..\n");
 }
+
+int lista_eliminar_inicio(Tlista *lista, int *valor) {
+    Tlista eliminado;
+    if (lista == NULL || *lista == NULL || valor == NULL) return 0;
+    eliminado = *lista;
+    *valor = eliminado->nro;
+    *lista = eliminado->sgte;
+    free(eliminado);
+    return 1;
+}
+
+int lista_eliminar_final(Tlista *lista, int *valor) {
+    Tlista actual, anterior = NULL;
+    if (lista == NULL || *lista == NULL || valor == NULL) return 0;
+    actual = *lista;
+    while (actual->sgte != NULL) { anterior = actual; actual = actual->sgte; }
+    *valor = actual->nro;
+    if (anterior == NULL) *lista = NULL; else anterior->sgte = NULL;
+    free(actual);
+    return 1;
+}
+
+int lista_eliminar_posicion(Tlista *lista, int posicion, int *valor) {
+    Tlista actual, anterior = NULL;
+    int indice = 0;
+    if (lista == NULL || posicion < 0 || valor == NULL) return 0;
+    actual = *lista;
+    while (actual != NULL && indice < posicion) { anterior = actual; actual = actual->sgte; indice++; }
+    if (actual == NULL) return 0;
+    *valor = actual->nro;
+    if (anterior == NULL) *lista = actual->sgte; else anterior->sgte = actual->sgte;
+    free(actual);
+    return 1;
+}
+
+void lista_invertir(Tlista *lista) {
+    Tlista anterior = NULL, actual, siguiente;
+    if (lista == NULL) return;
+    actual = *lista;
+    while (actual != NULL) {
+        siguiente = actual->sgte;
+        actual->sgte = anterior;
+        anterior = actual;
+        actual = siguiente;
+    }
+    *lista = anterior;
+}
+
+int lista_primero(Tlista lista, int *valor) {
+    if (lista == NULL || valor == NULL) return 0;
+    *valor = lista->nro;
+    return 1;
+}
+
+int lista_ultimo(Tlista lista, int *valor) {
+    if (lista == NULL || valor == NULL) return 0;
+    while (lista->sgte != NULL) lista = lista->sgte;
+    *valor = lista->nro;
+    return 1;
+}

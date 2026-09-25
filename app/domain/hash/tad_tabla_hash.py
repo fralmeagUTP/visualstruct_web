@@ -30,7 +30,7 @@ class THEstadisticas:
 
 def th_indice(tabla: TablaHash, clave: int) -> int:
     if tabla.capacidad <= 0:
-        return 0
+        return -1
     return clave % tabla.capacidad
 
 
@@ -43,7 +43,7 @@ def th_inicializar(tabla: TablaHash, capacidad: int) -> None:
 
 def th_insertar(tabla: TablaHash, clave: int, valor: int) -> bool:
     if tabla.capacidad <= 0:
-        th_inicializar(tabla, 17)
+        return False
     idx = th_indice(tabla, clave)
     actual = tabla.buckets[idx]
     while actual is not None:
@@ -178,4 +178,3 @@ def th_formatear_estadisticas(tabla: TablaHash, destino: list[str] | None, capac
         destino[0] = texto
     else:
         destino.append(texto)
-

@@ -128,9 +128,10 @@ class SortingStructureService:
             active_algorithm = payload.get("algorithm_id") or before_state.get("algorithm")
             if active_algorithm:
                 adapter.select_algorithm(str(active_algorithm))
+            source_algorithm = str(active_algorithm or adapter.to_visual_state().get("algorithm") or "")
             source_code = str(
                 didactic_data.get("operations", {}).get(
-                    str(before_state.get("algorithm") or adapter.to_visual_state().get("algorithm")),
+                    source_algorithm,
                     didactic_data.get("default_operation", ""),
                 )
             )
@@ -149,6 +150,10 @@ class SortingStructureService:
             }
 
         if operation_meta.get("mutates", False) and operation_name in {"create_array", "generate_random_array", "select_algorithm"}:
+            if operation_name == "generate_random_array":
+                effective_seed = result.get("result", {}).get("seed")
+                if effective_seed is not None:
+                    payload = {**payload, "seed": effective_seed}
             valid_history.append({"operation": operation_name, "payload": deepcopy(payload)})
 
         response: dict[str, Any] = {
@@ -165,3 +170,21 @@ class SortingStructureService:
             response["total_steps"] = result.get("total_steps")
             response["step"] = result.get("step")
         return response
+
+    @staticmethod
+    def compare_algorithms(*, values: Any, left_algorithm: str, right_algorithm: str) -> dict[str, Any]:
+        """Execute two isolated traces over defensive copies of one immutable input."""
+        parser = SortingAdapter()
+        parsed = parser._parse_manual_values({"values": values})
+        parser._validate_values(parsed)
+        didactic = SortingStructureService._didactic_content("sorting_array")
+
+        def execute(algorithm_id: str) -> dict[str, Any]:
+            adapter = SortingAdapter()
+            adapter.create_array(list(parsed))
+            adapter.select_algorithm(algorithm_id)
+            source = str(didactic.get("operations", {}).get(algorithm_id, ""))
+            result = adapter.run("step_by_step", source_code=source)
+            return {"algorithm": algorithm_id, "trace": result["execution_trace"], "result": result["result"]}
+
+        return {"success": True, "input": list(parsed), "left": execute(left_algorithm), "right": execute(right_algorithm)}

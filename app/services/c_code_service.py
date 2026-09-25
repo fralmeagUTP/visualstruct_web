@@ -12,6 +12,28 @@ class CCodeService:
 
     _DOCS_TADS_C = Path(__file__).resolve().parents[2] / "docs" / "tads_C"
 
+    # Only these canonical teaching assets may be exposed for download.  Keeping
+    # this mapping here avoids ever deriving a filesystem path from a request.
+    _DOWNLOADABLE_TADS: dict[str, dict[str, object]] = {
+        "stack": {"source": "tad_pila.c", "header": "tad_pila.h", "label": "Pila"},
+        "queue": {"source": "tad_cola.c", "header": "tad_cola.h", "label": "Cola"},
+        "priority_queue": {"source": "tad_cola_prioridad.c", "header": "tad_cola_prioridad.h", "label": "Cola de prioridad"},
+        "linked_list": {"source": "tad_lista.c", "header": "tad_lista.h", "label": "Lista enlazada"},
+        "circular_list": {"source": "tad_lista_circular.c", "header": "tad_lista_circular.h", "label": "Lista circular"},
+        "sublist": {"source": "tad_sublista.c", "header": "tad_sublista.h", "label": "Sublista"},
+        "abb": {"source": "tad_abb.c", "header": "tad_abb.h", "label": "ABB"},
+        "avl": {"source": "tad_avl.c", "header": "tad_avl.h", "label": "AVL"},
+        "red_black": {"source": "tad_rojo_negro.c", "header": "tad_rojo_negro.h", "label": "Árbol rojo-negro"},
+        "binary_heap": {"source": "tad_monticulo_binario.c", "header": "tad_monticulo_binario.h", "label": "Montículo binario"},
+        "graph": {
+            "source": "tad_grafo.c", "header": "tad_grafo.h", "label": "Grafo",
+            "dependencies": ("queue",),
+            "note": "Los recorridos del grafo usan el TAD Cola; descarga también sus archivos si vas a compilar los recorridos.",
+        },
+        "hash_table": {"source": "tad_tabla_hash.c", "header": "tad_tabla_hash.h", "label": "Tabla hash"},
+        "sorting_array": {"source": "tad_ordenamiento.c", "header": "tad_ordenamiento.h", "label": "Métodos de ordenamiento"},
+    }
+
     _LINKED_LIST_OPERATION_MAP: dict[str, str] = {
         "insertar_inicio": "lista_insertar_inicio",
         "insertar_final": "lista_insertar_final",
@@ -21,18 +43,31 @@ class CCodeService:
         "mostrar": "lista_mostrar",
         "eliminar_elemento": "lista_eliminar_elemento",
         "eliminar_repetidos": "lista_eliminar_repetidos",
+        "insertar_posicion": "lista_insertar_elemento",
+        "eliminar_primero": "lista_eliminar_inicio",
+        "buscar_posiciones": "lista_buscar_elemento",
+        "eliminar_inicio": "lista_eliminar_inicio",
+        "eliminar_final": "lista_eliminar_final",
+        "eliminar_posicion": "lista_eliminar_posicion",
+        "invertir": "lista_invertir",
+        "primero": "lista_primero",
+        "ultimo": "lista_ultimo",
     }
     _STACK_OPERATION_MAP: dict[str, str] = {
         "apilar": "pila_apilar",
         "desapilar": "pila_desapilar",
+        "cima": "pila_cima",
     }
     _QUEUE_OPERATION_MAP: dict[str, str] = {
         "encolar": "cola_encolar",
         "desencolar": "cola_desencolar",
+        "frente": "cola_frente",
+        "final": "cola_final",
     }
     _PRIORITY_QUEUE_OPERATION_MAP: dict[str, str] = {
         "encolar": "cp_encolar",
         "desencolar": "cp_desencolar",
+        "frente": "cp_frente",
     }
     _CIRCULAR_LIST_OPERATION_MAP: dict[str, str] = {
         "insertar_inicio": "lcir_insertar_inicio",
@@ -151,6 +186,35 @@ class CCodeService:
         return None
 
     @classmethod
+    def get_downloadable_tad(cls, structure_id: str) -> dict[str, Any] | None:
+        """Return safe metadata for a complete, canonical TAD source download."""
+        item = cls._DOWNLOADABLE_TADS.get(structure_id)
+        if item is None:
+            return None
+        source = cls._DOCS_TADS_C / str(item["source"])
+        header = cls._DOCS_TADS_C / str(item["header"])
+        if not source.is_file() or not header.is_file():
+            return None
+        return {
+            "label": str(item["label"]),
+            "source_name": source.name,
+            "header_name": header.name,
+            "dependencies": tuple(item.get("dependencies", ())),
+            "note": str(item.get("note", "")),
+        }
+
+    @classmethod
+    def get_downloadable_tad_file(cls, structure_id: str, file_kind: str) -> Path | None:
+        """Return one allowlisted TAD file for a Help download, never a request path."""
+        if file_kind not in {"source", "header"}:
+            return None
+        item = cls._DOWNLOADABLE_TADS.get(structure_id)
+        if item is None:
+            return None
+        path = cls._DOCS_TADS_C / str(item[file_kind])
+        return path if path.is_file() else None
+
+    @classmethod
     def _build_linked_list_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for linked list."""
         c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_lista.c")
@@ -207,16 +271,6 @@ class CCodeService:
         elif destroy_fn:
             operation_code["limpiar"] = destroy_fn
 
-        # El TAD no expone `pila_cima`; se deja explícito para el estudiante.
-        operation_code["cima"] = (
-            "/* Este TAD en C no define una funcion directa para leer la cima. */\n"
-            "/* Para consulta didactica, se puede copiar 1 valor desde el tope: */\n"
-            "int cima;\n"
-            "int usados = pila_copiar_valores(&pila, &cima, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* cima contiene el valor del tope */\n"
-            "}"
-        )
 
         structure_text = cls._extract_stack_structure(h_text, c_text)
         return {
@@ -251,25 +305,6 @@ class CCodeService:
         elif clear_fn:
             operation_code["limpiar"] = clear_fn
 
-        operation_code["frente"] = (
-            "/* Este TAD en C no define una funcion directa cola_frente(). */\n"
-            "/* Consulta didactica del frente mediante copia de 1 valor: */\n"
-            "int frente;\n"
-            "int usados = cola_copiar_valores(&cola, &frente, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* frente contiene el valor del primer nodo */\n"
-            "}"
-        )
-        operation_code["final"] = (
-            "/* Este TAD en C no define una funcion directa cola_final(). */\n"
-            "/* Consulta didactica del final recorriendo copia temporal: */\n"
-            "int buffer[256];\n"
-            "int usados = cola_copiar_valores(&cola, buffer, 256);\n"
-            "if (usados > 0) {\n"
-            "    int final = buffer[usados - 1];\n"
-            "    /* final contiene el valor del ultimo nodo */\n"
-            "}"
-        )
 
         structure_text = cls._extract_queue_structure(h_text, c_text)
         return {
@@ -303,17 +338,6 @@ class CCodeService:
             )
         elif clear_fn:
             operation_code["limpiar"] = clear_fn
-
-        operation_code["frente"] = (
-            "/* Este TAD en C no define una funcion directa cp_frente(). */\n"
-            "/* Consulta didactica: copiar el primer item en orden actual de enlace. */\n"
-            "int valor;\n"
-            "int prioridad;\n"
-            "int usados = cp_copiar_items(&cola, &valor, &prioridad, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* valor y prioridad del primer nodo enlazado */\n"
-            "}"
-        )
 
         structure_text = cls._extract_priority_queue_structure(h_text, c_text)
         return {
@@ -637,6 +661,13 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
+        heapify_up = cls._extract_function_with_comment(c_text, "heapify_up")
+        heapify_down = cls._extract_function_with_comment(c_text, "heapify_down")
+        if heapify_up and operation_code.get("insertar"):
+            operation_code["insertar"] = f"{heapify_up}\n\n{operation_code['insertar']}"
+        if heapify_down and operation_code.get("extraer_raiz"):
+            operation_code["extraer_raiz"] = f"{heapify_down}\n\n{operation_code['extraer_raiz']}"
+
         init_fn = cls._extract_function_with_comment(c_text, "monticulo_inicializar")
         destroy_fn = cls._extract_function_with_comment(c_text, "monticulo_destruir")
         if init_fn and destroy_fn:
@@ -717,6 +748,21 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
+        hash_index = cls._extract_function_with_comment(c_text, "th_indice")
+        hash_search = cls._extract_function_with_comment(c_text, "th_buscar")
+        dependencies = {
+            "insert": (hash_index,),
+            "get": (hash_index,),
+            "contains": (hash_index, hash_search),
+            "remove": (hash_index,),
+        }
+        for operation_name, helpers in dependencies.items():
+            public_function = operation_code.get(operation_name)
+            if public_function:
+                operation_code[operation_name] = "\n\n".join(
+                    [public_function] + [snippet for snippet in helpers if snippet]
+                )
+
         operation_code["keys"] = (
             "/* Este TAD en C no expone un metodo que retorne solo claves como arreglo. */\n"
             "/* Se puede recorrer la tabla completa usando th_formatear. */\n"
@@ -743,8 +789,9 @@ class CCodeService:
 
         init_fn = cls._extract_function_with_comment(c_text, "th_inicializar")
         destroy_fn = cls._extract_function_with_comment(c_text, "th_destruir")
+        clear_fn = cls._extract_function_with_comment(c_text, "th_vaciar")
         if init_fn and destroy_fn:
-            operation_code["destroy_table"] = destroy_fn
+            operation_code["destroy_table"] = "\n\n".join([destroy_fn, clear_fn] if clear_fn else [destroy_fn])
             operation_code["clear_and_reinit"] = (
                 f"{destroy_fn}\n\n"
                 "/* Reinicio recomendado del TAD conservando una capacidad valida. */\n"
@@ -772,6 +819,36 @@ class CCodeService:
             snippet = cls._extract_function_with_comment(c_text, function_name)
             if snippet:
                 operation_code[operation_name] = snippet
+
+        validation = cls._extract_function_with_comment(c_text, "arreglo_valido")
+        swap = cls._extract_function_with_comment(c_text, "intercambiar")
+        quick = cls._extract_function_with_comment(c_text, "quicksort_recursivo")
+        merge = cls._extract_function_with_comment(c_text, "mezclar")
+        merge_recursive = cls._extract_function_with_comment(c_text, "mergesort_recursivo")
+        heap = cls._extract_function_with_comment(c_text, "heapify")
+        min_max = cls._extract_function_with_comment(c_text, "obtener_minimo_maximo")
+        counting = cls._extract_function_with_comment(c_text, "ordenar_counting_sort")
+        radix_digit = cls._extract_function_with_comment(c_text, "counting_por_digito")
+
+        dependencies: dict[str, tuple[str, ...]] = {
+            "intercambio": (validation, swap),
+            "seleccion": (validation, swap),
+            "insercion": (validation,),
+            "burbuja": (validation, swap),
+            "shell": (validation,),
+            "quicksort": (validation, swap, quick),
+            "mergesort": (validation, merge, merge_recursive),
+            "heapsort": (validation, swap, heap),
+            "counting_sort": (validation, min_max),
+            "binsort": (validation, min_max, counting),
+            "radixsort": (validation, radix_digit),
+        }
+        for operation_name, helpers in dependencies.items():
+            public_function = operation_code.get(operation_name)
+            if public_function:
+                operation_code[operation_name] = "\n\n".join(
+                    [snippet for snippet in helpers if snippet] + [public_function]
+                )
 
         structure_text = cls._extract_sorting_structure(h_text)
         return {

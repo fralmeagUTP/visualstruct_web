@@ -1,0 +1,58 @@
+{
+  "schema": "sorting-module-detailed-test/v1",
+  "executed_at": "2026-08-23",
+  "status": "passed",
+  "algorithms": [
+    "intercambio",
+    "seleccion",
+    "insercion",
+    "burbuja",
+    "shell",
+    "quicksort",
+    "mergesort",
+    "heapsort",
+    "counting_sort",
+    "binsort",
+    "radixsort"
+  ],
+  "input_partitions": {
+    "normal": [5, 1, 4, 2, 3],
+    "sorted": [1, 2, 3, 4, 5],
+    "reverse": [5, 4, 3, 2, 1],
+    "duplicates": [3, 1, 3, 2, 1, 3],
+    "signed": [-7, 0, 4, -2, 4, -7],
+    "singleton": [9],
+    "c_int_extremes": [2147483647, -2147483648, 0, -1, 2147483647]
+  },
+  "matrix": {
+    "algorithm_partition_executions": 66,
+    "fast_step_equivalence_checks": 11,
+    "source_line_fidelity_checks": 11,
+    "c_int_extreme_success_checks": 9,
+    "counting_range_guard_checks": 2,
+    "browser_algorithm_executions": 11,
+    "visible_validation_helper_checks": 11,
+    "visible_swap_helper_checks": 5,
+    "random_history_replay_checks": 1
+  },
+  "findings": [
+    {"id": "SORT-QA-001", "severity": "high", "status": "fixed", "summary": "run podía ejecutar un algoritmo con el fragmento C de la selección anterior"},
+    {"id": "SORT-QA-002", "severity": "high", "status": "fixed", "summary": "55 pasos didácticos carecían de una línea C visible asociada"},
+    {"id": "SORT-QA-003", "severity": "high", "status": "fixed", "summary": "se aceptaban enteros fuera del rango representable por int C"},
+    {"id": "SORT-QA-004", "severity": "medium", "status": "fixed", "summary": "la API documentaba prev pero sólo aceptaba previous"},
+    {"id": "SORT-QA-005", "severity": "medium", "status": "fixed", "summary": "CSV con posiciones vacías era aceptado silenciosamente"},
+    {"id": "SORT-QA-006", "severity": "high", "status": "fixed", "summary": "la consola etiquetaba mensajes internos como si fueran salidas printf del C"},
+    {"id": "SORT-QA-007", "severity": "high", "status": "fixed", "summary": "el seguimiento omitía entrar en las funciones realmente ejecutadas arreglo_valido e intercambiar"},
+    {"id": "SORT-QA-008", "severity": "high", "status": "fixed", "summary": "un arreglo aleatorio sin semilla explícita se regeneraba al reconstruir el historial para reproducir"}
+  ],
+  "validation": {
+    "sorting_tests": 150,
+    "full_pytest_suite": 800,
+    "full_pytest_status": "passed",
+    "c17_harness": "passed",
+    "linux_asan": "passed",
+    "linux_ubsan": "passed",
+    "playwright": "passed",
+    "openspec_strict": "passed"
+  }
+}

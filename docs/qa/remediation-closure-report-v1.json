@@ -1,0 +1,36 @@
+{
+  "schema": "didactic-remediation-closure/v1",
+  "change_id": "remediate-didactic-c-trace-fidelity",
+  "validated_at": "2026-08-23",
+  "status": "closed",
+  "findings": {
+    "total": 29,
+    "corrected": 29,
+    "regression_oracles_removed_or_weakened": 0,
+    "evidence_directory": "docs/qa/remediation-evidence",
+    "matrix": "docs/qa/remediation-regression-matrix-v1.json"
+  },
+  "generated_audit": {
+    "report": "docs/qa/didactic-generated-audit-5000-v2.json",
+    "families": 5,
+    "sequences_per_family": 1000,
+    "total_sequences": 5000,
+    "divergences": 0,
+    "product_logic_changes": 0
+  },
+  "c_conformance": {
+    "standard": "C17",
+    "harnesses": 13,
+    "strict_compile": "passed",
+    "linux_asan": "passed",
+    "linux_ubsan": "passed"
+  },
+  "application_suite": {
+    "pytest_tests": 670,
+    "backend_frontend_ui": "passed",
+    "frame_by_frame_report": "docs/qa/phase8-visual-integration-report.json"
+  },
+  "openspec": {
+    "strict_validation": "passed"
+  }
+}

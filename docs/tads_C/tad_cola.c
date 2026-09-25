@@ -125,3 +125,7 @@ int cola_frente(struct Cola q) {
     else
         return -1;
 }
+
+int cola_final(struct Cola q) {
+    return q.atras == NULL ? -1 : q.atras->nro;
+}

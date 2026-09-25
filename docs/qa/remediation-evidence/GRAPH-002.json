@@ -1,0 +1,8 @@
+{
+  "schema": "didactic-remediation-evidence/v1",
+  "case_id": "GRAPH-002",
+  "status": "fixed",
+  "contract": "El modo no dirigido compone dos arcos C y los pesos son enteros sin truncamiento silencioso.",
+  "tests": ["tests/test_graph_phase3_remediation.py::test_non_integer_weight_is_rejected_without_mutating_graph", "tests/test_graph_phase3_remediation.py::test_directed_and_undirected_edges_keep_the_declared_orientation_contract"],
+  "gates": {"c17": "passed", "backend": "passed"}
+}

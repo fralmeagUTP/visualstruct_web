@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "executed_at": "2026-08-23",
+  "inventory": {
+    "total": 357,
+    "categories": {"route": 45, "structure": 13, "operation": 110, "algorithm": 23, "phase": 4, "control": 162}
+  },
+  "unit_integration": {"passed": 1145, "deselected": 28, "xfail": 4, "duration_seconds": 222.13, "junit": "docs/qa/comprehensive-app-unit-results-v1.xml"},
+  "c17_conformance": {"status": "passed", "command": ".venv\\Scripts\\python.exe scripts\\check_c_conformance.py --qa-events"},
+  "sanitizers": {"status": "infrastructure_blocked", "reason": "MinGW local no dispone de -lasan ni -lubsan.", "ci_coverage": ".github/workflows/c-conformance.yml"},
+  "e2e": {"chromium_critical_flows_passed": 5, "firefox_smoke_skipped": 5, "firefox_reason": "Binario Playwright Firefox no instalado localmente."},
+  "performance": {"status": "passed", "artifact": "docs/qa/comprehensive-app-replay-performance-v1.json", "budget_ms": 200.0},
+  "findings": [
+    {"id": "QA-ROUTE-HELP-UNKNOWN", "status": "known_failure", "severity": "low", "module": "help", "file": "app/routes/help_routes.py"},
+    {"id": "QA-INFRA-FIREFOX", "status": "infrastructure_blocked", "severity": "low"},
+    {"id": "QA-INFRA-SANITIZERS-WINDOWS", "status": "infrastructure_blocked", "severity": "medium"}
+  ]
+}

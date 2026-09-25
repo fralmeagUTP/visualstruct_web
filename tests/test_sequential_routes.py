@@ -214,7 +214,9 @@ def test_sublist_methods_via_route(client) -> None:
         json={"operation": "eliminar_hijo", "payload": {"parent": "1", "child": "7"}},
     )
     assert remove_child.status_code == 200
-    assert remove_child.get_json()["visual_state"]["items"] == [{"parent": 1, "children": [8]}]
+    sublist_items = remove_child.get_json()["visual_state"]["items"]
+    assert [{"parent": item["parent"], "children": item["children"]} for item in sublist_items] == [{"parent": 1, "children": [8]}]
+    assert sublist_items[0]["id"].startswith("parent-")
 
     remove_parent = client.post(
         "/sequential/sublist/operate",

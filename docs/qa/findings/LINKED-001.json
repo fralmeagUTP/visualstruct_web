@@ -1,0 +1,22 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "LINKED-001",
+  "structure_id": "linked_list",
+  "operation": "invertir/primero/ultimo/eliminar_posicion",
+  "input": {"values": [1, 2, 3]},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_lista.h", "state": {"operations_backed_by_c": true}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/sequential/tad_wrappers.py:ListaEnlazada", "state": {"same_algorithm_as_c": true}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_lista.h", "state": {"operations_backed_by_c": false}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/sequential/tad_wrappers.py:ListaEnlazada", "state": {"operations_implemented_only_in_python": ["invertir", "primero", "ultimo", "eliminar_posicion"]}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "Varias operaciones ejecutables por el adapter no tienen función ni algoritmo equivalente en el TAD C mostrado, por lo que no pueden interpretarse fielmente instrucción por instrucción.",
+  "probable_cause": "El wrapper amplió el TAD para compatibilidad legacy sin ampliar el contrato C ni sus mapas de código.",
+  "location": "app/domain/sequential/tad_wrappers.py:ListaEnlazada; docs/tads_C/tad_lista.h",
+  "recommended_test": "Para cada operación publicada exigir una función C mapeada, compilable, y comparar sus snapshots con backend/traza; fallar si se usa default_operation.",
+  "suggested_fix": "Implementar y declarar las operaciones faltantes en C o retirarlas del contrato ejecutable; después mapearlas explícitamente y generar trazas desde ese C. No se modifica código funcional durante esta auditoría."
+}

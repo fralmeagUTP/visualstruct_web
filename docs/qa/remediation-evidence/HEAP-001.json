@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"HEAP-001","status":"fixed","contract":"La traza de montículo incluye append, comparaciones y cada intercambio de sift-up/sift-down.","tests":["tests/test_phase6_intermediate_states_remediation.py::test_heap_insert_exposes_append_and_each_sift_up_swap"],"gates":{"backend":"passed","trace":"passed"}}

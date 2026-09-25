@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"PRIORITY-001","status":"fixed","contract":"Enqueue conserva enlaces por llegada y dequeue busca prioridad mínima estable en C/Python/UI.","tests":["tests/test_hash_sequential_phase4_remediation.py::test_priority_queue_keeps_arrival_links_and_stable_priority_selection"],"gates":{"c17":"passed","backend":"passed"}}

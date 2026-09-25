@@ -25,68 +25,34 @@ class TablaHash(Generic[K, V]):
             raise ValueError("La capacidad debe ser positiva.")
         self._tabla = TablaHashTAD()
         th_inicializar(self._tabla, capacidad)
-        self._key_to_id: dict[K, int] = {}
-        self._id_to_key: dict[int, K] = {}
-        self._values_by_key: dict[K, V] = {}
         self._buckets: list[list[_Entrada[K, V]]] = []
         self._sync_buckets_cache()
 
     def _indice(self, clave: K) -> int:
-        return hash(clave) % self.capacidad()
-
-    def _allocate_id_for_key(self, clave: K) -> int:
-        if clave in self._key_to_id:
-            return self._key_to_id[clave]
-        base = self._indice(clave)
-        step = self.capacidad()
-        candidato = base
-        while candidato in self._id_to_key and self._id_to_key[candidato] != clave:
-            candidato += step
-        return candidato
+        if isinstance(clave, bool) or not isinstance(clave, int):
+            raise ValueError("La clave debe ser un entero representable por el TAD C.")
+        return clave % self.capacidad()
 
     def insertar(self, clave: K, valor: V) -> None:
-        if clave in self._key_to_id:
-            self._values_by_key[clave] = valor
-            self._sync_buckets_cache()
-            return
-
-        ident = self._allocate_id_for_key(clave)
-        th_insertar(self._tabla, ident, ident)
-        self._key_to_id[clave] = ident
-        self._id_to_key[ident] = clave
-        self._values_by_key[clave] = valor
-
-        if self.factor_carga() > 0.75:
-            self._redimensionar(self.capacidad() * 2 + 1)
-        else:
-            self._sync_buckets_cache()
+        if isinstance(clave, bool) or not isinstance(clave, int) or isinstance(valor, bool) or not isinstance(valor, int):
+            raise ValueError("La clave y el valor deben ser enteros representables por el TAD C.")
+        if not th_insertar(self._tabla, clave, valor):
+            raise ValueError("La tabla no está inicializada; crea una tabla antes de insertar.")
+        self._sync_buckets_cache()
 
     def buscar(self, clave: K) -> V | None:
-        if clave not in self._key_to_id:
-            return None
-        ident = self._key_to_id[clave]
         out: list[int] = []
-        if not th_buscar(self._tabla, ident, out):
+        if not th_buscar(self._tabla, clave, out):
             return None
-        return self._values_by_key.get(clave)
+        return out[0] if out else None  # type: ignore[return-value]
 
     def contiene(self, clave: K) -> bool:
-        if clave not in self._key_to_id:
-            return False
-        return bool(th_contiene(self._tabla, self._key_to_id[clave]))
+        return bool(th_contiene(self._tabla, clave))
 
     def eliminar(self, clave: K) -> bool:
-        if clave not in self._key_to_id:
-            return False
-        ident = self._key_to_id[clave]
-        ok = th_eliminar(self._tabla, ident)
-        if not ok:
-            return False
-        self._key_to_id.pop(clave, None)
-        self._id_to_key.pop(ident, None)
-        self._values_by_key.pop(clave, None)
+        ok = th_eliminar(self._tabla, clave)
         self._sync_buckets_cache()
-        return True
+        return ok
 
     def claves(self) -> list[K]:
         return [entrada.clave for bucket in self._buckets for entrada in bucket]
@@ -109,24 +75,10 @@ class TablaHash(Generic[K, V]):
 
     def limpiar(self) -> None:
         th_vaciar(self._tabla)
-        self._key_to_id.clear()
-        self._id_to_key.clear()
-        self._values_by_key.clear()
         self._sync_buckets_cache()
 
-    def _redimensionar(self, nueva_capacidad: int) -> None:
-        antiguos = list(self._values_by_key.items())
+    def destruir(self) -> None:
         th_destruir(self._tabla)
-        th_inicializar(self._tabla, nueva_capacidad)
-        self._key_to_id.clear()
-        self._id_to_key.clear()
-        self._values_by_key.clear()
-        for clave, valor in antiguos:
-            ident = self._allocate_id_for_key(clave)
-            th_insertar(self._tabla, ident, ident)
-            self._key_to_id[clave] = ident
-            self._id_to_key[ident] = clave
-            self._values_by_key[clave] = valor
         self._sync_buckets_cache()
 
     def _sync_buckets_cache(self) -> None:
@@ -134,10 +86,7 @@ class TablaHash(Generic[K, V]):
         for idx, head in enumerate(self._tabla.buckets):
             actual: THNodo | None = head
             while actual is not None:
-                ident = actual.clave
-                clave = self._id_to_key.get(ident)
-                if clave in self._values_by_key:
-                    buckets[idx].append(_Entrada(clave=clave, valor=self._values_by_key[clave]))
+                buckets[idx].append(_Entrada(clave=actual.clave, valor=actual.valor))  # type: ignore[arg-type]
                 actual = actual.siguiente
         self._buckets = buckets
 

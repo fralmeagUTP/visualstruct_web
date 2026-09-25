@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-08-23T22:34:48.835885+00:00",
+  "iterations": 5,
+  "environment": {
+    "python": "3.10.5",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "mode": "checkpoints enabled; missing checkpoint forces worst-case full replay"
+  },
+  "budget_ms": 200.0,
+  "passed": true,
+  "results": {
+    "sequential": {
+      "history_operations": 300,
+      "replay_operations": 300,
+      "checkpoint_enabled": true,
+      "checkpoint_used": false,
+      "fallback_reason": "missing",
+      "median_ms": 1.146,
+      "p95_ms": 1.157,
+      "budget_ms": 200.0,
+      "passed": true
+    },
+    "tree": {
+      "history_operations": 300,
+      "replay_operations": 300,
+      "checkpoint_enabled": true,
+      "checkpoint_used": false,
+      "fallback_reason": "missing",
+      "median_ms": 43.233,
+      "p95_ms": 43.321,
+      "budget_ms": 200.0,
+      "passed": true
+    },
+    "graph": {
+      "history_operations": 300,
+      "replay_operations": 300,
+      "checkpoint_enabled": true,
+      "checkpoint_used": false,
+      "fallback_reason": "missing",
+      "median_ms": 23.684,
+      "p95_ms": 24.32,
+      "budget_ms": 200.0,
+      "passed": true
+    },
+    "hash": {
+      "history_operations": 300,
+      "replay_operations": 300,
+      "checkpoint_enabled": true,
+      "checkpoint_used": false,
+      "fallback_reason": "missing",
+      "median_ms": 21.238,
+      "p95_ms": 22.024,
+      "budget_ms": 200.0,
+      "passed": true
+    },
+    "sorting": {
+      "history_operations": 300,
+      "replay_operations": 300,
+      "checkpoint_enabled": true,
+      "checkpoint_used": false,
+      "fallback_reason": "missing",
+      "median_ms": 1.764,
+      "p95_ms": 1.78,
+      "budget_ms": 200.0,
+      "passed": true
+    }
+  }
+}

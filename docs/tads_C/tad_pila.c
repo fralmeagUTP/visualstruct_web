@@ -54,6 +54,10 @@ int pila_desapilar(ptrPila *p) {
     return num;
 }
 
+int pila_cima(ptrPila p) {
+    return p == NULL ? -1 : p->nro;
+}
+
 
 //---------------------------------------------------------------
 /**

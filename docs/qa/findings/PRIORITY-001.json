@@ -1,0 +1,24 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "PRIORITY-001",
+  "structure_id": "priority_queue",
+  "operation": "encolar",
+  "input": {"items": [[100, 5], [200, 1], [300, 3]]},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_cola_prioridad.c:cp_encolar", "state": {"items": [[100, 5], [200, 1], [300, 3]], "dequeue_scan_result": 200}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/sequential/tad_cola_prioridad.py:cp_encolar", "state": {"items": [[100, 5], [200, 1], [300, 3]], "dequeue_scan_result": 200}},
+    {"step": 2, "layer": "frontend", "source_location": "app/adapters/priority_queue_adapter.py:to_visual_state", "state": {"items": [[100, 5], [200, 1], [300, 3]], "out_index": 1}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_cola_prioridad.c:cp_desencolar", "state": {"items": [[100, 5], [200, 1], [300, 3]], "algorithm": "linear scan on dequeue", "result": 200}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/sequential/tad_cola_prioridad.py:cp_encolar", "state": {"items": [[200, 1], [300, 3], [100, 5]], "algorithm": "ordered insertion then pop front", "result": 200}},
+    {"step": 2, "layer": "frontend", "source_location": "app/adapters/priority_queue_adapter.py:to_visual_state", "state": {"items": [[100, 5], [200, 1], [300, 3]], "out_index": 1}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "C conserva enlaces por llegada y busca la prioridad mínima durante dequeue O(n); Python inserta ordenado y hace dequeue del frente. Coinciden en salida, pero ejecutan y trazan algoritmos distintos.",
+  "probable_cause": "La transcripción Python cambió la estrategia de cp_encolar/cp_desencolar manteniendo solo equivalencia del resultado final; el adapter añadió una lista auxiliar para reconstruir llegada.",
+  "location": "docs/tads_C/tad_cola_prioridad.c:cp_encolar; app/domain/sequential/tad_cola_prioridad.py:cp_encolar; app/adapters/priority_queue_adapter.py:to_visual_state",
+  "recommended_test": "Encolar prioridades 5,1,3 y exigir que backend/traza recorran los candidatos en orden de llegada como cp_desencolar C, elijan 200 y preserven estabilidad; repetir con empates e INT_MIN/INT_MAX.",
+  "suggested_fix": "Transcribir fielmente append en cp_encolar y búsqueda lineal en cp_desencolar, usando una sola fuente de estado para backend y visualización. No se modifica código funcional durante esta auditoría."
+}

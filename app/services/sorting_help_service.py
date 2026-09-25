@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.domain.sorting import SORTING_ALGORITHMS
+from app.domain.sorting.pedagogy import SORTING_LEARNING_CATALOG, SORTING_THEORY_CATALOG
 
 
 class SortingHelpService:
@@ -69,7 +70,13 @@ class SortingHelpService:
             ),
             "supported_operations": ops,
             "supported_algorithms": [
-                {"id": item["id"], "label": item["label"], "summary": SortingHelpService._ALGO_SUMMARY.get(item["id"], "")}
+                {
+                    "id": item["id"], "label": item["label"], "summary": SortingHelpService._ALGO_SUMMARY.get(item["id"], ""),
+                    "objective": SORTING_LEARNING_CATALOG[item["id"]]["objective"],
+                    "mastery": SORTING_LEARNING_CATALOG[item["id"]]["mastery"],
+                    "theory": SORTING_THEORY_CATALOG[item["id"]],
+                    "common_error": "Confundir el estado parcial con el resultado final o ignorar los límites del rango activo.",
+                }
                 for item in SORTING_ALGORITHMS
             ],
             "pending_operations": pending,

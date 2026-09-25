@@ -51,8 +51,7 @@ class SublistAdapter(BaseAdapter):
         raise ValueError(f"Operación no soportada: {operation_name}.")
 
     def to_visual_state(self) -> dict[str, Any]:
-        data = self._structure.a_diccionario()
-        items = [{"parent": parent, "children": children} for parent, children in data.items()]
+        items = self._structure.a_lista()
         return {
             "kind": "sublist",
             "title": "Sublista (padres e hijos)",

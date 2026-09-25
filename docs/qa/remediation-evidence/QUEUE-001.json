@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"QUEUE-001","status":"fixed","contract":"cola_frente y cola_final son funciones C reales declaradas y mostradas.","tests":["tests/test_hash_sequential_phase4_remediation.py::test_all_remediated_sequential_operations_map_to_real_c_functions"],"gates":{"c17":"passed","snippet":"passed"}}

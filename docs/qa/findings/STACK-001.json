@@ -1,0 +1,20 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "STACK-001",
+  "structure_id": "stack",
+  "operation": "cima",
+  "input": {"values_top_to_bottom": [20, 10]},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_pila.h", "state": {"available_function": false, "valid_equivalent": "pila != NULL ? pila->nro : error"}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "frontend", "source_location": "app/services/c_code_service.py:210", "state": {"shown_call": "pila_copiar_valores(&pila, &cima, 1)", "declared_in_tad": false}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "El panel de cima muestra una llamada a pila_copiar_valores que no existe en el TAD C y por tanto el fragmento no compila ni representa la ejecución real.",
+  "probable_cause": "CCodeService fabricó una operación auxiliar para cubrir una consulta ausente sin añadirla al contrato ni a la implementación C.",
+  "location": "app/services/c_code_service.py:CCodeService._build_stack_data",
+  "recommended_test": "Obtener el snippet de cima, compilarlo contra tad_pila.h/tad_pila.c y exigir que use únicamente símbolos declarados; comparar el retorno con stack->nro sin mutación.",
+  "suggested_fix": "Añadir pila_cima al TAD C o mostrar un fragmento válido que compruebe NULL y lea pila->nro, instrumentando condición y retorno. No se modifica código funcional durante esta auditoría."
+}

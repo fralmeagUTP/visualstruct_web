@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "SUBLIST-002", "structure_id": "sublist", "operation": "limpiar",
+  "input": {"parents": [{"parent": 1, "children": [10, 20]}]},
+  "expected": [{"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_sublista.c:sublista_destruir", "state": {"freed_children": 2, "freed_parents": 1, "head": null}}],
+  "observed": [{"step": 0, "layer": "backend", "source_location": "app/domain/sequential/tad_wrappers.py:Sublista.limpiar", "state": {"assignment": "self._lista_ref[0] = None", "c_destroy_called": false}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "La limpieza del backend no ejecuta la transcripción de sublista_destruir ni sus liberaciones hijo-a-padre mostradas en C.",
+  "probable_cause": "El wrapper descarta la referencia confiando en el recolector de Python y evita el algoritmo didáctico de destrucción.",
+  "location": "app/domain/sequential/tad_wrappers.py:Sublista.limpiar",
+  "recommended_test": "Limpiar dos padres con hijos y exigir eventos free por cada hijo y padre, en el mismo orden que sublista_destruir, hasta head=NULL.",
+  "suggested_fix": "Llamar a la transcripción sublista_destruir y propagar sus eventos de liberación lógica al historial y frontend. No se modifica código funcional durante esta auditoría."
+}

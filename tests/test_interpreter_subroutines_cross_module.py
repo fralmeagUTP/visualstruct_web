@@ -69,7 +69,7 @@ def _default_payload(operation_name: str, inputs: list[dict[str, Any]]) -> dict[
         elif name == "directed":
             payload[name] = "false"
         elif name == "key":
-            payload[name] = "k1"
+            payload[name] = "1"
         elif name == "value" and field.get("type") == "text":
             payload[name] = "v1"
         elif field.get("type") == "text":
@@ -136,8 +136,8 @@ def _seed_history_hash() -> list[dict[str, Any]]:
     history: list[dict[str, Any]] = []
     seed = [
         ("create_table", {"capacity": "17"}),
-        ("insert", {"key": "k1", "value": "v1"}),
-        ("insert", {"key": "k2", "value": "v2"}),
+        ("insert", {"key": "1", "value": "10"}),
+        ("insert", {"key": "2", "value": "20"}),
     ]
     for op, payload in seed:
         result = _exec(HashStructureService.execute_operation, "hash_table", op, payload, history)
@@ -221,10 +221,10 @@ def test_trace_contract_all_visible_hash_methods() -> None:
         op_name = op["name"]
         payload = _default_payload(op_name, op.get("inputs", []))
         if op_name in {"get", "contains", "remove"}:
-            payload["key"] = "k1"
+            payload["key"] = "1"
         if op_name == "insert":
-            payload["key"] = "k3"
-            payload["value"] = "v3"
+            payload["key"] = "3"
+            payload["value"] = "30"
         if op_name == "create_table":
             payload["capacity"] = "17"
 

@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "SUBLIST-001", "structure_id": "sublist", "operation": "insertar_padre/to_visual_state",
+  "input": {"parents": [1, 1]},
+  "expected": [{"step": 0, "layer": "frontend", "source_location": "app/adapters/sublist_adapter.py:to_visual_state", "state": {"parents": [1, 1], "size": 2}}],
+  "observed": [{"step": 0, "layer": "frontend", "source_location": "app/domain/sequential/tad_wrappers.py:a_diccionario", "state": {"parents": [1], "size": 1}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "El C conserva padres duplicados como nodos distintos, pero el wrapper los convierte en diccionario y el último sobrescribe visualmente al anterior.",
+  "probable_cause": "a_diccionario usa actual.nro como clave única aunque el TAD C no impone unicidad.",
+  "location": "app/domain/sequential/tad_wrappers.py:Sublista.a_diccionario",
+  "recommended_test": "Insertar dos padres con el mismo valor y exigir dos identidades lógicas, dos enlaces externos y sublistas independientes en C/backend/frontend.",
+  "suggested_fix": "Serializar una lista ordenada de nodos padre con IDs lógicos, no un diccionario por valor, o rechazar duplicados explícitamente también en C. No se modifica código funcional durante esta auditoría."
+}

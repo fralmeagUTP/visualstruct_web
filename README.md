@@ -136,7 +136,7 @@ Criterios obligatorios:
 - Secuencial/Jerarquico: `value`, `parent`, `child` y campos equivalentes se validan como enteros.
 - Grafos: `vertex`, `origin`, `target`, `start`, `end` enteros.
 - Grafos: `weight` numerico (entero o decimal).
-- Hash: `key` y `value` texto.
+- Hash: `key` y `value` enteros C (`INT_MIN` a `INT_MAX`); la capacidad es fija.
 
 ## Arquitectura
 
@@ -249,6 +249,36 @@ Ejecucion de ejemplo:
 ```powershell
 python -m waitress --host=0.0.0.0 --port=5050 wsgi:app
 ```
+
+## Docker
+
+La aplicacion puede ejecutarse en un contenedor Linux con Waitress. El servicio
+incluye un volumen nombrado para las sesiones server-side y un health check en
+`/healthz`.
+
+```powershell
+Copy-Item .env.example .env
+# Reemplace FLASK_SECRET_KEY por un secreto largo y aleatorio en .env.
+docker compose up --build -d
+```
+
+Abrir `http://localhost:5050/`. Para comprobar su estado:
+
+```powershell
+docker compose ps
+docker compose logs -f visualstruct
+```
+
+Para detenerlo sin borrar las sesiones: `docker compose down`.
+Para eliminar tambien las sesiones persistidas: `docker compose down -v`.
+
+El archivo de ejemplo configura HTTP solo para pruebas locales. Para un despliegue
+detras de Traefik con HTTPS, use el archivo adicional `compose.vps.yaml` y
+configure `SESSION_COOKIE_SECURE=true` y
+`ALLOW_INSECURE_COOKIES_IN_PRODUCTION=false`. El VPS debe tener la red externa
+`red` y un Traefik con el resolvedor `letsencrypt`. Para escalar a varias
+replicas, reemplace el almacenamiento `cachelib` por Redis mediante
+`SESSION_TYPE=redis` y `SESSION_REDIS_URL`.
 
 ## Documentacion relacionada
 

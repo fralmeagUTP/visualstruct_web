@@ -92,7 +92,7 @@ def test_graph_operation_includes_execution_trace(client) -> None:
 def test_hash_operation_includes_execution_trace(client) -> None:
     response = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "A", "value": "1"}},
+        json={"operation": "insert", "payload": {"key": "1", "value": "1"}},
     )
     assert response.status_code == 200
     data = response.get_json()

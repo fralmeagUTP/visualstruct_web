@@ -1,0 +1,444 @@
+{
+  "schema": "didactic-qa-minimal-cases/v1",
+  "cases": [
+    {
+      "case_id": "ABB-001",
+      "structure_id": "abb",
+      "operation": "eliminar",
+      "input": {
+        "before": [
+          2,
+          [
+            1,
+            null,
+            null
+          ],
+          [
+            3,
+            null,
+            null
+          ]
+        ],
+        "value": 2
+      }
+    },
+    {
+      "case_id": "AVL-001",
+      "structure_id": "avl",
+      "operation": "insertar",
+      "input": {
+        "before": [
+          30,
+          [
+            10,
+            null,
+            null
+          ],
+          null
+        ],
+        "value": 20,
+        "rotation": "LR/RDD"
+      }
+    },
+    {
+      "case_id": "CIRCULAR-001",
+      "structure_id": "circular_list",
+      "operation": "insertar_inicio/insertar_final",
+      "input": {
+        "before": [],
+        "value": 7
+      }
+    },
+    {
+      "case_id": "GRAPH-001",
+      "structure_id": "graph",
+      "operation": "insert_edge",
+      "input": {
+        "operations": [
+          [
+            "insert_edge",
+            1,
+            2,
+            5
+          ],
+          [
+            "insert_edge",
+            1,
+            2,
+            7
+          ]
+        ],
+        "initial_vertices": []
+      }
+    },
+    {
+      "case_id": "GRAPH-002",
+      "structure_id": "graph",
+      "operation": "create_graph/insert_edge",
+      "input": {
+        "directed": false,
+        "edge": [
+          1,
+          2,
+          2.75
+        ]
+      }
+    },
+    {
+      "case_id": "GRAPH-003",
+      "structure_id": "graph",
+      "operation": "run_bfs/run_dfs",
+      "input": {
+        "directed_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "start": 1
+      }
+    },
+    {
+      "case_id": "GRAPH-004",
+      "structure_id": "graph",
+      "operation": "run_dijkstra",
+      "input": {
+        "edges": [
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            1,
+            3,
+            -5
+          ]
+        ],
+        "start": 1,
+        "end": 3
+      }
+    },
+    {
+      "case_id": "GRAPH-005",
+      "structure_id": "graph",
+      "operation": "run_dijkstra/run_bellman_ford",
+      "input": {
+        "path": [
+          1,
+          2,
+          3
+        ],
+        "weights": [
+          4,
+          1
+        ]
+      }
+    },
+    {
+      "case_id": "GRAPH-006",
+      "structure_id": "graph",
+      "operation": "run_prim/run_kruskal",
+      "input": {
+        "vertices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "edges": [
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            3,
+            2
+          ]
+        ],
+        "disconnected": true
+      }
+    },
+    {
+      "case_id": "HASH-001",
+      "structure_id": "hash_table",
+      "operation": "insert",
+      "input": {
+        "initial_capacity": 3,
+        "entries": [
+          [
+            "a",
+            "1"
+          ],
+          [
+            "b",
+            "2"
+          ],
+          [
+            "c",
+            "3"
+          ]
+        ]
+      }
+    },
+    {
+      "case_id": "HASH-002",
+      "structure_id": "hash_table",
+      "operation": "insert/search/remove",
+      "input": {
+        "capacity": 17,
+        "key": "A",
+        "value": "1"
+      }
+    },
+    {
+      "case_id": "HEAP-001",
+      "structure_id": "binary_heap",
+      "operation": "insertar",
+      "input": {
+        "before": [
+          2,
+          5,
+          3
+        ],
+        "value": 1
+      }
+    },
+    {
+      "case_id": "LINKED-001",
+      "structure_id": "linked_list",
+      "operation": "invertir/primero/ultimo/eliminar_posicion",
+      "input": {
+        "values": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "case_id": "PRIORITY-001",
+      "structure_id": "priority_queue",
+      "operation": "encolar",
+      "input": {
+        "items": [
+          [
+            100,
+            5
+          ],
+          [
+            200,
+            1
+          ],
+          [
+            300,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "case_id": "PRIORITY-002",
+      "structure_id": "priority_queue",
+      "operation": "frente",
+      "input": {
+        "items": [
+          [
+            100,
+            5
+          ],
+          [
+            200,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "case_id": "QUEUE-001",
+      "structure_id": "queue",
+      "operation": "frente/final",
+      "input": {
+        "values_front_to_rear": [
+          10,
+          20
+        ]
+      }
+    },
+    {
+      "case_id": "RBT-001",
+      "structure_id": "red_black",
+      "operation": "insertar",
+      "input": {
+        "sequence": [
+          10,
+          5,
+          15,
+          1
+        ],
+        "case": "uncle red"
+      }
+    },
+    {
+      "case_id": "RBT-002",
+      "structure_id": "red_black",
+      "operation": "eliminar",
+      "input": {
+        "sequence": [
+          7,
+          3,
+          18,
+          10,
+          22,
+          8,
+          11,
+          26
+        ],
+        "remove": 3
+      }
+    },
+    {
+      "case_id": "SORT-001",
+      "structure_id": "sorting_array",
+      "operation": "quicksort",
+      "input": {
+        "values": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "case_id": "SORT-002",
+      "structure_id": "sorting_array",
+      "operation": "mergesort/binsort",
+      "input": {
+        "values": [
+          5,
+          -1,
+          4,
+          2,
+          2,
+          0
+        ]
+      }
+    },
+    {
+      "case_id": "SORT-003",
+      "structure_id": "sorting_array",
+      "operation": "radixsort",
+      "input": {
+        "values": [
+          -2147483648,
+          -1,
+          0,
+          7
+        ]
+      }
+    },
+    {
+      "case_id": "SORT-004",
+      "structure_id": "sorting_array",
+      "operation": "counting_sort/binsort",
+      "input": {
+        "values": [
+          -2147483648,
+          2147483647
+        ]
+      }
+    },
+    {
+      "case_id": "STACK-001",
+      "structure_id": "stack",
+      "operation": "cima",
+      "input": {
+        "values_top_to_bottom": [
+          20,
+          10
+        ]
+      }
+    },
+    {
+      "case_id": "STACK-002",
+      "structure_id": "stack",
+      "operation": "apilar",
+      "input": {
+        "before": [],
+        "value": 9
+      }
+    },
+    {
+      "case_id": "SUBLIST-001",
+      "structure_id": "sublist",
+      "operation": "insertar_padre/to_visual_state",
+      "input": {
+        "parents": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "case_id": "SUBLIST-002",
+      "structure_id": "sublist",
+      "operation": "limpiar",
+      "input": {
+        "parents": [
+          {
+            "parent": 1,
+            "children": [
+              10,
+              20
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "TRACE-001",
+      "structure_id": "application",
+      "operation": "console playback",
+      "input": {
+        "printf_examples": [
+          "printf(\"%d \", valor)",
+          "printf(\"Error %s\", detalle)"
+        ]
+      }
+    },
+    {
+      "case_id": "TRACE-002",
+      "structure_id": "application",
+      "operation": "trace validation/playback",
+      "input": {
+        "step0_after": {
+          "size": 1
+        },
+        "step1_before": {
+          "size": 99
+        }
+      }
+    },
+    {
+      "case_id": "TRACE-003",
+      "structure_id": "application",
+      "operation": "source highlighting",
+      "input": {
+        "source_code": "linea real",
+        "line_index": 50,
+        "line_text": "linea inventada"
+      }
+    }
+  ]
+}

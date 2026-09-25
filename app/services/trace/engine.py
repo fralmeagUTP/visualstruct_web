@@ -19,13 +19,33 @@ class TraceEngine:
     """Validate trace invariants while the legacy generator is migrated."""
 
     @staticmethod
-    def validate_steps(steps: list[TraceStep], final_state: dict[str, Any]) -> None:
+    def validate_steps(
+        steps: list[TraceStep], final_state: dict[str, Any], source_code: str = ""
+    ) -> None:
         if not steps:
             raise TraceContractError("La traza debe contener al menos un paso.")
         if not isinstance(final_state, dict):
             raise TraceContractError("final_state debe ser un diccionario.")
         if steps[-1].after_state != final_state:
             raise TraceContractError("El estado posterior del último paso no coincide con final_state.")
+
+        for index in range(len(steps) - 1):
+            following = steps[index + 1]
+            if steps[index].after_state != following.before_state and following.event != "rebase":
+                raise TraceContractError(
+                    f"Discontinuidad entre los pasos {index} y {index + 1}; se requiere rebase explícito."
+                )
+        if source_code:
+            source_lines = source_code.replace("\r\n", "\n").split("\n")
+            for index, step in enumerate(steps):
+                if step.line_index is None:
+                    continue
+                if step.line_index >= len(source_lines):
+                    raise TraceContractError(f"line_index fuera de rango en el paso {index}.")
+                expected = " ".join(source_lines[step.line_index].strip().split())
+                observed = " ".join(step.line_text.strip().split())
+                if expected != observed:
+                    raise TraceContractError(f"line_text no coincide con source_code en el paso {index}.")
 
     @classmethod
     def validate_legacy_trace(cls, trace: dict[str, Any]) -> list[TraceStep]:
@@ -47,7 +67,7 @@ class TraceEngine:
             if LegacyTraceAdapter.round_trip(raw_steps) != raw_steps:
                 raise TraceContractError("La adaptación de compatibilidad modificó el esquema público.")
             steps = strategy.normalize_steps(raw_steps)
-            cls.validate_steps(steps, final_state)
+            cls.validate_steps(steps, final_state, str(trace.get("source_code") or ""))
         except (KeyError, TypeError, ValueError) as error:
             emit_operational_event(
                 "trace_validation",

@@ -4,6 +4,47 @@ function byId(id) {
   return document.getElementById(id);
 }
 
+function initSequentialResponsiveWorkspace() {
+  const workspace = document.querySelector(".sequential-primary-workspace");
+  const tabs = Array.from(document.querySelectorAll("[data-seq-tab]"));
+  if (!workspace || !tabs.length) return;
+  const storageKey = document.querySelector(".is-stack-pilot") ? "sequential-stack-workspace-tab-v2" : "sequential-active-tab";
+  let saved = "visual";
+  try { saved = window.sessionStorage.getItem(storageKey) || "visual"; } catch (_error) { saved = "visual"; }
+  const activate = (name) => {
+    const selected = name === "code" ? "code" : "visual";
+    workspace.dataset.activeTab = selected;
+    tabs.forEach((tab) => { const active = tab.dataset.seqTab === selected; tab.classList.toggle("is-active", active); tab.setAttribute("aria-selected", String(active)); });
+    try { window.sessionStorage.setItem(storageKey, selected); } catch (_error) { /* optional */ }
+  };
+  tabs.forEach((tab) => tab.addEventListener("click", () => activate(tab.dataset.seqTab)));
+  activate(saved);
+}
+
+function enhanceSequentialCodeNavigation(activeLine = null) {
+  const code = byId("op-pseudocode");
+  const list = byId("seq-function-list");
+  const hide = byId("seq-hide-comments");
+  if (!code || !list) return;
+  const raw = String(code.dataset.rawCode || code.textContent || "");
+  const rows = raw.replaceAll("\r\n", "\n").split("\n");
+  const functions = [];
+  const signature = /^\s*(?:static\s+)?(?:void|bool|int|size_t|ptr\w+|[A-Za-z_]\w*)\s+\**([A-Za-z_]\w*)\s*\(/;
+  rows.forEach((row, index) => { const match = row.match(signature); if (match && !["if", "while", "for", "switch"].includes(match[1])) functions.push({ name: match[1], line: index }); });
+  let inBlock = false;
+  code.querySelectorAll(".code-line").forEach((line, index) => {
+    const value = String(rows[index] || "").trim();
+    const starts = value.startsWith("/*");
+    line.classList.toggle("is-code-comment", inBlock || starts || value.startsWith("//") || value.startsWith("*"));
+    if (starts && !value.includes("*/")) inBlock = true;
+    if (inBlock && value.includes("*/")) inBlock = false;
+  });
+  code.classList.toggle("hide-code-comments", Boolean(hide?.checked));
+  const active = [...functions].reverse().find((item) => Number.isInteger(activeLine) && item.line <= activeLine) || functions[0];
+  list.innerHTML = functions.length ? functions.map((item) => `<li><button type="button" class="seq-function-link${active?.line === item.line ? " is-active" : ""}" data-line="${item.line}">${escapeHtml(item.name)}</button></li>`).join("") : '<li class="muted">Sin funciones detectadas</li>';
+  list.querySelectorAll(".seq-function-link").forEach((button) => button.addEventListener("click", () => code.querySelector(`.code-line[data-line="${button.dataset.line}"]`)?.scrollIntoView({ block: "center" })));
+}
+
 function renderOperationInputs(operation, container) {
   container.innerHTML = "";
   if (!operation || !operation.inputs) {
@@ -38,6 +79,50 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function sequentialValue(value) {
+  if (value === null || typeof value === "undefined") return "NULL";
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
+}
+
+function renderSequentialPedagogyFrame(frame, level) {
+  const summary = byId("seq-pedagogy-summary");
+  const conditionView = byId("seq-condition-view");
+  const variableView = byId("seq-variable-view");
+  const pointerView = byId("seq-pointer-view");
+  const heapView = byId("seq-heap-view");
+  const callView = byId("seq-call-view");
+  if (!frame) return;
+  const narration = frame.narration?.[level] || frame.narration?.intermediate || "";
+  if (summary) summary.innerHTML = `<strong>${escapeHtml(frame.phase?.label || frame.concept)}</strong>: ${escapeHtml(narration)}<br><small>Invariante: ${escapeHtml(frame.invariant?.text || "")}</small>`;
+  if (conditionView) {
+    const condition = frame.condition;
+    const loop = frame.loop;
+    conditionView.innerHTML = condition
+      ? `<code>${escapeHtml(condition.source)}</code><br>Sustitución: <code>${escapeHtml(condition.substituted)}</code><br>Resultado: <strong>${escapeHtml(sequentialValue(condition.result))}</strong><br>${escapeHtml(condition.consequence)}${loop?.active ? `<br>Ciclo: ${escapeHtml(loop.exit || "continúa")}` : ""}`
+      : "Sin condición en este frame.";
+  }
+  const table = (headers, rows) => `<table class="seq-data-table"><thead><tr>${headers.map((item) => `<th>${escapeHtml(item)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
+  if (variableView) {
+    const rows = (frame.variables || []).map((item) => `<tr><td><code>${escapeHtml(item.type)}</code></td><td>${escapeHtml(item.name)}</td><td>${escapeHtml(item.meaning)}</td><td>${escapeHtml(sequentialValue(item.previous))}</td><td>${escapeHtml(sequentialValue(item.value))}${item.changed ? " Δ" : ""}</td></tr>`);
+    variableView.innerHTML = rows.length ? table(["Tipo", "Nombre", "Significado", "Anterior", "Actual"], rows) : "Sin variables.";
+  }
+  if (pointerView) {
+    const rows = (frame.pointers || []).map((item) => `<tr><td><code>${escapeHtml(item.name)}</code></td><td>${escapeHtml(sequentialValue(item.previous_target))}</td><td>${escapeHtml(sequentialValue(item.target))}</td><td>${item.changed ? "reasignado" : escapeHtml(item.alias || "estable")}</td></tr>`);
+    pointerView.innerHTML = rows.length ? table(["Puntero", "Destino anterior", "Destino nuevo", "Relación"], rows) : "Sin punteros activos en esta línea.";
+  }
+  if (heapView) {
+    const transition = frame.heap_transition || {};
+    const live = (transition.after || frame.heap_objects || []).map((item) => `<span class="seq-memory-object"><code>${escapeHtml(item.address || item.id)}</code> ${escapeHtml(sequentialValue(item.fields))} · ${escapeHtml(item.status || "linked")}</span>`);
+    const freed = (transition.freed || []).map((item) => `<span class="seq-memory-object is-freed"><code>${escapeHtml(item.address || item.id)}</code> liberado</span>`);
+    heapView.innerHTML = `<strong>Evento: ${escapeHtml(transition.kind || "stable")}</strong><div>${[...live, ...freed].join("") || "No hay objetos alcanzables."}</div>`;
+  }
+  if (callView) {
+    const rows = (frame.call_stack || []).map((item) => `<tr><td><code>${escapeHtml(item.function)}</code></td><td>${escapeHtml(sequentialValue(item.parameters))}</td><td>${escapeHtml(sequentialValue(item.return))}</td><td>${escapeHtml(item.continuation)}</td></tr>`);
+    callView.innerHTML = rows.length ? table(["Función", "Parámetros", "Retorno", "Continuación"], rows) : "Sin llamadas.";
+  }
 }
 
 function toCStringLiteral(text) {
@@ -617,7 +702,7 @@ function drawCircularLoop(visualContainer) {
   }
 
   const nodes = row.querySelectorAll(".viz-node");
-  if (nodes.length < 2) {
+  if (nodes.length < 1) {
     return;
   }
 
@@ -753,7 +838,7 @@ function renderLinearWithHeadTail(state, circular, hint) {
     html += '<div class="viz-row-label null">NULL</div>';
   }
   html += "</div>";
-  if (circular && items.length > 1) {
+  if (circular && items.length > 0) {
     html += '<div class="viz-loop-host"></div>';
   }
   if (hasTempNode) {
@@ -1230,6 +1315,33 @@ function buildStackSimulationFrames(currentState, operationName, payload) {
   return frames;
 }
 
+function buildCircularListSimulationFrames(currentState, operationName, payload) {
+  const values = cloneValues(currentState); const frames = [];
+  const frame = (next, simulation) => frames.push(makeLinkedListFrame(currentState, next, { suppressDefaultBadges: true, ...(simulation || {}) }));
+  const value = toIntOrNull(payload.value);
+  if (operationName === "insertar_inicio" && value !== null) { frame(values, { opLabel: "HEAD actual" }); frame(values, { tempNodeValue: value, tempNodeTitle: "aux creado", opLabel: "aux->sgte = HEAD" }); frame([value, ...values], { activeIndices: [0], commitIndices: [0], opLabel: "HEAD = aux; TAIL->sgte = HEAD" }); }
+  else if (operationName === "insertar_final" && value !== null) { frame(values, { activeIndices: values.length ? [values.length - 1] : [], opLabel: "TAIL actual" }); frame(values, { tempNodeValue: value, tempNodeTitle: "aux creado", opLabel: "aux->sgte = HEAD" }); frame([...values, value], { activeIndices: [values.length], commitIndices: [values.length], opLabel: "TAIL = aux; cierre circular" }); }
+  else if (operationName === "eliminar_inicio" && values.length) { frame(values, { activeIndices: [0], tempDetachedValue: values[0], tempDetachedTitle: "aux = HEAD", opLabel: "aux = HEAD" }); frame(values.slice(1), { tempDetachedValue: values[0], tempActionLabel: "HEAD = aux->sgte; free(aux)", opLabel: "HEAD avanza y TAIL conserva el ciclo" }); }
+  else if (operationName === "eliminar_primero" && values.length && value !== null) { const index = values.findIndex((item) => Number(item) === value); if (index >= 0) { frame(values, { activeIndices: [index], opLabel: `recorrido hasta ${value}` }); frame(values.filter((_, i) => i !== index), { tempDetachedValue: values[index], tempActionLabel: "enlace reasignado; free(aux)", opLabel: "nodo desconectado" }); } }
+  else if (operationName === "buscar_posiciones" && values.length) values.forEach((_, i) => frame(values, { activeIndices: [i], visitedIndices: values.slice(0, i).map((_, j) => j), opLabel: "recorrido circular" }));
+  else if (operationName === "invertir" && values.length) { frame(values, { opLabel: "invertir enlaces sgte" }); frame([...values].reverse(), { commitIndices: values.map((_, i) => i), opLabel: "HEAD y TAIL actualizados; ciclo restaurado" }); }
+  else if (operationName === "limpiar" && values.length) { values.forEach((_, i) => frame(values.slice(i), { tempDetachedValue: values[i], opLabel: "desconectar y liberar nodo" })); frame([], { opLabel: "HEAD = TAIL = NULL" }); }
+  return frames;
+}
+
+function buildSublistSimulationFrames(currentState, operationName, payload) {
+  const original = structuredClone(currentState.items || []); const frames = [];
+  const frame = (items, simulation = {}) => frames.push({ state: { ...currentState, items: structuredClone(items), size: items.length, empty: !items.length }, simulation: { suppressDefaultBadges: true, ...simulation } });
+  const parent = toIntOrNull(payload.parent); const child = toIntOrNull(payload.child);
+  if (operationName === "insertar_padre" && parent !== null) { frame(original, { opLabel: "buscar final de padres" }); frame([...original, { parent, children: [] }], { tempNodeValue: parent, commitIndices: [original.length], opLabel: "enlazar nuevo padre" }); }
+  else if (operationName === "insertar_hijo" && parent !== null && child !== null) { const next = structuredClone(original); const index = next.findIndex((item) => Number(item.parent) === parent); frame(original, { activeIndices: index >= 0 ? [index] : [], opLabel: "localizar padre" }); if (index >= 0) { next[index].children = [...(next[index].children || []), child]; frame(next, { activeIndices: [index], tempNodeValue: child, opLabel: "enlazar hijo en la rama" }); } }
+  else if (operationName === "eliminar_padre" && parent !== null) { const index = original.findIndex((item) => Number(item.parent) === parent); if (index >= 0) { frame(original, { activeIndices: [index], tempDetachedValue: parent, opLabel: "aislar padre y sus hijos" }); frame(original.filter((_, i) => i !== index), { tempDetachedValue: parent, tempActionLabel: "free de rama padre-hijos", opLabel: "rama liberada" }); } }
+  else if (operationName === "eliminar_hijo" && parent !== null && child !== null) { const next = structuredClone(original); const index = next.findIndex((item) => Number(item.parent) === parent); frame(original, { activeIndices: index >= 0 ? [index] : [], opLabel: "localizar rama padre" }); if (index >= 0) { const childIndex = (next[index].children || []).findIndex((item) => Number(item) === child); if (childIndex >= 0) { next[index].children.splice(childIndex, 1); frame(next, { activeIndices: [index], tempDetachedValue: child, tempActionLabel: "enlace hijo reasignado; free", opLabel: "primera coincidencia de hijo desconectada" }); } } }
+  else if (operationName === "hijos_de" && parent !== null) { const parentIndex = original.findIndex((item) => Number(item.parent) === parent); const limit = parentIndex >= 0 ? parentIndex + 1 : original.length; for (let index = 0; index < limit; index += 1) frame(original, { activeIndices: [index], visitedIndices: Array.from({ length: index }, (_, visited) => visited), opLabel: `comparar padre ${original[index].parent}` }); }
+  else if (operationName === "limpiar" && original.length) { original.forEach((item, index) => frame(original.slice(index), { tempDetachedValue: item.parent, opLabel: "liberar rama" })); frame([], { opLabel: "HEAD = NULL" }); }
+  return frames;
+}
+
 function buildQueueSimulationFrames(currentState, operationName, payload) {
   const baseValues = cloneValues(currentState);
   const frames = [];
@@ -1370,19 +1482,32 @@ function buildPriorityQueueSimulationFrames(currentState, operationName, payload
     if (value === null || priority === null) {
       return frames;
     }
-    if (baseItems.length) {
-      frames.push(makePriorityQueueFrame(currentState, baseItems, { activeIndices: [0] }));
-    } else {
-      frames.push(makePriorityQueueFrame(currentState, baseItems, {}));
-    }
+    frames.push(makePriorityQueueFrame(currentState, baseItems, {
+      activeIndices: baseItems.length ? [baseItems.length - 1] : [],
+      opLabel: baseItems.length ? "Estado inicial (última llegada)" : "Estado inicial (cola vacía)",
+    }));
     const nextItems = [...baseItems, { value, priority }];
+    frames.push(makePriorityQueueFrame(currentState, baseItems, {
+      tempNodeValue: value,
+      tempNodePriority: priority,
+      opLabel: "aux = malloc; aux->sgte = NULL",
+    }));
     frames.push(makePriorityQueueFrame(currentState, nextItems, {
       activeIndices: [nextItems.length - 1],
       pendingIndices: [nextItems.length - 1],
+      commitIndices: [nextItems.length - 1],
+      tempNodeValue: value,
+      tempNodePriority: priority,
+      tempNodeTitle: "aux (integrado)",
+      opLabel: "enlace de llegada actualizado",
     }));
+    const selectedIndex = nextItems.reduce((best, item, index) => (
+      Number(item.priority) < Number(nextItems[best].priority) ? index : best
+    ), 0);
     frames.push(makePriorityQueueFrame(currentState, nextItems, {
-      activeIndices: [0],
-      visitedIndices: nextItems.map((_, index) => index).slice(1),
+      activeIndices: [selectedIndex],
+      visitedIndices: nextItems.map((_, index) => index).filter((index) => index !== selectedIndex),
+      opLabel: "La selección respeta prioridad y llegada",
     }));
     return frames;
   }
@@ -1402,13 +1527,41 @@ function buildPriorityQueueSimulationFrames(currentState, operationName, payload
         visitedIndices: visited.slice(0, -1),
       }));
     }
+    const removed = baseItems[minIndex];
+    frames.push(makePriorityQueueFrame(currentState, baseItems, {
+      activeIndices: [minIndex],
+      visitedIndices: visited.filter((index) => index !== minIndex),
+      tempDetachedValue: removed.value,
+      tempDetachedPriority: removed.priority,
+      tempDetachedTitle: "objetivo seleccionado",
+      opLabel: "desconectar objetivo de la cadena",
+    }));
     const remaining = baseItems.filter((_, idx) => idx !== minIndex);
-    frames.push(makePriorityQueueFrame(currentState, remaining, {}));
+    frames.push(makePriorityQueueFrame(currentState, remaining, {
+      tempDetachedValue: removed.value,
+      tempDetachedPriority: removed.priority,
+      tempDetachedTitle: "objetivo retirado",
+      tempActionLabel: "free(objetivo)",
+      opLabel: "Liberar sólo el candidato seleccionado",
+    }));
+    frames.push(makePriorityQueueFrame(currentState, remaining, {
+      activeIndices: remaining.length ? [remaining.reduce((best, item, index) => (
+        Number(item.priority) < Number(remaining[best].priority) ? index : best
+      ), 0)] : [],
+      opLabel: "Estado final tras desencolar",
+    }));
     return frames;
   }
 
   if (operationName === "frente" && baseItems.length) {
-    frames.push(makePriorityQueueFrame(currentState, baseItems, { activeIndices: [0] }));
+    const candidate = baseItems.reduce((best, item, index) => (
+      Number(item.priority) < Number(baseItems[best].priority) ? index : best
+    ), 0);
+    frames.push(makePriorityQueueFrame(currentState, baseItems, {
+      activeIndices: [candidate],
+      visitedIndices: baseItems.map((_, index) => index).filter((index) => index !== candidate),
+      opLabel: "Consulta: candidato de mayor prioridad",
+    }));
     return frames;
   }
 
@@ -1653,6 +1806,8 @@ function buildSequentialVisualFrames(modelId, visualState, operationName, payloa
   if (modelId === "priority_queue") {
     return buildPriorityQueueSimulationFrames(visualState, operationName, payload);
   }
+  if (modelId === "circular_list") return buildCircularListSimulationFrames(visualState, operationName, payload);
+  if (modelId === "sublist") return buildSublistSimulationFrames(visualState, operationName, payload);
   return [];
 }
 
@@ -1678,7 +1833,7 @@ function renderQueue(state, hint) {
   if (simulation && simulation.opLabel) {
     html += `<div class="viz-op-label">${escapeHtml(simulation.opLabel)}</div>`;
   }
-  html += '<div class="viz-row-label front">FRONT</div><div class="viz-row">';
+  html += '<div class="viz-row-label front">DELANTE</div><div class="viz-row">';
   items.forEach((item, index) => {
     const isFront = index === 0;
     const isBack = index === items.length - 1;
@@ -1710,7 +1865,7 @@ function renderQueue(state, hint) {
   if (!items.length) {
     html += '<div class="viz-row-label null">NULL</div>';
   }
-  html += '</div><div class="viz-row-tail"><span class="viz-row-label back">BACK</span></div>';
+  html += '</div><div class="viz-row-tail"><span class="viz-row-label back">ATRÁS</span></div>';
   if (hasTempNode || hasDetachedNode || (simulation && simulation.tempActionLabel)) {
     html += '<div class="viz-temp-node-wrap">';
     if (hasTempNode) {
@@ -1878,6 +2033,115 @@ function renderStack(state, hint) {
   return html;
 }
 
+function renderLinkedStack(state, hint) {
+  const items = state.items || [];
+  const simulation = hint && hint.simulation ? hint.simulation : null;
+  const activeIndices = new Set(simulation?.activeIndices || []);
+  const visitedIndices = new Set(simulation?.visitedIndices || []);
+  const pendingIndices = new Set(simulation?.pendingIndices || []);
+  const commitIndices = new Set(simulation?.commitIndices || []);
+  const tempNodeValue = simulation?.tempNodeValue;
+  const detachedValue = simulation?.tempDetachedValue;
+  const hasTempNode = tempNodeValue !== undefined && tempNodeValue !== null;
+  const hasDetachedNode = detachedValue !== undefined && detachedValue !== null;
+  const tempIsIntegrated = String(simulation?.tempNodeTitle || "").includes("integrado");
+  const nodeName = (index) => `N${index + 1}`;
+  const nodeClasses = (index) => {
+    const classes = [];
+    if (index === 0) classes.push("is-top");
+    if (activeIndices.has(index)) classes.push("sim-active");
+    else if (visitedIndices.has(index)) classes.push("sim-visited");
+    if (pendingIndices.has(index)) classes.push("sim-pending");
+    if (commitIndices.has(index)) classes.push("sim-commit");
+    return classes.join(" ");
+  };
+  const nodeMarkup = (value, index, classes = "", nextLabel) => {
+    const next = nextLabel === undefined
+      ? (index + 1 < items.length ? nodeName(index + 1) : "NULL")
+      : nextLabel;
+    return `<article class="stack-linked-node ${classes}"><div class="stack-linked-node-id">${escapeHtml(nodeName(index))}</div><div class="stack-linked-field"><span>DATO</span><strong>${escapeHtml(value)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${escapeHtml(next)}</strong></div></article>`;
+  };
+
+  let html = '<div class="stack-linked-wrap">';
+  if (simulation?.opLabel) {
+    html += `<p class="stack-linked-operation">${escapeHtml(simulation.opLabel)}</p>`;
+  }
+  html += '<div class="stack-linked-pointer"><strong>Pila</strong><span aria-hidden="true">↓</span><code>';
+  html += items.length ? nodeName(0) : "NULL";
+  html += '</code></div>';
+
+  if (!items.length) {
+    html += '<div class="stack-linked-null">Pila → NULL</div>';
+  } else {
+    html += '<div class="stack-linked-chain">';
+    items.forEach((item, index) => {
+      html += nodeMarkup(item.value, index, nodeClasses(index));
+      html += index + 1 < items.length
+        ? '<div class="stack-linked-arrow" aria-hidden="true">↓</div>'
+        : '<div class="stack-linked-arrow stack-linked-null-arrow" aria-hidden="true">↓&nbsp; NULL</div>';
+    });
+    html += '</div>';
+  }
+
+  if (hasTempNode && !tempIsIntegrated) {
+    const target = Number.isInteger(simulation?.tempLinkTargetIndex) && simulation.tempLinkTargetIndex >= 0
+      ? nodeName(simulation.tempLinkTargetIndex)
+      : "NULL";
+    html += `<aside class="stack-linked-aux"><p><strong>aux</strong> · ${escapeHtml(simulation?.tempNodeTitle || "nodo temporal")}</p>${nodeMarkup(tempNodeValue, items.length, "sim-pending", target)}</aside>`;
+  }
+  if (hasDetachedNode) {
+    const next = items.length ? nodeName(0) : "NULL";
+    html += `<aside class="stack-linked-aux is-detached"><p><strong>aux</strong> · ${escapeHtml(simulation?.tempDetachedTitle || "nodo retirado")}</p>${nodeMarkup(detachedValue, items.length, "sim-detached", next)}${simulation?.tempActionLabel ? `<small>${escapeHtml(simulation.tempActionLabel)}</small>` : ""}</aside>`;
+  } else if (simulation?.tempActionLabel) {
+    html += `<p class="stack-linked-note">${escapeHtml(simulation.tempActionLabel)}</p>`;
+  }
+  if (hint?.operation === "desapilar" && hint.result !== undefined && hint.result !== null) {
+    html += `<p class="viz-out">OUT: ${escapeHtml(hint.result)}</p>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderStructuralSequential(structureId, state, hint) {
+  const items = state.items || [];
+  const sim = hint?.simulation || {};
+  const active = new Set(sim.activeIndices || []);
+  const valueField = structureId === "queue" || structureId === "linked_list" || structureId === "circular_list" ? "NRO" : "DATO";
+  const node = (value, index, extra = "") => `<article class="stack-linked-node ${active.has(index) ? "sim-active" : ""} ${extra}"><div class="stack-linked-node-id">N${index + 1}</div><div class="stack-linked-field"><span>${valueField}</span><strong>${escapeHtml(value)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${escapeHtml(index + 1 < items.length ? `N${index + 2}` : (structureId === "circular_list" && items.length ? "HEAD" : "NULL"))}</strong></div></article>`;
+  if (structureId === "sublist") {
+    const parents = items.map((item, parentIndex) => {
+      const children = Array.isArray(item.children) ? item.children : [];
+      const parentRef = `P${parentIndex + 1}`;
+      const nextParent = parentIndex + 1 < items.length ? `P${parentIndex + 2}` : "NULL";
+      const childrenMarkup = children.length
+        ? children.map((child, childIndex) => {
+          const childRef = `H${parentIndex + 1}.${childIndex + 1}`;
+          const nextChild = childIndex + 1 < children.length ? `H${parentIndex + 1}.${childIndex + 2}` : "NULL";
+          return `<div class="stack-sublist-child-entry"><article class="stack-linked-node stack-sublist-child ${active.has(parentIndex) ? "sim-active" : ""}"><div class="stack-linked-node-id">${childRef}</div><div class="stack-linked-field"><span>HIJO</span><strong>${escapeHtml(child)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${nextChild}</strong></div></article>${childIndex + 1 < children.length ? '<div class="stack-sublist-child-link" aria-hidden="true"><span>→</span><small>sgte</small></div>' : '<div class="stack-sublist-child-null"><span>→</span><small>NULL</small></div>'}</div>`;
+        }).join("")
+        : '<div class="stack-sublist-empty">hijos → NULL</div>';
+
+      return `<section class="stack-sublist-parent ${active.has(parentIndex) ? "sim-active" : ""}"><div class="stack-sublist-parent-head"><span class="stack-sublist-parent-label">${parentRef}</span><article class="stack-linked-node stack-sublist-parent-node"><div class="stack-linked-field"><span>PADRE</span><strong>${escapeHtml(item.parent)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte padre</span><strong>→ ${nextParent}</strong></div></article></div><div class="stack-sublist-children" aria-label="Sublista de hijos del padre ${escapeHtml(item.parent)}"><div class="stack-sublist-children-label"><span>hijos</span><strong>→ ${children.length ? `H${parentIndex + 1}.1` : "NULL"}</strong></div>${childrenMarkup}</div></section>`;
+    }).join('<div class="stack-sublist-parent-link" aria-hidden="true"><span>↓</span><small>siguiente padre</small></div>');
+    const transient = sim.tempNodeValue !== undefined
+      ? `<aside class="stack-linked-aux"><p><strong>aux</strong> · hijo temporal</p><div class="stack-linked-node stack-sublist-child"><div class="stack-linked-node-id">aux</div><div class="stack-linked-field"><span>HIJO</span><strong>${escapeHtml(sim.tempNodeValue)}</strong></div><div class="stack-linked-field"><span>sgte</span><strong>→ ${sim.tempLinkTargetIndex >= 0 ? `H?.${sim.tempLinkTargetIndex + 1}` : "NULL"}</strong></div></div></aside>`
+      : sim.tempDetachedValue !== undefined
+        ? `<aside class="stack-linked-aux is-detached"><p><strong>aux</strong> · hijo retirado ${escapeHtml(sim.tempDetachedValue)}</p><small>${escapeHtml(sim.tempActionLabel || "desconectar y liberar")}</small></aside>`
+        : "";
+    return `<div class="stack-linked-wrap stack-sublist-wrap">${sim.opLabel ? `<p class="stack-linked-operation">${escapeHtml(sim.opLabel)}</p>` : ""}<div class="stack-linked-pointer"><strong>HEAD</strong><span>↓</span><code>${items.length ? "P1" : "NULL"}</code></div><div class="stack-sublist-parents">${parents || '<div class="stack-linked-null">HEAD → NULL</div>'}</div>${transient}</div>`;
+  }
+  const labels = structureId === "queue" || structureId === "priority_queue" ? `<div class="stack-linked-pointer"><strong>delante</strong><span>→</span><code>${items.length ? "N1" : "NULL"}</code></div><div class="stack-linked-pointer"><strong>atrás</strong><span>→</span><code>${items.length ? `N${items.length}` : "NULL"}</code></div>` : `<div class="stack-linked-pointer"><strong>HEAD</strong><span>→</span><code>${items.length ? "N1" : "NULL"}</code></div>${structureId === "linked_list" && sim.activeIndices?.length ? `<div class="stack-linked-pointer"><strong>actual</strong><span>→</span><code>N${sim.activeIndices[0] + 1}</code></div>${sim.activeIndices[0] > 0 ? `<div class="stack-linked-pointer"><strong>anterior</strong><span>→</span><code>N${sim.activeIndices[0]}</code></div>` : ""}` : ""}${structureId === "circular_list" ? `<div class="stack-linked-note">TAIL → HEAD (circular)</div>` : ""}`;
+  const priority = structureId === "priority_queue";
+  const chain = items.map((item, i) => priority ? `<article class="stack-linked-node stack-priority-node ${active.has(i) ? "sim-active" : ""}"><div class="stack-linked-node-id">N${i + 1}</div><div class="stack-linked-field"><span>VALOR</span><strong>${escapeHtml(item.value)}</strong></div><div class="stack-linked-field"><span>PRIORIDAD</span><strong>${escapeHtml(item.priority)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${i + 1 < items.length ? `N${i + 2}` : "NULL"}</strong></div></article>` : node(item.value, i)).join('<div class="stack-linked-arrow">↓</div>');
+  const priorityFields = structureId === "priority_queue" && sim.tempNodePriority !== undefined
+    ? `<div class="stack-linked-field"><span>PRIORIDAD</span><strong>${escapeHtml(sim.tempNodePriority)}</strong></div>` : "";
+  const detachedPriority = structureId === "priority_queue" && sim.tempDetachedPriority !== undefined
+    ? ` · prioridad ${escapeHtml(sim.tempDetachedPriority)}` : "";
+  const transientNodeClass = structureId === "priority_queue" ? " stack-priority-node" : "";
+  const transient = sim.tempNodeValue !== undefined ? `<aside class="stack-linked-aux"><p><strong>aux</strong> · nodo temporal</p><div class="stack-linked-node${transientNodeClass}"><div class="stack-linked-field"><span>${valueField}</span><strong>${escapeHtml(sim.tempNodeValue)}</strong></div>${priorityFields}<div class="stack-linked-field"><span>enlace</span><strong>→ ${sim.tempLinkTargetIndex >= 0 ? `N${sim.tempLinkTargetIndex + 1}` : "NULL"}</strong></div></div></aside>` : sim.tempDetachedValue !== undefined ? `<aside class="stack-linked-aux is-detached"><p><strong>aux</strong> · nodo retirado ${escapeHtml(sim.tempDetachedValue)}${detachedPriority}</p><small>${escapeHtml(sim.tempActionLabel || "desconectar y liberar")}</small></aside>` : "";
+  return `<div class="stack-linked-wrap">${sim.opLabel ? `<p class="stack-linked-operation">${escapeHtml(sim.opLabel)}</p>` : ""}${labels}<div class="stack-linked-chain">${chain || '<div class="stack-linked-null">NULL</div>'}</div>${transient}</div>`;
+}
+
 function renderSublist(state) {
   const items = state.items || [];
   if (!items.length) {
@@ -1975,7 +2239,11 @@ function renderVisualState(structureId, state, container, hint) {
   let inner = `<div class="viz-meta"><strong>${escapeHtml(state.title || "Estado")}</strong> | Tamano: ${escapeHtml(state.size ?? 0)}</div>`;
 
   if (structureId === "stack") {
-    inner += renderStack(state, hint);
+    inner += container.dataset.stackVisualMode === "linked"
+      ? renderLinkedStack(state, hint)
+      : renderStack(state, hint);
+  } else if (container.dataset.stackVisualMode === "linked" || container.dataset.structuralVisualMode === "nodes") {
+    inner += renderStructuralSequential(structureId, state, hint);
   } else if (structureId === "queue") {
     inner += renderQueue(state, hint);
   } else if (structureId === "priority_queue") {
@@ -1996,6 +2264,59 @@ function renderVisualState(structureId, state, container, hint) {
       drawCircularLoop(container);
     });
   }
+}
+
+function appendSequentialSemanticOverlay(structureId, state, container, frame) {
+  if (!container || !frame) return;
+  const items = Array.isArray(state?.items) ? state.items : [];
+  const chips = [];
+  const pointerNames = (frame.pointers || []).filter((item) => item.changed || item.target !== null).map((item) => item.name);
+  if (structureId === "stack") {
+    chips.push(`TOP → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, "Regla: LIFO");
+    if (pointerNames.includes("aux")) chips.push("auxiliar activo");
+    if (frame.concept === "free") chips.push("nodo desconectado → free");
+  } else if (structureId === "queue") {
+    chips.push(`DELANTE → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, `ATRÁS → ${items.length ? sequentialValue(items[items.length - 1].value) : "NULL"}`, "Regla: FIFO");
+    chips.push(items.length === 0 ? "estado vacío" : items.length === 1 ? "estado unitario" : "estado múltiple");
+  } else if (structureId === "priority_queue") {
+    const priorities = items.map((item) => String(item.priority));
+    const tie = priorities.some((value, index) => priorities.indexOf(value) !== index);
+    chips.push("enlaces: orden de llegada", "selección: prioridad mínima");
+    if (frame.concept === "condition") chips.push("candidato evaluado en el recorrido");
+    if (Number.isInteger(state.out_index) && state.out_index >= 0) chips.push(`seleccionado: llegada #${state.out_index + 1}`);
+    if (tie) chips.push("empate → gana quien llegó antes");
+  } else if (structureId === "linked_list") {
+    chips.push(`HEAD → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, "cadena alcanzable → NULL");
+    pointerNames.filter((name) => ["actual", "anterior", "p", "q", "t"].includes(name)).forEach((name) => chips.push(`${name} visible`));
+    if (frame.concept === "link") chips.push("enlace anterior → enlace nuevo");
+  } else if (structureId === "circular_list") {
+    chips.push(`HEAD → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, items.length ? "TAIL.next → HEAD ↻" : "cierre vacío");
+    if (frame.loop?.active) chips.push("salida: volver al inicio");
+  } else if (structureId === "sublist") {
+    chips.push("propiedad: padre → hijos", "ramas no activas: sin cambios");
+    if (frame.variables?.some((item) => item.name === "parent")) chips.push(`rama activa: padre ${sequentialValue(frame.variables.find((item) => item.name === "parent")?.value)}`);
+  }
+  const strip = document.createElement("div");
+  strip.className = "seq-semantic-strip";
+  strip.innerHTML = chips.map((chip) => `<span class="seq-semantic-chip">${escapeHtml(chip)}</span>`).join("") + `<span class="seq-invariant-status">✓ Invariante: ${escapeHtml(frame.invariant?.text || "verificado")}</span>`;
+  container.querySelector(".viz-canvas")?.appendChild(strip);
+}
+
+const SEQUENTIAL_COMPARISONS = Object.freeze({
+  "stack-queue": { left: "Pila", right: "Cola", steps: [["Entrada común", "10, 20, 30", "10, 20, 30"], ["Extremo de extracción", "TOP = 30", "FRONT = 10"], ["Resultado", "sale 30 (LIFO)", "sale 10 (FIFO)"]], conclusion: "Con las mismas inserciones, la pila retira el último elemento y la cola retira el primero." },
+  "queue-priority": { left: "Cola", right: "Cola de prioridad", steps: [["Llegada inmutable", "10(P3), 20(P1), 30(P2)", "10(P3), 20(P1), 30(P2)"], ["Selección", "FRONT = 10", "candidato = 20(P1)"], ["Resultado", "sale 10 por llegada", "sale 20 por prioridad"]], conclusion: "La cola física conserva llegada en ambos lados; solo la política de selección cambia." },
+  "linear-circular": { left: "Lista lineal", right: "Lista circular", steps: [["Nodos", "10 → 20 → 30", "10 → 20 → 30"], ["Último enlace", "30 → NULL", "30 → HEAD"], ["Terminación", "actual == NULL", "actual == HEAD otra vez"]], conclusion: "La circularidad cambia el último enlace y obliga a terminar al volver al inicio." },
+  "list-sublist": { left: "Lista", right: "Sublista", steps: [["Datos", "P1 → P2", "P1(h11) → P2(h21)"], ["Cambio aislado", "insertar tras P1", "insertar h12 en P1"], ["Resultado", "cambia cadena principal", "P2 y sus hijos no cambian"]], conclusion: "La sublista añade propiedad padre-hijo y protege las ramas no seleccionadas." },
+});
+
+function renderSequentialComparison(kind, cursor, grid, conclusion) {
+  const source = SEQUENTIAL_COMPARISONS[kind] || SEQUENTIAL_COMPARISONS["stack-queue"];
+  // Las dos vistas reciben copias profundas; ninguna puede mutar la secuencia base congelada.
+  const left = structuredClone(source.steps); const right = structuredClone(source.steps);
+  const index = Math.max(0, Math.min(Number(cursor) || 0, source.steps.length - 1));
+  const row = source.steps[index];
+  grid.innerHTML = `<article class="seq-compare-card"><h4>${escapeHtml(source.left)}</h4><p><strong>${escapeHtml(row[0])}</strong></p><p class="seq-compare-sequence">${escapeHtml(left[index][1])}</p></article><article class="seq-compare-card"><h4>${escapeHtml(source.right)}</h4><p><strong>${escapeHtml(row[0])}</strong></p><p class="seq-compare-sequence">${escapeHtml(right[index][2])}</p></article>`;
+  conclusion.textContent = `Conclusión guiada: ${source.conclusion}`;
 }
 
 function showMessage(text, success) {
@@ -2032,6 +2353,7 @@ function updateDidacticPanel(model, operationName) {
   renderDidacticCode(recordBox, didactic.record || "Estructura no documentada.", codeTitle);
   pseudoTitle.textContent = selectedLabel ? `${codeTitle}: ${selectedLabel}` : codeTitle;
   renderDidacticCode(pseudoBox, opMap[selectedOp] || fallback, codeTitle);
+  enhanceSequentialCodeNavigation(null);
 }
 
 function summarizePayload(payload) {
@@ -2240,14 +2562,44 @@ function initStructurePage(model) {
   const resetButton = byId("reset-button");
   const visualContainer = byId("visual-state");
   const historyBox = byId("action-history");
+  const simExecuteButton = byId("seq-sim-execute");
   const simPlayButton = byId("seq-sim-play");
+  const simPrepareButton = byId("seq-sim-prepare");
+  const simPauseButton = byId("seq-sim-pause");
+  const simStartButton = byId("seq-sim-start");
   const simPrevButton = byId("seq-sim-prev");
   const simStepButton = byId("seq-sim-step");
+  const simEndButton = byId("seq-sim-end");
+  const simRepeatButton = byId("seq-sim-repeat");
   const simStatus = byId("seq-sim-status");
   const stepToggle = byId("seq-step-toggle");
   const speedSlider = byId("seq-speed-slider");
   const speedValue = byId("seq-speed-value");
   const printfConsole = byId("seq-printf-console");
+  const restartExecutionButton = byId("seq-restart-execution");
+  const hideComments = byId("seq-hide-comments");
+  const pedagogySummary = byId("seq-pedagogy-summary");
+  // Las estructuras secuenciales usan siempre explicaciones de nivel intermedio.
+  const learningLevel = null;
+  const progressSlider = byId("seq-progress-slider");
+  const progressDetail = byId("seq-progress-detail");
+  const predictionsEnabled = byId("seq-predictions-enabled");
+  const practiceMode = byId("seq-practice-mode");
+  const predictionPanel = byId("seq-prediction-panel");
+  const predictionQuestion = byId("seq-prediction-question");
+  const predictionChoices = byId("seq-prediction-choices");
+  const predictionFeedback = byId("seq-prediction-feedback");
+  const predictionHint = byId("seq-prediction-hint");
+  const predictionSkip = byId("seq-prediction-skip");
+  const conceptProgressBox = byId("seq-concept-progress");
+  const resetLearningButton = byId("seq-reset-learning");
+  const compareKind = byId("seq-compare-kind");
+  const compareRun = byId("seq-compare-run");
+  const compareProgress = byId("seq-compare-progress");
+  const compareGrid = byId("seq-compare-grid");
+  const compareConclusion = byId("seq-compare-conclusion");
+  const exportImageButton = byId("seq-export-image");
+  const exportSummaryButton = byId("seq-export-summary");
 
   if (!form || !operationSelect || !inputsContainer || !visualContainer) {
     return;
@@ -2271,8 +2623,34 @@ function initStructurePage(model) {
     frames: [],
     totalSteps: 0,
   };
+  const lastVisualRender = {
+    state: model.visual_state,
+    hint: null,
+  };
+  function renderCurrentVisual(state, hint) {
+    lastVisualRender.state = state;
+    lastVisualRender.hint = hint;
+    renderVisualState(model.id, state, visualContainer, hint);
+  }
   let playbackSpeed = 1;
   let playbackSpeedSetting = 0;
+  let currentPedagogyFrame = null;
+  let predictionPendingIndex = -1;
+  let predictionHintLevel = 0;
+  const presentationKey = `sequential-presentation:${model.id}`;
+  const learningProgressKey = `sequential-learning-progress:${model.id}`;
+  function readLearningProgress() { try { return JSON.parse(window.sessionStorage.getItem(learningProgressKey) || '{"attempts":0,"correct":0,"concepts":{}}'); } catch (_error) { return { attempts: 0, correct: 0, concepts: {} }; } }
+  let learningProgress = readLearningProgress();
+  function renderLearningProgress() { if (conceptProgressBox) conceptProgressBox.textContent = `Progreso conceptual de esta sesión: ${learningProgress.correct}/${learningProgress.attempts} predicciones correctas · ${Object.keys(learningProgress.concepts || {}).length} conceptos practicados.`; }
+  function saveLearningProgress() { try { window.sessionStorage.setItem(learningProgressKey, JSON.stringify(learningProgress)); } catch (_error) { /* optional */ } renderLearningProgress(); }
+  function readPresentation() {
+    try { return JSON.parse(window.sessionStorage.getItem(presentationKey) || "{}"); } catch (_error) { return {}; }
+  }
+  function writePresentation(extra = {}) {
+    const current = operationCatalog.get(operationSelect.value);
+    const payload = current ? collectPayload(current) : {};
+    try { window.sessionStorage.setItem(presentationKey, JSON.stringify({ operation: operationSelect.value, payload, level: learningLevel?.value || "intermediate", cursor: traceCursor, ...extra })); } catch (_error) { /* optional */ }
+  }
 
   function speedSettingToMultiplier(setting) {
     return Math.pow(2, setting);
@@ -2303,21 +2681,8 @@ function initStructurePage(model) {
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
-      const rawMessages = extractPrintfMessagesFromLine(step.line_text);
-      rawMessages.forEach((msg) => {
-        // Evita ruido visual de formatos printf no resueltos (ej. "%d", "%s").
-        if (hasPrintfFormatSpecifier(msg)) {
-          return;
-        }
-        pushUniqueConsoleLine(out, `[printf] ${msg}`);
-      });
-    }
-    // Refleja el printf del main al finalizar la simulacion de la operacion.
-    if (limit >= trace.steps.length - 1) {
-      const finalMessage = String(trace.message || "").trim();
-      if (finalMessage) {
-        pushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
-      }
+      const emitted = Array.isArray(step.console) ? step.console : [];
+      emitted.forEach((line) => pushUniqueConsoleLine(out, line));
     }
     return out;
   }
@@ -2332,26 +2697,38 @@ function initStructurePage(model) {
       statusElement: simStatus,
       counterElement: byId("seq-sim-counter"),
       renderState: (stateSnapshot, stepMeta) => {
-        const hasFrames = Array.isArray(visualTraceState.frames) && visualTraceState.frames.length > 0;
-        if (hasFrames && stepMeta && Number.isInteger(stepMeta.step_index)) {
-          const frameIndex = resolveFrameIndexForStep(
+        // El backend conserva el estado canónico; la vista enlazada añade solo
+        // metadatos temporales de la traza (aux, sgte y liberación) para enseñar
+        // la misma transición que ejecuta el código C.
+        const runtimeCursor = tracePlayer?.getCursor?.() ?? -1;
+        const stepIndex = Math.max(0, runtimeCursor + 1);
+        const frameIndex = (visualContainer.dataset.stackVisualMode === "linked" || visualContainer.dataset.structuralVisualMode === "nodes")
+          ? resolveFrameIndexForStep(
             model.id,
             visualTraceState.operationName,
-            stepMeta.step_index,
-            visualTraceState.totalSteps || 0,
+            stepIndex,
+            visualTraceState.totalSteps,
             visualTraceState.frames,
-            { lineText: stepMeta.line_text || "" },
-          );
-          if (frameIndex >= 0 && frameIndex < visualTraceState.frames.length) {
-            const frame = visualTraceState.frames[frameIndex];
-            renderVisualState(model.id, frame.state, visualContainer, {
-              operation: visualTraceState.operationName,
-              simulation: frame.simulation,
-            });
-            return;
-          }
-        }
-        renderVisualState(model.id, stateSnapshot, visualContainer, null);
+            stepMeta,
+          )
+          : -1;
+        // El último paso siempre vuelve al snapshot canónico del intérprete.
+        // Así, paso a paso, «Ejecutar operación» desde un cursor intermedio y
+        // el modo rápido terminan en exactamente el mismo estado del TAD.
+        const isFinalTraceStep = visualTraceState.totalSteps > 0
+          && stepIndex >= visualTraceState.totalSteps - 1;
+        const visualFrame = !isFinalTraceStep && frameIndex >= 0
+          ? visualTraceState.frames[frameIndex]
+          : null;
+        renderCurrentVisual(
+          visualFrame?.state || stateSnapshot,
+          visualFrame ? {
+            operation: visualTraceState.operationName,
+            payload: visualTraceState.payload,
+            simulation: visualFrame.simulation,
+          } : null,
+        );
+        appendSequentialSemanticOverlay(model.id, stateSnapshot, visualContainer, stepMeta?.pedagogy);
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
@@ -2360,6 +2737,12 @@ function initStructurePage(model) {
           ? event.trace.steps.length
           : 0;
         refreshPrintfConsole(cursor);
+        const step = event && event.step ? event.step : null;
+        enhanceSequentialCodeNavigation(step && Number.isInteger(step.line_index) ? step.line_index : null);
+        if (step && step.pedagogy) { currentPedagogyFrame = step.pedagogy; renderSequentialPedagogyFrame(currentPedagogyFrame, learningLevel?.value || "intermediate"); }
+        if (progressSlider) { progressSlider.max = String(traceTotalSteps); progressSlider.value = String(Math.max(0, cursor + 1)); progressSlider.disabled = traceTotalSteps === 0; }
+        if (progressDetail) progressDetail.textContent = `Paso ${Math.max(0, cursor + 1)} · ${step?.pedagogy?.call_stack?.[0]?.function || "sin función"} · ${step?.pedagogy?.phase?.label || "sin fase"} · ${step?.pedagogy?.concept || "sin concepto"}`;
+        writePresentation({ cursor });
         setSimulationButtonsEnabled();
       },
     })
@@ -2373,6 +2756,10 @@ function initStructurePage(model) {
   } else {
     setPlaybackSpeed(0);
   }
+  initSequentialResponsiveWorkspace();
+  renderLearningProgress();
+  hideComments?.addEventListener("change", () => enhanceSequentialCodeNavigation(null));
+  restartExecutionButton?.addEventListener("click", () => { tracePlayer?.reset(); setSimulationButtonsEnabled(); });
 
   visibleOperations.forEach((operation) => {
     const option = document.createElement("option");
@@ -2381,13 +2768,17 @@ function initStructurePage(model) {
     operationSelect.appendChild(option);
   });
   operationSelect.disabled = visibleOperations.length === 0;
+  const savedPresentation = readPresentation();
+  if (savedPresentation.operation && operationCatalog.has(savedPresentation.operation)) selected = operationCatalog.get(savedPresentation.operation);
   if (selected) {
     operationSelect.value = selected.name;
   }
 
+  if (learningLevel) learningLevel.value = ["basic", "intermediate", "advanced"].includes(savedPresentation.level) ? savedPresentation.level : "intermediate";
   renderOperationInputs(selected, inputsContainer);
+  if (savedPresentation.payload && selected) selected.inputs.forEach((field) => { const input = byId(`field-${field.name}`); if (input && Object.prototype.hasOwnProperty.call(savedPresentation.payload, field.name)) input.value = savedPresentation.payload[field.name]; });
   updateDidacticPanel(model, selected ? selected.name : "");
-  renderVisualState(model.id, model.visual_state, visualContainer, null);
+  renderCurrentVisual(model.visual_state, null);
 
   (model.history || []).forEach((step) => {
     const opName = String(step.operation || "");
@@ -2408,8 +2799,125 @@ function initStructurePage(model) {
   renderActionHistory(actionHistory, historyBox, model.id, operationCatalog);
   refreshPrintfConsole(-1);
 
+  function initStackPilotPanels() {
+    const currentViewButton = byId("stack-view-current");
+    const linkedViewButton = byId("stack-view-linked");
+    // La preferencia es de presentación por TAD; no debe mezclarse entre pantallas
+    // ni formar parte del historial de operaciones.
+    const stackViewStorageKey = `sequential-structural-visual-mode:${model.id}`;
+    const setStackVisualMode = (mode) => {
+      const linked = mode === "linked";
+      visualContainer.dataset.stackVisualMode = linked ? "linked" : "current";
+      currentViewButton?.classList.toggle("is-active", !linked);
+      linkedViewButton?.classList.toggle("is-active", linked);
+      currentViewButton?.setAttribute("aria-pressed", String(!linked));
+      linkedViewButton?.setAttribute("aria-pressed", String(linked));
+      try { window.sessionStorage.setItem(stackViewStorageKey, linked ? "linked" : "current"); } catch (_error) { /* optional */ }
+      renderCurrentVisual(lastVisualRender.state, lastVisualRender.hint);
+    };
+    let savedVisualMode = "current";
+    try { savedVisualMode = window.sessionStorage.getItem(stackViewStorageKey) || "current"; } catch (_error) { /* optional */ }
+    setStackVisualMode(savedVisualMode);
+    currentViewButton?.addEventListener("click", () => setStackVisualMode("current"));
+    linkedViewButton?.addEventListener("click", () => setStackVisualMode("linked"));
+    const predictionStage = document.querySelector(".is-stack-pilot > .seq-predict");
+    const predictionOptIn = byId("seq-predictions-enabled");
+    if (predictionOptIn) predictionOptIn.checked = false;
+    predictionStage?.remove();
+    document.querySelector(".is-stack-pilot > .seq-compare")?.remove();
+    const prepareStage = document.querySelector(".is-stack-pilot > .seq-prepare");
+    const executeStage = document.querySelector(".is-stack-pilot > .seq-execute");
+    if (prepareStage && executeStage && executeStage.parentElement !== prepareStage) {
+      prepareStage.appendChild(executeStage);
+    }
+    const actionGroup = document.querySelector(".seq-execute .actions");
+    const technicalControls = document.querySelector(".seq-execute > .didactic-technical");
+    if (actionGroup && !actionGroup.querySelector(".seq-pilot-step-toggle")) {
+      ["seq-sim-prepare", "seq-sim-play", "seq-sim-pause", "seq-sim-start", "seq-sim-end", "seq-sim-repeat", "seq-restart-execution", "reset-button"].forEach((id) => byId(id)?.remove());
+      technicalControls?.remove();
+      const stepToggleButton = document.createElement("button");
+      stepToggleButton.type = "button";
+      stepToggleButton.className = "btn secondary seq-pilot-step-toggle";
+      stepToggleButton.textContent = "Paso a paso";
+      const stepNavigation = document.createElement("div");
+      stepNavigation.className = "seq-pilot-step-navigation";
+      stepNavigation.hidden = true;
+      stepNavigation.append(byId("seq-sim-prev"), byId("seq-sim-step"));
+      stepToggleButton.setAttribute("aria-expanded", "false");
+      stepToggleButton.addEventListener("click", () => {
+        const expanded = stepNavigation.hidden;
+        stepNavigation.hidden = !expanded;
+        stepToggleButton.setAttribute("aria-expanded", String(expanded));
+        stepToggleButton.textContent = expanded ? "Cerrar paso a paso" : "Paso a paso";
+      });
+      const traceStatus = document.createElement("div");
+      traceStatus.className = "seq-pilot-trace-status";
+      ["seq-progress-detail", "seq-sim-counter", "seq-sim-status"].forEach((id) => {
+        const item = byId(id);
+        if (item) traceStatus.appendChild(item);
+      });
+      actionGroup.append(stepToggleButton, stepNavigation, traceStatus);
+    }
+    const storageKey = "sequential-stack-pilot-panels-v2";
+    let saved = {};
+    try { saved = JSON.parse(window.sessionStorage.getItem(storageKey) || "{}"); } catch (_error) { saved = {}; }
+    [
+      ["seq-predict-title", "seq-predict", "Predecir"],
+      ["seq-understand-title", "seq-understand", "Comprender"],
+      ["seq-compare-title", "seq-compare", "Comparar"],
+      ["seq-reflect-title", "seq-reflect", "Resultados de la ejecución"],
+    ].forEach(([headingId, sectionClass, label]) => {
+      const heading = byId(headingId);
+      const section = heading?.closest(`.${sectionClass}`);
+      if (!heading || !section || heading.querySelector(".seq-pilot-toggle")) return;
+      section.id = `stack-pilot-${sectionClass}`;
+      section.classList.add("seq-pilot-panel");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "seq-pilot-toggle";
+      button.setAttribute("aria-controls", section.id);
+      const setExpanded = (expanded) => {
+        section.classList.toggle("seq-pilot-collapsed", !expanded);
+        button.setAttribute("aria-expanded", String(expanded));
+        button.textContent = expanded ? "Ocultar" : "Mostrar";
+        saved[sectionClass] = expanded;
+        try { window.sessionStorage.setItem(storageKey, JSON.stringify(saved)); } catch (_error) { /* optional */ }
+      };
+      button.setAttribute("aria-label", `Mostrar u ocultar ${label}`);
+      button.addEventListener("click", () => setExpanded(section.classList.contains("seq-pilot-collapsed")));
+      heading.appendChild(button);
+      setExpanded(saved[sectionClass] === true);
+    });
+  }
+
+  initStackPilotPanels();
+
+  function initSiblingSequentialViews() {
+    if (model.id === "stack") return;
+    const current = byId("seq-view-current"); const structural = byId("seq-view-structural");
+    const modeKey = `sequential-structural-mode:${model.id}`;
+    const setMode = (mode) => {
+      const nodes = mode === "nodes";
+      visualContainer.dataset.structuralVisualMode = nodes ? "nodes" : "current";
+      current?.classList.toggle("is-active", !nodes); structural?.classList.toggle("is-active", nodes);
+      current?.setAttribute("aria-pressed", String(!nodes)); structural?.setAttribute("aria-pressed", String(nodes));
+      try { sessionStorage.setItem(modeKey, nodes ? "nodes" : "current"); } catch (_error) { /* optional */ }
+      renderCurrentVisual(lastVisualRender.state, lastVisualRender.hint);
+    };
+    try { setMode(sessionStorage.getItem(modeKey) || "current"); } catch (_error) { setMode("current"); }
+    current?.addEventListener("click", () => setMode("current")); structural?.addEventListener("click", () => setMode("nodes"));
+    const heading = byId("seq-reflect-title"); const section = heading?.closest(".seq-reflect");
+    if (heading && section && !heading.querySelector(".seq-pilot-toggle")) {
+      const button = document.createElement("button"); button.type = "button"; button.className = "seq-pilot-toggle";
+      const apply = (expanded) => { section.classList.toggle("seq-pilot-collapsed", !expanded); button.textContent = expanded ? "Ocultar" : "Mostrar"; button.setAttribute("aria-expanded", String(expanded)); };
+      button.addEventListener("click", () => apply(section.classList.contains("seq-pilot-collapsed"))); heading.appendChild(button); apply(false);
+    }
+  }
+  initSiblingSequentialViews();
+
   let pendingExecution = false;
   let traceSelectionKey = "";
+  let traceExecutionRevision = 0;
   let traceCursor = -1;
   let traceTotalSteps = 0;
   let lockStepUntilInput = false;
@@ -2451,14 +2959,15 @@ function initStructurePage(model) {
       : traceTotalSteps;
     const hasProgress = hasTrace && runtimeCursor >= 0;
     const atEnd = hasTrace && runtimeTotalSteps > 0 && runtimeCursor >= runtimeTotalSteps - 1;
-    if (simPlayButton) {
-      simPlayButton.disabled = busy || !canExecute;
-    }
+    if (simExecuteButton) simExecuteButton.disabled = busy || !canExecute;
+    if (simPlayButton) simPlayButton.disabled = busy || !stepMode || !hasTrace || predictionPendingIndex >= 0;
+    [simPauseButton, simStartButton, simEndButton, simRepeatButton, restartExecutionButton].forEach((button) => { if (button) button.disabled = busy || !stepMode || !hasTrace; });
+    if (simPrepareButton) simPrepareButton.disabled = busy || !stepMode || !hasTrace;
     if (simPrevButton) {
       simPrevButton.disabled = busy || !stepMode || !hasProgress;
     }
     if (simStepButton) {
-      simStepButton.disabled = busy || !stepMode || !canExecute || (hasTrace && atEnd) || lockStepUntilInput;
+      simStepButton.disabled = busy || !stepMode || !hasTrace || atEnd || lockStepUntilInput || predictionPendingIndex >= 0;
     }
     if (speedSlider) {
       speedSlider.disabled = busy || !stepMode;
@@ -2476,9 +2985,63 @@ function initStructurePage(model) {
     visualTraceState.payload = {};
     visualTraceState.frames = [];
     visualTraceState.totalSteps = 0;
-    tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    tracePlayer?.clear(message || "Ejecuta una operación para crear una traza; después podrás preparar o reproducir.");
+    predictionPendingIndex = -1; if (predictionPanel) predictionPanel.hidden = true;
     refreshPrintfConsole(-1);
     setSimulationButtonsEnabled();
+  }
+
+  function predictionForStep(step) {
+    const frame = step?.pedagogy;
+    if (!frame) return null;
+    const pointerChanged = (frame.pointers || []).some((item) => item.changed);
+    const extremeChanged = (frame.state_changes || []).some((item) => ["empty", "size", "items"].includes(item));
+    if (!["condition", "link", "free"].includes(frame.concept) && !pointerChanged && !extremeChanged) return null;
+    if (frame.concept === "condition") return { question: `¿La condición «${frame.condition?.substituted || frame.condition?.source}» resulta verdadera?`, expected: frame.condition?.result === true, hint: ["Observa los valores sustituidos.", "Compara ambos operandos de la condición.", `La ruta registrada ${frame.condition?.result ? "entra" : "no entra"} al cuerpo.`] };
+    const changes = (frame.state_changes || []).length > 0 || pointerChanged || frame.concept === "free";
+    const label = frame.concept === "free" ? "liberará y hará inalcanzable un nodo" : frame.concept === "link" ? "reasignará un enlace" : "cambiará un extremo o el tamaño";
+    return { question: `¿Esta instrucción ${label}?`, expected: changes, hint: ["Compara el estado anterior con el siguiente frame.", `Concepto actual: ${frame.concept}.`, changes ? "Sí existe una transición registrada." : "El estado observable permanece estable."] };
+  }
+
+  async function advancePendingPrediction(answered) {
+    if (predictionPendingIndex < 0) return;
+    predictionPendingIndex = -1; predictionHintLevel = 0;
+    if (predictionPanel && !answered) predictionPanel.hidden = true;
+    if (answered) predictionChoices?.querySelectorAll("button").forEach((button) => { button.disabled = true; });
+    const advanced = await tracePlayer?.step();
+    visualContainer.classList.remove("seq-practice-hidden");
+    if (advanced && tracePlayer.isAtEnd()) lockStepUntilInput = true;
+    if (!answered && simStatus) simStatus.textContent = "Continuaste sin responder; revisa la explicación del frame.";
+    setSimulationButtonsEnabled();
+  }
+
+  function requestPrediction(step, index) {
+    const prompt = predictionForStep(step);
+    if (!prompt || !predictionsEnabled?.checked) return false;
+    // Predecir acompaña la traza, pero no debe interrumpir su avance.
+    predictionPendingIndex = -1; predictionHintLevel = 0;
+    const predictionStage = predictionPanel?.closest(".seq-predict");
+    if (predictionStage?.classList.contains("seq-pilot-collapsed")) {
+      predictionStage.classList.remove("seq-pilot-collapsed");
+      const toggle = predictionStage.querySelector(".seq-pilot-toggle");
+      if (toggle) { toggle.setAttribute("aria-expanded", "true"); toggle.textContent = "Ocultar"; }
+      try {
+        const savedPanels = JSON.parse(window.sessionStorage.getItem("sequential-stack-pilot-panels-v2") || "{}");
+        savedPanels.seqPredict = true;
+        window.sessionStorage.setItem("sequential-stack-pilot-panels-v2", JSON.stringify(savedPanels));
+      } catch (_error) { /* optional storage */ }
+    }
+    predictionPanel.hidden = false; predictionQuestion.textContent = prompt.question; predictionFeedback.textContent = "Selecciona una respuesta o continúa sin responder.";
+    predictionChoices.innerHTML = '<button class="btn" type="button" data-answer="true">Sí</button><button class="btn secondary" type="button" data-answer="false">No</button>';
+    if (practiceMode?.checked) visualContainer.classList.add("seq-practice-hidden");
+    predictionChoices.querySelectorAll("[data-answer]").forEach((button) => button.addEventListener("click", () => {
+      const answer = button.dataset.answer === "true"; const correct = answer === prompt.expected;
+      learningProgress.attempts += 1; if (correct) learningProgress.correct += 1; learningProgress.concepts[step.pedagogy.concept] = (learningProgress.concepts[step.pedagogy.concept] || 0) + 1; saveLearningProgress();
+      predictionFeedback.textContent = correct ? "Correcto. Continúa la traza para observar el efecto real." : `No coincide. ${prompt.hint[2]}`;
+      predictionChoices.querySelectorAll("button").forEach((choice) => { choice.disabled = true; });
+    }));
+    predictionHint.onclick = () => { predictionFeedback.textContent = prompt.hint[Math.min(predictionHintLevel, prompt.hint.length - 1)]; predictionHintLevel += 1; };
+    return false;
   }
 
   function collectPayload(current) {
@@ -2492,6 +3055,25 @@ function initStructurePage(model) {
 
   function buildSelectionKey(current, payload) {
     return `${current.name}::${JSON.stringify(payload)}`;
+  }
+
+  function hasPreparedTraceForCurrentSelection() {
+    const current = operationCatalog.get(operationSelect.value);
+    if (!current || !tracePlayer?.hasTrace()) return false;
+    const selectionKey = buildSelectionKey(current, collectPayload(current));
+    return traceSelectionKey.startsWith(`${selectionKey}::execution:`);
+  }
+
+  function requirePreparedTrace() {
+    if (!isStepByStepEnabled()) {
+      if (simStatus) simStatus.textContent = "Activa el modo paso a paso y ejecuta una operación para preparar una traza.";
+      return false;
+    }
+    if (!hasPreparedTraceForCurrentSelection()) {
+      if (simStatus) simStatus.textContent = "No hay una traza preparada para estos datos. Ejecuta la operación primero.";
+      return false;
+    }
+    return true;
   }
 
   async function executeOperationAndLoadTrace(current, payload, selectionKey, options) {
@@ -2514,6 +3096,11 @@ function initStructurePage(model) {
       showMessage(data.message, Boolean(data.success));
       updateDidacticPanel(model, current.name);
 
+      if (!data.success) {
+        if (simStatus) simStatus.textContent = "La operación no se ejecutó; el TAD y la traza anterior permanecen sin cambios.";
+        return data;
+      }
+
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
       if (hasExecutionTrace) {
@@ -2532,7 +3119,8 @@ function initStructurePage(model) {
         consoleState.trace = data.execution_trace;
         consoleState.fallbackMessage = "";
         tracePlayer.loadTrace(data.execution_trace);
-        traceSelectionKey = selectionKey;
+        traceExecutionRevision += 1;
+        traceSelectionKey = `${selectionKey}::execution:${traceExecutionRevision}`;
       } else {
         visualTraceState.operationName = "";
         visualTraceState.payload = {};
@@ -2541,45 +3129,13 @@ function initStructurePage(model) {
         consoleState.trace = null;
         consoleState.fallbackMessage = data.message || "(sin salida printf en esta ruta)";
         refreshPrintfConsole(-1);
-        const allowFallbackPlayback = !(options && options.allowFallbackPlayback === false) && !finalOnly;
-        if (allowFallbackPlayback) {
-          const visualFrames = buildSequentialVisualFrames(
-            model.id,
-            model.visual_state,
-            current.name,
-            payload,
-          );
-          await simulateDidacticExecution({
-            operation: current.name,
-            payload,
-            sizeBefore: Number(model?.visual_state?.size || 0),
-            playbackSpeed,
-            onStep: (stepIndex, totalSteps, stepMeta) => {
-              if (!visualFrames.length) {
-                return;
-              }
-              const frameIndex = resolveFrameIndexForStep(
-                model.id,
-                current.name,
-                stepIndex,
-                totalSteps,
-                visualFrames,
-                stepMeta,
-              );
-              if (frameIndex < 0) {
-                return;
-              }
-              const frame = visualFrames[frameIndex];
-              renderVisualState(model.id, frame.state, visualContainer, {
-                operation: current.name,
-                simulation: frame.simulation,
-              });
-            },
-          });
-        } else if (simStatus) {
+        if (simStatus && !finalOnly) {
           simStatus.textContent = "No hay traza paso a paso disponible para esta operacion.";
         }
         traceSelectionKey = "";
+        tracePlayer?.clear(finalOnly
+          ? "Modo rápido: se aplicó el resultado final de la operación."
+          : "No hay una traza disponible para esta operación.");
       }
 
       const payloadText = summarizePayload(payload);
@@ -2597,16 +3153,17 @@ function initStructurePage(model) {
       renderActionHistory(actionHistory, historyBox, model.id, operationCatalog);
       if (data.visual_state) {
         model.visual_state = data.visual_state;
-        if (!hasExecutionTrace) {
-          renderVisualState(model.id, data.visual_state, visualContainer, {
-            operation: current.name,
-            payload,
-            result: data.result,
-            result_priority: data.result_priority,
-          });
-          if (simStatus && finalOnly) {
-            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
-          }
+        // Executing a real operation must leave the canonical final state visible.
+        // The trace is loaded for later playback; its initial snapshot is rendered
+        // only when the learner explicitly prepares, replays, or navigates it.
+        renderCurrentVisual(data.visual_state, {
+          operation: current.name,
+          payload,
+          result: data.result,
+          result_priority: data.result_priority,
+        });
+        if (simStatus && finalOnly) {
+          simStatus.textContent = "Modo rápido: se aplicó el resultado final de la operación.";
         }
       }
       return data;
@@ -2622,61 +3179,75 @@ function initStructurePage(model) {
     }
   }
 
-  async function ensureTraceForCurrentSelection(options) {
+  async function executeNewOperation() {
     const current = operationCatalog.get(operationSelect.value);
     if (!current) {
       showMessage("Debes seleccionar una operacion valida.", false);
       return null;
     }
+    if (!isCurrentSelectionValid()) {
+      form.reportValidity?.();
+      showMessage("Completa los datos requeridos antes de ejecutar.", false);
+      return null;
+    }
     const payload = collectPayload(current);
     const selectionKey = buildSelectionKey(current, payload);
-    if (tracePlayer && tracePlayer.hasTrace() && traceSelectionKey === selectionKey) {
-      return { current, payload, selectionKey };
-    }
-
-    const data = await executeOperationAndLoadTrace(current, payload, selectionKey, options);
+    tracePlayer?.pause(true);
+    const data = await executeOperationAndLoadTrace(current, payload, selectionKey, {
+      finalOnly: !isStepByStepEnabled(),
+    });
     if (!data) {
       return null;
     }
-    return { current, payload, selectionKey };
+    if (data.success && simStatus && isStepByStepEnabled()) {
+      simStatus.textContent = "Traza lista: pulsa «Siguiente paso» para recorrer el código instrucción por instrucción.";
+    }
+    return data;
   }
 
-  invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+  async function executeOrFinishCurrentTrace() {
+    const hasActiveTrace = hasPreparedTraceForCurrentSelection()
+      && tracePlayer
+      && tracePlayer.getCursor() >= 0
+      && !tracePlayer.isAtEnd();
+    if (hasActiveTrace) {
+      tracePlayer.seek(tracePlayer.getTotalSteps() - 1);
+      lockStepUntilInput = true;
+      if (simStatus) simStatus.textContent = "Ejecución completada desde la instrucción actual.";
+      setSimulationButtonsEnabled();
+      return null;
+    }
+    return executeNewOperation();
+  }
+
+  invalidateTrace("Ejecuta una operación para crear una traza; después podrás preparar o reproducir.");
 
   operationSelect.addEventListener("change", () => {
     selected = operationCatalog.get(operationSelect.value) || null;
     renderOperationInputs(selected, inputsContainer);
     updateDidacticPanel(model, selected ? selected.name : "");
-    invalidateTrace("Operacion cambiada. Ejecuta nuevamente.");
+    invalidateTrace("Operación cambiada. Ejecuta una nueva operación para crear su traza.");
+    writePresentation({ cursor: -1 });
   });
 
   inputsContainer.addEventListener("input", () => {
-    invalidateTrace("Entradas cambiadas. Ejecuta nuevamente.");
+    invalidateTrace("Entradas cambiadas. Ejecuta una nueva operación para crear su traza.");
+    writePresentation({ cursor: -1 });
   });
 
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (!isStepByStepEnabled()) {
-      const current = operationCatalog.get(operationSelect.value);
-      if (!current) {
-        return;
-      }
-      const payload = collectPayload(current);
-      const selectionKey = buildSelectionKey(current, payload);
-      await executeOperationAndLoadTrace(current, payload, selectionKey, {
-        finalOnly: true,
-        allowFallbackPlayback: false,
-      });
-      return;
-    }
-    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: true });
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
-      return;
-    }
-    await tracePlayer.playFromStart();
+  learningLevel?.addEventListener("change", () => {
+    renderSequentialPedagogyFrame(currentPedagogyFrame, learningLevel.value);
+    writePresentation();
   });
+
+  form.addEventListener("submit", async (event) => { event.preventDefault(); await executeNewOperation(); });
+
+  simExecuteButton?.addEventListener("click", executeOrFinishCurrentTrace);
 
   resetButton?.addEventListener("click", async () => {
+    if (!window.confirm("¿Restablecer el TAD y borrar su historial de esta sesión?")) {
+      return;
+    }
     const response = await fetch(form.dataset.resetUrl, { method: "POST" });
     const data = await response.json();
     showMessage(data.message, Boolean(data.success));
@@ -2685,30 +3256,58 @@ function initStructurePage(model) {
     renderActionHistory(actionHistory, historyBox, model.id, operationCatalog);
     if (data.visual_state) {
       model.visual_state = data.visual_state;
-      renderVisualState(model.id, data.visual_state, visualContainer, null);
+      renderCurrentVisual(data.visual_state, null);
     }
-    invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+    invalidateTrace("TAD restablecido. Ejecuta una operación para crear una traza.");
     refreshPrintfConsole(-1);
   });
 
+  simPrepareButton?.addEventListener("click", () => {
+    if (!requirePreparedTrace()) return;
+    tracePlayer.seek(-1);
+    lockStepUntilInput = false;
+    if (simStatus) simStatus.textContent = "Traza preparada. Predice o inicia la reproducción.";
+    setSimulationButtonsEnabled();
+  });
+
+  simPauseButton?.addEventListener("click", () => { tracePlayer?.pause(); setSimulationButtonsEnabled(); });
+  simStartButton?.addEventListener("click", () => { tracePlayer?.seek(-1); lockStepUntilInput = false; setSimulationButtonsEnabled(); });
+  simEndButton?.addEventListener("click", () => {
+    if (!requirePreparedTrace()) return;
+    tracePlayer.seek(tracePlayer.getTotalSteps() - 1); lockStepUntilInput = true; setSimulationButtonsEnabled();
+  });
+  simRepeatButton?.addEventListener("click", async () => { if (!requirePreparedTrace()) return; lockStepUntilInput = false; await tracePlayer.playFromStart(); setSimulationButtonsEnabled(); });
+  progressSlider?.addEventListener("input", () => { if (tracePlayer?.hasTrace()) { tracePlayer.seek(Number(progressSlider.value) - 1); lockStepUntilInput = tracePlayer.isAtEnd(); setSimulationButtonsEnabled(); } });
+  predictionSkip?.addEventListener("click", () => { if (predictionPanel) predictionPanel.hidden = true; visualContainer.classList.remove("seq-practice-hidden"); });
+  resetLearningButton?.addEventListener("click", () => { learningProgress = { attempts: 0, correct: 0, concepts: {} }; saveLearningProgress(); });
+  practiceMode?.addEventListener("change", () => { if (!practiceMode.checked) visualContainer.classList.remove("seq-practice-hidden"); });
+  const refreshComparison = () => renderSequentialComparison(compareKind?.value, compareProgress?.value, compareGrid, compareConclusion);
+  compareRun?.addEventListener("click", refreshComparison);
+  compareProgress?.addEventListener("input", refreshComparison);
+  compareKind?.addEventListener("change", () => { if (compareProgress) compareProgress.value = "0"; refreshComparison(); });
+  exportImageButton?.addEventListener("click", async () => {
+    try { const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({ target: visualContainer, quality: 0.9, scale: 1 }); const link = document.createElement("a"); link.href = exported.dataUrl; link.download = exported.suggestedName; link.click(); }
+    catch (error) { showMessage(error.message || "No se pudo exportar la captura.", false); }
+  });
+  exportSummaryButton?.addEventListener("click", () => {
+    const current = operationCatalog.get(operationSelect.value);
+    const summary = { schema: "sequential-learning-summary/v1", structure: model.id, operation: operationSelect.value, payload: current ? collectPayload(current) : {}, level: learningLevel?.value, cursor: tracePlayer?.getCursor() ?? -1, total_steps: tracePlayer?.getTotalSteps() ?? 0, frame: currentPedagogyFrame, state: model.visual_state, practice: learningProgress, comparison: compareKind?.value };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(summary, null, 2)], { type: "application/json" })); const link = document.createElement("a"); link.href = url; link.download = `${model.id}-resumen.json`; link.click(); URL.revokeObjectURL(url);
+  });
+  document.addEventListener("keydown", async (event) => {
+    if (!event.altKey || event.ctrlKey || event.metaKey || ["INPUT", "SELECT", "TEXTAREA"].includes(event.target?.tagName)) return;
+    const key = event.key.toLowerCase();
+    if (key === "arrowright") { event.preventDefault(); simStepButton?.click(); }
+    else if (key === "arrowleft") { event.preventDefault(); tracePlayer?.prev(); }
+    else if (key === "home") { event.preventDefault(); tracePlayer?.seek(-1); }
+    else if (key === "end") { event.preventDefault(); if (tracePlayer?.hasTrace()) tracePlayer.seek(tracePlayer.getTotalSteps() - 1); }
+    else if (key === "p") { event.preventDefault(); tracePlayer?.pause(); }
+    else if (key === "r") { event.preventDefault(); if (tracePlayer?.hasTrace()) await tracePlayer.playFromStart(); }
+    setSimulationButtonsEnabled();
+  });
+
   simPlayButton?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
-      const current = operationCatalog.get(operationSelect.value);
-      if (!current) {
-        return;
-      }
-      const payload = collectPayload(current);
-      const selectionKey = buildSelectionKey(current, payload);
-      await executeOperationAndLoadTrace(current, payload, selectionKey, {
-        finalOnly: true,
-        allowFallbackPlayback: false,
-      });
-      return;
-    }
-    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: true });
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
-      return;
-    }
+    if (!requirePreparedTrace()) return;
     await tracePlayer.playFromStart();
   });
 
@@ -2724,13 +3323,10 @@ function initStructurePage(model) {
   });
 
   simStepButton?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
-      return;
-    }
-    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: false });
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
-      return;
-    }
+    if (!requirePreparedTrace()) return;
+    const nextIndex = tracePlayer.getCursor() + 1;
+    const nextStep = consoleState.trace?.steps?.[nextIndex];
+    if (requestPrediction(nextStep, nextIndex)) { setSimulationButtonsEnabled(); return; }
     const advanced = await tracePlayer.step();
     if (advanced && tracePlayer.isAtEnd()) {
       lockStepUntilInput = true;
@@ -2741,8 +3337,8 @@ function initStructurePage(model) {
   stepToggle?.addEventListener("change", () => {
     invalidateTrace(
       isStepByStepEnabled()
-        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
-        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
+        ? "Modo paso a paso activado. Ejecuta una operación para crear una traza."
+        : "Modo rápido activado. Ejecutar operación aplicará solo el resultado final.",
     );
   });
 
