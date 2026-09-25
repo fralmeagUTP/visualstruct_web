@@ -707,33 +707,6 @@ def test_playwright_hierarchical_comparison_practice_keyboard_and_accessibility(
             browser.close()
 
 
-def test_playwright_sequential_level_and_guided_example_preserve_trace() -> None:
-    """Changing explanation level keeps the same cursor and guided LIFO state."""
-    playwright_mod = pytest.importorskip("playwright.sync_api")
-    with _live_server_url() as base_url:
-        with playwright_mod.sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page = browser.new_page()
-            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
-            page.check("#didactic-mode-switch")
-            _wait_didactic_mode(page, "full")
-            page.select_option("#seq-guided-example", "lifo")
-            page.click("#seq-load-example")
-            page.wait_for_function("() => (document.querySelector('#visual-state')?.textContent || '').includes('30')")
-            assert "último insertado" in (page.text_content("#seq-example-lesson") or "")
-            assert "30" in (page.text_content("#visual-state") or "")
-            assert page.input_value("#operation-select") == "desapilar"
-            page.click("#seq-sim-execute")
-            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
-            page.click("#seq-sim-step")
-            _wait_status_contains(page, "#seq-sim-counter", "Paso: 1/")
-            cursor_before = page.text_content("#seq-sim-counter")
-            page.select_option("#seq-learning-level", "advanced")
-            assert page.text_content("#seq-sim-counter") == cursor_before
-            assert "Semántica C" in (page.text_content("#seq-pedagogy-summary") or "")
-            browser.close()
-
-
 def test_playwright_sequential_prediction_progress_and_navigation() -> None:
     """Practice mode predicts a real frame and exposes complete navigation."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
@@ -765,6 +738,45 @@ def test_playwright_sequential_prediction_progress_and_navigation() -> None:
             page.wait_for_function("() => document.querySelector('#seq-progress-slider').value === document.querySelector('#seq-progress-slider').max")
             page.click("#seq-sim-start")
             assert page.input_value("#seq-progress-slider") == "0"
+            browser.close()
+
+
+def test_playwright_stack_compact_pilot_keeps_primary_workspace_visible() -> None:
+    """The stack pilot uses the requested order without changing other structures."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1366, "height": 768})
+            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+
+            assert page.locator(".is-stack-pilot").count() == 1
+            headings = page.evaluate(
+                """() => [
+                    document.querySelector('#seq-prepare-title')?.innerText,
+                    document.querySelector('#seq-visual-title')?.innerText,
+                    document.querySelector('.seq-code-toolbar h3')?.innerText,
+                    document.querySelector('#seq-execute-title')?.innerText,
+                    document.querySelector('#seq-predict-title')?.innerText,
+                ]""",
+            )
+            assert headings[:4] == [
+                "1 Preparar",
+                "2 Ejecutar y visualizar",
+                "3 Relacionar con C",
+                "4 Controlar la ejecución",
+            ]
+            assert headings[4].startswith("5\nPredecir")
+            assert page.locator(".seq-predict").evaluate("el => el.classList.contains('seq-pilot-collapsed')")
+            assert page.locator(".seq-understand").evaluate("el => el.classList.contains('seq-pilot-collapsed')")
+            assert page.locator(".seq-compare").evaluate("el => el.classList.contains('seq-pilot-collapsed')")
+            assert page.locator(".seq-execute").evaluate("el => el.getBoundingClientRect().bottom <= window.innerHeight")
+
+            page.get_by_role("button", name="Mostrar u ocultar Predecir").click()
+            assert not page.locator(".seq-predict").evaluate("el => el.classList.contains('seq-pilot-collapsed')")
+
+            page.goto(f"{base_url}/sequential/queue", wait_until="networkidle")
+            assert page.locator(".is-stack-pilot").count() == 0
             browser.close()
 
 

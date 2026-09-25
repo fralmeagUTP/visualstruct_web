@@ -150,17 +150,17 @@ function buildHashOperationInputs(operation, container) {
   });
 }
 
-function renderHashEntries(entries, showAddresses) {
+function renderHashEntries(entries, showAddresses, examinedKeys) {
   if (!Array.isArray(entries) || !entries.length) {
     return "<span class=\"hash-empty\">vacio</span>";
   }
 
   return entries
-    .map((entry) => `<span class="hash-entry"><span class="hash-node-address">${showAddresses?hashEscape(entry.address||"—"):"nodo"}</span><span><code>clave</code> = ${hashEscape(entry.key)}</span><span><code>valor</code> = ${hashEscape(entry.value)}</span>${showAddresses?`<span><code>siguiente</code> = ${hashEscape(entry.next||"NULL")}</span>`:""}</span>`)
+    .map((entry) => `<span class="hash-entry ${examinedKeys.has(Number(entry.key)) ? "is-examined" : ""}"><span class="hash-node-address">${showAddresses?hashEscape(entry.address||"—"):"nodo"}</span><span><code>clave</code> = ${hashEscape(entry.key)}</span><span><code>valor</code> = ${hashEscape(entry.value)}</span>${showAddresses?`<span><code>siguiente</code> = ${hashEscape(entry.next||"NULL")}</span>`:""}</span>`)
     .join("<span class=\"hash-sep\"> -> </span>");
 }
 
-function renderHashState(state, container) {
+function renderHashState(state, container, frame) {
   if (!state || !container) {
     return;
   }
@@ -169,6 +169,11 @@ function renderHashState(state, container) {
   const allBuckets = Array.isArray(state.buckets) ? state.buckets : [];
   const filter = hashById("hash-bucket-filter")?.value || "all";
   const showAddresses = hashById("hash-show-addresses")?.checked !== false;
+  const frameBucket = frame?.chain?.bucket;
+  const activeBucket = frameBucket === null || frameBucket === undefined || frameBucket === ""
+    ? null
+    : Number(frameBucket);
+  const examinedKeys = new Set((frame?.chain?.examined || []).map((key) => Number(key)));
   const buckets = filter === "occupied" ? allBuckets.filter((bucket)=>bucket.size>0) : allBuckets;
   const minimap=hashById("hash-minimap");
   if(minimap)minimap.innerHTML=allBuckets.map((bucket)=>`<span class="hash-minimap-cell ${bucket.size?"is-occupied":""}" title="Bucket ${hashEscape(bucket.index)}: longitud ${hashEscape(bucket.size)}"><span class="sr-only">${hashEscape(bucket.index)}</span></span>`).join("");
@@ -192,7 +197,7 @@ function renderHashState(state, container) {
   } else {
     html += "<div class=\"hash-buckets-wrap\">";
     buckets.forEach((bucket) => {
-      const bucketClass = bucket.collisions > 0 ? "hash-bucket has-collision" : "hash-bucket";
+      const bucketClass = ["hash-bucket", bucket.collisions > 0 ? "has-collision" : "", Number.isInteger(activeBucket) && Number(bucket.index) === activeBucket ? "is-active-bucket" : ""].filter(Boolean).join(" ");
       const collisionBadge = bucket.collisions > 0
         ? `<span class="hash-collision-badge">colisiones: ${hashEscape(bucket.collisions)}</span>`
         : "";
@@ -203,7 +208,7 @@ function renderHashState(state, container) {
         `<span class="hash-bucket-size">n=${hashEscape(bucket.size)}</span>` +
         `${collisionBadge}</div>`
       );
-      html += `<div class="hash-bucket-body"><span class="hash-head-pointer">buckets[${hashEscape(bucket.index)}] →</span>${renderHashEntries(bucket.entries,showAddresses)}${bucket.entries?.length?'<span class="hash-null">→ NULL</span>':""}</div>`;
+      html += `<div class="hash-bucket-body"><span class="hash-head-pointer">buckets[${hashEscape(bucket.index)}] →</span>${renderHashEntries(bucket.entries,showAddresses,examinedKeys)}${bucket.entries?.length?'<span class="hash-null">→ NULL</span>':""}</div>`;
       html += "</div>";
     });
     html += "</div>";
@@ -421,6 +426,8 @@ function initHashPage(model) {
   const simPlayButton = hashById("hash-sim-play");
   const simPrevButton = hashById("hash-sim-prev");
   const simStepButton = hashById("hash-sim-step");
+  const simNextButton = hashById("hash-sim-next");
+  const stepNavigation = hashById("hash-step-navigation");
   const simPauseButton = hashById("hash-sim-pause"),simStartButton=hashById("hash-sim-start"),simEndButton=hashById("hash-sim-end"),simRepeatButton=hashById("hash-sim-repeat"),simProgress=hashById("hash-sim-progress"),simDetail=hashById("hash-sim-detail");
   const stepToggle = hashById("hash-step-toggle");
   const simStatus = hashById("hash-sim-status");
@@ -475,7 +482,7 @@ function initHashPage(model) {
       counterElement: hashById("hash-sim-counter"),
       renderState: (stateSnapshot,stepMeta) => {
         visualState = stateSnapshot;
-        renderHashState(visualState, visualContainer);
+        renderHashState(visualState, visualContainer, stepMeta?.pedagogy);
         if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderHashPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
       },
       onCursorChange: (event) => {
@@ -484,6 +491,7 @@ function initHashPage(model) {
         const step=event?.step;enhanceHashCodeNavigation(Number.isInteger(step?.line_index)?step.line_index:null);try{sessionStorage.setItem(presentationKey,JSON.stringify({level:learningLevel?.value||"intermediate",cursor}));}catch(_error){}
         if(simProgress){const total=tracePlayer?.getTotalSteps?.()||0;simProgress.max=String(total);simProgress.value=String(Math.max(0,cursor+1));simProgress.disabled=!total;}
         if(simDetail){const frame=step?.pedagogy;simDetail.textContent=frame?`Función: ${frame.source?.function||"—"} · fase: ${frame.phase?.label||"—"} · concepto: ${frame.concept||"—"} · bucket: ${frame.chain?.bucket??"—"} · nodo: ${frame.pointers?.actual||"NULL"} · transición: ${frame.memory?.transition||"estable"}`:"Sin traza cargada.";}
+        setSimulationButtonsEnabled();
       },
     })
     : null;
@@ -545,11 +553,22 @@ function initHashPage(model) {
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const busy = pendingExecution;
     const canExecute = isCurrentSelectionValid();
+    const cursor = tracePlayer?.getCursor?.() ?? -1;
+    const total = tracePlayer?.getTotalSteps?.() ?? 0;
+    if (stepNavigation) {
+      stepNavigation.hidden = !hasTrace;
+    }
+    if (simStepButton) {
+      simStepButton.hidden = hasTrace;
+    }
     if (simPlayButton) {
       simPlayButton.disabled = busy || !canExecute;
     }
     if (simPrevButton) {
-      simPrevButton.disabled = busy || !stepMode || !hasTrace;
+      simPrevButton.disabled = busy || !stepMode || !hasTrace || cursor < 0;
+    }
+    if (simNextButton) {
+      simNextButton.disabled = busy || !stepMode || !hasTrace || cursor >= total - 1;
     }
     if (simStepButton) {
       simStepButton.disabled = busy || !stepMode || !canExecute;
@@ -561,6 +580,12 @@ function initHashPage(model) {
     consoleState.trace = null;
     consoleState.fallbackMessage = "";
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    if (stepNavigation) {
+      stepNavigation.hidden = true;
+    }
+    if (simStepButton) {
+      simStepButton.hidden = false;
+    }
     refreshHashPrintfConsole(-1);
     setSimulationButtonsEnabled();
   }
@@ -715,7 +740,7 @@ function initHashPage(model) {
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
-    await tracePlayer.playFromStart();
+    await tracePlayer.play();
   });
 
   resetButton?.addEventListener("click", async () => {
@@ -748,7 +773,7 @@ function initHashPage(model) {
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
-    await tracePlayer.playFromStart();
+    await tracePlayer.play();
   });
 
   simPrevButton?.addEventListener("click", () => {
@@ -767,6 +792,16 @@ function initHashPage(model) {
       return;
     }
     await tracePlayer.step();
+    setSimulationButtonsEnabled();
+  });
+
+  simNextButton?.addEventListener("click", async () => {
+    const ready = await ensureTraceForCurrentSelection();
+    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
+      return;
+    }
+    await tracePlayer.step();
+    setSimulationButtonsEnabled();
   });
 
   stepToggle?.addEventListener("change", () => {

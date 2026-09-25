@@ -2123,6 +2123,112 @@ function renderHierHistory(history, container, modelId, didactic) {
   }).join("");
 }
 
+function initHierSimplifiedWorkspace() {
+  const prepareTitle = hById("hier-prepare-title");
+  const visualTitle = hById("hier-visual-title");
+  const codeTitle = hById("op-pseudocode-title");
+  const controlTitle = hById("hier-control-title");
+  const understandTitle = hById("hier-understand-title");
+  const reflectTitle = hById("hier-reflect-title");
+  const prepareStage = prepareTitle?.closest("section");
+  const controlStage = controlTitle?.closest("section");
+  const understandStage = understandTitle?.closest("section");
+  const resultsStage = reflectTitle?.closest("section");
+
+  hById("hier-predict-title")?.closest("section")?.remove();
+  hById("hier-compare-title")?.closest("section")?.remove();
+  ["hier-learning-level", "hier-guided-example"].forEach((id) => {
+    hById(id)?.closest("label")?.remove();
+  });
+  hById("hier-load-example")?.remove();
+  hById("hier-example-lesson")?.remove();
+
+  if (prepareTitle) prepareTitle.innerHTML = "<span>1</span> Preparar y controlar la ejecución";
+  if (visualTitle) visualTitle.innerHTML = "<span>2</span> Visualizar y ejecutar";
+  const codeHeading = codeTitle?.closest("section")?.querySelector(".hier-code-toolbar h3");
+  if (codeHeading) codeHeading.innerHTML = "<span>3</span> Relacionar con código C";
+  if (understandTitle) understandTitle.innerHTML = "<span>4</span> Comprender";
+  if (reflectTitle) reflectTitle.innerHTML = "<span>5</span> Resultados de la ejecución";
+
+  if (prepareStage && controlStage) {
+    const actions = controlStage.querySelector(".actions");
+    const stepToggle = hById("hier-step-toggle");
+    const counter = hById("hier-sim-counter");
+    const status = hById("hier-sim-status");
+    ["hier-prepare", "hier-sim-pause", "hier-sim-home", "hier-sim-end", "hier-sim-repeat", "hier-restart-execution"].forEach((id) => hById(id)?.remove());
+    const executeButton = hById("hier-sim-play");
+    const previousButton = hById("hier-sim-prev");
+    const nextButton = hById("hier-sim-step");
+    if (executeButton) executeButton.textContent = "Ejecutar operación";
+    if (nextButton) nextButton.textContent = "Siguiente";
+    if (previousButton) previousButton.textContent = "Anterior";
+    if (actions && executeButton && previousButton && nextButton) {
+      const stepModeButton = document.createElement("button");
+      stepModeButton.id = "hier-step-mode";
+      stepModeButton.type = "button";
+      stepModeButton.className = "btn secondary hier-step-mode";
+      stepModeButton.textContent = "Paso a paso";
+      stepModeButton.setAttribute("aria-pressed", "false");
+      const stepControls = document.createElement("div");
+      stepControls.id = "hier-step-controls";
+      stepControls.className = "hier-step-controls";
+      stepControls.hidden = true;
+      stepControls.append(previousButton, nextButton);
+      executeButton.after(stepModeButton, stepControls);
+    }
+    if (stepToggle) {
+      stepToggle.checked = false;
+      stepToggle.classList.add("sr-only");
+      stepToggle.setAttribute("tabindex", "-1");
+      stepToggle.setAttribute("aria-hidden", "true");
+    }
+    const technical = controlStage.querySelector(".didactic-technical");
+    prepareStage.append(actions, stepToggle, counter, status);
+    technical?.remove();
+    controlStage.remove();
+  }
+
+  function makeCollapsible(stage, title, contentId) {
+    if (!stage || !title || hById(contentId)) return;
+    const content = document.createElement("div");
+    content.id = contentId;
+    content.className = "hier-panel-content";
+    content.hidden = true;
+    Array.from(stage.children).forEach((child) => {
+      if (child !== title) content.appendChild(child);
+    });
+    const heading = document.createElement("div");
+    heading.className = "hier-panel-heading";
+    const button = document.createElement("button");
+    button.id = contentId.replace("-content", "-toggle");
+    button.type = "button";
+    button.className = "btn secondary hier-panel-toggle";
+    button.textContent = "Mostrar";
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-controls", contentId);
+    button.addEventListener("click", () => {
+      const visible = content.hidden;
+      content.hidden = !visible;
+      button.textContent = visible ? "Ocultar" : "Mostrar";
+      button.setAttribute("aria-expanded", String(visible));
+    });
+    heading.append(title, button);
+    stage.append(heading, content);
+  }
+
+  const tadDetails = resultsStage?.querySelector("details");
+  if (tadDetails) {
+    const tadPanel = document.createElement("section");
+    tadPanel.className = "didactic-technical";
+    const heading = document.createElement("h4");
+    heading.textContent = "Estructura del TAD";
+    tadPanel.append(heading, ...Array.from(tadDetails.children).filter((child) => child.tagName !== "SUMMARY"));
+    tadDetails.replaceWith(tadPanel);
+  }
+  makeCollapsible(understandStage, understandTitle, "hier-understand-content");
+  makeCollapsible(resultsStage, reflectTitle, "hier-results-content");
+}
+
 function initHierPage(model) {
   const form = hById("operation-form");
   const operationSelect = hById("operation-select");
@@ -2152,6 +2258,24 @@ function initHierPage(model) {
   if (!form || !operationSelect || !inputsContainer || !visualContainer) {
     return;
   }
+
+  initHierSimplifiedWorkspace();
+  const stepModeButton = hById("hier-step-mode");
+  const stepControls = hById("hier-step-controls");
+  function syncStepModeUi() {
+    const active = Boolean(stepToggle?.checked);
+    if (stepControls) stepControls.hidden = !active;
+    if (stepModeButton) {
+      stepModeButton.setAttribute("aria-pressed", String(active));
+      stepModeButton.classList.toggle("is-active", active);
+    }
+  }
+  stepModeButton?.addEventListener("click", () => {
+    if (!stepToggle) return;
+    stepToggle.checked = !stepToggle.checked;
+    stepToggle.dispatchEvent(new Event("change"));
+  });
+  syncStepModeUi();
 
   const pageState = {
     modelId: model.id,
@@ -2475,7 +2599,7 @@ function initHierPage(model) {
     pageState.pendingExecution = null;
     pageState.rnTimeline = [];
     pageState.rnTimelineIndex = -1;
-    tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    tracePlayer?.clear(message || "Usa Ejecutar operación o activa Paso a paso.");
     repaint();
     refreshHierPrintfConsole(-1);
     setSimulationButtonsEnabled();
@@ -2592,7 +2716,7 @@ function initHierPage(model) {
 
   repaint();
   refreshHierPrintfConsole(-1);
-  invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+  invalidateTrace("Usa Ejecutar operación o activa Paso a paso.");
 
   operationSelect.addEventListener("change", () => {
     selected = operations.find((op) => op.name === operationSelect.value) || null;
@@ -2808,25 +2932,23 @@ function initHierPage(model) {
       model.visual_state = data.visual_state;
       applyState(data.visual_state, null);
     }
-    invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+    invalidateTrace("Usa Ejecutar operación o activa Paso a paso.");
   });
 
   simPlayButton?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
-      const current = operations.find((op) => op.name === operationSelect.value);
-      if (!current) {
-        return;
-      }
-      const payload = collectPayload(current);
-      const selectionKey = buildSelectionKey(current, payload);
-      await executeOperationAndLoadTrace(current, payload, selectionKey, { finalOnly: true });
+    const current = operations.find((op) => op.name === operationSelect.value);
+    if (!current) {
       return;
     }
-    const ready = await ensureTraceForCurrentSelection();
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
+    const payload = collectPayload(current);
+    const selectionKey = buildSelectionKey(current, payload);
+    const total = tracePlayer?.getTotalSteps?.() || 0;
+    const cursor = tracePlayer?.getCursor?.() ?? -1;
+    if (tracePlayer?.hasTrace?.() && traceSelectionKey === selectionKey && total > 0 && cursor < total - 1) {
+      tracePlayer.seek(total - 1);
       return;
     }
-    await tracePlayer.playFromStart();
+    await executeOperationAndLoadTrace(current, payload, selectionKey, { finalOnly: true });
   });
 
   simPrevButton?.addEventListener("click", () => {
@@ -2870,10 +2992,11 @@ function initHierPage(model) {
   if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches&&speedSlider){speedSlider.value="-2";setPlaybackSpeed(speedSlider.value);}
 
   stepToggle?.addEventListener("change", () => {
+    syncStepModeUi();
     invalidateTrace(
       isStepByStepEnabled()
-        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
-        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
+        ? "Modo paso a paso activado. Usa Siguiente para recorrer el código."
+        : "Modo paso a paso cerrado. Ejecutar operación aplicará el resultado final.",
     );
   });
 

@@ -5,16 +5,8 @@
   <h2>{{ help_data.title }}</h2>
   <h3>Descripcion del TAD</h3>
   <p>{{ help_data.tad_description }}</p>
-
-  <h3>Controles de ejecucion paso a paso</h3>
-  <ul>
-    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra traza completa; desactivado aplica resultado final.</li>
-    <li>Controles disponibles: <strong>Reproducir</strong>, <strong>Anterior paso</strong>, <strong>Siguiente paso</strong>, <strong>Reiniciar</strong>.</li>
-    <li>Velocidad de simulacion: slider de <strong>-2x</strong> a <strong>+2x</strong>.</li>
-    <li>El resultado final del modo rapido debe coincidir con el ultimo paso del modo interpretado.</li>
-  </ul>
-  <h3>Atajos de teclado</h3>
-  <ul><li><kbd>Alt</kbd> + <kbd>→</kbd>: siguiente.</li><li><kbd>Alt</kbd> + <kbd>←</kbd>: anterior.</li><li><kbd>Alt</kbd> + <kbd>Inicio</kbd>/<kbd>Fin</kbd>: inicio/final.</li><li><kbd>Alt</kbd> + <kbd>P</kbd>: pausar.</li><li><kbd>Alt</kbd> + <kbd>R</kbd>: reproducir o repetir.</li></ul>
+  {% include "help/_source_download.html" %}
+  {% include "help/_execution_guide.html" %}
 
   <h3>Fichas por algoritmo</h3>
   {% for algorithm in help_data.supported_algorithms %}

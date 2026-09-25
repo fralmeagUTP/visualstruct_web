@@ -12,6 +12,28 @@ class CCodeService:
 
     _DOCS_TADS_C = Path(__file__).resolve().parents[2] / "docs" / "tads_C"
 
+    # Only these canonical teaching assets may be exposed for download.  Keeping
+    # this mapping here avoids ever deriving a filesystem path from a request.
+    _DOWNLOADABLE_TADS: dict[str, dict[str, object]] = {
+        "stack": {"source": "tad_pila.c", "header": "tad_pila.h", "label": "Pila"},
+        "queue": {"source": "tad_cola.c", "header": "tad_cola.h", "label": "Cola"},
+        "priority_queue": {"source": "tad_cola_prioridad.c", "header": "tad_cola_prioridad.h", "label": "Cola de prioridad"},
+        "linked_list": {"source": "tad_lista.c", "header": "tad_lista.h", "label": "Lista enlazada"},
+        "circular_list": {"source": "tad_lista_circular.c", "header": "tad_lista_circular.h", "label": "Lista circular"},
+        "sublist": {"source": "tad_sublista.c", "header": "tad_sublista.h", "label": "Sublista"},
+        "abb": {"source": "tad_abb.c", "header": "tad_abb.h", "label": "ABB"},
+        "avl": {"source": "tad_avl.c", "header": "tad_avl.h", "label": "AVL"},
+        "red_black": {"source": "tad_rojo_negro.c", "header": "tad_rojo_negro.h", "label": "Árbol rojo-negro"},
+        "binary_heap": {"source": "tad_monticulo_binario.c", "header": "tad_monticulo_binario.h", "label": "Montículo binario"},
+        "graph": {
+            "source": "tad_grafo.c", "header": "tad_grafo.h", "label": "Grafo",
+            "dependencies": ("queue",),
+            "note": "Los recorridos del grafo usan el TAD Cola; descarga también sus archivos si vas a compilar los recorridos.",
+        },
+        "hash_table": {"source": "tad_tabla_hash.c", "header": "tad_tabla_hash.h", "label": "Tabla hash"},
+        "sorting_array": {"source": "tad_ordenamiento.c", "header": "tad_ordenamiento.h", "label": "Métodos de ordenamiento"},
+    }
+
     _LINKED_LIST_OPERATION_MAP: dict[str, str] = {
         "insertar_inicio": "lista_insertar_inicio",
         "insertar_final": "lista_insertar_final",
@@ -162,6 +184,35 @@ class CCodeService:
         if structure_id == "sorting_array":
             return cls._build_sorting_data()
         return None
+
+    @classmethod
+    def get_downloadable_tad(cls, structure_id: str) -> dict[str, Any] | None:
+        """Return safe metadata for a complete, canonical TAD source download."""
+        item = cls._DOWNLOADABLE_TADS.get(structure_id)
+        if item is None:
+            return None
+        source = cls._DOCS_TADS_C / str(item["source"])
+        header = cls._DOCS_TADS_C / str(item["header"])
+        if not source.is_file() or not header.is_file():
+            return None
+        return {
+            "label": str(item["label"]),
+            "source_name": source.name,
+            "header_name": header.name,
+            "dependencies": tuple(item.get("dependencies", ())),
+            "note": str(item.get("note", "")),
+        }
+
+    @classmethod
+    def get_downloadable_tad_file(cls, structure_id: str, file_kind: str) -> Path | None:
+        """Return one allowlisted TAD file for a Help download, never a request path."""
+        if file_kind not in {"source", "header"}:
+            return None
+        item = cls._DOWNLOADABLE_TADS.get(structure_id)
+        if item is None:
+            return None
+        path = cls._DOCS_TADS_C / str(item[file_kind])
+        return path if path.is_file() else None
 
     @classmethod
     def _build_linked_list_data(cls) -> dict[str, Any]:

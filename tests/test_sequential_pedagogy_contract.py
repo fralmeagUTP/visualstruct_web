@@ -69,15 +69,17 @@ def test_trace_boundaries_are_exactly_reversible(client) -> None:
 
 def test_sequential_page_exposes_learning_regions_and_mobile_workspace(client) -> None:
     html = client.get("/sequential/stack").get_data(as_text=True)
-    for label in ("Preparar", "Predecir", "Controlar la ejecución", "Comprender", "Relacionar con C", "Reflexionar"):
+    for label in ("Preparar y controlar la ejecución", "Predecir", "Controles de ejecución", "Comprender", "Relacionar con código C", "Resultados de la ejecución"):
         assert label in html
     assert 'id="seq-visual-region"' in html
     assert 'id="seq-code-region"' in html
     assert 'data-seq-tab="visual"' in html and 'data-seq-tab="code"' in html
     assert 'id="seq-hide-comments"' in html and 'id="seq-function-list"' in html
     assert 'id="seq-restart-execution"' in html
-    for element_id in ("seq-learning-level", "seq-guided-example", "seq-condition-view", "seq-variable-view", "seq-pointer-view", "seq-heap-view", "seq-call-view", "seq-sim-execute", "seq-sim-prepare", "seq-sim-pause", "seq-sim-start", "seq-sim-end", "seq-sim-repeat", "seq-progress-slider", "seq-prediction-panel", "seq-practice-mode", "seq-reset-learning"):
+    for element_id in ("seq-condition-view", "seq-variable-view", "seq-pointer-view", "seq-heap-view", "seq-call-view", "seq-sim-execute", "seq-sim-prepare", "seq-sim-pause", "seq-sim-start", "seq-sim-end", "seq-sim-repeat", "seq-progress-slider", "seq-prediction-panel", "seq-practice-mode", "seq-reset-learning"):
         assert f'id="{element_id}"' in html
+    assert 'id="seq-learning-level"' not in html
+    assert 'id="seq-guided-example"' not in html
 
 
 def test_priority_help_describes_arrival_order_and_selection(client) -> None:
@@ -91,4 +93,16 @@ def test_sequential_javascript_exposes_per_tad_semantics_and_active_learning() -
     for marker in ("Regla: LIFO", "Regla: FIFO", "empate → gana quien llegó antes", "TAIL.next → HEAD ↻", "ramas no activas: sin cambios"):
         assert marker in source
     for marker in ("requestPrediction", "learningProgressKey", "tracePlayer.seek", "seq-practice-hidden"):
+        assert marker in source
+
+
+def test_stack_page_keeps_current_and_linked_visual_modes_available(client) -> None:
+    """Pila offers an alternate linked-node diagram without replacing its current view."""
+    html = client.get("/sequential/stack").get_data(as_text=True)
+    assert 'id="stack-view-current"' in html
+    assert 'id="stack-view-linked"' in html
+    assert "Vista actual" in html and "Nodos enlazados" in html
+
+    source = (Path(__file__).parents[1] / "static" / "js" / "sequential.js").read_text(encoding="utf-8")
+    for marker in ("renderLinkedStack", "stack-linked-field", "aux->sgte = *p", "tempDetachedValue"):
         assert marker in source

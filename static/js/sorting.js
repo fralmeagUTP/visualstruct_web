@@ -302,6 +302,8 @@ function initSortingPage(model) {
   const playButton = sById("sorting-sim-play");
   const stepButton = sById("sorting-sim-step");
   const prevButton = sById("sorting-sim-prev");
+  const nextButton = sById("sorting-sim-next");
+  const stepNavigation = sById("sorting-step-navigation");
   const speedSlider = sById("sorting-speed-slider");
   const speedValue = sById("sorting-speed-value");
   const prepareButton = sById("sorting-sim-prepare");
@@ -372,8 +374,7 @@ function initSortingPage(model) {
   }
 
   function currentLearningLevel() {
-    const value = learningLevel ? learningLevel.value : "intermediate";
-    return ["basic", "intermediate", "advanced"].includes(value) ? value : "intermediate";
+    return "intermediate";
   }
 
   function renderPedagogy(frame) {
@@ -562,22 +563,27 @@ function initSortingPage(model) {
           progressLabel.textContent = `Paso ${Math.max(0, cursor + 1)} · ${phase} · ${concept}`;
           if (announcer) announcer.textContent = `Paso ${Math.max(0, cursor + 1)}. ${phase}. ${concept}.`;
         }
+        setButtonsState();
       },
     })
     : null;
 
   function setButtonsState() {
     const stepMode = isStepByStepEnabled();
+    const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
+    const atEnd = Boolean(tracePlayer && tracePlayer.isAtEnd());
+    if (stepNavigation) stepNavigation.hidden = !hasTrace;
+    if (stepButton) stepButton.hidden = hasTrace;
     if (speedSlider) {
       speedSlider.disabled = !stepMode;
     }
     if (prevButton) {
-      prevButton.disabled = !stepMode || !tracePlayer || tracePlayer.getCursor() < 0;
+      prevButton.disabled = !stepMode || !hasTrace || tracePlayer.getCursor() < 0;
     }
     if (stepButton) {
-      const atEnd = tracePlayer && tracePlayer.isAtEnd();
-      stepButton.disabled = !stepMode || !tracePlayer || !tracePlayer.hasTrace() || atEnd;
+      stepButton.disabled = !stepMode;
     }
+    if (nextButton) nextButton.disabled = !stepMode || !hasTrace || atEnd;
     if (pauseButton) pauseButton.disabled = !stepMode || !tracePlayer || !tracePlayer.hasTrace();
     if (startButton) startButton.disabled = !stepMode || !tracePlayer || !tracePlayer.hasTrace();
     if (endButton) endButton.disabled = !stepMode || !tracePlayer || !tracePlayer.hasTrace();
@@ -618,6 +624,7 @@ function initSortingPage(model) {
       renderSortingHistory(history, historyBox);
       tracePlayer?.clear("Arreglo creado. Ejecuta Reproducir.");
       renderSortingConsole(consoleBox, []);
+      setButtonsState();
     }
   }
 
@@ -636,6 +643,7 @@ function initSortingPage(model) {
       renderSortingHistory(history, historyBox);
       tracePlayer?.clear("Arreglo generado. Ejecuta Reproducir.");
       renderSortingConsole(consoleBox, []);
+      setButtonsState();
     }
   }
 
@@ -656,6 +664,7 @@ function initSortingPage(model) {
     updateCodeByAlgorithm();
     tracePlayer?.clear("Algoritmo cambiado. Ejecuta Reproducir.");
     renderSortingConsole(consoleBox, []);
+    setButtonsState();
   }
 
   async function runSorting(finalOnly, autoPlay = true) {
@@ -682,6 +691,7 @@ function initSortingPage(model) {
     if (!trace || !tracePlayer) {
       renderSortingVisualState(data.visual_state, visualContainer);
       renderSortingConsole(consoleBox, []);
+      setButtonsState();
       return;
     }
     tracePlayer.loadTrace(trace);
@@ -780,7 +790,7 @@ function initSortingPage(model) {
   randomButton?.addEventListener("click", randomArray);
   algorithmSelect?.addEventListener("change", selectAlgorithm);
   playButton?.addEventListener("click", async () => {
-    if (!(stepToggle && stepToggle.checked)) {
+    if (!isStepByStepEnabled()) {
       await runSorting(true);
     } else if (practiceMode?.checked) {
       if (!tracePlayer?.hasTrace()) await runSorting(false, false);
@@ -803,9 +813,12 @@ function initSortingPage(model) {
       return;
     }
     if (!tracePlayer || !tracePlayer.hasTrace()) {
-      await runSorting(false);
-      return;
+      await runSorting(false, false);
     }
+    if (tracePlayer?.hasTrace()) await advanceWithPractice();
+  });
+  nextButton?.addEventListener("click", async () => {
+    if (!tracePlayer?.hasTrace()) return;
     await advanceWithPractice();
   });
   prevButton?.addEventListener("click", () => {
@@ -815,14 +828,7 @@ function initSortingPage(model) {
     tracePlayer?.prev();
     setButtonsState();
   });
-  stepToggle?.addEventListener("change", () => {
-    tracePlayer?.clear(
-      stepToggle.checked
-        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
-        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
-    );
-    setButtonsState();
-  });
+  stepToggle?.addEventListener("change", () => setButtonsState());
   resetButton?.addEventListener("click", resetSorting);
   speedSlider?.addEventListener("input", () => setSpeed(speedSlider.value));
   progress?.addEventListener("input", () => { tracePlayer?.seek(Number(progress.value) - 1); setButtonsState(); });

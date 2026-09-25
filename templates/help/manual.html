@@ -1,84 +1,45 @@
 {% extends "base.html" %}
 {% block title %}Manual de uso{% endblock %}
 {% block content %}
-<section>
-  <h2>Manual de uso de la app</h2>
-  <p>
-    Esta app es un visualizador didactico de estructuras de datos y algoritmos.
-    Combina operaciones reales, interpretacion paso a paso del codigo C y una vista visual
-    para que el usuario comprenda <strong>que hace cada metodo</strong>, <strong>como cambia el estado</strong>
-    y <strong>por que ocurre ese resultado</strong>.
-  </p>
+<section class="help-manual">
+  <h2>Manual de uso</h2>
+  <p>VisualStruct permite estudiar estructuras de datos y algoritmos mediante una representación visual sincronizada con código C y con el resultado de cada operación.</p>
 
-  <h3>Que es esta app</h3>
-  <ul>
-    <li>Una herramienta educativa para practicar TAD y algoritmos.</li>
-    <li>Un entorno de simulacion donde el estado visual sigue la logica del metodo ejecutado.</li>
-    <li>Un apoyo para clase, autoestudio, laboratorios y evaluaciones practicas.</li>
-  </ul>
+  <section class="help-source-download" aria-labelledby="manual-flow-title">
+    <h3 id="manual-flow-title">Flujo de aprendizaje</h3>
+    <ol>
+      <li><strong>Elige un módulo</strong> y la estructura o algoritmo que quieres estudiar.</li>
+      <li><strong>Prepara los datos</strong>: escribe valores, define la operación o construye el grafo según la pantalla.</li>
+      <li><strong>Ejecuta</strong> para llegar al resultado, o usa el modo <strong>Paso a paso</strong> para avanzar y retroceder por la traza.</li>
+      <li><strong>Observa</strong> la representación visual, la línea C activa y la salida/resultados de la operación.</li>
+      <li><strong>Consulta Ayuda</strong> para la explicación del TAD y descarga su código C completo cuando quieras revisarlo fuera de la aplicación.</li>
+    </ol>
+  </section>
 
-  <h3>Para que sirve</h3>
-  <ul>
-    <li>Entender estructuras secuenciales, jerarquicas, grafos, hash y ordenamiento.</li>
-    <li>Comparar ejecucion paso a paso vs ejecucion rapida (solo resultado final).</li>
-    <li>Relacionar entradas, salidas, consola C e historial tecnico con el estado visual final.</li>
-    <li>Exportar evidencias visuales en JPG para informes o actividades.</li>
-  </ul>
+  <h3>Cómo leer una ejecución</h3>
+  <div class="seq-c-semantics">
+    <section><h4>Visualización</h4><p>Representa el estado actual del TAD o del algoritmo; no es una ilustración independiente del código.</p></section>
+    <section><h4>Código C</h4><p>Resalta la instrucción o método relacionado con el estado que se está explicando.</p></section>
+    <section><h4>Resultados</h4><p>Reúnen mensajes, consola C, historial y la estructura final cuando el módulo los ofrece.</p></section>
+    <section><h4>Paso a paso</h4><p>Permite revisar una traza con Anterior y Siguiente; Ejecutar completa una operación o la traza en curso.</p></section>
+  </div>
 
-  <h3>Que se puede hacer</h3>
-  <ul>
-    <li>Ejecutar operaciones sobre cada estructura (insertar, eliminar, buscar, recorrer, etc.).</li>
-    <li>Simular linea por linea con controles de reproduccion y navegacion por pasos.</li>
-    <li>Ver codigo C, consola C (printf) e historial tecnico cuando el modo tecnico esta activo.</li>
-    <li>Cambiar entre modo visual y modo completo con el switch global.</li>
-    <li>Exportar el estado visual actual con boton <strong>Exportar JPG</strong> (calidad y escala configurables).</li>
-  </ul>
+  <h3>Módulos disponibles</h3>
+  <div class="cards">
+    <article class="card"><h4>Estructuras secuenciales</h4><p>Pila, Cola, Cola de prioridad, listas y sublistas.</p><a class="link" href="{{ url_for('help.sequential_help') }}">Abrir ayuda secuencial</a></article>
+    <article class="card"><h4>Estructuras jerárquicas</h4><p>ABB, AVL, Rojo-Negro y Montículo binario.</p><a class="link" href="{{ url_for('help.hierarchical_help') }}">Abrir ayuda jerárquica</a></article>
+    <article class="card"><h4>Grafos</h4><p>Construcción, recorridos, caminos mínimos y expansión mínima.</p><a class="link" href="{{ url_for('help.graph_help') }}">Abrir ayuda de grafos</a></article>
+    <article class="card"><h4>Tablas hash</h4><p>Claves, buckets, colisiones y consultas.</p><a class="link" href="{{ url_for('help.hash_help') }}">Abrir ayuda hash</a></article>
+    <article class="card"><h4>Ordenamiento</h4><p>Once métodos sobre arreglos de enteros.</p><a class="link" href="{{ url_for('help.sorting_help') }}">Abrir ayuda de ordenamiento</a></article>
+  </div>
 
-  <h3>Como funciona (flujo recomendado)</h3>
-  <ol>
-    <li>Selecciona un modulo en la barra superior.</li>
-    <li>Elige estructura, operacion y completa entradas.</li>
-    <li>Decide el modo de ejecucion:
-      <ul>
-        <li><strong>Interpretar codigo paso a paso</strong> activado: recorre la traza completa.</li>
-        <li><strong>Interpretar codigo paso a paso</strong> desactivado: aplica resultado final.</li>
-      </ul>
-    </li>
-    <li>Pulsa <strong>Reproducir</strong> o avanza con <strong>Siguiente paso</strong>.</li>
-    <li>Valida mensaje funcional, estado visual y (si corresponde) consola/historial.</li>
-    <li>Si necesitas evidencia, usa <strong>Exportar JPG</strong>.</li>
-  </ol>
-
-  <h3>Modos didacticos</h3>
-  <ul>
-    <li><strong>Modo visual (por defecto):</strong> reduce carga cognitiva inicial y muestra la parte esencial de interaccion y resultado.</li>
-    <li><strong>Modo completo:</strong> muestra codigo C, consola C y detalle tecnico para analisis profundo.</li>
-  </ul>
-
-  <h3>Como leer la salida de la app</h3>
-  <ul>
-    <li><strong>Estado visual:</strong> representa la estructura/algoritmo en el paso actual o final.</li>
-    <li><strong>Mensaje:</strong> confirma resultado funcional (exito/error de la operacion).</li>
-    <li><strong>Consola C:</strong> muestra salidas printf relevantes de la ruta ejecutada.</li>
-    <li><strong>Historial tecnico:</strong> resume operaciones y resultados en secuencia de ejecucion.</li>
-  </ul>
-
-  <h3>Recomendaciones para usuarios nuevos</h3>
-  <ul>
-    <li>Empieza por Pila o Cola en el modulo secuencial.</li>
-    <li>Activa modo paso a paso para observar cambios de punteros y estados intermedios.</li>
-    <li>Luego practica ABB/AVL para comprender comparaciones y balanceo.</li>
-    <li>En grafos, sigue el flujo: construccion -> recorrido/camino minimo/MST.</li>
-    <li>Usa exportacion JPG para registrar resultados de cada practica.</li>
-  </ul>
-
-  <h3>Accesos rapidos de ayuda</h3>
-  <ul>
-    <li><a class="link" href="{{ url_for('help.sequential_help') }}">Ayuda modulo secuencial</a></li>
-    <li><a class="link" href="{{ url_for('help.hierarchical_help') }}">Ayuda modulo jerarquico</a></li>
-    <li><a class="link" href="{{ url_for('help.graph_help') }}">Ayuda modulo grafos</a></li>
-    <li><a class="link" href="{{ url_for('help.hash_help') }}">Ayuda modulo hash</a></li>
-    <li><a class="link" href="{{ url_for('help.sorting_help') }}">Ayuda modulo ordenamiento</a></li>
-  </ul>
+  <details>
+    <summary>Sobre el código C descargable</summary>
+    <p>La ayuda específica de cada TAD ofrece el archivo fuente principal <code>.c</code> y su encabezado <code>.h</code>. Son fuentes completas del módulo, no fragmentos del panel de ejecución. Lee la nota de dependencias antes de compilarlos; por ejemplo, los recorridos del Grafo usan el TAD Cola.</p>
+  </details>
+  <details>
+    <summary>Accesibilidad y evidencias</summary>
+    <p>El interruptor global permite mostrar más código y detalles técnicos. Cuando el módulo lo habilita, puedes exportar la visualización actual en JPG desde la barra superior.</p>
+  </details>
 </section>
 {% endblock %}

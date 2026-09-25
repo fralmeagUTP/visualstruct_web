@@ -1074,6 +1074,8 @@ function initGraphPage(model) {
   const simPlay = gById("graph-sim-play");
   const simPrev = gById("graph-sim-prev");
   const simStep = gById("graph-sim-step");
+  const simNext = gById("graph-sim-next");
+  const stepNavigation = gById("graph-step-navigation");
   const simStatus = gById("graph-sim-status");
   const stepToggle = gById("graph-step-toggle");
   const speedSlider = gById("graph-speed-slider");
@@ -1373,6 +1375,15 @@ function initGraphPage(model) {
     if (simStep) {
       simStep.disabled = busy || !stepMode || !canExecute || atEnd || pageState.lockStepUntilInput;
     }
+    if (simNext) {
+      simNext.disabled = busy || !stepMode || !canExecute || atEnd || pageState.lockStepUntilInput;
+    }
+    if (stepNavigation) {
+      stepNavigation.hidden = !hasTrace;
+    }
+    if (simStep) {
+      simStep.hidden = hasTrace;
+    }
     if (speedSlider) {
       speedSlider.disabled = busy || !stepMode;
     }
@@ -1391,6 +1402,14 @@ function initGraphPage(model) {
     pageState.consoleTrace = null;
     pageState.consoleFallbackMessage = "";
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    // Al cambiar operación o entrada la navegación pertenece a la traza previa.
+    // Restáurase explícitamente el único botón de entrada al modo paso a paso.
+    if (stepNavigation) {
+      stepNavigation.hidden = true;
+    }
+    if (simStep) {
+      simStep.hidden = false;
+    }
     updateGraphStepKind(null);
     refreshGraphPrintfConsole(-1);
     setSimulationButtonsState();
@@ -1946,6 +1965,21 @@ function initGraphPage(model) {
     }
   });
 
+  simNext?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled()) {
+      return;
+    }
+    const ready = await ensureTraceForCurrentTarget();
+    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
+      return;
+    }
+    const advanced = await tracePlayer.step();
+    if (advanced && tracePlayer.isAtEnd()) {
+      pageState.lockStepUntilInput = true;
+    }
+    setSimulationButtonsState();
+  });
+
   simPrev?.addEventListener("click", () => {
     if (!isStepByStepEnabled()) {
       return;
@@ -1973,7 +2007,7 @@ function initGraphPage(model) {
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
-    await tracePlayer.playFromStart();
+    await tracePlayer.play();
     if (tracePlayer.isAtEnd()) {
       pageState.lockStepUntilInput = true;
       setSimulationButtonsState();
