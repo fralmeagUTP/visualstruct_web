@@ -2378,6 +2378,7 @@ function initStructurePage(model) {
   const resetButton = byId("reset-button");
   const visualContainer = byId("visual-state");
   const historyBox = byId("action-history");
+  const simExecuteButton = byId("seq-sim-execute");
   const simPlayButton = byId("seq-sim-play");
   const simPrepareButton = byId("seq-sim-prepare");
   const simPauseButton = byId("seq-sim-pause");
@@ -2584,6 +2585,7 @@ function initStructurePage(model) {
 
   let pendingExecution = false;
   let traceSelectionKey = "";
+  let traceExecutionRevision = 0;
   let traceCursor = -1;
   let traceTotalSteps = 0;
   let lockStepUntilInput = false;
@@ -2625,16 +2627,15 @@ function initStructurePage(model) {
       : traceTotalSteps;
     const hasProgress = hasTrace && runtimeCursor >= 0;
     const atEnd = hasTrace && runtimeTotalSteps > 0 && runtimeCursor >= runtimeTotalSteps - 1;
-    if (simPlayButton) {
-      simPlayButton.disabled = busy || !canExecute || predictionPendingIndex >= 0;
-    }
-    [simPauseButton, simStartButton, simEndButton, simRepeatButton].forEach((button) => { if (button) button.disabled = busy || !hasTrace; });
-    if (simPrepareButton) simPrepareButton.disabled = busy || !canExecute;
+    if (simExecuteButton) simExecuteButton.disabled = busy || !canExecute;
+    if (simPlayButton) simPlayButton.disabled = busy || !stepMode || !hasTrace || predictionPendingIndex >= 0;
+    [simPauseButton, simStartButton, simEndButton, simRepeatButton, restartExecutionButton].forEach((button) => { if (button) button.disabled = busy || !stepMode || !hasTrace; });
+    if (simPrepareButton) simPrepareButton.disabled = busy || !stepMode || !hasTrace;
     if (simPrevButton) {
       simPrevButton.disabled = busy || !stepMode || !hasProgress;
     }
     if (simStepButton) {
-      simStepButton.disabled = busy || !stepMode || !canExecute || (hasTrace && atEnd) || lockStepUntilInput || predictionPendingIndex >= 0;
+      simStepButton.disabled = busy || !stepMode || !hasTrace || atEnd || lockStepUntilInput || predictionPendingIndex >= 0;
     }
     if (speedSlider) {
       speedSlider.disabled = busy || !stepMode;
@@ -2652,7 +2653,7 @@ function initStructurePage(model) {
     visualTraceState.payload = {};
     visualTraceState.frames = [];
     visualTraceState.totalSteps = 0;
-    tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    tracePlayer?.clear(message || "Ejecuta una operación para crear una traza; después podrás preparar o reproducir.");
     predictionPendingIndex = -1; if (predictionPanel) predictionPanel.hidden = true;
     refreshPrintfConsole(-1);
     setSimulationButtonsEnabled();
@@ -2711,6 +2712,25 @@ function initStructurePage(model) {
     return `${current.name}::${JSON.stringify(payload)}`;
   }
 
+  function hasPreparedTraceForCurrentSelection() {
+    const current = operationCatalog.get(operationSelect.value);
+    if (!current || !tracePlayer?.hasTrace()) return false;
+    const selectionKey = buildSelectionKey(current, collectPayload(current));
+    return traceSelectionKey.startsWith(`${selectionKey}::execution:`);
+  }
+
+  function requirePreparedTrace() {
+    if (!isStepByStepEnabled()) {
+      if (simStatus) simStatus.textContent = "Activa el modo paso a paso y ejecuta una operación para preparar una traza.";
+      return false;
+    }
+    if (!hasPreparedTraceForCurrentSelection()) {
+      if (simStatus) simStatus.textContent = "No hay una traza preparada para estos datos. Ejecuta la operación primero.";
+      return false;
+    }
+    return true;
+  }
+
   async function executeOperationAndLoadTrace(current, payload, selectionKey, options) {
     pendingExecution = true;
     setSimulationButtonsEnabled();
@@ -2731,6 +2751,11 @@ function initStructurePage(model) {
       showMessage(data.message, Boolean(data.success));
       updateDidacticPanel(model, current.name);
 
+      if (!data.success) {
+        if (simStatus) simStatus.textContent = "La operación no se ejecutó; el TAD y la traza anterior permanecen sin cambios.";
+        return data;
+      }
+
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
       if (hasExecutionTrace) {
@@ -2744,7 +2769,8 @@ function initStructurePage(model) {
         consoleState.trace = data.execution_trace;
         consoleState.fallbackMessage = "";
         tracePlayer.loadTrace(data.execution_trace);
-        traceSelectionKey = selectionKey;
+        traceExecutionRevision += 1;
+        traceSelectionKey = `${selectionKey}::execution:${traceExecutionRevision}`;
       } else {
         visualTraceState.operationName = "";
         visualTraceState.payload = {};
@@ -2757,6 +2783,9 @@ function initStructurePage(model) {
           simStatus.textContent = "No hay traza paso a paso disponible para esta operacion.";
         }
         traceSelectionKey = "";
+        tracePlayer?.clear(finalOnly
+          ? "Modo rápido: se aplicó el resultado final de la operación."
+          : "No hay una traza disponible para esta operación.");
       }
 
       const payloadText = summarizePayload(payload);
@@ -2774,16 +2803,17 @@ function initStructurePage(model) {
       renderActionHistory(actionHistory, historyBox, model.id, operationCatalog);
       if (data.visual_state) {
         model.visual_state = data.visual_state;
-        if (!hasExecutionTrace) {
-          renderVisualState(model.id, data.visual_state, visualContainer, {
-            operation: current.name,
-            payload,
-            result: data.result,
-            result_priority: data.result_priority,
-          });
-          if (simStatus && finalOnly) {
-            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
-          }
+        // Executing a real operation must leave the canonical final state visible.
+        // The trace is loaded for later playback; its initial snapshot is rendered
+        // only when the learner explicitly prepares, replays, or navigates it.
+        renderVisualState(model.id, data.visual_state, visualContainer, {
+          operation: current.name,
+          payload,
+          result: data.result,
+          result_priority: data.result_priority,
+        });
+        if (simStatus && finalOnly) {
+          simStatus.textContent = "Modo rápido: se aplicó el resultado final de la operación.";
         }
       }
       return data;
@@ -2799,37 +2829,44 @@ function initStructurePage(model) {
     }
   }
 
-  async function ensureTraceForCurrentSelection(options) {
+  async function executeNewOperation() {
     const current = operationCatalog.get(operationSelect.value);
     if (!current) {
       showMessage("Debes seleccionar una operacion valida.", false);
       return null;
     }
+    if (!isCurrentSelectionValid()) {
+      form.reportValidity?.();
+      showMessage("Completa los datos requeridos antes de ejecutar.", false);
+      return null;
+    }
     const payload = collectPayload(current);
     const selectionKey = buildSelectionKey(current, payload);
-    if (tracePlayer && tracePlayer.hasTrace() && traceSelectionKey === selectionKey) {
-      return { current, payload, selectionKey };
-    }
-
-    const data = await executeOperationAndLoadTrace(current, payload, selectionKey, options);
+    tracePlayer?.pause(true);
+    const data = await executeOperationAndLoadTrace(current, payload, selectionKey, {
+      finalOnly: !isStepByStepEnabled(),
+    });
     if (!data) {
       return null;
     }
-    return { current, payload, selectionKey };
+    if (data.success && simStatus && isStepByStepEnabled()) {
+      simStatus.textContent = "Operación ejecutada: se muestra el estado final real. La traza está lista para preparar, reproducir o recorrer paso a paso.";
+    }
+    return data;
   }
 
-  invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+  invalidateTrace("Ejecuta una operación para crear una traza; después podrás preparar o reproducir.");
 
   operationSelect.addEventListener("change", () => {
     selected = operationCatalog.get(operationSelect.value) || null;
     renderOperationInputs(selected, inputsContainer);
     updateDidacticPanel(model, selected ? selected.name : "");
-    invalidateTrace("Operacion cambiada. Ejecuta nuevamente.");
+    invalidateTrace("Operación cambiada. Ejecuta una nueva operación para crear su traza.");
     writePresentation({ cursor: -1 });
   });
 
   inputsContainer.addEventListener("input", () => {
-    invalidateTrace("Entradas cambiadas. Ejecuta nuevamente.");
+    invalidateTrace("Entradas cambiadas. Ejecuta una nueva operación para crear su traza.");
     writePresentation({ cursor: -1 });
   });
 
@@ -2863,27 +2900,9 @@ function initStructurePage(model) {
     finally { pendingExecution = false; loadExampleButton.disabled = false; setSimulationButtonsEnabled(); }
   });
 
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (!isStepByStepEnabled()) {
-      const current = operationCatalog.get(operationSelect.value);
-      if (!current) {
-        return;
-      }
-      const payload = collectPayload(current);
-      const selectionKey = buildSelectionKey(current, payload);
-      await executeOperationAndLoadTrace(current, payload, selectionKey, {
-        finalOnly: true,
-        allowFallbackPlayback: false,
-      });
-      return;
-    }
-    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: true });
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
-      return;
-    }
-    await tracePlayer.playFromStart();
-  });
+  form.addEventListener("submit", async (event) => { event.preventDefault(); await executeNewOperation(); });
+
+  simExecuteButton?.addEventListener("click", executeNewOperation);
 
   resetButton?.addEventListener("click", async () => {
     if (!window.confirm("¿Restablecer el TAD y borrar su historial de esta sesión?")) {
@@ -2899,23 +2918,25 @@ function initStructurePage(model) {
       model.visual_state = data.visual_state;
       renderVisualState(model.id, data.visual_state, visualContainer, null);
     }
-    invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+    invalidateTrace("TAD restablecido. Ejecuta una operación para crear una traza.");
     refreshPrintfConsole(-1);
   });
 
-  simPrepareButton?.addEventListener("click", async () => {
-    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: false });
-    if (ready && simStatus) simStatus.textContent = "Traza preparada. Predice o inicia la ejecución.";
+  simPrepareButton?.addEventListener("click", () => {
+    if (!requirePreparedTrace()) return;
+    tracePlayer.seek(-1);
+    lockStepUntilInput = false;
+    if (simStatus) simStatus.textContent = "Traza preparada. Predice o inicia la reproducción.";
+    setSimulationButtonsEnabled();
   });
 
   simPauseButton?.addEventListener("click", () => { tracePlayer?.pause(); setSimulationButtonsEnabled(); });
   simStartButton?.addEventListener("click", () => { tracePlayer?.seek(-1); lockStepUntilInput = false; setSimulationButtonsEnabled(); });
-  simEndButton?.addEventListener("click", async () => {
-    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: false });
-    if (!ready) return;
+  simEndButton?.addEventListener("click", () => {
+    if (!requirePreparedTrace()) return;
     tracePlayer.seek(tracePlayer.getTotalSteps() - 1); lockStepUntilInput = true; setSimulationButtonsEnabled();
   });
-  simRepeatButton?.addEventListener("click", async () => { if (tracePlayer?.hasTrace()) { lockStepUntilInput = false; await tracePlayer.playFromStart(); setSimulationButtonsEnabled(); } });
+  simRepeatButton?.addEventListener("click", async () => { if (!requirePreparedTrace()) return; lockStepUntilInput = false; await tracePlayer.playFromStart(); setSimulationButtonsEnabled(); });
   progressSlider?.addEventListener("input", () => { if (tracePlayer?.hasTrace()) { tracePlayer.seek(Number(progressSlider.value) - 1); lockStepUntilInput = tracePlayer.isAtEnd(); setSimulationButtonsEnabled(); } });
   predictionSkip?.addEventListener("click", () => advancePendingPrediction(false));
   resetLearningButton?.addEventListener("click", () => { learningProgress = { attempts: 0, correct: 0, concepts: {} }; saveLearningProgress(); });
@@ -2946,23 +2967,7 @@ function initStructurePage(model) {
   });
 
   simPlayButton?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
-      const current = operationCatalog.get(operationSelect.value);
-      if (!current) {
-        return;
-      }
-      const payload = collectPayload(current);
-      const selectionKey = buildSelectionKey(current, payload);
-      await executeOperationAndLoadTrace(current, payload, selectionKey, {
-        finalOnly: true,
-        allowFallbackPlayback: false,
-      });
-      return;
-    }
-    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: true });
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
-      return;
-    }
+    if (!requirePreparedTrace()) return;
     await tracePlayer.playFromStart();
   });
 
@@ -2978,13 +2983,7 @@ function initStructurePage(model) {
   });
 
   simStepButton?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
-      return;
-    }
-    const ready = await ensureTraceForCurrentSelection({ allowFallbackPlayback: false });
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
-      return;
-    }
+    if (!requirePreparedTrace()) return;
     const nextIndex = tracePlayer.getCursor() + 1;
     const nextStep = consoleState.trace?.steps?.[nextIndex];
     if (requestPrediction(nextStep, nextIndex)) { setSimulationButtonsEnabled(); return; }
@@ -2998,8 +2997,8 @@ function initStructurePage(model) {
   stepToggle?.addEventListener("change", () => {
     invalidateTrace(
       isStepByStepEnabled()
-        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
-        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
+        ? "Modo paso a paso activado. Ejecuta una operación para crear una traza."
+        : "Modo rápido activado. Ejecutar operación aplicará solo el resultado final.",
     );
   });
 

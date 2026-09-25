@@ -76,7 +76,7 @@ def test_sequential_page_exposes_learning_regions_and_mobile_workspace(client) -
     assert 'data-seq-tab="visual"' in html and 'data-seq-tab="code"' in html
     assert 'id="seq-hide-comments"' in html and 'id="seq-function-list"' in html
     assert 'id="seq-restart-execution"' in html
-    for element_id in ("seq-learning-level", "seq-guided-example", "seq-condition-view", "seq-variable-view", "seq-pointer-view", "seq-heap-view", "seq-call-view", "seq-sim-prepare", "seq-sim-pause", "seq-sim-start", "seq-sim-end", "seq-sim-repeat", "seq-progress-slider", "seq-prediction-panel", "seq-practice-mode", "seq-reset-learning"):
+    for element_id in ("seq-learning-level", "seq-guided-example", "seq-condition-view", "seq-variable-view", "seq-pointer-view", "seq-heap-view", "seq-call-view", "seq-sim-execute", "seq-sim-prepare", "seq-sim-pause", "seq-sim-start", "seq-sim-end", "seq-sim-repeat", "seq-progress-slider", "seq-prediction-panel", "seq-practice-mode", "seq-reset-learning"):
         assert f'id="{element_id}"' in html
 
 

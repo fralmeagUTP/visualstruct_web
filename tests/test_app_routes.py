@@ -137,6 +137,7 @@ def test_sequential_page_renders_interpreter_controls(client) -> None:
     """Sequential structure page should include interpreter simulation controls."""
     response = client.get("/sequential/stack")
     assert response.status_code == 200
+    assert b"seq-sim-execute" in response.data
     assert b"seq-sim-play" in response.data
     assert b"seq-sim-prev" in response.data
     assert b"seq-sim-step" in response.data

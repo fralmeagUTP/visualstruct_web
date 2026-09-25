@@ -241,7 +241,9 @@ def test_playwright_sequential_interpreter_controls_workflow() -> None:
             assert page.is_disabled("#seq-sim-step") is True
 
             page.check("#seq-step-toggle")
-            assert page.is_disabled("#seq-sim-step") is False
+            assert page.is_disabled("#seq-sim-step") is True
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
             page.click("#seq-sim-play")
             _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
             visual_text = page.text_content("#visual-state") or ""
@@ -249,14 +251,118 @@ def test_playwright_sequential_interpreter_controls_workflow() -> None:
 
             page.once("dialog", lambda dialog: dialog.accept())
             page.click("#reset-button")
-            _wait_status_contains(page, "#seq-sim-status", "Usa Reproducir o Siguiente paso para ejecutar.")
+            _wait_status_contains(page, "#seq-sim-status", "Ejecuta una operación para crear una traza")
 
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
             page.click("#seq-sim-step")
             _wait_status_contains(page, "#seq-sim-counter", "Paso: 1/")
 
             page.click("#seq-sim-prev")
             _wait_status_contains(page, "#seq-sim-counter", "Paso: 0/")
 
+            browser.close()
+
+
+def test_playwright_sequential_execution_is_separate_from_playback() -> None:
+    """A real operation is posted once; replaying it never posts it again."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            requests: list[str] = []
+            page.on(
+                "request",
+                lambda request: requests.append(request.url)
+                if request.method == "POST" and request.url.endswith("/operate")
+                else None,
+            )
+            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+            page.check("#didactic-mode-switch")
+            _wait_didactic_mode(page, "full")
+            page.fill("#field-value", "7")
+
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
+            assert len(requests) == 1
+            assert page.locator(".viz-stack-node-row").count() == 1
+            page.click("#seq-sim-prepare")
+            page.click("#seq-sim-play")
+            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            page.click("#seq-sim-repeat")
+            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            assert len(requests) == 1
+
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
+            assert len(requests) == 2
+            assert page.locator(".viz-stack-node-row").count() == 2
+            page.click("#seq-sim-play")
+            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            assert page.locator(".viz-stack-node-row").count() == 2
+
+            page.select_option("#operation-select", "desapilar")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
+            assert len(requests) == 3
+            assert page.locator(".viz-stack-node-row").count() == 1
+            page.click("#seq-sim-play")
+            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            assert page.locator(".viz-stack-node-row").count() == 1
+
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
+            assert len(requests) == 4
+            assert page.locator(".viz-stack-node-row").count() == 0
+            page.click("#seq-sim-play")
+            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            assert page.locator(".viz-stack-node-row").count() == 0
+            browser.close()
+
+
+@pytest.mark.parametrize(
+    ("structure_id", "seed_operation", "seed_payload", "remove_operation", "remove_payload"),
+    [
+        ("queue", "encolar", {"value": "7"}, "desencolar", {}),
+        ("priority_queue", "encolar", {"value": "7", "priority": "1"}, "desencolar", {}),
+        ("linked_list", "insertar_inicio", {"value": "7"}, "eliminar_elemento", {"value": "7"}),
+        ("circular_list", "insertar_inicio", {"value": "7"}, "eliminar_inicio", {}),
+        ("sublist", "insertar_padre", {"parent": "7"}, "eliminar_padre", {"parent": "7"}),
+    ],
+)
+def test_playwright_other_sequential_structures_show_canonical_final_state(
+    structure_id: str,
+    seed_operation: str,
+    seed_payload: dict[str, str],
+    remove_operation: str,
+    remove_payload: dict[str, str],
+) -> None:
+    """Every sequential renderer shows the final state immediately after Execute."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/sequential/{structure_id}", wait_until="networkidle")
+            page.check("#didactic-mode-switch")
+            _wait_didactic_mode(page, "full")
+
+            page.select_option("#operation-select", seed_operation)
+            for name, value in seed_payload.items():
+                page.fill(f"#field-{name}", value)
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "estado final real")
+            assert "Tamano: 1" in (page.text_content("#visual-state") or "")
+
+            page.select_option("#operation-select", remove_operation)
+            for name, value in remove_payload.items():
+                page.fill(f"#field-{name}", value)
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "estado final real")
+            assert "Tamano: 0" in (page.text_content("#visual-state") or "")
             browser.close()
 
 
@@ -274,10 +380,14 @@ def test_playwright_queue_final_view_hides_aux_temporary_node() -> None:
 
             page.select_option("#operation-select", "encolar")
             page.fill("#field-value", "8")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
             page.click("#seq-sim-play")
             _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
 
             page.fill("#field-value", "6")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
             page.click("#seq-sim-play")
             _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
 
@@ -613,6 +723,8 @@ def test_playwright_sequential_level_and_guided_example_preserve_trace() -> None
             assert "último insertado" in (page.text_content("#seq-example-lesson") or "")
             assert "30" in (page.text_content("#visual-state") or "")
             assert page.input_value("#operation-select") == "desapilar"
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
             page.click("#seq-sim-step")
             _wait_status_contains(page, "#seq-sim-counter", "Paso: 1/")
             cursor_before = page.text_content("#seq-sim-counter")
@@ -634,6 +746,8 @@ def test_playwright_sequential_prediction_progress_and_navigation() -> None:
             _wait_didactic_mode(page, "full")
             page.fill("#field-value", "17")
             page.check("#seq-practice-mode")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
             page.click("#seq-sim-prepare")
             _wait_status_contains(page, "#seq-sim-status", "Traza preparada")
             assert page.is_disabled("#seq-progress-slider") is False
@@ -669,6 +783,8 @@ def test_playwright_sequential_comparison_keyboard_and_responsive_accessibility(
             assert page.locator(".seq-compare-card").count() == 2
             assert "conserva llegada" in (page.text_content("#seq-compare-conclusion") or "")
             page.fill("#field-value", "8")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "traza está lista")
             page.click("#seq-sim-prepare")
             _wait_status_contains(page, "#seq-sim-status", "Traza preparada")
             page.keyboard.press("Alt+ArrowRight")
