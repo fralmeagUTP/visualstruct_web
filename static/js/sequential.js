@@ -2884,9 +2884,17 @@ function initStructurePage(model) {
         try { window.sessionStorage.setItem(storageKey, JSON.stringify(saved)); } catch (_error) { /* optional */ }
       };
       button.setAttribute("aria-label", `Mostrar u ocultar ${label}`);
-      button.addEventListener("click", () => setExpanded(section.classList.contains("seq-pilot-collapsed")));
+      button.addEventListener("click", () => {
+        const expanding = section.classList.contains("seq-pilot-collapsed");
+        setExpanded(expanding);
+        if (expanding) {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
       heading.appendChild(button);
-      setExpanded(saved[sectionClass] === true);
+      // Los resultados son la evidencia de la ejecución; deben estar disponibles
+      // desde el primer renderizado, sin obligar a abrir un panel adicional.
+      setExpanded(sectionClass === "seq-reflect" || saved[sectionClass] === true);
     });
   }
 
@@ -2910,7 +2918,13 @@ function initStructurePage(model) {
     if (heading && section && !heading.querySelector(".seq-pilot-toggle")) {
       const button = document.createElement("button"); button.type = "button"; button.className = "seq-pilot-toggle";
       const apply = (expanded) => { section.classList.toggle("seq-pilot-collapsed", !expanded); button.textContent = expanded ? "Ocultar" : "Mostrar"; button.setAttribute("aria-expanded", String(expanded)); };
-      button.addEventListener("click", () => apply(section.classList.contains("seq-pilot-collapsed"))); heading.appendChild(button); apply(false);
+      button.addEventListener("click", () => {
+        const expanding = section.classList.contains("seq-pilot-collapsed");
+        apply(expanding);
+        if (expanding) {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }); heading.appendChild(button); apply(false);
     }
   }
   initSiblingSequentialViews();
