@@ -201,10 +201,10 @@ bool lcir_eliminar_primero(ListaCircular *lista, int valor) {
     do {
         if (actual->valor == valor) {
             if (actual == lista->cabeza && actual == lista->cola) {
-                free(actual);
                 lista->cabeza = NULL;
                 lista->cola = NULL;
                 lista->cantidad = 0;
+                free(actual);
                 return true;
             }
 
@@ -215,10 +215,10 @@ bool lcir_eliminar_primero(ListaCircular *lista, int valor) {
             if (actual == lista->cola) {
                 lista->cola = anterior;
             }
-            free(actual);
             if (lista->cantidad > 0) {
                 lista->cantidad--;
             }
+            free(actual);
             return true;
         }
         anterior = actual;
@@ -226,6 +226,38 @@ bool lcir_eliminar_primero(ListaCircular *lista, int valor) {
     } while (actual != lista->cabeza);
 
     return false;
+}
+
+/**
+ * @brief Elimina el nodo de la cabeza de la lista circular.
+ *
+ * @param[in,out] lista Puntero a la lista circular.
+ * @return true si se eliminó la cabeza; false si la lista era nula o vacía.
+ * @post Si había un nodo, la cola vuelve a enlazar con la nueva cabeza.
+ */
+bool lcir_eliminar_inicio(ListaCircular *lista) {
+    LCirNodo *actual;
+
+    if (lista == NULL || lista->cabeza == NULL) {
+        return false;
+    }
+
+    actual = lista->cabeza;
+    if (lista->cabeza == lista->cola) {
+        lista->cabeza = NULL;
+        lista->cola = NULL;
+        lista->cantidad = 0;
+        free(actual);
+        return true;
+    }
+
+    lista->cabeza = actual->sgte;
+    lista->cola->sgte = lista->cabeza;
+    if (lista->cantidad > 0) {
+        lista->cantidad--;
+    }
+    free(actual);
+    return true;
 }
 
 /**
@@ -386,14 +418,28 @@ void lcir_destruir(ListaCircular *lista) {
         return;
     }
 
-    actual = lista->cabeza->sgte;
-    while (actual != NULL && actual != lista->cabeza) {
+    actual = lista->cabeza;
+    if (lista->cabeza == lista->cola) {
+        lista->cabeza = NULL;
+        lista->cola = NULL;
+        lista->cantidad = 0;
+        free(actual);
+        return;
+    }
+
+    while (actual != lista->cola) {
         next = actual->sgte;
+        lista->cabeza = next;
+        lista->cola->sgte = lista->cabeza;
+        if (lista->cantidad > 0) {
+            lista->cantidad--;
+        }
         free(actual);
         actual = next;
     }
-    free(lista->cabeza);
+
     lista->cabeza = NULL;
     lista->cola = NULL;
     lista->cantidad = 0;
+    free(actual);
 }

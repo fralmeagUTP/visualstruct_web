@@ -172,14 +172,27 @@ bool cp_desencolar(ColaPrioridad *cola, int *valor, int *prioridad) {
     return true;
 }
 
+/**
+ * @brief Consulta el elemento que sería atendido sin modificar la cola.
+ * @details Selecciona la menor prioridad; los empates conservan el orden de llegada.
+ * @param[in] cola Cola que se consulta.
+ * @param[out] valor Valor del candidato seleccionado.
+ * @param[out] prioridad Prioridad del candidato seleccionado.
+ * @return true si hay candidato y los parámetros de salida son válidos.
+ */
 bool cp_frente(const ColaPrioridad *cola, int *valor, int *prioridad) {
     const CPNodo *actual;
     const CPNodo *objetivo;
-    if (cola == NULL || cola->delante == NULL || valor == NULL || prioridad == NULL) return false;
+
+    if (cola == NULL || cola->delante == NULL || valor == NULL || prioridad == NULL) {
+        return false;
+    }
     objetivo = cola->delante;
     actual = cola->delante->sgte;
     while (actual != NULL) {
-        if (actual->prioridad < objetivo->prioridad) objetivo = actual;
+        if (actual->prioridad < objetivo->prioridad) {
+            objetivo = actual;
+        }
         actual = actual->sgte;
     }
     *valor = objetivo->valor;
@@ -330,7 +343,14 @@ void cp_vaciar(ColaPrioridad *cola) {
     aux = cola->delante;
     while (aux != NULL) {
         next = aux->sgte;
+        cola->delante = next;
+        if (cola->atras == aux) {
+            cola->atras = NULL;
+        }
         free(aux);
+        if (cola->cantidad > 0) {
+            cola->cantidad--;
+        }
         aux = next;
     }
 

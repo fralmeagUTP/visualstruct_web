@@ -27,14 +27,14 @@ int main(int argc, char **argv) {
             HARNESS_QA_OPERATION(is_query ? "get_children" : "remove_parent", "before");
             if (index + 1 >= argc || !harness_parse_int(argv[index + 1], &parent_value)) { sublista_destruir(&list); return harness_error("operacion requiere padre"); }
             parent = sublista_buscar_padre(list, parent_value); HARNESS_QA_CONDITION(parent == NULL ? "parent == NULL:true" : "parent == NULL:false");
-            if (is_query) { HARNESS_QA_RETURN_INT("children", sublista_contar_hijos(parent)); }
+            if (is_query) { int children[64]; HARNESS_QA_RETURN_INT("children", sublista_obtener_hijos(list, parent_value, children, 64)); }
             else { int removed = sublista_eliminar_padre_primero(&list, parent_value) ? 1 : 0; HARNESS_QA_RETURN_INT("removed_parent", removed); if (removed) HARNESS_QA_FREE("freed parent and its complete child sublist"); }
             HARNESS_QA_OPERATION(is_query ? "get_children" : "remove_parent", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after parent operation"); emit_state(list); } index += 2; continue;
         }
         if (strcmp(argv[index], "remove_child") == 0) {
             HARNESS_QA_OPERATION("remove_child", "before");
             if (index + 2 >= argc || !harness_parse_int(argv[index + 1], &parent_value) || !harness_parse_int(argv[index + 2], &child_value)) { sublista_destruir(&list); return harness_error("remove_child requiere padre e hijo"); }
-            parent = sublista_buscar_padre(list, parent_value); { int removed = parent != NULL && sublista_eliminar_hijo_primero(parent, child_value); HARNESS_QA_RETURN_INT("removed_child", removed); if (removed) HARNESS_QA_FREE("freed selected child node"); }
+            parent = sublista_buscar_padre(list, parent_value); { int removed = sublista_eliminar_hijo(list, parent_value, child_value); HARNESS_QA_RETURN_INT("removed_child", removed); if (removed) HARNESS_QA_FREE("freed selected child node"); }
             HARNESS_QA_OPERATION("remove_child", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after remove_child"); emit_state(list); } index += 3; continue;
         }
         if (strcmp(argv[index], "add_parent") == 0) {
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
             if (index + 2 >= argc || !harness_parse_int(argv[index + 1], &parent_value) || !harness_parse_int(argv[index + 2], &child_value)) { sublista_destruir(&list); return harness_error("add_child requiere padre e hijo"); }
             parent = sublista_buscar_padre(list, parent_value);
             HARNESS_QA_CONDITION(parent == NULL ? "parent == NULL:true" : "parent == NULL:false");
-            if (parent == NULL || !sublista_insertar_hijo_final(parent, child_value)) { sublista_destruir(&list); return harness_error("padre inexistente o sin memoria"); }
+            if (parent == NULL || !sublista_insertar_hijo(list, parent_value, child_value)) { sublista_destruir(&list); return harness_error("padre inexistente o sin memoria"); }
             HARNESS_QA_ALLOCATION("allocated child node"); HARNESS_QA_POINTER("child linked at selected parent sublist tail"); HARNESS_QA_OPERATION("add_child", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after add_child"); emit_state(list); } index += 3; continue;
         }
         sublista_destruir(&list); return harness_error("operacion no permitida");

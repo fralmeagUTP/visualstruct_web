@@ -221,6 +221,24 @@ void lista_eliminar_repetidos(Tlista *lista, int valor) {
     printf("\n\n Valores eliminados..\n");
 }
 
+//---------------------------------------------------------------
+/**
+ * @brief Libera todos los nodos de una lista enlazada.
+ * @param lista Puntero a la lista que se vacía.
+ */
+void lista_limpiar(Tlista *lista) {
+    if (lista == NULL) {
+        return;
+    }
+
+    Tlista q;
+    while (*lista != NULL) {
+        q = *lista;
+        *lista = q->sgte;
+        free(q);
+    }
+}
+
 int lista_eliminar_inicio(Tlista *lista, int *valor) {
     Tlista eliminado;
     if (lista == NULL || *lista == NULL || valor == NULL) return 0;

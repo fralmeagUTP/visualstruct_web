@@ -42,9 +42,9 @@ def test_real_graph_trace_exposes_canonical_frames(client):
 
 def test_page_exposes_learning_regions_and_no_active_frontend_inference(client):
     html=client.get("/graph/graph/recorridos").get_data(as_text=True)
-    for label in ("Preparar","Predecir","Ejecutar y visualizar","Comprender","Relacionar con C","Comparar","Reflexionar"):
+    for label in ("Preparar y controlar la ejecución", "Visualizar y ejecutar", "Relacionar con código C", "Comprender", "Resultados de la ejecución"):
         assert label in html
-    for element_id in ("graph-learning-level","graph-guided-example","graph-load-example","graph-visual-region","graph-code-region","graph-function-list","graph-hide-comments","graph-restart-execution","graph-reset-button","graph-state-legend","graph-pedagogy-summary"):
+    for element_id in ("graph-visual-region","graph-code-region","graph-function-list","graph-hide-comments","graph-sim-play","graph-sim-step","graph-step-navigation","graph-reset-button","graph-state-legend","graph-pedagogy-summary","graph-export-image","graph-printf-console","action-history","tad-record"):
         assert f'id="{element_id}"' in html or (element_id=="graph-state-legend" and 'class="graph-state-legend"' in html)
     source=(Path(__file__).parents[1]/"static/js/graph.js").read_text(encoding="utf-8")
     assert source.count("buildSimulationFromState(")==1

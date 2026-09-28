@@ -36,8 +36,8 @@ CHECKS: dict[str, HarnessCheck] = {
         "dequeue", "dequeue", "dequeue", "dequeue", "empty", "clear",
     )),
     "circular_list": HarnessCheck(("tad_lista_circular.c",), (
-        "append", "1", "search", "1", "remove", "1", "prepend", "2",
-        "append", "3", "append", "2", "search", "2", "reverse", "remove", "3", "clear",
+        "append", "1", "search", "1", "remove", "1", "prepend", "2", "pop_front",
+        "append", "3", "append", "2", "append", "2", "search", "2", "reverse", "remove", "3", "clear",
     )),
     "sublist": HarnessCheck(("tad_sublista.c",), (
         "add_parent", "1", "add_child", "1", "10", "add_parent", "1",

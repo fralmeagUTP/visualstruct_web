@@ -58,7 +58,8 @@ class HelpService:
             "summary": (
                 "Secuencia lineal de nodos enlazados por referencias al siguiente. En el simulador "
                 "debes seguir el avance de punteros auxiliares para inserciones/eliminaciones por "
-                "posicion, verificando que el HEAD siempre conserve la conectividad de la lista."
+                "posicion, verificando que *lista (HEAD) siempre conserve la conectividad. "
+                "Para limpiar, lista_limpiar desconecta la cabeza con q y la libera en cada vuelta."
             ),
             "supported_operations": [
                 "insertar_inicio",
@@ -70,9 +71,7 @@ class HelpService:
                 "eliminar_repetidos",
                 "limpiar",
             ],
-            "pending_operations": [
-                "lista_insertar_elemento usa modo relativo: -1 (antes) o 0 (despues).",
-            ],
+            "pending_operations": [],
         },
         "circular_list": {
             "title": "Lista Circular",

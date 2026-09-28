@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ model.name }} | Módulo Secuencial{% endblock %}
 {% block content %}
-{% set stack_pilot = true %}
+{% set stack_pilot = model.id == "stack" %}
 <article class="sequential-learning-shell{% if stack_pilot %} is-stack-pilot{% endif %}" aria-labelledby="seq-page-title">
   <header class="sequential-learning-header"><div><p class="sorting-eyebrow">Laboratorio de memoria y punteros en C</p><h2 id="seq-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div><a class="link" href="{{ url_for('help.structure_help', structure_id=model.id) }}">Abrir guía de {{ model.name }}</a></header>
 

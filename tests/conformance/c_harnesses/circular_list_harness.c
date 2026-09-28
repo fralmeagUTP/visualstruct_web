@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
     while (index < argc) {
         if (strcmp(argv[index], "clear") == 0) { HARNESS_QA_OPERATION("clear", "before"); lcir_destruir(&list); HARNESS_QA_FREE("freed every circular-list node during clear"); HARNESS_QA_POINTER("head and tail set to NULL"); HARNESS_QA_OPERATION("clear", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after clear"); emit_state(&list); } index++; continue; }
         if (strcmp(argv[index], "reverse") == 0) { HARNESS_QA_OPERATION("reverse", "before"); lcir_invertir(&list); HARNESS_QA_POINTER("circular next links reversed and cycle closed"); HARNESS_QA_OPERATION("reverse", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after reverse"); emit_state(&list); } index++; continue; }
+        if (strcmp(argv[index], "pop_front") == 0) { HARNESS_QA_OPERATION("pop_front", "before"); if (lcir_eliminar_inicio(&list)) HARNESS_QA_FREE("freed circular-list head after reconnecting the cycle"); HARNESS_QA_POINTER("head and tail links updated and cycle closed"); HARNESS_QA_OPERATION("pop_front", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after removing circular-list head"); emit_state(&list); } index++; continue; }
         int value;
         HARNESS_QA_OPERATION(argv[index], "before");
         if (index + 1 >= argc || !harness_parse_int(argv[index + 1], &value)) { lcir_destruir(&list); return harness_error("la operacion requiere un entero"); }

@@ -28,10 +28,13 @@ Nodo *sublista_buscar_padre(Nodo *lista, int valor_padre);
 bool sublista_eliminar_padre_primero(Nodo **lista, int valor_padre);
 int sublista_contar_padres(const Nodo *lista);
 bool sublista_insertar_hijo_final(Nodo *padre, int valor_hijo);
+bool sublista_insertar_hijo(Nodo *lista, int valor_padre, int valor_hijo);
 Sublista *sublista_buscar_hijo(Sublista *lista_hijos, int valor_hijo);
 bool sublista_eliminar_hijo_primero(Nodo *padre, int valor_hijo);
+bool sublista_eliminar_hijo(Nodo *lista, int valor_padre, int valor_hijo);
 int sublista_contar_hijos(const Nodo *padre);
 int sublista_copiar_hijos(const Nodo *padre, int *destino, int capacidad);
+int sublista_obtener_hijos(Nodo *lista, int valor_padre, int *destino, int capacidad);
 void sublista_formatear(const Nodo *lista, char *destino, size_t capacidad);
 void sublista_destruir(Nodo **lista);
 

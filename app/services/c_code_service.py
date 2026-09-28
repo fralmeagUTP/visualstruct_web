@@ -72,15 +72,17 @@ class CCodeService:
     _CIRCULAR_LIST_OPERATION_MAP: dict[str, str] = {
         "insertar_inicio": "lcir_insertar_inicio",
         "insertar_final": "lcir_insertar_final",
+        "eliminar_inicio": "lcir_eliminar_inicio",
         "eliminar_primero": "lcir_eliminar_primero",
         "buscar_posiciones": "lcir_buscar_posiciones",
         "invertir": "lcir_invertir",
     }
     _SUBLIST_OPERATION_MAP: dict[str, str] = {
         "insertar_padre": "sublista_insertar_padre_final",
-        "insertar_hijo": "sublista_insertar_hijo_final",
+        "insertar_hijo": "sublista_insertar_hijo",
         "eliminar_padre": "sublista_eliminar_padre_primero",
-        "eliminar_hijo": "sublista_eliminar_hijo_primero",
+        "eliminar_hijo": "sublista_eliminar_hijo",
+        "hijos_de": "sublista_obtener_hijos",
     }
     _ABB_OPERATION_MAP: dict[str, str] = {
         "insertar": "abb_insertar",
@@ -230,12 +232,8 @@ class CCodeService:
         operation_code["insertar_elemento"] = operation_code.get("lista_insertar_elemento", "")
         operation_code["eliminar_primero"] = operation_code.get("eliminar_elemento", "")
         operation_code["buscar_posiciones"] = operation_code.get("buscar_elemento", "")
-        operation_code["limpiar"] = (
-            "/* Liberacion completa para dejar lista vacia. */\n"
-            "while (*lista != NULL) {\n"
-            "    int head = (*lista)->nro;\n"
-            "    lista_eliminar_elemento(lista, head);\n"
-            "}"
+        operation_code["limpiar"] = cls._extract_function_with_comment(c_text, "lista_limpiar") or (
+            "/* Codigo C no disponible para lista_limpiar. */"
         )
 
         structure_text = cls._extract_linked_list_structure(h_text, c_text)
@@ -328,16 +326,20 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        init_fn = cls._extract_function_with_comment(c_text, "cp_inicializar")
-        clear_fn = cls._extract_function_with_comment(c_text, "cp_vaciar")
-        if init_fn and clear_fn:
-            operation_code["limpiar"] = (
-                f"{clear_fn}\n\n"
-                "/* Reinicio recomendado del TAD despues de vaciar */\n"
-                f"{init_fn}"
-            )
-        elif clear_fn:
-            operation_code["limpiar"] = clear_fn
+        # Show the exact public function responsible for this operation.  The
+        # downloaded source already contains its final pointer/count reset, so
+        # appending cp_inicializar here would present a synthetic method that
+        # is not what the priority-queue adapter executes.
+        operation_code["limpiar"] = cls._extract_function_with_comment(c_text, "cp_vaciar")
+
+        # Enqueue calls this allocator.  Include both real C functions in the
+        # didactic source so the allocation and field initialization are not a
+        # black box; both snippets are extracted verbatim from the downloadable
+        # .c file and are shared by the operation panel and Help.
+        create_node = cls._extract_function_with_comment(c_text, "cp_crear_nodo")
+        enqueue = operation_code.get("encolar", "")
+        if create_node and enqueue:
+            operation_code["encolar"] = f"{create_node}\n\n{enqueue}"
 
         structure_text = cls._extract_priority_queue_structure(h_text, c_text)
         return {
@@ -361,26 +363,16 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        init_fn = cls._extract_function_with_comment(c_text, "lcir_inicializar")
-        destroy_fn = cls._extract_function_with_comment(c_text, "lcir_destruir")
-        if init_fn and destroy_fn:
-            operation_code["limpiar"] = (
-                f"{destroy_fn}\n\n"
-                "/* Reinicio recomendado del TAD luego de liberar nodos */\n"
-                f"{init_fn}"
-            )
-        elif destroy_fn:
-            operation_code["limpiar"] = destroy_fn
+        operation_code["limpiar"] = cls._extract_function_with_comment(c_text, "lcir_destruir")
 
-        operation_code["eliminar_inicio"] = (
-            "/* Este TAD en C no define una funcion directa lcir_eliminar_inicio(). */\n"
-            "/* Se puede eliminar la cabeza usando lcir_eliminar_primero con su valor actual. */\n"
-            "int head;\n"
-            "int usados = lcir_copiar_valores(&lista, &head, 1);\n"
-            "if (usados == 1) {\n"
-            "    lcir_eliminar_primero(&lista, head);\n"
-            "}"
-        )
+        # Insertions call this allocator; show its real body with each public
+        # operation so allocation and field initialization are not a black box.
+        create_node = cls._extract_function_with_comment(c_text, "lcir_crear_nodo")
+        if create_node:
+            for operation_name in ("insertar_inicio", "insertar_final"):
+                operation = operation_code.get(operation_name, "")
+                if operation:
+                    operation_code[operation_name] = f"{operation}\n\n{create_node}"
 
         structure_text = cls._extract_circular_list_structure(h_text, c_text)
         return {
@@ -404,26 +396,29 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        init_fn = cls._extract_function_with_comment(c_text, "sublista_inicializar")
         destroy_fn = cls._extract_function_with_comment(c_text, "sublista_destruir")
-        if init_fn and destroy_fn:
-            operation_code["limpiar"] = (
-                f"{destroy_fn}\n\n"
-                "/* Reinicio recomendado del TAD luego de liberar memoria */\n"
-                f"{init_fn}"
-            )
-        elif destroy_fn:
+        destroy_children_fn = cls._extract_function_with_comment(c_text, "destruir_hijos")
+        if destroy_fn:
             operation_code["limpiar"] = destroy_fn
 
-        operation_code["hijos_de"] = (
-            "/* Consulta de hijos en C: buscar padre y copiar su sublista a un arreglo. */\n"
-            "Nodo *padre = sublista_buscar_padre(lista, valor_padre);\n"
-            "if (padre != NULL) {\n"
-            "    int hijos[256];\n"
-            "    int usados = sublista_copiar_hijos(padre, hijos, 256);\n"
-            "    /* hijos[0..usados-1] contiene los valores de la sublista */\n"
-            "}"
-        )
+        helper_for_operation = {
+            "insertar_padre": ("crear_padre",),
+            "insertar_hijo": ("sublista_buscar_padre", "sublista_insertar_hijo_final", "crear_hijo"),
+            "eliminar_padre": ("destruir_hijos",),
+            "eliminar_hijo": ("sublista_buscar_padre", "sublista_eliminar_hijo_primero"),
+            "hijos_de": ("sublista_buscar_padre", "sublista_copiar_hijos"),
+            "limpiar": ("destruir_hijos",),
+        }
+        for operation_name, helpers in helper_for_operation.items():
+            if operation_name not in operation_code:
+                continue
+            helper_sources = [
+                cls._extract_function_with_comment(c_text, helper)
+                for helper in helpers
+            ]
+            operation_code[operation_name] = "\n\n".join(
+                part for part in (operation_code[operation_name], *helper_sources) if part
+            )
 
         structure_text = cls._extract_sublist_structure(h_text)
         return {

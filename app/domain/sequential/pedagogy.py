@@ -57,7 +57,7 @@ def _concept(line:str)->str:
  n=line.lower().lstrip()
  if "malloc" in n or "calloc" in n:return "allocation"
  if "free(" in n:return "free"
- if n.startswith(("if ","if(","while ","while(","for ","for(")):return "condition"
+ if n.startswith(("if ","if(","while ","while(","} while ","} while(","for ","for(")):return "condition"
  if "return" in n:return "return"
  if "->" in n and "=" in n:return "link"
  if "=" in n:return "assignment"
@@ -85,7 +85,7 @@ def _scalars(state:Mapping[str,Any])->dict[str,Any]:
  return {str(k):v for k,v in state.items() if k not in {"items","temporaries","title","kind"} and not isinstance(v,(dict,list))}
 
 def _ctype(value:Any,name:str)->str:
- if name in {"head","tail","front","back","top","root","aux","actual","anterior"}:return "struct Nodo *"
+ if name in {"head","tail","front","back","top","root","aux","actual","anterior","prev","next","objetivo","objetivoPrev","delante","atras","p","q","t","lista","ant","temp","nuevo","cabeza","cola","curr","old_head","nodo"}:return "CPNodo *" if name in {"objetivo","objetivoPrev","delante","atras"} else "struct Nodo *"
  if isinstance(value,bool):return "bool"
  if isinstance(value,int) or str(value).lstrip("-").isdigit():return "int"
  return "const char *"
@@ -98,7 +98,7 @@ def _substitute(expr:str,payload:Mapping[str,Any],before:Mapping[str,Any])->str:
  values={**_scalars(before),**{str(k):v for k,v in payload.items()}}
  values.update({aliases[k]:v for k,v in payload.items() if k in aliases})
  temporaries=before.get("temporaries") if isinstance(before.get("temporaries"),Mapping) else {}
- for pointer in re.findall(r"\b(aux|actual|anterior|nuevo|p|q|t|lista|cola)\b",expr):
+ for pointer in re.findall(r"\b(aux|actual|anterior|prev|next|objetivo|objetivoPrev|nuevo|p|q|t|lista|cola|cabeza|curr|old_head|nodo)\b",expr):
   values[pointer]=f"0xTMP-{pointer}" if pointer in temporaries else None
  result=expr
  for name in sorted(values,key=len,reverse=True):
@@ -106,7 +106,7 @@ def _substitute(expr:str,payload:Mapping[str,Any],before:Mapping[str,Any])->str:
  return result
 
 def _pointers(before:Mapping[str,Any],after:Mapping[str,Any],line:str)->list[dict[str,Any]]:
- names={"head","tail","front","back","top","root","aux","actual","anterior","p","q","t","nuevo"}; names.update(re.findall(r"\b([A-Za-z_]\w*)\s*->",line))
+ names={"head","tail","front","back","top","root","aux","actual","anterior","prev","next","objetivo","objetivoPrev","p","q","t","ant","temp","lista","nuevo","delante","atras","cabeza","cola","curr","old_head","nodo"}; names.update(re.findall(r"\b([A-Za-z_]\w*)\s*->",line))
  bt=before.get("temporaries") if isinstance(before.get("temporaries"),Mapping) else {}; at=after.get("temporaries") if isinstance(after.get("temporaries"),Mapping) else {}; rows=[]
  for name in sorted(names):
   old=before.get(name,bt.get(name)); new=after.get(name,at.get(name))
@@ -121,7 +121,10 @@ def _invariant_holds(structure_id:str,state:Mapping[str,Any])->tuple[bool,str]:
   expected=min(range(len(items)),key=lambda i:NumberProxy(items[i].get("priority"),i))
   common=common and state.get("out_index",expected)==expected
  if structure_id=="sublist":
-  parents=[item.get("parent") for item in items if isinstance(item,Mapping)]; common=common and len(parents)==len(set(map(str,parents)))
+  # Parent values are data, not identities: C permits duplicates and each
+  # allocated Nodo remains a distinct parent. Validate identity uniqueness.
+  ids=[item.get("id") for item in items if isinstance(item,Mapping)]
+  common=common and len(ids)==len(items) and len(ids)==len(set(map(str,ids)))
  return common, f"size={size}, nodos={len(items)}, empty={empty}"
 
 def NumberProxy(value:Any,fallback:int)->tuple[float,int]:
@@ -131,6 +134,7 @@ def NumberProxy(value:Any,fallback:int)->tuple[float,int]:
 def build_sequential_frame(*,structure_id:str,operation_name:str,payload:Mapping[str,Any],step:Mapping[str,Any],success:bool)->dict[str,Any]:
  if structure_id not in SEQUENTIAL_STRUCTURES:raise SequentialFrameValidationError(f"TAD secuencial desconocido: {structure_id}.")
  line=str(step.get("line_text") or ""); concept=_concept(line); before=dict(step.get("state_snapshot") or {}); after=dict(step.get("state_after") or {}); changed=sorted(k for k in set(before)|set(after) if before.get(k)!=after.get(k))
+ normalized_line=line.lower()
  condition=None
  if concept=="condition":
   expr=_expression(line); result=step.get("condition_result"); consequence="Se ejecuta el cuerpo" if result is True else "Se omite el cuerpo o termina el ciclo" if result is False else "La traza conserva la ruta observada"
@@ -139,8 +143,69 @@ def build_sequential_frame(*,structure_id:str,operation_name:str,payload:Mapping
  for raw in names:
   name=str(raw); previous=sb.get(name,payload.get(raw)); value=sa.get(name,payload.get(raw)); variables.append({"name":name,"type":_ctype(value,name),"previous":previous,"value":value,"changed":previous!=value,"meaning":"Parámetro de entrada" if raw in payload else "Estado observable del TAD"})
  bh,ah=_objects(before),_objects(after); addresses={o["address"] for o in ah}; freed=[{**o,"status":"freed","allocated":False,"freed":True} for o in bh if o["address"] not in addresses]
+ # En apilar, aux no se libera: el mismo nodo pasa de temporal a enlazado al
+ # publicar *p = aux. La diferencia estructural no debe convertirse en free.
+ if structure_id=="stack" and "*p = aux" in line:
+  freed=[]
+ # En desapilar, aux es un alias del TOP retirado. La liberación ocurre solo
+ # en free(aux), aunque ya no pertenezca a la cadena alcanzable desde *p.
+ if structure_id=="stack" and "free(aux)" in line:
+  value=before.get("aux_value")
+  freed=[{"id":"aux","address":"0xTMP-aux","status":"freed","allocated":False,"freed":True,"fields":{"nro":value}}]
+ if structure_id=="queue" and any(token in line for token in ("q->delante = aux", "q->atras->sgte = aux", "q->atras = aux")):
+  freed=[]
+ if structure_id=="queue" and "free(aux)" in line:
+  value=before.get("aux_value")
+  freed=[{"id":"aux","address":"0xTMP-aux","status":"freed","allocated":False,"freed":True,"fields":{"nro":value}}]
+ if structure_id=="priority_queue":
+  if any(token in normalized_line for token in ("cola->delante = objetivo->sgte", "objetivoprev->sgte = objetivo->sgte", "cola->delante = next")):
+   # Unlinking only removes reachability; the allocation stays live until free.
+   freed=[]
+  if any(token in normalized_line for token in ("cola->delante = nuevo", "cola->atras->sgte = nuevo")):
+   # Publishing the temporary node transfers ownership into the live chain.
+   freed=[]
+  if "free(objetivo)" in line or "free(aux)" in line:
+   temporary_name="objetivo" if "free(objetivo)" in line else "aux"
+   temporary=before.get("temporaries",{}).get(temporary_name,{})
+   fields={key:value for key,value in temporary.items() if key!="allocated"}
+   freed=[{"id":temporary_name,"address":f"0xTMP-{temporary_name}","status":"freed","allocated":False,"freed":True,"fields":fields}]
+ # En listas, q se integra a la cadena; no se libera al desaparecer de la
+ # zona temporal. p/temp solo se consideran liberados en su free explícito.
+ if structure_id=="linked_list" and ("*lista = q" in line or "t->sgte = q" in line):
+  freed=[]
+ if structure_id=="linked_list" and "free(q)" in line:
+  value=before.get("temporaries",{}).get("q",{}).get("nro",before.get("removed_value"))
+  freed=[{"id":"q","address":"0xTMP-q","status":"freed","allocated":False,"freed":True,"fields":{"nro":value}}]
+ if structure_id=="linked_list" and ("free(p)" in line or "free(temp)" in line):
+  value=before.get("removed_value", before.get("freed_p"))
+  freed=[{"id":"p" if "free(p)" in line else "temp","address":"0xTMP-p","status":"freed","allocated":False,"freed":True,"fields":{"nro":value}}]
+ if structure_id=="circular_list":
+  if any(token in normalized_line for token in ("anterior->sgte = actual->sgte", "lista->cabeza = actual->sgte", "lista->cabeza = next", "lista->cabeza = null")):
+   # Rewiring roots or links only disconnects a node; the next free releases it.
+   freed=[]
+  if "free(actual)" in normalized_line:
+   value=before.get("actual_value", before.get("freed_node"))
+   freed=[{"id":"actual","address":"0xTMP-actual","status":"freed","allocated":False,"freed":True,"fields":{"valor":value}}]
+ if structure_id=="sublist":
+  if any(token in normalized_line for token in ("*lista = actual->sgte", "anterior->sgte = actual->sgte", "padre->sub = actual->sgte", "previo->sgte = actual->sgte", "*lista_hijos = next", "*lista = next")):
+   # A pointer update only detaches a node; the following C free releases it.
+   freed=[]
+  if "free(actual)" in normalized_line:
+   temporary=before.get("temporaries",{}).get("actual",{}) if isinstance(before.get("temporaries"),Mapping) else {}
+   detached=before.get("detached_parent") if isinstance(before.get("detached_parent"),Mapping) else {}
+   if temporary.get("kind")=="child":
+    fields={"nro":temporary.get("value")}
+    object_id="actual"
+   elif detached:
+    fields={"nro":detached.get("parent"),"children":list(detached.get("children") or [])}
+    object_id=detached.get("id","actual")
+   else:
+    fields={}
+    object_id="actual"
+   freed=[{"id":object_id,"address":f"0xTMP-{object_id}","status":"freed","allocated":False,"freed":True,"fields":fields}]
  transition="free" if concept=="free" else "allocate" if concept=="allocation" else "link" if concept=="link" else "stable"; action=line.strip() or f"Ejecutar {operation_name}."; invariant_holds,invariant_evidence=_invariant_holds(structure_id,after)
- return {"schema_version":SEQUENTIAL_FRAME_SCHEMA_VERSION,"structure":structure_id,"operation":operation_name,"concept":concept,"phase":{"id":f"{operation_name}-{concept}","label":concept.replace("_"," ").title(),"goal":action},"condition":condition,"variables":variables,"pointers":_pointers(before,after,line),"heap_objects":ah,"heap_transition":{"kind":transition,"before":bh,"after":ah,"freed":freed,"dangling_references":[]},"call_stack":[{"function":str(step.get("function_name") or operation_name),"parameters":dict(payload),"return":step.get("result") if concept=="return" else None,"continuation":"llamador / siguiente instrucción"}],"loop":{"active":line.lstrip().startswith(("while","for")),"condition":_expression(line) if line.lstrip().startswith(("while","for")) else None,"exit":condition["consequence"] if condition and line.lstrip().startswith(("while","for")) else None},"state_changes":changed,"invariant":{"text":_INVARIANTS[structure_id],"holds":invariant_holds,"symbol":"✓" if invariant_holds else "✗","evidence":invariant_evidence},"narration":{"basic":f"{SEQUENTIAL_LEARNING_CATALOG[structure_id]['objective']} Observa: {action}","intermediate":f"En {operation_name}, «{concept}» conecta esta línea con {', '.join(changed) if changed else 'un estado sin cambios visibles'}.","advanced":f"Semántica C: «{action}». Hay {len(bh)} objeto(s) antes y {len(ah)} después; la ruta no ejecutada no aparece."},"source":{"line_index":step.get("line_index"),"line_text":line}}
+ loop_line=line.lstrip().startswith(("while","for","} while"))
+ return {"schema_version":SEQUENTIAL_FRAME_SCHEMA_VERSION,"structure":structure_id,"operation":operation_name,"concept":concept,"phase":{"id":f"{operation_name}-{concept}","label":concept.replace("_"," ").title(),"goal":action},"condition":condition,"variables":variables,"pointers":_pointers(before,after,line),"heap_objects":ah,"heap_transition":{"kind":transition,"before":bh,"after":ah,"freed":freed,"dangling_references":[]},"call_stack":[{"function":str(step.get("function_name") or operation_name),"parameters":dict(payload),"return":step.get("result") if concept=="return" else None,"continuation":"llamador / siguiente instrucción"}],"loop":{"active":loop_line,"condition":_expression(line) if loop_line else None,"exit":condition["consequence"] if condition and loop_line else None},"state_changes":changed,"invariant":{"text":_INVARIANTS[structure_id],"holds":invariant_holds,"symbol":"✓" if invariant_holds else "✗","evidence":invariant_evidence},"narration":{"basic":f"{SEQUENTIAL_LEARNING_CATALOG[structure_id]['objective']} Observa: {action}","intermediate":f"En {operation_name}, «{concept}» conecta esta línea con {', '.join(changed) if changed else 'un estado sin cambios visibles'}.","advanced":f"Semántica C: «{action}». Hay {len(bh)} objeto(s) antes y {len(ah)} después; la ruta no ejecutada no aparece."},"source":{"line_index":step.get("line_index"),"line_text":line}}
 
 def validate_sequential_frame(frame:Mapping[str,Any],*,source_code:str="")->None:
  required={"schema_version","structure","operation","concept","phase","condition","variables","pointers","heap_objects","heap_transition","call_stack","loop","state_changes","invariant","narration","source"}; missing=sorted(required.difference(frame))

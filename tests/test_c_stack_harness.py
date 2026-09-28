@@ -45,7 +45,7 @@ def test_stack_harness_emits_canonical_state(tmp_path: Path) -> None:
         ("queue", "queue_harness.c", "tad_cola.c", ["enqueue", "4", "enqueue", "7", "dequeue"], {"values": [7], "size": 1}),
         ("sorting", "sorting_harness.c", "tad_ordenamiento.c", ["quick", "5", "-1", "3", "3"], {"values": [-1, 3, 3, 5], "size": 4}),
         ("linked_list", "linked_list_harness.c", "tad_lista.c", ["append", "2", "prepend", "1", "append", "3", "remove", "2"], {"values": [1, 3], "size": 2}),
-        ("circular_list", "circular_list_harness.c", "tad_lista_circular.c", ["append", "1", "append", "2", "append", "3", "reverse"], {"values": [3, 2, 1], "size": 3}),
+        ("circular_list", "circular_list_harness.c", "tad_lista_circular.c", ["append", "1", "append", "2", "pop_front", "append", "3", "reverse"], {"values": [3, 2], "size": 2}),
         ("priority_queue", "priority_queue_harness.c", "tad_cola_prioridad.c", ["enqueue", "10", "3", "enqueue", "20", "1", "enqueue", "30", "2"], {"items": [{"value": 10, "priority": 3}, {"value": 20, "priority": 1}, {"value": 30, "priority": 2}], "size": 3}),
         ("sublist", "sublist_harness.c", "tad_sublista.c", ["add_parent", "1", "add_child", "1", "8", "add_child", "1", "9", "add_parent", "2"], {"parents": [{"parent": 1, "children": [8, 9]}, {"parent": 2, "children": []}], "size": 2}),
         ("binary_heap", "binary_heap_harness.c", "tad_monticulo_binario.c", ["insert", "5", "insert", "1", "insert", "3", "extract"], {"values": [3, 5], "size": 2}),

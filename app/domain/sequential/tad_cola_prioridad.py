@@ -124,7 +124,19 @@ def cp_formatear(cola: ColaPrioridad, destino: list[str] | None, capacidad: int)
 
 
 def cp_vaciar(cola: ColaPrioridad) -> None:
-    cp_inicializar(cola)
+    actual = cola.delante
+    while actual is not None:
+        siguiente = actual.sgte
+        cola.delante = siguiente
+        if cola.atras is actual:
+            cola.atras = None
+        actual.sgte = None
+        if cola.cantidad > 0:
+            cola.cantidad -= 1
+        actual = siguiente
+    cola.delante = None
+    cola.atras = None
+    cola.cantidad = 0
 
 
 def _set_out(out_ref: list[int] | None, value: int) -> None:

@@ -1953,6 +1953,20 @@ html[data-didactic-mode="visual"] .didactic-technical {
   border-width: 0 !important;
   pointer-events: none;
 }
+html[data-didactic-mode="visual"] #seq-code-region.didactic-technical,
+html[data-didactic-mode="visual"] #sorting-code-region.didactic-technical,
+html[data-didactic-mode="visual"] #hash-code-region.didactic-technical,
+html[data-didactic-mode="visual"] #graph-code-region.didactic-technical,
+html[data-didactic-mode="visual"] #hier-code-region.didactic-technical {
+  max-height: none !important;
+  opacity: 1;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  border-width: 1px !important;
+  pointer-events: auto;
+}
 
 .hash-buckets-wrap {
   display: grid;
@@ -2390,7 +2404,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, .btn:focus-visi
 
 /* Pilot: compact stack laboratory. Other sequential structures keep their layout. */
 body:has(.is-stack-pilot) .site-nav .nav-row { padding: 0.28rem 0; }
-body:has(.is-stack-pilot) .site-nav .nav-tools { display: none; }
+body:has(.is-stack-pilot) .site-nav .nav-export-controls { display: none; }
 body:has(.is-stack-pilot) .site-nav .nav-links { flex-wrap: nowrap; gap: 0.75rem; overflow-x: auto; white-space: nowrap; font-size: 0.84rem; }
 body:has(.is-stack-pilot) main { padding-top: 0.4rem; }
 .is-stack-pilot .seq-pilot-panel > h3 { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
@@ -2405,15 +2419,6 @@ body:has(.is-stack-pilot) main { padding-top: 0.4rem; }
 .is-stack-pilot .seq-pilot-trace-details { margin-top: 0.55rem; border: 1px solid #b8cad9; border-radius: 0.45rem; padding: 0.38rem 0.55rem; background: #fbfdff; }
 .is-stack-pilot .seq-pilot-trace-details summary { cursor: pointer; color: #174f86; font-size: 0.88rem; font-weight: 700; }
 .is-stack-pilot .seq-pilot-trace-details .didactic-technical { margin-top: 0.55rem; }
-html[data-didactic-mode="visual"] .is-stack-pilot #seq-code-region.didactic-technical {
-  max-height: none !important;
-  opacity: 1;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding: 1rem !important;
-  border-width: 1px !important;
-  pointer-events: auto;
-}
 
 @media (min-width: 1101px) {
   .is-stack-pilot { grid-template-columns: minmax(0, 1fr); grid-template-areas: "header" "prepare" "workspace" "understand" "reflect"; align-items: start; }

@@ -64,6 +64,12 @@ void lista_eliminar_elemento(Tlista *lista, int valor);
  * @param[in] valor Valor a eliminar.
  */
 void lista_eliminar_repetidos(Tlista *lista, int valor);
+
+/**
+ * @brief Libera todos los nodos y deja la lista en NULL.
+ * @param[in,out] lista Lista que se vacía.
+ */
+void lista_limpiar(Tlista *lista);
 int lista_eliminar_inicio(Tlista *lista, int *valor);
 int lista_eliminar_final(Tlista *lista, int *valor);
 int lista_eliminar_posicion(Tlista *lista, int posicion, int *valor);

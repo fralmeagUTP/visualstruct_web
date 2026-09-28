@@ -174,7 +174,7 @@ def test_tad_lista_mostrar_eliminar_variants(capsys: pytest.CaptureFixture[str])
     assert "no encontrado" in capsys.readouterr().out.lower()
 
 
-@pytest.mark.parametrize("values,target,expected", [([1, 2, 1], 1, [0, 2]), ([9], 7, []), ([4, 4, 4], 4, [0, 1, 2])])
+@pytest.mark.parametrize("values,target,expected", [([1, 2, 1], 1, [1, 3]), ([9], 7, []), ([4, 4, 4], 4, [1, 2, 3])])
 def test_tad_lista_circular_buscar_posiciones(values: list[int], target: int, expected: list[int]) -> None:
     lista = ListaCircular()
     lcir_inicializar(lista)
@@ -183,6 +183,7 @@ def test_tad_lista_circular_buscar_posiciones(values: list[int], target: int, ex
     out: list[int] = []
     used = lcir_buscar_posiciones(lista, target, out, 32)
     assert out[:used] == expected
+    assert used == len(expected)
 
 
 def test_tad_lista_circular_mutation_and_formatting() -> None:
@@ -267,7 +268,7 @@ def test_tad_sublista_parent_child_branches() -> None:
     assert out == [20]
     text: list[str] = []
     sublista_formatear(lista_ref[0], text, 120)
-    assert "1:" in text[0]
+    assert "P(1):" in text[0]
     sublista_destruir(lista_ref)
     assert lista_ref[0] is None
 

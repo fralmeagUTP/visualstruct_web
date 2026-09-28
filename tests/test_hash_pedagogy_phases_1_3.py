@@ -68,10 +68,12 @@ def test_catalog_examples_and_page_regions(client):
     assert HASH_LEARNING_CATALOG["value_type"] == "int"
     assert {item["id"] for item in HASH_GUIDED_EXAMPLES} >= {"empty","collision","update","negative"}
     html = client.get("/hash/hash_table").get_data(as_text=True)
-    for label in ("Preparar","Predecir","Ejecutar","Comprender","Relacionar con C","Comparar","Reflexionar"):
+    for label in ("Preparar y controlar la ejecución", "Visualizar y ejecutar", "Relacionar con código C", "Comprender", "Resultados de la ejecución"):
         assert label in html
-    for element_id in ("hash-learning-level","hash-guided-example","hash-load-example","hash-visual-region","hash-code-region","hash-function-list","hash-hide-comments","hash-reset-execution","hash-formula-view","hash-chain-view","hash-pointers-view","hash-memory-view","hash-invariant-view"):
+    for element_id in ("hash-operation-form","hash-operation-select","hash-sim-play","hash-sim-step","hash-step-navigation","hash-visual-region","hash-code-region","hash-function-list","hash-hide-comments","hash-formula-view","hash-chain-view","hash-pointers-view","hash-memory-view","hash-invariant-view","hash-export-image","hash-printf-console","action-history","tad-record"):
         assert f'id="{element_id}"' in html
+    assert "hash-learning-level" not in html
+    assert "hash-guided-example" not in html
 
 
 def test_help_and_frontend_remove_false_rehash_claim_and_generate_c17_main():

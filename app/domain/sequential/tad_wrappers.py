@@ -31,6 +31,7 @@ from .tad_lista import (
     lista_configurar_insertar_antes_despues_provider,
     lista_eliminar_elemento,
     lista_eliminar_repetidos,
+    lista_limpiar,
     lista_insertar_elemento,
     lista_insertar_final,
     lista_insertar_inicio,
@@ -41,6 +42,7 @@ from .tad_lista_circular import (
     lcir_contar,
     lcir_copiar_valores,
     lcir_destruir,
+    lcir_eliminar_inicio,
     lcir_eliminar_primero,
     lcir_inicializar,
     lcir_insertar_final,
@@ -267,7 +269,7 @@ class ListaCircular(Generic[T]):
         if lcir_vacia(self._lista):
             raise EstructuraVaciaError("La lista circular esta vacia.")
         head = self._lista.cabeza.valor
-        if not lcir_eliminar_primero(self._lista, head):
+        if not lcir_eliminar_inicio(self._lista):
             raise EstructuraVaciaError("No se pudo eliminar el inicio.")
         return head  # type: ignore[return-value]
 
@@ -441,9 +443,10 @@ class ListaEnlazada(Generic[T]):
         return self._cola.nro  # type: ignore[return-value]
 
     def limpiar(self) -> None:
-        self._cabeza = None
-        self._cola = None
-        self._tamano = 0
+        ref = [self._cabeza]
+        lista_limpiar(ref)
+        self._cabeza = ref[0]
+        self._recalcular_metadata()
 
     def vacia(self) -> bool:
         return self._tamano == 0
@@ -631,10 +634,22 @@ class Sublista(Generic[T]):
         nodo_padre = sublista_buscar_padre(self._lista_ref[0], int(padre))
         if nodo_padre is None:
             raise ElementoNoEncontradoError(f"El padre {padre!r} no existe.")
-        return sublista_eliminar_hijo_primero(nodo_padre, int(hijo))
+        self.last_delete_events: list[dict[str, object]] = []
+        return sublista_eliminar_hijo_primero(nodo_padre, int(hijo), self.last_delete_events)
 
     def eliminar_padre(self, dato: T) -> bool:
-        return sublista_eliminar_padre_primero(self._lista_ref, int(dato))
+        self.last_delete_events: list[dict[str, object]] = []
+        eliminado = sublista_eliminar_padre_primero(self._lista_ref, int(dato), self.last_delete_events)
+        for event in self.last_delete_events:
+            if event.get("stage") == "free_parent":
+                event["logical_id"] = self._logical_ids.pop(int(event["node_id"]), None)
+            elif event.get("stage") == "free_child":
+                event["parent_logical_id"] = next(
+                    (logical_id for node_id, logical_id in self._logical_ids.items()
+                     if node_id == int(event["parent_id"])),
+                    None,
+                )
+        return eliminado
 
     def hijos_de(self, padre: T) -> list[T]:
         nodo_padre = sublista_buscar_padre(self._lista_ref[0], int(padre))

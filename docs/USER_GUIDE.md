@@ -165,6 +165,18 @@ Incluye operaciones de insercion, eliminacion, busqueda y limpieza para:
 - Lista circular
 - Sublista
 
+En la Lista enlazada, `limpiar` ejecuta `lista_limpiar(Tlista *lista)`: mientras
+`*lista` no sea `NULL`, guarda el nodo cabeza en `q`, actualiza
+`*lista = q->sgte` y ejecuta `free(q)`. La pantalla, la ayuda y la descarga del
+TAD muestran este mismo método.
+
+En Sublista cada padre es un nodo independiente, aunque varios almacenen el
+mismo valor. Las operaciones por valor actúan sobre la primera coincidencia de
+padre o hijo, igual que las funciones C. `hijos_de` muestra la función real
+`sublista_obtener_hijos` y sus recorridos auxiliares; al eliminar un padre o
+limpiar, primero se desconectan los enlaces y luego se libera cada hijo y padre.
+La traza enseña esos estados temporales junto con el código C y la estructura.
+
 ### 8.2 Jerarquico
 
 Estructuras:

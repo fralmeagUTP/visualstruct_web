@@ -66,12 +66,14 @@ def test_trace_final_state_matches_fast_execution_and_every_frame_is_replay_safe
     assert all(frame["memory"]["dangling_references"] == [] for frame in (step["pedagogy"] for step in trace["steps"]))
 
 
-def test_page_and_client_expose_practice_predictions_and_full_playback_controls(client) -> None:
+def test_page_exposes_compact_execution_and_simultaneous_learning_regions(client) -> None:
     html = client.get("/hash/hash_table").get_data(as_text=True)
-    for element_id in ("hash-sim-pause", "hash-sim-start", "hash-sim-end", "hash-sim-repeat", "hash-sim-progress", "hash-sim-detail", "hash-prediction-kind", "hash-prediction-answer", "hash-check-prediction", "hash-prediction-hint", "hash-skip-prediction", "hash-practice-mode", "hash-reset-progress"):
+    for element_id in ("hash-sim-play", "hash-sim-step", "hash-step-navigation", "hash-sim-counter", "hash-visual-region", "hash-code-region", "hash-pedagogy-summary", "hash-export-image", "hash-export-summary"):
         assert f'id="{element_id}"' in html
+    assert 'data-hash-tab="visual"' in html and 'data-hash-tab="code"' in html
+    assert "hash-prediction-kind" not in html and "hash-practice-mode" not in html
     source = Path("static/js/hash.js").read_text(encoding="utf-8")
-    for token in ("hashPredictionExpected", "hash-learning-progress", "tracePlayer?.seek", "tracePlayer?.pause", "playFromStart"):
+    for token in ("tracePlayer?.seek", "tracePlayer.step()", "initHashResponsiveWorkspace"):
         assert token in source
 
 
@@ -91,12 +93,13 @@ def test_capacity_comparison_uses_immutable_input_and_isolated_tables(client) ->
 
 def test_hash_help_and_page_cover_comparison_accessibility_and_export(client) -> None:
     page = client.get("/hash/hash_table").get_data(as_text=True)
-    for element_id in ("hash-compare-controls", "hash-compare-run", "hash-compare-progress", "hash-export-image", "hash-export-summary", "hash-accessible-announcer"):
+    for element_id in ("hash-export-image", "hash-export-summary", "hash-accessible-announcer", "hash-printf-console", "action-history", "tad-record"):
         assert f'id="{element_id}"' in page
+    assert "hash-compare-controls" not in page
     help_page = client.get("/help/hash/hash_table").get_data(as_text=True)
-    for label in ("Guía de aprendizaje", "Capacidad fija", "Glosario", "Guía docente", "Alt+→"):
+    for label in ("Guía de aprendizaje", "Capacidad fija", "Glosario", "Guía docente", "Teclado"):
         assert label in help_page
     source = Path("static/js/hash.js").read_text(encoding="utf-8")
-    for token in ("compareControls?.dataset.compareUrl", "exportVisualStateAsJpg", "hash-learning-summary/v1"):
+    for token in ("exportVisualStateAsJpg", "hash-learning-summary/v1"):
         assert token in source
     assert "prefers-reduced-motion" in Path("static/css/styles.css").read_text(encoding="utf-8")

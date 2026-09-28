@@ -17,15 +17,15 @@ def test_sorting_visualizer_page_loads(client) -> None:
     assert b"didactic-mode-switch" in response.data
     assert "Mostrar codigo y detalles tecnicos".encode("utf-8") in response.data
     assert b"sorting-sim-play" in response.data
-    assert b"sorting-step-toggle" in response.data
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert b"sorting-step-navigation" in response.data
+    assert "Relacionar con código C".encode("utf-8") in response.data
 
 
 def test_sorting_visualizer_exposes_five_learning_regions_and_responsive_tools(client) -> None:
     """The learning workflow must keep visual and C context addressable."""
     response = client.get("/sorting/visualizador")
     html = response.get_data(as_text=True)
-    for label in ("Preparar", "Visualizar", "Comprender", "Relacionar con C", "Reflexionar"):
+    for label in ("Preparar y controlar la ejecución", "Visualizar y ejecutar", "Comprender", "Relacionar con código C", "Resultados de la ejecución"):
         assert label in html
     assert 'id="sorting-visual-region"' in html
     assert 'id="sorting-code-region"' in html
@@ -33,24 +33,22 @@ def test_sorting_visualizer_exposes_five_learning_regions_and_responsive_tools(c
     assert 'data-sorting-tab="code"' in html
     assert 'id="sorting-hide-comments"' in html
     assert 'id="sorting-function-list"' in html
-    assert 'id="sorting-learning-level"' in html
-    assert 'id="sorting-guided-example"' in html
+    assert 'id="sorting-learning-level"' not in html
+    assert 'id="sorting-guided-example"' not in html
     assert 'id="sorting-pedagogy-narration"' in html
     assert 'id="sorting-variable-table"' in html
     assert 'id="sorting-call-stack"' in html
     assert 'id="sorting-loop-view"' in html
     assert 'id="sorting-pointer-view"' in html
     assert 'id="sorting-strategy-view"' in html
-    for control_id in ("sorting-sim-prepare", "sorting-sim-pause", "sorting-sim-start", "sorting-sim-end", "sorting-sim-repeat", "sorting-progress", "sorting-restart-execution"):
+    for control_id in ("sorting-sim-play", "sorting-sim-step", "sorting-step-navigation", "sorting-sim-counter"):
         assert f'id="{control_id}"' in html
     assert 'id="sorting-invariant-text"' in html
     assert 'id="sorting-observed-metrics"' in html
     assert 'id="sorting-theory-profile"' in html
-    assert 'id="sorting-practice-mode"' in html
-    assert 'id="sorting-prediction-card"' in html
-    assert 'id="sorting-compare-left"' in html
-    assert 'id="sorting-compare-right"' in html
-    assert 'id="sorting-compare-progress"' in html
+    assert 'id="sorting-practice-mode"' not in html
+    assert 'id="sorting-prediction-card"' not in html
+    assert 'id="sorting-compare-left"' not in html
     assert 'id="sorting-export-image"' in html
     assert 'id="sorting-export-summary"' in html
     assert 'id="sorting-accessible-announcer"' in html
@@ -113,5 +111,4 @@ def test_sorting_help_pages_available(client) -> None:
     help_html = structure_help.get_data(as_text=True)
     assert "Fichas por algoritmo" in help_html
     assert "Glosario contextual" in help_html
-    assert "Atajos de teclado" in help_html
     assert "Pivote" in help_html and "Estabilidad" in help_html and "In-place" in help_html

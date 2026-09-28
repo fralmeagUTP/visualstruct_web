@@ -115,7 +115,7 @@ def test_lista_circular_metodos_consistentes() -> None:
     lista.insertar_final(2)
 
     assert lista.a_lista() == [1, 2, 3, 2]
-    assert lista.buscar_posiciones(2) == [1, 3]
+    assert lista.buscar_posiciones(2) == [2, 4]
     assert lista.eliminar_primero(2) is True
     assert lista.a_lista() == [1, 3, 2]
     assert lista.eliminar_inicio() == 1

@@ -71,7 +71,7 @@ def test_compare_route_and_learning_regions(client):
     response = client.post("/graph/compare", json={"kind": "prim-kruskal", "graph": state, "start": 1})
     assert response.status_code == 200 and response.get_json()["isolated"] is True
     html = client.get("/graph/graph/expansion-minima").get_data(as_text=True)
-    for element_id in ("graph-prepare", "graph-sim-pause", "graph-sim-home", "graph-sim-end", "graph-sim-repeat", "graph-progress", "graph-step-metadata", "graph-prediction", "graph-practice-mode", "graph-compare-kind", "graph-compare-grid", "graph-export-image", "graph-export-summary", "graph-accessible-announcer"):
+    for element_id in ("graph-controls", "graph-sim-play", "graph-sim-step", "graph-step-navigation", "graph-sim-counter", "graph-step-metadata", "graph-visual-region", "graph-code-region", "graph-export-image", "graph-export-summary", "graph-accessible-announcer", "graph-printf-console", "action-history", "tad-record"):
         assert f'id="{element_id}"' in html
 
 

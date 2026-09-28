@@ -15,7 +15,7 @@ def test_graph_structure_page_loads(client) -> None:
     response = client.get("/graph/graph")
     assert response.status_code == 200
     assert b"Estado visual" in response.data
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Relacionar con código C".encode("utf-8") in response.data
     assert "grafo_insertar_vertice".encode("utf-8") in response.data
 
 

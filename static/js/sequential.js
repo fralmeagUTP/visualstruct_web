@@ -954,19 +954,19 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
     }));
     frames.push(makeLinkedListFrame(currentState, baseValues, {
       tempNodeValue: value,
-      opLabel: `1) Se crea nodo aux con valor ${value}`,
+      opLabel: `1) CrearNodoLista crea q con valor ${value}`,
     }));
     frames.push(makeLinkedListFrame(currentState, baseValues, {
       tempNodeValue: value,
       tempLinkTargetIndex: baseValues.length ? 0 : -1,
       activeIndices: baseValues.length ? [0] : [],
-      opLabel: "2) aux->sgte = *l",
+      opLabel: "2) q->sgte = *lista",
     }));
     frames.push(makeLinkedListFrame(currentState, nextValues, {
       activeIndices: [0],
       pendingIndices: [0],
       commitIndices: [0],
-      opLabel: "3) *l = aux (actualiza HEAD)",
+      opLabel: "3) *lista = q (actualiza HEAD)",
     }));
     frames.push(makeLinkedListFrame(currentState, nextValues, {
       activeIndices: [0],
@@ -984,13 +984,13 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
       frames.push(makeLinkedListFrame(currentState, baseValues, { opLabel: "Estado inicial (lista vacia)" }));
       frames.push(makeLinkedListFrame(currentState, baseValues, {
         tempNodeValue: value,
-        opLabel: `1) Se crea nodo aux con valor ${value}`,
+        opLabel: `1) CrearNodoLista crea q con valor ${value}`,
       }));
       frames.push(makeLinkedListFrame(currentState, [value], {
         activeIndices: [0],
         pendingIndices: [0],
         commitIndices: [0],
-        opLabel: "2) *l = aux",
+        opLabel: "2) *lista = q",
       }));
       return frames;
     }
@@ -1009,7 +1009,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
     }
     frames.push(makeLinkedListFrame(currentState, baseValues, {
       tempNodeValue: value,
-      opLabel: `1) Se crea nodo aux con valor ${value}`,
+      opLabel: `1) CrearNodoLista crea q con valor ${value}`,
       visitedIndices: baseValues.map((_, i) => i),
     }));
     frames.push(makeLinkedListFrame(currentState, baseValues, {
@@ -1017,7 +1017,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
       tempLinkTargetIndex: baseValues.length - 1,
       activeIndices: [baseValues.length - 1],
       visitedIndices: baseValues.slice(0, -1).map((_, i) => i),
-      opLabel: "2) ultimo->sgte = aux",
+      opLabel: "2) t->sgte = q",
     }));
     const nextValues = [...baseValues, value];
     frames.push(makeLinkedListFrame(currentState, nextValues, {
@@ -1040,7 +1040,13 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
     if (value === null || posUi === null) {
       return frames;
     }
-    const idx = Math.max(0, Math.min(baseValues.length, posUi - 1));
+    // El contrato visible de lista_insertar_elemento coincide con C:
+    // posición 1 inserta al inicio; posición n (>1) inserta DESPUÉS del
+    // nodo que ocupa la posición base n. No se debe desplazar el nodo n.
+    if (posUi < 1 || (posUi > 1 && posUi > baseValues.length)) {
+      return frames;
+    }
+    const idx = posUi === 1 ? 0 : posUi;
     const visited = [];
     for (let i = 0; i < idx; i += 1) {
       visited.push(i);
@@ -1050,7 +1056,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
     nextValues.splice(idx, 0, value);
     frames.push(makeLinkedListFrame(currentState, baseValues, {
       tempNodeValue: value,
-      opLabel: `1) Se crea nodo aux con valor ${value}`,
+      opLabel: `1) CrearNodoLista crea q con valor ${value}`,
       visitedIndices: visited,
     }));
     frames.push(makeLinkedListFrame(currentState, nextValues, {
@@ -1058,7 +1064,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
       pendingIndices: [idx],
       commitIndices: [idx],
       visitedIndices: visited,
-      opLabel: "2) Reasignacion de enlaces en la posicion objetivo",
+      opLabel: "2) q->sgte = t->sgte; t->sgte = q",
     }));
     return frames;
   }
@@ -1371,6 +1377,7 @@ function buildQueueSimulationFrames(currentState, operationName, payload) {
         tempNodeValue: value,
         tempLinkTargetIndex: baseValues.length - 1,
         activeIndices: [baseValues.length - 1],
+        pointerTargets: { delante: "N1", atras: `N${baseValues.length}` },
         opLabel: "2) q->atras->sgte = aux",
       }));
     } else {
@@ -1380,11 +1387,13 @@ function buildQueueSimulationFrames(currentState, operationName, payload) {
         commitIndices: [0],
         tempNodeValue: value,
         tempNodeTitle: "aux (integrado)",
+        pointerTargets: { delante: "N1", atras: "NULL" },
         opLabel: "2) q->delante = aux",
       }));
       frames.push(makeQueueFrame(currentState, nextValues, {
         activeIndices: [0],
         commitIndices: [0],
+        pointerTargets: { delante: "N1", atras: "N1" },
         opLabel: "3) q->atras = aux",
       }));
       frames.push(makeQueueFrame(currentState, nextValues, {
@@ -1400,6 +1409,7 @@ function buildQueueSimulationFrames(currentState, operationName, payload) {
       commitIndices: [baseValues.length],
       tempNodeValue: value,
       tempNodeTitle: "aux (integrado)",
+      pointerTargets: { delante: "N1", atras: `N${baseValues.length}` },
       opLabel: "3) q->atras = aux",
     }));
     frames.push(makeQueueFrame(currentState, nextValues, {
@@ -1428,12 +1438,22 @@ function buildQueueSimulationFrames(currentState, operationName, payload) {
       commitIndices: remaining.length ? [0] : [],
       tempDetachedValue: removed,
       tempDetachedTitle: "nodo removido",
+      pointerTargets: remaining.length ? { delante: "N1", atras: `N${remaining.length}` } : { delante: "NULL", atras: "N1" },
       opLabel: "2) q->delante = aux->sgte",
     }));
+    if (!remaining.length) {
+      frames.push(makeQueueFrame(currentState, remaining, {
+        tempDetachedValue: removed,
+        tempDetachedTitle: "nodo removido",
+        pointerTargets: { delante: "NULL", atras: "NULL" },
+        opLabel: "3) q->atras = NULL",
+      }));
+    }
     frames.push(makeQueueFrame(currentState, remaining, {
-      tempActionLabel: "3) free(aux)",
+      tempActionLabel: `${remaining.length ? "3" : "4"}) free(aux)`,
       tempDetachedValue: removed,
       tempDetachedTitle: "nodo removido",
+      pointerTargets: { delante: remaining.length ? "N1" : "NULL", atras: remaining.length ? `N${remaining.length}` : "NULL" },
       opLabel: "Memoria del nodo removido liberada",
     }));
     frames.push(makeQueueFrame(currentState, remaining, {
@@ -1664,13 +1684,20 @@ function resolveQueueFrameByLine(operationName, lineText, frames) {
   }
 
   if (operationName === "desencolar") {
-    if (line.includes("free(aux)") || line.includes("q->delante = aux->sgte")) {
-      return line.includes("free(aux)")
-        ? Math.min(3, frames.length - 1)
-        : Math.min(2, frames.length - 1);
+    if (line.includes("q->atras = null")) {
+      return Math.min(3, frames.length - 1);
+    }
+    if (line.includes("free(aux)")) {
+      return Math.min(frames.length - 2, frames.length - 1);
+    }
+    if (line.includes("q->delante = aux->sgte")) {
+      return Math.min(2, frames.length - 1);
     }
     if (line.includes("int num = aux->nro") || line.includes("aux = q->delante")) {
       return Math.min(1, frames.length - 1);
+    }
+    if (line.includes("if (q->delante == null)")) {
+      return Math.min(2, frames.length - 1);
     }
     return -1;
   }
@@ -1807,7 +1834,7 @@ function buildSequentialVisualFrames(modelId, visualState, operationName, payloa
     return buildPriorityQueueSimulationFrames(visualState, operationName, payload);
   }
   if (modelId === "circular_list") return buildCircularListSimulationFrames(visualState, operationName, payload);
-  if (modelId === "sublist") return buildSublistSimulationFrames(visualState, operationName, payload);
+  if (modelId === "sublist") return [];
   return [];
 }
 
@@ -1976,7 +2003,7 @@ function renderStack(state, hint) {
   if (simulation && simulation.opLabel) {
     html += `<div class="viz-op-label">${escapeHtml(simulation.opLabel)}</div>`;
   }
-  html += '<div class="viz-row-label top">TOPE</div><div class="viz-stack">';
+  html += '<div class="viz-row-label top">*p (TOPE)</div><div class="viz-stack">';
   items.forEach((item, index) => {
     const isTop = index === 0;
     const value = escapeHtml(item.value);
@@ -2059,19 +2086,19 @@ function renderLinkedStack(state, hint) {
     const next = nextLabel === undefined
       ? (index + 1 < items.length ? nodeName(index + 1) : "NULL")
       : nextLabel;
-    return `<article class="stack-linked-node ${classes}"><div class="stack-linked-node-id">${escapeHtml(nodeName(index))}</div><div class="stack-linked-field"><span>DATO</span><strong>${escapeHtml(value)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${escapeHtml(next)}</strong></div></article>`;
+    return `<article class="stack-linked-node ${classes}"><div class="stack-linked-node-id">${escapeHtml(nodeName(index))}</div><div class="stack-linked-field"><span>nro</span><strong>${escapeHtml(value)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${escapeHtml(next)}</strong></div></article>`;
   };
 
   let html = '<div class="stack-linked-wrap">';
   if (simulation?.opLabel) {
     html += `<p class="stack-linked-operation">${escapeHtml(simulation.opLabel)}</p>`;
   }
-  html += '<div class="stack-linked-pointer"><strong>Pila</strong><span aria-hidden="true">↓</span><code>';
+  html += '<div class="stack-linked-pointer"><strong>*p (TOPE)</strong><span aria-hidden="true">↓</span><code>';
   html += items.length ? nodeName(0) : "NULL";
   html += '</code></div>';
 
   if (!items.length) {
-    html += '<div class="stack-linked-null">Pila → NULL</div>';
+    html += '<div class="stack-linked-null">*p (TOPE) → NULL</div>';
   } else {
     html += '<div class="stack-linked-chain">';
     items.forEach((item, index) => {
@@ -2130,7 +2157,10 @@ function renderStructuralSequential(structureId, state, hint) {
         : "";
     return `<div class="stack-linked-wrap stack-sublist-wrap">${sim.opLabel ? `<p class="stack-linked-operation">${escapeHtml(sim.opLabel)}</p>` : ""}<div class="stack-linked-pointer"><strong>HEAD</strong><span>↓</span><code>${items.length ? "P1" : "NULL"}</code></div><div class="stack-sublist-parents">${parents || '<div class="stack-linked-null">HEAD → NULL</div>'}</div>${transient}</div>`;
   }
-  const labels = structureId === "queue" || structureId === "priority_queue" ? `<div class="stack-linked-pointer"><strong>delante</strong><span>→</span><code>${items.length ? "N1" : "NULL"}</code></div><div class="stack-linked-pointer"><strong>atrás</strong><span>→</span><code>${items.length ? `N${items.length}` : "NULL"}</code></div>` : `<div class="stack-linked-pointer"><strong>HEAD</strong><span>→</span><code>${items.length ? "N1" : "NULL"}</code></div>${structureId === "linked_list" && sim.activeIndices?.length ? `<div class="stack-linked-pointer"><strong>actual</strong><span>→</span><code>N${sim.activeIndices[0] + 1}</code></div>${sim.activeIndices[0] > 0 ? `<div class="stack-linked-pointer"><strong>anterior</strong><span>→</span><code>N${sim.activeIndices[0]}</code></div>` : ""}` : ""}${structureId === "circular_list" ? `<div class="stack-linked-note">TAIL → HEAD (circular)</div>` : ""}`;
+  const pointerTarget = (name, fallback) => sim.pointerTargets && Object.prototype.hasOwnProperty.call(sim.pointerTargets, name)
+    ? sim.pointerTargets[name]
+    : fallback;
+  const labels = structureId === "queue" || structureId === "priority_queue" ? `<div class="stack-linked-pointer"><strong>delante</strong><span>→</span><code>${escapeHtml(pointerTarget("delante", items.length ? "N1" : "NULL"))}</code></div><div class="stack-linked-pointer"><strong>atrás</strong><span>→</span><code>${escapeHtml(pointerTarget("atras", items.length ? `N${items.length}` : "NULL"))}</code></div>` : `<div class="stack-linked-pointer"><strong>${structureId === "linked_list" ? "*lista (HEAD)" : "HEAD"}</strong><span>→</span><code>${items.length ? "N1" : "NULL"}</code></div>${structureId === "linked_list" && sim.activeIndices?.length ? `<div class="stack-linked-pointer"><strong>actual</strong><span>→</span><code>N${sim.activeIndices[0] + 1}</code></div>${sim.activeIndices[0] > 0 ? `<div class="stack-linked-pointer"><strong>anterior</strong><span>→</span><code>N${sim.activeIndices[0]}</code></div>` : ""}` : ""}${structureId === "circular_list" ? `<div class="stack-linked-note">TAIL → HEAD (circular)</div>` : ""}`;
   const priority = structureId === "priority_queue";
   const chain = items.map((item, i) => priority ? `<article class="stack-linked-node stack-priority-node ${active.has(i) ? "sim-active" : ""}"><div class="stack-linked-node-id">N${i + 1}</div><div class="stack-linked-field"><span>VALOR</span><strong>${escapeHtml(item.value)}</strong></div><div class="stack-linked-field"><span>PRIORIDAD</span><strong>${escapeHtml(item.priority)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${i + 1 < items.length ? `N${i + 2}` : "NULL"}</strong></div></article>` : node(item.value, i)).join('<div class="stack-linked-arrow">↓</div>');
   const priorityFields = structureId === "priority_queue" && sim.tempNodePriority !== undefined
@@ -2138,13 +2168,16 @@ function renderStructuralSequential(structureId, state, hint) {
   const detachedPriority = structureId === "priority_queue" && sim.tempDetachedPriority !== undefined
     ? ` · prioridad ${escapeHtml(sim.tempDetachedPriority)}` : "";
   const transientNodeClass = structureId === "priority_queue" ? " stack-priority-node" : "";
-  const transient = sim.tempNodeValue !== undefined ? `<aside class="stack-linked-aux"><p><strong>aux</strong> · nodo temporal</p><div class="stack-linked-node${transientNodeClass}"><div class="stack-linked-field"><span>${valueField}</span><strong>${escapeHtml(sim.tempNodeValue)}</strong></div>${priorityFields}<div class="stack-linked-field"><span>enlace</span><strong>→ ${sim.tempLinkTargetIndex >= 0 ? `N${sim.tempLinkTargetIndex + 1}` : "NULL"}</strong></div></div></aside>` : sim.tempDetachedValue !== undefined ? `<aside class="stack-linked-aux is-detached"><p><strong>aux</strong> · nodo retirado ${escapeHtml(sim.tempDetachedValue)}${detachedPriority}</p><small>${escapeHtml(sim.tempActionLabel || "desconectar y liberar")}</small></aside>` : "";
+  const temporaryName = structureId === "linked_list" ? "q" : "aux";
+  const transient = sim.tempNodeValue !== undefined ? `<aside class="stack-linked-aux"><p><strong>${temporaryName}</strong> · nodo temporal</p><div class="stack-linked-node${transientNodeClass}"><div class="stack-linked-field"><span>${valueField}</span><strong>${escapeHtml(sim.tempNodeValue)}</strong></div>${priorityFields}<div class="stack-linked-field"><span>sgte</span><strong>→ ${sim.tempLinkTargetIndex >= 0 ? `N${sim.tempLinkTargetIndex + 1}` : "NULL"}</strong></div></div></aside>` : sim.tempDetachedValue !== undefined ? `<aside class="stack-linked-aux is-detached"><p><strong>p</strong> · nodo retirado ${escapeHtml(sim.tempDetachedValue)}${detachedPriority}</p><small>${escapeHtml(sim.tempActionLabel || "desconectar y liberar")}</small></aside>` : "";
   return `<div class="stack-linked-wrap">${sim.opLabel ? `<p class="stack-linked-operation">${escapeHtml(sim.opLabel)}</p>` : ""}${labels}<div class="stack-linked-chain">${chain || '<div class="stack-linked-null">NULL</div>'}</div>${transient}</div>`;
 }
 
 function renderSublist(state) {
   const items = state.items || [];
-  if (!items.length) {
+  const temporaryNodes = state.temporaries || {};
+  const hasTransient = Object.keys(temporaryNodes).length > 0 || Boolean(state.detached_parent);
+  if (!items.length && !hasTransient) {
     return '<p class="viz-empty">No hay padres en la sublista.</p>';
   }
 
@@ -2228,7 +2261,12 @@ function renderSublist(state) {
   });
 
   svg += "</svg>";
-  return `<div class="viz-sub-svg-wrap">${svg}</div>`;
+  const transientHtml = Object.entries(temporaryNodes).map(([name, node]) => {
+    const kind = node.kind === "parent" ? "Padre" : "Hijo";
+    return `<aside class="stack-linked-aux${node.next === "desconectado" ? " is-detached" : ""}"><p><strong>${escapeHtml(name)}</strong> · ${kind} temporal</p><div class="stack-linked-node"><div class="stack-linked-field"><span>nro</span><strong>${escapeHtml(node.value ?? "sin inicializar")}</strong></div><div class="stack-linked-field"><span>sgte</span><strong>→ ${escapeHtml(node.next ?? "NULL")}</strong></div></div></aside>`;
+  }).join("");
+  const detached = state.detached_parent ? `<aside class="stack-linked-aux is-detached"><p><strong>actual</strong> · padre desconectado ${escapeHtml(state.detached_parent.parent)}</p><small>Hijos pendientes de liberar: ${escapeHtml((state.detached_parent.children || []).join(", ") || "ninguno")}</small></aside>` : "";
+  return `${items.length ? `<div class="viz-sub-svg-wrap">${svg}</div>` : ""}${transientHtml}${detached}`;
 }
 
 function renderVisualState(structureId, state, container, hint) {
@@ -2286,7 +2324,7 @@ function appendSequentialSemanticOverlay(structureId, state, container, frame) {
     if (Number.isInteger(state.out_index) && state.out_index >= 0) chips.push(`seleccionado: llegada #${state.out_index + 1}`);
     if (tie) chips.push("empate → gana quien llegó antes");
   } else if (structureId === "linked_list") {
-    chips.push(`HEAD → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, "cadena alcanzable → NULL");
+    chips.push(`*lista (HEAD) → ${items.length ? sequentialValue(items[0].value) : "NULL"}`, "cadena alcanzable → NULL");
     pointerNames.filter((name) => ["actual", "anterior", "p", "q", "t"].includes(name)).forEach((name) => chips.push(`${name} visible`));
     if (frame.concept === "link") chips.push("enlace anterior → enlace nuevo");
   } else if (structureId === "circular_list") {
@@ -2830,11 +2868,10 @@ function initStructurePage(model) {
     if (prepareStage && executeStage && executeStage.parentElement !== prepareStage) {
       prepareStage.appendChild(executeStage);
     }
-    const actionGroup = document.querySelector(".seq-execute .actions");
-    const technicalControls = document.querySelector(".seq-execute > .didactic-technical");
+    const actionGroup = document.querySelector(".is-stack-pilot .seq-execute .actions");
+    const technicalControls = document.querySelector(".is-stack-pilot .seq-execute > .didactic-technical");
     if (actionGroup && !actionGroup.querySelector(".seq-pilot-step-toggle")) {
       ["seq-sim-prepare", "seq-sim-play", "seq-sim-pause", "seq-sim-start", "seq-sim-end", "seq-sim-repeat", "seq-restart-execution", "reset-button"].forEach((id) => byId(id)?.remove());
-      technicalControls?.remove();
       const stepToggleButton = document.createElement("button");
       stepToggleButton.type = "button";
       stepToggleButton.className = "btn secondary seq-pilot-step-toggle";
@@ -2856,6 +2893,7 @@ function initStructurePage(model) {
         const item = byId(id);
         if (item) traceStatus.appendChild(item);
       });
+      technicalControls?.remove();
       actionGroup.append(stepToggleButton, stepNavigation, traceStatus);
     }
     const storageKey = "sequential-stack-pilot-panels-v2";
@@ -2932,6 +2970,7 @@ function initStructurePage(model) {
   let pendingExecution = false;
   let traceSelectionKey = "";
   let traceExecutionRevision = 0;
+  let traceWasNavigated = false;
   let traceCursor = -1;
   let traceTotalSteps = 0;
   let lockStepUntilInput = false;
@@ -2990,6 +3029,7 @@ function initStructurePage(model) {
 
   function invalidateTrace(message) {
     traceSelectionKey = "";
+    traceWasNavigated = false;
     traceCursor = -1;
     traceTotalSteps = 0;
     lockStepUntilInput = false;
@@ -3133,6 +3173,7 @@ function initStructurePage(model) {
         consoleState.trace = data.execution_trace;
         consoleState.fallbackMessage = "";
         tracePlayer.loadTrace(data.execution_trace);
+        traceWasNavigated = false;
         traceExecutionRevision += 1;
         traceSelectionKey = `${selectionKey}::execution:${traceExecutionRevision}`;
       } else {
@@ -3220,9 +3261,11 @@ function initStructurePage(model) {
   }
 
   async function executeOrFinishCurrentTrace() {
-    const hasActiveTrace = hasPreparedTraceForCurrentSelection()
-      && tracePlayer
-      && tracePlayer.getCursor() >= 0
+    // Selection/input changes invalidate the player explicitly. Once a trace is
+    // loaded, its own state is the source of truth for continuing it; rebuilding
+    // a form key here can reject a valid trace after the UI has normalized fields.
+    const hasActiveTrace = tracePlayer?.hasTrace()
+      && traceWasNavigated
       && !tracePlayer.isAtEnd();
     if (hasActiveTrace) {
       tracePlayer.seek(tracePlayer.getTotalSteps() - 1);
@@ -3279,19 +3322,20 @@ function initStructurePage(model) {
   simPrepareButton?.addEventListener("click", () => {
     if (!requirePreparedTrace()) return;
     tracePlayer.seek(-1);
+    traceWasNavigated = true;
     lockStepUntilInput = false;
     if (simStatus) simStatus.textContent = "Traza preparada. Predice o inicia la reproducción.";
     setSimulationButtonsEnabled();
   });
 
   simPauseButton?.addEventListener("click", () => { tracePlayer?.pause(); setSimulationButtonsEnabled(); });
-  simStartButton?.addEventListener("click", () => { tracePlayer?.seek(-1); lockStepUntilInput = false; setSimulationButtonsEnabled(); });
+  simStartButton?.addEventListener("click", () => { tracePlayer?.seek(-1); traceWasNavigated = true; lockStepUntilInput = false; setSimulationButtonsEnabled(); });
   simEndButton?.addEventListener("click", () => {
     if (!requirePreparedTrace()) return;
-    tracePlayer.seek(tracePlayer.getTotalSteps() - 1); lockStepUntilInput = true; setSimulationButtonsEnabled();
+    tracePlayer.seek(tracePlayer.getTotalSteps() - 1); traceWasNavigated = true; lockStepUntilInput = true; setSimulationButtonsEnabled();
   });
   simRepeatButton?.addEventListener("click", async () => { if (!requirePreparedTrace()) return; lockStepUntilInput = false; await tracePlayer.playFromStart(); setSimulationButtonsEnabled(); });
-  progressSlider?.addEventListener("input", () => { if (tracePlayer?.hasTrace()) { tracePlayer.seek(Number(progressSlider.value) - 1); lockStepUntilInput = tracePlayer.isAtEnd(); setSimulationButtonsEnabled(); } });
+  progressSlider?.addEventListener("input", () => { if (tracePlayer?.hasTrace()) { tracePlayer.seek(Number(progressSlider.value) - 1); traceWasNavigated = true; lockStepUntilInput = tracePlayer.isAtEnd(); setSimulationButtonsEnabled(); } });
   predictionSkip?.addEventListener("click", () => { if (predictionPanel) predictionPanel.hidden = true; visualContainer.classList.remove("seq-practice-hidden"); });
   resetLearningButton?.addEventListener("click", () => { learningProgress = { attempts: 0, correct: 0, concepts: {} }; saveLearningProgress(); });
   practiceMode?.addEventListener("change", () => { if (!practiceMode.checked) visualContainer.classList.remove("seq-practice-hidden"); });
@@ -3322,6 +3366,7 @@ function initStructurePage(model) {
 
   simPlayButton?.addEventListener("click", async () => {
     if (!requirePreparedTrace()) return;
+    traceWasNavigated = true;
     await tracePlayer.playFromStart();
   });
 
@@ -3331,6 +3376,7 @@ function initStructurePage(model) {
     }
     const moved = tracePlayer?.prev();
     if (moved) {
+      traceWasNavigated = true;
       lockStepUntilInput = false;
     }
     setSimulationButtonsEnabled();
@@ -3342,6 +3388,7 @@ function initStructurePage(model) {
     const nextStep = consoleState.trace?.steps?.[nextIndex];
     if (requestPrediction(nextStep, nextIndex)) { setSimulationButtonsEnabled(); return; }
     const advanced = await tracePlayer.step();
+    if (advanced) traceWasNavigated = true;
     if (advanced && tracePlayer.isAtEnd()) {
       lockStepUntilInput = true;
       setSimulationButtonsEnabled();

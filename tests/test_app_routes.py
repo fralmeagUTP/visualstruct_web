@@ -14,8 +14,8 @@ def test_user_manual_route_loads(client) -> None:
     """User manual page should be available as part of didactic help."""
     response = client.get("/help/manual")
     assert response.status_code == 200
-    assert "Manual de uso de la app".encode("utf-8") in response.data
-    assert "Que es esta app".encode("utf-8") in response.data
+    assert "Manual de uso".encode("utf-8") in response.data
+    assert "VisualStruct permite estudiar estructuras de datos".encode("utf-8") in response.data
 
 
 def test_global_didactic_switch_is_rendered_in_layout(client) -> None:
@@ -167,7 +167,7 @@ def test_hash_page_renders_interpreter_controls(client) -> None:
     assert b"hash-sim-step" in response.data
     assert b"hash-reset-button" in response.data
     assert b"hash-sim-counter" in response.data
-    assert b"hash-step-toggle" in response.data
+    assert b"hash-step-navigation" in response.data
 
 
 def test_graph_page_renders_interpreter_counter(client) -> None:
@@ -175,7 +175,7 @@ def test_graph_page_renders_interpreter_counter(client) -> None:
     response = client.get("/graph/graph")
     assert response.status_code == 200
     assert b"graph-sim-counter" in response.data
-    assert b"graph-step-toggle" in response.data
+    assert b"graph-step-navigation" in response.data
 
 
 def test_sorting_page_renders_interpreter_controls(client) -> None:
@@ -185,7 +185,7 @@ def test_sorting_page_renders_interpreter_controls(client) -> None:
     assert b"sorting-sim-play" in response.data
     assert b"sorting-sim-prev" in response.data
     assert b"sorting-sim-step" in response.data
-    assert b"sorting-step-toggle" in response.data
+    assert b"sorting-step-navigation" in response.data
 
 
 def test_help_module_pages_reference_user_manual(client) -> None:

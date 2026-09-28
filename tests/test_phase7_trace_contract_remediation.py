@@ -58,7 +58,7 @@ def test_merge_and_bin_frames_all_map_to_real_c_lines(algorithm):
 def test_console_is_transported_as_events_and_not_reconstructed_by_frontend():
     history = []
     result = HierarchicalStructureService.execute_operation("red_black", "insertar", {"value": 10}, history)
-    assert result["execution_trace"]["steps"][-1]["console"] == ["El numero ha sido insertado"]
+    assert result["execution_trace"]["steps"][-1]["console"] == ["\tEl numero ha sido insertado"]
     for script in ("sequential.js", "hierarchical.js", "graph.js", "hash.js"):
         source = (ROOT / "static/js" / script).read_text(encoding="utf-8")
         assert "Array.isArray(step.console)" in source
