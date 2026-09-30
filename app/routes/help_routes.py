@@ -5,7 +5,7 @@ from __future__ import annotations
 from copy import deepcopy
 import re
 
-from flask import Blueprint, render_template
+from flask import Blueprint, abort, render_template, send_file
 
 from app.services.hash_help_service import HashHelpService
 from app.services.hash_structure_service import HashStructureService
@@ -32,8 +32,8 @@ _TAD_INTRODUCTIONS: dict[str, str] = {
         "y cada operacion debe preservar consistencia cuando la estructura pasa de vacia a no vacia y viceversa."
     ),
     "priority_queue": (
-        "La Cola de Prioridad atiende primero el elemento con mayor prioridad logica (segun contrato del TAD). "
-        "La interpretacion muestra comparaciones para ubicar el nuevo nodo en la posicion correcta."
+        "La Cola de Prioridad conserva físicamente el orden de llegada. Para atender, recorre esa cadena y "
+        "selecciona la mayor prioridad lógica (menor número); los empates se resuelven por llegada anterior."
     ),
     "linked_list": (
         "La Lista Enlazada representa una secuencia dinamica de nodos conectados por punteros. "
@@ -307,11 +307,22 @@ def _enrich_help_with_c_code(help_data: dict, structure_id: str) -> dict:
     enriched["c_code_title"] = c_data.get("code_title", "Codigo C")
     enriched["c_structure_code"] = c_data.get("record", "/* Estructura C no encontrada. */")
     enriched["c_methods"] = c_methods
+    enriched["source_download"] = CCodeService.get_downloadable_tad(structure_id)
     enriched["supported_operations_display"] = _build_supported_operations_display(
         list(supported_operations),
         methods_by_operation,
     )
     return enriched
+
+
+@help_bp.get("/source/<structure_id>/<file_kind>")
+def download_tad_source(structure_id: str, file_kind: str):
+    """Download an allowlisted complete C TAD source or its public header."""
+    source_file = CCodeService.get_downloadable_tad_file(structure_id, file_kind)
+    if source_file is None:
+        abort(404)
+    mimetype = "text/x-c" if file_kind == "source" else "text/x-csrc"
+    return send_file(source_file, mimetype=mimetype, as_attachment=True, download_name=source_file.name)
 
 
 @help_bp.get("/sequential")

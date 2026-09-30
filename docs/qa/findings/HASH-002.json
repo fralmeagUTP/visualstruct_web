@@ -1,0 +1,22 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "HASH-002",
+  "structure_id": "hash_table",
+  "operation": "insert/search/remove",
+  "input": {"capacity": 17, "key": "A", "value": "1"},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_tabla_hash.c:39", "state": {"key_type": "int", "index_rule": "key % capacity", "deterministic": true}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/hash/tad_wrappers.py:34", "state": {"key_type": "int", "index_rule": "key % capacity", "deterministic": true}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_tabla_hash.c:39", "state": {"key_type": "int", "index_rule": "key % capacity", "deterministic": true}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/hash/tad_wrappers.py:34", "state": {"key_type": "text", "index_rule": "python_hash(key) % capacity", "deterministic": false}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "La interfaz acepta claves de texto y calcula el bucket con hash() de Python, cuyo resultado cambia entre procesos; el C mostrado acepta enteros y usa clave % capacidad.",
+  "probable_cause": "El wrapper convierte claves genéricas en identificadores enteros mediante hash() sin definir en C la misma conversión ni fijar una función reproducible.",
+  "location": "app/adapters/hash_table_adapter.py:_require_key; app/domain/hash/tad_wrappers.py:_indice; docs/tads_C/tad_tabla_hash.c:th_indice",
+  "recommended_test": "Ejecutar las mismas claves de texto en procesos con semillas hash diferentes y comparar bucket, colisiones, traza e imagen final contra el índice del código C.",
+  "suggested_fix": "Restringir la UI a claves enteras o definir e implementar la misma función hash determinista para texto en C y Python, mostrando sus pasos y resultado. No se modifica código funcional durante esta auditoría."
+}

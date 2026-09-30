@@ -30,9 +30,25 @@ jobs:
           pip install -r requirements.txt
           pip install pytest-cov
 
-      - name: Run unit/integration tests
+      - name: Install matching C coverage toolchain
+        # Condition coverage and gcov JSON calls require GCC/gcov 14 or newer.
+        # Keep the compiler and report reader on the same version.
+        # Install before both the ordinary and instrumented Python test runs.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-14
+          mkdir -p "$RUNNER_TEMP/c-coverage-bin"
+          ln -s "$(command -v gcc-14)" "$RUNNER_TEMP/c-coverage-bin/gcc"
+          ln -s "$(command -v gcov-14)" "$RUNNER_TEMP/c-coverage-bin/gcov"
+          echo "$RUNNER_TEMP/c-coverage-bin" >> "$GITHUB_PATH"
+
+      - name: Run unit/integration suite
         run: |
           python -m pytest -q tests -m "not e2e"
+
+      - name: Verify published-option coverage inventory
+        run: |
+          python scripts/build_app_quality_inventory.py --check
 
       - name: Run coverage report
         run: |

@@ -1,172 +1,100 @@
 {% extends "base.html" %}
 {% block title %}{{ model.name }} | Módulo Grafos{% endblock %}
 {% block content %}
-<section class="structure-layout">
-  <div class="panel graph-left-panel">
-    <h2>{{ model.name }}</h2>
-    <p>{{ model.description }}</p>
-    <p class="graph-guide">
-      Flujo recomendado: define el tipo de grafo, construye vértices/aristas y luego ejecuta el algoritmo.
-    </p>
-    <div class="didactic-technical">
-      <h4>Estructura del TAD</h4>
-      <pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre>
-    </div>
+<article class="graph-learning-shell graph-workspace" aria-labelledby="graph-page-title">
+  <header class="graph-learning-header">
+    <div><p class="sorting-eyebrow">Laboratorio de grafos y algoritmos en C</p><h2 id="graph-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div>
+    <a class="link" href="{{ url_for('help.graph_structure_help', structure_id=model.id) }}">Abrir guía del módulo</a>
+  </header>
 
-    <nav class="graph-phase-nav" aria-label="Fases del módulo de grafos">
-      {% for phase_key in graph_phase_order %}
-      {% set phase_item = graph_phases[phase_key] %}
-      <a class="graph-phase-link {% if graph_phase == phase_key %}active{% endif %}"
-         href="{{ url_for('graph.structure_phase_page', structure_id=model.id, phase=phase_key) }}">
-        {{ phase_item.title }}
-      </a>
-      {% endfor %}
-    </nav>
+  <nav class="graph-phase-nav" aria-label="Fases del módulo de grafos">
+    {% for phase_key in graph_phase_order %}{% set phase_item = graph_phases[phase_key] %}
+    <a class="graph-phase-link {% if graph_phase == phase_key %}active{% endif %}" href="{{ url_for('graph.structure_phase_page', structure_id=model.id, phase=phase_key) }}">{{ phase_item.title }}</a>
+    {% endfor %}
+  </nav>
 
-    <div id="graph-controls"
-         data-operate-url="{{ url_for('graph.operate_structure', structure_id=model.id) }}"
-         data-reset-url="{{ url_for('graph.reset_structure', structure_id=model.id) }}"
-         data-active-phase="{{ graph_phase }}"
-         data-phase-run-mode="{{ graph_phase_data.run_mode }}"
-         data-default-algorithm="{{ graph_phase_data.default_algorithm }}"
-         data-allowed-operations='{{ graph_phase_data.operations | list | tojson }}'
-         data-allowed-algorithms='{{ graph_phase_data.algorithms | list | tojson }}'>
-
-      <div class="graph-step-box {% if graph_phase != 'construccion' %}graph-phase-hidden{% endif %}" id="builder">
-        <h4>1) Construcción del grafo</h4>
-        <p class="graph-step-help">Selecciona el tipo y reinicia para empezar una nueva construcción.</p>
-        <label for="graph-mode-select">Tipo de grafo</label>
-        <select id="graph-mode-select" name="graph_mode">
-          <option value="false">No dirigido</option>
-          <option value="true">Dirigido</option>
-        </select>
-        <div class="actions">
-          <button class="btn secondary" id="graph-create-button" type="button">Aplicar tipo y reiniciar</button>
-        </div>
-
-        <label for="graph-operation-select">Operaciones de grafo</label>
-        <select id="graph-operation-select" name="operation"></select>
+  <section class="graph-stage graph-control-stage" aria-labelledby="graph-prepare-title">
+    <div class="graph-panel-heading"><h3 id="graph-prepare-title"><span>1</span> Preparar y controlar la ejecución</h3><p class="graph-phase-description">{{ graph_phase_data.description }}</p></div>
+    <div id="graph-controls" data-operate-url="{{ url_for('graph.operate_structure', structure_id=model.id) }}" data-reset-url="{{ url_for('graph.reset_structure', structure_id=model.id) }}" data-compare-url="{{ url_for('graph.compare_algorithms') }}" data-active-phase="{{ graph_phase }}" data-phase-run-mode="{{ graph_phase_data.run_mode }}" data-default-algorithm="{{ graph_phase_data.default_algorithm }}" data-allowed-operations='{{ graph_phase_data.operations | list | tojson }}' data-allowed-algorithms='{{ graph_phase_data.algorithms | list | tojson }}'>
+      <p id="graph-edge-policy" class="graph-policy">Política: lazos {{ model.edge_policy.self_loops }}, aristas paralelas {{ model.edge_policy.parallel_edges }} y vecinos en {{ model.edge_policy.neighbor_order }}.</p>
+      <div id="builder" class="graph-prepare-grid {% if graph_phase != 'construccion' %}graph-phase-hidden{% endif %}">
+        <label for="graph-mode-select">Tipo<select id="graph-mode-select"><option value="false">No dirigido</option><option value="true">Dirigido</option></select></label>
+        <button class="btn secondary" id="graph-create-button" type="button">Aplicar tipo</button>
+        <label for="graph-operation-select">Operación<select id="graph-operation-select"></select></label>
         <div id="graph-operation-inputs"></div>
-
-        {% if graph_phase == 'construccion' %}
-        <div class="actions">
-          <button class="btn" id="graph-sim-play" type="button">Reproducir</button>
-        </div>
-        <div class="didactic-technical">
-          <div class="sim-toggle-control">
-            <label for="graph-step-toggle">
-              <input id="graph-step-toggle" type="checkbox" checked>
-              Interpretar codigo paso a paso
-            </label>
-          </div>
-          <h4>Ejecución paso a paso</h4>
-          <div class="actions graph-sim-actions">
-            <button class="btn secondary" id="graph-sim-prev" type="button">Anterior paso</button>
-            <button class="btn" id="graph-sim-step" type="button">Siguiente paso</button>
-          </div>
-          <div class="sim-speed-control">
-            <label for="graph-speed-slider">Velocidad de simulacion</label>
-            <input id="graph-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
-            <p class="sim-speed-value">Actual: <span id="graph-speed-value">+0.00x (1.00x real)</span></p>
-          </div>
-          <p id="graph-sim-counter" class="sim-counter">Paso: 0/0</p>
-          <p id="graph-sim-step-kind" class="sim-counter">Acción actual: -</p>
-          <p id="graph-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
-        </div>
-        {% endif %}
       </div>
-
-      <div class="graph-step-box {% if graph_phase == 'construccion' %}graph-phase-hidden{% endif %}">
-        <h4>Grafo base para algoritmos</h4>
-        <p class="graph-step-help">
-          Esta fase solo ejecuta algoritmos. Si necesitas editar vértices/aristas, vuelve a la fase de construcción.
-        </p>
-        <p>
-          <a class="link" href="{{ url_for('graph.structure_phase_page', structure_id=model.id, phase='construccion') }}">
-            Ir a Construcción del grafo
-          </a>
-        </p>
-      </div>
-
-      <div class="graph-step-box {% if graph_phase == 'construccion' %}graph-phase-hidden{% endif %}" id="traversals">
-        <h4>
-          {% if graph_phase_data.title %}{{ graph_phase_data.title }}{% else %}3) Ejecutar algoritmo{% endif %}
-        </h4>
-        <p class="graph-step-help">{{ graph_phase_data.description }}</p>
-        <label for="graph-algorithm-select">Algoritmos de grafo</label>
-        <select id="graph-algorithm-select" name="algorithm"></select>
+      <div id="traversals" class="graph-prepare-grid {% if graph_phase == 'construccion' %}graph-phase-hidden{% endif %}">
+        <p class="graph-construction-link">Edita el grafo en <a class="link" href="{{ url_for('graph.structure_phase_page', structure_id=model.id, phase='construccion') }}">Construcción</a>.</p>
+        <label for="graph-algorithm-select">Algoritmo<select id="graph-algorithm-select"></select></label>
         <div id="graph-algorithm-inputs"></div>
-        <p class="graph-step-help">Selecciona el algoritmo y define sus entradas.</p>
-
-        {% if graph_phase != 'construccion' %}
-        <div class="actions">
-          <button class="btn" id="graph-sim-play" type="button">Reproducir</button>
-        </div>
-        <div class="didactic-technical">
-          <div class="sim-toggle-control">
-            <label for="graph-step-toggle">
-              <input id="graph-step-toggle" type="checkbox" checked>
-              Interpretar codigo paso a paso
-            </label>
-          </div>
-          <h4>Ejecución paso a paso</h4>
-          <div class="actions graph-sim-actions">
-            <button class="btn secondary" id="graph-sim-prev" type="button">Anterior paso</button>
-            <button class="btn" id="graph-sim-step" type="button">Siguiente paso</button>
-          </div>
-          <div class="sim-speed-control">
-            <label for="graph-speed-slider">Velocidad de simulacion</label>
-            <input id="graph-speed-slider" type="range" min="-2" max="2" step="0.25" value="0">
-            <p class="sim-speed-value">Actual: <span id="graph-speed-value">+0.00x (1.00x real)</span></p>
-          </div>
-          <p id="graph-sim-counter" class="sim-counter">Paso: 0/0</p>
-          <p id="graph-sim-step-kind" class="sim-counter">Acción actual: -</p>
-          <p id="graph-sim-status" class="message">Usa Reproducir o Siguiente paso para ejecutar.</p>
-        </div>
-        {% endif %}
       </div>
+      <div class="graph-control-row" aria-label="Controles de ejecución">
+        <button class="btn" id="graph-sim-play" type="button" title="Ejecuta la operación o completa la traza actual">Ejecutar operación</button>
+        <button class="btn secondary" id="graph-sim-step" type="button" title="Inicia o avanza una instrucción de la traza">Paso a paso</button>
+        <span id="graph-step-navigation" class="graph-step-navigation" hidden>
+          <button class="btn secondary" id="graph-sim-prev" type="button">Anterior</button>
+          <button class="btn secondary" id="graph-sim-next" type="button">Siguiente</button>
+        </span>
+        <button class="btn secondary" id="graph-reset-button" type="button">Restablecer grafo</button>
+        <span id="graph-sim-counter" class="graph-sim-counter">Paso: 0/0</span>
+      </div>
+      <p class="graph-control-explanation">Ejecutar operación completa la ejecución desde el punto actual. Paso a paso revela una instrucción y habilita Anterior y Siguiente.</p>
+      <p id="graph-step-metadata" class="graph-step-metadata">Función: — · Fase: — · Concepto: — · Vértice: — · Arista: —</p>
+      <p id="graph-sim-status" class="message" aria-live="polite">Elige una operación o algoritmo y ejecuta.</p>
     </div>
-
     <div id="graph-message-box" class="message" aria-live="polite"></div>
-    <p>
-      <a class="link" href="{{ url_for('help.graph_structure_help', structure_id=model.id) }}">
-        Ver ayuda de {{ model.name }}
-      </a>
-    </p>
-    <section class="console-panel didactic-technical">
-      <h4>Consola C (printf)</h4>
-      <div class="console-monitor">
-        <div class="console-monitor-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="title">terminal</span>
-        </div>
-        <pre id="graph-printf-console" class="console-screen" aria-live="polite"></pre>
+  </section>
+
+  <nav class="graph-mobile-tabs" aria-label="Vistas principales">
+    <button type="button" class="hier-tab is-active" data-graph-tab="visual" aria-controls="graph-visual-region" aria-selected="true">Visualización</button>
+    <button type="button" class="hier-tab" data-graph-tab="code" aria-controls="graph-code-region" aria-selected="false">Código C</button>
+  </nav>
+  <div class="graph-primary-workspace" data-active-tab="visual">
+    <section id="graph-visual-region" class="graph-stage graph-visual-stage" aria-labelledby="graph-visual-title">
+      <h3 id="graph-visual-title"><span>2</span> Visualizar y ejecutar</h3>
+      <p class="graph-visual-help">El lienzo se actualiza con cada instrucción: vértice, arista, peso, auxiliar y decisión activa.</p>
+      <div id="graph-visual-state" role="img" aria-label="Estado visual de {{ model.name }}"></div>
+      <div class="graph-state-legend" aria-label="Leyenda de estados"><span>○ No descubierto</span><span>◇ Frontera</span><span>▶ Activo</span><span>● Cerrado</span><span>✓ MST</span><span>＋ Aceptado</span><span>× Rechazado</span></div>
+    </section>
+    <section id="graph-code-region" class="graph-stage graph-code-stage didactic-technical" aria-labelledby="op-pseudocode-title">
+      <div class="graph-code-toolbar"><h3><span>3</span> Relacionar con código C</h3><label><input id="graph-hide-comments" type="checkbox"> Ocultar documentación extensa</label></div>
+      <div class="graph-code-layout">
+        <nav class="graph-function-index" aria-label="Funciones del código C"><strong>Funciones</strong><ol id="graph-function-list"></ol></nav>
+        <div class="graph-code-content"><h4 id="op-pseudocode-title">{{ model.didactic.code_title if model.didactic else "Código C" }}</h4><pre id="op-pseudocode" class="didactic-code didactic-code-scroll">{{ model.didactic.default_operation if model.didactic else "Contenido didáctico no disponible." }}</pre></div>
       </div>
     </section>
   </div>
 
-  <div class="panel graph-right-panel">
-    <h3>Estado visual</h3>
-    <p class="graph-step-help">Visualización del estado actual del grafo y del resultado del algoritmo ejecutado.</p>
-    <div id="graph-visual-state"></div>
-    <h4>Notas didacticas</h4>
-    <p id="graph-didactic-note">{{ graph_phase_note }}</p>
-    <div class="didactic-technical">
-      <h4 id="op-pseudocode-title">{{ model.didactic.code_title if model.didactic and model.didactic.code_title else "Seudocódigo" }}: {{ model.operations[0].label if model.operations else "" }}</h4>
-      <pre id="op-pseudocode" class="didactic-code didactic-code-scroll">{{ model.didactic.operations.get(model.operations[0].name, model.didactic.default_operation) if model.operations and model.didactic else "Contenido didáctico no disponible para esta operación." }}</pre>
+  <details class="graph-stage graph-collapsible" open>
+    <summary><span>4</span> Comprender <small>Auxiliares, memoria e invariantes del frame actual</small></summary>
+    <div class="graph-panel-content">
+      <p id="graph-pedagogy-summary">Prepara una operación para observar auxiliar, tabla e invariante.</p>
+      <div class="graph-frame-grid">
+        <section><h4>Representación y memoria</h4><div id="graph-representation-view">Sin frame.</div></section>
+        <section><h4>Estructura auxiliar</h4><div id="graph-auxiliary-view">Sin frame.</div></section>
+        <section><h4>Recorrido</h4><div id="graph-traversal-view">Sin recorrido.</div></section>
+        <section><h4>Tabla por vértice</h4><div id="graph-table-view">Sin datos.</div></section>
+        <section><h4>Relajación o decisión</h4><div id="graph-relaxation-view">Sin relajación.</div></section>
+        <section><h4>Condición y arista</h4><div id="graph-condition-view">Sin condición.</div></section>
+        <section><h4>Invariante</h4><div id="graph-invariant-view">Sin verificación.</div></section>
+      </div>
+      <p class="graph-learning-caveat"><strong>BFS:</strong> minimiza el número de aristas solo en grafos no ponderados o cuando todas las aristas tienen el mismo peso.</p>
+      <p id="graph-didactic-note">{{ graph_phase_note }}</p>
     </div>
-    <div class="didactic-technical">
-      <h4>Historial de ejecución</h4>
-      <ol id="action-history" class="didactic-history"></ol>
+  </details>
+
+  <details class="graph-stage graph-collapsible">
+    <summary><span>5</span> Resultados de la ejecución <small>Consola C, historial, TAD y exportación</small></summary>
+    <div class="graph-panel-content">
+      <div class="actions"><button class="btn secondary" id="graph-export-image" type="button">Exportar captura JPG</button><button class="btn secondary" id="graph-export-summary" type="button">Exportar resumen</button></div>
+      <p id="graph-accessible-announcer" class="sr-only" aria-live="polite"></p>
+      <div class="graph-results-grid">
+        <section class="console-panel didactic-technical"><h4>Consola C (printf)</h4><pre id="graph-printf-console" class="console-screen" aria-live="polite"></pre></section>
+        <section class="didactic-technical"><h4>Historial técnico</h4><ol id="action-history" class="didactic-history"></ol></section>
+        <section class="didactic-technical"><h4>Estructura del TAD</h4><pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre></section>
+      </div>
     </div>
-  </div>
-</section>
+  </details>
+</article>
 {% endblock %}
-{% block scripts %}
-<script>
-  window.GRAPH_VIEW_MODEL = {{ model | tojson }};
-  window.GRAPH_DIDACTIC_NOTES = {{ graph_didactic_notes | tojson }};
-</script>
-{% endblock %}
+{% block scripts %}<script>window.GRAPH_VIEW_MODEL={{ model | tojson }};window.GRAPH_DIDACTIC_NOTES={{ graph_didactic_notes | tojson }};</script>{% endblock %}

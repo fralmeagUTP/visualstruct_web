@@ -1,0 +1,26 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "STACK-002",
+  "structure_id": "stack",
+  "operation": "apilar",
+  "input": {"before": [], "value": 9},
+  "expected": [
+    {"step": 0, "layer": "frontend", "source_location": "docs/tads_C/tad_pila.c:27", "state": {"temporary": "aux allocated"}},
+    {"step": 1, "layer": "frontend", "source_location": "docs/tads_C/tad_pila.c:32", "state": {"temporary": "aux->nro = 9"}},
+    {"step": 2, "layer": "frontend", "source_location": "docs/tads_C/tad_pila.c:33", "state": {"temporary_link": "aux->sgte = old_top"}},
+    {"step": 3, "layer": "frontend", "source_location": "docs/tads_C/tad_pila.c:34", "state": {"values": [9], "top": 9}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "frontend", "source_location": "app/services/trace/strategies.py:SequentialTraceStrategy", "state": {"values": []}},
+    {"step": 1, "layer": "frontend", "source_location": "app/services/trace/strategies.py:SequentialTraceStrategy", "state": {"values": []}},
+    {"step": 2, "layer": "frontend", "source_location": "app/services/trace/strategies.py:SequentialTraceStrategy", "state": {"values": []}},
+    {"step": 3, "layer": "frontend", "source_location": "app/services/trace/strategies.py:SequentialTraceStrategy", "state": {"values": [9]}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "Durante malloc y asignaciones de aux la visualización no muestra el nodo temporal, su valor ni su enlace al tope anterior.",
+  "probable_cause": "El estado visual solo modela items pertenecientes a la pila y la transición genérica no posee entidades temporales ni punteros locales.",
+  "location": "app/services/trace/strategies.py:SequentialTraceStrategy; app/adapters/stack_adapter.py:to_visual_state",
+  "recommended_test": "Avanzar por malloc, aux->nro, aux->sgte y *p=aux y comprobar presencia, contenido y enlace del nodo temporal en cada paso.",
+  "suggested_fix": "Extender el snapshot didáctico con temporales y enlaces lógicos, alimentados por eventos allocation/pointer_link antes de incorporar el nodo a items. No se modifica código funcional durante esta auditoría."
+}

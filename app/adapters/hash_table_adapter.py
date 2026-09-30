@@ -12,14 +12,13 @@ class HashTableAdapter(BaseAdapter):
     """Adapt ``TablaHash`` to the common visualizer contract."""
 
     def __init__(self) -> None:
-        self._table: TablaHash[str, str] | None = None
+        self._table: TablaHash[int, int] | None = None
         self._last_operation: dict[str, Any] = {}
         self._last_result: dict[str, Any] | None = None
-        self._last_resize_event: dict[str, Any] | None = None
         self.create()
 
     @property
-    def table(self) -> TablaHash[str, str]:
+    def table(self) -> TablaHash[int, int]:
         """Return a non-null table instance."""
         if self._table is None:
             self.create()
@@ -37,7 +36,6 @@ class HashTableAdapter(BaseAdapter):
         """Create a new hash table with default capacity."""
         self._table = TablaHash(capacidad=17)
         self._last_result = None
-        self._last_resize_event = None
         self._record_last_operation(
             name="create_table",
             status="success",
@@ -50,17 +48,25 @@ class HashTableAdapter(BaseAdapter):
         capacidad = BaseAdapter._require_int(payload, "capacity", "capacidad")
         if capacidad <= 0:
             raise ValueError("La capacidad debe ser positiva.")
+        if capacidad > 2**31 - 1:
+            raise ValueError("La capacidad excede INT_MAX del TAD C.")
         return capacidad
 
     @staticmethod
-    def _require_key(payload: dict[str, Any]) -> str:
+    def _require_key(payload: dict[str, Any]) -> int:
         """Validate key field."""
-        return BaseAdapter._require_text(payload, "key", "clave")
+        value = BaseAdapter._require_int(payload, "key", "clave")
+        if not -(2**31) <= value <= 2**31 - 1:
+            raise ValueError("La clave debe pertenecer al rango de int C (INT_MIN..INT_MAX).")
+        return value
 
     @staticmethod
-    def _require_value(payload: dict[str, Any]) -> str:
+    def _require_value(payload: dict[str, Any]) -> int:
         """Validate value field."""
-        return BaseAdapter._require_text(payload, "value", "valor")
+        value = BaseAdapter._require_int(payload, "value", "valor")
+        if not -(2**31) <= value <= 2**31 - 1:
+            raise ValueError("El valor debe pertenecer al rango de int C (INT_MIN..INT_MAX).")
+        return value
 
     def _set_result(self, name: str, result: dict[str, Any]) -> dict[str, Any]:
         """Persist successful operation result."""
@@ -81,7 +87,6 @@ class HashTableAdapter(BaseAdapter):
         if operation_name == "create_table":
             capacidad = self._parse_capacity(payload)
             self._table = TablaHash(capacidad=capacidad)
-            self._last_resize_event = None
             self._last_result = None
             return self._set_result(
                 operation_name,
@@ -92,38 +97,23 @@ class HashTableAdapter(BaseAdapter):
             key = self._require_key(payload)
             value = self._require_value(payload)
             existed_before = self.table.contiene(key)
-            old_capacity = self.table.capacidad()
-
+            if not existed_before and payload.get("simulate_allocation_failure") in (True, "true", "1", 1):
+                raise ValueError("Fallo de malloc simulado: no se reservó memoria y la tabla permanece sin cambios.")
             self.table.insertar(key, value)
-
-            new_capacity = self.table.capacidad()
-            resized = new_capacity != old_capacity
-            if resized:
-                self._last_resize_event = {
-                    "old_capacity": old_capacity,
-                    "new_capacity": new_capacity,
-                    "reason": "factor_carga_superior_a_0_75",
-                }
-            else:
-                self._last_resize_event = None
 
             message = (
                 f"Se actualizo la clave '{key}' con el nuevo valor."
                 if existed_before
                 else f"Se inserto la clave '{key}' en la tabla hash."
             )
-            if resized:
-                message += f" Se redimensiono de {old_capacity} a {new_capacity}."
-
             return self._set_result(
                 operation_name,
                 {
                     "message": message,
                     "result": {
                         "updated": existed_before,
-                        "resized": resized,
-                        "old_capacity": old_capacity,
-                        "new_capacity": new_capacity,
+                        "capacity": self.table.capacidad(),
+                        "capacity_policy": "fixed",
                     },
                 },
             )
@@ -150,7 +140,6 @@ class HashTableAdapter(BaseAdapter):
                 message = f"Se elimino la clave '{key}'."
             else:
                 message = f"La clave '{key}' no existe; no hubo cambios."
-            self._last_resize_event = None
             return self._set_result(operation_name, {"message": message, "result": removed})
 
         if operation_name == "keys":
@@ -185,8 +174,11 @@ class HashTableAdapter(BaseAdapter):
 
         if operation_name == "clear":
             self.table.limpiar()
-            self._last_resize_event = None
             return self._set_result(operation_name, {"message": "Tabla hash limpiada correctamente."})
+
+        if operation_name == "destroy_table":
+            self.table.destruir()
+            return self._set_result(operation_name, {"message": "Tabla destruida: nodos y arreglo de buckets fueron liberados."})
 
         raise ValueError(f"Operacion no soportada: {operation_name}.")
 
@@ -201,7 +193,15 @@ class HashTableAdapter(BaseAdapter):
         buckets: list[dict[str, Any]] = []
         internal_buckets = getattr(self.table, "_buckets")
         for index, bucket in enumerate(internal_buckets):
-            entries = [{"key": entry.clave, "value": entry.valor} for entry in bucket]
+            entries = [
+                {
+                    "key": entry.clave,
+                    "value": entry.valor,
+                    "address": f"0xHASH-{entry.clave}",
+                    "next": f"0xHASH-{bucket[position + 1].clave}" if position + 1 < len(bucket) else "NULL",
+                }
+                for position, entry in enumerate(bucket)
+            ]
             buckets.append(
                 {
                     "index": index,
@@ -216,14 +216,19 @@ class HashTableAdapter(BaseAdapter):
         """Serialize hash-table state for frontend rendering."""
         buckets = self._buckets_visual_snapshot()
         total_collisions = sum(bucket["collisions"] for bucket in buckets)
+        occupied_buckets = sum(1 for bucket in buckets if bucket["size"] > 0)
+        chain_lengths = [bucket["size"] for bucket in buckets]
         metadata = {
             "size": self.table.tamano(),
             "capacity": self.table.capacidad(),
             "load_factor": round(self.table.factor_carga(), 6),
             "collisions": total_collisions,
+            "occupied_buckets": occupied_buckets,
+            "empty_buckets": max(0, self.table.capacidad() - occupied_buckets),
+            "max_chain_length": max(chain_lengths, default=0),
+            "chain_lengths": chain_lengths,
             "is_empty": self.table.tamano() == 0,
-            "resized": self._last_resize_event is not None,
-            "resize_event": self._last_resize_event,
+            "capacity_policy": "fixed",
         }
         return {
             "structure": "hash_table",
@@ -239,7 +244,6 @@ class HashTableAdapter(BaseAdapter):
         current_capacity = self.table.capacidad()
         self._table = TablaHash(capacidad=current_capacity)
         self._last_result = None
-        self._last_resize_event = None
         self._record_last_operation(
             name="reset",
             status="success",
@@ -260,31 +264,33 @@ class HashTableAdapter(BaseAdapter):
                 "label": "Insertar/Actualizar clave-valor",
                 "mutates": True,
                 "inputs": [
-                    {"name": "key", "label": "Clave", "type": "text"},
-                    {"name": "value", "label": "Valor", "type": "text"},
+                    {"name": "key", "label": "Clave", "type": "number"},
+                    {"name": "value", "label": "Valor entero", "type": "number"},
+                    {"name": "simulate_allocation_failure", "label": "Simular fallo de malloc", "type": "checkbox", "required": False},
                 ],
             },
             {
                 "name": "get",
                 "label": "Buscar clave",
                 "mutates": False,
-                "inputs": [{"name": "key", "label": "Clave", "type": "text"}],
+                "inputs": [{"name": "key", "label": "Clave", "type": "number"}],
             },
             {
                 "name": "contains",
                 "label": "Verificar existencia de clave",
                 "mutates": False,
-                "inputs": [{"name": "key", "label": "Clave", "type": "text"}],
+                "inputs": [{"name": "key", "label": "Clave", "type": "number"}],
             },
             {
                 "name": "remove",
                 "label": "Eliminar clave",
                 "mutates": True,
-                "inputs": [{"name": "key", "label": "Clave", "type": "text"}],
+                "inputs": [{"name": "key", "label": "Clave", "type": "number"}],
             },
             {"name": "keys", "label": "Listar claves", "mutates": False, "inputs": []},
             {"name": "values", "label": "Listar valores", "mutates": False, "inputs": []},
             {"name": "items", "label": "Listar items", "mutates": False, "inputs": []},
             {"name": "stats", "label": "Tamano/capacidad/factor", "mutates": False, "inputs": []},
             {"name": "clear", "label": "Limpiar tabla", "mutates": True, "inputs": []},
+            {"name": "destroy_table", "label": "Destruir tabla", "mutates": True, "inputs": []},
         ]

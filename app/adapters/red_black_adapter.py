@@ -22,7 +22,10 @@ class RedBlackAdapter(BaseAdapter):
         if operation_name == "insertar":
             value = self._require_int(payload, "value", "valor")
             self._structure.insertar(value)
-            return {"message": f"Se insertó {value} en el Rojo-Negro."}
+            return {
+                "message": f"Se insertó {value} en el Rojo-Negro.",
+                "console": ["El numero ha sido insertado"],
+            }
         if operation_name == "eliminar":
             value = self._require_int(payload, "value", "valor")
             self._structure.eliminar(value)

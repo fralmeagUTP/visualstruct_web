@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "SORT-001", "structure_id": "sorting_array", "operation": "quicksort",
+  "input": {"values": [1, 2, 3]},
+  "expected": [{"layer": "c", "source_location": "quicksort_recursivo", "state": {"comparisons": ["1<2 true", "2<2 false", "3>2 true", "2>2 false"]}}],
+  "observed": [{"layer": "trace", "source_location": "SortingInterpreter._quicksort_rec", "state": {"failed_inner_comparisons": "not emitted"}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "Quicksort sólo visualiza las comparaciones que hacen avanzar i/j; omite las comparaciones falsas que detienen ambos while y determinan el intercambio.",
+  "probable_cause": "Los eventos se registran dentro del cuerpo de los while, no al evaluar su condición.",
+  "location": "app/domain/sorting/tad_ordenamiento.py:_quicksort_rec",
+  "recommended_test": "Particionar [1,2,3] y exigir las cuatro evaluaciones contra el pivote, incluidas las dos falsas.",
+  "suggested_fix": "Emitir un evento antes de cada evaluación de condición y registrar su resultado booleano. No se modifica código funcional durante la auditoría."
+}

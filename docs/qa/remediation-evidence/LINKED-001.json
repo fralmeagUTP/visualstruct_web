@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"LINKED-001","status":"fixed","contract":"Invertir, primero, último y eliminación por posición existen y están declarados/mapeados en C.","tests":["tests/test_hash_sequential_phase4_remediation.py::test_all_remediated_sequential_operations_map_to_real_c_functions"],"gates":{"c17":"passed","mapping":"passed"}}

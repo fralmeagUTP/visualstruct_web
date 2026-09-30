@@ -176,15 +176,42 @@ def rbt_insertar(arbol: list[RBT], dato: int) -> None:
 
 
 def rbt_eliminar(arbol: list[RBT], key: int) -> None:
-    nodo = rbt_buscar(arbol[0], key)
-    if nodo is None:
+    z = rbt_buscar(arbol[0], key)
+    if z is None:
         return
-    if nodo.izq is not None and nodo.der is not None:
-        sucesor = _minimo(nodo.der)
-        nodo.nro = sucesor.nro
-        nodo = sucesor
-    hijo = nodo.izq if nodo.izq is not None else nodo.der
-    _trasplantar(arbol, nodo, hijo)
+
+    y = z
+    y_color_original = y.rbt_color
+    x: RBT = None
+    x_parent: RBT = None
+
+    if z.izq is None:
+        x = z.der
+        x_parent = z.padre
+        _trasplantar(arbol, z, z.der)
+    elif z.der is None:
+        x = z.izq
+        x_parent = z.padre
+        _trasplantar(arbol, z, z.izq)
+    else:
+        y = _minimo(z.der)
+        assert y is not None
+        y_color_original = y.rbt_color
+        x = y.der
+        if y.padre is z:
+            x_parent = y
+        else:
+            _trasplantar(arbol, y, y.der)
+            x_parent = y.padre
+            y.der = z.der
+            y.der.padre = y
+        _trasplantar(arbol, z, y)
+        y.izq = z.izq
+        y.izq.padre = y
+        y.rbt_color = z.rbt_color
+
+    if y_color_original == NEGRO:
+        _arreglar_eliminacion(arbol, x, x_parent)
     if arbol[0] is not None:
         arbol[0].rbt_color = NEGRO
 
@@ -212,3 +239,83 @@ def _trasplantar(arbol: list[RBT], u: RBT, v: RBT) -> None:
     if v is not None:
         v.padre = u.padre
 
+
+def _color_de(nodo: RBT) -> str:
+    return NEGRO if nodo is None else nodo.rbt_color
+
+
+def _arreglar_eliminacion(arbol: list[RBT], x: RBT, x_parent: RBT) -> None:
+    """Restaura los invariantes rojo-negro tratando ``None`` como NIL negro."""
+
+    while x is not arbol[0] and _color_de(x) == NEGRO:
+        if x_parent is None:
+            break
+
+        es_izq = x is x_parent.izq
+        w = x_parent.der if es_izq else x_parent.izq
+
+        if es_izq:
+            if _color_de(w) == ROJO:
+                assert w is not None
+                w.rbt_color = NEGRO
+                x_parent.rbt_color = ROJO
+                rbt_rotar_izda(arbol, x_parent)
+                w = x_parent.der
+
+            w_izq = w.izq if w is not None else None
+            w_der = w.der if w is not None else None
+            if _color_de(w_izq) == NEGRO and _color_de(w_der) == NEGRO:
+                if w is not None:
+                    w.rbt_color = ROJO
+                x = x_parent
+                x_parent = x.padre
+            else:
+                if _color_de(w_der) == NEGRO:
+                    if w_izq is not None:
+                        w_izq.rbt_color = NEGRO
+                    if w is not None:
+                        w.rbt_color = ROJO
+                        rbt_rotar_dcha(arbol, w)
+                    w = x_parent.der
+                    w_der = w.der if w is not None else None
+                if w is not None:
+                    w.rbt_color = _color_de(x_parent)
+                x_parent.rbt_color = NEGRO
+                if w_der is not None:
+                    w_der.rbt_color = NEGRO
+                rbt_rotar_izda(arbol, x_parent)
+                x = arbol[0]
+        else:
+            if _color_de(w) == ROJO:
+                assert w is not None
+                w.rbt_color = NEGRO
+                x_parent.rbt_color = ROJO
+                rbt_rotar_dcha(arbol, x_parent)
+                w = x_parent.izq
+
+            w_izq = w.izq if w is not None else None
+            w_der = w.der if w is not None else None
+            if _color_de(w_der) == NEGRO and _color_de(w_izq) == NEGRO:
+                if w is not None:
+                    w.rbt_color = ROJO
+                x = x_parent
+                x_parent = x.padre
+            else:
+                if _color_de(w_izq) == NEGRO:
+                    if w_der is not None:
+                        w_der.rbt_color = NEGRO
+                    if w is not None:
+                        w.rbt_color = ROJO
+                        rbt_rotar_izda(arbol, w)
+                    w = x_parent.izq
+                    w_izq = w.izq if w is not None else None
+                if w is not None:
+                    w.rbt_color = _color_de(x_parent)
+                x_parent.rbt_color = NEGRO
+                if w_izq is not None:
+                    w_izq.rbt_color = NEGRO
+                rbt_rotar_dcha(arbol, x_parent)
+                x = arbol[0]
+
+    if x is not None:
+        x.rbt_color = NEGRO

@@ -11,6 +11,7 @@ from app.services.observability import observe_replay
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
+from app.domain.hash.pedagogy import HASH_GUIDED_EXAMPLES, HASH_LEARNING_CATALOG
 
 
 class HashStructureService:
@@ -19,7 +20,7 @@ class HashStructureService:
     _REGISTRY: dict[str, dict[str, Any]] = {
         "hash_table": {
             "name": "Tabla Hash",
-            "description": "Tabla hash con encadenamiento separado y redimensionamiento automatico.",
+            "description": "Tabla hash de capacidad fija con claves/valores enteros y encadenamiento separado.",
             "adapter": HashTableAdapter,
         }
     }
@@ -103,6 +104,8 @@ class HashStructureService:
             "visual_state": adapter.to_visual_state(),
             "didactic": HashStructureService._didactic_content(structure_id),
             "history": valid_history,
+            "guided_examples": deepcopy(HASH_GUIDED_EXAMPLES),
+            "learning_profile": deepcopy(HASH_LEARNING_CATALOG),
         }
 
     @staticmethod
@@ -181,6 +184,7 @@ class HashStructureService:
             success=True,
             message=message,
             mutates=bool(operation_meta.get("mutates", False)),
+            console_events=result.get("console") if isinstance(result.get("console"), list) else [],
         )
         return {
             "success": True,
@@ -189,4 +193,62 @@ class HashStructureService:
             "visual_state": after_state,
             "history": valid_history,
             "execution_trace": trace,
+        }
+
+    @staticmethod
+    def compare_capacities(entries: Any, success_key: Any, absent_key: Any) -> dict[str, Any]:
+        """Compare isolated fixed-capacity tables using one immutable input."""
+        if not isinstance(entries, list) or not entries:
+            raise ValueError("Debes proporcionar al menos un par clave:valor.")
+        frozen_entries: tuple[tuple[int, int], ...] = tuple(
+            (
+                BaseAdapter._require_int({"key": pair[0]}, "key", "clave"),
+                BaseAdapter._require_int({"value": pair[1]}, "value", "valor"),
+            )
+            for pair in entries
+            if isinstance(pair, (list, tuple)) and len(pair) == 2
+        )
+        if len(frozen_entries) != len(entries):
+            raise ValueError("Cada entrada debe ser un par entero clave:valor.")
+        found_key = BaseAdapter._require_int({"key": success_key}, "key", "clave")
+        missing_key = BaseAdapter._require_int({"key": absent_key}, "key", "clave")
+
+        def lookup_cost(state: dict[str, Any], key: int) -> dict[str, int | bool]:
+            capacity = int((state.get("metadata") or {}).get("capacity", 0))
+            index = ((key % capacity) + capacity) % capacity if capacity else -1
+            bucket = next((item for item in state.get("buckets") or [] if int(item.get("index", -1)) == index), {})
+            chain = list(bucket.get("entries") or []) if isinstance(bucket, dict) else []
+            position = next((i for i, entry in enumerate(chain) if int(entry.get("key")) == key), None)
+            comparisons = len(chain) if position is None else position + 1
+            return {"found": position is not None, "bucket": index, "hash_evaluations": 1, "comparisons": comparisons, "nodes_visited": comparisons}
+
+        variants: list[dict[str, Any]] = []
+        for capacity in (3, 7, 17):
+            adapter = HashTableAdapter()
+            adapter.execute("create_table", {"capacity": capacity})
+            snapshots = [deepcopy(adapter.to_visual_state())]
+            for key, value in frozen_entries:
+                adapter.execute("insert", {"key": key, "value": value})
+                snapshots.append(deepcopy(adapter.to_visual_state()))
+            final = snapshots[-1]
+            variants.append(
+                {
+                    "capacity": capacity,
+                    "snapshots": snapshots,
+                    "final": final,
+                    "distribution": {
+                        "occupied_buckets": final["metadata"].get("occupied_buckets", 0),
+                        "collisions": final["metadata"].get("collisions", 0),
+                        "chain_lengths": final["metadata"].get("chain_lengths", []),
+                        "load_factor": final["metadata"].get("load_factor", 0),
+                    },
+                    "successful_lookup": lookup_cost(final, found_key),
+                    "absent_lookup": lookup_cost(final, missing_key),
+                }
+            )
+        return {
+            "success": True,
+            "input": {"entries": [list(pair) for pair in frozen_entries], "success_key": found_key, "absent_key": missing_key},
+            "variants": variants,
+            "conclusion": "Las mediciones corresponden únicamente a esta entrada y estas capacidades; no prueban por sí solas una complejidad promedio universal.",
         }

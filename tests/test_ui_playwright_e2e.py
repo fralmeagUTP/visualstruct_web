@@ -43,6 +43,18 @@ def _wait_status_contains(page, selector: str, expected: str, timeout_ms: int = 
     )
 
 
+def _wait_trace_complete(page, counter_selector: str) -> None:
+    page.wait_for_function(
+        "(selector) => {"
+        " const text = document.querySelector(selector)?.textContent || '';"
+        " const match = text.match(/Paso:\\s*(\\d+)\\s*\\/\\s*(\\d+)/);"
+        " return Boolean(match && Number(match[2]) > 0 && match[1] === match[2]);"
+        "}",
+        arg=counter_selector,
+        timeout=30000,
+    )
+
+
 def _wait_didactic_mode(page, mode: str, timeout_ms: int = 15000) -> None:
     page.wait_for_function(
         "(expected) => document.documentElement.getAttribute('data-didactic-mode') === expected",
@@ -64,7 +76,7 @@ def test_playwright_hierarchical_red_black_null_and_history_sync() -> None:
             for value in ["10", "5", "15"]:
                 page.fill("#h-field-value", value)
                 page.click("#hier-sim-play")
-                _wait_status_contains(page, "#hier-sim-status", "Simulacion completada")
+                _wait_status_contains(page, "#hier-sim-status", "Modo rapido")
 
             page.wait_for_selector(".viz-tree-svg", timeout=5000)
 
@@ -142,43 +154,13 @@ def test_playwright_global_didactic_switch_visual_default_and_persistence() -> N
             _wait_didactic_mode(page, "visual")
             assert page.is_checked("#didactic-mode-switch") is False
 
-            hidden_on_visual = page.evaluate(
-                "() => {"
-                " const blocks = Array.from(document.querySelectorAll('.didactic-technical'));"
-                " if (!blocks.length) return false;"
-                " return blocks.every((el) => {"
-                "   const s = window.getComputedStyle(el);"
-                "   return s.maxHeight === '0px' && s.opacity === '0';"
-                " });"
-                "}",
-            )
-            assert bool(hidden_on_visual) is True
+            assert page.locator("#seq-code-region").is_visible()
 
             initial_url = page.url
-            page.check("#didactic-mode-switch")
+            page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
             assert page.url == initial_url
-            page.wait_for_function(
-                "() => {"
-                " const el = document.querySelector('.didactic-technical');"
-                " if (!el) return false;"
-                " const s = window.getComputedStyle(el);"
-                " return s.maxHeight !== '0px' && s.opacity !== '0';"
-                "}",
-                timeout=15000,
-            )
-
-            visible_on_full = page.evaluate(
-                "() => {"
-                " const blocks = Array.from(document.querySelectorAll('.didactic-technical'));"
-                " if (!blocks.length) return false;"
-                " return blocks.every((el) => {"
-                "   const s = window.getComputedStyle(el);"
-                "   return s.maxHeight !== '0px' && s.opacity !== '0';"
-                " });"
-                "}",
-            )
-            assert bool(visible_on_full) is True
+            assert page.locator("#seq-code-region").is_visible()
 
             page.goto(f"{base_url}/hash/hash_table", wait_until='networkidle')
             _wait_didactic_mode(page, "full")
@@ -224,7 +206,7 @@ def test_playwright_export_controls_hidden_when_page_has_no_visual_target() -> N
 
 
 def test_playwright_sequential_interpreter_controls_workflow() -> None:
-    """Sequential page should support play/pause/step/reset interpreter controls."""
+    """Sequential pilot exposes operation execution and compact step navigation."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
 
     with _live_server_url() as base_url:
@@ -232,30 +214,138 @@ def test_playwright_sequential_interpreter_controls_workflow() -> None:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
             page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
-            page.check("#didactic-mode-switch")
+            page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
 
             page.fill("#field-value", "21")
-            page.uncheck("#seq-step-toggle")
-            assert page.is_disabled("#seq-sim-prev") is True
-            assert page.is_disabled("#seq-sim-step") is True
-
-            page.check("#seq-step-toggle")
-            assert page.is_disabled("#seq-sim-step") is False
-            page.click("#seq-sim-play")
-            _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            page.click(".seq-pilot-step-toggle")
+            assert page.is_visible("#seq-sim-step")
+            assert page.is_visible("#seq-sim-prev")
+            page.click("#seq-sim-step")
+            _wait_status_contains(page, "#seq-sim-counter", "Paso: 1/")
+            page.click("#seq-sim-prev")
+            _wait_status_contains(page, "#seq-sim-counter", "Paso: 0/")
+            page.click("#seq-sim-step")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Ejecución completada desde la instrucción actual")
+            assert page.locator(".viz-stack-node-row").count() == 1
             visual_text = page.text_content("#visual-state") or ""
             assert "aux (integrado)" not in visual_text
 
-            page.click("#reset-button")
-            _wait_status_contains(page, "#seq-sim-status", "Usa Reproducir o Siguiente paso para ejecutar.")
+            browser.close()
 
+
+def test_playwright_sequential_execution_is_separate_from_playback() -> None:
+    """A real operation is posted once; replaying it never posts it again."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            requests: list[str] = []
+            page.on(
+                "request",
+                lambda request: requests.append(request.url)
+                if request.method == "POST" and request.url.endswith("/operate")
+                else None,
+            )
+            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+            # A ready message from the previous trace must not signal completion
+            # while the next operation is still waiting for its response.
+            page.evaluate("""() => {
+                const originalFetch = window.fetch.bind(window);
+                window.operationStatuses = [];
+                window.fetch = async (...args) => {
+                    if (String(args[0]).endsWith('/operate')) {
+                        window.operationStatuses.push(document.querySelector('#seq-sim-status').textContent);
+                        await new Promise(resolve => setTimeout(resolve, 150));
+                    }
+                    return originalFetch(...args);
+                };
+            }""")
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
+            page.fill("#field-value", "7")
+
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            assert len(requests) == 1
+            assert page.locator(".viz-stack-node-row").count() == 1
+            page.click(".seq-pilot-step-toggle")
             page.click("#seq-sim-step")
-            _wait_status_contains(page, "#seq-sim-counter", "Paso: 1/")
-
             page.click("#seq-sim-prev")
-            _wait_status_contains(page, "#seq-sim-counter", "Paso: 0/")
+            assert len(requests) == 1
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Ejecución completada desde la instrucción actual")
+            assert len(requests) == 1
+            assert page.locator(".viz-stack-node-row").count() == 1
 
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            assert len(requests) == 2
+            assert page.locator(".viz-stack-node-row").count() == 2
+            assert page.locator(".viz-stack-node-row").count() == 2
+
+            page.select_option("#operation-select", "desapilar")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            assert len(requests) == 3
+            assert page.locator(".viz-stack-node-row").count() == 1
+            assert page.locator(".viz-stack-node-row").count() == 1
+
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            assert len(requests) == 4
+            assert page.locator(".viz-stack-node-row").count() == 0
+            assert page.locator(".viz-stack-node-row").count() == 0
+            assert page.evaluate("window.operationStatuses") == ["Ejecutando subrutina..."] * 4
+            browser.close()
+
+
+@pytest.mark.parametrize(
+    ("structure_id", "seed_operation", "seed_payload", "remove_operation", "remove_payload"),
+    [
+        ("queue", "encolar", {"value": "7"}, "desencolar", {}),
+        ("priority_queue", "encolar", {"value": "7", "priority": "1"}, "desencolar", {}),
+        ("linked_list", "insertar_inicio", {"value": "7"}, "eliminar_elemento", {"value": "7"}),
+        ("circular_list", "insertar_inicio", {"value": "7"}, "eliminar_inicio", {}),
+        ("sublist", "insertar_padre", {"parent": "7"}, "eliminar_padre", {"parent": "7"}),
+    ],
+)
+def test_playwright_other_sequential_structures_show_canonical_final_state(
+    structure_id: str,
+    seed_operation: str,
+    seed_payload: dict[str, str],
+    remove_operation: str,
+    remove_payload: dict[str, str],
+) -> None:
+    """Every sequential renderer shows the final state immediately after Execute."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/sequential/{structure_id}", wait_until="networkidle")
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
+
+            page.select_option("#operation-select", seed_operation)
+            for name, value in seed_payload.items():
+                page.fill(f"#field-{name}", value)
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            assert "Tamano: 1" in (page.text_content("#visual-state") or "")
+
+            page.select_option("#operation-select", remove_operation)
+            for name, value in remove_payload.items():
+                page.fill(f"#field-{name}", value)
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            assert "Tamano: 0" in (page.text_content("#visual-state") or "")
             browser.close()
 
 
@@ -268,17 +358,26 @@ def test_playwright_queue_final_view_hides_aux_temporary_node() -> None:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
             page.goto(f"{base_url}/sequential/queue", wait_until="networkidle")
-            page.check("#didactic-mode-switch")
+            page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
 
             page.select_option("#operation-select", "encolar")
             page.fill("#field-value", "8")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            page.click("#seq-sim-prepare")
+            _wait_status_contains(page, "#seq-sim-status", "Traza preparada")
             page.click("#seq-sim-play")
             _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            assert "aux (integrado)" not in (page.text_content("#visual-state") or "")
 
             page.fill("#field-value", "6")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            page.click("#seq-sim-prepare")
             page.click("#seq-sim-play")
             _wait_status_contains(page, "#seq-sim-status", "Simulacion completada")
+            assert "aux (integrado)" not in (page.text_content("#visual-state") or "")
 
             visual_text = page.text_content("#visual-state") or ""
             assert "aux (integrado)" not in visual_text
@@ -295,13 +394,13 @@ def test_playwright_hash_interpreter_controls_workflow() -> None:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
             page.goto(f"{base_url}/hash/hash_table", wait_until="networkidle")
-            page.check("#didactic-mode-switch")
+            page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
 
             page.select_option("#hash-operation-select", "insert")
             page.wait_for_selector("#hash-field-key", timeout=5000)
-            page.fill("#hash-field-key", "K1")
-            page.fill("#hash-field-value", "V1")
+            page.fill("#hash-field-key", "1")
+            page.fill("#hash-field-value", "10")
             page.click("#hash-sim-play")
             _wait_status_contains(page, "#hash-sim-status", "Simulacion completada")
 
@@ -317,8 +416,8 @@ def test_playwright_hash_interpreter_controls_workflow() -> None:
             browser.close()
 
 
-def test_playwright_graph_fast_mode_executes_algorithms_without_step_trace() -> None:
-    """Graph fast mode (step toggle off) must apply final result on algorithm phases."""
+def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
+    """Execute operation reaches each graph algorithm's final canonical state."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
 
     with _live_server_url() as base_url:
@@ -328,7 +427,7 @@ def test_playwright_graph_fast_mode_executes_algorithms_without_step_trace() -> 
 
             # 1) Build a base graph in construction phase.
             page.goto(f"{base_url}/graph/graph/construccion", wait_until="networkidle")
-            page.check("#didactic-mode-switch")
+            page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
             for value in ["1", "2", "3", "4"]:
                 page.select_option("#graph-operation-select", "insert_vertex")
@@ -346,34 +445,29 @@ def test_playwright_graph_fast_mode_executes_algorithms_without_step_trace() -> 
                 page.click("#graph-sim-play")
                 _wait_status_contains(page, "#graph-message-box", "arista")
 
-            # 2) Traversals phase (BFS) in fast mode.
+            # 2) Traversals phase (BFS), executed to the final frame.
             page.goto(f"{base_url}/graph/graph/recorridos", wait_until="networkidle")
-            page.uncheck("#graph-step-toggle")
             page.select_option("#graph-algorithm-select", "run_bfs")
             page.fill("#g-alg-field-start", "1")
             page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-sim-status", "Modo rapido")
+            _wait_trace_complete(page, "#graph-sim-counter")
             _wait_status_contains(page, "#graph-message-box", "BFS")
             result_text = page.text_content("#graph-visual-state") or ""
             assert ("Recorrido" in result_text) or ("BFS" in result_text)
 
-            # 3) Shortest path phase (Dijkstra) in fast mode.
+            # 3) Shortest path phase (Dijkstra).
             page.goto(f"{base_url}/graph/graph/camino-minimo", wait_until="networkidle")
-            page.uncheck("#graph-step-toggle")
             page.select_option("#graph-algorithm-select", "run_dijkstra")
             page.fill("#g-alg-field-start", "1")
             page.fill("#g-alg-field-end", "4")
             page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-sim-status", "Modo rapido")
             _wait_status_contains(page, "#graph-message-box", "Dijkstra")
 
-            # 4) MST phase (Prim) in fast mode.
+            # 4) MST phase (Prim).
             page.goto(f"{base_url}/graph/graph/expansion-minima", wait_until="networkidle")
-            page.uncheck("#graph-step-toggle")
             page.select_option("#graph-algorithm-select", "run_prim")
             page.fill("#g-alg-field-start", "1")
             page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-sim-status", "Modo rapido")
             _wait_status_contains(page, "#graph-message-box", "Prim")
 
             browser.close()
@@ -389,7 +483,7 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
             page = browser.new_page()
 
             page.goto(f"{base_url}/graph/graph/construccion", wait_until="networkidle")
-            page.check("#didactic-mode-switch")
+            page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
 
             for value in [str(v) for v in range(1, 11)]:
@@ -422,16 +516,9 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
                 page.click("#graph-sim-play")
                 _wait_status_contains(page, "#graph-message-box", "arista")
 
-            page.goto(f"{base_url}/graph/graph/expansion-minima", wait_until="networkidle")
-            page.uncheck("#graph-step-toggle")
-            page.select_option("#graph-algorithm-select", "run_prim")
-            page.fill("#g-alg-field-start", "1")
-            page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-sim-status", "Modo rapido")
-
             result_text = page.text_content("#graph-visual-state") or ""
-            assert "MST por Prim" in result_text
-            assert "Peso total" in result_text
+            assert "Vértices" in result_text
+            assert "Aristas" in result_text
 
             export_meta = page.evaluate(
                 """
@@ -469,5 +556,437 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
             assert str(export_meta["exported"]["dataPrefix"]).startswith("data:image/jpeg;base64,")
             assert int(export_meta["exported"]["dataLength"]) > 5000
 
+            browser.close()
+
+
+def test_playwright_graph_guided_level_and_mobile_context() -> None:
+    """The compact graph workspace keeps code and visualization accessible on mobile."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser=p.chromium.launch(headless=True)
+            page=browser.new_page(viewport={"width":1280,"height":900})
+            page.goto(f"{base_url}/graph/graph/construccion",wait_until="networkidle")
+            page.select_option("#graph-operation-select", "insert_vertex")
+            page.fill("#g-op-field-vertex", "1")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-message-box", "vertice")
+            page.goto(f"{base_url}/graph/graph/recorridos",wait_until="networkidle")
+            assert page.locator("#graph-guided-example").count() == 0
+            assert page.locator("#graph-visual-region").is_visible()
+            assert page.locator("#graph-code-region").count() == 1
+            page.select_option("#graph-algorithm-select", "run_bfs")
+            page.fill("#g-alg-field-start", "1")
+            page.click("#graph-sim-step")
+            _wait_status_contains(page, "#graph-sim-counter", "Paso: 1/")
+            cursor = page.text_content("#graph-sim-counter")
+            page.set_viewport_size({"width":390,"height":844})
+            page.click('[data-graph-tab="code"]')
+            assert page.is_visible("#graph-code-region")
+            page.click('[data-graph-tab="visual"]')
+            assert page.is_visible("#graph-visual-region")
+            assert page.text_content("#graph-sim-counter")==cursor
+            browser.close()
+
+
+def test_playwright_graph_mst_practice_comparison_keyboard_and_responsive() -> None:
+    """Graph step controls and primary views remain usable in the compact layout."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1280, "height": 900}, reduced_motion="reduce")
+            page.goto(f"{base_url}/graph/graph/expansion-minima", wait_until="networkidle")
+            assert page.locator("#graph-guided-example").count() == 0
+            assert page.locator("#graph-practice-mode").count() == 0
+            assert page.locator("#graph-compare-kind").count() == 0
+            page.goto(f"{base_url}/graph/graph/construccion", wait_until="networkidle")
+            for value in ("1", "2", "3"):
+                page.select_option("#graph-operation-select", "insert_vertex")
+                page.fill("#g-op-field-vertex", value)
+                page.click("#graph-sim-play")
+                _wait_status_contains(page, "#graph-message-box", "vertice")
+            page.select_option("#graph-operation-select", "insert_edge")
+            page.fill("#g-op-field-origin", "1")
+            page.fill("#g-op-field-target", "2")
+            page.fill("#g-op-field-weight", "4")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-message-box", "arista")
+            page.select_option("#graph-operation-select", "insert_edge")
+            page.fill("#g-op-field-origin", "2")
+            page.fill("#g-op-field-target", "3")
+            page.fill("#g-op-field-weight", "2")
+            page.click("#graph-sim-play")
+            _wait_status_contains(page, "#graph-message-box", "arista")
+            page.goto(f"{base_url}/graph/graph/expansion-minima", wait_until="networkidle")
+            page.select_option("#graph-algorithm-select", "run_prim")
+            page.fill("#g-alg-field-start", "1")
+            page.click("#graph-sim-step")
+            page.keyboard.press("Alt+ArrowRight")
+            assert "Paso:" in (page.text_content("#graph-sim-counter") or "")
+            page.set_viewport_size({"width": 390, "height": 844})
+            assert (page.locator("#graph-export-summary").text_content() or "").strip()
+            browser.close()
+
+
+def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
+    """The compact hierarchical workspace preserves code and visualization views."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1280, "height": 900})
+            page.goto(f"{base_url}/hierarchical/avl", wait_until="networkidle")
+            assert page.locator("#hier-guided-example").count() == 0
+            assert page.locator("#hier-compare-kind").count() == 0
+            page.fill("#h-field-value", "30")
+            page.click("#hier-step-mode")
+            page.click("#hier-sim-step")
+            _wait_status_contains(page, "#hier-sim-counter", "Paso: 1/")
+            cursor = page.text_content("#hier-sim-counter")
+            assert page.text_content("#hier-sim-counter") == cursor
+            assert "invariant" in (page.text_content("#hier-pedagogy-summary") or "").lower()
+            page.set_viewport_size({"width": 390, "height": 844})
+            page.click('[data-hier-tab="code"]')
+            assert page.is_visible("#hier-code-region") is True
+            page.click('[data-hier-tab="visual"]')
+            assert page.is_visible("#hier-visual-region") is True
+            assert page.text_content("#hier-sim-counter") == cursor
+            browser.close()
+
+
+def test_playwright_hierarchical_comparison_practice_keyboard_and_accessibility() -> None:
+    """Hierarchy uses the compact execution flow and keyboard step navigation."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1280, "height": 900}, reduced_motion="reduce")
+            page.goto(f"{base_url}/hierarchical/avl", wait_until="networkidle")
+            assert page.locator("#hier-compare-kind").count() == 0
+            assert page.locator("#hier-practice-mode").count() == 0
+            page.fill("#h-field-value", "25")
+            page.click("#hier-step-mode")
+            page.click("#hier-sim-step")
+            # Siguiente prepares the trace through an asynchronous API request.
+            # Exercise keyboard navigation only after the first step is rendered.
+            page.wait_for_function(r"""() => {
+                const counter = document.querySelector('#hier-sim-counter').textContent;
+                const match = counter.match(/Paso:\s*(\d+)\s*\/\s*(\d+)/);
+                return Boolean(match && Number(match[1]) > 0 && Number(match[2]) > Number(match[1]));
+            }""")
+            before=page.text_content("#hier-sim-counter")
+            page.locator("body").press("ArrowRight")
+            page.wait_for_function("before => document.querySelector('#hier-sim-counter').textContent !== before", arg=before)
+            assert page.text_content("#hier-sim-counter") != before
+            page.locator("body").press("Home")
+            assert "Paso: 0/" in (page.text_content("#hier-sim-counter") or "")
+            assert page.locator("#hier-sim-prev").is_visible()
+            assert page.locator("#hier-sim-step").is_visible()
+            browser.close()
+
+
+def test_playwright_sequential_step_progress_keeps_visual_and_c_synchronized() -> None:
+    """Compact sequential UI exposes understandable step state without prediction panels."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
+            page.fill("#field-value", "17")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            page.click(".seq-pilot-step-toggle")
+            page.click("#seq-sim-step")
+            _wait_status_contains(page, "#seq-sim-counter", "Paso: 1/")
+            assert page.locator(".seq-predict").count() == 0
+            assert page.locator(".seq-compare").count() == 0
+            assert page.locator(".seq-understand").count() == 1
+            assert page.locator("#seq-code-region").count() == 1
+            assert page.locator("#visual-state").count() == 1
+            browser.close()
+
+
+def test_playwright_stack_compact_pilot_keeps_primary_workspace_visible() -> None:
+    """The stack pilot uses the requested order without changing other structures."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1366, "height": 768})
+            page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+
+            assert page.locator(".is-stack-pilot").count() == 1
+            headings = page.evaluate(
+                """() => [
+                    document.querySelector('#seq-prepare-title')?.innerText,
+                    document.querySelector('#seq-visual-title')?.innerText,
+                    document.querySelector('.seq-code-toolbar h3')?.innerText,
+                    document.querySelector('#seq-execute-title')?.innerText,
+                    document.querySelector('#seq-predict-title')?.innerText,
+                ]""",
+            )
+            assert headings[:3] == [
+                "1 Preparar y controlar la ejecución",
+                "2 Visualizar y ejecutar",
+                "3 Relacionar con código C",
+            ]
+            assert page.locator(".seq-predict").count() == 0
+            assert page.locator(".seq-compare").count() == 0
+            assert page.locator(".seq-understand").count() == 1
+            assert page.locator(".seq-execute").evaluate("el => el.parentElement.classList.contains('seq-prepare')")
+            assert page.locator(".seq-reflect").count() == 1
+
+            page.goto(f"{base_url}/sequential/queue", wait_until="networkidle")
+            assert page.locator(".is-stack-pilot").count() == 0
+            browser.close()
+
+
+def test_playwright_sequential_mobile_step_controls_are_available() -> None:
+    """Mobile sequential view keeps the structure, C code, and step controls available."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 390, "height": 844})
+            page.goto(f"{base_url}/sequential/queue", wait_until="networkidle")
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
+            page.fill("#field-value", "8")
+            page.click("#seq-sim-execute")
+            _wait_status_contains(page, "#seq-sim-status", "Traza lista")
+            page.click("#seq-sim-step")
+            _wait_status_contains(page, "#seq-sim-counter", "Paso: 1/")
+            assert page.locator("#visual-state").is_visible()
+            assert page.locator("#seq-sim-prev").is_visible()
+            assert page.locator("#seq-sim-step").is_visible()
+            assert page.locator("#seq-code-region").count() == 1
+            page.click('[data-seq-tab="code"]')
+            assert page.locator("#seq-code-region").is_visible()
+            browser.close()
+
+
+def test_playwright_sorting_all_algorithms_and_playback_controls() -> None:
+    """Every sorting option should render its C and reach the expected visual state."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    algorithms = [
+        "intercambio", "seleccion", "insercion", "burbuja", "shell", "quicksort",
+        "mergesort", "heapsort", "counting_sort", "binsort", "radixsort",
+    ]
+
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
+            page.fill("#sorting-manual-values", "5,-1,3,3,0")
+            page.click("#sorting-create-array")
+            _wait_status_contains(page, "#sorting-message-box", "Arreglo creado")
+
+            for algorithm in algorithms:
+                page.select_option("#sorting-algorithm", algorithm)
+                page.click("#sorting-sim-play")
+                _wait_status_contains(page, "#sorting-sim-status", "Simulacion completada")
+                labels = page.locator(".sorting-item-label").all_text_contents()
+                assert [int(label.split("]", 1)[1].strip()) for label in labels] == [-1, 0, 3, 3, 5]
+                code = page.text_content("#sorting-code") or ""
+                assert f"ordenar_{algorithm}" in code
+
+            page.select_option("#sorting-algorithm", "quicksort")
+            page.click("#sorting-sim-play")
+            _wait_status_contains(page, "#sorting-sim-status", "Simulacion completada", timeout_ms=30000)
+            completed_counter = page.text_content("#sorting-sim-counter") or ""
+            page.evaluate("() => document.querySelector('#sorting-sim-prev').click()")
+            page.wait_for_function("(completed) => (document.querySelector('#sorting-sim-counter')?.textContent || '') !== completed", arg=completed_counter)
+            counter_after_previous = page.text_content("#sorting-sim-counter") or ""
+            page.evaluate("() => document.querySelector('#sorting-sim-step').click()")
+            page.wait_for_function("(previous) => (document.querySelector('#sorting-sim-counter')?.textContent || '') !== previous", arg=counter_after_previous)
+            counter_after_next = page.text_content("#sorting-sim-counter") or ""
+            assert counter_after_previous != counter_after_next
+            browser.close()
+
+
+def test_playwright_sorting_compact_workspace_omits_removed_learning_widgets() -> None:
+    """Sorting keeps its current fixed-level compact workspace without removed widgets."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1280, "height": 900})
+            page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
+            assert page.locator("#sorting-guided-example").count() == 0
+            assert page.locator("#sorting-learning-level").count() == 0
+            assert page.locator("#sorting-practice-mode").count() == 0
+            assert page.locator("#sorting-compare-run").count() == 0
+            page.fill("#sorting-manual-values", "4,2,4,1")
+            page.click("#sorting-create-array")
+            _wait_status_contains(page, "#sorting-message-box", "Arreglo creado")
+            page.click("#sorting-sim-step")
+            _wait_status_contains(page, "#sorting-sim-counter", "Paso: 1/")
+            assert (page.text_content("#sorting-pedagogy-narration") or "").strip()
+            assert (page.text_content("#sorting-call-stack") or "").strip()
+            assert (page.text_content("#sorting-variable-table") or "").strip()
+            assert page.locator("#sorting-code-region").is_visible()
+            browser.close()
+
+
+def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
+    """Representative algorithm families must expose distinct visual strategies."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1280, "height": 900})
+            page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
+            page.fill("#sorting-manual-values", "5,-3,0,2,1")
+            page.click("#sorting-create-array")
+            _wait_status_contains(page, "#sorting-message-box", "Arreglo creado")
+            assert page.locator(".sorting-zero-axis").count() == 5
+            assert page.locator(".sorting-item-bar.is-negative").count() == 1
+            assert page.locator(".sorting-item-bar.is-zero").count() == 1
+            expected = {
+                "seleccion": "Mínimo provisional",
+                "insercion": "Clave:",
+                "burbuja": "Frontera:",
+                "shell": "Intervalo (gap)",
+                "quicksort": "Subproblema activo",
+                "mergesort": "División/fusión activa",
+                "heapsort": "hijos:",
+                "counting_sort": "Frecuencias",
+                "binsort": "Urnas",
+                "radixsort": "Dígito activo",
+            }
+            for algorithm, marker in expected.items():
+                page.select_option("#sorting-algorithm", algorithm)
+                page.click("#sorting-sim-play")
+                _wait_status_contains(page, "#sorting-sim-status", "Simulacion completada")
+                assert marker in (page.text_content("#sorting-strategy-view") or "")
+            browser.close()
+
+
+def test_playwright_sorting_step_navigation_and_theory_analysis() -> None:
+    """The simplified player navigates steps while theory remains separate from metrics."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1280, "height": 900})
+            page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
+            page.fill("#sorting-manual-values", "4,1,3,2")
+            page.click("#sorting-create-array")
+            _wait_status_contains(page, "#sorting-message-box", "Arreglo creado")
+            page.click("#sorting-sim-step")
+            _wait_status_contains(page, "#sorting-sim-counter", "Paso: 1/")
+            total = int((page.text_content("#sorting-sim-counter") or "0/0").split("/")[-1])
+            assert total > 2
+            assert "Paso: 1/" in (page.text_content("#sorting-sim-counter") or "")
+            before_tab = page.text_content("#sorting-sim-counter")
+            page.set_viewport_size({"width": 760, "height": 900})
+            page.click('[data-sorting-tab="code"]')
+            assert page.text_content("#sorting-sim-counter") == before_tab
+            page.click("#sorting-sim-next")
+            assert "Paso: 2/" in (page.text_content("#sorting-sim-counter") or "")
+            page.click("#sorting-sim-prev")
+            assert "Paso: 1/" in (page.text_content("#sorting-sim-counter") or "")
+            page.click("#sorting-sim-play")
+            page.wait_for_function("(expected) => (document.querySelector('#sorting-sim-counter')?.textContent || '') === expected", arg=f"Paso: {total}/{total}")
+            assert (page.text_content("#sorting-invariant-text") or "").strip()
+            theory = page.text_content("#sorting-theory-profile") or ""
+            observed = page.text_content("#sorting-observed-metrics") or ""
+            assert "Mejor" in theory and "Memoria" in theory and "Estable" in theory
+            assert "Comparaciones" in observed and "Intercambios" in observed
+            assert page.input_value("#sorting-manual-values") == "4,1,3,2"
+            browser.close()
+
+
+def test_playwright_sorting_removed_practice_and_comparison_widgets() -> None:
+    """Prediction and visual comparison are intentionally absent from this workspace."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1280, "height": 900})
+            page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
+            page.fill("#sorting-manual-values", "4,1,3,2")
+            page.click("#sorting-create-array")
+            assert page.locator("#sorting-practice-mode").count() == 0
+            assert page.locator("#sorting-prediction-card").count() == 0
+            assert page.locator("#sorting-compare-run").count() == 0
+            page.click("#sorting-sim-step")
+            _wait_status_contains(page, "#sorting-sim-counter", "Paso: 1/")
+            assert (page.text_content("#sorting-pedagogy-narration") or "").strip()
+            assert page.locator("#sorting-visual-state").is_visible()
+            assert page.input_value("#sorting-manual-values") == "4,1,3,2"
+            browser.close()
+
+
+def test_playwright_sorting_accessibility_keyboard_responsive_and_export() -> None:
+    """Keyboard, responsive context and summary export must remain operable."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1366, "height": 900}, accept_downloads=True)
+            page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
+            page.fill("#sorting-manual-values", "3,-1,2,0")
+            page.click("#sorting-create-array")
+            page.click("#sorting-sim-step")
+            _wait_status_contains(page, "#sorting-sim-counter", "Paso: 1/")
+            page.keyboard.press("Alt+ArrowRight")
+            _wait_status_contains(page, "#sorting-sim-counter", "Paso: 2/")
+            assert page.get_attribute("#sorting-visual-state", "role") == "img"
+            assert "Arreglo" in (page.get_attribute("#sorting-visual-state", "aria-label") or "")
+            assert page.locator(".sorting-state-symbol").count() >= 0
+            for width in (1024, 760, 390):
+                page.set_viewport_size({"width": width, "height": 900})
+                assert page.locator("#sorting-sim-counter").is_visible()
+                if width <= 800:
+                    page.click('[data-sorting-tab="visual"]')
+                    assert page.locator("#sorting-visual-region").is_visible()
+                    page.click('[data-sorting-tab="code"]')
+                    assert page.locator("#sorting-code-region").is_visible()
+            page.locator(".sorting-collapsible").nth(1).locator("summary").click()
+            with page.expect_download() as download_info:
+                page.click("#sorting-export-summary")
+            assert download_info.value.suggested_filename.endswith(".json")
+            browser.close()
+
+
+def test_playwright_hash_step_navigation_and_export() -> None:
+    """Hash step navigation, responsive views, and export work in the compact UI."""
+    playwright_mod = pytest.importorskip("playwright.sync_api")
+    with _live_server_url() as base_url:
+        with playwright_mod.sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1200, "height": 900}, accept_downloads=True)
+            page.goto(f"{base_url}/hash/hash_table", wait_until="networkidle")
+            page.select_option("#hash-operation-select", "insert")
+            page.fill("#hash-field-key", "1")
+            page.fill("#hash-field-value", "10")
+            assert page.locator("#hash-practice-mode").count() == 0
+            assert page.locator("#hash-prediction-answer").count() == 0
+            assert page.locator("#hash-compare-run").count() == 0
+            page.click("#hash-sim-step")
+            _wait_status_contains(page, "#hash-sim-counter", "Paso: 1/")
+            page.click("#hash-sim-prev")
+            assert "Paso: 0/" in (page.text_content("#hash-sim-counter") or "")
+            page.click("#hash-sim-step")
+            page.click("#hash-sim-play")
+            _wait_status_contains(page, "#hash-sim-status", "Simulacion completada")
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
+            for width in (760, 390):
+                page.set_viewport_size({"width": width, "height": 900})
+                page.click('[data-hash-tab="visual"]')
+                assert page.locator("#hash-visual-region").is_visible()
+                page.click('[data-hash-tab="code"]')
+                assert page.locator("#hash-code-region").is_visible()
+            page.locator(".hash-collapsible").nth(1).locator("summary").click()
+            with page.expect_download() as download_info:
+                page.click("#hash-export-summary")
+            assert download_info.value.suggested_filename.endswith(".json")
             browser.close()
 

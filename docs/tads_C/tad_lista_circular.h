@@ -23,6 +23,7 @@ void lcir_inicializar(ListaCircular *lista);
 bool lcir_insertar_inicio(ListaCircular *lista, int valor);
 bool lcir_insertar_final(ListaCircular *lista, int valor);
 int lcir_buscar_posiciones(const ListaCircular *lista, int valor, int *destino, int capacidad);
+bool lcir_eliminar_inicio(ListaCircular *lista);
 bool lcir_eliminar_primero(ListaCircular *lista, int valor);
 void lcir_invertir(ListaCircular *lista);
 bool lcir_vacia(const ListaCircular *lista);

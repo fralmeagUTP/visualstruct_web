@@ -1,0 +1,8 @@
+{
+  "schema": "didactic-remediation-evidence/v1",
+  "case_id": "GRAPH-006",
+  "status": "fixed",
+  "contract": "Prim y Kruskal sólo aceptan modo no dirigido y reportan conectividad, componentes y árbol/bosque.",
+  "tests": ["tests/test_graph_phase3_remediation.py::test_prim_and_kruskal_report_forest_for_disconnected_graph", "tests/test_graph_phase3_remediation.py::test_prim_and_kruskal_report_mst_for_connected_graph", "tests/test_graph_phase3_remediation.py::test_mst_algorithms_reject_directed_graphs"],
+  "gates": {"c17": "passed", "backend": "passed", "routes": "passed"}
+}

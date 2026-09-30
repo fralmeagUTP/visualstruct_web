@@ -23,8 +23,8 @@ def test_heap_rejects_invalid_parent_child_order() -> None:
 
 
 def test_hash_state_ignores_bucket_representation_order() -> None:
-    state = {"buckets": [{"entries": [{"key": "b", "value": "2"}, {"key": "a", "value": "1"}]}], "metadata": {"size": 2, "capacity": 3}}
-    assert canonicalize_state("hash_table", state)["state"]["pairs"] == [["a", "1"], ["b", "2"]]
+    state = {"buckets": [{"entries": [{"key": 2, "value": 20}, {"key": 1, "value": 10}]}], "metadata": {"size": 2, "capacity": 3}}
+    assert canonicalize_state("hash_table", state)["state"]["pairs"] == [[1, 10], [2, 20]]
 
 
 def test_undirected_graph_normalizes_edge_orientation() -> None:

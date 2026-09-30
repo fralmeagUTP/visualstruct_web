@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "didactic-qa-result/v1",
+  "title": "Resultado de auditoría de fidelidad didáctica",
+  "type": "object",
+  "required": ["schema", "case_id", "structure_id", "operation", "input", "expected", "observed", "result"],
+  "properties": {
+    "schema": {"const": "didactic-qa-result/v1"},
+    "case_id": {"type": "string", "minLength": 1},
+    "structure_id": {"type": "string", "minLength": 1},
+    "operation": {"type": "string", "minLength": 1},
+    "seed": {"type": ["integer", "null"]},
+    "input": {"type": "object"},
+    "precondition": {"type": "object"},
+    "expected": {"type": "array", "items": {"$ref": "#/$defs/layerState"}},
+    "observed": {"type": "array", "items": {"$ref": "#/$defs/layerState"}},
+    "result": {"enum": ["passed", "failed"]},
+    "severity": {"enum": ["critical", "high", "medium", "low", "none"]},
+    "discrepancy": {"type": ["string", "null"]},
+    "probable_cause": {"type": ["string", "null"]},
+    "location": {"type": ["string", "null"]},
+    "recommended_test": {"type": ["string", "null"]},
+    "suggested_fix": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "layerState": {
+      "type": "object",
+      "required": ["step", "layer", "state"],
+      "properties": {
+        "step": {"type": "integer", "minimum": 0},
+        "layer": {"enum": ["c", "backend", "trace", "history", "console", "frontend"]},
+        "source_location": {"type": ["string", "null"]},
+        "state": {}
+      }
+    }
+  }
+}

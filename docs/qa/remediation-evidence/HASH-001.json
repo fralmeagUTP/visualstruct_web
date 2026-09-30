@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"HASH-001","status":"fixed","contract":"Capacidad fija compartida con C; no existe rehash automático.","tests":["tests/test_hash_sequential_phase4_remediation.py::test_hash_capacity_is_fixed_and_collision_chain_survives_update_remove"],"gates":{"c17":"passed","backend":"passed"}}

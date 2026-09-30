@@ -1,0 +1,8 @@
+{
+  "schema": "didactic-remediation-evidence/v1",
+  "case_id": "GRAPH-003",
+  "status": "fixed",
+  "contract": "BFS y DFS anexan cada visita y retornan el orden directo en C y backend.",
+  "tests": ["tests/test_graph_phase3_remediation.py::test_bfs_and_dfs_expose_c_return_order"],
+  "gates": {"c17": "passed", "backend": "passed", "trace": "passed"}
+}

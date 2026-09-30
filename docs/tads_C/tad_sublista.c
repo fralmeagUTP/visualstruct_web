@@ -71,10 +71,10 @@ static void destruir_hijos(Sublista **lista_hijos) {
     actual = *lista_hijos;
     while (actual != NULL) {
         next = actual->sgte;
+        *lista_hijos = next;
         free(actual);
         actual = next;
     }
-    *lista_hijos = NULL;
 }
 
 /**
@@ -218,6 +218,21 @@ bool sublista_insertar_hijo_final(Nodo *padre, int valor_hijo) {
 }
 
 /**
+ * @brief Busca el padre por valor e inserta al final de su sublista.
+ * @param[in] lista Lista principal de padres.
+ * @param[in] valor_padre Valor del padre destino.
+ * @param[in] valor_hijo Valor del nuevo hijo.
+ * @return true si el padre existe y el hijo se inserta; false en otro caso.
+ */
+bool sublista_insertar_hijo(Nodo *lista, int valor_padre, int valor_hijo) {
+    Nodo *padre = sublista_buscar_padre(lista, valor_padre);
+    if (padre == NULL) {
+        return false;
+    }
+    return sublista_insertar_hijo_final(padre, valor_hijo);
+}
+
+/**
  * @brief Busca un nodo hijo dentro de una sublista por su valor.
  * @param[in] lista_hijos Puntero al primer nodo de la sublista.
  * @param[in] valor_hijo  Valor a buscar.
@@ -267,6 +282,21 @@ bool sublista_eliminar_hijo_primero(Nodo *padre, int valor_hijo) {
 }
 
 /**
+ * @brief Busca el padre por valor y elimina la primera coincidencia de hijo.
+ * @param[in] lista Lista principal de padres.
+ * @param[in] valor_padre Valor del padre destino.
+ * @param[in] valor_hijo Valor del hijo a eliminar.
+ * @return true si se elimina un hijo; false si no existe padre o hijo.
+ */
+bool sublista_eliminar_hijo(Nodo *lista, int valor_padre, int valor_hijo) {
+    Nodo *padre = sublista_buscar_padre(lista, valor_padre);
+    if (padre == NULL) {
+        return false;
+    }
+    return sublista_eliminar_hijo_primero(padre, valor_hijo);
+}
+
+/**
  * @brief Cuenta cuántos hijos tiene un nodo padre.
  * @param[in] padre Puntero constante al padre.
  * @return Número de hijos del padre.
@@ -309,6 +339,22 @@ int sublista_copiar_hijos(const Nodo *padre, int *destino, int capacidad) {
         actual = actual->sgte;
     }
     return usados;
+}
+
+/**
+ * @brief Copia los hijos del primer padre con el valor indicado.
+ * @param[in] lista Lista principal de padres.
+ * @param[in] valor_padre Valor del padre buscado.
+ * @param[out] destino Arreglo que recibe los valores de los hijos.
+ * @param[in] capacidad Capacidad del arreglo destino.
+ * @return Cantidad copiada, o -1 si no existe el padre.
+ */
+int sublista_obtener_hijos(Nodo *lista, int valor_padre, int *destino, int capacidad) {
+    Nodo *padre = sublista_buscar_padre(lista, valor_padre);
+    if (padre == NULL) {
+        return -1;
+    }
+    return sublista_copiar_hijos(padre, destino, capacidad);
 }
 
 /**
@@ -372,8 +418,8 @@ void sublista_destruir(Nodo **lista) {
     while (actual != NULL) {
         next = actual->sgte;
         destruir_hijos(&actual->sub);
+        *lista = next;
         free(actual);
         actual = next;
     }
-    *lista = NULL;
 }

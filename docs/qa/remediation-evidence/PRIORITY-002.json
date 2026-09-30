@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"PRIORITY-002","status":"fixed","contract":"cp_frente reutiliza la selección estable de cp_desencolar sin liberar.","tests":["tests/test_hash_sequential_phase4_remediation.py::test_priority_queue_keeps_arrival_links_and_stable_priority_selection"],"gates":{"c17":"passed","snippet":"passed"}}

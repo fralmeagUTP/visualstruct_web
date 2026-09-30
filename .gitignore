@@ -8,3 +8,4 @@ coverage.xml
 tmp_server_out.log
 tmp_server_err.log
 *.pyc
+.env

@@ -26,6 +26,7 @@ void pila_apilar(ptrPila *p, int valor);
  * @return Valor extraido, o -1 si no se puede extraer.
  */
 int pila_desapilar(ptrPila *p);
+int pila_cima(ptrPila p);
 
 /**
  * @brief Muestra el contenido de la pila en orden de cima a fondo.

@@ -41,12 +41,15 @@ from app.domain.hierarchical.tad_monticulo_binario import (
 
 def test_hash_uninitialized_collision_update_search_and_delete_chain() -> None:
     table = TablaHash()
-    assert th_indice(table, 5) == 0
+    assert th_indice(table, 5) == -1
     assert th_buscar(table, 5, []) is False
     assert th_eliminar(table, 5) is False
     assert th_vacia(table) is True
 
-    # Lazy initialization uses capacity 17; keys form one collision chain.
+    assert th_insertar(table, 1, 10) is False
+
+    # El contrato C exige inicializacion explicita; estas claves colisionan.
+    th_inicializar(table, 17)
     assert th_insertar(table, 1, 10) is True
     th_insertar(table, 18, 20)
     th_insertar(table, 35, 30)

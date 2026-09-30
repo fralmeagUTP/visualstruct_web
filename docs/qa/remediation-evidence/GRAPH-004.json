@@ -1,0 +1,8 @@
+{
+  "schema": "didactic-remediation-evidence/v1",
+  "case_id": "GRAPH-004",
+  "status": "fixed",
+  "contract": "Dijkstra rechaza todo el grafo antes de relajar si existe un peso negativo.",
+  "tests": ["tests/test_graph_phase3_remediation.py::test_dijkstra_rejects_any_negative_edge_before_relaxation"],
+  "gates": {"c17": "passed", "backend": "passed", "trace": "passed"}
+}

@@ -1,0 +1,1 @@
+{"schema":"didactic-remediation-evidence/v1","case_id":"SORT-002","status":"fixed","contract":"MergeSort y Bin Sort cargan auxiliares transitivos y todos sus frames apuntan a una línea C real.","tests":["tests/test_phase7_trace_contract_remediation.py::test_merge_and_bin_frames_all_map_to_real_c_lines"],"gates":{"backend":"passed","source_mapping":"passed"}}

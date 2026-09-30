@@ -1,0 +1,21 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "PRIORITY-002",
+  "structure_id": "priority_queue",
+  "operation": "frente",
+  "input": {"items": [[100, 5], [200, 1]]},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "app/services/c_code_service.py:_build_priority_queue_data", "state": {"front_semantics": "next item to dequeue", "value": 200}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "c", "source_location": "app/services/c_code_service.py:_build_priority_queue_data", "state": {"front_semantics": "first linked item copied", "value": 100}},
+    {"step": 1, "layer": "backend", "source_location": "app/domain/sequential/tad_wrappers.py:ColaPrioridad.frente", "state": {"front_semantics": "next item to dequeue", "value": 200}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "El snippet C de frente copia el primer nodo enlazado, pero el backend retorna el elemento de mayor prioridad que será desencolado; pueden ser valores distintos.",
+  "probable_cause": "El TAD C no expone cp_frente y el snippet derivado usa cp_copiar_items sin reproducir el recorrido selector de cp_desencolar.",
+  "location": "app/services/c_code_service.py:_build_priority_queue_data",
+  "recommended_test": "Con (100,p5),(200,p1), exigir frente=200 en C derivado, backend, consola y frontend sin mutar la cola.",
+  "suggested_fix": "Añadir cp_frente que reutilice la misma selección estable de cp_desencolar sin liberar el nodo y mapear el panel a esa función. No se modifica código funcional durante esta auditoría."
+}

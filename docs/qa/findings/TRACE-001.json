@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "TRACE-001", "structure_id": "application", "operation": "console playback",
+  "input": {"printf_examples": ["printf(\"%d \", valor)", "printf(\"Error %s\", detalle)"]},
+  "expected": [{"layer": "c", "state": {"console": "formatted runtime values in causal order"}}],
+  "observed": [{"layer": "frontend", "source_location": "collect*PrintfLines", "state": {"formatted_printf": "discarded", "trace_message": "labeled as printf"}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "El frontend intenta reconstruir stdout leyendo literales del código: descarta formatos no resueltos y al final presenta trace.message como salida printf aunque no provenga de C.",
+  "probable_cause": "Los pasos productivos no transportan eventos console concretos y cada página implementa una heurística de extracción textual.",
+  "location": "static/js/sequential.js, hierarchical.js, graph.js y hash.js",
+  "recommended_test": "Emitir printf con %d/%s, avanzar y retroceder; exigir valores concretos acumulados exactamente en el frame causal y retirar mensajes no C.",
+  "suggested_fix": "Propagar el canal console del oráculo a TraceStep y renderizarlo directamente, sin analizar literales fuente. No se modifica código funcional durante la auditoría."
+}

@@ -16,6 +16,7 @@
 
 #define ORDENAMIENTO_OK 1
 #define ORDENAMIENTO_ERROR 0
+#define ORDENAMIENTO_RANGO_MAX 1000000U
 
 #ifdef __cplusplus
 extern "C" {

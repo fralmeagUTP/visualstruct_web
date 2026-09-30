@@ -19,6 +19,7 @@ from .tad_cola_prioridad import (
     cp_copiar_items,
     cp_desencolar,
     cp_encolar,
+    cp_frente,
     cp_inicializar,
     cp_vacia,
     cp_vaciar,
@@ -30,6 +31,7 @@ from .tad_lista import (
     lista_configurar_insertar_antes_despues_provider,
     lista_eliminar_elemento,
     lista_eliminar_repetidos,
+    lista_limpiar,
     lista_insertar_elemento,
     lista_insertar_final,
     lista_insertar_inicio,
@@ -40,6 +42,7 @@ from .tad_lista_circular import (
     lcir_contar,
     lcir_copiar_valores,
     lcir_destruir,
+    lcir_eliminar_inicio,
     lcir_eliminar_primero,
     lcir_inicializar,
     lcir_insertar_final,
@@ -64,6 +67,7 @@ from .tad_sublista import (
     Nodo as NodoSublistaTAD,
     sublista_buscar_padre,
     sublista_copiar_hijos,
+    sublista_destruir,
     sublista_eliminar_hijo_primero,
     sublista_eliminar_padre_primero,
     sublista_inicializar,
@@ -216,12 +220,11 @@ class ColaPrioridad(Generic[T]):
         return valor_out[0]  # type: ignore[return-value]
 
     def frente(self) -> T:
-        if cp_vacia(self._cola):
+        valor: list[int] = []
+        prioridad: list[int] = []
+        if not cp_frente(self._cola, valor, prioridad):
             raise EstructuraVaciaError("La cola de prioridad esta vacia.")
-        valores: list[int] = []
-        prioridades: list[int] = []
-        cp_copiar_items(self._cola, valores, prioridades, 1)
-        return valores[0]  # type: ignore[return-value]
+        return valor[0]  # type: ignore[return-value]
 
     def vacia(self) -> bool:
         return cp_vacia(self._cola)
@@ -266,7 +269,7 @@ class ListaCircular(Generic[T]):
         if lcir_vacia(self._lista):
             raise EstructuraVaciaError("La lista circular esta vacia.")
         head = self._lista.cabeza.valor
-        if not lcir_eliminar_primero(self._lista, head):
+        if not lcir_eliminar_inicio(self._lista):
             raise EstructuraVaciaError("No se pudo eliminar el inicio.")
         return head  # type: ignore[return-value]
 
@@ -440,9 +443,10 @@ class ListaEnlazada(Generic[T]):
         return self._cola.nro  # type: ignore[return-value]
 
     def limpiar(self) -> None:
-        self._cabeza = None
-        self._cola = None
-        self._tamano = 0
+        ref = [self._cabeza]
+        lista_limpiar(ref)
+        self._cabeza = ref[0]
+        self._recalcular_metadata()
 
     def vacia(self) -> bool:
         return self._tamano == 0
@@ -604,10 +608,14 @@ class Sublista(Generic[T]):
 
     def __init__(self) -> None:
         self._lista_ref: list[NodoSublistaTAD | None] = [None]
+        self._logical_ids: dict[int, str] = {}
+        self._next_logical_id = 1
         sublista_inicializar(self._lista_ref)
 
     def insertar_padre(self, dato: T) -> None:
-        sublista_insertar_padre_final(self._lista_ref, int(dato))
+        nodo = sublista_insertar_padre_final(self._lista_ref, int(dato))
+        self._logical_ids[id(nodo)] = f"parent-{self._next_logical_id}"
+        self._next_logical_id += 1
 
     def buscar_padre(self, dato: T) -> NodoPadre[T] | None:
         nodo = sublista_buscar_padre(self._lista_ref[0], int(dato))
@@ -626,10 +634,22 @@ class Sublista(Generic[T]):
         nodo_padre = sublista_buscar_padre(self._lista_ref[0], int(padre))
         if nodo_padre is None:
             raise ElementoNoEncontradoError(f"El padre {padre!r} no existe.")
-        return sublista_eliminar_hijo_primero(nodo_padre, int(hijo))
+        self.last_delete_events: list[dict[str, object]] = []
+        return sublista_eliminar_hijo_primero(nodo_padre, int(hijo), self.last_delete_events)
 
     def eliminar_padre(self, dato: T) -> bool:
-        return sublista_eliminar_padre_primero(self._lista_ref, int(dato))
+        self.last_delete_events: list[dict[str, object]] = []
+        eliminado = sublista_eliminar_padre_primero(self._lista_ref, int(dato), self.last_delete_events)
+        for event in self.last_delete_events:
+            if event.get("stage") == "free_parent":
+                event["logical_id"] = self._logical_ids.pop(int(event["node_id"]), None)
+            elif event.get("stage") == "free_child":
+                event["parent_logical_id"] = next(
+                    (logical_id for node_id, logical_id in self._logical_ids.items()
+                     if node_id == int(event["parent_id"])),
+                    None,
+                )
+        return eliminado
 
     def hijos_de(self, padre: T) -> list[T]:
         nodo_padre = sublista_buscar_padre(self._lista_ref[0], int(padre))
@@ -649,8 +669,26 @@ class Sublista(Generic[T]):
             actual = actual.sgte
         return resultado
 
+    def a_lista(self) -> list[dict[str, object]]:
+        """Serializa por identidad; padres con el mismo valor siguen siendo nodos distintos."""
+        resultado: list[dict[str, object]] = []
+        actual = self._lista_ref[0]
+        while actual is not None:
+            out: list[int] = []
+            usados = sublista_copiar_hijos(actual, out, 1024)
+            resultado.append({"id": self._logical_ids[id(actual)], "parent": actual.nro, "children": out[:usados]})
+            actual = actual.sgte
+        return resultado
+
     def limpiar(self) -> None:
-        self._lista_ref[0] = None
+        self.last_destroy_events: list[dict[str, object]] = []
+        sublista_destruir(self._lista_ref, self.last_destroy_events)
+        for event in self.last_destroy_events:
+            if event.get("stage") == "free_parent":
+                event["logical_id"] = self._logical_ids.get(int(event["node_id"]))
+            elif event.get("stage") == "free_child":
+                event["parent_logical_id"] = self._logical_ids.get(int(event["parent_id"]))
+        self._logical_ids.clear()
 
     def __repr__(self) -> str:
         return f"Sublista({self.a_diccionario()!r})"

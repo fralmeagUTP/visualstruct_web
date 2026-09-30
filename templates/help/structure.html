@@ -5,16 +5,11 @@
   <h2>{{ help_data.title }}</h2>
   <h3>Descripcion del TAD</h3>
   <p>{{ help_data.tad_description }}</p>
-
-  <h3>Controles de ejecucion paso a paso</h3>
-  <ul>
-    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra toda la traza; desactivado aplica solo el resultado final.</li>
-    <li>Botones de ejecucion: <strong>Reproducir</strong> y <strong>Reiniciar</strong>.</li>
-    <li>Navegacion por traza: <strong>Anterior paso</strong> y <strong>Siguiente paso</strong>.</li>
-    <li><strong>Velocidad de simulacion</strong>: slider de <strong>-2x</strong> a <strong>+2x</strong> (0.00x = 1.00x real).</li>
-    <li>En modo rapido (checkbox desactivado), el resultado visual final debe coincidir con el ultimo estado de la traza interpretada.</li>
-    <li>Al llegar al ultimo paso, <strong>Siguiente paso</strong> se bloquea hasta cambiar entradas/operacion; <strong>Anterior paso</strong> se habilita solo cuando ya avanzaste.</li>
-  </ul>
+  {% include "help/_source_download.html" %}
+  {% include "help/_execution_guide.html" %}
+  <div class="seq-c-semantics"><section><h3>Objetivo</h3><p>{{ help_data.objective }}</p></section><section><h3>Estrategia</h3><p>{{ help_data.strategy }}</p></section><section><h3>Invariante</h3><p>{{ help_data.invariant }}</p></section><section><h3>Memoria dinámica</h3><p>{{ help_data.memory }}</p></section></div>
+  <h3>Errores frecuentes</h3><ul>{% for error in help_data.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+  <details><summary>Glosario contextual</summary><dl>{% for term, definition in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ definition }}</dd>{% endfor %}</dl></details>
 
   <h3>Operaciones soportadas</h3>
   <ul>
