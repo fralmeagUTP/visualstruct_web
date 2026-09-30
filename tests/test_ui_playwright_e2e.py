@@ -253,6 +253,19 @@ def test_playwright_sequential_execution_is_separate_from_playback() -> None:
                 else None,
             )
             page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
+            # A ready message from the previous trace must not signal completion
+            # while the next operation is still waiting for its response.
+            page.evaluate("""() => {
+                const originalFetch = window.fetch.bind(window);
+                window.operationStatuses = [];
+                window.fetch = async (...args) => {
+                    if (String(args[0]).endsWith('/operate')) {
+                        window.operationStatuses.push(document.querySelector('#seq-sim-status').textContent);
+                        await new Promise(resolve => setTimeout(resolve, 150));
+                    }
+                    return originalFetch(...args);
+                };
+            }""")
             page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
             page.fill("#field-value", "7")
@@ -288,6 +301,7 @@ def test_playwright_sequential_execution_is_separate_from_playback() -> None:
             assert len(requests) == 4
             assert page.locator(".viz-stack-node-row").count() == 0
             assert page.locator(".viz-stack-node-row").count() == 0
+            assert page.evaluate("window.operationStatuses") == ["Ejecutando subrutina..."] * 4
             browser.close()
 
 

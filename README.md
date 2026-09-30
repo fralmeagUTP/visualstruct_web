@@ -20,6 +20,10 @@ Resultados obtenidos con:
 .\.venv\Scripts\python.exe scripts\check_coverage_gates.py --report coverage.json
 ```
 
+Las pruebas de cobertura de ejecucion C requieren GCC y gcov de la misma version,
+14 o superior, disponibles como `gcc` y `gcov` en PATH. CI instala ambos en version
+14 para conservar la cobertura de condiciones y llamadas.
+
 Para ejecutar rápidamente la suite sin navegador:
 
 ```powershell

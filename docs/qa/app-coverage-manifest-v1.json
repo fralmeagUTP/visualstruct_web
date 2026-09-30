@@ -3,13 +3,13 @@
   "generated_by": "scripts/build_app_quality_inventory.py",
   "coverage_policy": "Cada elemento publicado debe tener case_id, capa y oráculo no vacíos.",
   "summary": {
-    "total": 357,
+    "total": 296,
     "by_category": {
       "algorithm": 23,
-      "control": 162,
+      "control": 100,
       "operation": 110,
       "phase": 4,
-      "route": 45,
+      "route": 46,
       "structure": 13
     }
   },
@@ -449,47 +449,7 @@
       }
     },
     {
-      "id": "control:templates/graph/structure.html:button:graph-check-prediction:25",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-check-prediction",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-check-prediction",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-CHECK-PREDICTION-25",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-compare-run:36",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-compare-run",
-        "attributes": {
-          "class": "btn",
-          "id": "graph-compare-run",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-COMPARE-RUN-36",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-create-button:7",
+      "id": "control:templates/graph/structure.html:button:graph-create-button:4",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -503,13 +463,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-CREATE-BUTTON-7",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-CREATE-BUTTON-4",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:button:graph-export-image:38",
+      "id": "control:templates/graph/structure.html:button:graph-export-image:16",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -519,18 +479,17 @@
         "attributes": {
           "class": "btn secondary",
           "id": "graph-export-image",
-          "type": "button",
-          "aria-label": "Exportar captura del grafo"
+          "type": "button"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-EXPORT-IMAGE-38",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-EXPORT-IMAGE-16",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:button:graph-export-summary:39",
+      "id": "control:templates/graph/structure.html:button:graph-export-summary:17",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -540,78 +499,17 @@
         "attributes": {
           "class": "btn secondary",
           "id": "graph-export-summary",
-          "type": "button",
-          "aria-label": "Exportar resumen JSON de aprendizaje"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-EXPORT-SUMMARY-39",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-load-example:5",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-load-example",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-load-example",
           "type": "button"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-LOAD-EXAMPLE-5",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-EXPORT-SUMMARY-17",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:button:graph-prediction-hint:26",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-prediction-hint",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-prediction-hint",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-PREDICTION-HINT-26",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-prepare:11",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-prepare",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-prepare",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-PREPARE-11",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-reset-button:20",
+      "id": "control:templates/graph/structure.html:button:graph-reset-button:12",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -625,113 +523,33 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-RESET-BUTTON-20",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-RESET-BUTTON-12",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:button:graph-reset-progress:29",
+      "id": "control:templates/graph/structure.html:button:graph-sim-next:11",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
       "metadata": {
         "tag": "button",
-        "identifier": "graph-reset-progress",
+        "identifier": "graph-sim-next",
         "attributes": {
           "class": "btn secondary",
-          "id": "graph-reset-progress",
+          "id": "graph-sim-next",
           "type": "button"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-RESET-PROGRESS-29",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-NEXT-11",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:button:graph-restart-execution:19",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-restart-execution",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-restart-execution",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-RESTART-EXECUTION-19",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-sim-end:17",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-sim-end",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-sim-end",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-END-17",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-sim-home:14",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-sim-home",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-sim-home",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-HOME-14",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-sim-pause:13",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-sim-pause",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-sim-pause",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-PAUSE-13",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-sim-play:12",
+      "id": "control:templates/graph/structure.html:button:graph-sim-play:8",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -741,17 +559,18 @@
         "attributes": {
           "class": "btn",
           "id": "graph-sim-play",
-          "type": "button"
+          "type": "button",
+          "title": "Ejecuta la operación o completa la traza actual"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-PLAY-12",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-PLAY-8",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:button:graph-sim-prev:15",
+      "id": "control:templates/graph/structure.html:button:graph-sim-prev:10",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -765,33 +584,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-PREV-15",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-PREV-10",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:button:graph-sim-repeat:18",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-sim-repeat",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "graph-sim-repeat",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-REPEAT-18",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-sim-step:16",
+      "id": "control:templates/graph/structure.html:button:graph-sim-step:9",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -799,101 +598,20 @@
         "tag": "button",
         "identifier": "graph-sim-step",
         "attributes": {
-          "class": "btn",
-          "id": "graph-sim-step",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-STEP-16",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:button:graph-skip-prediction:27",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "graph-skip-prediction",
-        "attributes": {
           "class": "btn secondary",
-          "id": "graph-skip-prediction",
-          "type": "button"
+          "id": "graph-sim-step",
+          "type": "button",
+          "title": "Inicia o avanza una instrucción de la traza"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SKIP-PREDICTION-27",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-BUTTON-GRAPH-SIM-STEP-9",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:input:graph-compare-end:35",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "graph-compare-end",
-        "attributes": {
-          "id": "graph-compare-end",
-          "inputmode": "numeric",
-          "value": "2"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-COMPARE-END-35",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:input:graph-compare-progress:37",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "graph-compare-progress",
-        "attributes": {
-          "id": "graph-compare-progress",
-          "type": "range",
-          "min": "0",
-          "max": "3",
-          "value": "0"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-COMPARE-PROGRESS-37",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:input:graph-compare-start:34",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "graph-compare-start",
-        "attributes": {
-          "id": "graph-compare-start",
-          "inputmode": "numeric",
-          "value": "1"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-COMPARE-START-34",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:input:graph-hide-comments:32",
+      "id": "control:templates/graph/structure.html:input:graph-hide-comments:15",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -906,96 +624,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-HIDE-COMMENTS-32",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-HIDE-COMMENTS-15",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:input:graph-practice-mode:28",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "graph-practice-mode",
-        "attributes": {
-          "id": "graph-practice-mode",
-          "type": "checkbox"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-PRACTICE-MODE-28",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:input:graph-progress:23",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "graph-progress",
-        "attributes": {
-          "id": "graph-progress",
-          "type": "range",
-          "min": "0",
-          "max": "0",
-          "value": "0"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-PROGRESS-23",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:input:graph-speed-slider:22",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "graph-speed-slider",
-        "attributes": {
-          "id": "graph-speed-slider",
-          "type": "range",
-          "min": "-2",
-          "max": "2",
-          "step": ".25",
-          "value": "0"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-SPEED-SLIDER-22",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:input:graph-step-toggle:21",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "graph-step-toggle",
-        "attributes": {
-          "id": "graph-step-toggle",
-          "type": "checkbox"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-INPUT-GRAPH-STEP-TOGGLE-21",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:select:graph-algorithm-select:10",
+      "id": "control:templates/graph/structure.html:select:graph-algorithm-select:7",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -1007,67 +642,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-ALGORITHM-SELECT-10",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-ALGORITHM-SELECT-7",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:select:graph-compare-kind:33",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "graph-compare-kind",
-        "attributes": {
-          "id": "graph-compare-kind"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-COMPARE-KIND-33",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:select:graph-guided-example:4",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "graph-guided-example",
-        "attributes": {
-          "id": "graph-guided-example"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-GUIDED-EXAMPLE-4",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:select:graph-learning-level:3",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "graph-learning-level",
-        "attributes": {
-          "id": "graph-learning-level"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-LEARNING-LEVEL-3",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/graph/structure.html:select:graph-mode-select:6",
+      "id": "control:templates/graph/structure.html:select:graph-mode-select:3",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -1079,13 +660,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-MODE-SELECT-6",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-MODE-SELECT-3",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:select:graph-operation-select:8",
+      "id": "control:templates/graph/structure.html:select:graph-operation-select:5",
       "category": "control",
       "module": "graph",
       "source": "templates/graph/structure.html",
@@ -1097,71 +678,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-OPERATION-SELECT-8",
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-OPERATION-SELECT-5",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/graph/structure.html:select:graph-prediction:24",
-      "category": "control",
-      "module": "graph",
-      "source": "templates/graph/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "graph-prediction",
-        "attributes": {
-          "id": "graph-prediction"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-SELECT-GRAPH-PREDICTION-24",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-check-prediction:19",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-check-prediction",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-check-prediction",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-CHECK-PREDICTION-19",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-compare-run:32",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-compare-run",
-        "attributes": {
-          "class": "btn",
-          "id": "hash-compare-run",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-COMPARE-RUN-32",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-export-image:34",
+      "id": "control:templates/hash/structure.html:button:hash-export-image:13",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1175,13 +698,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-EXPORT-IMAGE-34",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-EXPORT-IMAGE-13",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:button:hash-export-summary:35",
+      "id": "control:templates/hash/structure.html:button:hash-export-summary:14",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1195,53 +718,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-EXPORT-SUMMARY-35",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-EXPORT-SUMMARY-14",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:button:hash-load-example:4",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-load-example",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-load-example",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-LOAD-EXAMPLE-4",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-prediction-hint:20",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-prediction-hint",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-prediction-hint",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-PREDICTION-HINT-20",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-reset-button:10",
+      "id": "control:templates/hash/structure.html:button:hash-reset-button:7",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1255,93 +738,33 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-RESET-BUTTON-10",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-RESET-BUTTON-7",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:button:hash-reset-execution:9",
+      "id": "control:templates/hash/structure.html:button:hash-sim-next:6",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
       "metadata": {
         "tag": "button",
-        "identifier": "hash-reset-execution",
+        "identifier": "hash-sim-next",
         "attributes": {
-          "class": "btn secondary",
-          "id": "hash-reset-execution",
+          "class": "btn",
+          "id": "hash-sim-next",
           "type": "button"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-RESET-EXECUTION-9",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-NEXT-6",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:button:hash-reset-progress:23",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-reset-progress",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-reset-progress",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-RESET-PROGRESS-23",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-sim-end:14",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-sim-end",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-sim-end",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-END-14",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-sim-pause:7",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-sim-pause",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-sim-pause",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-PAUSE-7",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-sim-play:6",
+      "id": "control:templates/hash/structure.html:button:hash-sim-play:3",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1355,13 +778,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-PLAY-6",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-PLAY-3",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:button:hash-sim-prev:12",
+      "id": "control:templates/hash/structure.html:button:hash-sim-prev:5",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1375,53 +798,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-PREV-12",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-PREV-5",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:button:hash-sim-repeat:15",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-sim-repeat",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-sim-repeat",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-REPEAT-15",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-sim-start:8",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-sim-start",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-sim-start",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-START-8",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:button:hash-sim-step:13",
+      "id": "control:templates/hash/structure.html:button:hash-sim-step:4",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1429,121 +812,19 @@
         "tag": "button",
         "identifier": "hash-sim-step",
         "attributes": {
-          "class": "btn",
+          "class": "btn secondary",
           "id": "hash-sim-step",
           "type": "button"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-STEP-13",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SIM-STEP-4",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:button:hash-skip-prediction:21",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "hash-skip-prediction",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "hash-skip-prediction",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-BUTTON-HASH-SKIP-PREDICTION-21",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:input:hash-compare-absent-key:31",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "hash-compare-absent-key",
-        "attributes": {
-          "id": "hash-compare-absent-key",
-          "value": "10",
-          "type": "number"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-COMPARE-ABSENT-KEY-31",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:input:hash-compare-entries:29",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "hash-compare-entries",
-        "attributes": {
-          "id": "hash-compare-entries",
-          "value": "1:10, 4:40, 7:70",
-          "inputmode": "text"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-COMPARE-ENTRIES-29",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:input:hash-compare-progress:33",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "hash-compare-progress",
-        "attributes": {
-          "id": "hash-compare-progress",
-          "type": "range",
-          "min": "0",
-          "max": "0",
-          "value": "0"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-COMPARE-PROGRESS-33",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:input:hash-compare-success-key:30",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "hash-compare-success-key",
-        "attributes": {
-          "id": "hash-compare-success-key",
-          "value": "1",
-          "type": "number"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-COMPARE-SUCCESS-KEY-30",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:input:hash-hide-comments:28",
+      "id": "control:templates/hash/structure.html:input:hash-hide-comments:12",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1556,52 +837,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-HIDE-COMMENTS-28",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-HIDE-COMMENTS-12",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:input:hash-practice-mode:22",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "hash-practice-mode",
-        "attributes": {
-          "id": "hash-practice-mode",
-          "type": "checkbox"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-PRACTICE-MODE-22",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:input:hash-prediction-answer:18",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "hash-prediction-answer",
-        "attributes": {
-          "id": "hash-prediction-answer",
-          "type": "text",
-          "autocomplete": "off"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-PREDICTION-ANSWER-18",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:input:hash-show-addresses:27",
+      "id": "control:templates/hash/structure.html:input:hash-show-addresses:11",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1614,54 +856,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-SHOW-ADDRESSES-27",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-SHOW-ADDRESSES-11",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:input:hash-sim-progress:16",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "hash-sim-progress",
-        "attributes": {
-          "id": "hash-sim-progress",
-          "type": "range",
-          "min": "0",
-          "max": "0",
-          "value": "0"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-SIM-PROGRESS-16",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:input:hash-step-toggle:11",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "hash-step-toggle",
-        "attributes": {
-          "id": "hash-step-toggle",
-          "type": "checkbox"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-INPUT-HASH-STEP-TOGGLE-11",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:select:hash-bucket-filter:26",
+      "id": "control:templates/hash/structure.html:select:hash-bucket-filter:10",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1673,49 +874,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-SELECT-HASH-BUCKET-FILTER-26",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-SELECT-HASH-BUCKET-FILTER-10",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hash/structure.html:select:hash-guided-example:3",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "hash-guided-example",
-        "attributes": {
-          "id": "hash-guided-example"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-SELECT-HASH-GUIDED-EXAMPLE-3",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:select:hash-learning-level:2",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "hash-learning-level",
-        "attributes": {
-          "id": "hash-learning-level"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-SELECT-HASH-LEARNING-LEVEL-2",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:select:hash-operation-select:5",
+      "id": "control:templates/hash/structure.html:select:hash-operation-select:2",
       "category": "control",
       "module": "hash",
       "source": "templates/hash/structure.html",
@@ -1728,25 +893,7 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-SELECT-HASH-OPERATION-SELECT-5",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/hash/structure.html:select:hash-prediction-kind:17",
-      "category": "control",
-      "module": "hash",
-      "source": "templates/hash/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "hash-prediction-kind",
-        "attributes": {
-          "id": "hash-prediction-kind"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-SELECT-HASH-PREDICTION-KIND-17",
+        "case_id": "QA-CONTROL-TEMPLATES-HASH-STRUCTURE-HTML-SELECT-HASH-OPERATION-SELECT-2",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -2349,7 +1496,7 @@
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:reset-button:23",
+      "id": "control:templates/sequential/structure.html:button:reset-button:18",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2363,7 +1510,7 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-RESET-BUTTON-23",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-RESET-BUTTON-18",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -2431,27 +1578,7 @@
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-load-example:5",
-      "category": "control",
-      "module": "sequential",
-      "source": "templates/sequential/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "seq-load-example",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "seq-load-example",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-LOAD-EXAMPLE-5",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sequential/structure.html:button:seq-prediction-hint:8",
+      "id": "control:templates/sequential/structure.html:button:seq-prediction-hint:24",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2465,13 +1592,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-PREDICTION-HINT-8",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-PREDICTION-HINT-24",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-prediction-skip:9",
+      "id": "control:templates/sequential/structure.html:button:seq-prediction-skip:25",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2485,13 +1612,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-PREDICTION-SKIP-9",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-PREDICTION-SKIP-25",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-reset-learning:10",
+      "id": "control:templates/sequential/structure.html:button:seq-reset-learning:26",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2505,13 +1632,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-RESET-LEARNING-10",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-RESET-LEARNING-26",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-restart-execution:22",
+      "id": "control:templates/sequential/structure.html:button:seq-restart-execution:17",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2525,13 +1652,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-RESTART-EXECUTION-22",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-RESTART-EXECUTION-17",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-sim-end:20",
+      "id": "control:templates/sequential/structure.html:button:seq-sim-end:15",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2545,13 +1672,34 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-END-20",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-END-15",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-sim-pause:16",
+      "id": "control:templates/sequential/structure.html:button:seq-sim-execute:8",
+      "category": "control",
+      "module": "sequential",
+      "source": "templates/sequential/structure.html",
+      "metadata": {
+        "tag": "button",
+        "identifier": "seq-sim-execute",
+        "attributes": {
+          "class": "btn",
+          "id": "seq-sim-execute",
+          "type": "button",
+          "title": "Ejecuta una nueva operación sobre el estado actual"
+        }
+      },
+      "coverage": {
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-EXECUTE-8",
+        "layer": "e2e",
+        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:seq-sim-pause:11",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2565,13 +1713,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-PAUSE-16",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-PAUSE-11",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-sim-play:15",
+      "id": "control:templates/sequential/structure.html:button:seq-sim-play:10",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2581,17 +1729,18 @@
         "attributes": {
           "class": "btn",
           "id": "seq-sim-play",
-          "type": "button"
+          "type": "button",
+          "title": "Anima la traza preparada sin cambiar el TAD"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-PLAY-15",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-PLAY-10",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-sim-prepare:14",
+      "id": "control:templates/sequential/structure.html:button:seq-sim-prepare:9",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2601,17 +1750,18 @@
         "attributes": {
           "class": "btn secondary",
           "id": "seq-sim-prepare",
-          "type": "button"
+          "type": "button",
+          "title": "Vuelve al inicio de la última traza preparada"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-PREPARE-14",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-PREPARE-9",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-sim-prev:18",
+      "id": "control:templates/sequential/structure.html:button:seq-sim-prev:13",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2625,13 +1775,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-PREV-18",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-PREV-13",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-sim-repeat:21",
+      "id": "control:templates/sequential/structure.html:button:seq-sim-repeat:16",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2645,13 +1795,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-REPEAT-21",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-REPEAT-16",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-sim-start:17",
+      "id": "control:templates/sequential/structure.html:button:seq-sim-start:12",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2665,13 +1815,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-START-17",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-START-12",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-sim-step:19",
+      "id": "control:templates/sequential/structure.html:button:seq-sim-step:14",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2685,7 +1835,49 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-STEP-19",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-SIM-STEP-14",
+        "layer": "e2e",
+        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:stack-view-current:5",
+      "category": "control",
+      "module": "sequential",
+      "source": "templates/sequential/structure.html",
+      "metadata": {
+        "tag": "button",
+        "identifier": "stack-view-current",
+        "attributes": {
+          "id": "stack-view-current",
+          "class": "btn secondary is-active",
+          "type": "button",
+          "aria-pressed": "true"
+        }
+      },
+      "coverage": {
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-STACK-VIEW-CURRENT-5",
+        "layer": "e2e",
+        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:stack-view-linked:6",
+      "category": "control",
+      "module": "sequential",
+      "source": "templates/sequential/structure.html",
+      "metadata": {
+        "tag": "button",
+        "identifier": "stack-view-linked",
+        "attributes": {
+          "id": "stack-view-linked",
+          "class": "btn secondary",
+          "type": "button",
+          "aria-pressed": "false"
+        }
+      },
+      "coverage": {
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-STACK-VIEW-LINKED-6",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -2713,7 +1905,7 @@
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:input:seq-hide-comments:13",
+      "id": "control:templates/sequential/structure.html:input:seq-hide-comments:7",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2726,13 +1918,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-HIDE-COMMENTS-13",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-HIDE-COMMENTS-7",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:input:seq-practice-mode:7",
+      "id": "control:templates/sequential/structure.html:input:seq-practice-mode:23",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2745,13 +1937,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-PRACTICE-MODE-7",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-PRACTICE-MODE-23",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:input:seq-predictions-enabled:6",
+      "id": "control:templates/sequential/structure.html:input:seq-predictions-enabled:22",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2764,13 +1956,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-PREDICTIONS-ENABLED-6",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-PREDICTIONS-ENABLED-22",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:input:seq-progress-slider:26",
+      "id": "control:templates/sequential/structure.html:input:seq-progress-slider:21",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2786,13 +1978,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-PROGRESS-SLIDER-26",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-PROGRESS-SLIDER-21",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:input:seq-speed-slider:25",
+      "id": "control:templates/sequential/structure.html:input:seq-speed-slider:20",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2809,13 +2001,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-SPEED-SLIDER-25",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-SPEED-SLIDER-20",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:input:seq-step-toggle:24",
+      "id": "control:templates/sequential/structure.html:input:seq-step-toggle:19",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -2828,7 +2020,7 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-STEP-TOGGLE-24",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-INPUT-SEQ-STEP-TOGGLE-19",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -2871,63 +2063,7 @@
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:select:seq-guided-example:4",
-      "category": "control",
-      "module": "sequential",
-      "source": "templates/sequential/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "seq-guided-example",
-        "attributes": {
-          "id": "seq-guided-example"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-SELECT-SEQ-GUIDED-EXAMPLE-4",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sequential/structure.html:select:seq-learning-level:3",
-      "category": "control",
-      "module": "sequential",
-      "source": "templates/sequential/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "seq-learning-level",
-        "attributes": {
-          "id": "seq-learning-level"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-SELECT-SEQ-LEARNING-LEVEL-3",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-compare-run:36",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-compare-run",
-        "attributes": {
-          "class": "btn",
-          "id": "sorting-compare-run",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-COMPARE-RUN-36",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-create-array:4",
+      "id": "control:templates/sorting/structure.html:button:sorting-create-array:3",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -2941,13 +2077,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-CREATE-ARRAY-4",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-CREATE-ARRAY-3",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:button:sorting-export-image:38",
+      "id": "control:templates/sorting/structure.html:button:sorting-export-image:17",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -2961,13 +2097,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-EXPORT-IMAGE-38",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-EXPORT-IMAGE-17",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:button:sorting-export-summary:39",
+      "id": "control:templates/sorting/structure.html:button:sorting-export-summary:18",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -2981,73 +2117,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-EXPORT-SUMMARY-39",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-EXPORT-SUMMARY-18",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:button:sorting-load-example:11",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-load-example",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-load-example",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-LOAD-EXAMPLE-11",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-prediction-skip:28",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-prediction-skip",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-prediction-skip",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-PREDICTION-SKIP-28",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-progress-reset:25",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-progress-reset",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-progress-reset",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-PROGRESS-RESET-25",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-random-array:8",
+      "id": "control:templates/sorting/structure.html:button:sorting-random-array:7",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3061,13 +2137,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-RANDOM-ARRAY-8",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-RANDOM-ARRAY-7",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:button:sorting-reset:32",
+      "id": "control:templates/sorting/structure.html:button:sorting-reset:13",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3075,79 +2151,39 @@
         "tag": "button",
         "identifier": "sorting-reset",
         "attributes": {
-          "class": "btn danger",
+          "class": "btn secondary",
           "id": "sorting-reset",
           "type": "button"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-RESET-32",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-RESET-13",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:button:sorting-restart-execution:31",
+      "id": "control:templates/sorting/structure.html:button:sorting-sim-next:12",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
       "metadata": {
         "tag": "button",
-        "identifier": "sorting-restart-execution",
+        "identifier": "sorting-sim-next",
         "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-restart-execution",
+          "class": "btn",
+          "id": "sorting-sim-next",
           "type": "button"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-RESTART-EXECUTION-31",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-NEXT-12",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:button:sorting-sim-end:21",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-sim-end",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-sim-end",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-END-21",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-sim-pause:17",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-sim-pause",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-sim-pause",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-PAUSE-17",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-sim-play:16",
+      "id": "control:templates/sorting/structure.html:button:sorting-sim-play:9",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3161,33 +2197,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-PLAY-16",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-PLAY-9",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:button:sorting-sim-prepare:15",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-sim-prepare",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-sim-prepare",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-PREPARE-15",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-sim-prev:19",
+      "id": "control:templates/sorting/structure.html:button:sorting-sim-prev:11",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3201,53 +2217,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-PREV-19",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-PREV-11",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:button:sorting-sim-repeat:22",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-sim-repeat",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-sim-repeat",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-REPEAT-22",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-sim-start:18",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "button",
-        "identifier": "sorting-sim-start",
-        "attributes": {
-          "class": "btn secondary",
-          "id": "sorting-sim-start",
-          "type": "button"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-START-18",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:button:sorting-sim-step:20",
+      "id": "control:templates/sorting/structure.html:button:sorting-sim-step:10",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3255,41 +2231,19 @@
         "tag": "button",
         "identifier": "sorting-sim-step",
         "attributes": {
-          "class": "btn",
+          "class": "btn secondary",
           "id": "sorting-sim-step",
           "type": "button"
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-STEP-20",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-BUTTON-SORTING-SIM-STEP-10",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:input:sorting-compare-progress:37",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "sorting-compare-progress",
-        "attributes": {
-          "id": "sorting-compare-progress",
-          "type": "range",
-          "min": "0",
-          "max": "0",
-          "value": "0"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-COMPARE-PROGRESS-37",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:input:sorting-hide-comments:14",
+      "id": "control:templates/sorting/structure.html:input:sorting-hide-comments:16",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3302,13 +2256,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-HIDE-COMMENTS-14",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-HIDE-COMMENTS-16",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:input:sorting-manual-values:3",
+      "id": "control:templates/sorting/structure.html:input:sorting-manual-values:2",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3322,54 +2276,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-MANUAL-VALUES-3",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-MANUAL-VALUES-2",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:input:sorting-practice-mode:24",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "sorting-practice-mode",
-        "attributes": {
-          "id": "sorting-practice-mode",
-          "type": "checkbox"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-PRACTICE-MODE-24",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:input:sorting-progress:23",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "sorting-progress",
-        "attributes": {
-          "id": "sorting-progress",
-          "type": "range",
-          "min": "0",
-          "max": "0",
-          "value": "0"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-PROGRESS-23",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:input:sorting-random-max:7",
+      "id": "control:templates/sorting/structure.html:input:sorting-random-max:6",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3383,13 +2296,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-RANDOM-MAX-7",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-RANDOM-MAX-6",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:input:sorting-random-min:6",
+      "id": "control:templates/sorting/structure.html:input:sorting-random-min:5",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3403,13 +2316,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-RANDOM-MIN-6",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-RANDOM-MIN-5",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:input:sorting-random-size:5",
+      "id": "control:templates/sorting/structure.html:input:sorting-random-size:4",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3426,55 +2339,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-RANDOM-SIZE-5",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-RANDOM-SIZE-4",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sorting/structure.html:input:sorting-speed-slider:30",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "sorting-speed-slider",
-        "attributes": {
-          "id": "sorting-speed-slider",
-          "type": "range",
-          "min": "-2",
-          "max": "2",
-          "step": "0.25",
-          "value": "0"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-SPEED-SLIDER-30",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:input:sorting-step-toggle:29",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "input",
-        "identifier": "sorting-step-toggle",
-        "attributes": {
-          "id": "sorting-step-toggle",
-          "type": "checkbox"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-INPUT-SORTING-STEP-TOGGLE-29",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:select:sorting-algorithm:9",
+      "id": "control:templates/sorting/structure.html:select:sorting-algorithm:8",
       "category": "control",
       "module": "sorting",
       "source": "templates/sorting/structure.html",
@@ -3486,97 +2357,7 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-SELECT-SORTING-ALGORITHM-9",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:select:sorting-compare-left:33",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "sorting-compare-left",
-        "attributes": {
-          "id": "sorting-compare-left"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-SELECT-SORTING-COMPARE-LEFT-33",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:select:sorting-compare-right:34",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "sorting-compare-right",
-        "attributes": {
-          "id": "sorting-compare-right"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-SELECT-SORTING-COMPARE-RIGHT-34",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:select:sorting-compare-sync:35",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "sorting-compare-sync",
-        "attributes": {
-          "id": "sorting-compare-sync"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-SELECT-SORTING-COMPARE-SYNC-35",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:select:sorting-guided-example:10",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "sorting-guided-example",
-        "attributes": {
-          "id": "sorting-guided-example"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-SELECT-SORTING-GUIDED-EXAMPLE-10",
-        "layer": "e2e",
-        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
-      }
-    },
-    {
-      "id": "control:templates/sorting/structure.html:select:sorting-learning-level:1",
-      "category": "control",
-      "module": "sorting",
-      "source": "templates/sorting/structure.html",
-      "metadata": {
-        "tag": "select",
-        "identifier": "sorting-learning-level",
-        "attributes": {
-          "id": "sorting-learning-level"
-        }
-      },
-      "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-SELECT-SORTING-LEARNING-LEVEL-1",
+        "case_id": "QA-CONTROL-TEMPLATES-SORTING-STRUCTURE-HTML-SELECT-SORTING-ALGORITHM-8",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -6728,6 +5509,24 @@
       },
       "coverage": {
         "case_id": "QA-ROUTE-GET-HELP-SORTING-STRUCTURE-ID",
+        "layer": "api",
+        "oracle": "La ruta responde con el contrato HTTP esperado para datos válidos e inválidos."
+      }
+    },
+    {
+      "id": "route:GET /help/source/<structure_id>/<file_kind>",
+      "category": "route",
+      "module": "help",
+      "source": "Flask:help.download_tad_source",
+      "metadata": {
+        "endpoint": "help.download_tad_source",
+        "methods": [
+          "GET"
+        ],
+        "rule": "/help/source/<structure_id>/<file_kind>"
+      },
+      "coverage": {
+        "case_id": "QA-ROUTE-GET-HELP-SOURCE-STRUCTURE-ID-FILE-KIND",
         "layer": "api",
         "oracle": "La ruta responde con el contrato HTTP esperado para datos válidos e inválidos."
       }

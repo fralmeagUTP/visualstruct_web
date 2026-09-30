@@ -3132,6 +3132,7 @@ function initStructurePage(model) {
 
   async function executeOperationAndLoadTrace(current, payload, selectionKey, options) {
     pendingExecution = true;
+    if (simStatus) simStatus.textContent = "Ejecutando subrutina...";
     setSimulationButtonsEnabled();
     const resetButtonLocal = byId("reset-button");
     if (resetButtonLocal) {
