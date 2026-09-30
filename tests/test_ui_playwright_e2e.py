@@ -668,8 +668,16 @@ def test_playwright_hierarchical_comparison_practice_keyboard_and_accessibility(
             page.fill("#h-field-value", "25")
             page.click("#hier-step-mode")
             page.click("#hier-sim-step")
+            # Siguiente prepares the trace through an asynchronous API request.
+            # Exercise keyboard navigation only after the first step is rendered.
+            page.wait_for_function(r"""() => {
+                const counter = document.querySelector('#hier-sim-counter').textContent;
+                const match = counter.match(/Paso:\s*(\d+)\s*\/\s*(\d+)/);
+                return Boolean(match && Number(match[1]) > 0 && Number(match[2]) > Number(match[1]));
+            }""")
             before=page.text_content("#hier-sim-counter")
             page.locator("body").press("ArrowRight")
+            page.wait_for_function("before => document.querySelector('#hier-sim-counter').textContent !== before", arg=before)
             assert page.text_content("#hier-sim-counter") != before
             page.locator("body").press("Home")
             assert "Paso: 0/" in (page.text_content("#hier-sim-counter") or "")
