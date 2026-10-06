@@ -4,42 +4,42 @@
 <section>
   <h2>{{ help_data.title }}</h2>
   <h3>Descripcion del TAD</h3>
-  <p>{{ help_data.tad_description }}</p>
+  <p>{{ help_data.summary }}</p>
+  {% include "help/_source_download.html" %}
+  {% include "help/_execution_guide.html" %}
+  {% include "help/_operation_contracts.html" %}
 
-  <h3>Controles de ejecucion paso a paso</h3>
-  <ul>
-    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra traza completa; desactivado aplica resultado final.</li>
-    <li>Controles disponibles: <strong>Reproducir</strong>, <strong>Anterior paso</strong>, <strong>Siguiente paso</strong>, <strong>Reiniciar</strong>.</li>
-    <li>Velocidad de simulacion: slider de <strong>-2x</strong> a <strong>+2x</strong>.</li>
-    <li>El resultado final del modo rapido debe coincidir con el ultimo paso del modo interpretado.</li>
-  </ul>
+  <h3>Fichas por algoritmo</h3>
+  {% for algorithm in help_data.supported_algorithms %}
+  <article class="sorting-help-card"><h4>{{ algorithm.label }}</h4><p><strong>Objetivo:</strong> {{ algorithm.objective }}</p><p><strong>Estrategia:</strong> {{ algorithm.summary }}</p><p><strong>Invariante y dominio:</strong> {{ algorithm.mastery | join('; ') }}</p><p><strong>Error frecuente:</strong> {{ algorithm.common_error }}</p><p><strong>Complejidad:</strong> mejor {{ algorithm.theory.best }}, promedio {{ algorithm.theory.average }}, peor {{ algorithm.theory.worst }}; memoria {{ algorithm.theory.memory }}.</p></article>
+  {% endfor %}
 
-  <h3>Operaciones soportadas</h3>
+  <h3>Glosario contextual</h3>
+  <dl><dt>Pivote</dt><dd>Valor copiado que guía una partición de QuickSort.</dd><dt>Estabilidad</dt><dd>Conservación del orden relativo entre claves iguales.</dd><dt>In-place</dt><dd>Algoritmo que usa memoria auxiliar constante o no proporcional a la entrada.</dd><dt>Heap</dt><dd>Árbol completo representado en arreglo que mantiene una relación padre-hijos.</dd><dt>Bucket o urna</dt><dd>Grupo asociado a un valor o dígito durante una distribución.</dd><dt>Complejidad</dt><dd>Crecimiento teórico del trabajo o memoria al aumentar la entrada.</dd></dl>
+
+  <h3>Atajos de teclado</h3>
+  <ul><li><kbd>Alt</kbd> + <kbd>→</kbd>: avanzar al siguiente paso.</li><li><kbd>Alt</kbd> + <kbd>←</kbd>: regresar al paso anterior.</li><li><kbd>Alt</kbd> + <kbd>Inicio</kbd>: volver al comienzo de la traza.</li><li><kbd>Alt</kbd> + <kbd>Fin</kbd>: ir al último paso.</li><li><kbd>Alt</kbd> + <kbd>P</kbd>: pausar la reproducción.</li><li><kbd>Alt</kbd> + <kbd>R</kbd>: reproducir la traza; si está al final, comienza otra vez.</li></ul>
+
+  <h3>Operaciones y utilidades explicadas</h3>
   <ul>
-    {% for op in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
+    {% for op in help_data.supported_operations %}
     <li>{{ op }}</li>
     {% endfor %}
   </ul>
 
-  <h3>Pendientes / discrepancias</h3>
-  {% if help_data.pending_operations %}
-  <ul>
-    {% for item in help_data.pending_operations %}
-    <li>{{ item }}</li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p>No hay pendientes registrados.</p>
-  {% endif %}
+  <h3>Alcance y restricciones</h3><p>Los once métodos tienen verificaciones finitas registradas; no son una prueba exhaustiva de toda entrada, plataforma o agotamiento real de memoria. Los errores simulados de reserva se identifican como tales.</p>
 
   <h3>Estructura del TAD en C</h3>
   <pre class="didactic-code">{{ help_data.c_structure_code }}</pre>
 
-  <h3>Metodos del TAD en C</h3>
+  <h3>Código C y llamadores equivalentes</h3>
   {% if help_data.c_methods %}
     {% for method in help_data.c_methods %}
     <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
-    <p>{{ method.explanation }}</p>
+    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>La aplicación retira también los arcos incidentes. El cuerpo grafo_eliminar_vertice mostrado sólo retira el vértice; el llamador debe gestionar esos arcos.</p>
+    {% elif structure_id == "graph" and method.operation == "generate_random_graph" %}<p>La generación aleatoria pertenece a la aplicación; no existe una función C descargable equivalente de generación. Los vértices y arcos materializados se reproducen mediante llamadas reales del main.</p>
+    {% elif structure_id == "hash_table" and method.operation == "create_table" %}<p>Inicializa los buckets con capacidad fija. Recrear en la aplicación destruye antes la tabla anterior; th_inicializar por sí solo no la libera.</p>
+    {% else %}<p>{{ method.explanation }}</p>{% endif %}
     <pre class="didactic-code">{{ method.code }}</pre>
     {% endfor %}
   {% else %}
@@ -51,4 +51,3 @@
   </p>
 </section>
 {% endblock %}
-

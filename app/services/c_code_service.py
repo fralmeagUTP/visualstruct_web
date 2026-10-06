@@ -1,4 +1,4 @@
-﻿"""Didactic service that exposes C source snippets for selected TADs."""
+"""Didactic service that exposes C source snippets for selected TADs."""
 
 from __future__ import annotations
 
@@ -12,6 +12,28 @@ class CCodeService:
 
     _DOCS_TADS_C = Path(__file__).resolve().parents[2] / "docs" / "tads_C"
 
+    # Only these canonical teaching assets may be exposed for download.  Keeping
+    # this mapping here avoids ever deriving a filesystem path from a request.
+    _DOWNLOADABLE_TADS: dict[str, dict[str, object]] = {
+        "stack": {"source": "tad_pila.c", "header": "tad_pila.h", "label": "Pila"},
+        "queue": {"source": "tad_cola.c", "header": "tad_cola.h", "label": "Cola"},
+        "priority_queue": {"source": "tad_cola_prioridad.c", "header": "tad_cola_prioridad.h", "label": "Cola de prioridad"},
+        "linked_list": {"source": "tad_lista.c", "header": "tad_lista.h", "label": "Lista enlazada"},
+        "circular_list": {"source": "tad_lista_circular.c", "header": "tad_lista_circular.h", "label": "Lista circular"},
+        "sublist": {"source": "tad_sublista.c", "header": "tad_sublista.h", "label": "Sublista"},
+        "abb": {"source": "tad_abb.c", "header": "tad_abb.h", "label": "ABB"},
+        "avl": {"source": "tad_avl.c", "header": "tad_avl.h", "label": "AVL"},
+        "red_black": {"source": "tad_rojo_negro.c", "header": "tad_rojo_negro.h", "label": "Árbol rojo-negro"},
+        "binary_heap": {"source": "tad_monticulo_binario.c", "header": "tad_monticulo_binario.h", "label": "Montículo binario"},
+        "graph": {
+            "source": "tad_grafo.c", "header": "tad_grafo.h", "label": "Grafo",
+            "dependencies": ("queue",),
+            "note": "Los recorridos del grafo usan el TAD Cola; descarga también sus archivos si vas a compilar los recorridos.",
+        },
+        "hash_table": {"source": "tad_tabla_hash.c", "header": "tad_tabla_hash.h", "label": "Tabla hash"},
+        "sorting_array": {"source": "tad_ordenamiento.c", "header": "tad_ordenamiento.h", "label": "Métodos de ordenamiento"},
+    }
+
     _LINKED_LIST_OPERATION_MAP: dict[str, str] = {
         "insertar_inicio": "lista_insertar_inicio",
         "insertar_final": "lista_insertar_final",
@@ -21,31 +43,52 @@ class CCodeService:
         "mostrar": "lista_mostrar",
         "eliminar_elemento": "lista_eliminar_elemento",
         "eliminar_repetidos": "lista_eliminar_repetidos",
+        "insertar_posicion": "lista_insertar_elemento",
+        "eliminar_primero": "lista_eliminar_inicio",
+        "buscar_posiciones": "lista_buscar_elemento",
+        "eliminar_inicio": "lista_eliminar_inicio",
+        "eliminar_final": "lista_eliminar_final",
+        "eliminar_posicion": "lista_eliminar_posicion",
+        "primero": "lista_primero",
+        "ultimo": "lista_ultimo",
     }
     _STACK_OPERATION_MAP: dict[str, str] = {
         "apilar": "pila_apilar",
         "desapilar": "pila_desapilar",
+        "cima": "pila_cima",
+        "mostrar": "pila_mostrar",
     }
     _QUEUE_OPERATION_MAP: dict[str, str] = {
         "encolar": "cola_encolar",
         "desencolar": "cola_desencolar",
+        "frente": "cola_frente",
+        "final": "cola_final",
+        "mostrar": "cola_mostrar",
     }
     _PRIORITY_QUEUE_OPERATION_MAP: dict[str, str] = {
         "encolar": "cp_encolar",
         "desencolar": "cp_desencolar",
+        "frente": "cp_frente",
+        "inicializar": "cp_inicializar",
+        "vacia": "cp_vacia",
+        "contar": "cp_contar",
+        "copiar_items": "cp_copiar_items",
+        "formatear": "cp_formatear",
     }
     _CIRCULAR_LIST_OPERATION_MAP: dict[str, str] = {
         "insertar_inicio": "lcir_insertar_inicio",
         "insertar_final": "lcir_insertar_final",
+        "eliminar_inicio": "lcir_eliminar_inicio",
         "eliminar_primero": "lcir_eliminar_primero",
         "buscar_posiciones": "lcir_buscar_posiciones",
         "invertir": "lcir_invertir",
     }
     _SUBLIST_OPERATION_MAP: dict[str, str] = {
         "insertar_padre": "sublista_insertar_padre_final",
-        "insertar_hijo": "sublista_insertar_hijo_final",
+        "insertar_hijo": "sublista_insertar_hijo",
         "eliminar_padre": "sublista_eliminar_padre_primero",
-        "eliminar_hijo": "sublista_eliminar_hijo_primero",
+        "eliminar_hijo": "sublista_eliminar_hijo",
+        "hijos_de": "sublista_obtener_hijos",
     }
     _ABB_OPERATION_MAP: dict[str, str] = {
         "insertar": "abb_insertar",
@@ -151,6 +194,35 @@ class CCodeService:
         return None
 
     @classmethod
+    def get_downloadable_tad(cls, structure_id: str) -> dict[str, Any] | None:
+        """Return safe metadata for a complete, canonical TAD source download."""
+        item = cls._DOWNLOADABLE_TADS.get(structure_id)
+        if item is None:
+            return None
+        source = cls._DOCS_TADS_C / str(item["source"])
+        header = cls._DOCS_TADS_C / str(item["header"])
+        if not source.is_file() or not header.is_file():
+            return None
+        return {
+            "label": str(item["label"]),
+            "source_name": source.name,
+            "header_name": header.name,
+            "dependencies": tuple(item.get("dependencies", ())),
+            "note": str(item.get("note", "")),
+        }
+
+    @classmethod
+    def get_downloadable_tad_file(cls, structure_id: str, file_kind: str) -> Path | None:
+        """Return one allowlisted TAD file for a Help download, never a request path."""
+        if file_kind not in {"source", "header"}:
+            return None
+        item = cls._DOWNLOADABLE_TADS.get(structure_id)
+        if item is None:
+            return None
+        path = cls._DOCS_TADS_C / str(item[file_kind])
+        return path if path.is_file() else None
+
+    @classmethod
     def _build_linked_list_data(cls) -> dict[str, Any]:
         """Build didactic C-code payload for linked list."""
         c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_lista.c")
@@ -166,12 +238,8 @@ class CCodeService:
         operation_code["insertar_elemento"] = operation_code.get("lista_insertar_elemento", "")
         operation_code["eliminar_primero"] = operation_code.get("eliminar_elemento", "")
         operation_code["buscar_posiciones"] = operation_code.get("buscar_elemento", "")
-        operation_code["limpiar"] = (
-            "/* Liberacion completa para dejar lista vacia. */\n"
-            "while (*lista != NULL) {\n"
-            "    int head = (*lista)->nro;\n"
-            "    lista_eliminar_elemento(lista, head);\n"
-            "}"
+        operation_code["limpiar"] = cls._extract_function_with_comment(c_text, "lista_limpiar") or (
+            "/* Codigo C no disponible para lista_limpiar. */"
         )
 
         structure_text = cls._extract_linked_list_structure(h_text, c_text)
@@ -207,16 +275,6 @@ class CCodeService:
         elif destroy_fn:
             operation_code["limpiar"] = destroy_fn
 
-        # El TAD no expone `pila_cima`; se deja explícito para el estudiante.
-        operation_code["cima"] = (
-            "/* Este TAD en C no define una funcion directa para leer la cima. */\n"
-            "/* Para consulta didactica, se puede copiar 1 valor desde el tope: */\n"
-            "int cima;\n"
-            "int usados = pila_copiar_valores(&pila, &cima, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* cima contiene el valor del tope */\n"
-            "}"
-        )
 
         structure_text = cls._extract_stack_structure(h_text, c_text)
         return {
@@ -251,25 +309,6 @@ class CCodeService:
         elif clear_fn:
             operation_code["limpiar"] = clear_fn
 
-        operation_code["frente"] = (
-            "/* Este TAD en C no define una funcion directa cola_frente(). */\n"
-            "/* Consulta didactica del frente mediante copia de 1 valor: */\n"
-            "int frente;\n"
-            "int usados = cola_copiar_valores(&cola, &frente, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* frente contiene el valor del primer nodo */\n"
-            "}"
-        )
-        operation_code["final"] = (
-            "/* Este TAD en C no define una funcion directa cola_final(). */\n"
-            "/* Consulta didactica del final recorriendo copia temporal: */\n"
-            "int buffer[256];\n"
-            "int usados = cola_copiar_valores(&cola, buffer, 256);\n"
-            "if (usados > 0) {\n"
-            "    int final = buffer[usados - 1];\n"
-            "    /* final contiene el valor del ultimo nodo */\n"
-            "}"
-        )
 
         structure_text = cls._extract_queue_structure(h_text, c_text)
         return {
@@ -293,27 +332,25 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        init_fn = cls._extract_function_with_comment(c_text, "cp_inicializar")
-        clear_fn = cls._extract_function_with_comment(c_text, "cp_vaciar")
-        if init_fn and clear_fn:
-            operation_code["limpiar"] = (
-                f"{clear_fn}\n\n"
-                "/* Reinicio recomendado del TAD despues de vaciar */\n"
-                f"{init_fn}"
-            )
-        elif clear_fn:
-            operation_code["limpiar"] = clear_fn
+        # Show the exact public function responsible for this operation.  The
+        # downloaded source already contains its final pointer/count reset, so
+        # appending cp_inicializar here would present a synthetic method that
+        # is not what the priority-queue adapter executes.
+        operation_code["limpiar"] = cls._extract_function_with_comment(c_text, "cp_vaciar")
 
-        operation_code["frente"] = (
-            "/* Este TAD en C no define una funcion directa cp_frente(). */\n"
-            "/* Consulta didactica: copiar el primer item en orden actual de enlace. */\n"
-            "int valor;\n"
-            "int prioridad;\n"
-            "int usados = cp_copiar_items(&cola, &valor, &prioridad, 1);\n"
-            "if (usados == 1) {\n"
-            "    /* valor y prioridad del primer nodo enlazado */\n"
-            "}"
-        )
+        # Enqueue calls this allocator.  Include both real C functions in the
+        # didactic source so the allocation and field initialization are not a
+        # black box; both snippets are extracted verbatim from the downloadable
+        # .c file and are shared by the operation panel and Help.
+        create_node = cls._extract_function_with_comment(c_text, "cp_crear_nodo")
+        enqueue = operation_code.get("encolar", "")
+        if create_node and enqueue:
+            operation_code["encolar"] = f"{create_node}\n\n{enqueue}"
+
+        if "formatear" in operation_code:
+            dependency = cls._extract_function_with_comment(c_text, "cp_append_text")
+            if dependency:
+                operation_code["formatear"] += "\n\n" + dependency
 
         structure_text = cls._extract_priority_queue_structure(h_text, c_text)
         return {
@@ -337,26 +374,16 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        init_fn = cls._extract_function_with_comment(c_text, "lcir_inicializar")
-        destroy_fn = cls._extract_function_with_comment(c_text, "lcir_destruir")
-        if init_fn and destroy_fn:
-            operation_code["limpiar"] = (
-                f"{destroy_fn}\n\n"
-                "/* Reinicio recomendado del TAD luego de liberar nodos */\n"
-                f"{init_fn}"
-            )
-        elif destroy_fn:
-            operation_code["limpiar"] = destroy_fn
+        operation_code["limpiar"] = cls._extract_function_with_comment(c_text, "lcir_destruir")
 
-        operation_code["eliminar_inicio"] = (
-            "/* Este TAD en C no define una funcion directa lcir_eliminar_inicio(). */\n"
-            "/* Se puede eliminar la cabeza usando lcir_eliminar_primero con su valor actual. */\n"
-            "int head;\n"
-            "int usados = lcir_copiar_valores(&lista, &head, 1);\n"
-            "if (usados == 1) {\n"
-            "    lcir_eliminar_primero(&lista, head);\n"
-            "}"
-        )
+        # Insertions call this allocator; show its real body with each public
+        # operation so allocation and field initialization are not a black box.
+        create_node = cls._extract_function_with_comment(c_text, "lcir_crear_nodo")
+        if create_node:
+            for operation_name in ("insertar_inicio", "insertar_final"):
+                operation = operation_code.get(operation_name, "")
+                if operation:
+                    operation_code[operation_name] = f"{operation}\n\n{create_node}"
 
         structure_text = cls._extract_circular_list_structure(h_text, c_text)
         return {
@@ -380,26 +407,29 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        init_fn = cls._extract_function_with_comment(c_text, "sublista_inicializar")
         destroy_fn = cls._extract_function_with_comment(c_text, "sublista_destruir")
-        if init_fn and destroy_fn:
-            operation_code["limpiar"] = (
-                f"{destroy_fn}\n\n"
-                "/* Reinicio recomendado del TAD luego de liberar memoria */\n"
-                f"{init_fn}"
-            )
-        elif destroy_fn:
+        destroy_children_fn = cls._extract_function_with_comment(c_text, "destruir_hijos")
+        if destroy_fn:
             operation_code["limpiar"] = destroy_fn
 
-        operation_code["hijos_de"] = (
-            "/* Consulta de hijos en C: buscar padre y copiar su sublista a un arreglo. */\n"
-            "Nodo *padre = sublista_buscar_padre(lista, valor_padre);\n"
-            "if (padre != NULL) {\n"
-            "    int hijos[256];\n"
-            "    int usados = sublista_copiar_hijos(padre, hijos, 256);\n"
-            "    /* hijos[0..usados-1] contiene los valores de la sublista */\n"
-            "}"
-        )
+        helper_for_operation = {
+            "insertar_padre": ("crear_padre",),
+            "insertar_hijo": ("sublista_buscar_padre", "sublista_insertar_hijo_final", "crear_hijo"),
+            "eliminar_padre": ("destruir_hijos",),
+            "eliminar_hijo": ("sublista_buscar_padre", "sublista_eliminar_hijo_primero"),
+            "hijos_de": ("sublista_buscar_padre", "sublista_copiar_hijos"),
+            "limpiar": ("destruir_hijos",),
+        }
+        for operation_name, helpers in helper_for_operation.items():
+            if operation_name not in operation_code:
+                continue
+            helper_sources = [
+                cls._extract_function_with_comment(c_text, helper)
+                for helper in helpers
+            ]
+            operation_code[operation_name] = "\n\n".join(
+                part for part in (operation_code[operation_name], *helper_sources) if part
+            )
 
         structure_text = cls._extract_sublist_structure(h_text)
         return {
@@ -427,6 +457,15 @@ class CCodeService:
         if clear_fn:
             operation_code["limpiar"] = clear_fn
         operation_code["contar_hojas"] = (
+            "/**\n"
+            " * @brief Cuenta hojas sin modificar el arbol ni imprimir.\n"
+            " * @param nodo Raiz prestada del subarbol, o NULL.\n"
+            " * @return 0 para NULL, 1 para una hoja, o la suma de ambos subarboles.\n"
+            " * @note Helper mostrado por la aplicacion; no incluido en el C/H descargado.\n"
+            " * C no fija el orden de evaluacion de las dos llamadas sumadas.\n"
+            " * No declara locales para sus resultados parciales; son operandos de la expresion.\n"
+            " * Tiempo O(n), pila recursiva O(h); no reserva ni libera nodos.\n"
+            " */\n"
             "int abb_contarHojas(ABBNodo* nodo) {\n"
             "    if (nodo == NULL) {\n"
             "        return 0;\n"
@@ -438,17 +477,31 @@ class CCodeService:
             "}"
         )
         operation_code["validar"] = (
-            "int abb_validar_rango(ABBNodo* nodo, int minimo, int maximo) {\n"
+            "/**\n"
+            " * @brief Valida orden ABB estricto con limites opcionales, sin mutacion.\n"
+            " * @param nodo Raiz del subarbol finito y aciclico; NULL admitido.\n"
+            " * @param hay_minimo Indicador de limite inferior presente; cero lo omite.\n"
+            " * @param minimo Limite inferior exclusivo, solo comparado si hay_minimo.\n"
+            " * @param hay_maximo Indicador de limite superior presente; cero lo omite.\n"
+            " * @param maximo Limite superior exclusivo, solo comparado si hay_maximo.\n"
+            " * @return 1 si el subarbol respeta todos los limites; 0 si no.\n"
+            " * @note Auxiliar didactico de la aplicacion; no exportado por el C/H del TAD.\n"
+            " * La llamada inicial usa 0,0,0,0: INT_MIN e INT_MAX son claves validas.\n"
+            " * No usa sentinelas fuera de int ni suma/resta uno. Los limites presentes\n"
+            " * rechazan igualdad y duplicados. El cortocircuito omite limites ausentes\n"
+            " * y omite el subarbol derecho cuando el izquierdo resulta invalido.\n"
+            " */\n"
+            "int abb_validar_rango(ABBNodo* nodo, int hay_minimo, int minimo, int hay_maximo, int maximo) {\n"
             "    if (nodo == NULL) {\n"
             "        return 1;\n"
             "    }\n"
-            "    if (nodo->valor <= minimo || nodo->valor >= maximo) {\n"
+            "    if ((hay_minimo && nodo->valor <= minimo) || (hay_maximo && nodo->valor >= maximo)) {\n"
             "        return 0;\n"
             "    }\n"
-            "    if (!abb_validar_rango(nodo->izquierdo, minimo, nodo->valor)) {\n"
+            "    if (!abb_validar_rango(nodo->izquierdo, hay_minimo, minimo, 1, nodo->valor)) {\n"
             "        return 0;\n"
             "    }\n"
-            "    if (!abb_validar_rango(nodo->derecho, nodo->valor, maximo)) {\n"
+            "    if (!abb_validar_rango(nodo->derecho, 1, nodo->valor, hay_maximo, maximo)) {\n"
             "        return 0;\n"
             "    }\n"
             "    return 1;\n"
@@ -520,6 +573,19 @@ class CCodeService:
             "}",
         )
 
+        operation_code['validar'] = (
+            "/**\n"
+            " * @brief Comprueba equilibrio por alturas en cada subarbol.\n"
+            " * @param nodo Raiz prestada del subarbol; NULL es valido.\n"
+            " * @return 1 si todas las diferencias altura(der)-altura(izq) estan entre -1 y 1; 0 en otro caso.\n"
+            " * @pre Enlaces finitos, aciclicos y nodos vivos.\n"
+            " * @note No verifica orden ABB, padres ni el FE almacenado; la validacion del backend es distinta.\n"
+            " * @note No muta, reserva, libera ni imprime; cortocircuita al hallar desequilibrio.\n"
+            " * @note C no fija el orden de los operandos de la resta de alturas; ambas consultas son puras.\n"
+            " * @note Recalcula alturas por nodo: coste O(n*h), no certificado lineal.\n"
+            " */\n" + operation_code['validar']
+        )
+
         structure_text = cls._extract_avl_structure(h_text, c_text)
         return {
             "record": structure_text,
@@ -547,6 +613,13 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
+        # Eliminar necesita sus seis dependencias reales, sin cambiar el menu o C.
+        delete_helpers = [cls._extract_function_with_comment(c_text, fn) for fn in
+                          ["colorOf", "rbt_rotar_dcha", "rbt_rotar_izda", "transplantar",
+                           "minimo", "arreglarEliminacion", "rbt_eliminar"]]
+        if all(delete_helpers):
+            operation_code["eliminar"] = "\n\n".join(delete_helpers)
+
         # Para la simulacion didactica de insercion RN se requiere visualizar
         # tambien las subrutinas llamadas (casos y rotaciones).
         insert_helpers: list[str] = []
@@ -571,49 +644,12 @@ class CCodeService:
         clear_fn = cls._extract_function_with_comment(c_text, "rbt_liberar")
         if clear_fn:
             operation_code["limpiar"] = clear_fn
-        operation_code.setdefault(
-            "inorden",
-            "void rbt_inorden(RBT nodo) {\n"
-            "    if (nodo == NULL) {\n"
-            "        return;\n"
-            "    }\n"
-            "    rbt_inorden(nodo->rbt_izq);\n"
-            "    printf(\"%d \", nodo->rbt_dato);\n"
-            "    rbt_inorden(nodo->rbt_der);\n"
-            "}",
-        )
-        operation_code.setdefault(
-            "altura",
-            "int rbt_altura(RBT nodo) {\n"
-            "    if (nodo == NULL) {\n"
-            "        return 0;\n"
-            "    }\n"
-            "    int altIzq = rbt_altura(nodo->rbt_izq);\n"
-            "    int altDer = rbt_altura(nodo->rbt_der);\n"
-            "    return (altIzq > altDer ? altIzq : altDer) + 1;\n"
-            "}",
-        )
-        operation_code.setdefault(
-            "validar",
-            "int rbt_validar(RBT raiz) {\n"
-            "    if (raiz == NULL) {\n"
-            "        return 1;\n"
-            "    }\n"
-            "    if (raiz->rbt_color == ROJO) {\n"
-            "        if ((raiz->rbt_izq != NULL && raiz->rbt_izq->rbt_color == ROJO) ||\n"
-            "            (raiz->rbt_der != NULL && raiz->rbt_der->rbt_color == ROJO)) {\n"
-            "            return 0;\n"
-            "        }\n"
-            "    }\n"
-            "    if (!rbt_validar(raiz->rbt_izq)) {\n"
-            "        return 0;\n"
-            "    }\n"
-            "    if (!rbt_validar(raiz->rbt_der)) {\n"
-            "        return 0;\n"
-            "    }\n"
-            "    return 1;\n"
-            "}",
-        )
+        operation_code.setdefault('inorden', '/**\n * @brief Imprime los enteros en orden ascendente, cada uno seguido de un espacio.\n * @param nodo Raiz prestada; NULL no imprime nada.\n * @note Auxiliar de la aplicacion y del main, no exportado por el C/H. No muta ni libera.\n */\nvoid rbt_inorden(RBT nodo) {\n    if (nodo == NULL) return;\n    rbt_inorden(nodo->izq);\n    printf("%d ", nodo->nro);\n    rbt_inorden(nodo->der);\n}')
+        operation_code.setdefault('altura', '/**\n * @brief Calcula la altura en nodos, sin mutar el arbol.\n * @param nodo Raiz prestada; NULL admitido.\n * @return 0 para NULL; uno mas que la mayor altura de los hijos en otro caso.\n * @note Auxiliar de la aplicacion y del main, no exportado por el C/H.\n */\nint rbt_altura(RBT nodo) {\n    if (nodo == NULL) return 0;\n    int altIzq = rbt_altura(nodo->izq);\n    int altDer = rbt_altura(nodo->der);\n    return (altIzq > altDer ? altIzq : altDer) + 1;\n}')
+        validator = cls._extract_function_with_comment(c_text, "rbt_validar")
+        validation_helper = cls._extract_function_with_comment(c_text, "rbt_validar_altura_negra")
+        operation_code["validar"] = "#include <limits.h>\n\n" + validation_helper + "\n\n" + validator
+
 
         structure_text = cls._extract_red_black_structure(h_text, c_text)
         return {
@@ -637,6 +673,13 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
+        heapify_up = cls._extract_function_with_comment(c_text, "heapify_up")
+        heapify_down = cls._extract_function_with_comment(c_text, "heapify_down")
+        if heapify_up and operation_code.get("insertar"):
+            operation_code["insertar"] = f"{heapify_up}\n\n{operation_code['insertar']}"
+        if heapify_down and operation_code.get("extraer_raiz"):
+            operation_code["extraer_raiz"] = f"{heapify_down}\n\n{operation_code['extraer_raiz']}"
+
         init_fn = cls._extract_function_with_comment(c_text, "monticulo_inicializar")
         destroy_fn = cls._extract_function_with_comment(c_text, "monticulo_destruir")
         if init_fn and destroy_fn:
@@ -650,11 +693,18 @@ class CCodeService:
 
         operation_code["a_lista"] = (
             "/* Copia didactica del arreglo interno del monticulo. */\n"
-            "int buffer[256];\n"
-            "int usados = monticulo_copiar_valores(&monticulo, buffer, 256);\n"
+            "/* Requiere <stdlib.h>; reserva solo si hay elementos. */\n"
+            "int cantidad = monticulo_cantidad(&monticulo);\n"
+            "int *buffer = cantidad > 0 ? malloc((size_t)cantidad * sizeof *buffer) : NULL;\n"
+            "if (cantidad > 0 && buffer == NULL) {\n"
+            "    /* Sin memoria: no copiar ni presentar un resultado incompleto. */\n"
+            "    return EXIT_FAILURE;\n"
+            "}\n"
+            "int usados = monticulo_copiar_valores(&monticulo, buffer, cantidad);\n"
             "for (int i = 0; i < usados; i++) {\n"
-            "    /* buffer[i] contiene el valor en el indice i */\n"
-            "}"
+            "    /* buffer[i] contiene el valor en el indice i, no orden total. */\n"
+            "}\n"
+            "free(buffer);"
         )
 
         structure_text = cls._extract_binary_heap_structure(h_text)
@@ -679,12 +729,46 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
+        # BFS calls the actual graph scans, successor allocator and FIFO TAD.
+        # These are verbatim downloadable definitions, never synthetic C.
+        bfs = operation_code.get("run_bfs")
+        if bfs:
+            helpers = [cls._extract_function_with_comment(c_text, name) for name in
+                       ("grafo_desmarcar", "grafo_marcar_vertice", "grafo_marcado_vertice", "grafo_sucesores")]
+            queue_text = cls._safe_read(cls._DOCS_TADS_C / "tad_cola.c")
+            helpers += [cls._extract_function_with_comment(queue_text, name) for name in
+                        ("cola_encolar", "cola_desencolar")]
+            operation_code["run_bfs"] = "\n\n".join([bfs] + [h for h in helpers if h])
+
         # Para DFS se muestra tambien la subrutina recursiva llamada para
         # mantener coherencia con la interpretacion paso a paso.
         dfs_wrapper = cls._extract_function_with_comment(c_text, "grafo_dfs")
         dfs_recursive = cls._extract_function_with_comment(c_text, "grafo_dfs_recursivo")
         if dfs_wrapper and dfs_recursive:
-            operation_code["run_dfs"] = f"{dfs_wrapper}\n\n{dfs_recursive}"
+            dfs_helpers = [cls._extract_function_with_comment(c_text, name) for name in (
+                "grafo_agregar_recorrido", "grafo_existe_vertice", "grafo_desmarcar",
+                "grafo_marcar_vertice", "grafo_marcado_vertice", "grafo_sucesores",
+            )]
+            operation_code["run_dfs"] = "\n\n".join([dfs_wrapper, dfs_recursive] + [h for h in dfs_helpers if h])
+
+        # Four numeric algorithms show every actual helper they can call.
+        # BFS/DFS snippets above remain unchanged and are not reopened.
+        dependencies = {
+            "run_dijkstra": ("grafo_orden", "grafo_vertices", "inicializarVectorVertices", "indiceVertice",
+                "grafo_tiene_peso_negativo", "grafo_sucesores_atomicos", "grafo_costo_arco", "liberarListaArcos"),
+            "run_bellman_ford": ("grafo_orden", "grafo_vertices", "inicializarVectorVertices", "indiceVertice",
+                "grafo_arcos", "grafo_costo_arco", "liberarListaArcos"),
+            "run_prim": ("grafo_orden", "grafo_vertices", "inicializarVectorVertices", "indiceVertice",
+                "grafo_sucesores_atomicos", "grafo_costo_arco", "liberarListaArcos"),
+            "run_kruskal": ("grafo_orden", "grafo_tamano", "grafo_vertices", "inicializarVectorVertices", "indiceVertice",
+                "grafo_arcos", "grafo_encontrar_conjunto", "grafo_unir_conjuntos", "liberarListaArcos"),
+        }
+        for operation, names in dependencies.items():
+            if operation in operation_code:
+                helpers = [cls._extract_function_with_comment(c_text, name) for name in names]
+                if not all(helpers):
+                    raise ValueError(f"Falta una dependencia C real de {operation}.")
+                operation_code[operation] = "\n\n".join([operation_code[operation], *helpers])
 
         create_fn = cls._extract_function_with_comment(c_text, "grafo_crear")
         if create_fn:
@@ -717,34 +801,44 @@ class CCodeService:
             if snippet:
                 operation_code[operation_name] = snippet
 
-        operation_code["keys"] = (
-            "/* Este TAD en C no expone un metodo que retorne solo claves como arreglo. */\n"
-            "/* Se puede recorrer la tabla completa usando th_formatear. */\n"
-            "char buffer[2048];\n"
-            "th_formatear(&tabla, buffer, sizeof(buffer));"
-        )
-        operation_code["values"] = (
-            "/* Este TAD en C no expone un metodo que retorne solo valores como arreglo. */\n"
-            "/* Se puede recorrer la tabla completa usando th_formatear. */\n"
-            "char buffer[2048];\n"
-            "th_formatear(&tabla, buffer, sizeof(buffer));"
-        )
-        operation_code["items"] = (
-            "/* Consulta didactica de pares clave:valor por bucket. */\n"
-            "char buffer[2048];\n"
-            "th_formatear(&tabla, buffer, sizeof(buffer));"
-        )
-        operation_code["stats"] = (
-            "/* Estadisticas del TAD tabla hash. */\n"
+        hash_index = cls._extract_function_with_comment(c_text, "th_indice")
+        hash_search = cls._extract_function_with_comment(c_text, "th_buscar")
+        dependencies = {
+            "insert": (hash_index,),
+            "get": (hash_index,),
+            "contains": (hash_index, hash_search),
+            "remove": (hash_index,),
+        }
+        for operation_name, helpers in dependencies.items():
+            public_function = operation_code.get(operation_name)
+            if public_function:
+                operation_code[operation_name] = "\n\n".join(
+                    [public_function] + [snippet for snippet in helpers if snippet]
+                )
+
+        formatter = cls._extract_function_with_comment(c_text, "th_formatear")
+        append = cls._extract_function_with_comment(c_text, "th_append_text")
+        for listing in ("keys", "values", "items"):
+            operation_code[listing] = "\n\n".join([
+                "/* Texto C de tabla completa; la proyeccion API es independiente. */\n"
+                "char buffer[2048];\n"
+                "th_formatear(&tabla, buffer, sizeof(buffer));",
+                formatter, append,
+            ])
+        operation_code["stats"] = "\n\n".join([
+            "/* C float y texto; la proyeccion API mantiene su cociente propio. */\n"
             "THEstadisticas stats = th_estadisticas(&tabla);\n"
             "char texto[512];\n"
-            "th_formatear_estadisticas(&tabla, texto, sizeof(texto));"
-        )
+            "th_formatear_estadisticas(&tabla, texto, sizeof(texto));",
+            cls._extract_function_with_comment(c_text, "th_estadisticas"),
+            cls._extract_function_with_comment(c_text, "th_formatear_estadisticas"),
+        ])
 
         init_fn = cls._extract_function_with_comment(c_text, "th_inicializar")
         destroy_fn = cls._extract_function_with_comment(c_text, "th_destruir")
+        clear_fn = cls._extract_function_with_comment(c_text, "th_vaciar")
         if init_fn and destroy_fn:
-            operation_code["destroy_table"] = destroy_fn
+            operation_code["destroy_table"] = "\n\n".join([destroy_fn, clear_fn] if clear_fn else [destroy_fn])
             operation_code["clear_and_reinit"] = (
                 f"{destroy_fn}\n\n"
                 "/* Reinicio recomendado del TAD conservando una capacidad valida. */\n"
@@ -772,6 +866,36 @@ class CCodeService:
             snippet = cls._extract_function_with_comment(c_text, function_name)
             if snippet:
                 operation_code[operation_name] = snippet
+
+        validation = cls._extract_function_with_comment(c_text, "arreglo_valido")
+        swap = cls._extract_function_with_comment(c_text, "intercambiar")
+        quick = cls._extract_function_with_comment(c_text, "quicksort_recursivo")
+        merge = cls._extract_function_with_comment(c_text, "mezclar")
+        merge_recursive = cls._extract_function_with_comment(c_text, "mergesort_recursivo")
+        heap = cls._extract_function_with_comment(c_text, "heapify")
+        min_max = cls._extract_function_with_comment(c_text, "obtener_minimo_maximo")
+        counting = cls._extract_function_with_comment(c_text, "ordenar_counting_sort")
+        radix_digit = cls._extract_function_with_comment(c_text, "counting_por_digito")
+
+        dependencies: dict[str, tuple[str, ...]] = {
+            "intercambio": (validation, swap),
+            "seleccion": (validation, swap),
+            "insercion": (validation,),
+            "burbuja": (validation, swap),
+            "shell": (validation,),
+            "quicksort": (validation, swap, quick),
+            "mergesort": (validation, merge, merge_recursive),
+            "heapsort": (validation, swap, heap),
+            "counting_sort": (validation, min_max),
+            "binsort": (validation, min_max, counting),
+            "radixsort": (validation, radix_digit),
+        }
+        for operation_name, helpers in dependencies.items():
+            public_function = operation_code.get(operation_name)
+            if public_function:
+                operation_code[operation_name] = "\n\n".join(
+                    [snippet for snippet in helpers if snippet] + [public_function]
+                )
 
         structure_text = cls._extract_sorting_structure(h_text)
         return {

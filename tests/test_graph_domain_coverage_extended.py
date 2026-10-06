@@ -131,7 +131,13 @@ def test_graph_traversals_and_shortest_paths_cover_invalid_and_disconnected_case
 
     manual = [None]
     grafo_dfs_recursivo(graph, 99, manual)
-    assert manual == [None]
+    # Current C helper does not validate membership; wrapper does.
+    assert _vertices(manual[0]) == [(99, 0)]
+    assert grafo_existe_vertice(graph, 99) == 0
+    grafo_desmarcar(graph)
+    valid_manual = [None]
+    grafo_dfs_recursivo(graph, 1, valid_manual)
+    assert _vertices(valid_manual[0]) == [(1, 0), (2, 0), (4, 0), (3, 0)]
 
     assert _arcs(grafo_dijkstra(graph, 1, 4)) == [(1, 3, 1), (3, 2, 2), (2, 4, 1)]
     assert _arcs(grafo_bellman_ford(graph, 1, 4)) == [(1, 3, 1), (3, 2, 2), (2, 4, 1)]
@@ -160,12 +166,26 @@ def test_graph_mst_and_disjoint_sets_cover_cycles_and_disconnected_vertices() ->
     ]:
         grafo_insertar_arco(graph, origin, target, cost)
 
-    assert _arcs(grafo_prim(graph, 1)) == [(1, 3, 1), (2, 3, 2), (3, 4, 4)]
-    assert _arcs(grafo_kruskal(graph)) == [(1, 3, 1), (2, 3, 2), (3, 4, 4)]
+    # Raw asymmetric historical scenario is retained, checked against CURRENT C.
+    from pathlib import Path
+    import json
+    oracle = json.loads((Path(__file__).parent / "fixtures/current_c_domain_oracles/graph_993_mst.json").read_text(encoding="utf-8"))["rows"]
+    assert [list(x) for x in _arcs(grafo_prim(graph, 1))] == oracle["prim_raw"]
+    symmetric = grafo_crear()
+    for origin, target, cost in [(1, 2, 3), (1, 3, 1), (2, 3, 2), (3, 4, 4)]:
+        grafo_insertar_arco(symmetric, origin, target, cost)
+        grafo_insertar_arco(symmetric, target, origin, cost)
+    assert [list(x) for x in _arcs(grafo_prim(symmetric, 1))] == oracle["prim_symmetric"]
+    grafo_insertar_vertice(symmetric, 9)
+    assert [list(x) for x in _arcs(grafo_prim(symmetric, 1))] == oracle["prim_symmetric_isolated"]
+    # Current raw C prepends each accepted arc; preserve returned order/orientation.
+    kruskal_result = _arcs(grafo_kruskal(graph))
+    assert [list(x) for x in kruskal_result] == oracle["kruskal_raw"]
+    assert sum(cost for _, _, cost in kruskal_result) == 7
     assert grafo_prim(graph, 99) is None
 
     grafo_insertar_vertice(graph, 9)
-    assert len(_arcs(grafo_prim(graph, 1))) == 3
+    assert [list(x) for x in _arcs(grafo_prim(graph, 1))] == oracle["prim_raw_isolated"]
 
     sets = Conjunto(padre=[0, 0, 1, 3], n=4)
     assert grafo_encontrar_conjunto(sets, 2) == 0

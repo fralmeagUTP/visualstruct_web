@@ -24,6 +24,7 @@ from app.adapters.graph_adapter import GraphAdapter
 from app.adapters.hash_table_adapter import HashTableAdapter
 from app.adapters.sorting_adapter import SortingAdapter
 from app.services.conformance.canonical_state import canonicalize_state
+from app.services.c_code_service import CCodeService
 
 
 class ConformanceRunnerError(RuntimeError):
@@ -264,6 +265,38 @@ class ConformanceRunner:
                 return json.loads(line)
         raise ConformanceRunnerError("el harness no emitió estado canónico")
 
+    @staticmethod
+    def _normalize_c_state(structure_id: str, state: dict[str, Any]) -> dict[str, Any]:
+        """Normalize harness JSON scalars to the public C-backed adapter contract."""
+        if structure_id != "hash_table":
+            return state
+        normalized = dict(state)
+        payload = dict(normalized.get("state") or {})
+        pairs: list[list[Any]] = []
+        for pair in payload.get("pairs") or []:
+            if isinstance(pair, list) and len(pair) == 2:
+                pairs.append([int(pair[0]), int(pair[1])])
+        # Hash canonicalization represents a map, with the same deterministic
+        # string-key ordering as canonicalize_state. This preserves every
+        # key/value, cardinality and invariant while preventing false negatives
+        # when numeric keys reach 10 (1,10,2 versus native numeric 1,2,10).
+        payload["pairs"] = sorted(pairs, key=lambda pair: (str(pair[0]), str(pair[1])))
+        normalized["state"] = payload
+        return normalized
+
+    def _execute_operation(self, structure_id: str, adapter: Any, item: ScenarioOperation) -> None:
+        """Connect the same canonical C snippet used by the sorting web service."""
+        payload = dict(item.payload)
+        if structure_id == "sorting" and item.operation in {"run", "step"}:
+            class RunnerCCodeService(CCodeService):
+                _DOCS_TADS_C = self.c_tads_dir
+
+            didactic_data = RunnerCCodeService.get_structure_data("sorting_array") or {}
+            algorithm = str(adapter.to_visual_state().get("algorithm") or "")
+            payload["source_code"] = str(didactic_data.get("operations", {}).get(
+                algorithm, didactic_data.get("default_operation", "")))
+        adapter.execute(item.operation, payload)
+
     def compare(self, structure_id: str, operations: list[ScenarioOperation]) -> ConformanceResult:
         normalized_id = str(structure_id).strip().lower()
         if normalized_id not in SPECS:
@@ -272,7 +305,7 @@ class ConformanceRunner:
         arguments = spec.to_c_arguments(operations)
         adapter = spec.adapter_factory()
         for item in operations:
-            adapter.execute(item.operation, dict(item.payload))
+            self._execute_operation(normalized_id, adapter, item)
         python_state = canonicalize_state(normalized_id, adapter.to_visual_state())
 
         with tempfile.TemporaryDirectory(prefix="visualestruct-conformance-") as directory:
@@ -281,7 +314,7 @@ class ConformanceRunner:
             completed = subprocess.run([str(executable), *arguments], capture_output=True, text=True, check=False)
             if completed.returncode != 0:
                 raise ConformanceRunnerError(f"falló escenario C de {normalized_id}: {completed.stderr.strip()}")
-            c_state = self._canonical_c_output(completed.stdout)
+            c_state = self._normalize_c_state(normalized_id, self._canonical_c_output(completed.stdout))
 
         return ConformanceResult(
             structure_id=normalized_id,
@@ -304,7 +337,7 @@ class ConformanceRunner:
         adapter = spec.adapter_factory()
         try:
             for item in operations:
-                adapter.execute(item.operation, dict(item.payload))
+                self._execute_operation(normalized_id, adapter, item)
         except Exception as error:  # The domain exposes several intentional error types.
             python_error = f"{type(error).__name__}: {error}"
 
@@ -364,7 +397,7 @@ class CompiledConformanceRunner(ConformanceRunner):
         arguments = spec.to_c_arguments(operations)
         adapter = spec.adapter_factory()
         for item in operations:
-            adapter.execute(item.operation, dict(item.payload))
+            self._execute_operation(normalized_id, adapter, item)
         python_state = canonicalize_state(normalized_id, adapter.to_visual_state())
 
         completed = subprocess.run(
@@ -377,7 +410,7 @@ class CompiledConformanceRunner(ConformanceRunner):
             raise ConformanceRunnerError(
                 f"falló escenario C de {normalized_id}: {completed.stderr.strip()}"
             )
-        c_state = self._canonical_c_output(completed.stdout)
+        c_state = self._normalize_c_state(normalized_id, self._canonical_c_output(completed.stdout))
         return ConformanceResult(
             structure_id=normalized_id,
             equivalent=c_state.get("state") == python_state.get("state"),

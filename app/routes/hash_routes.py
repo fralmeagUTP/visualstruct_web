@@ -4,13 +4,31 @@ from __future__ import annotations
 
 from typing import Any
 
+from copy import deepcopy
+import hashlib
+import json
+
 from flask import Blueprint, abort, jsonify, render_template, request
 
 from app.services.hash_help_service import HashHelpService
 from app.services.hash_structure_service import HashStructureService
+from app.services import hash_journal_service
 from app.services.session_service import SessionService
 
 hash_bp = Blueprint("hash", __name__, url_prefix="/hash")
+
+
+@hash_bp.post("/compare-capacities")
+def compare_capacities() -> Any:
+    """Compare fixed capacities without changing the session table."""
+    body = request.get_json(silent=True) or {}
+    try:
+        result = HashStructureService.compare_capacities(
+            body.get("entries"), body.get("success_key"), body.get("absent_key"),
+        )
+    except (TypeError, ValueError) as error:
+        return jsonify({"success": False, "message": str(error)}), 400
+    return jsonify(result)
 
 
 @hash_bp.get("/")
@@ -30,6 +48,11 @@ def structure_page(structure_id: str) -> str:
     except KeyError:
         abort(404)
 
+    model["main_c"] = hash_journal_service.get_main(session_key, history)
+    checkpoint = SessionService.get_checkpoint(session_key)
+    digest = hashlib.sha256(json.dumps(history, sort_keys=True).encode()).hexdigest()
+    if checkpoint and checkpoint.get("schema") == "hash-trace/v1" and checkpoint.get("history_digest") == digest:
+        model["execution_trace"] = deepcopy(checkpoint.get("trace"))
     help_data = HashHelpService.get_structure_help(structure_id)
     return render_template(
         "hash/structure.html",
@@ -62,7 +85,13 @@ def operate_structure(structure_id: str) -> Any:
     except KeyError:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
 
+    result["main_c"] = hash_journal_service.record_journal(session_key, history, result["history"], operation_name, payload, result)
     SessionService.save_history(session_key, result["history"])
+    persisted_history = SessionService.get_history(session_key)
+    if persisted_history == result["history"] and result.get("execution_trace"):
+        SessionService.save_checkpoint(session_key, {"schema": "hash-trace/v1",
+            "history_digest": hashlib.sha256(json.dumps(persisted_history, sort_keys=True).encode()).hexdigest(),
+            "trace": deepcopy(result["execution_trace"])})
     return jsonify(result), (200 if result["success"] else 400)
 
 
@@ -76,6 +105,7 @@ def reset_structure(structure_id: str) -> Any:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
 
     SessionService.clear_history(session_key)
+    hash_journal_service.clear_journal(session_key)
     model = HashStructureService.get_view_model(structure_id, [])
     return jsonify(
         {

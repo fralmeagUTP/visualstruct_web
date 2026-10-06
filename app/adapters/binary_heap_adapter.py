@@ -54,6 +54,7 @@ class BinaryHeapAdapter(BaseAdapter):
             "array": values,
             "root": self._to_tree_node(values, 0),
             "size": self._structure.tamano(),
+            "capacity": self._structure.capacidad(),
             "empty": self._structure.vacio(),
         }
 

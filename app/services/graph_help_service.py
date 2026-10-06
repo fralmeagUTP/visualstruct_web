@@ -1,4 +1,4 @@
-﻿"""Didactic help content for graph structures."""
+"""Didactic help content for graph structures."""
 
 from __future__ import annotations
 
@@ -16,13 +16,16 @@ class GraphHelpService:
             "caminos minimos y expansion minima paso a paso o en modo rapido de resultado final."
         ),
         "tips": [
+            "Limite educativo: 15 vertices distintos, incluidos extremos creados por aristas. Las sesiones anteriores conservan datos e historial; se permiten consultas y reduccion explicita, con inserciones y algoritmos bloqueados mientras superen15. El C/H descargable no cambia.",
             "Flujo sugerido: define tipo de grafo, crea vertices/aristas y despues ejecuta el algoritmo.",
-            "Usa Reproducir para la traza completa y Siguiente/Anterior paso para validar condiciones y actualizaciones.",
-            "Si desactivas 'Interpretar codigo paso a paso', Reproducir aplica directamente el estado final.",
+            "Activa Paso a paso y pulsa Ejecutar operación; usa Siguiente paso y Paso anterior para validar condiciones y actualizaciones.",
+            "Al cerrar Paso a paso se muestra el estado final de la misma ejecución; navegar no repite la operación.",
             "El resultado visual final en modo rapido debe coincidir con el ultimo estado de la traza interpretada.",
             "Interpreta el estado visual junto con 'Accion actual' para distinguir exploracion, relajacion y cierre.",
             "Con pesos negativos usa Bellman-Ford; para no dirigidos ponderados compara Prim y Kruskal.",
             "Ejecuta BFS y DFS desde el mismo origen para contrastar ordenes de visita.",
+            "BFS marca al encolar; el recorrido publicado, la cola y las marcas son estados distintos. -1 es un dato valido.",
+            "BFS conserva cada llamada exitosa en el main; recargar reconstruye topologia sin ejecutar consultas historicas. El caller imprime datos reales y libera el resultado.",
         ],
     }
 
@@ -59,6 +62,18 @@ class GraphHelpService:
                 "Union-Find no tiene pagina independiente: se integra conceptualmente en Kruskal.",
                 "No se implementan algoritmos adicionales no expuestos por el TAD (por ejemplo, Floyd-Warshall).",
             ],
+            "learning_guide": {
+                "objective": "Interpretar cómo el código C transforma representación, auxiliares y propiedades del grafo en cada instrucción ejecutada.",
+                "strategy": "Predecir, avanzar un frame, contrastar la evidencia y explicar el invariante antes de continuar.",
+                "invariants": ["BFS descubre una sola vez y usa FIFO.", "DFS conserva una pila coherente.", "Dijkstra solo cierra mínimos con pesos no negativos.", "Bellman-Ford distingue inalcanzable de ciclo negativo alcanzable.", "Prim y Kruskal producen un árbol o bosque acíclico de peso mínimo."],
+                "memory": "Los vértices y enlaces muestran direcciones lógicas estables; malloc, NULL, desconexión y free se relacionan con el dibujo.",
+                "complexity": {"BFS/DFS": "O(V+E) en el modelo ideal; BFS del TAD C: O(V*(V+E)) por barridos de listas", "Dijkstra": "O(V²+E) en el TAD didáctico", "Bellman-Ford": "O(VE)", "Prim": "O(VE)", "Kruskal": "C: O(E²+EV+V), burbuja estable e índices lineales; modelo ideal O(E log E) más Union-Find"},
+                "applications": ["redes y conectividad", "rutas y costos", "dependencias", "diseño de redes mínimas"],
+                "common_errors": ["confundir menor número de aristas con menor peso", "usar Dijkstra con pesos negativos", "olvidar componentes desconectadas", "aceptar una arista que cierra ciclo"],
+            },
+            "glossary": {"adyacencia": "Relación directa entre dos vértices.", "frontera": "Candidatos todavía no incorporados.", "relajación": "Intento de mejorar una distancia mediante una arista.", "predecesor": "Vértice anterior usado para reconstruir una ruta.", "MST": "Árbol de expansión de peso total mínimo.", "Union-Find": "Estructura que mantiene componentes disjuntas."},
+            "teacher_guide": ["Solicitar una predicción antes de cada extracción o relajación.", "Comparar algoritmos con la misma entrada y pedir una conclusión causal.", "Usar contraejemplos: peso negativo, destino inalcanzable, ciclo y grafo desconectado.", "Evaluar la explicación del invariante, no solo el resultado final."],
+            "keyboard": ["Alt+→ siguiente", "Alt+← anterior", "Alt+Inicio inicio", "Alt+Fin final", "Alt+P pausar"],
         }
     }
 

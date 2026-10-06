@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import re
+from html import unescape
+
 
 def test_hash_module_page_loads(client) -> None:
     """Hash module index should be reachable."""
@@ -38,76 +41,76 @@ def test_insert_update_search_contains_remove_via_route(client) -> None:
     """Core hash operations should work through routes."""
     insert = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "A", "value": "1"}},
+        json={"operation": "insert", "payload": {"key": "1", "value": "1"}},
     )
     assert insert.status_code == 200
 
     update = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "A", "value": "2"}},
+        json={"operation": "insert", "payload": {"key": "1", "value": "2"}},
     )
     assert update.status_code == 200
     assert update.get_json()["result"]["updated"] is True
 
     get_existing = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "get", "payload": {"key": "A"}},
+        json={"operation": "get", "payload": {"key": "1"}},
     )
     assert get_existing.status_code == 200
-    assert get_existing.get_json()["result"] == "2"
+    assert get_existing.get_json()["result"] == 2
 
     get_missing = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "get", "payload": {"key": "Z"}},
+        json={"operation": "get", "payload": {"key": "99"}},
     )
-    assert get_missing.status_code == 200
+    assert get_missing.status_code == 400
+    assert get_missing.get_json()["success"] is False
     assert get_missing.get_json()["result"] is None
 
     contains = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "contains", "payload": {"key": "A"}},
+        json={"operation": "contains", "payload": {"key": "1"}},
     )
     assert contains.status_code == 200
     assert contains.get_json()["result"] is True
 
     removed = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "remove", "payload": {"key": "A"}},
+        json={"operation": "remove", "payload": {"key": "1"}},
     )
     assert removed.status_code == 200
     assert removed.get_json()["result"] is True
 
     missing_remove = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "remove", "payload": {"key": "A"}},
+        json={"operation": "remove", "payload": {"key": "1"}},
     )
     assert missing_remove.status_code == 200
     assert missing_remove.get_json()["result"] is False
 
 
-def test_queries_stats_visual_collisions_resize_and_clear_via_route(client) -> None:
-    """Route should expose queries, stats, collisions, resize and clear."""
+def test_queries_stats_visual_collisions_fixed_capacity_and_clear_via_route(client) -> None:
     client.post(
         "/hash/hash_table/operate",
         json={"operation": "create_table", "payload": {"capacity": "3"}},
     )
     client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "k1", "value": "v1"}},
+        json={"operation": "insert", "payload": {"key": "1", "value": "10"}},
     )
     client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "k2", "value": "v2"}},
+        json={"operation": "insert", "payload": {"key": "4", "value": "40"}},
     )
     third = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "k3", "value": "v3"}},
+        json={"operation": "insert", "payload": {"key": "7", "value": "70"}},
     )
     assert third.status_code == 200
-    state_after_resize = third.get_json()["visual_state"]
-    assert state_after_resize["metadata"]["resized"] is True
-    assert state_after_resize["metadata"]["resize_event"]["old_capacity"] == 3
-    assert state_after_resize["metadata"]["resize_event"]["new_capacity"] == 7
+    state_after_insert = third.get_json()["visual_state"]
+    assert state_after_insert["metadata"]["capacity_policy"] == "fixed"
+    assert state_after_insert["metadata"]["capacity"] == 3
+    assert state_after_insert["metadata"]["collisions"] == 2
 
     keys = client.post("/hash/hash_table/operate", json={"operation": "keys", "payload": {}})
     values = client.post("/hash/hash_table/operate", json={"operation": "values", "payload": {}})
@@ -129,14 +132,14 @@ def test_hash_session_persistence_and_reset(client) -> None:
     """Hash history should persist in session and reset correctly."""
     client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "Persistida", "value": "ok"}},
+        json={"operation": "insert", "payload": {"key": "42", "value": "420"}},
     )
     get_result = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "get", "payload": {"key": "Persistida"}},
+        json={"operation": "get", "payload": {"key": "42"}},
     )
     assert get_result.status_code == 200
-    assert get_result.get_json()["result"] == "ok"
+    assert get_result.get_json()["result"] == 420
 
     reset = client.post("/hash/hash_table/reset")
     assert reset.status_code == 200
@@ -151,4 +154,10 @@ def test_hash_help_pages_available(client) -> None:
     assert module_help.status_code == 200
     assert b"Ayuda del modulo de tablas hash" in module_help.data
     assert structure_help.status_code == 200
-    assert b"Operaciones soportadas" in structure_help.data
+    page = structure_help.get_data(as_text=True)
+    method_cards = re.findall(r'<h4>([^<]+)</h4>\s*<p>(.*?)</p>\s*<pre class="didactic-code">(.*?)</pre>', page, re.S)
+    assert method_cards
+    for symbol in ('th_inicializar', 'th_insertar', 'th_buscar', 'th_eliminar'):
+        matches = [(heading, explanation, unescape(code)) for heading, explanation, code in method_cards if re.search(r'\b' + symbol + r'\s*\(', unescape(code))]
+        assert matches, symbol
+        assert any(re.sub(r'<[^>]+>', '', explanation).strip() for heading, explanation, code in matches), symbol

@@ -54,13 +54,15 @@ def test_graph_trace_bfs_keeps_statement_order_before_condition_checks() -> None
     assert bfs["success"] is True
 
     lines = _trace_lines(bfs)
-    idx_decl_actual = lines.index(_norm("int actual = cola_desencolar(&cola);"))
-    idx_if_actual = lines.index(_norm("if (actual == -1) {"))
-    idx_decl_tmp = lines.index(_norm("ListaVertice tmp = (ListaVertice) malloc(sizeof(struct NodoV));"))
+    steps = bfs["execution_trace"]["steps"]
+    actual = next(i for i,step in enumerate(steps) if step["pedagogy"]["instruction_event"]["function"]=="grafo_bfs" and step["pedagogy"]["instruction_event"]["phase"]=="statement" and _norm(step["line_text"])==_norm("int actual = cola_desencolar(&cola);"))
+    idx_decl_tmp = next(i for i,step in enumerate(steps) if step["pedagogy"]["instruction_event"]["phase"]=="allocate" and "ListaVertice tmp =" in step["line_text"])
     idx_if_tmp = lines.index(_norm("if (tmp == NULL) continue;"))
-
-    assert idx_decl_actual < idx_if_actual, "Se evalua 'actual' antes de asignarlo en la traza."
-    assert idx_decl_tmp < idx_if_tmp, "Se evalua 'tmp' antes de reservar memoria en la traza."
+    idx_queue_guard = lines.index(_norm("while (cola.delante != NULL) {"))
+    assert idx_queue_guard < actual < idx_decl_tmp < idx_if_tmp
+    assert _norm("if (actual == -1) {") not in lines
+    assert steps[actual]["pedagogy"]["memory_state"]["frames"][-1]["locals"]["actual"] == 1
+    assert steps[idx_if_tmp]["pedagogy"]["condition"]["result"] is False
 
 
 def test_graph_trace_bfs_repeats_loop_blocks_for_multiple_visits() -> None:
@@ -81,7 +83,7 @@ def test_graph_trace_bfs_repeats_loop_blocks_for_multiple_visits() -> None:
 
 
 def test_graph_trace_bfs_stops_after_return_when_start_vertex_does_not_exist() -> None:
-    """If BFS hits `if (!existe) return NULL;` trace must stop the subroutine there."""
+    """An app guard rejects absent starts before calling the independently tested C BFS."""
     history: list[dict] = []
     history = _run_graph_op(history, "create_graph", {"directed": "false"})["history"]
 
@@ -89,11 +91,13 @@ def test_graph_trace_bfs_stops_after_return_when_start_vertex_does_not_exist() -
     assert bfs["success"] is False
 
     lines = _trace_lines(bfs)
-    return_idx = lines.index(_norm("if (!existe) return NULL;"))
-    tail = lines[return_idx + 1 :]
-
-    assert _norm("cola_encolar(&cola, inicio);") not in tail
-    assert _norm("while (cola.delante != NULL) {") not in tail
+    assert bfs["execution_trace"]["bfs_application_rejection"] is True
+    assert len(lines) == 1 and "no se invoco grafo_bfs" in lines[0]
+    assert bfs["history"] == history
+    assert bfs["execution_trace"]["steps"][0]["pedagogy"]["call_stack"] == []
+    assert bfs["execution_trace"]["steps"][0]["console"] == []
+    assert not any(_norm("cola_encolar(&cola, inicio);")==line for line in lines)
+    assert _norm("while (cola.delante != NULL) {") not in lines
 
 
 def test_graph_trace_dijkstra_unreachable_stops_before_path_reconstruction() -> None:

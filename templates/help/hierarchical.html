@@ -1,39 +1,12 @@
-﻿{% extends "base.html" %}
-{% block title %}Ayuda Jerarquica{% endblock %}
+{% extends "base.html" %}
+{% block title %}Ayuda | Estructuras jerárquicas{% endblock %}
 {% block content %}
-<section>
+<section class="help-module-page">
   <h2>{{ module_help.title }}</h2>
   <p>{{ module_help.description }}</p>
-  <p><strong>Contrato activo:</strong> solo TAD nuevos en <code>docs/tads_C</code>.</p>
-  <p>
-    Si es tu primera vez, empieza por el
-    <a class="link" href="{{ url_for('help.user_manual') }}">Manual de uso</a>
-    para entender objetivos, flujo de trabajo y controles.
-  </p>
-
-  <h3>Como usar esta ayuda</h3>
-  <ul>
-    <li>Revisa recomendaciones y luego abre una estructura.</li>
-    <li>Usa el checkbox <strong>Interpretar codigo paso a paso</strong> para alternar entre traza completa y resultado final.</li>
-    <li>En la vista de estructura usa Ejecucion paso a paso para analizar la traza cuando el checkbox este activado.</li>
-    <li>Vuelve al visualizador para practicar cada operacion.</li>
-  </ul>
-  <h3>Recomendaciones</h3>
-  <ul>
-    {% for tip in module_help.tips %}
-    <li>{{ tip }}</li>
-    {% endfor %}
-  </ul>
-
-  <h3>Estructuras disponibles</h3>
-  <ul>
-    {% for structure in structures %}
-    <li>
-      <a class="link" href="{{ url_for('help.hierarchical_structure_help', structure_id=structure.id) }}">
-        {{ structure.name }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
+  <section class="help-source-download"><h3>Cómo trabajar este módulo</h3><ol><li>Selecciona el árbol o montículo.</li><li>Prepara una operación y su valor.</li><li>Ejecuta o avanza por la traza.</li><li>Comprueba orden, balance, rotaciones o propiedad de heap con el código C.</li></ol></section>
+  <h3>Recomendaciones</h3><ul>{% for tip in module_help.tips %}<li>{{ tip }}</li>{% endfor %}</ul>
+  <h3>Elige una estructura</h3><div class="cards">{% for structure in structures %}<article class="card"><h4>{{ structure.name }}</h4><p>{{ structure.description }}</p><a class="link" href="{{ url_for('help.hierarchical_structure_help', structure_id=structure.id) }}">Ver guía y código C</a></article>{% endfor %}</div>
+  <p><a class="link" href="{{ url_for('help.user_manual') }}">Volver al Manual de uso</a></p>
 </section>
 {% endblock %}

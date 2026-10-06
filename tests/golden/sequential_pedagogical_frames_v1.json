@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "fixtures": {
+    "call": "pila_apilar(p, 8);",
+    "return": "return valor;",
+    "malloc": "aux = (ptrNodo) malloc(sizeof(struct Nodo));",
+    "allocation_failure": "if (aux == NULL) return;",
+    "link": "aux->sgte = *p;",
+    "branch": "if (*p == NULL) return;",
+    "loop": "while (actual != primero) {",
+    "free": "free(aux);"
+  }
+}

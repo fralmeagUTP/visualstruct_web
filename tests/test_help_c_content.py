@@ -1,6 +1,8 @@
-﻿"""Regression tests for help pages with C TAD structure/methods."""
+"""Regression tests for help pages with C TAD structure/methods."""
 
 from __future__ import annotations
+
+import re
 
 
 
@@ -9,7 +11,7 @@ def test_sequential_help_structure_includes_c_tad_content(client) -> None:
     response = client.get("/help/sequential/linked_list")
     assert response.status_code == 200
     assert "Estructura del TAD en C".encode("utf-8") in response.data
-    assert "Metodos del TAD en C".encode("utf-8") in response.data
+    assert re.search(rb'<h4>[^<]+</h4>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre>', response.data, re.S)
     assert "NodoLista".encode("utf-8") in response.data
     assert "lista_insertar_inicio".encode("utf-8") in response.data
 
@@ -20,7 +22,7 @@ def test_hierarchical_help_structure_includes_c_tad_content(client) -> None:
     response = client.get("/help/hierarchical/abb")
     assert response.status_code == 200
     assert "Estructura del TAD en C".encode("utf-8") in response.data
-    assert "Metodos del TAD en C".encode("utf-8") in response.data
+    assert re.search(rb'<h4>[^<]+</h4>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre>', response.data, re.S)
     assert "ABBNodo".encode("utf-8") in response.data
     assert "abb_insertar".encode("utf-8") in response.data
 
@@ -31,7 +33,7 @@ def test_graph_help_structure_includes_c_tad_content(client) -> None:
     response = client.get("/help/graph/graph")
     assert response.status_code == 200
     assert "Estructura del TAD en C".encode("utf-8") in response.data
-    assert "Metodos del TAD en C".encode("utf-8") in response.data
+    assert re.search(rb'<h4>[^<]+</h4>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre>', response.data, re.S)
     assert "nodoGrafo".encode("utf-8") in response.data
     assert "grafo_insertar_vertice".encode("utf-8") in response.data
 
@@ -42,7 +44,7 @@ def test_hash_help_structure_includes_c_tad_content(client) -> None:
     response = client.get("/help/hash/hash_table")
     assert response.status_code == 200
     assert "Estructura del TAD en C".encode("utf-8") in response.data
-    assert "Metodos del TAD en C".encode("utf-8") in response.data
+    assert re.search(rb'<h4>[^<]+</h4>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre>', response.data, re.S)
     assert "TablaHash".encode("utf-8") in response.data
     assert "th_insertar".encode("utf-8") in response.data
 

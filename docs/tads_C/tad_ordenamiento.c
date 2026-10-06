@@ -11,7 +11,7 @@
  * @details
  * Compilacion sugerida:
  * @code
- * gcc -std=c99 -Wall -Wextra -pedantic tad_ordenamiento.c -o ordenamientos
+ * gcc -std=c17 -Wall -Wextra -pedantic -c tad_ordenamiento.c
  * @endcode
  *
  * @author Francisco Alejandro Medina Aguirre
@@ -22,14 +22,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <stdint.h>
 #include "tad_ordenamiento.h"
 
 
 /**
  * @brief Intercambia el contenido de dos variables enteras.
- *
+ * 
  * @param a Puntero al primer entero.
  * @param b Puntero al segundo entero.
+ * @note NULL a o b se ignora. Con ambos validos son ints escribibles; mismo entero permitido sin cambio. No reserva/libera.
  */
 static void intercambiar(int *a, int *b) {
 	int temporal;
@@ -41,10 +43,11 @@ static void intercambiar(int *a, int *b) {
 
 /**
  * @brief Verifica si un arreglo puede procesarse.
- *
+ * 
  * @param arreglo Arreglo de enteros.
  * @param n Número de elementos del arreglo.
- * @return 1 si el arreglo es válido; 0 en caso contrario.
+ * @return 1 exclusivamente si arreglo != NULL y n > 0; 0 de otro modo.
+ * @note No inspecciona elementos ni valida longitud real, alineacion, punteros colgantes o tamano de reservas.
  */
 static int arreglo_valido(const int arreglo[], size_t n) {
 	return arreglo != NULL && n > 0;
@@ -52,9 +55,11 @@ static int arreglo_valido(const int arreglo[], size_t n) {
 
 /**
  * @brief Imprime un arreglo de enteros en una línea.
- *
+ * 
  * @param arreglo Arreglo de enteros.
  * @param n Número de elementos del arreglo.
+ * @pre Si arreglo no NULL y n>0, contiene n ints vivos legibles.
+ * @note NULL arreglo o n==0 imprime [] y salto de linea. No reserva/libera ni modifica datos.
  */
 void imprimir_arreglo(const int arreglo[], size_t n) {
 	size_t i;
@@ -69,11 +74,13 @@ void imprimir_arreglo(const int arreglo[], size_t n) {
 
 /**
  * @brief Copia los elementos de un arreglo origen hacia un arreglo destino.
- *
+ * 
  * @param destino Arreglo destino.
  * @param origen Arreglo origen.
  * @param n Número de elementos a copiar.
  * @return ORDENAMIENTO_OK si la copia fue correcta; ORDENAMIENTO_ERROR en caso contrario.
+ * @pre Buffers vivos de al menos n ints, destino escribible y origen legible, sin solapamiento; n*sizeof(int) representable en size_t.
+ * @note NULL buffers o n==0 retorna ORDENAMIENTO_ERROR sin copiar. Usa memcpy, no memmove; no admite buffers solapados ni valida longitud. No reserva/libera.
  */
 int copiar_arreglo(int destino[], const int origen[], size_t n) {
 	if (destino == NULL || origen == NULL || n == 0) return ORDENAMIENTO_ERROR;
@@ -86,6 +93,8 @@ int copiar_arreglo(int destino[], const int origen[], size_t n) {
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
+ * @note Tiempo O(n^2), memoria O(1); no estable por intercambios no adyacentes.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 void ordenar_intercambio(int arreglo[], size_t n) {
 	size_t i, j;
@@ -100,6 +109,8 @@ void ordenar_intercambio(int arreglo[], size_t n) {
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
+ * @note Tiempo O(n^2), memoria O(1); no estable por intercambio con el minimo distante.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 void ordenar_seleccion(int arreglo[], size_t n) {
 	size_t i, j, indice_menor;
@@ -117,6 +128,8 @@ void ordenar_seleccion(int arreglo[], size_t n) {
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
+ * @note Mejor O(n), peor O(n^2), memoria O(1); estable por desplazar solo valores estrictamente mayores.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 void ordenar_insercion(int arreglo[], size_t n) {
 	size_t i;
@@ -137,6 +150,8 @@ void ordenar_insercion(int arreglo[], size_t n) {
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
+ * @note Mejor O(n), peor O(n^2), memoria O(1); estable por intercambiar vecinos solo si son estrictamente mayores.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 void ordenar_burbuja(int arreglo[], size_t n) {
 	size_t pasada, j;
@@ -159,6 +174,8 @@ void ordenar_burbuja(int arreglo[], size_t n) {
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
+ * @note Gaps n/2, n/4, ...; peor O(n^2), memoria O(1); no estable.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 void ordenar_shell(int arreglo[], size_t n) {
 	size_t intervalo;
@@ -179,10 +196,12 @@ void ordenar_shell(int arreglo[], size_t n) {
 
 /**
  * @brief Particiona un arreglo para QuickSort usando pivote central (función auxiliar).
- *
+ * 
  * @param arreglo Arreglo de enteros.
  * @param primero Índice inicial.
  * @param ultimo Índice final.
+ * @pre Arreglo escribible; 0 <= primero <= ultimo dentro del buffer. primero+ultimo y ultimo+1 deben caber en int en todos los frames.
+ * @note Sin guardas NULL/rango; pivote central, particion con intercambios, recursion sobre segmentos. No reserva/libera ni garantiza profundidad arbitraria.
  */
 static void quicksort_recursivo(int arreglo[], int primero, int ultimo) {
 	int i = primero, j = ultimo, pivote = arreglo[(primero + ultimo) / 2];
@@ -203,6 +222,8 @@ static void quicksort_recursivo(int arreglo[], int primero, int ultimo) {
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
+ * @note Promedio O(n log n), peor O(n^2); pila O(log n) promedio, O(n) peor; no estable. n debe permitir indices int y suma de extremos int.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 void ordenar_quicksort(int arreglo[], size_t n) {
 	if (!arreglo_valido(arreglo, n)) return;
@@ -211,12 +232,14 @@ void ordenar_quicksort(int arreglo[], size_t n) {
 
 /**
  * @brief Mezcla dos subarreglos ordenados dentro del arreglo principal (función auxiliar para MergeSort).
- *
+ * 
  * @param arreglo Arreglo de enteros.
  * @param auxiliar Arreglo auxiliar.
  * @param izquierda Índice inicial.
  * @param medio Índice medio.
  * @param derecha Índice final.
+ * @pre 0 <= izquierda <= medio < derecha dentro de ambos buffers; derecha+1 cabe en size_t; mitades ya ordenadas. Buffers escribibles y disjuntos.
+ * @note Escribe auxiliar en el mismo rango y lo copia de vuelta; usa <= para conservar izquierda en empate. No reserva/libera ni valida NULL/rangos.
  */
 static void mezclar(int arreglo[], int auxiliar[], size_t izquierda, size_t medio, size_t derecha) {
 	size_t i = izquierda, j = medio + 1, k = izquierda;
@@ -231,11 +254,13 @@ static void mezclar(int arreglo[], int auxiliar[], size_t izquierda, size_t medi
 
 /**
  * @brief Función recursiva auxiliar de MergeSort.
- *
+ * 
  * @param arreglo Arreglo de enteros.
  * @param auxiliar Arreglo auxiliar.
  * @param izquierda Índice inicial.
  * @param derecha Índice final.
+ * @pre Buffers escribibles disjuntos con rango valido y derecha+1 representable en size_t.
+ * @note izquierda >= derecha retorna sin escritura. Caller provee auxiliar; divide con izquierda+(derecha-izquierda)/2. No reserva/libera ni valida punteros.
  */
 static void mergesort_recursivo(int arreglo[], int auxiliar[], size_t izquierda, size_t derecha) {
 	if (izquierda >= derecha) return;
@@ -250,7 +275,9 @@ static void mergesort_recursivo(int arreglo[], int auxiliar[], size_t izquierda,
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
- * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR si falló memoria.
+ * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR ante arreglo NULL, n == 0 o fallo de memoria.
+ * @note Tiempo O(n log n), auxiliar O(n), pila O(log n); estable porque la mezcla toma primero el lado izquierdo en igualdad.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 int ordenar_mergesort(int arreglo[], size_t n) {
 	int *auxiliar;
@@ -264,10 +291,12 @@ int ordenar_mergesort(int arreglo[], size_t n) {
 
 /**
  * @brief Restaura la propiedad de montículo máximo desde un índice dado (función auxiliar para HeapSort).
- *
+ * 
  * @param arreglo Arreglo de enteros.
  * @param n Tamaño lógico del montículo.
  * @param raiz Índice de la raíz del submontículo.
+ * @pre Arreglo escribible con n entradas; raiz < n y cada 2*raiz+2 visitado representable en size_t. Hijos son heaps maximos.
+ * @note No guardas NULL/limites; compara izquierdo antes de derecho con mejora estricta. No reserva/libera, recursion sobre hijo seleccionado. No soporte certificado para indices enormes.
  */
 static void heapify(int arreglo[], size_t n, size_t raiz) {
 	size_t mayor = raiz, izquierdo = 2 * raiz + 1, derecho = 2 * raiz + 2;
@@ -284,6 +313,8 @@ static void heapify(int arreglo[], size_t n, size_t raiz) {
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
+ * @note Tiempo O(n log n), sin arreglo auxiliar; heapify recursivo usa pila O(log n), no espacio total O(1); no estable.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 void ordenar_heapsort(int arreglo[], size_t n) {
 	size_t i;
@@ -297,12 +328,14 @@ void ordenar_heapsort(int arreglo[], size_t n) {
 
 /**
  * @brief Obtiene el menor y mayor valor de un arreglo (función auxiliar).
- *
+ * 
  * @param arreglo Arreglo de enteros.
  * @param n Número de elementos.
  * @param minimo Dirección donde se almacena el mínimo.
  * @param maximo Dirección donde se almacena el máximo.
  * @return ORDENAMIENTO_OK si se calcularon los valores; ORDENAMIENTO_ERROR en caso contrario.
+ * @pre Con n>0 arreglo legible de n ints; minimo/maximo externos escribibles, disjuntos entre si y de arreglo.
+ * @note NULL arreglo/salidas o n==0 retorna ORDENAMIENTO_ERROR sin escribir. Exito escribe ambos y retorna ORDENAMIENTO_OK; no reserva/libera ni modifica arreglo bajo precondiciones.
  */
 static int obtener_minimo_maximo(const int arreglo[], size_t n, int *minimo, int *maximo) {
 	size_t i;
@@ -320,13 +353,16 @@ static int obtener_minimo_maximo(const int arreglo[], size_t n, int *minimo, int
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
- * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR si falló memoria.
+ * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR ante arreglo NULL, n == 0, rango mayor que ORDENAMIENTO_RANGO_MAX, tamaño no representable o fallo de memoria.
+ * @note Tiempo O(n+k), memoria O(k), k=max-min+1 <= ORDENAMIENTO_RANGO_MAX; reconstruye enteros por frecuencia, sin preservar identidad de registros iguales.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 int ordenar_counting_sort(int arreglo[], size_t n) {
 	int minimo, maximo; size_t rango, i, indice; int *conteo;
 	if (!arreglo_valido(arreglo, n)) return ORDENAMIENTO_ERROR;
 	if (!obtener_minimo_maximo(arreglo, n, &minimo, &maximo)) return ORDENAMIENTO_ERROR;
 	rango = (size_t)((long long)maximo - (long long)minimo + 1LL);
+	if (rango > ORDENAMIENTO_RANGO_MAX || rango > SIZE_MAX / sizeof(int)) return ORDENAMIENTO_ERROR;
 	conteo = (int *)calloc(rango, sizeof(int));
 	if (conteo == NULL) return ORDENAMIENTO_ERROR;
 	for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];
@@ -338,11 +374,13 @@ int ordenar_counting_sort(int arreglo[], size_t n) {
 }
 
 /**
- * @brief Ordena un arreglo usando Binsort o clasificación por urnas.
+ * @brief Ordena delegando en Counting Sort; conserva sus límites de rango y códigos de error.
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
- * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR si falló memoria.
+ * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR ante arreglo NULL, n == 0, rango mayor que ORDENAMIENTO_RANGO_MAX, tamaño no representable o fallo de memoria.
+ * @note Delegacion exacta a Counting Sort: O(n+k) tiempo, O(k) memoria y mismo limite; no es una implementacion independiente de buckets.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 int ordenar_binsort(int arreglo[], size_t n) {
 	return ordenar_counting_sort(arreglo, n);
@@ -350,21 +388,23 @@ int ordenar_binsort(int arreglo[], size_t n) {
 
 /**
  * @brief Ordena por conteo según un dígito decimal específico para Radix Sort (función auxiliar).
- *
+ * 
  * @param arreglo Arreglo de enteros no negativos.
  * @param n Número de elementos.
  * @param exp Potencia de 10 que representa el dígito a procesar.
  * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR si falló memoria.
+ * @pre Buffer uint32_t escribible de n>0 entradas; n*sizeof(uint32_t) cabe en size_t; exp >0 es potencia decimal del caller.
+ * @note No valida NULL/exp ni longitud. Malloc fallido retorna ORDENAMIENTO_ERROR antes de escribir arreglo. Exito ordena estable por (valor/exp)%10, copia salida y libera temporal.
  */
-static int counting_por_digito(int arreglo[], size_t n, int exp) {
-	int conteo[10] = {0}; int *salida; size_t i;
-	salida = (int *)malloc(n * sizeof(int));
+static int counting_por_digito(uint32_t arreglo[], size_t n, uint32_t exp) {
+	size_t conteo[10] = {0}; uint32_t *salida; size_t i;
+	salida = (uint32_t *)malloc(n * sizeof(uint32_t));
 	if (salida == NULL) return ORDENAMIENTO_ERROR;
 	for (i = 0; i < n; ++i) ++conteo[(arreglo[i] / exp) % 10];
 	for (i = 1; i < 10; ++i) conteo[i] += conteo[i - 1];
 	for (i = n; i > 0; --i) {
-		int valor = arreglo[i - 1];
-		int digito = (valor / exp) % 10;
+		uint32_t valor = arreglo[i - 1];
+		uint32_t digito = (valor / exp) % 10U;
 		salida[conteo[digito] - 1] = valor;
 		--conteo[digito];
 	}
@@ -381,44 +421,57 @@ static int counting_por_digito(int arreglo[], size_t n, int exp) {
  *
  * @param arreglo Arreglo de enteros a ordenar.
  * @param n Número de elementos del arreglo.
- * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR si falló memoria.
+ * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR ante arreglo NULL, n == 0 o fallo de memoria.
+ * @note Base 10, O(d(n+10)) tiempo y O(n+10) memoria. Conteo por digito estable; la inversion final del grupo negativo no garantiza estabilidad de registros negativos iguales. INT_MIN usa magnitud uint32_t y recomposicion protegida.
+ * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.
  */
 int ordenar_radixsort(int arreglo[], size_t n) {
-	int *negativos, *positivos; size_t cant_negativos = 0, cant_positivos = 0, i, indice;
+	uint32_t *negativos, *positivos; size_t cant_negativos = 0, cant_positivos = 0, i, indice;
 	if (!arreglo_valido(arreglo, n)) return ORDENAMIENTO_ERROR;
-	negativos = (int *)malloc(n * sizeof(int));
-	positivos = (int *)malloc(n * sizeof(int));
+	negativos = (uint32_t *)malloc(n * sizeof(uint32_t));
+	positivos = (uint32_t *)malloc(n * sizeof(uint32_t));
 	if (negativos == NULL || positivos == NULL) { free(negativos); free(positivos); return ORDENAMIENTO_ERROR; }
 	for (i = 0; i < n; ++i) {
-		if (arreglo[i] < 0) negativos[cant_negativos++] = -arreglo[i];
-		else positivos[cant_positivos++] = arreglo[i];
+		if (arreglo[i] < 0) negativos[cant_negativos++] = 0U - (uint32_t)arreglo[i];
+		else positivos[cant_positivos++] = (uint32_t)arreglo[i];
 	}
 	if (cant_negativos > 0) {
-		int maximo = negativos[0], exp;
+		uint32_t maximo = negativos[0], exp = 1U;
 		for (i = 1; i < cant_negativos; ++i) if (negativos[i] > maximo) maximo = negativos[i];
-		for (exp = 1; maximo / exp > 0; exp *= 10)
+		for (;;) {
 			if (!counting_por_digito(negativos, cant_negativos, exp)) { free(negativos); free(positivos); return ORDENAMIENTO_ERROR; }
+			if (exp > maximo / 10U) break;
+			exp *= 10U;
+		}
 	}
 	if (cant_positivos > 0) {
-		int maximo = positivos[0], exp;
+		uint32_t maximo = positivos[0], exp = 1U;
 		for (i = 1; i < cant_positivos; ++i) if (positivos[i] > maximo) maximo = positivos[i];
-		for (exp = 1; maximo / exp > 0; exp *= 10)
+		if (maximo > 0U) for (;;) {
 			if (!counting_por_digito(positivos, cant_positivos, exp)) { free(negativos); free(positivos); return ORDENAMIENTO_ERROR; }
+			if (exp > maximo / 10U) break;
+			exp *= 10U;
+		}
 	}
 	indice = 0;
-	for (i = cant_negativos; i > 0; --i) arreglo[indice++] = -negativos[i - 1];
-	for (i = 0; i < cant_positivos; ++i) arreglo[indice++] = positivos[i];
+	for (i = cant_negativos; i > 0; --i) {
+		uint32_t magnitud = negativos[i - 1];
+		arreglo[indice++] = magnitud == (uint32_t)INT_MAX + 1U ? INT_MIN : -(int)magnitud;
+	}
+	for (i = 0; i < cant_positivos; ++i) arreglo[indice++] = (int)positivos[i];
 	free(negativos); free(positivos);
 	return ORDENAMIENTO_OK;
 }
 
 /**
  * @brief Ejecuta y muestra un algoritmo de ordenamiento sobre una copia del arreglo base.
- *
+ * 
  * @param nombre Nombre descriptivo del algoritmo.
  * @param ordenar Función de ordenamiento que no retorna estado.
  * @param base Arreglo base.
  * @param n Número de elementos.
+ * @pre nombre es cadena viva terminada en NUL; base contiene n ints legibles, n*sizeof(int) representable. Callback valido recibe copia prestada, no la libera ni retiene; se cumplen sus limites particulares.
+ * @note NULL nombre/callback/base o n==0 no hace nada. Malloc fallido imprime error. Copia base, ejecuta callback, imprime copia y la libera; base queda intacta bajo precondiciones.
  */
 void probar_algoritmo_void(const char *nombre, void (*ordenar)(int[], size_t), const int base[], size_t n) {
 	int *copia;
@@ -434,11 +487,13 @@ void probar_algoritmo_void(const char *nombre, void (*ordenar)(int[], size_t), c
 
 /**
  * @brief Ejecuta y muestra un algoritmo de ordenamiento que retorna estado.
- *
+ * 
  * @param nombre Nombre descriptivo del algoritmo.
  * @param ordenar Función de ordenamiento que retorna ORDENAMIENTO_OK o ORDENAMIENTO_ERROR.
  * @param base Arreglo base.
  * @param n Número de elementos.
+ * @pre nombre es cadena viva terminada en NUL; base contiene n ints legibles, n*sizeof(int) representable. Callback valido recibe copia prestada, no la libera ni retiene; se cumplen sus limites particulares.
+ * @note NULL nombre/callback/base o n==0 no hace nada. Error de malloc imprime diagnostico; callback con retorno cero imprime error y libera copia sin imprimir arreglo. Exito no cero imprime copia y la libera.
  */
 void probar_algoritmo_int(const char *nombre, int (*ordenar)(int[], size_t), const int base[], size_t n) {
 	int *copia;

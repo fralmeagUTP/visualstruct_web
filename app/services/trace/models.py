@@ -38,7 +38,7 @@ class TraceStep:
             raise TypeError("metadata debe ser un diccionario.")
 
     @classmethod
-    def from_legacy(cls, step: dict[str, Any]) -> "TraceStep":
+    def from_legacy(cls, step: dict[str, Any], *, copy_value=deepcopy) -> "TraceStep":
         """Convert the current public step shape into the semantic contract."""
         if not isinstance(step, dict):
             raise TypeError("Cada paso legado debe ser un diccionario.")
@@ -54,16 +54,16 @@ class TraceStep:
         metadata = {
             "step_index": step.get("step_index"),
             "delay_ms": step.get("delay_ms"),
-            "debug": deepcopy(debug_data),
-            "legacy_step": deepcopy(step),
+            "debug": copy_value(debug_data),
+            "legacy_step": copy_value(step),
         }
         return cls(
             line_index=step.get("line_index"),
             line_text=step.get("line_text", ""),
             event=str(step.get("event_type") or "line"),
             stage=str(debug_data.get("stage") or step.get("phase") or "progress"),
-            before_state=deepcopy(step.get("state_snapshot")),
-            after_state=deepcopy(step.get("state_after")),
+            before_state=copy_value(step.get("state_snapshot")),
+            after_state=copy_value(step.get("state_after")),
             console=console,
             metadata=metadata,
         )

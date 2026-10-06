@@ -39,12 +39,11 @@ def cola_desencolar(q: Cola) -> int:
 
 def cola_mostrar(q: Cola) -> None:
     actual = q.delante
-    valores: list[str] = []
+    print("Cola: ", end="")
     while actual is not None:
-        valores.append(str(actual.nro))
+        print(f"{actual.nro} ", end="")
         actual = actual.sgte
-    print(" <- ".join(valores) if valores else "(vacia)")
-
+    print()
 
 def cola_vaciar(q: Cola) -> None:
     q.delante = None
@@ -54,3 +53,8 @@ def cola_vaciar(q: Cola) -> None:
 def cola_frente(q: Cola) -> int:
     return -1 if q.delante is None else q.delante.nro
 
+
+
+def cola_final(q: Cola) -> int:
+    """Return the borrowed rear value, or the C sentinel -1 when rear is NULL."""
+    return -1 if q.atras is None else q.atras.nro

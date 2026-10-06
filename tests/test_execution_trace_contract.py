@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from app.domain.graph.snapshot_pool import expand_graph_trace
+
 import json
 
 from app.services.execution_trace_service import ExecutionTraceService
@@ -92,7 +94,7 @@ def test_graph_operation_includes_execution_trace(client) -> None:
 def test_hash_operation_includes_execution_trace(client) -> None:
     response = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "A", "value": "1"}},
+        json={"operation": "insert", "payload": {"key": "1", "value": "1"}},
     )
     assert response.status_code == 200
     data = response.get_json()
@@ -158,12 +160,18 @@ def test_graph_algorithm_trace_includes_semantic_debug_steps(client) -> None:
     )
     assert response.status_code == 200
     data = response.get_json()
+    data["execution_trace"] = expand_graph_trace(data["execution_trace"])
     assert data["success"] is True
 
     steps = data["execution_trace"]["steps"]
     debug_steps = [step for step in steps if isinstance(step.get("debug"), dict)]
     assert debug_steps
-    assert any(step["debug"].get("stage") in {"visit", "complete"} for step in debug_steps)
+    assert data["result"] == [1, 2, 3]
+    assert all(step["pedagogy"]["instruction_event"]["function"] for step in debug_steps)
+    assert any(step["debug"].get("graph_progress", {}).get("nodes") == ["1", "2", "3"] for step in debug_steps)
+    assert any(step["debug"].get("graph_progress", {}).get("tree_edges") == [["1", "2"], ["2", "3"]] for step in debug_steps)
+    assert data["execution_trace"]["final_state"] == data["visual_state"]
+    assert data["execution_trace"]["steps"][-1]["state_after"] == data["visual_state"]
     assert any(
         isinstance(step["debug"].get("graph_progress"), dict)
         and step["debug"]["graph_progress"].get("mode") == "traversal"

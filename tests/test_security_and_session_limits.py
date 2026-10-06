@@ -80,17 +80,17 @@ def test_session_histories_are_isolated_by_module_namespace(client) -> None:
 
 @pytest.mark.performance
 def test_graph_bfs_performance_smoke(client) -> None:
-    """Smoke performance check: BFS on a moderate graph should finish quickly."""
+    """Smoke performance check: BFS on the approved educational 30-vertex graph should finish quickly."""
     client.post(
         "/graph/graph/operate",
         json={"operation": "create_graph", "payload": {"directed": "false"}},
     )
-    for value in range(1, 101):
+    for value in range(1, 31):
         client.post(
             "/graph/graph/operate",
             json={"operation": "insert_vertex", "payload": {"vertex": str(value)}},
         )
-    for value in range(1, 100):
+    for value in range(1, 30):
         client.post(
             "/graph/graph/operate",
             json={

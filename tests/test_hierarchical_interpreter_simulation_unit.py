@@ -22,6 +22,29 @@ def _trace_lines(result: dict) -> list[str]:
     return [_norm(step.get("line_text", "")) for step in result["execution_trace"]["steps"]]
 
 
+def _tree_shape(state: dict) -> tuple | None:
+    """Project only reachable node values and child links, not scope/heap metadata."""
+    def walk(node):
+        if node is None:
+            return None
+        return (node["value"], walk(node["left"]), walk(node["right"]))
+    return walk(state.get("root"))
+
+
+def _structural_change_indexes(trace: dict) -> list[int]:
+    for step in trace["steps"]:
+        assert step["line_text"] == trace["source_code"].splitlines()[step["line_index"]]
+    return [index for index, step in enumerate(trace["steps"])
+            if _tree_shape(step["state_snapshot"]) != _tree_shape(step["state_after"])]
+
+
+def _assert_single_reservation_no_free(trace: dict) -> None:
+    memories = [step["pedagogy"]["memory"] for step in trace["steps"]]
+    assert sum(len(memory["allocated_objects"]) for memory in memories) == 1
+    assert all(memory["freed_objects"] == [] for memory in memories)
+    assert _tree_shape(trace["steps"][-1]["state_after"]) == _tree_shape(trace["final_state"])
+
+
 def test_hierarchical_trace_contract_for_mutating_insert_abb() -> None:
     """Mutating ABB operation should expose trace and final state consistency."""
     history: list[dict] = []
@@ -83,7 +106,7 @@ def test_avl_duplicate_insert_returns_before_malloc() -> None:
 
 
 def test_red_black_duplicate_insert_returns_before_malloc_and_fixup() -> None:
-    """Duplicate red-black insert should return before allocation and re-balance calls."""
+    """The application rejects a duplicate without C calls, allocation, output or history."""
     history: list[dict] = []
     first = _run_hier_op("red_black", history, "insertar", {"value": "10"})
     history = first["history"]
@@ -91,13 +114,23 @@ def test_red_black_duplicate_insert_returns_before_malloc_and_fixup() -> None:
     duplicate = _run_hier_op("red_black", history, "insertar", {"value": "10"})
     assert duplicate["success"] is False
 
-    lines = _trace_lines(duplicate)
-    idx_if_actual = lines.index(_norm("if (actual != NULL)"))
-    idx_return = lines.index(_norm("return;"), idx_if_actual)
-    tail = lines[idx_return + 1 :]
-
-    assert _norm("actual = malloc(sizeof(struct nodorbt));") not in tail
-    assert _norm("rbt_insercion_caso1(actual, arbol);") not in tail
+    trace = duplicate["execution_trace"]
+    assert trace["application_precondition_rejected"] is True
+    assert duplicate["history"] == history
+    assert duplicate["visual_state"] == first["visual_state"]
+    assert trace["final_state"] == first["visual_state"]
+    assert len(trace["steps"]) == 1
+    step = trace["steps"][0]
+    frame = step["pedagogy"]
+    assert frame["instruction_event"]["C_invoked"] is False
+    assert frame["instruction_event"]["return"] is None
+    assert frame["call_stack"] == [] and frame["condition"] is None
+    assert frame["memory"]["allocated_objects"] == []
+    assert frame["memory"]["freed_objects"] == []
+    assert step["console"] == []
+    assert step["state_snapshot"] == step["state_after"] == first["visual_state"]
+    assert "rbt_insertar NO fue invocado" in step["line_text"]
+    assert step["line_text"] == trace["source_code"].splitlines()[step["line_index"]]
 
 
 def test_red_black_insert_non_duplicate_skips_duplicate_return_branch() -> None:
@@ -132,11 +165,7 @@ def test_red_black_insert_state_changes_on_link_line_not_during_search() -> None
     steps = result["execution_trace"]["steps"]
     assert steps
 
-    changed_indexes = [
-        idx
-        for idx, step in enumerate(steps)
-        if (step.get("state_snapshot") or {}) != (step.get("state_after") or {})
-    ]
+    changed_indexes = _structural_change_indexes(result["execution_trace"])
     assert changed_indexes, "La traza no refleja ningun cambio de estado."
     first_changed = steps[changed_indexes[0]]
     changed_line = _norm(first_changed.get("line_text", ""))
@@ -146,9 +175,12 @@ def test_red_black_insert_state_changes_on_link_line_not_during_search() -> None
         _norm("padre->izq = actual;"),
         _norm("padre->der = actual;"),
     }
+    assert all(_tree_shape(step["state_snapshot"]) == _tree_shape(step["state_after"])
+               for step in steps[:changed_indexes[0]])
+    _assert_single_reservation_no_free(result["execution_trace"])
 
-def test_abb_empty_insert_keeps_tree_empty_until_value_assignment_step() -> None:
-    """Root insertion must appear only when value assignment executes, not before."""
+def test_abb_empty_insert_keeps_root_null_until_caller_publication() -> None:
+    """The allocated local initializes before the by-value caller publishes root."""
     history: list[dict] = []
     result = _run_hier_op("abb", history, "insertar", {"value": "55"})
     assert result["success"] is True
@@ -189,7 +221,20 @@ def test_abb_empty_insert_keeps_tree_empty_until_value_assignment_step() -> None
         assert traversals.get("postorden") == []
 
     assignment_after = steps[assignment_index].get("state_after") or {}
-    assert values_from_state(assignment_after) == [55]
+    assert values_from_state(assignment_after) == []
+    assert assignment_after["head"] == "NULL"
+    assert assignment_after["heap_nodes"] == [{"id": "N1", "value": 55,
+        "left": "sin inicializar", "right": "sin inicializar", "status": "detached"}]
+    publication_index = next(idx for idx, step in enumerate(steps)
+        if step["pedagogy"]["instruction_event"]["phase"] == "caller")
+    assert publication_index > assignment_index
+    for step in steps[assignment_index:publication_index]:
+        assert values_from_state(step["state_after"]) == []
+        assert step["state_after"]["head"] == "NULL"
+    published = steps[publication_index]["pedagogy"]["memory_state"]
+    assert values_from_state(published) == [55] and published["head"] == "N1"
+    assert published["heap_nodes"] == [{"id": "N1", "value": 55,
+        "left": "NULL", "right": "NULL", "status": "linked"}]
 
 
 def test_abb_inorden_trace_expands_recursive_calls() -> None:
@@ -292,10 +337,7 @@ def test_avl_insert_state_changes_on_link_line_not_local_assignment() -> None:
     assert result["success"] is True
     steps = result["execution_trace"]["steps"]
 
-    changed_indexes = [
-        idx for idx, step in enumerate(steps)
-        if (step.get("state_snapshot") or {}) != (step.get("state_after") or {})
-    ]
+    changed_indexes = _structural_change_indexes(result["execution_trace"])
     assert changed_indexes, "La traza no refleja ningun cambio de estado."
     first_changed_step = steps[changed_indexes[0]]
     line = _norm(first_changed_step.get("line_text", ""))
@@ -306,6 +348,9 @@ def test_avl_insert_state_changes_on_link_line_not_local_assignment() -> None:
         _norm("padre->der = nuevo;"),
         _norm("*raiz = nuevo;"),
     }
+    assert all(_tree_shape(step["state_snapshot"]) == _tree_shape(step["state_after"])
+               for step in steps[:changed_indexes[0]])
+    _assert_single_reservation_no_free(result["execution_trace"])
 
 
 def test_avl_rotation_debug_marks_unbalanced_node_and_rotation_message() -> None:
@@ -344,11 +389,11 @@ def test_avl_insert_without_rotation_does_not_emit_rotation_hint() -> None:
     assert not any(isinstance(dbg.get("rotation_hint"), dict) for dbg in debug_steps)
     assert not any(str(dbg.get("rotation_message", "")).strip() for dbg in debug_steps)
 
-    changed_indexes = [
-        idx for idx, step in enumerate(steps)
-        if (step.get("state_snapshot") or {}) != (step.get("state_after") or {})
-    ]
+    changed_indexes = _structural_change_indexes(result["execution_trace"])
     assert len(changed_indexes) == 1
+    assert _norm(steps[changed_indexes[0]]["line_text"]) == _norm("padre->der = nuevo;")
+    assert _tree_shape(steps[changed_indexes[0]]["state_snapshot"]) != _tree_shape(steps[changed_indexes[0]]["state_after"])
+    _assert_single_reservation_no_free(result["execution_trace"])
 
 
 def test_avl_minimo_trace_expands_while_by_left_depth() -> None:
@@ -373,7 +418,27 @@ def test_avl_minimo_trace_expands_while_by_left_depth() -> None:
         if isinstance(step.get("debug"), dict)
     ]
     assert debug_steps
-    assert any(dbg.get("stage") == "result" for dbg in debug_steps)
+    returning = [step for step in result["execution_trace"]["steps"]
+                 if _norm(step["line_text"]) == _norm("return nodo;")]
+    assert len(returning) == 1
+    returned = returning[0]["pedagogy"]["instruction_event"]
+    assert returned["phase"] == "return" and returned["return"] not in (None, "NULL")
+    identity = returned["return"]
+    assert next(node for node in returning[0]["state_snapshot"]["heap_nodes"]
+                if node["id"] == identity)["value"] == 40
+    all_steps = result["execution_trace"]["steps"]
+    stages = [step["pedagogy"]["instruction_event"]["phase"] for step in all_steps]
+    assert stages.index("return") < stages.index("caller_assignment") < stages.index("caller_store") < stages.index("caller_result")
+    store = all_steps[stages.index("caller_store")]
+    assert store["state_snapshot"]["caller_output"]["initialized"] is False
+    assert store["state_after"]["caller_output"] == {"identity": "salida", "type": "int", "initialized": True, "value": 40}
+    assert all_steps[-1]["pedagogy"]["instruction_event"]["return"] == 1
+    for step in all_steps:
+        memory = step["pedagogy"]["memory"]
+        assert memory["objects_before"] == memory["objects_after"]
+        assert memory["allocated_objects"] == memory["freed_objects"] == []
+        assert _tree_shape(step["state_snapshot"]) == _tree_shape(step["state_after"])
+        assert step["line_text"] == result["execution_trace"]["source_code"].splitlines()[step["line_index"]]
 
 
 def test_abb_minimo_trace_repeats_while_per_left_depth() -> None:

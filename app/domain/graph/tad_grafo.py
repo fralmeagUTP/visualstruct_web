@@ -197,109 +197,76 @@ def grafo_predecesores(g: Grafo, x: int) -> ListaVertice:
 
 
 def grafo_bfs(g: Grafo, inicio: int) -> ListaVertice:
+    """Normal-allocation C parity: reset shared marks, mark on enqueue.
+
+    The returned list owns new unmarked nodes, independently of graph marks.
+    Negative vertex identifiers, including -1, remain valid data.
+    """
+    grafo_desmarcar(g)
     if inicio not in g._vertices:
         return None
-    visitados: set[int] = set()
     cola: list[int] = [inicio]
+    grafo_marcar_vertice(g, inicio)
     orden: list[int] = []
     while cola:
         actual = cola.pop(0)
-        if actual in visitados:
-            continue
-        visitados.add(actual)
         orden.append(actual)
         for vecino in _vecinos(g, actual):
-            if vecino not in visitados:
+            if not grafo_marcado_vertice(g, vecino):
                 cola.append(vecino)
-    return _build_vertices_list(orden, g._marcas)
+                grafo_marcar_vertice(g, vecino)
+    return _build_vertices_list(orden, {})
 
 
 def grafo_dfs_recursivo(g: Grafo, actual: int, recorrido: list[ListaVertice]) -> None:
-    if "_dfs_visitados" not in g.__dict__:
-        g.__dict__["_dfs_visitados"] = set()
-    visitados: set[int] = g.__dict__["_dfs_visitados"]
-    if actual in visitados or actual not in g._vertices:
+    """Follow normal-allocation C recursion, sharing graph marks and output head.
+
+    The public wrapper validates the start; recursive successors belong to g.
+    Returned nodes are new, unmarked and independent from graph vertex nodes.
+    """
+    if recorrido is None:
         return
-    visitados.add(actual)
-    _append_vertice_nodo(recorrido, NodoV(dato=actual, marcado=g._marcas.get(actual, 0)))
+    grafo_marcar_vertice(g, actual)
+    _append_vertice_nodo(recorrido, NodoV(dato=actual, marcado=0))
     for vecino in _vecinos(g, actual):
-        grafo_dfs_recursivo(g, vecino, recorrido)
+        if not grafo_marcado_vertice(g, vecino):
+            grafo_dfs_recursivo(g, vecino, recorrido)
 
 
 def grafo_dfs(g: Grafo, inicio: int) -> ListaVertice:
+    """Validate before resetting marks, as the actual C wrapper does."""
     if inicio not in g._vertices:
         return None
-    g.__dict__["_dfs_visitados"] = set()
+    grafo_desmarcar(g)
     recorrido_ref: list[ListaVertice] = [None]
     grafo_dfs_recursivo(g, inicio, recorrido_ref)
-    g.__dict__.pop("_dfs_visitados", None)
     return recorrido_ref[0]
 
 
 def grafo_dijkstra(g: Grafo, inicio: int, llegada: int) -> ListaArco:
-    if inicio not in g._vertices or llegada not in g._vertices:
+    from .integer_algorithms import dijkstra
+    if inicio not in g._vertices or llegada not in g._vertices or any(w < 0 for _, _, w in g._arcos):
         return None
-    dist: dict[int, float] = {v: inf for v in g._vertices}
-    prev: dict[int, int | None] = {v: None for v in g._vertices}
-    dist[inicio] = 0.0
-    pendientes = set(g._vertices)
-    while pendientes:
-        u = min(pendientes, key=lambda v: dist[v])
-        pendientes.remove(u)
-        if dist[u] == inf:
-            break
-        if u == llegada:
-            break
-        for v, costo in _vecinos_con_peso(g, u):
-            alt = dist[u] + costo
-            if alt < dist[v]:
-                dist[v] = alt
-                prev[v] = u
+    _, prev = dijkstra(g, inicio)
     return _ruta_arcos(g, prev, inicio, llegada)
 
 
 def grafo_bellman_ford(g: Grafo, inicio: int, llegada: int) -> ListaArco:
+    from .integer_algorithms import bellman_ford
     if inicio not in g._vertices or llegada not in g._vertices:
         return None
-    dist: dict[int, float] = {v: inf for v in g._vertices}
-    prev: dict[int, int | None] = {v: None for v in g._vertices}
-    dist[inicio] = 0.0
-    for _ in range(max(0, len(g._vertices) - 1)):
-        hubo_cambio = False
-        for o, d, c in g._arcos:
-            if dist[o] != inf and dist[o] + c < dist[d]:
-                dist[d] = dist[o] + c
-                prev[d] = o
-                hubo_cambio = True
-        if not hubo_cambio:
-            break
-    for o, d, c in g._arcos:
-        if dist[o] != inf and dist[o] + c < dist[d]:
-            return None
+    _, prev, negative_cycle = bellman_ford(g, inicio)
+    if negative_cycle:
+        return None
     return _ruta_arcos(g, prev, inicio, llegada)
 
 
 def grafo_prim(g: Grafo, inicio: int) -> ListaArco:
+    from .integer_algorithms import prim
     if inicio not in g._vertices:
         return None
-    visitados = {inicio}
-    mst: list[tuple[int, int, int]] = []
-    aristas = _aristas_no_dirigidas(g)
-    while len(visitados) < len(g._vertices):
-        candidato: tuple[int, int, int] | None = None
-        for o, d, c in aristas:
-            cruza = (o in visitados and d not in visitados) or (d in visitados and o not in visitados)
-            if not cruza:
-                continue
-            if candidato is None or c < candidato[2]:
-                candidato = (o, d, c)
-        if candidato is None:
-            break
-        o, d, c = candidato
-        mst.append((o, d, c))
-        visitados.add(o)
-        visitados.add(d)
-    return _build_arcs_list(mst)
+    arcs, _ = prim(g, inicio)
+    return _build_arcs_list(arcs)
 
 
 def grafo_encontrar_conjunto(c: Conjunto, x: int) -> int:
@@ -316,17 +283,9 @@ def grafo_unir_conjuntos(c: Conjunto, x: int, y: int) -> None:
 
 
 def grafo_kruskal(g: Grafo) -> ListaArco:
-    vertices = list(g._vertices)
-    indice = {v: i for i, v in enumerate(vertices)}
-    conjunto = Conjunto(padre=list(range(len(vertices))), n=len(vertices))
-    mst: list[tuple[int, int, int]] = []
-    for o, d, c in sorted(_aristas_no_dirigidas(g), key=lambda e: e[2]):
-        ro = grafo_encontrar_conjunto(conjunto, indice[o])
-        rd = grafo_encontrar_conjunto(conjunto, indice[d])
-        if ro != rd:
-            mst.append((o, d, c))
-            grafo_unir_conjuntos(conjunto, ro, rd)
-    return _build_arcs_list(mst)
+    from .integer_algorithms import kruskal
+    arcs, _ = kruskal(g)
+    return _build_arcs_list(arcs)
 
 
 def _sync_graph_lists(g: Grafo) -> None:

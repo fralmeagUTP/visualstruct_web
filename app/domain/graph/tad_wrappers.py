@@ -34,12 +34,11 @@ class Grafo(Generic[V]):
         grafo_eliminar_vertice(self._g, value)
 
     def insertar_arista(self, origen: V, destino: V, peso: float = 1) -> None:
-        o = int(origen)
-        d = int(destino)
-        w = float(peso)
-        grafo_insertar_arco(self._g, o, d, int(w))
+        from .integer_algorithms import integer_weight
+        o, d, w = int(origen), int(destino), integer_weight(peso)
+        grafo_insertar_arco(self._g, o, d, w)
         if not self.dirigido and o != d:
-            grafo_insertar_arco(self._g, d, o, int(w))
+            grafo_insertar_arco(self._g, d, o, w)
 
     def eliminar_arista(self, origen: V, destino: V) -> None:
         o = int(origen)
@@ -81,105 +80,36 @@ class Grafo(Generic[V]):
         lista = grafo_dfs(self._g, int(inicio))
         return self._vertices_from_lista(lista)  # type: ignore[return-value]
 
-    def dijkstra(self, inicio: V) -> tuple[dict[V, float], dict[V, V | None]]:
+    def dijkstra(self, inicio: V, llegada: V | None = None) -> tuple[dict[V, float], dict[V, V | None]]:
+        from .integer_algorithms import dijkstra
         self._validar_vertice(inicio)
         self._validar_pesos_no_negativos()
-        start = int(inicio)
+        if llegada is not None and int(llegada) not in self._g._vertices:
+            return ({v: inf for v in self._g._vertices}, {v: None for v in self._g._vertices})
+        return dijkstra(self._g, int(inicio))
 
-        dist: dict[int, float] = {v: inf for v in self._g._vertices}
-        previo: dict[int, int | None] = {v: None for v in self._g._vertices}
-        dist[start] = 0.0
-        pendientes: set[int] = set(self._g._vertices)
-
-        while pendientes:
-            actual = min(pendientes, key=lambda x: dist[x])
-            pendientes.remove(actual)
-            if dist[actual] == inf:
-                break
-            for vecino, peso in self._vecinos_con_peso(actual):
-                nueva = dist[actual] + peso
-                if nueva < dist[vecino]:
-                    dist[vecino] = nueva
-                    previo[vecino] = actual
-
-        return dist, previo  # type: ignore[return-value]
-
-    def bellman_ford(self, inicio: V) -> tuple[dict[V, float], dict[V, V | None], bool]:
+    def bellman_ford(self, inicio: V, llegada: V | None = None) -> tuple[dict[V, float], dict[V, V | None], bool]:
+        from .integer_algorithms import bellman_ford
         self._validar_vertice(inicio)
-        start = int(inicio)
-
-        dist: dict[int, float] = {v: inf for v in self._g._vertices}
-        previo: dict[int, int | None] = {v: None for v in self._g._vertices}
-        dist[start] = 0.0
-        # Bellman-Ford debe relajar aristas dirigidas; para grafo no dirigido
-        # el TAD mantiene ambos sentidos en `_g._arcos`.
-        aristas = [(int(o), int(d), float(c)) for o, d, c in self._g._arcos]
-
-        for _ in range(len(self._g._vertices) - 1):
-            cambio = False
-            for origen, destino, peso in aristas:
-                if dist[origen] != inf and dist[origen] + peso < dist[destino]:
-                    dist[destino] = dist[origen] + peso
-                    previo[destino] = origen
-                    cambio = True
-            if not cambio:
-                break
-
-        ciclo_negativo = any(
-            dist[origen] != inf and dist[origen] + peso < dist[destino]
-            for origen, destino, peso in aristas
-        )
-        return dist, previo, ciclo_negativo  # type: ignore[return-value]
+        if llegada is not None and int(llegada) not in self._g._vertices:
+            return ({v: inf for v in self._g._vertices}, {v: None for v in self._g._vertices}, False)
+        return bellman_ford(self._g, int(inicio))
 
     def prim(self, inicio: V | None = None) -> tuple[list[tuple[V, V, float]], float]:
+        from .integer_algorithms import prim
         if self.dirigido:
             raise ValueError("Prim requiere un grafo no dirigido.")
         if not self._g._vertices:
-            return [], 0.0
-
+            return [], 0
         start = int(inicio) if inicio is not None else self._g._vertices[0]
         self._validar_vertice(start)
-
-        visitados = {start}
-        mst: list[tuple[int, int, float]] = []
-        total = 0.0
-        aristas = self._aristas_no_dirigidas()
-
-        while len(visitados) < len(self._g._vertices):
-            candidato: tuple[int, int, float] | None = None
-            for o, d, c in aristas:
-                cruza = (o in visitados and d not in visitados) or (d in visitados and o not in visitados)
-                if not cruza:
-                    continue
-                if candidato is None or c < candidato[2]:
-                    candidato = (o, d, c)
-            if candidato is None:
-                break
-            o, d, c = candidato
-            mst.append(candidato)
-            total += c
-            visitados.add(o)
-            visitados.add(d)
-
-        return mst, total  # type: ignore[return-value]
+        return prim(self._g, start)
 
     def kruskal(self) -> tuple[list[tuple[V, V, float]], float]:
+        from .integer_algorithms import kruskal
         if self.dirigido:
             raise ValueError("Kruskal requiere un grafo no dirigido.")
-
-        uf: UnionFind[int] = UnionFind()
-        mst: list[tuple[int, int, float]] = []
-        total = 0.0
-
-        for vertice in self._g._vertices:
-            uf.agregar(vertice)
-
-        for origen, destino, peso in sorted(self._aristas_no_dirigidas(), key=lambda item: item[2]):
-            if uf.unir(origen, destino):
-                mst.append((origen, destino, peso))
-                total += peso
-
-        return mst, total  # type: ignore[return-value]
+        return kruskal(self._g)
 
     def aristas(self) -> list[tuple[V, V, float]]:
         if self.dirigido:
@@ -199,6 +129,24 @@ class Grafo(Generic[V]):
 
     def cantidad_aristas(self) -> int:
         return len(self.aristas())
+
+    def componentes_no_dirigidos(self) -> int:
+        """Count weak components using the same undirected projection as MST."""
+        pendientes = set(self._g._vertices)
+        componentes = 0
+        adyacentes: dict[int, set[int]] = {v: set() for v in self._g._vertices}
+        for origen, destino, _ in self._g._arcos:
+            if origen in adyacentes and destino in adyacentes:
+                adyacentes[origen].add(destino)
+                adyacentes[destino].add(origen)
+        while pendientes:
+            componentes += 1
+            pila = [pendientes.pop()]
+            while pila:
+                for vecino in adyacentes[pila.pop()] & pendientes:
+                    pendientes.remove(vecino)
+                    pila.append(vecino)
+        return componentes
 
     def _validar_vertice(self, vertice: V) -> None:
         value = int(vertice)

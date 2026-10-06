@@ -39,7 +39,7 @@ def test_lista_enlazada_operaciones_principales() -> None:
     assert lista.eliminar_inicio() == 10
     assert lista.a_lista() == [20]
 
-    lista.invertir()
+    assert not hasattr(lista, "invertir")
     assert lista.a_lista() == [20]
     assert lista.tamano() == 1
 
@@ -141,7 +141,7 @@ def test_lista_circular_operaciones_principales() -> None:
     lista.insertar_final(30)
 
     assert lista.a_lista() == [10, 20, 30, 30]
-    assert lista.buscar_posiciones(30) == [2, 3]
+    assert lista.buscar_posiciones(30) == [3, 4]
 
     assert lista.eliminar_primero(30) is True
     assert lista.a_lista() == [10, 20, 30]

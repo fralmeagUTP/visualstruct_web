@@ -9,27 +9,38 @@ from app.services.trace.engine import TraceEngine
 
 from app.adapters.base_adapter import BaseAdapter
 from app.domain.sorting import SORTING_ALGORITHMS, SortingExecutionError, SortingInterpreter
+from app.domain.sorting.pedagogy import (
+    PEDAGOGICAL_FRAME_SCHEMA_VERSION,
+    build_pedagogical_frame,
+    learning_profile,
+    pedagogical_frame_schema,
+    theory_profile,
+    validate_pedagogical_frame,
+)
 
 
 class SortingAdapter(BaseAdapter):
     """Adapt sorting simulation to the common visualizer contract."""
 
     _MAX_SIZE = 80
+    _C_INT_MIN = -(2**31)
+    _C_INT_MAX = 2**31 - 1
     _LINE_PATTERNS: dict[str, dict[str, str]] = {
         "intercambio": {"compare": "if (arreglo[i] > arreglo[j])", "swap": "intercambiar(&arreglo[i], &arreglo[j])"},
-        "seleccion": {"compare_min": "if (arreglo[j] < arreglo[indice_menor])", "swap": "intercambiar(&arreglo[i], &arreglo[indice_menor])"},
-        "insercion": {"while_compare": "while (j > 0 && arreglo[j - 1] > clave)", "shift": "arreglo[j] = arreglo[j - 1];", "insert_key": "arreglo[j] = clave;"},
+        "seleccion": {"init_min": "indice_menor = i;", "compare_min": "if (arreglo[j] < arreglo[indice_menor])", "set_min": "indice_menor = j;", "swap": "intercambiar(&arreglo[i], &arreglo[indice_menor])"},
+        "insercion": {"take_key": "int clave = arreglo[i];", "while_compare": "while (j > 0 && arreglo[j - 1] > clave)", "shift": "arreglo[j] = arreglo[j - 1];", "insert_key": "arreglo[j] = clave;"},
         "burbuja": {"compare": "if (arreglo[j] > arreglo[j + 1])", "swap": "intercambiar(&arreglo[j], &arreglo[j + 1])", "break": "if (!hubo_intercambio) break;"},
-        "shell": {"gap": "for (intervalo = n / 2; intervalo > 0; intervalo /= 2)", "gap_compare": "while (j >= intervalo && arreglo[j - intervalo] > temporal)", "gap_shift": "arreglo[j] = arreglo[j - intervalo];", "gap_insert": "arreglo[j] = temporal;"},
-        "quicksort": {"pivot": "int i = primero, j = ultimo, pivote =", "partition_swap": "intercambiar(&arreglo[i], &arreglo[j]);"},
+        "shell": {"gap": "for (intervalo = n / 2; intervalo > 0; intervalo /= 2)", "take_temp": "int temporal = arreglo[i];", "gap_compare": "while (j >= intervalo && arreglo[j - intervalo] > temporal)", "gap_shift": "arreglo[j] = arreglo[j - intervalo];", "gap_insert": "arreglo[j] = temporal;"},
+        "quicksort": {"pivot": "int i = primero, j = ultimo, pivote =", "move_i": "while (arreglo[i] < pivote)", "move_j": "while (arreglo[j] > pivote)", "partition_swap": "intercambiar(&arreglo[i], &arreglo[j]);"},
         "mergesort": {"split": "mergesort_recursivo(arreglo, auxiliar, izquierda, medio);", "merge_compare": "if (arreglo[i] <= arreglo[j])", "merge_copy_back": "for (i = izquierda; i <= derecha; ++i) arreglo[i] = auxiliar[i];"},
-        "heapsort": {"heap_compare": "if (izquierdo < n && arreglo[izquierdo] > arreglo[mayor])", "heap_swap": "intercambiar(&arreglo[raiz], &arreglo[mayor]);", "heap_extract": "intercambiar(&arreglo[0], &arreglo[i - 1]);"},
+        "heapsort": {"heap_compare_left": "if (izquierdo < n && arreglo[izquierdo] > arreglo[mayor])", "heap_compare_right": "if (derecho < n && arreglo[derecho] > arreglo[mayor])", "heap_swap": "intercambiar(&arreglo[raiz], &arreglo[mayor]);", "heap_extract": "intercambiar(&arreglo[0], &arreglo[i - 1]);"},
         "counting_sort": {"count_init": "conteo = (int *)calloc(rango, sizeof(int));", "count_fill": "++conteo[arreglo[i] - minimo];", "count_write": "while (conteo[i] > 0)"},
-        "binsort": {"binsort_delegate": "return ordenar_counting_sort(arreglo, n);"},
-        "radixsort": {"radix_split": "if (arreglo[i] < 0) negativos[cant_negativos++] = -arreglo[i];", "radix_digit": "counting_por_digito", "radix_merge": "for (i = cant_negativos; i > 0; --i) arreglo[indice++] = -negativos[i - 1];"},
+        "binsort": {"count_init": "conteo = (int *)calloc(rango, sizeof(int));", "count_fill": "++conteo[arreglo[i] - minimo];", "count_write": "while (conteo[i] > 0)", "binsort_delegate": "return ordenar_counting_sort(arreglo, n);"},
+        "radixsort": {"radix_split": "if (arreglo[i] < 0) negativos[cant_negativos++] = 0U - (uint32_t)arreglo[i];", "radix_digit": "counting_por_digito", "radix_merge": "uint32_t magnitud = negativos[i - 1];"},
     }
 
     def __init__(self) -> None:
+        self._counting_allocator = None
         self._array: list[int] = []
         self._algorithm_id: str = "burbuja"
         self._last_operation: dict[str, Any] = {"name": "create", "status": "success", "message": "Modulo inicializado."}
@@ -61,14 +72,23 @@ class SortingAdapter(BaseAdapter):
         raw = payload.get("values")
         if isinstance(raw, list):
             out: list[int] = []
-            for value in raw:
-                out.append(int(str(value).strip()))
+            try:
+                for value in raw:
+                    out.append(int(str(value).strip()))
+            except (TypeError, ValueError) as error:
+                raise ValueError("Cada posicion del arreglo debe contener un entero.") from error
             return out
         text = BaseAdapter._require_text(payload, "values", "valores")
-        items = [item.strip() for item in text.split(",") if item.strip()]
+        raw_items = text.split(",")
+        if any(not item.strip() for item in raw_items):
+            raise ValueError("Cada posicion del arreglo debe contener un entero.")
+        items = [item.strip() for item in raw_items]
         if not items:
             raise ValueError("Debes ingresar al menos un numero en el arreglo.")
-        return [int(item) for item in items]
+        try:
+            return [int(item) for item in items]
+        except ValueError as error:
+            raise ValueError("Cada posicion del arreglo debe contener un entero.") from error
 
     @staticmethod
     def _validate_values(values: list[int]) -> None:
@@ -76,6 +96,8 @@ class SortingAdapter(BaseAdapter):
             raise ValueError("El arreglo no puede estar vacio.")
         if len(values) > SortingAdapter._MAX_SIZE:
             raise ValueError(f"El arreglo no puede superar {SortingAdapter._MAX_SIZE} elementos.")
+        if any(value < SortingAdapter._C_INT_MIN or value > SortingAdapter._C_INT_MAX for value in values):
+            raise ValueError("Cada valor debe pertenecer al rango de int C (-2147483648 a 2147483647).")
 
     def create_array(self, values: list[int]) -> dict[str, Any]:
         """Create array from user values."""
@@ -100,12 +122,17 @@ class SortingAdapter(BaseAdapter):
             raise ValueError(f"El tamano maximo permitido es {self._MAX_SIZE}.")
         if min_value > max_value:
             raise ValueError("El valor minimo no puede ser mayor al maximo.")
-        rng = random.Random(seed if seed is not None else random.randint(1, 1_000_000_000))
+        self._validate_values([min_value, max_value])
+        effective_seed = seed if seed is not None else random.randint(1, 1_000_000_000)
+        rng = random.Random(effective_seed)
         self._array = [rng.randint(min_value, max_value) for _ in range(size)]
         self._last_trace = None
         self._last_result = {"array": list(self._array)}
         self._set_operation("generate_random_array", f"Arreglo aleatorio generado con {size} elementos.")
-        return {"message": self._last_operation["message"], "result": self._last_result}
+        return {
+            "message": self._last_operation["message"],
+            "result": {**self._last_result, "seed": effective_seed},
+        }
 
     def select_algorithm(self, algorithm_id: str) -> dict[str, Any]:
         """Select algorithm for next execution."""
@@ -123,7 +150,7 @@ class SortingAdapter(BaseAdapter):
         *,
         algorithm_id: str,
     ) -> dict[str, Any]:
-        return {
+        state = {
             "structure": "sorting_array",
             "kind": "sorting_array",
             "title": "Arreglo de ordenamiento",
@@ -136,6 +163,9 @@ class SortingAdapter(BaseAdapter):
             "active_range": step.get("active_range"),
             "pivot_index": step.get("pivot_index"),
             "auxiliary_array": step.get("auxiliary_snapshot"),
+            "temporaries": dict(step.get("temporaries", {})),
+            "trace_token": str(step.get("line_token") or ""),
+            "trace_action": str(step.get("action") or ""),
             "metrics": {
                 "comparisons": int(step.get("metrics", {}).get("comparisons", 0)),
                 "swaps": int(step.get("metrics", {}).get("swaps", 0)),
@@ -148,6 +178,23 @@ class SortingAdapter(BaseAdapter):
                 "message": str(step.get("action", "")),
             },
         }
+        if algorithm_id == "seleccion" and "selection_context" in step:
+            state["selection_context"] = dict(step["selection_context"])
+        if algorithm_id == "insercion" and "insertion_context" in step:
+            state["insertion_context"] = dict(step["insertion_context"])
+        if algorithm_id == "burbuja" and "bubble_context" in step:
+            state["bubble_context"] = dict(step["bubble_context"])
+        if algorithm_id == "shell" and "shell_context" in step:
+            state["shell_context"] = dict(step["shell_context"])
+        if algorithm_id == "quicksort" and "quick_context" in step:
+            state["quick_context"] = dict(step["quick_context"])
+        if algorithm_id == "mergesort" and "merge_context" in step:
+            state["merge_context"] = dict(step["merge_context"])
+        if algorithm_id == "heapsort" and "heap_context" in step:
+            state["heap_context"] = dict(step["heap_context"])
+        if algorithm_id == "counting_sort" and "counting_context" in step:
+            state["counting_context"] = dict(step["counting_context"])
+        return state
 
     @staticmethod
     def _build_line_lookup(source_code: str, patterns: dict[str, str]) -> dict[str, int | None]:
@@ -169,12 +216,105 @@ class SortingAdapter(BaseAdapter):
         if not self._array:
             raise ValueError("Debes crear primero un arreglo para ordenar.")
 
-        interpreter = SortingInterpreter(self._array, self._algorithm_id)
-        run_result = interpreter.run()
+        interpreter = SortingInterpreter(self._array, self._algorithm_id, counting_allocator=self._counting_allocator) if self._algorithm_id in {"counting_sort", "binsort"} else SortingInterpreter(self._array, self._algorithm_id)
+        if self._algorithm_id == "radixsort":
+            interpreter = SortingInterpreter(self._array, self._algorithm_id, radix_allocator=getattr(self, "_radix_allocator", None))
+        if self._algorithm_id in {"counting_sort", "binsort", "radixsort"}:
+            from app.services.counting_trace_service import BUILD_SLOTS
+            if not BUILD_SLOTS.acquire(timeout=30):
+                raise ValueError("Counting esta ocupado; vuelve a intentar la ejecucion.")
+            try:
+                run_result = interpreter.run()
+            except SortingExecutionError as error:
+                from app.domain.sorting.counting_sparse_instructions import CountingExecutionFailure
+                from app.domain.sorting.radix_instructions import RadixExecutionFailure
+                if isinstance(error, (CountingExecutionFailure, RadixExecutionFailure)):
+                    from app.services.counting_trace_service import CountingPageSource
+                    source_class = CountingPageSource
+                    if self._algorithm_id == "binsort":
+                        from app.services.binsort_trace_service import BinsortPageSource
+                        source_class = BinsortPageSource
+                    if self._algorithm_id == "radixsort":
+                        from app.services.radix_trace_service import RadixPageSource
+                        source_class = RadixPageSource
+                    source = source_class(error.steps, source_code, error_info=error.error_info, accepted_state=getattr(self, "_counting_accepted_state", self.to_visual_state()))
+                    error.execution_trace = source.trace()
+                raise
+            finally: BUILD_SLOTS.release()
+        else:
+            run_result = interpreter.run()
         raw_steps = run_result["steps"]
-        patterns = self._LINE_PATTERNS.get(self._algorithm_id, {})
+        from app.domain.sorting.counting_sparse_tape import CountingTape
+        from app.domain.sorting.radix_tape import RadixTape
+        if (self._algorithm_id in {"counting_sort", "binsort"} and isinstance(raw_steps, CountingTape)) or (self._algorithm_id == "radixsort" and isinstance(raw_steps, RadixTape)):
+            from app.services.counting_trace_service import CountingPageSource
+            source_class = CountingPageSource
+            if self._algorithm_id == "binsort":
+                from app.services.binsort_trace_service import BinsortPageSource
+                source_class = BinsortPageSource
+            if self._algorithm_id == "radixsort":
+                from app.services.radix_trace_service import RadixPageSource
+                source_class = RadixPageSource
+            page_source = source_class(raw_steps, source_code)
+            self._last_trace = page_source.trace()
+            self._array = list(page_source.final_state["items"])
+            self._last_result = {"mode": mode, "algorithm": self._algorithm_id, "metrics": run_result["metrics"], "array": list(self._array)}
+            self._set_operation("run", f"Ordenamiento ejecutado con {self._algorithm_id}.")
+            return {"message": self._last_operation["message"], "result": self._last_result, "execution_trace": self._last_trace, "visual_state": page_source.final_state}
+        patterns = {
+            **self._LINE_PATTERNS.get(self._algorithm_id, {}),
+            "validate_array": "return arreglo != NULL && n > 0;",
+            "swap_guard": "if (a == NULL || b == NULL) return;",
+            "swap_temp": "temporal = *a;",
+            "swap_assign_a": "*a = *b;",
+            "swap_assign_b": "*b = temporal;",
+        }
         line_lookup = self._build_line_lookup(source_code, patterns)
         source_lines = str(source_code or "").replace("\r\n", "\n").split("\n")
+        line_lookup["entry"] = next(
+            (index for index, line in enumerate(source_lines) if f"ordenar_{self._algorithm_id}(" in line),
+            next((index for index, line in enumerate(source_lines) if "ordenar_" in line and "(" in line), None),
+        )
+        line_lookup["return"] = next(
+            (index for index in range(len(source_lines) - 1, -1, -1) if "return ORDENAMIENTO_OK" in source_lines[index]),
+            next((index for index in range(len(source_lines) - 1, -1, -1) if source_lines[index].strip()), line_lookup.get("entry")),
+        )
+
+        if self._algorithm_id == "intercambio":
+            from app.domain.sorting.intercambio_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
+
+        if self._algorithm_id == "seleccion":
+            from app.domain.sorting.seleccion_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
+
+        if self._algorithm_id == "insercion":
+            from app.domain.sorting.insercion_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
+
+        if self._algorithm_id == "burbuja":
+            from app.domain.sorting.burbuja_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
+
+        if self._algorithm_id == "shell":
+            from app.domain.sorting.shell_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
+
+        if self._algorithm_id == "quicksort":
+            from app.domain.sorting.quicksort_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
+
+        if self._algorithm_id == "mergesort":
+            from app.domain.sorting.mergesort_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
+
+        if self._algorithm_id == "heapsort":
+            from app.domain.sorting.heapsort_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
+
+        if self._algorithm_id == "counting_sort":
+            from app.domain.sorting.counting_instructions import instruction_line_lookup
+            line_lookup = instruction_line_lookup(source_code)
 
         execution_steps: list[dict[str, Any]] = []
         for idx, raw_step in enumerate(raw_steps):
@@ -182,7 +322,8 @@ class SortingAdapter(BaseAdapter):
             state_snapshot = self._build_visual_state_from_step(prev, algorithm_id=self._algorithm_id)
             state_after = self._build_visual_state_from_step(raw_step, algorithm_id=self._algorithm_id)
             token = str(raw_step.get("line_token") or "")
-            line_index = line_lookup.get(token, None)
+            source_token = raw_step.get("source_line_token", token) if self._algorithm_id == "mergesort" else token
+            line_index = line_lookup.get(source_token, None)
             line_text = ""
             if isinstance(line_index, int) and 0 <= line_index < len(source_lines):
                 line_text = source_lines[line_index]
@@ -199,6 +340,17 @@ class SortingAdapter(BaseAdapter):
                     "debug": {"stage": "sorting", "note": str(raw_step.get("action", ""))},
                 }
             )
+            if "instruction_event" in raw_step:
+                execution_steps[-1]["debug"]["instruction_event"] = raw_step["instruction_event"]
+                execution_steps[-1]["debug"]["console_events"] = []
+            pedagogical = build_pedagogical_frame(
+                algorithm_id=self._algorithm_id,
+                raw_step=raw_step,
+                line_index=line_index,
+                line_text=line_text,
+            )
+            validate_pedagogical_frame(pedagogical, source_code=source_code)
+            execution_steps[-1]["pedagogy"] = pedagogical
 
         final_state = self._build_visual_state_from_step(raw_steps[-1], algorithm_id=self._algorithm_id)
         final_state["last_operation"] = {
@@ -219,8 +371,12 @@ class SortingAdapter(BaseAdapter):
             "source_code": source_code,
             "steps": execution_steps,
             "final_state": final_state,
+            "pedagogy_schema_version": PEDAGOGICAL_FRAME_SCHEMA_VERSION,
+            "pedagogy_schema": pedagogical_frame_schema(),
+            "learning_profile": learning_profile(self._algorithm_id),
+            "theory_profile": theory_profile(self._algorithm_id),
         }
-        TraceEngine.validate_legacy_trace(self._last_trace)
+        TraceEngine.validate_legacy_trace_readonly(self._last_trace)
         self._last_result = {
             "mode": mode,
             "algorithm": self._algorithm_id,
@@ -237,6 +393,8 @@ class SortingAdapter(BaseAdapter):
 
     def step(self, direction: str, cursor: int, *, source_code: str = "") -> dict[str, Any]:
         """Move one step in the execution trace."""
+        if direction == "prev":
+            direction = "previous"
         if direction not in {"next", "previous"}:
             raise ValueError("La direccion del paso debe ser 'next' o 'previous'.")
         trace_result = self.run("step_by_step", source_code=source_code)

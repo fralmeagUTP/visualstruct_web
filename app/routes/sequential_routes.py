@@ -29,6 +29,25 @@ def structure_page(structure_id: str) -> str:
     except KeyError:
         abort(404)
 
+    if structure_id == "stack":
+        from app.services.stack_cleanup_session_service import prepared_cleanup
+        model["prepared_cleanup_trace"] = prepared_cleanup(model["history"])
+        from app.services.stack_push_session_service import prepared_push
+        model["prepared_push_trace"] = prepared_push(model["history"])
+    if structure_id == "queue":
+        from app.services.queue_cleanup_session_service import prepared_cleanup
+        model["prepared_cleanup_trace"] = prepared_cleanup(model["history"])
+        from app.services.queue_enqueue_session_service import prepared_enqueue
+        model["prepared_enqueue_trace"] = prepared_enqueue(model["history"])
+        from app.services.queue_dequeue_session_service import prepared_dequeue
+        model["prepared_dequeue_trace"] = prepared_dequeue(model["history"], source_code=model["didactic"]["operations"]["desencolar"])
+    if structure_id == "priority_queue":
+        from app.services.priority_queue_cleanup_session_service import prepared_cleanup
+        model["prepared_cleanup_trace"] = prepared_cleanup(model["history"])
+        from app.services.priority_queue_enqueue_session_service import prepared_enqueue
+        model["prepared_enqueue_trace"] = prepared_enqueue(model["history"], source_code=model["didactic"]["operations"]["encolar"])
+        from app.services.priority_queue_dequeue_session_service import prepared_dequeue
+        model["prepared_dequeue_trace"] = prepared_dequeue(model["history"], source_code=model["didactic"]["operations"]["desencolar"])
     help_data = HelpService.get_structure_help(structure_id)
     return render_template(
         "sequential/structure.html",
@@ -61,6 +80,25 @@ def operate_structure(structure_id: str) -> Any:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
 
     SessionService.save_history(structure_id, result["history"])
+    if structure_id == "stack":
+        from app.services.stack_cleanup_session_service import remember_cleanup
+        remember_cleanup(result)
+        from app.services.stack_push_session_service import remember_push
+        remember_push(result)
+    if structure_id == "queue":
+        from app.services.queue_cleanup_session_service import remember_cleanup
+        remember_cleanup(result)
+        from app.services.queue_enqueue_session_service import remember_enqueue
+        remember_enqueue(result)
+        from app.services.queue_dequeue_session_service import remember_dequeue
+        remember_dequeue(result)
+    if structure_id == "priority_queue":
+        from app.services.priority_queue_cleanup_session_service import remember_cleanup
+        remember_cleanup(result)
+        from app.services.priority_queue_enqueue_session_service import remember_enqueue
+        remember_enqueue(result)
+        from app.services.priority_queue_dequeue_session_service import remember_dequeue
+        remember_dequeue(result)
     return jsonify(result), (200 if result["success"] else 400)
 
 
@@ -73,6 +111,25 @@ def reset_structure(structure_id: str) -> Any:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
 
     SessionService.clear_history(structure_id)
+    if structure_id == "stack":
+        from app.services.stack_cleanup_session_service import forget_cleanup
+        forget_cleanup()
+        from app.services.stack_push_session_service import forget_push
+        forget_push()
+    if structure_id == "queue":
+        from app.services.queue_cleanup_session_service import forget_cleanup
+        forget_cleanup()
+        from app.services.queue_enqueue_session_service import forget_enqueue
+        forget_enqueue()
+        from app.services.queue_dequeue_session_service import forget_dequeue
+        forget_dequeue()
+    if structure_id == "priority_queue":
+        from app.services.priority_queue_cleanup_session_service import forget_cleanup
+        forget_cleanup()
+        from app.services.priority_queue_enqueue_session_service import forget_enqueue
+        forget_enqueue()
+        from app.services.priority_queue_dequeue_session_service import forget_dequeue
+        forget_dequeue()
     model = StructureService.get_view_model(structure_id, [])
     return jsonify(
         {

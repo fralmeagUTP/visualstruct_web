@@ -7,6 +7,7 @@ from typing import Any
 
 from app.adapters.base_adapter import BaseAdapter
 from app.domain.graph import Grafo
+from app.domain.graph.educational_capacity import MAX_VERTICES, check_capacity
 
 
 class GraphAdapter(BaseAdapter):
@@ -14,6 +15,7 @@ class GraphAdapter(BaseAdapter):
 
     def __init__(self) -> None:
         """Initialize adapter state."""
+        self._enforce_educational_limit = True
         self._graph: Grafo[int] | None = None
         self._last_operation: dict[str, Any] = {}
         self._last_result: dict[str, Any] | None = None
@@ -69,22 +71,20 @@ class GraphAdapter(BaseAdapter):
         raise ValueError("El valor de 'dirigido' es invalido.")
 
     @staticmethod
-    def _parse_weight(payload: dict[str, Any], key: str = "weight") -> float:
-        """Parse edge weight as float, defaulting to 1.0."""
+    def _parse_weight(payload: dict[str, Any], key: str = "weight") -> int:
+        """Normalize finite integral values within the downloaded C int range."""
+        from app.domain.graph.integer_algorithms import integer_weight
         value = payload.get(key, 1)
         if value is None or str(value).strip() == "":
-            return 1.0
-        try:
-            return float(value)
-        except (TypeError, ValueError) as error:
-            raise ValueError("El peso debe ser numerico.") from error
+            return 1
+        return integer_weight(value)
 
     def _set_result(self, name: str, result: dict[str, Any]) -> dict[str, Any]:
         """Persist successful result payload."""
         self._last_result = result
         self._record_last_operation(
             name=name,
-            status="success",
+            status="success" if result.get("success", True) else "error",
             message=result.get("message", "Operacion ejecutada correctamente."),
         )
         return result
@@ -113,6 +113,8 @@ class GraphAdapter(BaseAdapter):
 
     def execute(self, operation_name: str, payload: dict[str, Any]) -> dict[str, Any]:
         """Execute one graph operation."""
+        if self._enforce_educational_limit:
+            check_capacity(self.graph, operation_name, payload, self._require_vertex, BaseAdapter._require_int)
         if operation_name == "create_graph":
             directed = self._parse_bool(payload.get("directed", False))
             self._graph = Grafo(dirigido=directed)
@@ -291,7 +293,7 @@ class GraphAdapter(BaseAdapter):
         if operation_name == "run_dijkstra":
             start = self._require_vertex(payload, "start", "inicio")
             end = self._require_vertex(payload, "end", "destino")
-            dist, prev = self.graph.dijkstra(start)
+            dist, prev = self.graph.dijkstra(start, end)
             previous = {key: value for key, value in prev.items()}
             path = self._rebuild_path(previous=previous, start=start, end=end)
             reachable = len(path) > 0
@@ -323,7 +325,7 @@ class GraphAdapter(BaseAdapter):
         if operation_name == "run_bellman_ford":
             start = self._require_vertex(payload, "start", "inicio")
             end = self._require_vertex(payload, "end", "destino")
-            dist, prev, has_negative_cycle = self.graph.bellman_ford(start)
+            dist, prev, has_negative_cycle = self.graph.bellman_ford(start, end)
             previous = {key: value for key, value in prev.items()}
             path: list[int] = []
             reachable = False
@@ -367,19 +369,27 @@ class GraphAdapter(BaseAdapter):
                 )
             return self._set_result(
                 operation_name,
-                {"message": message, "result": result},
+                {"message": message, "result": result, "success": not has_negative_cycle,
+                 "console": ["Se detecto un ciclo negativo."] if has_negative_cycle else []},
             )
 
         if operation_name == "run_prim":
             start_vertex = self._require_vertex(payload, "start", "inicio")
             mst, total = self.graph.prim(start_vertex)
-            result = {"mst_edges": mst, "total_weight": total}
+            components = self.graph.componentes_no_dirigidos()
+            connected = components <= 1
+            result = {
+                "mst_edges": mst, "total_weight": total, "connected": connected,
+                "components_count": components, "kind": "mst" if connected else "minimum_spanning_forest",
+                "start": start_vertex,
+            }
             return self._set_result(
                 operation_name,
                 {
                     "message": (
                         f"Prim desde '{start_vertex}' ejecutado. "
-                        f"Peso total del arbol de expansion minima: {total}."
+                        f"Peso total del {'arbol' if connected else 'bosque'} de expansion minima: {total}. "
+                        f"Componentes: {components}."
                     ),
                     "result": result,
                 },
@@ -387,10 +397,16 @@ class GraphAdapter(BaseAdapter):
 
         if operation_name == "run_kruskal":
             mst, total = self.graph.kruskal()
-            result = {"mst_edges": mst, "total_weight": total, "uses_union_find": True}
+            components = self.graph.componentes_no_dirigidos()
+            connected = components <= 1
+            result = {
+                "mst_edges": mst, "total_weight": total, "uses_union_find": True,
+                "connected": connected, "components_count": components,
+                "kind": "mst" if connected else "minimum_spanning_forest",
+            }
             return self._set_result(
                 operation_name,
-                {"message": f"Kruskal ejecutado. Peso total del arbol: {total}.", "result": result},
+                {"message": f"Kruskal ejecutado. Peso total del {'arbol' if connected else 'bosque'}: {total}. Componentes: {components}.", "result": result},
             )
 
         if operation_name == "clear_graph":
@@ -410,7 +426,7 @@ class GraphAdapter(BaseAdapter):
             "structure": "graph",
             "directed": self.graph.dirigido,
             "weighted": weighted,
-            "nodes": [{"id": str(vertex), "label": str(vertex), "value": str(vertex)} for vertex in nodes],
+            "nodes": [{"id": str(vertex), "label": str(vertex), "value": str(vertex), "marked": self.graph._g._marcas.get(vertex, 0)} for vertex in nodes],
             "edges": [
                 {"source": str(origin), "target": str(target), "weight": weight}
                 for origin, target, weight in edges
@@ -461,8 +477,9 @@ class GraphAdapter(BaseAdapter):
                 "inputs": [
                     {
                         "name": "vertices_count",
-                        "label": "Cantidad de vertices",
+                        "label": f"Cantidad de vertices (maximo {MAX_VERTICES})",
                         "type": "number",
+                        "min": 1, "max": MAX_VERTICES, "step": 1,
                     }
                 ],
             },

@@ -1,0 +1,14 @@
+{% if help_data.source_download %}
+<section class="help-source-download" aria-labelledby="source-download-title">
+  <h3 id="source-download-title">Código fuente completo del TAD</h3>
+  <p>Descarga el archivo C principal de <strong>{{ help_data.source_download.label }}</strong> y su encabezado para estudiarlo o compilarlo en tu equipo.</p>
+  <div class="help-source-actions">
+    <a class="btn" href="{{ url_for('help.download_tad_source', structure_id=structure_id, file_kind='source') }}" download="{{ help_data.source_download.source_name }}">Descargar {{ help_data.source_download.source_name }}</a>
+    <a class="btn secondary" href="{{ url_for('help.download_tad_source', structure_id=structure_id, file_kind='header') }}" download="{{ help_data.source_download.header_name }}">Descargar {{ help_data.source_download.header_name }}</a>
+  </div>
+  {% if help_data.source_download.note %}<p class="help-source-note">{{ help_data.source_download.note }}</p>{% endif %}
+  {% if help_data.source_download.dependencies %}
+  <p class="help-source-note">Dependencias: {% for dependency in help_data.source_download.dependencies %}<a href="{{ url_for('help.structure_help', structure_id=dependency) }}">{{ dependency }}</a>{% if not loop.last %}, {% endif %}{% endfor %}.</p>
+  {% endif %}
+</section>
+{% endif %}

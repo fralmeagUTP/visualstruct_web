@@ -2,15 +2,47 @@
 
 from __future__ import annotations
 
+from math import isfinite
 from typing import Any
 
 from flask import Blueprint, abort, jsonify, render_template, request
 
+from app.domain.graph.snapshot_pool import GraphSnapshotRecords
 from app.services.graph_help_service import GraphHelpService
 from app.services.graph_structure_service import GraphStructureService
 from app.services.session_service import SessionService
 
 graph_bp = Blueprint("graph", __name__, url_prefix="/graph")
+
+
+def _json_safe(value: Any, _memo=None) -> Any:
+    """Convert non-finite numeric sentinels to JSON-safe null values.
+
+    The graph algorithms use ``inf`` internally for an unreached distance.
+    Python's encoder can emit the non-standard token ``Infinity``; browsers
+    reject it in ``response.json()`` and the didactic trace never reaches the
+    visualizer. ``None`` keeps the semantic meaning and the UI renders it as ∞.
+    """
+    # Pool.encode has checked every primitive while constructing this private
+    # table. Borrow finite tables without a second million-object traversal.
+    # Non-finite pools still take the exact recursive null conversion below.
+    if isinstance(value,GraphSnapshotRecords) and value.is_json_safe:return value
+    if _memo is None:_memo = {}
+    if isinstance(value, (dict, list, tuple)):
+        cached = _memo.get(id(value))
+        if cached is not None and cached[0] is value:return cached[1]
+    if isinstance(value, float) and not isfinite(value):
+        return None
+    if isinstance(value, dict):
+        result = {key: _json_safe(item, _memo) for key, item in value.items()}
+        _memo[id(value)] = (value, result);return result
+    if isinstance(value, list):
+        result = [_json_safe(item, _memo) for item in value]
+        _memo[id(value)] = (value, result);return result
+    if isinstance(value, tuple):
+        result = [_json_safe(item, _memo) for item in value]
+        _memo[id(value)] = (value, result);return result
+    return value
 
 _GRAPH_PHASES: dict[str, dict[str, Any]] = {
     "construccion": {
@@ -190,7 +222,7 @@ def _render_graph_phase(structure_id: str, phase: str) -> str:
         abort(404)
     try:
         history = SessionService.get_history(session_key)
-        model = GraphStructureService.get_view_model(structure_id, history)
+        model = _json_safe(GraphStructureService.get_view_model(structure_id, history))
     except KeyError:
         abort(404)
 
@@ -233,7 +265,11 @@ def operate_structure(structure_id: str) -> Any:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
 
     SessionService.save_history(session_key, result["history"])
-    return jsonify(result), (200 if result["success"] else 400)
+    trace = result.get("execution_trace")
+    if trace and not trace.get("graph_snapshot_codec"):
+        from app.domain.graph.snapshot_pool import SnapshotPool
+        result = {**result, "execution_trace": (getattr(trace, "snapshot_pool", None) or SnapshotPool()).pack(trace)}
+    return jsonify(_json_safe(result)), (200 if result["success"] else 400)
 
 
 @graph_bp.post("/<structure_id>/reset")
@@ -251,7 +287,21 @@ def reset_structure(structure_id: str) -> Any:
         {
             "success": True,
             "message": "La estructura fue reiniciada.",
-            "visual_state": model["visual_state"],
+            "visual_state": _json_safe(model["visual_state"]),
             "history": [],
+            "main_c": model["main_c"],
         }
     )
+
+
+@graph_bp.post("/compare")
+def compare_algorithms() -> Any:
+    """Compare two algorithms over independent copies of a graph snapshot."""
+    body = request.get_json(silent=True) or {}
+    try:
+        result = GraphStructureService.compare_algorithms(
+            str(body.get("kind", "")), body.get("graph"), body.get("start"), body.get("end")
+        )
+    except ValueError as error:
+        return jsonify({"success": False, "message": str(error)}), 400
+    return jsonify(_json_safe({"success": True, **result}))

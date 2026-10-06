@@ -7,11 +7,15 @@ from typing import Any
 
 from app.adapters.base_adapter import BaseAdapter
 from app.adapters.graph_adapter import GraphAdapter
+from app.domain.graph.educational_capacity import MAX_VERTICES, GraphCapacityError
 from app.services.observability import observe_replay
 from app.domain.graph import PesoNegativoError, TADError, VerticeNoEncontradoError
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
+from app.domain.graph.pedagogy import GRAPH_EDGE_POLICY, GRAPH_GUIDED_EXAMPLES
+from app.services.graph_main_service import build_graph_main
+from app.services.graph_mark_effects import capture_mark_effect, restore_mark_effect
 
 
 class GraphStructureService:
@@ -80,11 +84,44 @@ class GraphStructureService:
         """Replay mutating history and return adapter with valid history."""
         adapter = GraphStructureService._new_adapter(structure_id)
         valid_history: list[dict[str, Any]] = []
+        # Reconstruct trusted pre-limit history in full; enforce on new requests.
+        adapter._enforce_educational_limit = False
 
-        for step in history:
+        for step in history if isinstance(history, list) else []:
+            if not isinstance(step, dict):
+                continue
             operation = step.get("operation")
             payload = step.get("payload", {})
             if not isinstance(operation, str) or not isinstance(payload, dict):
+                continue
+            if operation == "run_kruskal":
+                if adapter.graph.dirigido:
+                    continue
+                valid_history.append({"operation": operation, "payload": deepcopy(payload)})
+                continue
+            # Retain successful traversal/path calls for generated-main history, but do
+            # not execute historical read operations while rebuilding topology.
+            if operation in {"run_bfs", "run_dfs", "run_dijkstra", "run_bellman_ford", "run_prim"}:
+                try:
+                    start = adapter._require_vertex(payload, "start", "inicio")
+                    if not adapter.graph.existe_vertice(start) and not (operation == "run_prim" and adapter.graph.cantidad_vertices() == 0):
+                        continue
+                    if operation == "run_prim" and adapter.graph.dirigido:
+                        continue
+                    if operation in {"run_dijkstra", "run_bellman_ford"}:
+                        # Validate the same existing API contract at this
+                        # chronological position, without running the query.
+                        adapter._require_vertex(payload, "end", "destino")
+                        if operation == "run_dijkstra":
+                            adapter.graph._validar_pesos_no_negativos()
+                except (TADError, ValueError, TypeError, KeyError):
+                    continue
+                entry = {"operation": operation, "payload": deepcopy(payload)}
+                if operation in {"run_bfs", "run_dfs"}:
+                    effect = restore_mark_effect(adapter, operation, start, valid_history, step.get("mark_effect"))
+                    if effect is not None:
+                        entry["mark_effect"] = effect
+                valid_history.append(entry)
                 continue
             try:
                 adapter.execute(operation, payload)
@@ -92,6 +129,7 @@ class GraphStructureService:
                 continue
             valid_history.append({"operation": operation, "payload": deepcopy(payload)})
 
+        adapter._enforce_educational_limit = True
         return adapter, valid_history
 
     @staticmethod
@@ -129,6 +167,10 @@ class GraphStructureService:
             "visual_state": adapter.to_visual_state(),
             "didactic": didactic_data,
             "history": valid_history,
+            "main_c": build_graph_main(valid_history),
+            "guided_examples": deepcopy(GRAPH_GUIDED_EXAMPLES),
+            "edge_policy": deepcopy(GRAPH_EDGE_POLICY),
+            "max_vertices": MAX_VERTICES,
         }
 
     @staticmethod
@@ -163,11 +205,21 @@ class GraphStructureService:
                 "message": message,
                 "visual_state": before_state,
                 "history": valid_history,
+            "main_c": build_graph_main(valid_history),
                 "execution_trace": trace,
             }
 
         try:
             result = adapter.execute(operation_name, payload)
+        except GraphCapacityError as error:
+            trace = ExecutionTraceService.build_trace(
+                structure_id=structure_id, operation_name=operation_name, payload=payload,
+                didactic_data=didactic_data, before_state=before_state, after_state=before_state,
+                success=False, message=str(error), mutates=False)
+            trace.update(execution_started=False, C_instruction_events=[])
+            return {"success": False, "message": str(error), "visual_state": before_state,
+                "history": valid_history, "main_c": build_graph_main(valid_history),
+                "execution_trace": trace}
         except (TADError, ValueError, TypeError, KeyError) as error:
             message = GraphStructureService._didactic_error(error)
             if hasattr(adapter, "record_failed_operation"):
@@ -189,11 +241,17 @@ class GraphStructureService:
                 "message": message,
                 "visual_state": after_state,
                 "history": valid_history,
+            "main_c": build_graph_main(valid_history),
                 "execution_trace": trace,
             }
 
-        if operation_meta.get("mutates", False):
-            valid_history.append({"operation": operation_name, "payload": deepcopy(payload)})
+        operation_success = bool(result.get("success", True))
+        if operation_success and (operation_meta.get("mutates", False) or operation_name in {"run_bfs", "run_dfs", "run_dijkstra", "run_bellman_ford", "run_prim", "run_kruskal"}):
+            entry = {"operation": operation_name, "payload": deepcopy(payload)}
+            if operation_name in {"run_bfs", "run_dfs"}:
+                start = adapter._require_vertex(payload, "start", "inicio")
+                entry["mark_effect"] = capture_mark_effect(adapter, operation_name, start, valid_history)
+            valid_history.append(entry)
 
         after_state = adapter.to_visual_state()
         message = result.get("message", "Operación ejecutada correctamente.")
@@ -204,15 +262,61 @@ class GraphStructureService:
             didactic_data=didactic_data,
             before_state=before_state,
             after_state=after_state,
-            success=True,
+            success=operation_success,
             message=message,
             mutates=bool(operation_meta.get("mutates", False)),
+            console_events=result.get("console") if isinstance(result.get("console"), list) else [],
         )
         return {
-            "success": True,
+            "success": operation_success,
             "message": message,
             "result": result.get("result"),
             "visual_state": after_state,
             "history": valid_history,
+            "main_c": build_graph_main(valid_history),
             "execution_trace": trace,
         }
+
+    @staticmethod
+    def compare_algorithms(kind: str, graph_state: Any, start: Any = None, end: Any = None) -> dict[str, Any]:
+        """Run two algorithms on independent copies of one immutable graph snapshot."""
+        pairs = {
+            "bfs-dfs": ("run_bfs", "run_dfs"),
+            "dijkstra-bellman-ford": ("run_dijkstra", "run_bellman_ford"),
+            "prim-kruskal": ("run_prim", "run_kruskal"),
+        }
+        if kind not in pairs or not isinstance(graph_state, dict):
+            raise ValueError("Comparación de grafos no soportada.")
+        nodes = graph_state.get("nodes") or []
+        edges = graph_state.get("edges") or []
+        if not nodes or len(nodes) > MAX_VERTICES or len(edges) > 300:
+            raise ValueError(f"La comparación requiere entre 1 y {MAX_VERTICES} vértices y máximo 300 aristas.")
+        immutable = deepcopy({"directed": bool(graph_state.get("directed", False)), "nodes": nodes, "edges": edges})
+
+        def execute_copy(operation: str) -> dict[str, Any]:
+            adapter = GraphAdapter()
+            adapter.execute("create_graph", {"directed": immutable["directed"]})
+            for node in immutable["nodes"]:
+                adapter.execute("insert_vertex", {"vertex": node.get("id")})
+            for edge in immutable["edges"]:
+                adapter.execute("insert_edge", {"origin": edge.get("source"), "target": edge.get("target"), "weight": edge.get("weight", 1)})
+            payload: dict[str, Any] = {}
+            if operation in {"run_bfs", "run_dfs", "run_dijkstra", "run_bellman_ford", "run_prim"}:
+                payload["start"] = start if start not in (None, "") else immutable["nodes"][0].get("id")
+            if operation in {"run_dijkstra", "run_bellman_ford"}:
+                payload["end"] = end if end not in (None, "") else immutable["nodes"][-1].get("id")
+            outcome = adapter.execute(operation, payload).get("result")
+            if isinstance(outcome, list):
+                summary = {"order": outcome, "visited_count": len(outcome), "auxiliary": "FIFO" if operation == "run_bfs" else "pila/recursión"}
+            else:
+                summary = deepcopy(outcome or {})
+            return {"algorithm": operation, "payload": payload, "summary": summary, "final_state": deepcopy(adapter.to_visual_state())}
+
+        left_name, right_name = pairs[kind]
+        left, right = execute_copy(left_name), execute_copy(right_name)
+        conclusions = {
+            "bfs-dfs": "BFS usa FIFO y visita por niveles; DFS usa pila/recursión y profundiza antes de retroceder.",
+            "dijkstra-bellman-ford": "Dijkstra cierra mínimos con pesos no negativos; Bellman-Ford relaja por pasadas y admite pesos negativos.",
+            "prim-kruskal": "Prim crece desde una frontera; Kruskal ordena aristas y evita ciclos mediante Union-Find.",
+        }
+        return {"kind": kind, "input": immutable, "left": left, "right": right, "conclusion": conclusions[kind], "isolated": True}

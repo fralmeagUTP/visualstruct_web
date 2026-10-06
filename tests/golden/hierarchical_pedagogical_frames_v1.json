@@ -1,0 +1,15 @@
+{
+  "schema": "hierarchical-pedagogical-golden/v1",
+  "fixtures": {
+    "comparison": "if (valor < nodo->valor) {",
+    "descent": "nodo->izquierdo = abb_insertar(nodo->izquierdo, valor);",
+    "return": "return nodo;",
+    "assignment": "int balance = 0;",
+    "allocation": "ABBNodo* nuevo = malloc(sizeof *nuevo);",
+    "link": "nuevo->izquierdo = nuevo->derecho = NULL;",
+    "rotation": "avl_RSD(raiz, padre);",
+    "recolor": "n->padre->rbt_color = NEGRO;",
+    "swap": "intercambiar(&m->datos[indice], &m->datos[padre]);",
+    "free": "free(nodo);"
+  }
+}

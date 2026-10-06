@@ -20,18 +20,18 @@
       "final": {"size": 3, "root": 20, "inorder": [10, 20, 30]}
     },
     "graph": {
-      "step_count": 9,
+      "step_count": 18,
       "required_lines": ["Grafo grafo_insertar_arco(Grafo g, int x, int y, int z) {", "    g.a = nuevo;"],
       "final": {"vertices": 2, "edges": 1, "edge": ["1", "2", 3.0]}
     },
     "hash": {
-      "step_count": 13,
-      "required_lines": ["bool th_insertar(TablaHash *tabla, int clave, int valor) {", "    tabla->cantidad++;"],
-      "final": {"size": 1, "capacity": 5, "items": [["A", "1"]]}
+      "step_count": 18,
+      "required_lines": ["bool th_insertar(TablaHash *tabla, int clave, int valor) {", "int th_indice(const TablaHash *tabla, int clave) {", "    tabla->cantidad++;"],
+      "final": {"size": 1, "capacity": 5, "items": [[1, 1]]}
     },
     "sorting": {
-      "step_count": 8,
-      "required_lines": ["\t\t\tif (arreglo[j] > arreglo[j + 1]) {", "\t\t\t\tintercambiar(&arreglo[j], &arreglo[j + 1]);"],
+      "step_count": 17,
+      "required_lines": ["\t\t\tif (arreglo[j] > arreglo[j + 1]) {", "\t\t\t\tintercambiar(&arreglo[j], &arreglo[j + 1]);", "\treturn arreglo != NULL && n > 0;", "\tif (a == NULL || b == NULL) return;", "\ttemporal = *a;", "\t*a = *b;", "\t*b = temporal;"],
       "final": {"items": [1, 2, 3], "algorithm": "burbuja"}
     }
   }

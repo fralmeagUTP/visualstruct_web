@@ -1,24 +1,23 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}Ayuda | {{ help_data.title }}{% endblock %}
 {% block content %}
 <section>
   <h2>{{ help_data.title }}</h2>
   <h3>Descripcion del TAD</h3>
-  <p>{{ help_data.tad_description }}</p>
+  <p>{{ help_data.summary }}</p>
+  {% include "help/_source_download.html" %}
+  {% include "help/_execution_guide.html" %}
+  {% include "help/_operation_contracts.html" %}
 
-  <h3>Controles de ejecucion paso a paso</h3>
+  <h3>Operaciones y utilidades explicadas</h3>
+  {% if help_data.learning_guide %}
+  <h3>Guía de aprendizaje</h3><p><strong>Objetivo:</strong> {{ help_data.learning_guide.objective }}</p><p><strong>Estrategia:</strong> {{ help_data.learning_guide.strategy }}</p><p><strong>Memoria C:</strong> {{ help_data.learning_guide.memory }}</p><h4>Invariantes</h4><ul>{% for item in help_data.learning_guide.invariants %}<li>{{ item }}</li>{% endfor %}</ul><h4>Complejidad</h4><ul>{% for name, cost in help_data.learning_guide.complexity.items() %}<li><strong>{{ name }}:</strong> {{ cost }} para consulta/inserción/eliminación de una clave; listar, estadísticas y vaciar recorren buckets y cadenas.</li>{% endfor %}</ul><h4>Aplicaciones</h4><ul>{% for item in help_data.learning_guide.applications %}<li>{{ item }}</li>{% endfor %}</ul><h4>Errores frecuentes</h4><ul>{% for item in help_data.learning_guide.common_errors %}<li>{{ item }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if help_data.glossary %}<h3>Glosario</h3><dl>{% for term, meaning in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ meaning }}</dd>{% endfor %}</dl>{% endif %}
+  {% if help_data.teacher_guide %}<h3>Guía docente</h3><ul>{% for item in help_data.teacher_guide %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}
+  {% if help_data.keyboard %}<h3>Teclado</h3><ul>{% for item in help_data.keyboard %}<li>{% if item == "Alt+→: siguiente paso." %}Alt+→ activa/cierra Paso a paso; Siguiente paso avanza la traza.{% else %}{{ item }}{% endif %}</li>{% endfor %}</ul>{% endif %}
   <ul>
-    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra toda la traza; desactivado aplica solo el resultado final.</li>
-    <li>Botones de ejecucion: <strong>Reproducir</strong> y <strong>Reiniciar</strong>.</li>
-    <li>Navegacion por traza: <strong>Anterior paso</strong> y <strong>Siguiente paso</strong>.</li>
-    <li><strong>Velocidad de simulacion</strong>: slider de <strong>-2x</strong> a <strong>+2x</strong> (0.00x = 1.00x real).</li>
-    <li>En modo rapido (checkbox desactivado), el resultado visual final debe coincidir con el ultimo estado de la traza interpretada.</li>
-    <li>Al llegar al ultimo paso, <strong>Siguiente paso</strong> se bloquea hasta cambiar entradas/operacion; <strong>Anterior paso</strong> se habilita solo cuando ya avanzaste.</li>
-  </ul>
-
-  <h3>Operaciones soportadas</h3>
-  <ul>
-    {% for operation in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
+    {% for operation in help_data.supported_operations %}
     <li>{{ operation }}</li>
     {% endfor %}
   </ul>
@@ -37,11 +36,14 @@
   <h3>Estructura del TAD en C</h3>
   <pre class="didactic-code">{{ help_data.c_structure_code }}</pre>
 
-  <h3>Metodos del TAD en C</h3>
+  <h3>Código C y llamadores equivalentes</h3>
   {% if help_data.c_methods %}
     {% for method in help_data.c_methods %}
     <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
-    <p>{{ method.explanation }}</p>
+    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>La aplicación retira también los arcos incidentes. El cuerpo grafo_eliminar_vertice mostrado sólo retira el vértice; el llamador debe gestionar esos arcos.</p>
+    {% elif structure_id == "graph" and method.operation == "generate_random_graph" %}<p>La generación aleatoria pertenece a la aplicación; no existe una función C descargable equivalente de generación. Los vértices y arcos materializados se reproducen mediante llamadas reales del main.</p>
+    {% elif structure_id == "hash_table" and method.operation == "create_table" %}<p>Inicializa los buckets con capacidad fija. Recrear en la aplicación destruye antes la tabla anterior; th_inicializar por sí solo no la libera.</p>
+    {% else %}<p>{{ method.explanation }}</p>{% endif %}
     <pre class="didactic-code">{{ method.code }}</pre>
     {% endfor %}
   {% else %}

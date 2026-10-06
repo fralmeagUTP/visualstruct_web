@@ -1,4 +1,68 @@
+// Numeric Graph only: exact versioned subtree references, reconstructed once.
+// Shared frozen objects make replay read-only and avoid duplicated snapshots.
+function gExpandGraphInstructionTrace(trace) {
+  if (!trace || !trace.graph_snapshot_codec) return trace;
+  if (trace.graph_snapshot_codec !== "graph-snapshot-pool/v1") throw new Error("Codec Graph no compatible");
+  const objects = [];
+  function decode(value) {
+    if (value && typeof value === "object") {
+      const keys = Object.keys(value), id = value.$graph_ref;
+      if (Array.isArray(value) || keys.length !== 1 || keys[0] !== "$graph_ref" || !Number.isInteger(id) || id < 0 || id >= objects.length) throw new Error("Referencia Graph inválida");
+      return objects[id];
+    }
+    return value;
+  }
+  for (const record of trace.graph_snapshot_pool) {
+    if (!Array.isArray(record) || record.length !== 2 || ![0, 1].includes(record[0]) || !Array.isArray(record[1])) throw new Error("Registro Graph inválido");
+    let value;
+    if (record[0] === 0) {
+      const keys = record[1].map(item => item[0]);
+      if (keys.some(k => typeof k !== "string") || new Set(keys).size !== keys.length) throw new Error("Claves Graph inválidas");
+      value = Object.fromEntries(record[1].map(([key, child]) => [key, decode(child)]));
+    } else value = record[1].map(decode);
+    objects.push(Object.freeze(value));
+  }
+  const {graph_snapshot_codec, graph_snapshot_pool, graph_snapshot_stats, ...expanded} = trace;
+  expanded.steps = trace.steps.map(step => Object.freeze(Object.fromEntries(Object.entries(step).map(([key, value]) => [key, value && typeof value === "object" && !Array.isArray(value) && Object.prototype.hasOwnProperty.call(value, "$graph_ref") ? decode(value) : value]))));
+  if (trace.numeric_C_memory) expanded.numeric_C_memory = decode(trace.numeric_C_memory);
+  return expanded;
+}
+
 "use strict";
+
+function renderGraphPedagogy(frame,level){
+  if(!frame)return;
+  const summary=gById("graph-pedagogy-summary"),representation=gById("graph-representation-view"),aux=gById("graph-auxiliary-view"),traversal=gById("graph-traversal-view"),table=gById("graph-table-view"),relaxation=gById("graph-relaxation-view"),condition=gById("graph-condition-view"),invariant=gById("graph-invariant-view");
+  if(summary)summary.innerHTML=`<strong>${gEscape(frame.phase?.label||frame.concept)}</strong>: ${gEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;
+  if(representation){const adjacency=frame.representation?.adjacency||{},degrees=frame.representation?.degrees||[];representation.innerHTML=`<p><strong>${frame.representation?.directed?"Arcos dirigidos (→)":"Aristas no dirigidas (—)"}</strong></p><ul>${Object.entries(adjacency).map(([vertex,items])=>`<li><code>${gEscape(vertex)}</code>: ${items.length?items.map((item)=>`${gEscape(item.vertex)}(${gEscape(item.weight)})`).join(", "):"∅"}</li>`).join("")}</ul><p>${degrees.map((item)=>frame.representation?.directed?`${gEscape(item.vertex)}: entrada ${item.in_degree}, salida ${item.out_degree}`:`${gEscape(item.vertex)}: grado ${item.degree}`).join(" · ")}</p><p>Reservados: ${frame.memory?.allocated?.length||0}; liberados: ${frame.memory?.freed?.length||0}; punteros colgantes: ${frame.memory?.dangling_references?.length||0}</p>`;}
+  if(aux)aux.innerHTML=`<strong>${gEscape(frame.auxiliary?.kind||"—")}</strong><br>Contenido: <code>${gEscape(JSON.stringify(frame.auxiliary?.items||[]))}</code><br>Seleccionado: ${gEscape(frame.auxiliary?.selected??"—")} · Iteración: ${gEscape(frame.auxiliary?.iteration??"—")}`;
+  if(traversal)traversal.innerHTML=`Árbol/bosque: <code>${gEscape(JSON.stringify(frame.traversal?.tree_edges||[]))}</code><br>Orden descubierto: <code>${gEscape(JSON.stringify(frame.traversal?.discovery_order||[]))}</code><br>Activo: ${gEscape(frame.traversal?.active??"—")}`;
+  if(table)table.innerHTML=`<table><thead><tr><th>Vértice</th><th>Estado</th><th>Distancia</th><th>Predecesor</th><th>Iteración</th></tr></thead><tbody>${(frame.vertices||[]).map((item)=>`<tr><td>${gEscape(item.id)}</td><td>${gEscape(item.status)}</td><td>${gEscape(item.distance??"∞")}</td><td>${gEscape(item.predecessor??"—")}</td><td>${gEscape(frame.auxiliary?.iteration??"—")}</td></tr>`).join("")}</tbody></table>`;
+  if(relaxation)relaxation.innerHTML=frame.relaxation?`<code>${gEscape(frame.relaxation.expression)}</code><br>${gEscape(frame.relaxation.old_distance??"∞")} &gt; ${gEscape(frame.relaxation.candidate??"∞")} ⇒ <strong>${frame.relaxation.success?"relajación exitosa":"sin cambio"}</strong><br>Nuevo valor: ${gEscape(frame.relaxation.new_distance??"∞")}; predecesor: ${gEscape(frame.relaxation.predecessor??"—")}`:"No se evalúa una relajación en este paso.";
+  if(condition)condition.innerHTML=frame.condition?`<code>${gEscape(frame.condition.substituted)}</code> ⇒ <strong>${gEscape(frame.condition.result)}</strong><br>${gEscape(frame.condition.consequence)}`:`Arista activa: ${gEscape(frame.active_edge?`${frame.active_edge.from} → ${frame.active_edge.to} (peso ${frame.active_edge.weight})`:"—")}`;
+  if(frame.memory_state && frame.vertex_operation){
+    const st=frame.memory_state;
+    if(representation)representation.innerHTML+=`<div data-graph-instruction-memory><h4>Memoria C por instrucción</h4><p data-graph-heads>${frame.instruction_event?.origin === "caller" ? "Cabezas del caller C (retira incidentes tras el retorno):" : "Cabezas C (arcos conservados por esta función):"} ${gEscape(JSON.stringify(st.graph))}</p>${(st.heap_nodes||[]).map(n=>`<div data-graph-memory-node="${gEscape(n.id)}" data-graph-memory-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(n.kind)} · ${n.borrowed?"prestado":"propio"}: <code>${gEscape(JSON.stringify(n.fields||n.items))}</code></div>`).join("")}<p data-graph-retired>Retiradas (sólo registro histórico): ${gEscape(JSON.stringify(st.retired_objects||[]))}</p></div>`;
+    if(aux)aux.innerHTML+=`<div data-graph-variables>${(frame.variables||[]).map(v=>`<div data-graph-variable="${gEscape(v.name)}" data-graph-scope="${gEscape(v.scope)}">${gEscape(v.type)} ${gEscape(v.name)} (${gEscape(v.scope)}): ${gEscape(JSON.stringify(v.previous))} → ${gEscape(JSON.stringify(v.value))}</div>`).join("")}</div><div data-graph-frames>${(frame.call_stack||[]).map(f=>`<div data-graph-frame="${gEscape(f.frame_id)}">${gEscape(f.function)}: ${gEscape(f.scope_status)}</div>`).join("")}</div>`;
+    if(traversal)traversal.innerHTML+=`<p data-graph-return>${frame.instruction_event?.origin === "caller" ? "Retorno C registrado (identidades retiradas no utilizables):" : "Retorno al caller:"} ${gEscape(JSON.stringify(st.returned))}</p>`;
+  }else if(frame.memory_state && (frame.numeric_algorithm || frame.query_operation || frame.construction_operation)){
+    const st=frame.memory_state;
+    if(representation)representation.innerHTML+=`<div data-graph-instruction-memory><h4>Memoria C por instrucción</h4><p data-graph-heads>${frame.construction_operation ? "Cabezas del caller propietario:" : "Grafo prestado:"} ${gEscape(JSON.stringify(st.graph))}</p>${(st.heap_nodes||[]).map(n=>`<div data-graph-memory-node="${gEscape(n.id)}" data-graph-memory-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(n.kind)} · ${n.borrowed?"prestado":"propio"}: <code>${gEscape(JSON.stringify(n.fields||n.items))}</code></div>`).join("")}<p data-graph-retired>Retiradas (sólo registro histórico): ${gEscape(JSON.stringify(st.retired_objects||[]))}</p></div>`;
+    if(aux)aux.innerHTML+=`<div data-graph-variables>${(frame.variables||[]).map(v=>`<div data-graph-variable="${gEscape(v.name)}" data-graph-scope="${gEscape(v.scope)}">${gEscape(v.type)} ${gEscape(v.name)} (${gEscape(v.scope)}): ${gEscape(JSON.stringify(v.previous))} → ${gEscape(JSON.stringify(v.value))}</div>`).join("")}</div><div data-graph-frames>${(frame.call_stack||[]).map(f=>`<div data-graph-frame="${gEscape(f.frame_id)}">${gEscape(f.function)}: ${gEscape(f.scope_status)}</div>`).join("")}</div>`;
+    if(traversal)traversal.innerHTML+=`<p data-graph-return>Retorno al caller: ${gEscape(frame.query_operation ? JSON.stringify(st.returned) : frame.construction_operation ? JSON.stringify(st.returned) : st.returned)}</p>`;
+  }else if(frame.memory_state){
+    const st=frame.memory_state;
+    if(representation)representation.innerHTML+=`<div data-bfs-memory><h4>Reservas y enlaces C (identidades simbólicas)</h4>${st.heap_nodes.map(n=>`<div data-bfs-node="${gEscape(n.id)}" data-bfs-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(JSON.stringify(n))}</div>`).join("")}<p>Retiradas: ${gEscape(JSON.stringify(st.freed_nodes))}</p></div>`;
+    if(aux)aux.innerHTML+=`<p data-bfs-queue>${gEscape(JSON.stringify(st.queue))}</p><div data-bfs-variables>${frame.variables.map(v=>`<div data-bfs-variable="${gEscape(v.name)}" data-bfs-scope="${gEscape(v.scope)}">${gEscape(v.type)} ${gEscape(v.name)} (${gEscape(v.scope)}): ${gEscape(JSON.stringify(v.previous))} → ${gEscape(JSON.stringify(v.value))}</div>`).join("")}</div><div data-bfs-frames>${frame.call_stack.map(f=>`<div data-bfs-frame="${gEscape(f.frame_id)}">${gEscape(f.function)}: ${gEscape(f.scope_status)}</div>`).join("")}</div>`;
+    if(st.head_storage && representation)representation.innerHTML+=`<p data-dfs-head-storage>${gEscape(JSON.stringify(st.head_storage))}</p>`;
+    if(traversal)traversal.innerHTML+=`<p data-bfs-output>Recorrido publicado: ${gEscape(JSON.stringify(st.result_nodes.map(n=>n.value)))}</p><p>Retorno al caller: ${gEscape(st.published)}</p>`;
+  }
+  if(invariant)invariant.innerHTML=`<strong>${gEscape(frame.invariant?.symbol||"")} ${gEscape(frame.invariant?.name||"")}</strong><br>${gEscape(frame.invariant?.evidence||"")}`;
+}
+
+function enhanceGraphCodeNavigation(activeLine=null){const code=gById("op-pseudocode"),list=gById("graph-function-list"),hide=gById("graph-hide-comments");if(!code||!list)return;const raw=String(code.dataset.rawCode||code.textContent||"");const rows=raw.replaceAll("\r\n","\n").split("\n"),functions=[];rows.forEach((row,index)=>{const match=row.match(/^\s*(?:static\s+)?(?:void|bool|int|double|size_t|Grafo|Lista\w*)\s*\**\s*([A-Za-z_]\w*)\s*\(/);if(match&&!['if','for','while','switch'].includes(match[1]))functions.push({name:match[1],line:index});});let block=false;code.querySelectorAll(".code-line").forEach((node,index)=>{const value=String(rows[index]||"").trim(),starts=value.startsWith("/*");node.classList.toggle("is-code-comment",block||starts||value.startsWith("//")||value.startsWith("*"));if(starts&&!value.includes("*/"))block=true;if(block&&value.includes("*/"))block=false;});const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0];list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${gEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>';list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>code.querySelector(`.code-line[data-line="${button.dataset.line}"]`)?.scrollIntoView({block:"center"})));code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));}
+
+function initGraphResponsiveWorkspace(){const workspace=document.querySelector(".graph-primary-workspace"),tabs=[...document.querySelectorAll("[data-graph-tab]")];if(!workspace||!tabs.length)return;let saved="visual";try{saved=sessionStorage.getItem("graph-active-tab")||"visual";}catch(_error){/* optional */}const activate=(name)=>{const value=name==="code"?"code":"visual";workspace.dataset.activeTab=value;tabs.forEach((tab)=>{const active=tab.dataset.graphTab===value;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));});try{sessionStorage.setItem("graph-active-tab",value);}catch(_error){/* optional */}};tabs.forEach((tab)=>tab.addEventListener("click",()=>activate(tab.dataset.graphTab)));activate(saved);}
 
 function gById(id) {
   return document.getElementById(id);
@@ -81,7 +145,7 @@ function gPushUniqueHistoryEntry(history, entry) {
     return false;
   }
   const last = history.length ? history[history.length - 1] : null;
-  if (gBuildHistoryEntrySignature(last) === gBuildHistoryEntrySignature(entry)) {
+  if (!["run_bfs", "run_dfs", "run_dijkstra", "run_bellman_ford", "run_prim", "run_kruskal"].includes(entry.operation) && gBuildHistoryEntrySignature(last) === gBuildHistoryEntrySignature(entry)) {
     return false;
   }
   history.push(entry);
@@ -285,7 +349,9 @@ function buildGraphInputs(operation, container, prefix) {
       input = document.createElement("input");
       input.type = field.type === "number" ? "number" : "text";
       if (field.type === "number") {
-        input.step = "any";
+        input.step = field.step === undefined ? "any" : String(field.step);
+        if (field.min !== undefined) input.min = String(field.min);
+        if (field.max !== undefined) input.max = String(field.max);
       }
     }
 
@@ -728,6 +794,8 @@ function renderGraphState(state, container, simulation, traceDebug) {
   html += "<div class=\"viz-canvas\">";
   html += `<div class=\"viz-meta\"><strong>Grafo</strong> | Tipo: ${graphType} | Ponderado: ${weighted} | Vértices: ${metadata.vertices_count ?? 0} | Aristas: ${metadata.edges_count ?? 0}</div>`;
   html += `<div class=\"viz-stage\"><div class="viz-stage-center">${renderGraphSvg(state, simulation, traceDebug)}</div></div>`;
+  if(traceDebug?.bfs_memory || traceDebug?.dfs_memory){const st=traceDebug.bfs_memory || traceDebug.dfs_memory;html+=`<section data-bfs-live-memory><h4>Estado C por instrucción</h4><p>${st.recursive_frames ? "Pila recursiva: "+gEscape(JSON.stringify(st.recursive_frames.map(f=>f.parameters.actual))) : "Cola: "+gEscape(JSON.stringify(st.queue))}; resultado: ${gEscape(st.published)}</p><div class="viz-path-steps">${st.head_storage ? `<p data-dfs-live-head>${gEscape(JSON.stringify(st.head_storage))}</p>` : ""}${st.heap_nodes.map(n=>`<div class="viz-path-node" data-bfs-live-node="${gEscape(n.id)}" data-bfs-next="${gEscape(n.next)}" data-bfs-mark="${gEscape(n.mark??"-")}" data-bfs-value="${gEscape(n.value??"-")}"><strong>${gEscape(n.id)}</strong> (${gEscape(n.kind)})<br>${gEscape(n.value??`${n.origin} → ${n.target}`)}<br>sig: ${gEscape(n.next)}; marcado: ${gEscape(n.mark??"-")}</div>`).join("")}</div></section>`;}
+
 
   if (state.last_result && state.last_result.result !== undefined) {
     html += `<div class=\"viz-traversals\">${formatGraphResult(state)}</div>`;
@@ -826,105 +894,17 @@ function createGraphHistoryEntry(subroutine, payloadText, resultText, operationN
   };
 }
 
-function graphMainCallForEntry(entry, index) {
-  const payload = entry && entry.payloadRaw && typeof entry.payloadRaw === "object" ? entry.payloadRaw : {};
-  const directed = String(payload.directed || "").toLowerCase() === "true";
-  const vertex = Object.prototype.hasOwnProperty.call(payload, "vertex") ? String(payload.vertex).trim() : "";
-  const origin = Object.prototype.hasOwnProperty.call(payload, "origin") ? String(payload.origin).trim() : "";
-  const target = Object.prototype.hasOwnProperty.call(payload, "target") ? String(payload.target).trim() : "";
-  const weight = Object.prototype.hasOwnProperty.call(payload, "weight") ? String(payload.weight).trim() : "";
-  const start = Object.prototype.hasOwnProperty.call(payload, "start") ? String(payload.start).trim() : "";
-  const end = Object.prototype.hasOwnProperty.call(payload, "end") ? String(payload.end).trim() : "";
-
-  if (entry.operation === "create_graph") {
-    return `/* TAD nuevo: reinicio del grafo (dirigido=${directed ? "true" : "false"} didáctico). */ g = grafo_crear();`;
-  }
-  if (entry.operation === "insert_vertex") {
-    return `g = grafo_insertar_vertice(g, ${vertex || "0"});`;
-  }
-  if (entry.operation === "remove_vertex") {
-    return `g = grafo_eliminar_vertice(g, ${vertex || "0"});`;
-  }
-  if (entry.operation === "insert_edge") {
-    return `g = grafo_insertar_arco(g, ${origin || "0"}, ${target || "0"}, ${weight || "1"});`;
-  }
-  if (entry.operation === "remove_edge") {
-    return `g = grafo_eliminar_arco(g, ${origin || "0"}, ${target || "0"});`;
-  }
-  if (entry.operation === "exists_vertex") {
-    return `int existe_${index} = grafo_existe_vertice(g, ${vertex || "0"});`;
-  }
-  if (entry.operation === "exists_edge") {
-    return `int existe_${index} = grafo_existe_arco(g, ${origin || "0"}, ${target || "0"});`;
-  }
-  if (entry.operation === "neighbors") {
-    return `ListaVertice vecinos_${index} = grafo_sucesores(g, ${vertex || "0"});`;
-  }
-  if (entry.operation === "edge_weight") {
-    return `int peso_${index} = grafo_costo_arco(g, ${origin || "0"}, ${target || "0"});`;
-  }
-  if (entry.operation === "list_vertices") {
-    return `ListaVertice vertices_${index} = grafo_vertices(g);`;
-  }
-  if (entry.operation === "list_edges") {
-    return `ListaArco arcos_${index} = grafo_arcos(g);`;
-  }
-  if (entry.operation === "run_bfs") {
-    return `ListaVertice rec_${index} = grafo_bfs(g, ${start || "0"});`;
-  }
-  if (entry.operation === "run_dfs") {
-    return `ListaVertice rec_${index} = grafo_dfs(g, ${start || "0"});`;
-  }
-  if (entry.operation === "run_dijkstra") {
-    return `ListaArco camino_${index} = grafo_dijkstra(g, ${start || "0"}, ${end || "0"});`;
-  }
-  if (entry.operation === "run_bellman_ford") {
-    return `ListaArco camino_${index} = grafo_bellman_ford(g, ${start || "0"}, ${end || "0"});`;
-  }
-  if (entry.operation === "run_prim") {
-    return `ListaArco mst_${index} = grafo_prim(g, ${start || "0"});`;
-  }
-  if (entry.operation === "run_kruskal") {
-    return `ListaArco mst_${index} = grafo_kruskal(g);`;
-  }
-  if (entry.operation === "clear_graph") {
-    return "g = grafo_crear();";
-  }
-  return `${entry.subroutine || "Operación"}();`;
-}
-
-function buildGraphMainCode(history) {
-  const lines = [];
-  lines.push("int main(void) {");
-  lines.push("    Grafo g = grafo_crear();");
-  lines.push("");
-  lines.push("    // Historial de ejecucion del usuario");
-  history.forEach((entry, index) => {
-    if (!entry || typeof entry === "string") {
-      return;
-    }
-    lines.push(`    ${graphMainCallForEntry(entry, index + 1)}`);
-    if (entry.result) {
-      lines.push(`    printf("${gToCStringLiteral(String(entry.result))}\\n");`);
-      lines.push(`    // ${String(entry.result)}`);
-    }
-  });
-  lines.push("    return 0;");
-  lines.push("}");
-  return lines.join("\n");
-}
-
-function renderGraphHistory(history, container, didactic) {
+function renderGraphHistory(history, container, didactic, mainCode) {
   if (!container) {
     return;
   }
-  if (!history.length) {
+  if (!history.length && typeof mainCode !== "string") {
     container.innerHTML = "<li class=\"didactic-history-item empty\">Sin acciones ejecutadas.</li>";
     return;
   }
   const codeTitle = didactic && didactic.code_title ? String(didactic.code_title) : "";
   if (codeTitle.toLowerCase().includes("codigo c")) {
-    const code = buildGraphMainCode(history);
+    const code = String(mainCode || "");
     const codeHtml = buildGraphHighlightedCodeHtml(code, codeTitle);
     container.innerHTML = (
       "<li class=\"didactic-history-item history-main-wrap\">" +
@@ -1035,13 +1015,40 @@ function describeSimulationStep(simulation) {
   return `Paso ${simulation.index + 1}/${simulation.steps.length}: ${step.text}`;
 }
 
+function graphCapacityError(controls, operationName, payload) {
+  const limit = Number(controls.dataset.vertexLimit || 15);
+  const nodes = window.GRAPH_VIEW_MODEL?.visual_state?.nodes || [];
+  const ids = new Set(nodes.map(node => String(Number(node.id))));
+  const message = `El limite educativo es de ${limit} vertices. No se modifico el grafo ni el historial.`;
+  if (nodes.length > limit && (["insert_vertex", "insert_edge"].includes(operationName) || operationName.startsWith("run_"))) return message + " La sesion anterior conserva todos sus datos; elimina vertices o limpia el grafo para volver al limite.";
+  if (operationName === "generate_random_graph" && Number(payload.vertices_count) > limit) return message;
+  const fields = operationName === "insert_vertex" ? ["vertex"] : operationName === "insert_edge" ? ["origin", "target"] : [];
+  if (fields.length) {
+    const values = fields.map(field => Number(payload[field]));
+    if (values.every(Number.isInteger)) {
+      const added = [...new Set(values.map(String))].filter(id => !ids.has(id)).length;
+      if (nodes.length + added > limit) return message;
+    }
+  }
+  return "";
+}
+
 async function executeGraphOperation(controls, operationName, payload) {
+  const capacityError = graphCapacityError(controls, operationName, payload);
+  if (capacityError) {
+    const error = new Error(capacityError);error.graphCapacityRejected = true;throw error;
+  }
   const response = await fetch(controls.dataset.operateUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ operation: operationName, payload }),
   });
-  return response.json();
+  const data = await response.json();
+  if (typeof data.main_c === "string" && window.GRAPH_VIEW_MODEL) {
+    window.GRAPH_VIEW_MODEL.main_c = data.main_c;
+    renderGraphHistory(data.history || [], gById("action-history"), window.GRAPH_VIEW_MODEL.didactic, data.main_c);
+  }
+  return data;
 }
 
 function initGraphPage(model) {
@@ -1057,6 +1064,8 @@ function initGraphPage(model) {
   const simPlay = gById("graph-sim-play");
   const simPrev = gById("graph-sim-prev");
   const simStep = gById("graph-sim-step");
+  const simNext = gById("graph-sim-next");
+  const stepNavigation = gById("graph-step-navigation");
   const simStatus = gById("graph-sim-status");
   const stepToggle = gById("graph-step-toggle");
   const speedSlider = gById("graph-speed-slider");
@@ -1066,6 +1075,12 @@ function initGraphPage(model) {
   const printfConsole = gById("graph-printf-console");
   const didacticNote = gById("graph-didactic-note");
   const presetButtons = Array.from(document.querySelectorAll(".graph-preset-btn"));
+  const learningLevel=gById("graph-learning-level"),guidedExample=gById("graph-guided-example"),loadExample=gById("graph-load-example"),exampleLesson=gById("graph-example-lesson"),restartExecution=gById("graph-restart-execution"),resetGraph=gById("graph-reset-button"),hideComments=gById("graph-hide-comments");
+  const prepareButton=gById("graph-prepare"),pauseButton=gById("graph-sim-pause"),homeButton=gById("graph-sim-home"),endButton=gById("graph-sim-end"),repeatButton=gById("graph-sim-repeat"),progressSlider=gById("graph-progress"),stepMetadata=gById("graph-step-metadata");
+  const predictionSelect=gById("graph-prediction"),checkPrediction=gById("graph-check-prediction"),hintButton=gById("graph-prediction-hint"),skipPrediction=gById("graph-skip-prediction"),predictionFeedback=gById("graph-prediction-feedback"),practiceMode=gById("graph-practice-mode"),practiceCover=gById("graph-practice-cover"),progressSummary=gById("graph-progress-summary"),resetProgress=gById("graph-reset-progress");
+  const compareKind=gById("graph-compare-kind"),compareStart=gById("graph-compare-start"),compareEnd=gById("graph-compare-end"),compareRun=gById("graph-compare-run"),compareProgress=gById("graph-compare-progress"),compareInput=gById("graph-compare-input"),compareGrid=gById("graph-compare-grid"),compareConclusion=gById("graph-compare-conclusion");
+  const exportImage=gById("graph-export-image"),exportSummary=gById("graph-export-summary"),announcer=gById("graph-accessible-announcer");
+  const activePhase = String(controls?.dataset.activePhase || "construccion").trim() || "construccion";
 
   if (!controls || !visualState || !operationSelect || !algorithmSelect) {
     return;
@@ -1088,6 +1103,12 @@ function initGraphPage(model) {
 
   let playbackSpeed = 1;
   let playbackSpeedSetting = 0;
+  let currentPedagogyFrame=null;
+  let comparisonResult=null;let hintLevel=0;
+  const conceptualProgress={attempts:0,correct:0};
+  const presentationKey=`graph-presentation:${activePhase}`;
+  function readGraphPresentation(){try{return JSON.parse(sessionStorage.getItem(presentationKey)||"{}");}catch(_error){return {};}}
+  function writeGraphPresentation(){try{sessionStorage.setItem(presentationKey,JSON.stringify({level:learningLevel?.value||"intermediate",cursor:pageState.traceCursor,phase:activePhase,operation:selectedOperation?.name,algorithm:selectedAlgorithm?.name}));}catch(_error){/* optional */}}
 
   function isStepByStepEnabled() {
     return !stepToggle || Boolean(stepToggle.checked);
@@ -1138,20 +1159,8 @@ function initGraphPage(model) {
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
-      const messages = gExtractPrintfMessagesFromLine(step.line_text);
-      messages.forEach((msg) => {
-        // Evita mostrar literales de formato sin resolver (ej. "%d", "%s").
-        if (gHasPrintfFormatSpecifier(msg)) {
-          return;
-        }
-        gPushUniqueConsoleLine(out, `[printf] ${msg}`);
-      });
-    }
-    if (limit >= trace.steps.length - 1) {
-      const finalMessage = String(trace.message || "").trim();
-      if (finalMessage) {
-        gPushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
-      }
+      const emitted = Array.isArray(step.console) ? step.console : [];
+      emitted.forEach((line) => gPushUniqueConsoleLine(out, line));
     }
     return out;
   }
@@ -1179,7 +1188,6 @@ function initGraphPage(model) {
 
   const allowedOperations = new Set(parseJsonArray(controls.dataset.allowedOperations));
   const allowedAlgorithms = new Set(parseJsonArray(controls.dataset.allowedAlgorithms));
-  const activePhase = String(controls.dataset.activePhase || "construccion").trim() || "construccion";
   const phaseRunMode = String(controls.dataset.phaseRunMode || "operation").trim().toLowerCase();
   const defaultAlgorithm = String(controls.dataset.defaultAlgorithm || "").trim();
   const didacticNotesByPhase =
@@ -1202,6 +1210,8 @@ function initGraphPage(model) {
 
   let selectedOperation = operationList[0] || null;
   let selectedAlgorithm = algorithmList.find((op) => op.name === defaultAlgorithm) || algorithmList[0] || null;
+  const savedPresentation=readGraphPresentation();if(learningLevel)learningLevel.value=["basic","intermediate","advanced"].includes(savedPresentation.level)?savedPresentation.level:"intermediate";(model.guided_examples||[]).forEach((example)=>{const option=document.createElement("option");option.value=example.id;option.textContent=example.label;guidedExample?.appendChild(option);});
+  initGraphResponsiveWorkspace();hideComments?.addEventListener("change",()=>enhanceGraphCodeNavigation(null));learningLevel?.addEventListener("change",()=>{renderGraphPedagogy(currentPedagogyFrame,learningLevel.value);writeGraphPresentation();});guidedExample?.addEventListener("change",()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample.value);if(exampleLesson)exampleLesson.textContent=example?example.lesson:"El ejemplo se construye mediante operaciones públicas y no cambia al reproducir.";});
   let activeRunMode = phaseRunMode === "algorithm" ? "algorithm" : "operation";
 
   function resolveDidacticNote(operationName, mode) {
@@ -1267,8 +1277,10 @@ function initGraphPage(model) {
       ),
     );
   });
-  renderGraphHistory(pageState.actionHistory, historyBox, model.didactic);
+  renderGraphHistory(pageState.actionHistory, historyBox, model.didactic, model.main_c);
   renderGraphState(pageState.graphState, visualState, pageState.simulation);
+  const capacityPolicy = gById("graph-capacity-policy");
+  if (capacityPolicy && pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)) capacityPolicy.textContent = "Sesion anterior: se conservan todos los vertices. Elimina vertices o limpia para volver al limite de 15; las inserciones y algoritmos estan bloqueados mientras lo supere.";
 
   if (modeSelect) {
     modeSelect.value = pageState.graphState && pageState.graphState.directed ? "true" : "false";
@@ -1280,17 +1292,29 @@ function initGraphPage(model) {
       counterElement: gById("graph-sim-counter"),
       renderState: (stateSnapshot, stepMeta) => {
         pageState.graphState = stateSnapshot;
-        pageState.simulation = buildSimulationFromState(stateSnapshot);
+        pageState.simulation = null;
         renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null);
+        if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
         updateGraphStepKind(stepMeta || null);
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
         pageState.traceCursor = cursor;
+        if((event?.trace?.bfs_instruction_model || event?.trace?.dfs_instruction_model) && pageState.bfsFinalMessage)showGraphMessage(cursor===event.trace.steps.length-1?pageState.bfsFinalMessage:`${event?.trace?.dfs_instruction_model ? "DFS" : "BFS"} preparado: resultado pendiente hasta completar la traza.`,true);
+        if(event?.trace?.numeric_instruction_model && pageState.numericFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.numericFinalMessage.text:"Algoritmo preparado: resultado pendiente hasta completar la traza.",done?pageState.numericFinalMessage.success:true);}
+        if((event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model) && pageState.vertexFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.vertexFinalMessage.text:"Operación preparada: resultado pendiente hasta completar la traza.",done?pageState.vertexFinalMessage.success:true);}
+        if(cursor<0 && (event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,null);}
+        if(cursor<0 && event?.trace?.numeric_instruction_model && event.trace.execution_started){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,{graph_memory:currentPedagogyFrame.memory_state,graph_progress:{mode:"path",nodes:[],edges:[]}});}
+        if(cursor<0 && (event?.trace?.bfs_instruction_model || event?.trace?.dfs_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,{bfs_memory:currentPedagogyFrame.memory_state,graph_progress:{mode:"traversal",nodes:[],edges:[]}});}
         pageState.traceTotalSteps = event && event.trace && Array.isArray(event.trace.steps)
           ? event.trace.steps.length
           : 0;
         refreshGraphPrintfConsole(cursor);
+        const step=event?.step;enhanceGraphCodeNavigation(Number.isInteger(step?.line_index)?step.line_index:null);writeGraphPresentation();
+        if(progressSlider){progressSlider.max=String(Math.max(0,pageState.traceTotalSteps-1));progressSlider.value=String(Math.max(0,cursor));progressSlider.disabled=pageState.traceTotalSteps===0;}
+        if(stepMetadata){const frame=(cursor<0 && (event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model) ? currentPedagogyFrame : step?.pedagogy)||{};const edge=frame.active_edge?`${frame.active_edge.from}→${frame.active_edge.to}`:"—";stepMetadata.textContent=`Función: ${(frame.numeric_algorithm || frame.query_operation || frame.construction_operation) ? frame.instruction_event?.function||(frame.query_operation ? "-" : "caller") : frame.call_stack?.[0]?.function||"—"} · Fase: ${frame.phase?.label||"—"} · Concepto: ${frame.concept||"—"} · Vértice: ${frame.auxiliary?.selected??"—"} · Arista: ${edge}`;}
+        const concealed=Boolean(practiceMode?.checked&&cursor>=0);if(practiceCover)practiceCover.hidden=!concealed;visualState.classList.toggle("graph-practice-hidden",concealed);
+        if(announcer&&step?.pedagogy)announcer.textContent=`Paso ${cursor+1}. ${step.pedagogy.narration?.basic||step.pedagogy.phase?.label||""}`;
         setSimulationButtonsState();
       },
       defaultDelayMs: 900,
@@ -1347,7 +1371,16 @@ function initGraphPage(model) {
       simPrev.disabled = busy || !stepMode || !hasProgress;
     }
     if (simStep) {
-      simStep.disabled = busy || !stepMode || !canExecute || atEnd || pageState.lockStepUntilInput;
+      simStep.disabled = false;
+    }
+    if (simNext) {
+      simNext.disabled = busy || !stepMode || !hasTrace || atEnd || pageState.lockStepUntilInput;
+    }
+    if (stepNavigation) {
+      stepNavigation.hidden = !stepMode;
+    }
+    if (simStep) {
+      simStep.hidden = false;
     }
     if (speedSlider) {
       speedSlider.disabled = busy || !stepMode;
@@ -1367,6 +1400,14 @@ function initGraphPage(model) {
     pageState.consoleTrace = null;
     pageState.consoleFallbackMessage = "";
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    // Al cambiar operación o entrada la navegación pertenece a la traza previa.
+    // Restáurase explícitamente el único botón de entrada al modo paso a paso.
+    if (stepNavigation) {
+      stepNavigation.hidden = true;
+    }
+    if (simStep) {
+      simStep.hidden = false;
+    }
     updateGraphStepKind(null);
     refreshGraphPrintfConsole(-1);
     setSimulationButtonsState();
@@ -1538,6 +1579,10 @@ function initGraphPage(model) {
   }
 
   function repaint() {
+    const policy = gById("graph-capacity-policy");
+    if (policy) policy.textContent = pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)
+      ? "Sesion anterior: se conservan todos los vertices. Elimina vertices o limpia para volver al limite de 15; las inserciones y algoritmos estan bloqueados mientras lo supere."
+      : "Limite educativo: 15 vertices. No se truncan grafos ni se cambia el C descargable.";
     renderGraphState(pageState.graphState, visualState, pageState.simulation, pageState.finalTraceDebug);
     refreshSimulationStatus();
   }
@@ -1553,14 +1598,21 @@ function initGraphPage(model) {
       const operationName = target.operation.name;
       const payload = target.payload || {};
       const data = await executeGraphOperation(controls, operationName, payload);
-      showGraphMessage(data.message, Boolean(data.success));
+      if (typeof data.main_c === "string") model.main_c = data.main_c;
+      if (data.execution_trace?.graph_snapshot_codec) data.execution_trace = gExpandGraphInstructionTrace(data.execution_trace);
+      pageState.vertexFinalMessage = (data.execution_trace?.vertex_instruction_model || data.execution_trace?.neighbor_instruction_model || data.execution_trace?.construction_instruction_model) ? {text:data.message,success:Boolean(data.success)} : null;
+      pageState.bfsFinalMessage = ["run_bfs", "run_dfs"].includes(operationName) && data.success ? data.message : null;
+      pageState.numericFinalMessage = data.execution_trace?.numeric_instruction_model && data.execution_trace.execution_started ? {text:data.message,success:Boolean(data.success)} : null;
+      if(pageState.vertexFinalMessage && !options?.finalOnly)showGraphMessage("Operación preparada: resultado pendiente hasta completar la traza.",true);
+      else if(pageState.numericFinalMessage && !options?.finalOnly)showGraphMessage("Algoritmo preparado: resultado pendiente hasta completar la traza.",true);
+      else showGraphMessage(pageState.bfsFinalMessage && !options?.finalOnly ? `${operationName === "run_dfs" ? "DFS" : "BFS"} preparado: resultado pendiente hasta completar la traza.` : data.message, Boolean(data.success));
       updateGraphDidacticPanel(model, operationName);
       refreshDidacticNote(operationName, target.mode);
 
       const payloadText = summarizeGraphPayload(payload);
       const label = operationLabel.get(operationName) || operationName;
       const subroutine = getGraphSubroutineName(model, operationName, label);
-      gPushUniqueHistoryEntry(
+      if (!["run_bfs", "run_dfs", "run_dijkstra", "run_bellman_ford", "run_prim", "run_kruskal"].includes(operationName) || data.success) gPushUniqueHistoryEntry(
         pageState.actionHistory,
         createGraphHistoryEntry(
           subroutine,
@@ -1570,7 +1622,7 @@ function initGraphPage(model) {
           payload,
         ),
       );
-      renderGraphHistory(pageState.actionHistory, historyBox, model.didactic);
+      renderGraphHistory(pageState.actionHistory, historyBox, model.didactic, model.main_c);
 
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
@@ -1590,6 +1642,14 @@ function initGraphPage(model) {
           pageState.consoleTrace = data.execution_trace;
           pageState.consoleFallbackMessage = data.message || "(sin salida printf en esta ruta)";
           const finalCursor = data.execution_trace.steps.length ? data.execution_trace.steps.length - 1 : -1;
+          // Keep this actual execution for later replay. Enabling step mode
+          // must not execute the query again or retain an older player trace.
+          if (tracePlayer) {
+            tracePlayer.loadTrace(data.execution_trace);
+            pageState.lastTraceOperation = String(data.execution_trace.operation_name || "");
+            pageState.traceSelectionKey = selectionKey;
+            tracePlayer.seek(finalCursor);
+          }
           refreshGraphPrintfConsole(finalCursor);
           if (finalCursor >= 0) {
             const finalStep = data.execution_trace.steps[finalCursor] || null;
@@ -1618,6 +1678,7 @@ function initGraphPage(model) {
       }
       return data;
     } catch (_error) {
+      if (_error.graphCapacityRejected) {showGraphMessage(_error.message, false);return null;}
       showGraphMessage("No fue posible completar la operación.", false);
       return null;
     } finally {
@@ -1650,7 +1711,7 @@ function initGraphPage(model) {
   function applyNewGraphState(newState) {
     stopSimulationTimer(pageState.simulation);
     pageState.graphState = newState;
-    pageState.simulation = buildSimulationFromState(newState);
+    pageState.simulation = null;
     updateGraphStepKind(null);
     repaint();
     if (modeSelect) {
@@ -1814,6 +1875,10 @@ function initGraphPage(model) {
     invalidateTrace("Modo cambiado. Ejecuta nuevamente.");
   });
 
+  restartExecution?.addEventListener("click",()=>{tracePlayer?.reset();setSimulationButtonsState();});
+  resetGraph?.addEventListener("click",async()=>{if(!window.confirm("¿Restablecer el grafo y borrar su historial de esta sesión?"))return;const response=await fetch(controls.dataset.resetUrl,{method:"POST"});const data=await response.json();pageState.actionHistory.length=0;model.main_c=data.main_c;renderGraphHistory(pageState.actionHistory,historyBox,model.didactic,model.main_c);if(data.visual_state){model.visual_state=data.visual_state;applyNewGraphState(data.visual_state);}invalidateTrace("Grafo restablecido.");showGraphMessage(data.message,Boolean(data.success));});
+  loadExample?.addEventListener("click",async()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample?.value);if(!example){showGraphMessage("Selecciona un ejemplo guiado.",false);return;}loadExample.disabled=true;try{const labelMap=new Map((example.vertices||[]).map((value,index)=>[String(value),index+1]));const resolve=(value)=>labelMap.get(String(value))??value;let data=await executeGraphOperation(controls,"create_graph",{directed:Boolean(example.directed)});if(!data.success)throw new Error(data.message);for(const vertex of example.vertices||[]){data=await executeGraphOperation(controls,"insert_vertex",{vertex:resolve(vertex)});if(!data.success)throw new Error(data.message);}for(const edge of example.edges||[]){data=await executeGraphOperation(controls,"insert_edge",{origin:resolve(edge[0]),target:resolve(edge[1]),weight:edge[2]});if(!data.success)throw new Error(data.message);}if(data.visual_state){model.visual_state=data.visual_state;applyNewGraphState(data.visual_state);}const mappedPayload={};Object.entries(example.payload||{}).forEach(([key,value])=>{mappedPayload[key]=resolve(value);});selectedAlgorithm=algorithmList.find((item)=>item.name===example.operation)||selectedAlgorithm;if(selectedAlgorithm){algorithmSelect.value=selectedAlgorithm.name;buildGraphInputs(selectedAlgorithm,algorithmInputs,"g-alg-field");selectedAlgorithm.inputs.forEach((field)=>{const input=gById(`g-alg-field-${field.name}`);if(input&&Object.prototype.hasOwnProperty.call(mappedPayload,field.name))input.value=mappedPayload[field.name];});setRunMode("algorithm");updateGraphDidacticPanel(model,selectedAlgorithm.name);}pageState.actionHistory.length=0;invalidateTrace("Ejemplo preparado. Reproduce la operación objetivo.");writeGraphPresentation();showGraphMessage(`Ejemplo preparado: ${example.lesson}`,true);}catch(error){showGraphMessage(error.message||"No se pudo preparar el ejemplo.",false);}finally{loadExample.disabled=false;}});
+
   createButton?.addEventListener("click", async () => {
     const directedValue = modeSelect ? modeSelect.value : "false";
       const data = await executeGraphOperation(controls, "create_graph", { directed: directedValue });
@@ -1821,6 +1886,7 @@ function initGraphPage(model) {
     updateGraphDidacticPanel(model, "create_graph");
     refreshDidacticNote("create_graph", "operation");
     if (isStepByStepEnabled() && data.execution_trace && tracePlayer) {
+      pageState.vertexFinalMessage = {text:data.message,success:Boolean(data.success)};
       pageState.lockStepUntilInput = false;
       pageState.consoleTrace = data.execution_trace;
       pageState.consoleFallbackMessage = "";
@@ -1843,10 +1909,11 @@ function initGraphPage(model) {
         { directed: directedValue },
       ),
     );
-    renderGraphHistory(pageState.actionHistory, historyBox, model.didactic);
+    renderGraphHistory(pageState.actionHistory, historyBox, model.didactic, model.main_c);
     if (data.visual_state) {
       model.visual_state = data.visual_state;
       applyNewGraphState(data.visual_state);
+      if (isStepByStepEnabled() && tracePlayer?.hasTrace()) tracePlayer.reset();
       showSimulationStatus("Tipo de grafo aplicado. Ahora construye el grafo.");
     }
     setSimulationButtonsState();
@@ -1880,19 +1947,50 @@ function initGraphPage(model) {
     await tracePlayer.playFromStart();
   });
 
-  simStep?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
+  function renderConceptualProgress(){if(progressSummary)progressSummary.textContent=`Progreso conceptual de esta sesión: ${conceptualProgress.correct} aciertos de ${conceptualProgress.attempts} intentos.`;}
+  function revealPractice(){if(practiceCover)practiceCover.hidden=true;visualState.classList.remove("graph-practice-hidden");}
+  function expectedGraphPrediction(frame){const concept=String(frame?.concept||"");const stage=String(frame?.case||"");if(concept==="extract"||stage==="extract_min")return "extract";if(concept==="discover"||stage==="visit")return "discover";if(stage==="update_distance")return "predecessor";if(concept==="relax"||stage==="relax_edge")return frame?.relaxation?.success===false?"none":"relax";if(concept==="accept"||["accept_edge","union","expand_mst"].includes(stage))return "accept";if(concept==="reject"||stage==="reject_edge")return "reject";if(concept==="negative_cycle"||stage==="detect_negative_cycle")return "negative_cycle";return "none";}
+  checkPrediction?.addEventListener("click",()=>{if(!currentPedagogyFrame||!predictionSelect?.value){if(predictionFeedback)predictionFeedback.textContent="Prepara una traza y selecciona una predicción.";return;}const expected=expectedGraphPrediction(currentPedagogyFrame),correct=predictionSelect.value===expected;conceptualProgress.attempts+=1;if(correct)conceptualProgress.correct+=1;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent=correct?"Correcto: coincide con la decisión ejecutada.":`Revisa el auxiliar, la condición y el invariante. Evidencia: ${expected}.`;hintLevel=0;revealPractice();});
+  hintButton?.addEventListener("click",()=>{hintLevel=Math.min(3,hintLevel+1);const hints=["Observa qué estructura auxiliar cambia.",`El concepto del frame es «${currentPedagogyFrame?.concept||"aún no disponible"}».`,`La decisión esperada es ${expectedGraphPrediction(currentPedagogyFrame)}.`];if(predictionFeedback)predictionFeedback.textContent=hints[hintLevel-1];});
+  skipPrediction?.addEventListener("click",()=>{revealPractice();if(predictionFeedback)predictionFeedback.textContent="Continuaste sin responder; no se registra intento.";});
+  practiceMode?.addEventListener("change",()=>{const concealed=Boolean(practiceMode.checked&&pageState.traceCursor>=0);if(practiceCover)practiceCover.hidden=!concealed;visualState.classList.toggle("graph-practice-hidden",concealed);});
+  resetProgress?.addEventListener("click",()=>{conceptualProgress.attempts=0;conceptualProgress.correct=0;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent="Progreso conceptual reiniciado.";});
+  prepareButton?.addEventListener("click",async()=>{const ready=await ensureTraceForCurrentTarget();if(ready)tracePlayer?.reset();});
+  pauseButton?.addEventListener("click",()=>tracePlayer?.pause());
+  homeButton?.addEventListener("click",()=>tracePlayer?.reset());
+  endButton?.addEventListener("click",()=>{if(tracePlayer?.hasTrace())tracePlayer.seek(Math.max(0,tracePlayer.getTotalSteps()-1));});
+  repeatButton?.addEventListener("click",async()=>{if(tracePlayer?.hasTrace())await tracePlayer.playFromStart();});
+  progressSlider?.addEventListener("input",()=>{if(tracePlayer?.hasTrace())tracePlayer.seek(Number(progressSlider.value));});
+
+  function comparisonCard(side){const summary=side?.summary||{};const constraint=side?.algorithm==="run_dijkstra"?"pesos no negativos":side?.algorithm?.includes("bellman")?"admite negativos":side?.algorithm?.includes("prim")||side?.algorithm?.includes("kruskal")?"grafo no dirigido":"componente alcanzable";return `<article class="hier-compare-card"><h4>${gEscape(side?.algorithm||"algoritmo")}</h4><p><strong>Auxiliar/estrategia:</strong> ${gEscape(summary.auxiliary||constraint)}</p><p><strong>Resultado:</strong> <code>${gEscape(JSON.stringify(summary.order||summary.path||summary.mst_edges||summary))}</code></p><p><strong>Costo:</strong> ${gEscape(summary.distance_to_destination??summary.total_weight??"según V+E")}</p><p><strong>Restricción:</strong> ${gEscape(constraint)}</p><p><strong>Invariante:</strong> ${summary.has_negative_cycle?"ciclo negativo detectado":"✓ conservado"}</p></article>`;}
+  function renderComparison(){if(!comparisonResult||!compareGrid)return;compareGrid.innerHTML=comparisonCard(comparisonResult.left)+comparisonCard(comparisonResult.right);if(compareInput)compareInput.textContent=`Entrada inmutable: ${comparisonResult.input.nodes.length} vértices, ${comparisonResult.input.edges.length} aristas. Concepto ${Number(compareProgress?.value||0)+1}/4.`;if(compareConclusion)compareConclusion.textContent=`${comparisonResult.conclusion} Estado auxiliar, costo, restricción e invariante se calculan sobre copias aisladas.`;}
+  compareRun?.addEventListener("click",async()=>{const response=await fetch(controls.dataset.compareUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:compareKind?.value,graph:model.visual_state,start:compareStart?.value,end:compareEnd?.value})});const data=await response.json();if(!response.ok||!data.success){if(compareConclusion)compareConclusion.textContent=data.message||"No se pudo comparar.";return;}comparisonResult=data;renderComparison();});
+  compareProgress?.addEventListener("input",renderComparison);
+  exportImage?.addEventListener("click",async()=>{try{const result=await window.InterpreterRuntime.exportVisualStateAsJpg({target:visualState,quality:.92,scale:2});const link=document.createElement("a");link.href=result.dataUrl;link.download=result.suggestedName;link.click();if(announcer)announcer.textContent="Captura JPG exportada.";}catch(_error){if(announcer)announcer.textContent="No fue posible exportar la captura.";}});
+  exportSummary?.addEventListener("click",()=>{const report={module:"graph",phase:activePhase,algorithm:selectedAlgorithm?.name||selectedOperation?.name,cursor:pageState.traceCursor,total_steps:pageState.traceTotalSteps,progress:{...conceptualProgress},frame:currentPedagogyFrame,comparison:comparisonResult};const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download="graph-learning-summary.json";link.click();URL.revokeObjectURL(link.href);if(announcer)announcer.textContent="Resumen de aprendizaje exportado.";});
+  document.addEventListener("keydown",(event)=>{if(!event.altKey)return;if(event.key==="ArrowRight"){event.preventDefault();simStep?.click();}else if(event.key==="ArrowLeft"){event.preventDefault();simPrev?.click();}else if(event.key==="Home"){event.preventDefault();homeButton?.click();}else if(event.key==="End"){event.preventDefault();endButton?.click();}else if(event.key.toLowerCase()==="p"){event.preventDefault();pauseButton?.click();}});
+
+  simStep?.addEventListener("click", () => {
+    stepToggle.checked = !stepToggle.checked;
+    stepToggle.dispatchEvent(new Event("change"));
+  });
+
+  simNext?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled() || !tracePlayer?.hasTrace()) {
       return;
     }
-    const ready = await ensureTraceForCurrentTarget();
+    // Applying type owns its loaded creation trace until an input/selection
+    // change invalidates it. Advancing must not dispatch the unrelated selector.
+    const ready = pageState.lastTraceOperation === "create_graph" && tracePlayer.hasTrace()
+      ? true : await ensureTraceForCurrentTarget();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
     const advanced = await tracePlayer.step();
     if (advanced && tracePlayer.isAtEnd()) {
       pageState.lockStepUntilInput = true;
-      setSimulationButtonsState();
     }
+    setSimulationButtonsState();
   });
 
   simPrev?.addEventListener("click", () => {
@@ -1907,36 +2005,24 @@ function initGraphPage(model) {
   });
 
   simPlay?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
-      const target = resolveFastModeTarget();
-      if (!target || !isTargetSelectionValid(target)) {
-        showSimulationStatus("Completa las entradas para ejecutar.");
-        setSimulationButtonsState();
-        return;
-      }
-      const selectionKey = buildSelectionKey(target.mode, target.operation.name, target.payload);
-      await executeTargetAndLoadTrace(target, selectionKey, { finalOnly: true });
-      return;
-    }
-    const ready = await ensureTraceForCurrentTarget();
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
-      return;
-    }
-    await tracePlayer.playFromStart();
-    if (tracePlayer.isAtEnd()) {
-      pageState.lockStepUntilInput = true;
-      setSimulationButtonsState();
-    }
+    const target = resolveFastModeTarget();
+    if (!target || !isTargetSelectionValid(target)) { showSimulationStatus("Completa las entradas para ejecutar."); return; }
+    const key = buildSelectionKey(target.mode, target.operation.name, target.payload);
+    await executeTargetAndLoadTrace(target, key, { finalOnly: !isStepByStepEnabled() });
+    if (isStepByStepEnabled() && tracePlayer?.hasTrace()) tracePlayer.reset();
   });
 
   stepToggle?.addEventListener("change", () => {
-    updateStepModePanelVisibility();
-    invalidateTrace(
-      isStepByStepEnabled()
-        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
-        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
-    );
+    simStep.textContent = isStepByStepEnabled() ? "Cerrar paso a paso" : "Paso a paso";
+    simStep.setAttribute("aria-pressed", String(isStepByStepEnabled()));
+    tracePlayer?.pause(true);
+    if (tracePlayer?.hasTrace()) tracePlayer.seek(isStepByStepEnabled() ? -1 : tracePlayer.getTotalSteps() - 1);
+    setSimulationButtonsState();
   });
+  if (stepToggle) { stepToggle.checked = false; stepToggle.hidden = true; }
+  simPrev.textContent = "Paso anterior";
+  simNext.textContent = "Siguiente paso";
+  setSimulationButtonsState();
 
   updateStepModePanelVisibility();
   invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");

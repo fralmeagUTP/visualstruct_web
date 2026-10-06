@@ -21,6 +21,7 @@ from .tad_monticulo_binario import (
     MONTICULO_MIN,
     MonticuloBinario as MonticuloTAD,
     monticulo_cantidad,
+    monticulo_capacidad,
     monticulo_destruir,
     monticulo_extraer_raiz,
     monticulo_inicializar,
@@ -28,7 +29,7 @@ from .tad_monticulo_binario import (
     monticulo_raiz,
     monticulo_vacio,
 )
-from .tad_rojo_negro import NEGRO, ROJO, RBT, nodoRBT, rbt_buscar, rbt_eliminar, rbt_insertar
+from .tad_rojo_negro import NEGRO, ROJO, RBT, nodoRBT, rbt_buscar, rbt_eliminar, rbt_insertar, rbt_validar
 
 T = TypeVar("T")
 
@@ -372,13 +373,7 @@ class RojoNegro(Generic[T]):
         return self._altura_rec(self._root_ref[0])
 
     def validar(self) -> bool:
-        raiz = self._root_ref[0]
-        if raiz is None:
-            return True
-        if raiz.rbt_color != NEGRO:
-            return False
-        ok = self._validar_rec(raiz, None, None)
-        return ok
+        return bool(rbt_validar(self._root_ref[0]))
 
     def limpiar(self) -> None:
         self._root_ref[0] = None
@@ -429,19 +424,6 @@ class RojoNegro(Generic[T]):
             return 0
         return 1 + max(self._altura_rec(nodo.izq), self._altura_rec(nodo.der))
 
-    def _validar_rec(self, nodo: RBT, minimo: int | None, maximo: int | None) -> bool:
-        if nodo is None:
-            return True
-        if minimo is not None and nodo.nro <= minimo:
-            return False
-        if maximo is not None and nodo.nro >= maximo:
-            return False
-        if nodo.rbt_color == ROJO:
-            if (nodo.izq is not None and nodo.izq.rbt_color == ROJO) or (nodo.der is not None and nodo.der.rbt_color == ROJO):
-                return False
-
-        return self._validar_rec(nodo.izq, minimo, nodo.nro) and self._validar_rec(nodo.der, nodo.nro, maximo)
-
     def __len__(self) -> int:
         return self._tamano
 
@@ -480,7 +462,8 @@ class MonticuloBinario(Generic[T]):
 
     def insertar(self, dato: T) -> None:
         if self._use_tad:
-            monticulo_insertar(self._m, int(dato))
+            if not monticulo_insertar(self._m, int(dato)):
+                raise ValueError("No se pudo reservar memoria para insertar en el monticulo.")
             return
         self._py_datos.append(dato)
         self._subir_py(len(self._py_datos) - 1)
@@ -517,6 +500,10 @@ class MonticuloBinario(Generic[T]):
 
     def tamano(self) -> int:
         return monticulo_cantidad(self._m) if self._use_tad else len(self._py_datos)
+
+    def capacidad(self) -> int | None:
+        """Actual C-TAD storage capacity; custom Python priorities have no C capacity."""
+        return monticulo_capacidad(self._m) if self._use_tad else None
 
     def limpiar(self) -> None:
         if self._use_tad:

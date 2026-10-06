@@ -1,4 +1,4 @@
-﻿"""Didactic help content for sequential structures."""
+"""Didactic help content for sequential structures."""
 
 from __future__ import annotations
 
@@ -16,8 +16,8 @@ class HelpService:
             "efecto se refleja de inmediato en la animacion del estado."
         ),
         "tips": [
-            "Flujo sugerido: selecciona operacion, completa entradas y usa Reproducir para ver la secuencia completa.",
-            "Usa Siguiente/Anterior paso para verificar punteros auxiliares, reasignaciones y returns tempranos.",
+            "Flujo sugerido: selecciona operación, completa entradas y usa Ejecutar operación. Activa Paso a paso antes de ejecutar para recorrer la traza.",
+            "En modo Paso a paso usa Siguiente paso y Paso anterior para verificar punteros auxiliares, reasignaciones y retornos tempranos.",
             "Contrasta LIFO (pila) vs FIFO (cola) y valida que HEAD/TOPE/FRONT/BACK queden consistentes.",
         ],
     }
@@ -48,7 +48,7 @@ class HelpService:
             "summary": (
                 "Estructura FIFO por nivel de prioridad: se atiende primero el elemento con menor "
                 "valor numerico de prioridad y, en empate, se conserva el orden de llegada. "
-                "La simulacion muestra inserciones ordenadas y el impacto de cada comparacion."
+                "La inserción conserva el orden de llegada; la selección recorre la cadena y compara prioridades."
             ),
             "supported_operations": ["encolar(valor, prioridad)", "desencolar", "frente", "limpiar"],
             "pending_operations": [],
@@ -58,27 +58,25 @@ class HelpService:
             "summary": (
                 "Secuencia lineal de nodos enlazados por referencias al siguiente. En el simulador "
                 "debes seguir el avance de punteros auxiliares para inserciones/eliminaciones por "
-                "posicion, verificando que el HEAD siempre conserve la conectividad de la lista."
+                "posicion, verificando que *lista (HEAD) siempre conserve la conectividad. "
+                "Para limpiar, lista_limpiar desconecta la cabeza con q y la libera en cada vuelta."
             ),
             "supported_operations": [
                 "insertar_inicio",
                 "insertar_final",
                 "lista_insertar_elemento",
                 "buscar_elemento",
-                "mostrar",
                 "eliminar_elemento",
                 "eliminar_repetidos",
                 "limpiar",
             ],
-            "pending_operations": [
-                "lista_insertar_elemento usa modo relativo: -1 (antes) o 0 (despues).",
-            ],
+            "pending_operations": [],
         },
         "circular_list": {
             "title": "Lista Circular",
             "summary": (
                 "Lista enlazada circular donde el ultimo nodo apunta nuevamente al primero. "
-                "La interpretacion paso a paso debe evidenciar el cierre del ciclo en cada alta/baja "
+                "La interpretacion paso a paso muestra cada escritura; el cierre del ciclo se restablece al terminar cada alta/baja "
                 "de nodos para evitar rupturas o ciclos invalidos."
             ),
             "supported_operations": [
@@ -90,6 +88,12 @@ class HelpService:
                 "invertir",
                 "limpiar",
             ],
+            "contract_notes": [
+                "Buscar posiciones usa índices desde 1 y no modifica nodos. El C retorna el número total de coincidencias; copia solo las posiciones que caben en destino. NULL y capacidad 0 permiten contar sin copiar.",
+                "El main conserva búsquedas exitosas al recargar. En Circular pasa NULL, 0: ejecuta la búsqueda y cuenta coincidencias sin guardar un arreglo de posiciones.",
+                "Eliminar inicio devuelve el dato retirado en la aplicación; el método C devuelve true/false. Un nodo desconectado sigue reservado hasta free; el alias queda indeterminado después de liberarlo.",
+                "Invertir conserva reservas y cantidad; cambia enlaces y extremos. Limpiar libera todas las reservas de un anillo válido.",
+            ],
             "pending_operations": [
                 "No existe eliminar_final en el TAD suministrado.",
                 "No existe eliminar_posicion en el TAD suministrado.",
@@ -100,7 +104,11 @@ class HelpService:
             "summary": (
                 "Estructura jerarquica secuencial: cada nodo padre mantiene su propia sublista de hijos. "
                 "En la animacion observa dos niveles de punteros (padres e hijos) y valida que cada "
-                "operacion afecte solo la rama correspondiente sin corromper otras sublistas."
+                "operacion afecte solo la rama correspondiente sin corromper otras sublistas. "
+                "Listar hijos conserva la consulta exitosa en el historial tras recargar, sin volver a ejecutarla. "
+                "El main mostrado es un fragmento para copiar: inclúyelo en main.c con stdio.h y tad_sublista.h, "
+                "y compila junto con el archivo C descargado. La aplicación copia como máximo 1024 hijos por consulta. El arreglo de consulta tiene capacidad "
+                "suficiente según las inserciones previas; su contenido se obtiene ejecutando el C."
             ),
             "supported_operations": [
                 "insertar_padre",
@@ -116,6 +124,19 @@ class HelpService:
         },
     }
 
+    _PEDAGOGY = {
+        "stack": {"objective": "Predecir inserción y extracción LIFO.", "strategy": "Seguir TOP, aux y el enlace siguiente.", "invariant": "TOP es el único extremo; todos los nodos terminan en NULL.", "memory": "Cada apilar reserva; cada desapilar desconecta antes de liberar.", "errors": ["Confundir TOP con el fondo", "Usar aux después de free"]},
+        "queue": {"objective": "Explicar FIFO y las transiciones de extremos.", "strategy": "Seguir FRONT para salir y BACK para entrar.", "invariant": "Vacía implica FRONT == BACK == NULL.", "memory": "El nodo saliente se desconecta de FRONT antes de free.", "errors": ["Extraer por BACK", "No anular BACK al retirar el único nodo"]},
+        "priority_queue": {"objective": "Separar llegada, prioridad y desempate estable.", "strategy": "Conservar la cadena de llegada y recorrer candidatos.", "invariant": "El primer mínimo de prioridad es seleccionado.", "memory": "Solo el candidato elegido se desconecta y libera.", "errors": ["Dibujar la cadena físicamente ordenada", "Romper el empate por llegada"]},
+        "linked_list": {"objective": "Mantener la conectividad al buscar, insertar y eliminar.", "strategy": "Seguir HEAD, anterior y actual.", "invariant": "Cada nodo es alcanzable una vez desde HEAD y el último apunta a NULL.", "memory": "Guardar el enlace siguiente antes de liberar.", "errors": ["Perder HEAD", "Sobrescribir un enlace antes de conservar el resto"]},
+        "circular_list": {"objective": "Conservar el cierre y terminar recorridos seguros.", "strategy": "Seguir HEAD/TAIL y detectar la vuelta al inicio.", "invariant": "cola->sgte == cabeza al terminar la operación, si quedan nodos; durante las escrituras se observa el estado intermedio.", "memory": "Actualizar el cierre antes de liberar el nodo retirado.", "errors": ["Esperar NULL en un recorrido", "Dejar TAIL apuntando a memoria liberada"]},
+        "sublist": {"objective": "Modificar una rama sin afectar a las demás.", "strategy": "Localizar primero el padre y luego recorrer sus hijos.", "invariant": "Cada hijo pertenece a un único padre.", "memory": "La liberación de una rama no autoriza liberar ramas vecinas.", "errors": ["Insertar un hijo sin padre", "Compartir enlaces entre ramas"]},
+    }
+
+    GLOSSARY = {
+        "Nodo": "Objeto dinámico con datos y uno o más enlaces.", "Enlace": "Campo puntero que conecta objetos.", "Alias": "Dos punteros que designan el mismo objeto.", "LIFO": "El último en entrar es el primero en salir.", "FIFO": "El primero en entrar es el primero en salir.", "Prioridad": "Criterio de selección independiente del orden físico.", "Circularidad": "El último enlace vuelve al inicio.", "malloc": "Reserva memoria; puede devolver NULL.", "free": "Libera una reserva que deja de ser válida.",
+    }
+
     @staticmethod
     def get_module_help() -> dict[str, Any]:
         """Return the didactic help for the sequential module."""
@@ -124,7 +145,7 @@ class HelpService:
     @staticmethod
     def get_structure_help(structure_id: str) -> dict[str, Any]:
         """Return help for a concrete structure id."""
-        return HelpService._STRUCTURE_HELP.get(
+        result = dict(HelpService._STRUCTURE_HELP.get(
             structure_id,
             {
                 "title": "Estructura no encontrada",
@@ -132,4 +153,7 @@ class HelpService:
                 "supported_operations": [],
                 "pending_operations": [],
             },
-        )
+        ))
+        result.update(HelpService._PEDAGOGY.get(structure_id, {}))
+        result["glossary"] = dict(HelpService.GLOSSARY)
+        return result

@@ -1,24 +1,23 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}Ayuda | {{ help_data.title }}{% endblock %}
 {% block content %}
 <section>
   <h2>{{ help_data.title }}</h2>
   <h3>Descripcion del TAD</h3>
-  <p>{{ help_data.tad_description }}</p>
+  <p>{{ help_data.summary }}</p>
+  {% include "help/_source_download.html" %}
+  {% include "help/_execution_guide.html" %}
+  {% include "help/_operation_contracts.html" %}
 
-  <h3>Controles de ejecucion paso a paso</h3>
-  <ul>
-    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra toda la traza; desactivado aplica solo el resultado final.</li>
-    <li>Botones de ejecucion: <strong>Reproducir</strong> y <strong>Reiniciar</strong>.</li>
-    <li>Navegacion por traza: <strong>Anterior paso</strong> y <strong>Siguiente paso</strong>.</li>
-    <li><strong>Velocidad de simulacion</strong>: slider de <strong>-2x</strong> a <strong>+2x</strong> (0.00x = 1.00x real).</li>
-    <li>En modo rapido (checkbox desactivado), el resultado visual final debe coincidir con el ultimo estado de la traza interpretada.</li>
-    <li>Al llegar al ultimo paso, <strong>Siguiente paso</strong> se bloquea hasta cambiar entradas/operacion; <strong>Anterior paso</strong> se habilita solo cuando ya avanzaste.</li>
-  </ul>
+  {% if help_data.pedagogy %}<section aria-labelledby="hier-help-learning"><h3 id="hier-help-learning">Guía de aprendizaje</h3><p><strong>Objetivo:</strong> {{ help_data.pedagogy.objective }}</p><p><strong>Estrategia:</strong> {{ help_data.pedagogy.strategy }}</p><p><strong>Invariante:</strong> {{ help_data.pedagogy.invariant }}</p><p><strong>Memoria C:</strong> {{ help_data.pedagogy.memory }}</p><p><strong>Complejidad:</strong> {% if structure_id == "abb" %}Buscar, insertar y eliminar dependen de altura h; h puede ser n. Recorridos, altura, contar hojas, validar y liberar visitan los nodos aplicables.{% elif structure_id == "avl" %}La altura equilibrada limita la búsqueda a O(log n). La implementación de eliminación recalcula alturas mediante recorridos; no se atribuye a ese trabajo el coste de una variante que guarda alturas.{% elif structure_id == "binary_heap" %}Raíz O(1), reparar insertar/extraer O(log n); crecer con realloc puede copiar O(n). Ver arreglo copia O(n), y limpiar destruye/reinicializa el buffer.{% else %}{{ help_data.pedagogy.complexity }}{% endif %}</p><h4>Errores frecuentes</h4><ul>{% for error in help_data.pedagogy.errors %}<li>{{ error }}</li>{% endfor %}</ul></section>{% endif %}
 
-  <h3>Operaciones soportadas</h3>
+  {% if help_data.glossary %}<details><summary>Glosario jerárquico</summary><dl>{% for term, definition in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ definition }}</dd>{% endfor %}</dl></details>{% endif %}
+
+  <section aria-labelledby="hier-help-keyboard"><h3 id="hier-help-keyboard">Teclado y accesibilidad</h3><p>En la visualización, usa <kbd>→</kbd> para avanzar un paso, <kbd>←</kbd> para retroceder, <kbd>Inicio</kbd> para volver al comienzo, <kbd>Fin</kbd> para ir al último paso y <kbd>Espacio</kbd> para pausar la reproducción. Los estados y explicaciones también se presentan con texto, no solo con color.</p></section>
+
+  <h3>Operaciones y utilidades explicadas</h3>
   <ul>
-    {% for op in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
+    {% for op in help_data.supported_operations %}
     <li>{{ op }}</li>
     {% endfor %}
   </ul>
@@ -37,11 +36,14 @@
   <h3>Estructura del TAD en C</h3>
   <pre class="didactic-code">{{ help_data.c_structure_code }}</pre>
 
-  <h3>Metodos del TAD en C</h3>
+  <h3>Código C y llamadores equivalentes</h3>
   {% if help_data.c_methods %}
     {% for method in help_data.c_methods %}
     <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
-    <p>{{ method.explanation }}</p>
+    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>La aplicación retira también los arcos incidentes. El cuerpo grafo_eliminar_vertice mostrado sólo retira el vértice; el llamador debe gestionar esos arcos.</p>
+    {% elif structure_id == "graph" and method.operation == "generate_random_graph" %}<p>La generación aleatoria pertenece a la aplicación; no existe una función C descargable equivalente de generación. Los vértices y arcos materializados se reproducen mediante llamadas reales del main.</p>
+    {% elif structure_id == "hash_table" and method.operation == "create_table" %}<p>Inicializa los buckets con capacidad fija. Recrear en la aplicación destruye antes la tabla anterior; th_inicializar por sí solo no la libera.</p>
+    {% else %}<p>{{ method.explanation }}</p>{% endif %}
     <pre class="didactic-code">{{ method.code }}</pre>
     {% endfor %}
   {% else %}

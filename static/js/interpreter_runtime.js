@@ -262,6 +262,12 @@
     }
 
     applyInlineComputedStyles(target, cloned);
+    // The empty Sorting paragraph's top margin collapses outside its source
+    // target. The clipped foreignObject wrapper must preserve its text origin.
+    if (target.id === "sorting-visual-state" && target.children.length === 1 &&
+        target.firstElementChild?.matches("p.muted")) {
+      cloned.firstElementChild.style.marginTop = "0px";
+    }
     replaceClonedCanvasWithImages(target, cloned);
 
     // Importante: anular clipping del contenedor original (scroll/max-height)
@@ -285,7 +291,7 @@
     wrapper.style.overflow = "hidden";
     wrapper.appendChild(cloned);
 
-    const markup = toSvgForeignObjectMarkup(wrapper.outerHTML, width, height);
+    const markup = toSvgForeignObjectMarkup(new XMLSerializer().serializeToString(wrapper), width, height);
     const quality = normalizeExportQuality(options && options.quality);
     const scale = normalizeExportScale(options && options.scale);
     const dataUrl = await renderSvgMarkupToJpegDataUrl(markup, width, height, quality, scale);
@@ -918,6 +924,35 @@
       return true;
     }
 
+    function seek(targetIndex) {
+      if (!trace || !Array.isArray(trace.steps) || !trace.steps.length) {
+        setStatus(statusElement, "No hay traza para navegar.");
+        return false;
+      }
+      pause(true);
+      const parsed = Number(targetIndex);
+      const target = Number.isFinite(parsed) ? Math.max(-1, Math.min(Math.trunc(parsed), trace.steps.length - 1)) : cursor;
+      resetVisualLines();
+      if (target < 0) {
+        cursor = -1;
+        const firstStep = trace.steps[0] || null;
+        if (firstStep) applyStateSnapshot(firstStep);
+        setCounter(0, trace.steps.length);
+        setStatus(statusElement, `Paso 0/${trace.steps.length}`);
+        emitCursorChange("seek", firstStep);
+        return true;
+      }
+      const targetStep = trace.steps[target] || {};
+      paintDoneLinesTo(target - 1);
+      activateCurrentLine(targetStep);
+      applyStateAfter(targetStep);
+      cursor = target;
+      setCounter(cursor + 1, trace.steps.length);
+      setStatus(statusElement, stepStatusText(targetStep, cursor + 1, trace.steps.length));
+      emitCursorChange("seek", targetStep);
+      return true;
+    }
+
     function hasTrace() {
       return Boolean(trace && Array.isArray(trace.steps) && trace.steps.length);
     }
@@ -951,6 +986,7 @@
       playFromStart: () => _playLoop(true),
       step,
       prev,
+      seek,
       reset,
       hasTrace,
       setSpeed,

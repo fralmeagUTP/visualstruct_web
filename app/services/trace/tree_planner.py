@@ -973,3 +973,80 @@ class TreeAlgorithmPlanner:
 
         walk(root if isinstance(root, dict) else None, target)
         return ControlFlowPlanner.limit_step_indexes(expanded)
+
+    @classmethod
+    def expand_rbt_delete(
+        cls,
+        *,
+        lines: list[str],
+        before_state: dict[str, Any],
+        payload: dict[str, Any],
+    ) -> list[int] | None:
+        """Follow the real search and structural RBT deletion branch."""
+        target = cls.coerce_number(payload.get("value"))
+        root = before_state.get("root")
+        if target is None:
+            return None
+        normalized = [ControlFlowPlanner.normalize_line(line) for line in lines]
+
+        def line(needle: str) -> int:
+            return cls.find_line(normalized, needle)
+
+        indexes = {
+            "header": line("void rbt_eliminar("),
+            "z": line("rbt z = *arbol;"),
+            "while": line("while (z != null && z->nro != key)"),
+            "direction": line("if (key < z->nro) z = z->izq; else z = z->der;"),
+            "missing": line("if (z == null) return;"),
+            "y": line("rbt y = z;"),
+            "color": line("char y_color_original = y->rbt_color;"),
+            "x": line("rbt x = null;"),
+            "parent": line("rbt x_parent = null;"),
+            "if_left": line("if (z->izq == null)"),
+            "left_x": line("x = z->der;"),
+            "left_parent": line("x_parent = z->padre;"),
+            "left_transplant": line("transplantar(arbol, z, z->der);"),
+            "else_right": line("else if (z->der == null)"),
+            "right_x": line("x = z->izq;"),
+            "right_parent": line("x_parent = z->padre;"),
+            "right_transplant": line("transplantar(arbol, z, z->izq);"),
+            "successor": line("y = minimo(z->der);"),
+            "successor_color": line("y_color_original = y->rbt_color;"),
+            "successor_x": line("x = y->der;"),
+            "free": line("free(z);"),
+            "if_black": line("if (y_color_original == negro)"),
+            "fix": line("arreglareliminacion(arbol, x, x_parent);"),
+            "root_black": line("if (*arbol) (*arbol)->rbt_color = negro;"),
+        }
+        if indexes["header"] < 0 or indexes["while"] < 0 or indexes["free"] < 0:
+            return None
+        expanded = [indexes[key] for key in ("header", "z") if indexes[key] >= 0]
+        current = root if isinstance(root, dict) else None
+        while isinstance(current, dict) and cls.coerce_number(cls.node_value(current)) != target:
+            expanded.extend(index for index in (indexes["while"], indexes["direction"]) if index >= 0)
+            value = cls.coerce_number(cls.node_value(current))
+            if value is None:
+                break
+            current = cls.child(current, "left" if target < value else "right")
+        expanded.append(indexes["while"])
+        if not isinstance(current, dict):
+            if indexes["missing"] >= 0:
+                expanded.append(indexes["missing"])
+            return ControlFlowPlanner.limit_step_indexes(expanded)
+        expanded.extend(index for index in (indexes["y"], indexes["color"], indexes["x"], indexes["parent"], indexes["if_left"]) if index >= 0)
+        left, right = cls.child(current, "left"), cls.child(current, "right")
+        if left is None:
+            expanded.extend(index for index in (indexes["left_x"], indexes["left_parent"], indexes["left_transplant"]) if index >= 0)
+        elif right is None:
+            expanded.extend(index for index in (indexes["else_right"], indexes["right_x"], indexes["right_parent"], indexes["right_transplant"]) if index >= 0)
+        else:
+            expanded.extend(index for index in (indexes["else_right"], indexes["successor"], indexes["successor_color"], indexes["successor_x"]) if index >= 0)
+        expanded.append(indexes["free"])
+        color = str(current.get("color", "BLACK")).upper()
+        if indexes["if_black"] >= 0:
+            expanded.append(indexes["if_black"])
+        if color in {"BLACK", "NEGRO"} and indexes["fix"] >= 0:
+            expanded.append(indexes["fix"])
+        if indexes["root_black"] >= 0:
+            expanded.append(indexes["root_black"])
+        return ControlFlowPlanner.limit_step_indexes(expanded)

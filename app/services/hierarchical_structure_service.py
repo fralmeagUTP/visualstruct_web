@@ -14,6 +14,7 @@ from app.services.observability import observe_replay
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
+from app.domain.hierarchical.pedagogy import HIERARCHICAL_GUIDED_EXAMPLES
 from app.domain.hierarchical import (
     ElementoDuplicadoError,
     ElementoNoEncontradoError,
@@ -24,6 +25,9 @@ from app.domain.hierarchical import (
 
 class HierarchicalStructureService:
     """Coordinate adapters and transform errors into didactic messages."""
+
+    _RBT_QUERIES = frozenset({"buscar", "inorden", "altura", "validar"})
+    _AVL_QUERIES = frozenset({"buscar", "minimo", "maximo", "altura", "inorden", "validar"})
 
     _REGISTRY: dict[str, dict[str, Any]] = {
         "abb": {
@@ -97,6 +101,24 @@ class HierarchicalStructureService:
             payload = step.get("payload", {})
             if not isinstance(operation, str) or not isinstance(payload, dict):
                 continue
+            if ((structure_id == "avl" and operation in HierarchicalStructureService._AVL_QUERIES)
+                    or (structure_id == "red_black" and operation in HierarchicalStructureService._RBT_QUERIES)):
+                if operation == "buscar":
+                    try:
+                        BaseAdapter._require_int(payload, "value", "valor")
+                    except (TypeError, ValueError):
+                        continue
+                valid_history.append({"operation": operation, "payload": deepcopy(payload)})
+                continue
+            if structure_id == "binary_heap" and operation in {"raiz", "a_lista"}:
+                # Preserve successful consultations without executing them again on reload.
+                valid_history.append({"operation": operation, "payload": deepcopy(payload)})
+                continue
+            if structure_id == "abb" and operation in {"contar_hojas", "validar"}:
+                # Successful pure consultations belong to executable history,
+                # but restoring a snapshot must not execute them again.
+                valid_history.append({"operation": operation, "payload": deepcopy(payload)})
+                continue
             try:
                 adapter.execute(operation, payload)
             except Exception:
@@ -150,6 +172,7 @@ class HierarchicalStructureService:
             "visual_state": adapter.to_visual_state(),
             "didactic": HierarchicalStructureService._didactic_content(structure_id),
             "history": valid_history,
+            "guided_examples": deepcopy(HIERARCHICAL_GUIDED_EXAMPLES.get(structure_id, [])),
         }
 
     @staticmethod
@@ -162,6 +185,8 @@ class HierarchicalStructureService:
         """Execute an operation over a rebuilt hierarchical structure state."""
         adapter, valid_history = HierarchicalStructureService._rebuild_adapter(structure_id, history)
         didactic_data = HierarchicalStructureService._didactic_content(structure_id)
+        if structure_id == "red_black" and operation_name == "validar":
+            didactic_data["_rn_validation_projection"] = adapter._validation_projection()
         before_state = adapter.to_visual_state()
         operations = adapter.get_supported_operations()
         operation_meta = next((item for item in operations if item["name"] == operation_name), None)
@@ -211,7 +236,11 @@ class HierarchicalStructureService:
                 "execution_trace": trace,
             }
 
-        if operation_meta.get("mutates", False):
+        if (operation_meta.get("mutates", False)
+                or (structure_id == "abb" and operation_name in {"contar_hojas", "validar"})
+                or (structure_id == "avl" and operation_name in HierarchicalStructureService._AVL_QUERIES)
+                or (structure_id == "red_black" and operation_name in HierarchicalStructureService._RBT_QUERIES)
+                or (structure_id == "binary_heap" and operation_name in {"raiz", "a_lista"})):
             valid_history.append({"operation": operation_name, "payload": deepcopy(payload)})
 
         visual_state = adapter.to_visual_state()
@@ -228,6 +257,7 @@ class HierarchicalStructureService:
             success=True,
             message=message,
             mutates=bool(operation_meta.get("mutates", False)),
+            console_events=result.get("console") if isinstance(result.get("console"), list) else [],
         )
 
         return {
@@ -238,3 +268,58 @@ class HierarchicalStructureService:
             "history": valid_history,
             "execution_trace": trace,
         }
+
+    @staticmethod
+    def compare_structures(kind: str, values: Any) -> dict[str, Any]:
+        """Build an isolated, deterministic comparison without touching session state."""
+        if not isinstance(values, list) or not values or len(values) > 31:
+            raise ValueError("La comparación requiere entre 1 y 31 valores.")
+        try:
+            immutable_input = tuple(int(value) for value in values)
+        except (TypeError, ValueError) as error:
+            raise ValueError("Todos los valores de comparación deben ser enteros.") from error
+        if len(set(immutable_input)) != len(immutable_input):
+            raise ValueError("La comparación de árboles requiere valores sin duplicados.")
+        pairs = {
+            "abb-avl": ("abb", "avl"),
+            "avl-red-black": ("avl", "red_black"),
+            "abb-heap": ("abb", "binary_heap"),
+        }
+        if kind == "traversals":
+            adapter = HierarchicalStructureService._new_adapter("abb")
+            for value in immutable_input:
+                adapter.execute("insertar", {"value": value})
+            state = adapter.to_visual_state()
+            traversals = state.get("traversals", {})
+            return {
+                "kind": kind, "input": list(immutable_input), "state": state,
+                "traversals": [
+                    {"name": name, "values": list(traversals.get(name, [])), "stack_rule": rule}
+                    for name, rule in (
+                        ("inorden", "izquierda → nodo → derecha"),
+                        ("preorden", "nodo → izquierda → derecha"),
+                        ("postorden", "izquierda → derecha → nodo"),
+                    )
+                ],
+                "conclusion": "El orden de visita cambia; la estructura original permanece inmutable.",
+            }
+        if kind not in pairs:
+            raise ValueError("Comparación jerárquica no soportada.")
+
+        def execute_copy(structure_id: str) -> dict[str, Any]:
+            adapter = HierarchicalStructureService._new_adapter(structure_id)
+            timeline=[]
+            for step_index, value in enumerate(immutable_input):
+                adapter.execute("insertar", {"value": value})
+                state=deepcopy(adapter.to_visual_state())
+                timeline.append({"step":step_index+1,"inserted":value,"state":state,"height":state.get("height"),"validation":state.get("validation",True)})
+            final=deepcopy(adapter.to_visual_state())
+            return {"structure":structure_id,"timeline":timeline,"final_state":final,"height":final.get("height"),"size":final.get("size"),"validation":final.get("validation",True)}
+
+        left_id,right_id=pairs[kind]; left=execute_copy(left_id); right=execute_copy(right_id)
+        conclusions={
+            "abb-avl":"El AVL limita la altura mediante rotaciones; el ABB puede degenerarse con entradas ordenadas.",
+            "avl-red-black":"AVL usa balance de alturas más estricto; rojo-negro limita altura mediante reglas de color.",
+            "abb-heap":"El ABB mantiene orden de búsqueda global; el heap solo garantiza prioridad parcial padre-hijos.",
+        }
+        return {"kind":kind,"input":list(immutable_input),"left":left,"right":right,"conclusion":conclusions[kind],"isolated":True}
