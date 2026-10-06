@@ -1,0 +1,2232 @@
+{
+  "schema": "didactic-qa-inventory/v1",
+  "structures_count": 13,
+  "operations_count": 120,
+  "structures": [
+    {
+      "id": "stack",
+      "family": "sequential",
+      "adapter": "app.adapters.stack_adapter.StackAdapter",
+      "trace_strategy": "SequentialTraceStrategy",
+      "renderer": {
+        "file": "static/js/sequential.js",
+        "function": "renderVisualState"
+      },
+      "endpoints": {
+        "page": "/sequential/<structure_id>",
+        "operate": "/sequential/<structure_id>/operate",
+        "reset": "/sequential/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_pila.c"
+      ],
+      "operations": [
+        {
+          "name": "apilar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "pila_apilar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_c_execution_coverage.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_operational_observability.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_security_and_session_limits.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_service_and_priority_coverage.py",
+            "tests/test_session_migration.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "desapilar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "pila_desapilar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_app_routes.py",
+            "tests/test_c_execution_coverage.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_service_and_priority_coverage.py",
+            "tests/test_session_migration.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_service_and_priority_coverage.py",
+            "tests/test_trace_engine.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": [
+        "cima"
+      ]
+    },
+    {
+      "id": "queue",
+      "family": "sequential",
+      "adapter": "app.adapters.queue_adapter.QueueAdapter",
+      "trace_strategy": "SequentialTraceStrategy",
+      "renderer": {
+        "file": "static/js/sequential.js",
+        "function": "renderVisualState"
+      },
+      "endpoints": {
+        "page": "/sequential/<structure_id>",
+        "operate": "/sequential/<structure_id>/operate",
+        "reset": "/sequential/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_cola.c"
+      ],
+      "operations": [
+        {
+          "name": "encolar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "cola_encolar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_service_and_priority_coverage.py",
+            "tests/test_sequential_tad_parametric_unit.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "desencolar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "cola_desencolar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_tad_parametric_unit.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_service_and_priority_coverage.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": [
+        "final",
+        "frente"
+      ]
+    },
+    {
+      "id": "priority_queue",
+      "family": "sequential",
+      "adapter": "app.adapters.priority_queue_adapter.PriorityQueueAdapter",
+      "trace_strategy": "SequentialTraceStrategy",
+      "renderer": {
+        "file": "static/js/sequential.js",
+        "function": "renderVisualState"
+      },
+      "endpoints": {
+        "page": "/sequential/<structure_id>",
+        "operate": "/sequential/<structure_id>/operate",
+        "reset": "/sequential/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_cola_prioridad.c"
+      ],
+      "operations": [
+        {
+          "name": "encolar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "cp_encolar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_service_and_priority_coverage.py"
+          ]
+        },
+        {
+          "name": "desencolar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "cp_desencolar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "frente",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "cp_frente",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_service_and_priority_coverage.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_service_and_priority_coverage.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "linked_list",
+      "family": "sequential",
+      "adapter": "app.adapters.linked_list_adapter.LinkedListAdapter",
+      "trace_strategy": "SequentialTraceStrategy",
+      "renderer": {
+        "file": "static/js/sequential.js",
+        "function": "renderVisualState"
+      },
+      "endpoints": {
+        "page": "/sequential/<structure_id>",
+        "operate": "/sequential/<structure_id>/operate",
+        "reset": "/sequential/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_lista.c"
+      ],
+      "operations": [
+        {
+          "name": "insertar_inicio",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_insertar_inicio",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_help_c_content.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "insertar_final",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_insertar_final",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "lista_insertar_elemento",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_insertar_elemento",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "eliminar_elemento",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_eliminar_elemento",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "eliminar_repetidos",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_eliminar_repetidos",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_parametric_unit.py"
+          ]
+        },
+        {
+          "name": "buscar_elemento",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "lista_buscar_elemento",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "mostrar",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "lista_mostrar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": []
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "insertar_posicion",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_insertar_elemento",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_sequential_interpreter_flow.py"
+          ]
+        },
+        {
+          "name": "insertar_elemento",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_insertar_elemento",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "eliminar_primero",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_eliminar_inicio",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "buscar_posiciones",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "lista_buscar_elemento",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "eliminar_inicio",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_eliminar_inicio",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_sequential_interpreter_flow.py"
+          ]
+        },
+        {
+          "name": "eliminar_final",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_eliminar_final",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_sequential_interpreter_flow.py"
+          ]
+        },
+        {
+          "name": "eliminar_posicion",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_eliminar_posicion",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "invertir",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lista_invertir",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "primero",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "lista_primero",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "ultimo",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "lista_ultimo",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hash_sequential_phase4_remediation.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "circular_list",
+      "family": "sequential",
+      "adapter": "app.adapters.circular_list_adapter.CircularListAdapter",
+      "trace_strategy": "SequentialTraceStrategy",
+      "renderer": {
+        "file": "static/js/sequential.js",
+        "function": "renderVisualState"
+      },
+      "endpoints": {
+        "page": "/sequential/<structure_id>",
+        "operate": "/sequential/<structure_id>/operate",
+        "reset": "/sequential/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_lista_circular.c"
+      ],
+      "operations": [
+        {
+          "name": "insertar_inicio",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lcir_insertar_inicio",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "insertar_final",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lcir_insertar_final",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "eliminar_inicio",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_sequential_interpreter_flow.py"
+          ]
+        },
+        {
+          "name": "eliminar_primero",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lcir_eliminar_primero",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "buscar_posiciones",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "lcir_buscar_posiciones",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "invertir",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "lcir_invertir",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_routes.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "sublist",
+      "family": "sequential",
+      "adapter": "app.adapters.sublist_adapter.SublistAdapter",
+      "trace_strategy": "SequentialTraceStrategy",
+      "renderer": {
+        "file": "static/js/sequential.js",
+        "function": "renderVisualState"
+      },
+      "endpoints": {
+        "page": "/sequential/<structure_id>",
+        "operate": "/sequential/<structure_id>/operate",
+        "reset": "/sequential/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_sublista.c"
+      ],
+      "operations": [
+        {
+          "name": "insertar_padre",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "sublista_insertar_padre_final",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_tad_parametric_unit.py",
+            "tests/test_sequential_tads.py"
+          ]
+        },
+        {
+          "name": "insertar_hijo",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "sublista_insertar_hijo_final",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_tad_parametric_unit.py",
+            "tests/test_sequential_tads.py"
+          ]
+        },
+        {
+          "name": "eliminar_padre",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "sublista_eliminar_padre_primero",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_tad_parametric_unit.py",
+            "tests/test_sequential_tads.py"
+          ]
+        },
+        {
+          "name": "eliminar_hijo",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "sublista_eliminar_hijo_primero",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_tad_parametric_unit.py",
+            "tests/test_sequential_tads.py"
+          ]
+        },
+        {
+          "name": "hijos_de",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_adapters.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_parametric_unit.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_tads.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_sequential_interpreter_flow.py",
+            "tests/test_sequential_methods_evidence.py",
+            "tests/test_sequential_routes.py",
+            "tests/test_sequential_tads.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "abb",
+      "family": "hierarchical",
+      "adapter": "app.adapters.abb_adapter.ABBAdapter",
+      "trace_strategy": "TreeTraceStrategy",
+      "renderer": {
+        "file": "static/js/hierarchical.js",
+        "function": "renderHierState"
+      },
+      "endpoints": {
+        "page": "/hierarchical/<structure_id>",
+        "operate": "/hierarchical/<structure_id>/operate",
+        "reset": "/hierarchical/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_abb.c"
+      ],
+      "operations": [
+        {
+          "name": "insertar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "abb_insertar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_help_c_content.py",
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_hierarchical_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_security_and_session_limits.py",
+            "tests/test_tad_migration_and_testing.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "eliminar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "abb_eliminar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "buscar",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "abb_buscar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "minimo",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "abb_encontrarMinimo",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "maximo",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "abb_encontrarMaximo",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py"
+          ]
+        },
+        {
+          "name": "altura",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "abb_altura",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py"
+          ]
+        },
+        {
+          "name": "contar_hojas",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py"
+          ]
+        },
+        {
+          "name": "inorden",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "abb_inorden",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "preorden",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "abb_preorden",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "postorden",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "abb_postorden",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "validar",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_trace_engine.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "avl",
+      "family": "hierarchical",
+      "adapter": "app.adapters.avl_adapter.AVLAdapter",
+      "trace_strategy": "TreeTraceStrategy",
+      "renderer": {
+        "file": "static/js/hierarchical.js",
+        "function": "renderHierState"
+      },
+      "endpoints": {
+        "page": "/hierarchical/<structure_id>",
+        "operate": "/hierarchical/<structure_id>/operate",
+        "reset": "/hierarchical/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_avl.c"
+      ],
+      "operations": [
+        {
+          "name": "insertar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "avl_insertar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_tad_migration_and_testing.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "eliminar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "avl_eliminar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "buscar",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "avl_buscar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "minimo",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "avl_minimo",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "maximo",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py"
+          ]
+        },
+        {
+          "name": "altura",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "avl_altura",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py"
+          ]
+        },
+        {
+          "name": "inorden",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_execution_trace_golden.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "validar",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_domain_and_app_init.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_trace_engine.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "red_black",
+      "family": "hierarchical",
+      "adapter": "app.adapters.red_black_adapter.RedBlackAdapter",
+      "trace_strategy": "TreeTraceStrategy",
+      "renderer": {
+        "file": "static/js/hierarchical.js",
+        "function": "renderHierState"
+      },
+      "endpoints": {
+        "page": "/hierarchical/<structure_id>",
+        "operate": "/hierarchical/<structure_id>/operate",
+        "reset": "/hierarchical/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_rojo_negro.c"
+      ],
+      "operations": [
+        {
+          "name": "insertar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "rbt_insertar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_help_c_content.py",
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_rbt_counting_phase5_remediation.py",
+            "tests/test_tad_migration_and_testing.py",
+            "tests/test_trace_engine.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "eliminar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "rbt_eliminar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_rbt_counting_phase5_remediation.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "buscar",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "rbt_buscar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "inorden",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_rbt_counting_phase5_remediation.py"
+          ]
+        },
+        {
+          "name": "altura",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py"
+          ]
+        },
+        {
+          "name": "validar",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_hierarchical_regressions.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_trace_engine.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "binary_heap",
+      "family": "hierarchical",
+      "adapter": "app.adapters.binary_heap_adapter.BinaryHeapAdapter",
+      "trace_strategy": "TreeTraceStrategy",
+      "renderer": {
+        "file": "static/js/hierarchical.js",
+        "function": "renderHierState"
+      },
+      "endpoints": {
+        "page": "/hierarchical/<structure_id>",
+        "operate": "/hierarchical/<structure_id>/operate",
+        "reset": "/hierarchical/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_monticulo_binario.c"
+      ],
+      "operations": [
+        {
+          "name": "insertar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "monticulo_insertar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_hierarchical_adapters.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_tad_migration_and_testing.py"
+          ]
+        },
+        {
+          "name": "extraer_raiz",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "monticulo_extraer_raiz",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_tad_migration_and_testing.py"
+          ]
+        },
+        {
+          "name": "raiz",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "monticulo_raiz",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_tad_migration_and_testing.py"
+          ]
+        },
+        {
+          "name": "a_lista",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_adapters_coverage.py"
+          ]
+        },
+        {
+          "name": "limpiar",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_hierarchical_adapters_coverage.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_sequential_service_and_priority_coverage.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "graph",
+      "family": "graph",
+      "adapter": "app.adapters.graph_adapter.GraphAdapter",
+      "trace_strategy": "GraphTraceStrategy",
+      "renderer": {
+        "file": "static/js/graph.js",
+        "function": "renderGraphState"
+      },
+      "endpoints": {
+        "page": "/graph/<structure_id>/<phase>",
+        "operate": "/graph/<structure_id>/operate",
+        "reset": "/graph/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_grafo.c",
+        "docs/tads_C/tad_cola.c"
+      ],
+      "operations": [
+        {
+          "name": "create_graph",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_phase3_remediation.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_security_and_session_limits.py"
+          ]
+        },
+        {
+          "name": "generate_random_graph",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "fallback_or_derived",
+          "tests": [
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "insert_vertex",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "grafo_insertar_vertice",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_c_code_service.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_phase3_remediation.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_security_and_session_limits.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "remove_vertex",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "grafo_eliminar_vertice",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "insert_edge",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "grafo_insertar_arco",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_phase3_remediation.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_security_and_session_limits.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "remove_edge",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "grafo_eliminar_arco",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "exists_vertex",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_existe_vertice",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "exists_edge",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_existe_arco",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "list_vertices",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_vertices",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_routes.py"
+          ]
+        },
+        {
+          "name": "list_edges",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_arcos",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_routes.py"
+          ]
+        },
+        {
+          "name": "neighbors",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_sucesores",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "edge_weight",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_costo_arco",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "run_bfs",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_bfs",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_phase3_remediation.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_security_and_session_limits.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "run_dfs",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_dfs",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_phase3_remediation.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "run_dijkstra",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_dijkstra",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_phase3_remediation.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "run_bellman_ford",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_bellman_ford",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_execution_trace_contract.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase7_trace_contract_remediation.py"
+          ]
+        },
+        {
+          "name": "run_prim",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_prim",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_phase3_remediation.py",
+            "tests/test_graph_routes.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "run_kruskal",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "grafo_kruskal",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_graph_adapters.py",
+            "tests/test_graph_interpreter_simulation_unit.py",
+            "tests/test_graph_phase3_remediation.py",
+            "tests/test_graph_routes.py"
+          ]
+        },
+        {
+          "name": "clear_graph",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": []
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "hash_table",
+      "family": "hash",
+      "adapter": "app.adapters.hash_table_adapter.HashTableAdapter",
+      "trace_strategy": "HashTraceStrategy",
+      "renderer": {
+        "file": "static/js/hash.js",
+        "function": "renderHashState"
+      },
+      "endpoints": {
+        "page": "/hash/<structure_id>",
+        "operate": "/hash/<structure_id>/operate",
+        "reset": "/hash/<structure_id>/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_tabla_hash.c"
+      ],
+      "operations": [
+        {
+          "name": "create_table",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "th_inicializar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_c_code_service.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase8_visual_integration.py"
+          ]
+        },
+        {
+          "name": "insert",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "th_insertar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_c_qa_event_protocol.py",
+            "tests/test_c_stack_harness.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_help_c_content.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_tad_migration_and_testing.py",
+            "tests/test_trace_engine.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "get",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "th_buscar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_app_routes.py",
+            "tests/test_c_code_service.py",
+            "tests/test_canonical_state.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_execution_trace_contract.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_help_c_content.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_session_migration.py",
+            "tests/test_tad_migration_and_testing.py",
+            "tests/test_trace_engine.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "contains",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": "th_contiene",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_interpreter_subroutines_cross_module.py",
+            "tests/test_tad_migration_and_testing.py",
+            "tests/test_ui_playwright_e2e.py"
+          ]
+        },
+        {
+          "name": "remove",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "th_eliminar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_c_qa_event_protocol.py",
+            "tests/test_c_stack_harness.py",
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_interpreter_subroutines_cross_module.py"
+          ]
+        },
+        {
+          "name": "keys",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_execution_trace_contract.py",
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "values",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_c_qa_event_protocol.py",
+            "tests/test_c_stack_harness.py",
+            "tests/test_canonical_state.py",
+            "tests/test_conformance_runner.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_phase8_visual_integration.py"
+          ]
+        },
+        {
+          "name": "items",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_c_qa_event_protocol.py",
+            "tests/test_c_stack_harness.py",
+            "tests/test_canonical_state.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_hash_sequential_phase4_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "stats",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_c_code_service.py",
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py"
+          ]
+        },
+        {
+          "name": "clear",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": "th_vaciar",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hash_adapters.py",
+            "tests/test_hash_routes.py",
+            "tests/test_trace_engine.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": []
+    },
+    {
+      "id": "sorting_array",
+      "family": "sorting",
+      "adapter": "app.adapters.sorting_adapter.SortingAdapter",
+      "trace_strategy": "SortingTraceStrategy",
+      "renderer": {
+        "file": "static/js/sorting.js",
+        "function": "renderSortingVisualState"
+      },
+      "endpoints": {
+        "page": "/sorting/visualizador",
+        "operate": "/api/ordenamiento/<action>",
+        "reset": "/api/ordenamiento/reset"
+      },
+      "c_sources": [
+        "docs/tads_C/tad_ordenamiento.c"
+      ],
+      "operations": [
+        {
+          "name": "create_array",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "fallback_or_derived",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_phase8_visual_integration.py"
+          ]
+        },
+        {
+          "name": "generate_random_array",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "fallback_or_derived",
+          "tests": []
+        },
+        {
+          "name": "select_algorithm",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "fallback_or_derived",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_phase8_visual_integration.py"
+          ]
+        },
+        {
+          "name": "run",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "fallback_or_derived",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sorting_routes.py"
+          ]
+        },
+        {
+          "name": "step",
+          "kind": "operation",
+          "mutates": false,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "fallback_or_derived",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_execution_trace_golden.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sorting_routes.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "reset",
+          "kind": "operation",
+          "mutates": true,
+          "c_function": null,
+          "mapping_status": "unmapped",
+          "didactic_source": "fallback_or_derived",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_didactic_qa_inventory.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sorting_routes.py"
+          ]
+        },
+        {
+          "name": "intercambio",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_intercambio",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "seleccion",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_seleccion",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "insercion",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_insercion",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_hierarchical_interpreter_simulation_unit.py",
+            "tests/test_phase6_intermediate_states_remediation.py",
+            "tests/test_sorting_adapter.py",
+            "tests/test_sorting_trace.py",
+            "tests/test_trace_engine.py"
+          ]
+        },
+        {
+          "name": "burbuja",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_burbuja",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_execution_trace_golden.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sorting_adapter.py",
+            "tests/test_sorting_routes.py",
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "shell",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_shell",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "quicksort",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_quicksort",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_conformance_runner.py",
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_sorting_adapter.py",
+            "tests/test_sorting_domain_coverage.py",
+            "tests/test_sorting_routes.py",
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "mergesort",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_mergesort",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_phase8_visual_integration.py",
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "heapsort",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_heapsort",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "counting_sort",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_counting_sort",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_rbt_counting_phase5_remediation.py",
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "binsort",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_binsort",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_phase7_trace_contract_remediation.py",
+            "tests/test_rbt_counting_phase5_remediation.py",
+            "tests/test_sorting_trace.py"
+          ]
+        },
+        {
+          "name": "radixsort",
+          "kind": "algorithm",
+          "mutates": true,
+          "c_function": "ordenar_radixsort",
+          "mapping_status": "mapped",
+          "didactic_source": "c",
+          "tests": [
+            "tests/test_didactic_qa_findings.py",
+            "tests/test_radix_int_min_regression.py",
+            "tests/test_sorting_adapter.py",
+            "tests/test_sorting_domain_coverage.py",
+            "tests/test_sorting_trace.py"
+          ]
+        }
+      ],
+      "orphan_c_mappings": [
+        "copiar_arreglo",
+        "imprimir_arreglo",
+        "probar_algoritmo_int",
+        "probar_algoritmo_void"
+      ]
+    }
+  ],
+  "gaps": {
+    "unmapped_public_operations": [
+      "stack::limpiar",
+      "queue::limpiar",
+      "priority_queue::limpiar",
+      "linked_list::limpiar",
+      "circular_list::eliminar_inicio",
+      "circular_list::limpiar",
+      "sublist::hijos_de",
+      "sublist::limpiar",
+      "abb::contar_hojas",
+      "abb::validar",
+      "abb::limpiar",
+      "avl::maximo",
+      "avl::inorden",
+      "avl::validar",
+      "avl::limpiar",
+      "red_black::inorden",
+      "red_black::altura",
+      "red_black::validar",
+      "red_black::limpiar",
+      "binary_heap::a_lista",
+      "binary_heap::limpiar",
+      "graph::create_graph",
+      "graph::generate_random_graph",
+      "graph::clear_graph",
+      "hash_table::keys",
+      "hash_table::values",
+      "hash_table::items",
+      "hash_table::stats",
+      "sorting_array::create_array",
+      "sorting_array::generate_random_array",
+      "sorting_array::select_algorithm",
+      "sorting_array::run",
+      "sorting_array::step",
+      "sorting_array::reset"
+    ],
+    "fallback_or_derived_operations": [
+      "graph::generate_random_graph",
+      "sorting_array::create_array",
+      "sorting_array::generate_random_array",
+      "sorting_array::select_algorithm",
+      "sorting_array::run",
+      "sorting_array::step",
+      "sorting_array::reset"
+    ],
+    "orphan_c_mappings": {
+      "stack": [
+        "cima"
+      ],
+      "queue": [
+        "final",
+        "frente"
+      ],
+      "sorting_array": [
+        "copiar_arreglo",
+        "imprimir_arreglo",
+        "probar_algoritmo_int",
+        "probar_algoritmo_void"
+      ]
+    }
+  }
+}

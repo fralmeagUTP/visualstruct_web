@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "TRACE-002", "structure_id": "application", "operation": "trace validation/playback",
+  "input": {"step0_after": {"size": 1}, "step1_before": {"size": 99}},
+  "expected": [{"layer": "validator", "state": {"result": "reject discontinuous trace"}}],
+  "observed": [{"layer": "validator", "source_location": "TraceEngine.validate_steps", "state": {"result": "accepted"}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "El contrato sólo compara el último after con final_state; no exige que after[i] sea igual a before[i+1], por lo que avanzar y retroceder puede saltar entre historias incompatibles.",
+  "probable_cause": "Falta una validación de continuidad causal entre pasos consecutivos.",
+  "location": "app/services/trace/engine.py:TraceEngine.validate_steps",
+  "recommended_test": "Inyectar una discontinuidad intermedia y exigir TraceContractError antes de entregar la traza al reproductor.",
+  "suggested_fix": "Validar continuidad profunda y, cuando sea intencional, exigir un evento explícito de reset/rebase. No se modifica código funcional durante la auditoría."
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "TRACE-003", "structure_id": "application", "operation": "source highlighting",
+  "input": {"source_code": "linea real", "line_index": 50, "line_text": "linea inventada"},
+  "expected": [{"layer": "validator", "state": {"result": "reject out-of-range/mismatched source line"}}],
+  "observed": [{"layer": "validator", "source_location": "TraceStep/TraceEngine", "state": {"result": "accepted"}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "Una traza puede resaltar un índice fuera del código o asociar texto distinto y aun superar la validación.",
+  "probable_cause": "TraceStep sólo comprueba que line_index sea no negativo; TraceEngine no lo contrasta con source_code.",
+  "location": "app/services/trace/models.py y app/services/trace/engine.py",
+  "recommended_test": "Alterar índice/texto manteniendo estados válidos y exigir rechazo por falta de correspondencia exacta.",
+  "suggested_fix": "Validar límites y equivalencia normalizada de source_code.splitlines()[line_index] con line_text. No se modifica código funcional durante la auditoría."
+}

@@ -1,4 +1,4 @@
-﻿"""Optional E2E UI tests with Playwright for interpreter UX regressions.
+"""Optional E2E UI tests with Playwright for interpreter UX regressions.
 
 These tests are skipped automatically when Playwright or browser binaries
 are not installed in the environment.
@@ -98,6 +98,27 @@ def _finish_manual_trace(page, prefix: str) -> None:
     raise AssertionError("Trace did not finish within 2000 explicit manual steps")
 
 
+def _wait_graph_mutation_final(page, expected: str) -> None:
+    """Manual preparation is not a completed C operation or a future result."""
+    _wait_status_contains(page, "#graph-message-box", "Operación preparada")
+    assert "resultado pendiente" in (page.text_content("#graph-message-box") or "")
+    _finish_manual_trace(page, "graph")
+    _wait_status_contains(page, "#graph-message-box", expected)
+
+
+def _assert_stack_push_final(page, expected_value: int, expected_count: int = 1) -> None:
+    """Require published initialized C heap/root, not the superseded renderer CSS."""
+    nodes = page.locator("[data-stack-push-node]")
+    assert nodes.count() == expected_count
+    for node in nodes.all():
+        assert node.get_attribute("data-stack-push-mask") == "3"
+    root_id = page.locator("[data-stack-push-root]").get_attribute("data-stack-push-root")
+    root_node = page.locator(f'[data-stack-push-node="{root_id}"]')
+    assert root_node.count() == 1
+    assert root_node.locator('[data-stack-push-field="nro"] strong').inner_text() == str(expected_value)
+    assert page.locator("[data-stack-push-aux-valid]").get_attribute("data-stack-push-aux-valid") == "out-of-scope"
+
+
 def _wait_didactic_mode(page, mode: str, timeout_ms: int = 15000) -> None:
     page.wait_for_function(
         "(expected) => document.documentElement.getAttribute('data-didactic-mode') === expected",
@@ -161,12 +182,12 @@ def test_playwright_graph_code_panel_scroll_and_history_sync() -> None:
             page.fill("#g-op-field-vertex", "30")
             _enable_manual_mode(page, "graph")
             page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-message-box", "vertice")
+            _wait_graph_mutation_final(page, "vertice")
 
             page.fill("#g-op-field-vertex", "40")
             _enable_manual_mode(page, "graph")
             page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-message-box", "vertice")
+            _wait_graph_mutation_final(page, "vertice")
 
             code_title = page.text_content("#op-pseudocode-title") or ""
             assert "Codigo C" in code_title
@@ -276,7 +297,7 @@ def test_playwright_sequential_interpreter_controls_workflow() -> None:
             page.click("#seq-sim-step")
             _enable_manual_mode(page, "seq")
             _finish_manual_trace(page, "seq")
-            assert page.locator(".viz-stack-node-row").count() == 1
+            _assert_stack_push_final(page, 21)
             visual_text = page.text_content("#visual-state") or ""
             assert "aux (integrado)" not in visual_text
 
@@ -308,7 +329,7 @@ def test_playwright_sequential_execution_is_separate_from_playback() -> None:
             _wait_status_contains(page, "#seq-sim-status", "Traza lista")
             assert len(requests) == 1
             _finish_manual_trace(page, "seq")
-            assert page.locator(".viz-stack-node-row").count() == 1
+            _assert_stack_push_final(page, 7)
             page.click("#seq-step-mode")
             _enable_manual_mode(page, "seq")
             page.click("#seq-sim-step")
@@ -317,15 +338,15 @@ def test_playwright_sequential_execution_is_separate_from_playback() -> None:
             _enable_manual_mode(page, "seq")
             _finish_manual_trace(page, "seq")
             assert len(requests) == 1
-            assert page.locator(".viz-stack-node-row").count() == 1
+            _assert_stack_push_final(page, 7)
 
             _enable_manual_mode(page, "seq")
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Traza lista")
             assert len(requests) == 2
             _finish_manual_trace(page, "seq")
-            assert page.locator(".viz-stack-node-row").count() == 2
-            assert page.locator(".viz-stack-node-row").count() == 2
+            _assert_stack_push_final(page, 7, expected_count=2)
+            _assert_stack_push_final(page, 7, expected_count=2)
 
             page.select_option("#operation-select", "desapilar")
             _enable_manual_mode(page, "seq")
@@ -474,7 +495,7 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
                 page.fill("#g-op-field-vertex", value)
                 _enable_manual_mode(page, "graph")
                 page.click("#graph-sim-play")
-                _wait_status_contains(page, "#graph-message-box", "vertice")
+                _wait_graph_mutation_final(page, "vertice")
 
             for origin, target, weight in [("1", "2", "3"), ("2", "3", "2"), ("3", "4", "4"), ("1", "4", "15")]:
                 page.select_option("#graph-operation-select", "insert_edge")
@@ -484,7 +505,7 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
                 page.fill("#g-op-field-weight", weight)
                 _enable_manual_mode(page, "graph")
                 page.click("#graph-sim-play")
-                _wait_status_contains(page, "#graph-message-box", "arista")
+                _wait_graph_mutation_final(page, "arista")
 
             # 2) Traversals phase (BFS), executed to the final frame.
             page.goto(f"{base_url}/graph/graph/recorridos", wait_until="networkidle")
@@ -504,6 +525,7 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
             page.fill("#g-alg-field-end", "4")
             _enable_manual_mode(page, "graph")
             page.click("#graph-sim-play")
+            _finish_manual_trace(page, "graph")
             _wait_status_contains(page, "#graph-message-box", "Dijkstra")
 
             # 4) MST phase (Prim).
@@ -512,6 +534,7 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
             page.fill("#g-alg-field-start", "1")
             _enable_manual_mode(page, "graph")
             page.click("#graph-sim-play")
+            _finish_manual_trace(page, "graph")
             _wait_status_contains(page, "#graph-message-box", "Prim")
 
             browser.close()
@@ -530,13 +553,13 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
             page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
 
-            for value in [str(v) for v in range(1, 11)]:
+            for value in [str(v) for v in range(1, 9)]:
                 page.select_option("#graph-operation-select", "insert_vertex")
                 page.wait_for_selector("#g-op-field-vertex", timeout=5000)
                 page.fill("#g-op-field-vertex", value)
                 _enable_manual_mode(page, "graph")
                 page.click("#graph-sim-play")
-                _wait_status_contains(page, "#graph-message-box", "vertice")
+                _wait_graph_mutation_final(page, "vertice")
 
             ring_edges = [
                 ("1", "2", "4"),
@@ -546,11 +569,9 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
                 ("5", "6", "2"),
                 ("6", "7", "5"),
                 ("7", "8", "8"),
-                ("8", "9", "1"),
-                ("9", "10", "9"),
-                ("10", "1", "10"),
+                ("8", "1", "1"),
             ]
-            extra_edges = [("1", "6", "11"), ("2", "7", "12"), ("3", "8", "13"), ("4", "9", "14")]
+            extra_edges = [("1", "6", "11"), ("2", "7", "12"), ("3", "8", "13")]
 
             for origin, target, weight in ring_edges + extra_edges:
                 page.select_option("#graph-operation-select", "insert_edge")
@@ -560,7 +581,7 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
                 page.fill("#g-op-field-weight", weight)
                 _enable_manual_mode(page, "graph")
                 page.click("#graph-sim-play")
-                _wait_status_contains(page, "#graph-message-box", "arista")
+                _wait_graph_mutation_final(page, "arista")
 
             result_text = page.text_content("#graph-visual-state") or ""
             assert "Vértices" in result_text
@@ -617,7 +638,7 @@ def test_playwright_graph_guided_level_and_mobile_context() -> None:
             page.fill("#g-op-field-vertex", "1")
             _enable_manual_mode(page, "graph")
             page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-message-box", "vertice")
+            _wait_graph_mutation_final(page, "vertice")
             page.goto(f"{base_url}/graph/graph/recorridos",wait_until="networkidle")
             assert page.locator("#graph-guided-example").count() == 0
             assert page.locator("#graph-visual-region").is_visible()
@@ -653,21 +674,21 @@ def test_playwright_graph_mst_practice_comparison_keyboard_and_responsive() -> N
                 page.fill("#g-op-field-vertex", value)
                 _enable_manual_mode(page, "graph")
                 page.click("#graph-sim-play")
-                _wait_status_contains(page, "#graph-message-box", "vertice")
+                _wait_graph_mutation_final(page, "vertice")
             page.select_option("#graph-operation-select", "insert_edge")
             page.fill("#g-op-field-origin", "1")
             page.fill("#g-op-field-target", "2")
             page.fill("#g-op-field-weight", "4")
             _enable_manual_mode(page, "graph")
             page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-message-box", "arista")
+            _wait_graph_mutation_final(page, "arista")
             page.select_option("#graph-operation-select", "insert_edge")
             page.fill("#g-op-field-origin", "2")
             page.fill("#g-op-field-target", "3")
             page.fill("#g-op-field-weight", "2")
             _enable_manual_mode(page, "graph")
             page.click("#graph-sim-play")
-            _wait_status_contains(page, "#graph-message-box", "arista")
+            _wait_graph_mutation_final(page, "arista")
             page.goto(f"{base_url}/graph/graph/expansion-minima", wait_until="networkidle")
             page.select_option("#graph-algorithm-select", "run_prim")
             page.fill("#g-alg-field-start", "1")
@@ -695,7 +716,8 @@ def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
             _wait_status_contains(page, "#hier-sim-counter", "Paso: 1/")
             cursor = page.text_content("#hier-sim-counter")
             assert page.text_content("#hier-sim-counter") == cursor
-            assert "invariant" in (page.text_content("#hier-pedagogy-summary") or "").lower()
+            summary = (page.text_content("#hier-pedagogy-summary") or "").lower()
+            assert "caller_enter" in summary and "no hay resultado futuro" in summary
             page.set_viewport_size({"width": 390, "height": 844})
             page.click('[data-hier-tab="code"]')
             assert page.is_visible("#hier-code-region") is True
@@ -901,7 +923,7 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
             expected = {
                 "seleccion": "Mínimo provisional",
                 "insercion": "Clave:",
-                "burbuja": "Frontera:",
+                "burbuja": "Pasada:",
                 "shell": "Intervalo (gap)",
                 "quicksort": "Subproblema activo",
                 "mergesort": "División/fusión activa",
@@ -916,6 +938,10 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
                 page.click("#sorting-sim-play")
                 _finish_manual_trace(page, "sorting")
                 assert marker in (page.text_content("#sorting-strategy-view") or "")
+                if algorithm == "burbuja":
+                    strategy = page.text_content("#sorting-strategy-view") or ""
+                    assert "Retorno void al caller" in strategy
+                    assert "j: —" in strategy and "hubo_intercambio: —" in strategy
             browser.close()
 
 

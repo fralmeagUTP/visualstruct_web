@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "SORT-003", "structure_id": "sorting_array", "operation": "radixsort",
+  "input": {"values": [-2147483648, -1, 0, 7]},
+  "expected": [{"layer": "c", "source_location": "ordenar_radixsort", "state": {"result": [-2147483648, -1, 0, 7], "defined_behavior": true}}],
+  "observed": [{"layer": "c", "source_location": "negativos[cant_negativos++]=-arreglo[i]", "state": {"signed_overflow": true}}, {"layer": "backend", "state": {"result": [-2147483648, -1, 0, 7]}}],
+  "result": "failed", "severity": "critical",
+  "discrepancy": "Negar INT_MIN no es representable en int y produce comportamiento indefinido en C, mientras Python lo ordena correctamente.",
+  "probable_cause": "Las magnitudes negativas se almacenan en int sin tratar INT_MIN ni usar un tipo más ancho.",
+  "location": "docs/tads_C/tad_ordenamiento.c:ordenar_radixsort",
+  "recommended_test": "Ejecutar Radix con INT_MIN bajo UBSan y exigir ausencia de signed-integer-overflow y resultado ordenado.",
+  "suggested_fix": "Convertir a un tipo sin signo/ancho antes de obtener la magnitud y ajustar counting_por_digito. No se modifica código funcional durante la auditoría."
+}

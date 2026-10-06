@@ -1,0 +1,25 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "AVL-001",
+  "structure_id": "avl",
+  "operation": "insertar",
+  "input": {"before": [30, [10, null, null], null], "value": 20, "rotation": "LR/RDD"},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "docs/tads_C/tad_avl.c:avl_insertar", "state": {"shape": [30, [10, null, null], null]}},
+    {"step": 1, "layer": "c", "source_location": "docs/tads_C/tad_avl.c:padre->der=nuevo", "state": {"shape": [30, [10, null, [20, null, null]], null]}},
+    {"step": 2, "layer": "c", "source_location": "docs/tads_C/tad_avl.c:avl_RSI(r,B)", "state": {"shape": [30, [20, [10, null, null], null], null]}},
+    {"step": 3, "layer": "c", "source_location": "docs/tads_C/tad_avl.c:avl_RSD(r,A)", "state": {"shape": [20, [10, null, null], [30, null, null]]}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "frontend", "source_location": "app/services/trace/strategies.py:TreeTraceStrategy", "state": {"shape": [30, [10, null, null], null]}},
+    {"step": 1, "layer": "frontend", "source_location": "app/services/trace/strategies.py:TreeTraceStrategy", "state": {"shape": [30, [10, null, [20, null, null]], null]}},
+    {"step": 2, "layer": "frontend", "source_location": "app/services/trace/strategies.py:TreeTraceStrategy", "state": {"shape": [20, [10, null, null], [30, null, null]]}}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "Las rotaciones dobles LR y RL saltan del árbol desequilibrado al árbol final; no visualizan los enlaces, alturas ni factores de equilibrio producidos por la primera rotación simple.",
+  "probable_cause": "TreeTraceStrategy reconoce cualquier llamada avl_R* como un único punto de transición y sólo sintetiza un estado intermedio de inserción, aunque avl_RDD y avl_RDI ejecutan dos rotaciones.",
+  "location": "app/services/trace/strategies.py:TreeTraceStrategy.build_boundaries",
+  "recommended_test": "Insertar 30,10,20 y 10,30,20; exigir un frame por cada llamada interna RSI/RSD con raíz, enlaces, alturas y factores calculados en ese instante.",
+  "suggested_fix": "Alimentar la traza con snapshots del oráculo dentro de cada rotación simple y recalcular metadatos visuales por frame, preservando las identidades lógicas de los tres nodos. No se modifica código funcional durante esta auditoría."
+}

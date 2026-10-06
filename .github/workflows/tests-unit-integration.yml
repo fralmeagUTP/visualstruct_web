@@ -30,6 +30,24 @@ jobs:
           pip install -r requirements.txt
           pip install pytest-cov
 
+      - name: Select preinstalled GCC and gcov with condition coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          compiler="$(command -v gcc-14)"
+          coverage_tool="$(command -v gcov-14)"
+          "$compiler" --version
+          "$coverage_tool" --version
+          "$compiler" --help=common > "$RUNNER_TEMP/visualstruct-gcc-options.txt"
+          grep -q -- '-fcondition-coverage' "$RUNNER_TEMP/visualstruct-gcc-options.txt"
+          "$coverage_tool" --help > "$RUNNER_TEMP/visualstruct-gcov-options.txt"
+          grep -q -- '--conditions' "$RUNNER_TEMP/visualstruct-gcov-options.txt"
+          tools_dir="$RUNNER_TEMP/visualstruct-condition-coverage-tools"
+          mkdir -p "$tools_dir"
+          ln -s "$compiler" "$tools_dir/gcc"
+          ln -s "$coverage_tool" "$tools_dir/gcov"
+          echo "$tools_dir" >> "$GITHUB_PATH"
+
       - name: Run unit/integration tests
         run: |
           python -m pytest -q tests -m "not e2e"
