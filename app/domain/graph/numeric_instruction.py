@@ -1,13 +1,19 @@
 """Graph frames from completed instructions of the four downloaded C kernels."""
 from __future__ import annotations
 from copy import deepcopy
-from app.domain.graph.snapshot_pool import SnapshotPool, finish_graph_trace
+from app.domain.graph.snapshot_pool import SnapshotPool, finish_graph_trace, GraphLogicalTrace
 from typing import Any
 from .c_algorithm_subset import Program, GraphMachine, UNINIT, NULL
 from .pedagogy import (GRAPH_FRAME_SCHEMA_VERSION, GRAPH_LEARNING_CATALOG,
     build_graph_frame, graph_frame_schema, validate_graph_frame)
 
 OPERATIONS = frozenset({'run_dijkstra','run_bellman_ford','run_prim','run_kruskal'})
+
+
+def _finish_numeric_trace(trace, pool, compact):
+    """Keep typed service state; normalize keys only in the JSON wire records."""
+    logical = finish_graph_trace(trace, pool, False)
+    return pool.pack(logical) if compact else GraphLogicalTrace(logical, snapshot_pool=pool)
 
 
 def root_variables(state: dict[str,Any]) -> dict[str,Any]:
@@ -132,8 +138,8 @@ def build_graph_numeric_trace(*, operation_name: str, payload: dict[str,Any], so
     result_wrapper=after_state.get('last_result') or {};result=result_wrapper.get('result') or {}
     cycle_executed=operation_name=='run_bellman_ford' and isinstance(result,dict) and bool(result.get('has_negative_cycle'))
     if not success and not cycle_executed:
-        return finish_graph_trace(rejection_trace(trace,before_state,after_state),SnapshotPool(),_compact)
-    program=Program(source_code);lines=source_code.splitlines();steps=[];pool=SnapshotPool()
+        return _finish_numeric_trace(rejection_trace(trace,before_state,after_state),SnapshotPool(preserve_tuples=operation_name == 'run_dijkstra'),_compact)
+    program=Program(source_code);lines=source_code.splitlines();steps=[];pool=SnapshotPool(preserve_tuples=operation_name == 'run_dijkstra')
     seed_vertices=[int(n['id']) for n in before_state.get('nodes',[])]
     marks={int(n['id']):int(n.get('marked',0)) for n in before_state.get('nodes',[])}
     arcs=[]
@@ -249,4 +255,4 @@ def build_graph_numeric_trace(*, operation_name: str, payload: dict[str,Any], so
         numeric_C_memory=final_memory,returned_arcs=observed,
         instruction_scope='Four named downloaded C kernels and actual helpers; typed symbolic ABI model. Native C execution is QA evidence, not a compiler invocation in the application.',
         resource_scope='No event sampling or final-state interpolation. Finite fixture QA does not certify large-input transport, allocation failures or all C implementations.')
-    return finish_graph_trace(trace,pool,_compact)
+    return _finish_numeric_trace(trace,pool,_compact)

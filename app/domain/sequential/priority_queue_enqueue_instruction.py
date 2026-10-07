@@ -114,13 +114,21 @@ def build_priority_queue_enqueue_trace(*, payload: dict[str, Any], source_code: 
             'variables': deepcopy(variables), 'pointers': deepcopy(pointers), 'scopes': deepcopy(scopes),
             'call_stack': deepcopy(calls), 'return_value': return_value, 'condition_result': condition}
         previous = deepcopy(steps[-1]['state_after'] if steps else before_state)
-        current = snapshot()
+        memory_snapshot = snapshot()
+        # Intermediate frames retain their public C-memory annotations. At the
+        # parent return, expose the canonical logical state while retaining the
+        # same derived caller memory in pedagogy (never copied from after_state).
+        current = {key: value for key, value in memory_snapshot.items()
+                   if active or key not in {'node_ids', 'delante', 'atras', 'cantidad'}}
         step = {'step_index': len(steps), 'line_index': index, 'line_text': lines[index],
             'event_type': event, 'phase': 'progress', 'delay_ms': 100, 'function_name': function,
             'state_snapshot': previous, 'state_after': current, 'console': [],
             'condition_result': condition, 'debug': debug}
+        memory_step = {**step,
+            'state_snapshot': deepcopy(steps[-1]['pedagogy']['memory_state'] if steps else before_state),
+            'state_after': memory_snapshot}
         frame = build_sequential_frame(structure_id='priority_queue', operation_name='encolar',
-            payload=payload, step=step, success=success)
+            payload=payload, step=memory_step, success=success)
         memory = {'kind': 'priority_queue_enqueue', 'root': deepcopy(root), 'heap': deepcopy(heap),
             'parent_new': deepcopy(parent_new) if active else None,
             'helper_new': deepcopy(helper_new) if helper_active else None,
@@ -137,7 +145,7 @@ def build_priority_queue_enqueue_trace(*, payload: dict[str, Any], source_code: 
                 'link' if event in ('front_assigned', 'rear_next_assigned', 'rear_assigned') else 'stable',
                 'before': deepcopy(steps[-1]['pedagogy']['heap_objects'] if steps else heap),
                 'after': deepcopy(heap), 'freed': [], 'dangling_references': []},
-            scopes=scopes, call_stack=calls, memory_state=None, enqueue_memory=memory,
+            scopes=scopes, call_stack=calls, memory_state=deepcopy(memory_snapshot), enqueue_memory=memory,
             condition=None if condition is None else {'source': lines[index], 'substituted': substituted,
                 'result': condition, 'consequence': 'Rama C realmente ejecutada.'})
         frame['source']['function'] = function

@@ -1316,9 +1316,10 @@ class ExecutionTraceService:
             from app.domain.graph.numeric_instruction import build_graph_numeric_trace
             trace = build_graph_numeric_trace(operation_name=operation_name, payload=payload,
                 source_code=source_code, code_title=code_title, before_state=before_state,
-                after_state=after_state, success=success, message=message)
-            # The numeric builder validates each legacy conversion and all
-            # engine boundaries before compacting its exact snapshot transport.
+                after_state=after_state, success=success, message=message,
+                _compact=operation_name != "run_dijkstra")
+            # Dijkstra returns typed logical states. The Graph route emits
+            # compact JSON using the builder's validated snapshot pool.
             return trace
         if structure_id == "priority_queue" and operation_name.removeprefix("cp_") in {
                 "inicializar", "vacia", "contar", "copiar_items", "formatear"}:

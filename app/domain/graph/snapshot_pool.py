@@ -61,7 +61,7 @@ class SnapshotPool:
                 if isinstance(k,(int,float)):return json.dumps(k)
                 raise TypeError('Unsupported JSON snapshot key')
             pairs=[(k if self.preserve_tuples else text_key(k),v) for k,v in value.items()]
-            if len({k for k,v in pairs})!=len(pairs):raise ValueError('Duplicate normalized snapshot keys')
+            if len({text_key(k) for k,v in pairs})!=len(pairs):raise ValueError('Duplicate normalized snapshot keys')
             children=[(k,*self._intern_with_token(v,seen)) for k,v in pairs]
             key=('dict',tuple((self.primitive_key(k) if self.preserve_tuples else k,token) for k,child,token in children))
         else:

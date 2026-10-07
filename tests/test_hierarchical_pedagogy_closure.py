@@ -1,5 +1,6 @@
 """Closure acceptance tests for hierarchical pedagogy phases 7-9."""
 from pathlib import Path
+from _final_hierarchy_oracle import assert_final_hierarchical_invariant
 
 import pytest
 
@@ -58,7 +59,9 @@ def test_fast_and_trace_final_states_are_equivalent(structure_id):
     trace=result["execution_trace"]
     assert trace["final_state"]==result["visual_state"]
     assert trace["steps"][-1]["state_after"]==result["visual_state"]
-    assert trace["steps"][-1]["pedagogy"]["invariant"]["holds"]
+    holds = trace["steps"][-1]["pedagogy"]["invariant"]["holds"]
+    assert holds is (None if structure_id in {"avl", "red_black", "binary_heap"} else True)
+    assert_final_hierarchical_invariant(structure_id, result["visual_state"])
 
 
 @pytest.mark.parametrize("structure_id", ["abb","avl","red_black","binary_heap"])
