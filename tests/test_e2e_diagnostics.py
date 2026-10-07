@@ -1,5 +1,6 @@
 """Safe metadata retains real failure/exit code without publishing exception text."""
 import json
+import pytest
 import os
 from pathlib import Path
 import subprocess
@@ -7,19 +8,23 @@ import sys
 from types import SimpleNamespace
 
 
-def test_runner_records_timeout_and_exit1_without_token_password_or_raw_artifacts(tmp_path):
+@pytest.mark.parametrize("relative_directory", [False, True])
+def test_runner_records_timeout_and_exit1_without_token_password_or_raw_artifacts(tmp_path, relative_directory):
     root = Path(__file__).resolve().parents[1]
     sentinel = "SYNTHETIC_" + "SECRET_SENTINEL"
     password = "SYNTHETIC_" + "PASSWORD_SENTINEL"
-    probe = tmp_path / "test_probe.py"
+    child_directory = tmp_path / "child-tests"
+    child_directory.mkdir()
+    probe = child_directory / "test_probe.py"
     probe.write_text("import pytest\nfrom scripts.e2e_diagnostics import checkpoint\n@pytest.mark.parametrize('value', [" + repr(sentinel) + "])\ndef test_timeout(value):\n    checkpoint('manual_finish_start')\n    print('Authorization: Bearer ' + value)\n    raise TimeoutError('password=' + " + repr(password) + ")\ndef test_pass():\n    assert True\n", encoding="utf-8")
     directory = tmp_path / "diagnostics"
-    env = dict(os.environ, PYTHONPATH=str(root), VISUALSTRUCT_E2E_DIAGNOSTICS_DIR=str(directory),
+    env = dict(os.environ, PYTHONPATH=str(root), VISUALSTRUCT_E2E_DIAGNOSTICS_DIR="diagnostics" if relative_directory else str(directory),
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1", PYTHONDONTWRITEBYTECODE="1")
     result = subprocess.run([sys.executable, "-B", str(root / "scripts/run_e2e_diagnostics.py"),
                              "--suite", "probe", str(probe)],
                             cwd=tmp_path, env=env, capture_output=True, text=True, timeout=15)
     assert result.returncode == 1
+    assert (directory / "probe.jsonl").is_file()
     rows = [json.loads(line) for line in (directory / "probe.jsonl").read_text().splitlines()]
     assert rows[0]["stage"] == "session_start" and rows[0]["stack_dump_seconds"] == 90
     wait = next(row for row in rows if row["stage"] == "manual_finish_start")

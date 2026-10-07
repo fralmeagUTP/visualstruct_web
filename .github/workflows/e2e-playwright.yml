@@ -16,7 +16,7 @@ jobs:
     env:
       PYTHONUNBUFFERED: "1"
       VISUALSTRUCT_E2E_DIAGNOSTICS: "1"
-      VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: .pytest-e2e-safe-diagnostics
+      VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: e2e-safe-diagnostics
 
     steps:
       - name: Checkout
@@ -52,6 +52,7 @@ jobs:
         with:
           name: e2e-diagnostics
           path: |
-            .pytest-e2e-safe-diagnostics/*.jsonl
-            .pytest-e2e-safe-diagnostics/*-result.json
+            e2e-safe-diagnostics/*.jsonl
+            e2e-safe-diagnostics/*-result.json
           if-no-files-found: warn
+          include-hidden-files: false

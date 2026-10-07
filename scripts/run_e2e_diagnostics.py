@@ -21,11 +21,11 @@ def main():
     target = Path(args.target).resolve()
     if not target.is_file() or target.suffix != ".py":
         parser.error("target must be an existing Python test file")
-    directory = Path(os.environ.get("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", ".pytest-e2e-safe-diagnostics"))
+    directory = Path(os.environ.get("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", "e2e-safe-diagnostics")).resolve()
     directory.mkdir(parents=True, exist_ok=True)
     channel = directory / (args.suite + ".jsonl")
     offset = channel.stat().st_size if channel.exists() else 0
-    env = dict(os.environ, PYTHONPATH=str(_ROOT) + os.pathsep + os.environ.get("PYTHONPATH", ""), VISUALSTRUCT_E2E_DIAGNOSTICS="1", VISUALSTRUCT_E2E_DIAGNOSTICS_NAME=args.suite, PYTHONUNBUFFERED="1")
+    env = dict(os.environ, PYTHONPATH=str(_ROOT) + os.pathsep + os.environ.get("PYTHONPATH", ""), VISUALSTRUCT_E2E_DIAGNOSTICS="1", VISUALSTRUCT_E2E_DIAGNOSTICS_DIR=str(directory), VISUALSTRUCT_E2E_DIAGNOSTICS_NAME=args.suite, PYTHONUNBUFFERED="1")
     # No tee, raw pytest output, longrepr or JUnit artifact: they may contain arbitrary secrets.
     child = subprocess.Popen([sys.executable, "-B", "-m", "pytest", "-q", "--tb=no", "--no-summary", "-p", "scripts.e2e_diagnostics", str(target)],
                              cwd=target.parent, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

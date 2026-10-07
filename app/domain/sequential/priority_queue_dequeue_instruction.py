@@ -51,7 +51,13 @@ def build_priority_queue_dequeue_trace(*, payload: dict[str, Any], source_code: 
         variables.extend(local)
         calls=[{'function':'cp_desencolar','parameters':{'cola':None if null_root else '&cp','valor':None if null_value else '&caller_valor','prioridad':None if null_priority else '&caller_prioridad'},'return_type':'bool','return':None,'continuation':'Caller recibe bool y conserva ambas copias int.'}] if active else []
         scopes=[{'id':'cp_desencolar','kind':'function','state':scope,'scope_state':scope,'variables':deepcopy(local)}]
-        current=state();previous=deepcopy(steps[-1]['state_after'] if steps else before_state)
+        memory_snapshot=state()
+        # C stores remain in their physical snapshot; return exposes only the public TAD.
+        current=memory_snapshot if active else {key:value for key,value in memory_snapshot.items()
+            if key not in {'delante','atras','cantidad','actual','prev','objetivo','objetivoPrev','valor','prioridad'}}
+        if not active:
+            current['out_index']=min(range(len(current['items'])),key=lambda i:current['items'][i]['priority']) if current['items'] else -1
+        previous=deepcopy(steps[-1]['state_after'] if steps else before_state)
         debug={'token':event,'function':'cp_desencolar','root':deepcopy(root),'variables':deepcopy(variables),'pointers':deepcopy(pointers),'scopes':deepcopy(scopes),'call_stack':deepcopy(calls),'heap':deepcopy(heap),'result':result}
         step={'step_index':len(steps),'line_index':index,'line_text':lines[index],'event_type':event,'phase':'progress','delay_ms':100,'state_snapshot':previous,'state_after':current,'console':[],'condition_result':condition,'function_name':'cp_desencolar','debug':debug}
         frame=build_sequential_frame(structure_id='priority_queue',operation_name='desencolar',payload=payload,step=step,success=success)
@@ -66,7 +72,7 @@ def build_priority_queue_dequeue_trace(*, payload: dict[str, Any], source_code: 
             elif token.startswith('if (cola->delante'):substituted=(head or 'NULL')+' == NULL'
             elif token.startswith('if (cola->atras'):substituted=(rear or 'NULL')+' == '+(aliases['objetivo'] or 'NULL')
             else:substituted=str(quantity)+' > 0'
-        frame.update(variables=variables,pointers=pointers,scopes=scopes,call_stack=calls,heap_objects=deepcopy(heap),memory_state=None,dequeue_memory=memory,
+        frame.update(variables=variables,pointers=pointers,scopes=scopes,call_stack=calls,heap_objects=deepcopy(heap),memory_state=deepcopy(memory_snapshot),dequeue_memory=memory,
             heap_transition={'kind':'free' if freed else 'unlink' if event=='unlink' else 'stable','before':deepcopy(steps[-1]['pedagogy']['heap_objects'] if steps else heap),'after':deepcopy(heap),'freed':deepcopy(freed or []),'dangling_references':[], 'invalid_historical_aliases':deepcopy(invalid), 'opaque_call':{'function':'free','argument_historical_id':freed[0]['id'],'completed':True,'return_type':'void'} if freed else None},
             condition=None if condition is None else {'source':lines[index],'substituted':substituted,'result':condition,'consequence':'EvaluaciÃ³n C con cortocircuito y operandos vivos.'})
         frame['source']['function']='cp_desencolar';frame['invariant']={'text':'BÃºsqueda parcial; candidato mÃ­nimo del prefijo, empates conservan primer nodo.','holds':True,'symbol':'âœ“','evidence':'RaÃ­ces y cantidad sÃ³lo cambian en sus stores; IDs histÃ³ricos separados de lecturas vivas.'}

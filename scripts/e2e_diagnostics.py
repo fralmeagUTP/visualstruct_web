@@ -67,7 +67,7 @@ def safe_record(stage, details):
 
 
 def channel_path():
-    directory = Path(os.environ.get("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", ".pytest-e2e-safe-diagnostics"))
+    directory = Path(os.environ.get("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", "e2e-safe-diagnostics"))
     name = os.environ.get("VISUALSTRUCT_E2E_DIAGNOSTICS_NAME", "probe")
     if name not in {"chromium", "firefox", "probe"}: name = "probe"
     return directory / (name + ".jsonl")
