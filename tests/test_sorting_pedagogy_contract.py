@@ -88,10 +88,22 @@ def test_condition_stack_pointer_and_loop_semantics_are_explicit() -> None:
     pointer_assignment = next(step["pedagogy"] for step in steps if step["pedagogy"]["source"]["line_token"] == "swap_assign_a")
     assert comparison["condition"]["expression"] == "2 > 1"
     assert comparison["condition"]["result"] is True
-    assert comparison["loop"]["kind"] == "for"
+    assert comparison["loop"]["kind"] == "for interno"
+    assert comparison["loop"]["iteration"] == 0
+    assert comparison["loop"]["bounds"] == [0, 2]
+    assert comparison["loop"]["exit"] is False
     assert len(pointer_assignment["call_stack"]) == 2
     assert [pointer["target"] for pointer in pointer_assignment["pointers"]] == ["arreglo[0]", "arreglo[1]"]
-    assert any(variable["name"] == "temporal" and variable["changed"] for variable in pointer_assignment["variables"])
+    temporal_assignment = next(step["pedagogy"] for step in steps if step["pedagogy"]["source"]["line_token"] == "swap_temp")
+    assert any(variable["name"] == "temporal" and variable["changed"] for variable in temporal_assignment["variables"])
+    saved = next(variable for variable in pointer_assignment["variables"] if variable["name"] == "temporal")
+    assert saved["value"] == saved["previous"] == 2
+    assert saved["initialized"] is True
+    assert saved["changed"] is False
+    partial_write = next(step for step in steps if step["pedagogy"]["source"]["line_token"] == "swap_assign_a")
+    assert partial_write["state_after"]["items"] == [1, 1]
+    assert "temporal = *a;" in temporal_assignment["source"]["line_text"]
+    assert "*a = *b;" in pointer_assignment["source"]["line_text"]
 
 
 def test_every_frame_is_self_contained_for_exact_reverse_navigation() -> None:
@@ -102,8 +114,15 @@ def test_every_frame_is_self_contained_for_exact_reverse_navigation() -> None:
     for index in range(1, len(steps)):
         assert steps[index]["state_snapshot"] == steps[index - 1]["state_after"]
         validate_pedagogical_frame(steps[index - 1]["pedagogy"])
-    recursive = next(frame["pedagogy"] for frame in steps if frame["pedagogy"]["source"]["line_token"] == "pivot")
+    recursive = next(frame["pedagogy"] for frame in steps if frame["pedagogy"]["source"]["line_token"] == "rec_init")
     assert recursive["call_stack"][-1]["function"] == "quicksort_recursivo"
+    assert recursive["source"]["function"] == "quicksort_recursivo"
+    assert "pivote = arreglo[(primero + ultimo) / 2]" in recursive["source"]["line_text"]
+    assert recursive["call_stack"][-1]["parameters"] == {"arreglo": "arreglo del caller", "primero": 0, "ultimo": 2}
+    pivot = next(variable for variable in recursive["variables"] if variable["name"] == "pivote")
+    assert pivot["value"] == 1
+    assert pivot["type"] == "int"
+    assert pivot["initialized"] is True
 
 
 @pytest.mark.parametrize("algorithm_id", [item["id"] for item in SORTING_ALGORITHMS])
@@ -116,7 +135,29 @@ def test_adapter_exposes_complete_pedagogy_on_every_frame(algorithm_id: str) -> 
     assert trace["learning_profile"]["objective"]
     for step in trace["steps"]:
         validate_pedagogical_frame(step["pedagogy"])
-        assert step["pedagogy"]["invariant"]["holds"] is True
+        if algorithm_id == "heapsort":
+            state = step["state_after"]
+            items = state["items"]
+            confirmed = state["sorted_indices"]
+            # Completed extractions form the suffix; partial heapify/swap writes
+            # do not guarantee a global heap before that phase completes.
+            heap_n = len(items) - len(confirmed)
+            assert confirmed == list(range(heap_n, len(items)))
+            assert state["heap_context"]["heap_n"] == heap_n
+            observed_max_heap = all(items[(child - 1) // 2] >= items[child] for child in range(1, heap_n))
+            assert step["pedagogy"]["invariant"]["holds"] is observed_max_heap
+            assert state["heap_context"]["max_heap"] is observed_max_heap
+            assert items[heap_n:] == sorted(items[heap_n:])
+            token = step["pedagogy"]["source"]["line_token"]
+            completed_build = token == "build_test" and step["pedagogy"]["condition"]["result"] is False
+            if completed_build or token in {"extract_heap_resume", "sort_return"}:
+                assert observed_max_heap is True
+                assert all(left <= right for left in items[:heap_n] for right in items[heap_n:])
+        else:
+            assert step["pedagogy"]["invariant"]["holds"] is True
         assert step["pedagogy"]["invariant"]["text"]
         assert "corresponde a la instrucción" not in step["pedagogy"]["invariant"]["text"]
+    if algorithm_id == "heapsort":
+        assert trace["final_state"]["items"] == [1, 2, 3]
+        assert any(step["pedagogy"]["invariant"]["holds"] is False for step in trace["steps"])
     assert trace["theory_profile"] == SORTING_THEORY_CATALOG[algorithm_id]

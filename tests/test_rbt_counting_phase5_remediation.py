@@ -40,12 +40,26 @@ def test_counting_family_accepts_documented_boundary_and_preserves_multiset(algo
 
 @pytest.mark.parametrize("algorithm", ["counting_sort", "binsort"])
 def test_counting_rejection_is_identical_in_fast_and_step_modes(algorithm):
+    values = [-(2**31), 2**31 - 1]
+    expected_message = f"El rango de conteo (4294967296) supera el maximo permitido ({ORDENAMIENTO_RANGO_MAX})."
+    messages = []
+    allocation_attempts = []
+    def forbidden_allocation(size):
+        allocation_attempts.append(size)
+        raise AssertionError("Rejected range attempted auxiliary allocation")
     for mode in ("fast", "step_by_step"):
         adapter = SortingAdapter()
-        adapter.execute("create_array", {"values": [-(2**31), 2**31 - 1]})
+        adapter.execute("create_array", {"values": values})
         adapter.execute("select_algorithm", {"algorithm_id": algorithm})
-        with pytest.raises(SortingExecutionError, match="supera el máximo"):
+        adapter._counting_allocator = forbidden_allocation
+        with pytest.raises(SortingExecutionError) as captured:
             adapter.execute("run", {"mode": mode, "source_code": CCodeService.get_structure_data("sorting_array")["operations"][algorithm]})
+        assert str(captured.value) == expected_message
+        assert captured.value.error_info["code"] == "range-limit"
+        assert adapter.to_visual_state()["items"] == values
+        messages.append(str(captured.value))
+    assert messages == [expected_message, expected_message]
+    assert allocation_attempts == []
 
 
 @pytest.mark.parametrize(

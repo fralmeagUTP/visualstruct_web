@@ -3,6 +3,7 @@ from collections import Counter
 import pytest
 
 from app.adapters.sorting_adapter import SortingAdapter
+from app.services.c_code_service import CCodeService
 from app.domain.sorting.tad_ordenamiento import SortingExecutionError, SortingInterpreter
 from scripts.check_c_conformance import run_checks
 
@@ -34,7 +35,7 @@ def test_radix_fast_and_step_modes_match_at_integer_limits():
         adapter = SortingAdapter()
         adapter.execute("create_array", {"values": values})
         adapter.execute("select_algorithm", {"algorithm_id": "radixsort"})
-        result = adapter.execute("run", {"mode": mode, "source_code": ""})
+        result = adapter.execute("run", {"mode": mode, "source_code": CCodeService.get_structure_data("sorting_array")["operations"]["radixsort"]})
         outputs.append(result["visual_state"]["items"])
     assert outputs[0] == outputs[1] == sorted(values)
 
