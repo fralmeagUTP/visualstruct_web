@@ -517,9 +517,9 @@ def test_red_black_inorden_trace_expands_recursive_calls() -> None:
     lines = _trace_lines(result)
 
     header = _norm("void rbt_inorden(RBT nodo) {")
-    left_call = _norm("rbt_inorden(nodo->rbt_izq);")
-    right_call = _norm("rbt_inorden(nodo->rbt_der);")
-    visit = _norm('printf("%d ", nodo->rbt_dato);')
+    left_call = _norm("rbt_inorden(nodo->izq);")
+    right_call = _norm("rbt_inorden(nodo->der);")
+    visit = _norm('printf("%d ", nodo->nro);')
 
     assert lines.count(header) > 1
     assert lines.count(left_call) >= 5
@@ -563,12 +563,19 @@ def test_red_black_validar_trace_expands_recursive_calls() -> None:
     lines = _trace_lines(result)
 
     header = _norm("int rbt_validar(RBT raiz) {")
-    left_call = _norm("if (!rbt_validar(raiz->rbt_izq)) {")
-    right_call = _norm("if (!rbt_validar(raiz->rbt_der)) {")
+    helper_header = _norm("static int rbt_validar_altura_negra(RBT nodo, RBT padreEsperado, int tieneMin, int minimo, int tieneMax, int maximo) {")
+    delegate = _norm("return rbt_validar_altura_negra(raiz, NULL, 0, 0, 0, 0) != 0;")
+    left_call = _norm("int bhIzq = rbt_validar_altura_negra(nodo->izq, nodo, tieneMin, minimo, 1, nodo->nro);")
+    right_call = _norm("int bhDer = rbt_validar_altura_negra(nodo->der, nodo, 1, nodo->nro, tieneMax, maximo);")
 
-    assert lines.count(header) > 1
-    assert left_call in lines
-    assert right_call in lines
+    assert lines.count(header) == 1
+    delegate_steps = [step for step in result["execution_trace"]["steps"]
+                      if _norm(step["line_text"]) == delegate]
+    assert [step["debug"]["stage"] for step in delegate_steps] == ["call", "resume", "return"]
+    assert lines.count(helper_header) > 1
+    assert lines.count(left_call) >= 5
+    assert lines.count(right_call) >= 5
+    assert result.get("result") is True
 
 
 def test_abb_contar_hojas_trace_expands_recursive_calls() -> None:
@@ -600,9 +607,9 @@ def test_abb_validar_trace_expands_recursive_calls() -> None:
     assert result["success"] is True
     lines = _trace_lines(result)
 
-    header = _norm("int abb_validar_rango(ABBNodo* nodo, int minimo, int maximo) {")
-    left_call = _norm("if (!abb_validar_rango(nodo->izquierdo, minimo, nodo->valor)) {")
-    right_call = _norm("if (!abb_validar_rango(nodo->derecho, nodo->valor, maximo)) {")
+    header = _norm("int abb_validar_rango(ABBNodo* nodo, int hay_minimo, int minimo, int hay_maximo, int maximo) {")
+    left_call = _norm("if (!abb_validar_rango(nodo->izquierdo, hay_minimo, minimo, 1, nodo->valor)) {")
+    right_call = _norm("if (!abb_validar_rango(nodo->derecho, 1, nodo->valor, hay_maximo, maximo)) {")
 
     assert lines.count(header) > 1
     assert left_call in lines

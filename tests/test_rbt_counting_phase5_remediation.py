@@ -10,8 +10,23 @@ from app.services.hierarchical_structure_service import HierarchicalStructureSer
 
 @pytest.mark.parametrize("algorithm", ["counting_sort", "binsort"])
 def test_counting_family_rejects_excessive_range_before_auxiliary_allocation(algorithm):
-    with pytest.raises(SortingExecutionError, match="supera el máximo"):
-        SortingInterpreter([-(2**31), 2**31 - 1], algorithm).run()
+    values = [-(2**31), 2**31 - 1]
+    allocation_attempts = []
+
+    def reject_allocation(length):
+        allocation_attempts.append(length)
+        raise AssertionError("Excessive range reached auxiliary allocation")
+
+    interpreter = SortingInterpreter(values, algorithm, counting_allocator=reject_allocation)
+    with pytest.raises(
+        SortingExecutionError,
+        match=r"^El rango de conteo \(4294967296\) supera el maximo permitido \(1000000\)\.$",
+    ) as caught:
+        interpreter.run()
+    assert allocation_attempts == []
+    assert values == [-(2**31), 2**31 - 1]
+    assert interpreter.values == values
+    assert caught.value.error_info["code"] == "range-limit"
 
 
 @pytest.mark.parametrize("algorithm", ["counting_sort", "binsort"])

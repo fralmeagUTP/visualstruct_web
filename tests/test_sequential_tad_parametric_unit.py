@@ -250,7 +250,7 @@ def test_tad_cola_prioridad_copy_and_format() -> None:
     assert priorities == [2, 1]
     text: list[str] = []
     cp_formatear(queue, text, 120)
-    assert "[0]=11" in text[0]
+    assert text[0] == "frente -> 11(p=2) | 22(p=1)"
     cp_vaciar(queue)
     assert cp_contar(queue) == 0
 
