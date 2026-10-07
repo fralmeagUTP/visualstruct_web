@@ -89,7 +89,7 @@ def build_priority_queue_cleanup_trace(*, payload: dict[str, Any], source_code: 
         frame.update(variables=variables,pointers=pointers,heap_objects=live,
             heap_transition={'kind':'free' if event=='node_free' else 'link' if event=='root_assigned' else 'stable',
                 'before':deepcopy(steps[-1]['pedagogy']['heap_objects'] if steps else heap),'after':live,
-                'freed':retired,'dangling_references':[]},
+                'freed':[h for h in retired if h['id'] in {n['id'] for n in (steps[-1]['pedagogy']['heap_objects'] if steps else heap)}],'dangling_references':[]},
             call_stack=[{'function':'cp_vaciar','parameters':{'cola':None if null_root else '&cp'},
                 'return':None,'continuation':'caller; struct prestado'}] if active else [],
             scopes=scopes,memory_state=None,cleanup_memory={'kind':'priority_queue','root':deepcopy(root),

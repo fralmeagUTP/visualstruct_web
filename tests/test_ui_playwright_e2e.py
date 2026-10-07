@@ -13,6 +13,7 @@ import pytest
 from werkzeug.serving import make_server
 
 from app import create_app
+from scripts.e2e_diagnostics import checkpoint
 
 
 pytestmark = pytest.mark.e2e
@@ -21,18 +22,34 @@ pytestmark = pytest.mark.e2e
 @contextmanager
 def _live_server_url():
     """Run Flask app in-process and yield base URL."""
+    checkpoint("server_create_start")
     app = create_app()
     app.config.update(TESTING=False, SECRET_KEY="e2e-secret")
+
+    @app.before_request
+    def _diagnostic_request_start():
+        from flask import request
+        checkpoint("http_start", method=request.method, path=request.path)
+
+    @app.after_request
+    def _diagnostic_request_end(response):
+        from flask import request
+        checkpoint("http_end", method=request.method, path=request.path, status=response.status_code)
+        return response
 
     server = make_server("127.0.0.1", 0, app)
     port = server.server_port
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
+    checkpoint("server_ready", port=port)
     try:
         yield f"http://127.0.0.1:{port}"
     finally:
+        checkpoint("server_shutdown_start")
         server.shutdown()
+        checkpoint("server_shutdown_end")
         thread.join(timeout=5)
+        checkpoint("server_thread_join_end", alive=thread.is_alive())
 
 
 def _wait_status_contains(page, selector: str, expected: str, timeout_ms: int = 15000) -> None:
@@ -67,6 +84,7 @@ def _enable_manual_mode(page, prefix: str) -> None:
 
 def _advance_once(page, prefix: str) -> None:
     """Prepare one real operation if needed, then navigate exactly one frame."""
+    checkpoint("manual_prepare_start", module=prefix)
     _enable_manual_mode(page, prefix)
     counter = f"#{prefix}-sim-counter"
     text = page.text_content(counter) or "0/0"
@@ -81,17 +99,22 @@ def _advance_once(page, prefix: str) -> None:
 
 def _finish_manual_trace(page, prefix: str) -> None:
     """Finish by navigation, checking progress rather than triggering another operation."""
+    checkpoint("manual_prepare_start", module=prefix)
     _enable_manual_mode(page, prefix)
     counter = f"#{prefix}-sim-counter"
     page.wait_for_function("s => Number((document.querySelector(s)?.textContent || '0/0').split('/').pop()) > 0", arg=counter)
     selector = f"#{prefix}-sim-" + ("step" if prefix in {"seq", "hier"} else "next")
-    for _ in range(2000):
+    checkpoint("manual_finish_start", module=prefix)
+    for navigation_index in range(2000):
         text = page.text_content(counter) or ""
         match = __import__("re").search(r"Paso:\s*(\d+)\s*/\s*(\d+)", text)
         assert match is not None, text
         if int(match[1]) == int(match[2]):
             assert page.locator(selector).is_disabled()
+            checkpoint("manual_finish_end", module=prefix, counter=text)
             return
+        if navigation_index % 25 == 0:
+            checkpoint("manual_navigation", module=prefix, navigation_index=navigation_index, counter=text)
         before = text
         page.click(selector)
         page.wait_for_function("a => document.querySelector(a.s).textContent !== a.before", arg={"s":counter,"before":before})

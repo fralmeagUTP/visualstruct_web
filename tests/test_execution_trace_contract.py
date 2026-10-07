@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from app.domain.graph.snapshot_pool import expand_graph_trace
+from _graph_trace_contract import decode_graph_http_trace
 
 import json
 
@@ -333,6 +334,7 @@ def test_dijkstra_trace_includes_fine_grained_debug_stages(client) -> None:
     )
     assert response.status_code == 200
     data = response.get_json()
+    data["execution_trace"] = decode_graph_http_trace(data["execution_trace"])
     assert data["success"] is True
     stages = [
         step.get("debug", {}).get("stage")

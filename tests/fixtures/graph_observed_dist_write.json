@@ -1,0 +1,2075 @@
+{
+  "source_capture_sha256": "4a018c02f0fb276e38f5e7c9e8009f1d4dfe3da16154c206ea2cdf0c40ccb8ef",
+  "original_ordinal": 225,
+  "trace": {
+    "source_code": "/**\n * @brief Calcula un camino m\u00ednimo con pesos no negativos.\n * @param g Grafo dirigido ponderado.\n * @param inicio V\u00e9rtice inicial.\n * @param llegada V\u00e9rtice destino.\n * @return Lista nueva de arcos del camino; NULL si no hay arcos de resultado, hay pesos negativos, v\u00e9rtices inv\u00e1lidos o error de memoria.\n * @note NULL tambi\u00e9n representa el camino sin arcos de un v\u00e9rtice a s\u00ed mismo. El llamador libera el resultado.\n * @note INT_MAX es infinito: no se publica un camino con costo total mayor o igual a INT_MAX. Las sumas que exceder\u00edan INT_MAX se descartan antes de sumar.\n * @note Los empates eligen el primer \u00edndice con distancia m\u00ednima en el orden de la lista de v\u00e9rtices; una distancia igual no reemplaza el predecesor.\n * @note Se rechaza cualquier peso negativo del grafo, incluso en componentes no alcanzables. No se modifican sus marcas.\n */\nListaArco grafo_dijkstra(Grafo g, int inicio, int llegada) {\n    int n = grafo_orden(g);\n    int *dist;\n    int *prev;\n    int *visitado;\n    int *vertices;\n    int i;\n    int idx_inicio;\n    int idx_llegada;\n    ListaArco camino = NULL;\n    if (grafo_tiene_peso_negativo(g)) {\n        return NULL;\n    }\n\n    if (n <= 0) {\n        return NULL;\n    }\n\n    dist = malloc(sizeof(int) * n);\n    prev = malloc(sizeof(int) * n);\n    visitado = calloc(n, sizeof(int));\n    vertices = malloc(sizeof(int) * n);\n    if (dist == NULL || prev == NULL || visitado == NULL || vertices == NULL) {\n        free(dist);\n        free(prev);\n        free(visitado);\n        free(vertices);\n        return NULL;\n    }\n    if (!inicializarVectorVertices(g, vertices, n)) {\n        free(dist);\n        free(prev);\n        free(visitado);\n        free(vertices);\n        return NULL;\n    }\n\n    for (i = 0; i < n; i++) {\n        dist[i] = INT_MAX;\n        prev[i] = -1;\n    }\n\n    idx_inicio = indiceVertice(vertices, n, inicio);\n    idx_llegada = indiceVertice(vertices, n, llegada);\n    if (idx_inicio == -1 || idx_llegada == -1) {\n        free(dist);\n        free(prev);\n        free(visitado);\n        free(vertices);\n        return NULL;\n    }\n\n    dist[idx_inicio] = 0;\n\n    for (i = 0; i < n; i++) {\n        int j;\n        int u = -1;\n        int min = INT_MAX;\n        ListaVertice suces;\n        int suces_ok;\n\n        for (j = 0; j < n; j++) {\n            if (!visitado[j] && dist[j] < min) {\n                min = dist[j];\n                u = j;\n            }\n        }\n        if (u == -1) break;\n        visitado[u] = 1;\n\n        suces = grafo_sucesores_atomicos(g, vertices[u], &suces_ok);\n        if (!suces_ok) {\n            free(dist);\n            free(prev);\n            free(visitado);\n            free(vertices);\n            return NULL;\n        }\n        while (suces != NULL) {\n            int v = indiceVertice(vertices, n, suces->dato);\n            if (v != -1 && !visitado[v]) {\n                int costo = grafo_costo_arco(g, vertices[u], vertices[v]);\n                if (costo >= 0 && dist[u] != INT_MAX && dist[u] <= INT_MAX - costo) {\n                    int nueva_dist = dist[u] + costo;\n                    if (nueva_dist < dist[v]) {\n                        dist[v] = nueva_dist;\n                        prev[v] = u;\n                    }\n                }\n            }\n            ListaVertice temp = suces;\n            suces = suces->sig;\n            free(temp);\n        }\n    }\n\n    if (dist[idx_llegada] == INT_MAX) {\n        free(dist);\n        free(prev);\n        free(visitado);\n        free(vertices);\n        return NULL;\n    }\n\n    {\n        int destino = idx_llegada;\n        while (prev[destino] != -1) {\n            ListaArco nuevo = malloc(sizeof(struct NodoA));\n            if (nuevo == NULL) {\n                liberarListaArcos(camino);\n                camino = NULL;\n                break;\n            }\n            nuevo->origen = vertices[prev[destino]];\n            nuevo->destino = vertices[destino];\n            nuevo->costo = grafo_costo_arco(g, nuevo->origen, nuevo->destino);\n            nuevo->sig = camino;\n            camino = nuevo;\n            destino = prev[destino];\n        }\n    }\n\n    free(dist);\n    free(prev);\n    free(visitado);\n    free(vertices);\n    return camino;\n}\n\n/**\n * @brief Cuenta nodos almacenados de vertices.\n * @param[in] g Grafo inicializado por valor con lista prestada.\n * @return Numero de nodos de g.v; 0 si la cabeza es NULL.\n * @pre Lista viva, aciclica y con numero de nodos <= INT_MAX.\n * @note No valida identificadores, consistencia de extremos ni unicidad; no reserva/libera/imprime ni modifica. No certifica contadores fuera del rango int.\n */\nint grafo_orden(Grafo g)\n  {\n    int orden=0;\n    ListaVertice k=g.v;\n\n    while (k != NULL)\n      {\n        orden++;\n        k=k->sig;\n      }\n    return orden;\n  }\n\n/**\n * @brief Devuelve la cabeza compartida de vertices sin copiar nodos.\n * @param[in] g Grafo inicializado por valor.\n * @return g.v tal cual, incluida NULL para lista vacia.\n * @note Referencia prestada: no reserva, libera ni transfiere nueva propiedad. Escribir por el alias modifica los nodos originales; liberar nodos requiere coordinar al propietario, no tratar el resultado como copia independiente.\n */         \nListaVertice grafo_vertices (Grafo g)\n {\n     return g.v;\n }\n\n/**\n * @brief Copia los identificadores del grafo al arreglo.\n * @param g Grafo fuente.\n * @param vertices Salida con capacidad n.\n * @param n N\u00famero de identificadores esperado.\n * @return 1 si se copiaron n identificadores; 0 en otro caso.\n */\nstatic int inicializarVectorVertices(Grafo g, int *vertices, int n) {\n    int i = 0;\n    ListaVertice v = grafo_vertices(g);\n    while (v != NULL && i < n) {\n        vertices[i++] = v->dato;\n        v = v->sig;\n    }\n    return i == n;\n}\n\n/**\n * @brief Busca un valor en un arreglo de identificadores.\n * @param vertices Arreglo con al menos n posiciones.\n * @param n N\u00famero de posiciones a consultar.\n * @param valor Identificador buscado.\n * @return Primer \u00edndice coincidente, o -1 si no existe.\n */\nstatic int indiceVertice(const int *vertices, int n, int valor) {\n    int i;\n    for (i = 0; i < n; i++) {\n        if (vertices[i] == valor) {\n            return i;\n        }\n    }\n    return -1;\n}\n\n/**\n * @brief Consulta si alg\u00fan arco tiene peso negativo.\n * @param g Grafo fuente.\n * @return 1 si existe un costo negativo; 0 en otro caso.\n */\nstatic int grafo_tiene_peso_negativo(Grafo g) {\n    ListaArco actual = g.a;\n    while (actual != NULL) {\n        if (actual->costo < 0) return 1;\n        actual = actual->sig;\n    }\n    return 0;\n}\n\n/**\n * @brief Construye todos los sucesores o libera el parcial y reporta fallo.\n * @param g Grafo prestado; no se modifican nodos, arcos ni marcas.\n * @param x Vertice cuya lista de sucesores se consulta.\n * @param correcto Puntero prestado a un int valido del caller privado: 1 si\n * la lista esta completa (tambien vacia), 0 si una reserva falla.\n * @return Lista propia completa; NULL si vacia o fallo distinguido por correcto.\n * @note Helper privado exclusivo de Prim/Dijkstra. Conserva el orden de\n * grafo_sucesores; ante malloc fallido nunca entrega una lista parcial.\n */\nstatic ListaVertice grafo_sucesores_atomicos(Grafo g, int x, int *correcto) {\n    ListaArco k = g.a;\n    ListaVertice ver = NULL, nuevo;\n    *correcto = 1;\n    while (k != NULL) {\n        if (k->origen == x) {\n            nuevo = (ListaVertice)malloc(sizeof(struct NodoV));\n            if (nuevo == NULL) {\n                while (ver != NULL) {\n                    ListaVertice temp = ver;\n                    ver = ver->sig;\n                    free(temp);\n                }\n                *correcto = 0;\n                return NULL;\n            }\n            nuevo->sig = ver;\n            nuevo->dato = k->destino;\n            nuevo->marcado = 0;\n            ver = nuevo;\n        }\n        k = k->sig;\n    }\n    return ver;\n}\n\n/**\n * @brief Retorna el costo del arco que parte del v\u00e9rtice x al v\u00e9rtice y del grafo\n * @param g Grafo del cual se retornar\u00e1 el costo del arco\n * @param x V\u00e9rtice origen\n * @param y V\u00e9rtice destino\n * @return Costo del arco, o -1 si no existe; un arco v\u00e1lido tambi\u00e9n puede tener costo -1.\n * @note Para distinguir ausencia de costo -1, consultar grafo_existe_arco.\n*/\n  int grafo_costo_arco (Grafo g, int x, int y)\n  {\n    ListaArco k=g.a;\n\n    while (k != NULL)\n      {\n       if ((k->origen == x) && (k->destino == y))\n          return k->costo;\n       k=k->sig;\n      }\n    return -1;       // no encontr\u00f3 el arco\n  }\n\n/**\n * @brief Libera todos los nodos de una lista de arcos.\n * @param lista Cabeza de la lista; NULL es v\u00e1lido.\n */\nstatic void liberarListaArcos(ListaArco lista) {\n    while (lista != NULL) {\n        ListaArco tmp = lista;\n        lista = lista->sig;\n        free(tmp);\n    }\n}",
+    "steps": [
+      {
+        "console": [],
+        "debug": {
+          "stage": "write",
+          "note": "Completa exactamente esta escritura C; no anticipa la siguiente.",
+          "graph_memory": {
+            "frames": [
+              {
+                "id": "F1",
+                "function": "grafo_dijkstra",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  },
+                  "inicio": 1,
+                  "llegada": 3
+                },
+                "parameter_types": {
+                  "g": "Grafo",
+                  "inicio": "int",
+                  "llegada": "int"
+                },
+                "status": "active",
+                "scopes": [
+                  {
+                    "id": "F1:B914",
+                    "variables": {
+                      "n": {
+                        "type": "int",
+                        "value": 3
+                      },
+                      "dist": {
+                        "type": "int *",
+                        "value": "M1"
+                      },
+                      "prev": {
+                        "type": "int *",
+                        "value": "M2"
+                      },
+                      "visitado": {
+                        "type": "int *",
+                        "value": "M3"
+                      },
+                      "vertices": {
+                        "type": "int *",
+                        "value": "M4"
+                      },
+                      "i": {
+                        "type": "int",
+                        "value": 3
+                      },
+                      "idx_inicio": {
+                        "type": "int",
+                        "value": 2
+                      },
+                      "idx_llegada": {
+                        "type": "int",
+                        "value": 0
+                      },
+                      "camino": {
+                        "type": "ListaArco",
+                        "value": "NULL"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "heap_nodes": [
+              {
+                "id": "V1",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 1,
+                  "marcado": 0,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "V2",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 2,
+                  "marcado": 0,
+                  "sig": "V1"
+                },
+                "alive": true
+              },
+              {
+                "id": "V3",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 3,
+                  "marcado": 0,
+                  "sig": "V2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E1",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 2,
+                  "costo": 1,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "E2",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 1,
+                  "costo": 1,
+                  "sig": "E1"
+                },
+                "alive": true
+              },
+              {
+                "id": "E3",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 3,
+                  "costo": 2,
+                  "sig": "E2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E4",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 2,
+                  "costo": 2,
+                  "sig": "E3"
+                },
+                "alive": true
+              },
+              {
+                "id": "E5",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 3,
+                  "costo": 5,
+                  "sig": "E4"
+                },
+                "alive": true
+              },
+              {
+                "id": "E6",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 1,
+                  "costo": 5,
+                  "sig": "E5"
+                },
+                "alive": true
+              },
+              {
+                "id": "M1",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  2147483647,
+                  2147483647,
+                  0
+                ]
+              },
+              {
+                "id": "M2",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  -1,
+                  -1,
+                  -1
+                ]
+              },
+              {
+                "id": "M3",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "id": "M4",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  3,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "retired_objects": [],
+            "graph": {
+              "v": "V3",
+              "a": "E6"
+            },
+            "allocations": 4,
+            "allocation_attempts": 4,
+            "frees": 0,
+            "console_stdout": "",
+            "returned": "sin inicializar"
+          },
+          "graph_progress": {
+            "mode": "path",
+            "nodes": [],
+            "edges": [],
+            "tree_edges": [],
+            "distances": {
+              "3": "\u221e",
+              "2": "\u221e",
+              "1": 0
+            },
+            "previous": {
+              "3": null,
+              "2": null,
+              "1": null
+            },
+            "visited": [],
+            "candidates": [
+              "1"
+            ],
+            "selected": null,
+            "active_edge": null,
+            "edge_weight": null,
+            "iteration": 3,
+            "parents": {},
+            "result_arcs": [],
+            "raw_arc_order": []
+          }
+        },
+        "line_index": 63,
+        "line_text": "    dist[idx_inicio] = 0;",
+        "pedagogy": {
+          "schema_version": 1,
+          "algorithm": "run_dijkstra",
+          "concept": "write",
+          "case": "write",
+          "phase": {
+            "id": "run_dijkstra-write",
+            "label": "write",
+            "goal": "Completa exactamente esta escritura C; no anticipa la siguiente."
+          },
+          "source": {
+            "line_index": 63,
+            "line_text": "    dist[idx_inicio] = 0;"
+          },
+          "condition": null,
+          "variables": [
+            {
+              "name": "g",
+              "type": "Grafo",
+              "value": {
+                "v": "V3",
+                "a": "E6"
+              },
+              "scope": "grafo_dijkstra#F1",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": {
+                "v": "V3",
+                "a": "E6"
+              },
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "inicio",
+              "type": "int",
+              "value": 1,
+              "scope": "grafo_dijkstra#F1",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": 1,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "llegada",
+              "type": "int",
+              "value": 3,
+              "scope": "grafo_dijkstra#F1",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": 3,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "n",
+              "type": "int",
+              "value": 3,
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": 3,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "dist",
+              "type": "int *",
+              "value": "M1",
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": "M1",
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "prev",
+              "type": "int *",
+              "value": "M2",
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": "M2",
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "visitado",
+              "type": "int *",
+              "value": "M3",
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": "M3",
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "vertices",
+              "type": "int *",
+              "value": "M4",
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": "M4",
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "i",
+              "type": "int",
+              "value": 3,
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": 3,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "idx_inicio",
+              "type": "int",
+              "value": 2,
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": 2,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "idx_llegada",
+              "type": "int",
+              "value": 0,
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": 0,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "camino",
+              "type": "ListaArco",
+              "value": "NULL",
+              "scope": "grafo_dijkstra#F1:B914",
+              "frame_id": "F1",
+              "usable": true,
+              "previous": "NULL",
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M1[0]",
+              "type": "int",
+              "value": 2147483647,
+              "scope": "reserva M1",
+              "frame_id": null,
+              "usable": true,
+              "previous": 2147483647,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M1[1]",
+              "type": "int",
+              "value": 2147483647,
+              "scope": "reserva M1",
+              "frame_id": null,
+              "usable": true,
+              "previous": 2147483647,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M1[2]",
+              "type": "int",
+              "value": 0,
+              "scope": "reserva M1",
+              "frame_id": null,
+              "usable": true,
+              "previous": 2147483647,
+              "changed": true,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M2[0]",
+              "type": "int",
+              "value": -1,
+              "scope": "reserva M2",
+              "frame_id": null,
+              "usable": true,
+              "previous": -1,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M2[1]",
+              "type": "int",
+              "value": -1,
+              "scope": "reserva M2",
+              "frame_id": null,
+              "usable": true,
+              "previous": -1,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M2[2]",
+              "type": "int",
+              "value": -1,
+              "scope": "reserva M2",
+              "frame_id": null,
+              "usable": true,
+              "previous": -1,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M3[0]",
+              "type": "int",
+              "value": 0,
+              "scope": "reserva M3",
+              "frame_id": null,
+              "usable": true,
+              "previous": 0,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M3[1]",
+              "type": "int",
+              "value": 0,
+              "scope": "reserva M3",
+              "frame_id": null,
+              "usable": true,
+              "previous": 0,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M3[2]",
+              "type": "int",
+              "value": 0,
+              "scope": "reserva M3",
+              "frame_id": null,
+              "usable": true,
+              "previous": 0,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M4[0]",
+              "type": "int",
+              "value": 3,
+              "scope": "reserva M4",
+              "frame_id": null,
+              "usable": true,
+              "previous": 3,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M4[1]",
+              "type": "int",
+              "value": 2,
+              "scope": "reserva M4",
+              "frame_id": null,
+              "usable": true,
+              "previous": 2,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            },
+            {
+              "name": "M4[2]",
+              "type": "int",
+              "value": 1,
+              "scope": "reserva M4",
+              "frame_id": null,
+              "usable": true,
+              "previous": 1,
+              "changed": false,
+              "meaning": "Par\u00e1metro/local/celda de este \u00e1mbito. Las identidades retiradas no son valores de puntero legibles."
+            }
+          ],
+          "call_stack": [
+            {
+              "function": "grafo_dijkstra",
+              "frame_id": "F1",
+              "depth": 0,
+              "parameters": {
+                "g": {
+                  "v": "V3",
+                  "a": "E6"
+                },
+                "inicio": 1,
+                "llegada": 3
+              },
+              "locals": {
+                "n": 3,
+                "dist": "M1",
+                "prev": "M2",
+                "visitado": "M3",
+                "vertices": "M4",
+                "i": 3,
+                "idx_inicio": 2,
+                "idx_llegada": 0,
+                "camino": "NULL"
+              },
+              "scopes": [
+                {
+                  "id": "F1:B914",
+                  "variables": {
+                    "n": {
+                      "type": "int",
+                      "value": 3
+                    },
+                    "dist": {
+                      "type": "int *",
+                      "value": "M1"
+                    },
+                    "prev": {
+                      "type": "int *",
+                      "value": "M2"
+                    },
+                    "visitado": {
+                      "type": "int *",
+                      "value": "M3"
+                    },
+                    "vertices": {
+                      "type": "int *",
+                      "value": "M4"
+                    },
+                    "i": {
+                      "type": "int",
+                      "value": 3
+                    },
+                    "idx_inicio": {
+                      "type": "int",
+                      "value": 2
+                    },
+                    "idx_llegada": {
+                      "type": "int",
+                      "value": 0
+                    },
+                    "camino": {
+                      "type": "ListaArco",
+                      "value": "NULL"
+                    }
+                  }
+                }
+              ],
+              "scope_status": "activo",
+              "return_value": null
+            }
+          ],
+          "auxiliary": {
+            "kind": "linear_candidates",
+            "items": [
+              "1"
+            ],
+            "selected": null,
+            "candidates": [
+              "1"
+            ],
+            "iteration": 3,
+            "operation": "inspect"
+          },
+          "vertices": [
+            {
+              "id": "1",
+              "status": "frontier",
+              "distance": 0,
+              "predecessor": null
+            },
+            {
+              "id": "2",
+              "status": "undiscovered",
+              "distance": "\u221e",
+              "predecessor": null
+            },
+            {
+              "id": "3",
+              "status": "undiscovered",
+              "distance": "\u221e",
+              "predecessor": null
+            }
+          ],
+          "active_edge": null,
+          "table": {
+            "distances": {
+              "3": "\u221e",
+              "2": "\u221e",
+              "1": 0
+            },
+            "previous": {
+              "3": null,
+              "2": null,
+              "1": null
+            },
+            "visited": [],
+            "rows": [
+              {
+                "id": "1",
+                "status": "frontier",
+                "distance": 0,
+                "predecessor": null
+              },
+              {
+                "id": "2",
+                "status": "undiscovered",
+                "distance": "\u221e",
+                "predecessor": null
+              },
+              {
+                "id": "3",
+                "status": "undiscovered",
+                "distance": "\u221e",
+                "predecessor": null
+              }
+            ]
+          },
+          "relaxation": null,
+          "representation": {
+            "directed": false,
+            "adjacency": {
+              "1": [
+                {
+                  "vertex": "2",
+                  "weight": 1.0
+                },
+                {
+                  "vertex": "3",
+                  "weight": 5.0
+                }
+              ],
+              "2": [
+                {
+                  "vertex": "1",
+                  "weight": 1.0
+                },
+                {
+                  "vertex": "3",
+                  "weight": 2.0
+                }
+              ],
+              "3": [
+                {
+                  "vertex": "2",
+                  "weight": 2.0
+                },
+                {
+                  "vertex": "1",
+                  "weight": 5.0
+                }
+              ]
+            },
+            "degrees": [
+              {
+                "vertex": "1",
+                "degree": 2,
+                "out_degree": 2,
+                "in_degree": 2
+              },
+              {
+                "vertex": "2",
+                "degree": 2,
+                "out_degree": 2,
+                "in_degree": 2
+              },
+              {
+                "vertex": "3",
+                "degree": 2,
+                "out_degree": 2,
+                "in_degree": 2
+              }
+            ]
+          },
+          "traversal": {
+            "tree_edges": [],
+            "discovery_order": [],
+            "active": null,
+            "component": 0
+          },
+          "memory": {
+            "objects_before": [
+              {
+                "id": "V1",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 1,
+                  "marcado": 0,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "V2",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 2,
+                  "marcado": 0,
+                  "sig": "V1"
+                },
+                "alive": true
+              },
+              {
+                "id": "V3",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 3,
+                  "marcado": 0,
+                  "sig": "V2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E1",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 2,
+                  "costo": 1,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "E2",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 1,
+                  "costo": 1,
+                  "sig": "E1"
+                },
+                "alive": true
+              },
+              {
+                "id": "E3",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 3,
+                  "costo": 2,
+                  "sig": "E2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E4",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 2,
+                  "costo": 2,
+                  "sig": "E3"
+                },
+                "alive": true
+              },
+              {
+                "id": "E5",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 3,
+                  "costo": 5,
+                  "sig": "E4"
+                },
+                "alive": true
+              },
+              {
+                "id": "E6",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 1,
+                  "costo": 5,
+                  "sig": "E5"
+                },
+                "alive": true
+              },
+              {
+                "id": "M1",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  2147483647,
+                  2147483647,
+                  2147483647
+                ]
+              },
+              {
+                "id": "M2",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  -1,
+                  -1,
+                  -1
+                ]
+              },
+              {
+                "id": "M3",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "id": "M4",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  3,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "objects_after": [
+              {
+                "id": "V1",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 1,
+                  "marcado": 0,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "V2",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 2,
+                  "marcado": 0,
+                  "sig": "V1"
+                },
+                "alive": true
+              },
+              {
+                "id": "V3",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 3,
+                  "marcado": 0,
+                  "sig": "V2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E1",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 2,
+                  "costo": 1,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "E2",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 1,
+                  "costo": 1,
+                  "sig": "E1"
+                },
+                "alive": true
+              },
+              {
+                "id": "E3",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 3,
+                  "costo": 2,
+                  "sig": "E2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E4",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 2,
+                  "costo": 2,
+                  "sig": "E3"
+                },
+                "alive": true
+              },
+              {
+                "id": "E5",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 3,
+                  "costo": 5,
+                  "sig": "E4"
+                },
+                "alive": true
+              },
+              {
+                "id": "E6",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 1,
+                  "costo": 5,
+                  "sig": "E5"
+                },
+                "alive": true
+              },
+              {
+                "id": "M1",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  2147483647,
+                  2147483647,
+                  0
+                ]
+              },
+              {
+                "id": "M2",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  -1,
+                  -1,
+                  -1
+                ]
+              },
+              {
+                "id": "M3",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "id": "M4",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  3,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "allocated": [],
+            "freed": [],
+            "null_checked": false,
+            "dangling_references": [],
+            "retired_objects": [],
+            "symbolic_identities": true,
+            "records_are_not_pointer_values": true
+          },
+          "state_before": {
+            "structure": "graph",
+            "directed": false,
+            "weighted": true,
+            "nodes": [
+              {
+                "id": "1",
+                "label": "1",
+                "value": "1",
+                "marked": 0
+              },
+              {
+                "id": "2",
+                "label": "2",
+                "value": "2",
+                "marked": 0
+              },
+              {
+                "id": "3",
+                "label": "3",
+                "value": "3",
+                "marked": 0
+              }
+            ],
+            "edges": [
+              {
+                "source": "1",
+                "target": "2",
+                "weight": 1.0
+              },
+              {
+                "source": "2",
+                "target": "3",
+                "weight": 2.0
+              },
+              {
+                "source": "1",
+                "target": "3",
+                "weight": 5.0
+              }
+            ],
+            "metadata": {
+              "vertices_count": 3,
+              "edges_count": 3,
+              "is_empty": false
+            },
+            "last_operation": null,
+            "last_result": null
+          },
+          "state_after": {
+            "structure": "graph",
+            "directed": false,
+            "weighted": true,
+            "nodes": [
+              {
+                "id": "1",
+                "label": "1",
+                "value": "1",
+                "marked": 0
+              },
+              {
+                "id": "2",
+                "label": "2",
+                "value": "2",
+                "marked": 0
+              },
+              {
+                "id": "3",
+                "label": "3",
+                "value": "3",
+                "marked": 0
+              }
+            ],
+            "edges": [
+              {
+                "source": "1",
+                "target": "2",
+                "weight": 1.0
+              },
+              {
+                "source": "2",
+                "target": "3",
+                "weight": 2.0
+              },
+              {
+                "source": "1",
+                "target": "3",
+                "weight": 5.0
+              }
+            ],
+            "metadata": {
+              "vertices_count": 3,
+              "edges_count": 3,
+              "is_empty": false
+            },
+            "last_operation": null,
+            "last_result": null
+          },
+          "invariant": {
+            "name": "distancia cerrada definitiva",
+            "holds": null,
+            "symbol": "?",
+            "evidence": "Estado parcial observado: s\u00f3lo arrays/campos inicializados se leen. Grafo prestado sin modificaciones; no se afirma un resultado futuro."
+          },
+          "narration": {
+            "basic": "Completa exactamente esta escritura C; no anticipa la siguiente.",
+            "intermediate": "Completa exactamente esta escritura C; no anticipa la siguiente.",
+            "advanced": "Completa exactamente esta escritura C; no anticipa la siguiente."
+          },
+          "numeric_algorithm": true,
+          "instruction_state_before": {
+            "frames": [
+              {
+                "id": "F1",
+                "function": "grafo_dijkstra",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  },
+                  "inicio": 1,
+                  "llegada": 3
+                },
+                "parameter_types": {
+                  "g": "Grafo",
+                  "inicio": "int",
+                  "llegada": "int"
+                },
+                "status": "active",
+                "scopes": [
+                  {
+                    "id": "F1:B914",
+                    "variables": {
+                      "n": {
+                        "type": "int",
+                        "value": 3
+                      },
+                      "dist": {
+                        "type": "int *",
+                        "value": "M1"
+                      },
+                      "prev": {
+                        "type": "int *",
+                        "value": "M2"
+                      },
+                      "visitado": {
+                        "type": "int *",
+                        "value": "M3"
+                      },
+                      "vertices": {
+                        "type": "int *",
+                        "value": "M4"
+                      },
+                      "i": {
+                        "type": "int",
+                        "value": 3
+                      },
+                      "idx_inicio": {
+                        "type": "int",
+                        "value": 2
+                      },
+                      "idx_llegada": {
+                        "type": "int",
+                        "value": 0
+                      },
+                      "camino": {
+                        "type": "ListaArco",
+                        "value": "NULL"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "heap_nodes": [
+              {
+                "id": "V1",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 1,
+                  "marcado": 0,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "V2",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 2,
+                  "marcado": 0,
+                  "sig": "V1"
+                },
+                "alive": true
+              },
+              {
+                "id": "V3",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 3,
+                  "marcado": 0,
+                  "sig": "V2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E1",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 2,
+                  "costo": 1,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "E2",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 1,
+                  "costo": 1,
+                  "sig": "E1"
+                },
+                "alive": true
+              },
+              {
+                "id": "E3",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 3,
+                  "costo": 2,
+                  "sig": "E2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E4",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 2,
+                  "costo": 2,
+                  "sig": "E3"
+                },
+                "alive": true
+              },
+              {
+                "id": "E5",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 3,
+                  "costo": 5,
+                  "sig": "E4"
+                },
+                "alive": true
+              },
+              {
+                "id": "E6",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 1,
+                  "costo": 5,
+                  "sig": "E5"
+                },
+                "alive": true
+              },
+              {
+                "id": "M1",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  2147483647,
+                  2147483647,
+                  2147483647
+                ]
+              },
+              {
+                "id": "M2",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  -1,
+                  -1,
+                  -1
+                ]
+              },
+              {
+                "id": "M3",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "id": "M4",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  3,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "retired_objects": [],
+            "graph": {
+              "v": "V3",
+              "a": "E6"
+            },
+            "allocations": 4,
+            "allocation_attempts": 4,
+            "frees": 0,
+            "console_stdout": "",
+            "returned": "sin inicializar"
+          },
+          "instruction_state_after": {
+            "frames": [
+              {
+                "id": "F1",
+                "function": "grafo_dijkstra",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  },
+                  "inicio": 1,
+                  "llegada": 3
+                },
+                "parameter_types": {
+                  "g": "Grafo",
+                  "inicio": "int",
+                  "llegada": "int"
+                },
+                "status": "active",
+                "scopes": [
+                  {
+                    "id": "F1:B914",
+                    "variables": {
+                      "n": {
+                        "type": "int",
+                        "value": 3
+                      },
+                      "dist": {
+                        "type": "int *",
+                        "value": "M1"
+                      },
+                      "prev": {
+                        "type": "int *",
+                        "value": "M2"
+                      },
+                      "visitado": {
+                        "type": "int *",
+                        "value": "M3"
+                      },
+                      "vertices": {
+                        "type": "int *",
+                        "value": "M4"
+                      },
+                      "i": {
+                        "type": "int",
+                        "value": 3
+                      },
+                      "idx_inicio": {
+                        "type": "int",
+                        "value": 2
+                      },
+                      "idx_llegada": {
+                        "type": "int",
+                        "value": 0
+                      },
+                      "camino": {
+                        "type": "ListaArco",
+                        "value": "NULL"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "heap_nodes": [
+              {
+                "id": "V1",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 1,
+                  "marcado": 0,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "V2",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 2,
+                  "marcado": 0,
+                  "sig": "V1"
+                },
+                "alive": true
+              },
+              {
+                "id": "V3",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 3,
+                  "marcado": 0,
+                  "sig": "V2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E1",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 2,
+                  "costo": 1,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "E2",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 1,
+                  "costo": 1,
+                  "sig": "E1"
+                },
+                "alive": true
+              },
+              {
+                "id": "E3",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 3,
+                  "costo": 2,
+                  "sig": "E2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E4",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 2,
+                  "costo": 2,
+                  "sig": "E3"
+                },
+                "alive": true
+              },
+              {
+                "id": "E5",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 3,
+                  "costo": 5,
+                  "sig": "E4"
+                },
+                "alive": true
+              },
+              {
+                "id": "E6",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 1,
+                  "costo": 5,
+                  "sig": "E5"
+                },
+                "alive": true
+              },
+              {
+                "id": "M1",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  2147483647,
+                  2147483647,
+                  0
+                ]
+              },
+              {
+                "id": "M2",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  -1,
+                  -1,
+                  -1
+                ]
+              },
+              {
+                "id": "M3",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "id": "M4",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  3,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "retired_objects": [],
+            "graph": {
+              "v": "V3",
+              "a": "E6"
+            },
+            "allocations": 4,
+            "allocation_attempts": 4,
+            "frees": 0,
+            "console_stdout": "",
+            "returned": "sin inicializar"
+          },
+          "memory_state": {
+            "frames": [
+              {
+                "id": "F1",
+                "function": "grafo_dijkstra",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  },
+                  "inicio": 1,
+                  "llegada": 3
+                },
+                "parameter_types": {
+                  "g": "Grafo",
+                  "inicio": "int",
+                  "llegada": "int"
+                },
+                "status": "active",
+                "scopes": [
+                  {
+                    "id": "F1:B914",
+                    "variables": {
+                      "n": {
+                        "type": "int",
+                        "value": 3
+                      },
+                      "dist": {
+                        "type": "int *",
+                        "value": "M1"
+                      },
+                      "prev": {
+                        "type": "int *",
+                        "value": "M2"
+                      },
+                      "visitado": {
+                        "type": "int *",
+                        "value": "M3"
+                      },
+                      "vertices": {
+                        "type": "int *",
+                        "value": "M4"
+                      },
+                      "i": {
+                        "type": "int",
+                        "value": 3
+                      },
+                      "idx_inicio": {
+                        "type": "int",
+                        "value": 2
+                      },
+                      "idx_llegada": {
+                        "type": "int",
+                        "value": 0
+                      },
+                      "camino": {
+                        "type": "ListaArco",
+                        "value": "NULL"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "heap_nodes": [
+              {
+                "id": "V1",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 1,
+                  "marcado": 0,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "V2",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 2,
+                  "marcado": 0,
+                  "sig": "V1"
+                },
+                "alive": true
+              },
+              {
+                "id": "V3",
+                "kind": "struct NodoV",
+                "borrowed": true,
+                "fields": {
+                  "dato": 3,
+                  "marcado": 0,
+                  "sig": "V2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E1",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 2,
+                  "costo": 1,
+                  "sig": "NULL"
+                },
+                "alive": true
+              },
+              {
+                "id": "E2",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 1,
+                  "costo": 1,
+                  "sig": "E1"
+                },
+                "alive": true
+              },
+              {
+                "id": "E3",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 2,
+                  "destino": 3,
+                  "costo": 2,
+                  "sig": "E2"
+                },
+                "alive": true
+              },
+              {
+                "id": "E4",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 2,
+                  "costo": 2,
+                  "sig": "E3"
+                },
+                "alive": true
+              },
+              {
+                "id": "E5",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 1,
+                  "destino": 3,
+                  "costo": 5,
+                  "sig": "E4"
+                },
+                "alive": true
+              },
+              {
+                "id": "E6",
+                "kind": "struct NodoA",
+                "borrowed": true,
+                "fields": {
+                  "origen": 3,
+                  "destino": 1,
+                  "costo": 5,
+                  "sig": "E5"
+                },
+                "alive": true
+              },
+              {
+                "id": "M1",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  2147483647,
+                  2147483647,
+                  0
+                ]
+              },
+              {
+                "id": "M2",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  -1,
+                  -1,
+                  -1
+                ]
+              },
+              {
+                "id": "M3",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "id": "M4",
+                "kind": "int",
+                "borrowed": false,
+                "alive": true,
+                "bytes": 12,
+                "element_type": "int",
+                "items": [
+                  3,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "retired_objects": [],
+            "graph": {
+              "v": "V3",
+              "a": "E6"
+            },
+            "allocations": 4,
+            "allocation_attempts": 4,
+            "frees": 0,
+            "console_stdout": "",
+            "returned": "sin inicializar"
+          },
+          "instruction_event": {
+            "function": "grafo_dijkstra",
+            "pos": 2086,
+            "line_index": 63,
+            "phase": "write",
+            "name": "dist[idx_inicio]",
+            "value": 0,
+            "C_executed": true,
+            "statement": "    dist[idx_inicio] = 0;"
+          },
+          "highlight_semantics": "just-executed"
+        },
+        "state_after": {
+          "structure": "graph",
+          "directed": false,
+          "weighted": true,
+          "nodes": [
+            {
+              "id": "1",
+              "label": "1",
+              "value": "1",
+              "marked": 0
+            },
+            {
+              "id": "2",
+              "label": "2",
+              "value": "2",
+              "marked": 0
+            },
+            {
+              "id": "3",
+              "label": "3",
+              "value": "3",
+              "marked": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "1",
+              "target": "2",
+              "weight": 1.0
+            },
+            {
+              "source": "2",
+              "target": "3",
+              "weight": 2.0
+            },
+            {
+              "source": "1",
+              "target": "3",
+              "weight": 5.0
+            }
+          ],
+          "metadata": {
+            "vertices_count": 3,
+            "edges_count": 3,
+            "is_empty": false
+          },
+          "last_operation": null,
+          "last_result": null
+        },
+        "state_snapshot": {
+          "structure": "graph",
+          "directed": false,
+          "weighted": true,
+          "nodes": [
+            {
+              "id": "1",
+              "label": "1",
+              "value": "1",
+              "marked": 0
+            },
+            {
+              "id": "2",
+              "label": "2",
+              "value": "2",
+              "marked": 0
+            },
+            {
+              "id": "3",
+              "label": "3",
+              "value": "3",
+              "marked": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "1",
+              "target": "2",
+              "weight": 1.0
+            },
+            {
+              "source": "2",
+              "target": "3",
+              "weight": 2.0
+            },
+            {
+              "source": "1",
+              "target": "3",
+              "weight": 5.0
+            }
+          ],
+          "metadata": {
+            "vertices_count": 3,
+            "edges_count": 3,
+            "is_empty": false
+          },
+          "last_operation": null,
+          "last_result": null
+        }
+      }
+    ],
+    "final_state": {
+      "structure": "graph",
+      "directed": false,
+      "weighted": true,
+      "nodes": [
+        {
+          "id": "1",
+          "label": "1",
+          "value": "1",
+          "marked": 0
+        },
+        {
+          "id": "2",
+          "label": "2",
+          "value": "2",
+          "marked": 0
+        },
+        {
+          "id": "3",
+          "label": "3",
+          "value": "3",
+          "marked": 0
+        }
+      ],
+      "edges": [
+        {
+          "source": "1",
+          "target": "2",
+          "weight": 1.0
+        },
+        {
+          "source": "2",
+          "target": "3",
+          "weight": 2.0
+        },
+        {
+          "source": "1",
+          "target": "3",
+          "weight": 5.0
+        }
+      ],
+      "metadata": {
+        "vertices_count": 3,
+        "edges_count": 3,
+        "is_empty": false
+      },
+      "last_operation": null,
+      "last_result": null
+    },
+    "numeric_instruction_model": true,
+    "operation_name": "run_dijkstra",
+    "C_instruction_events": [
+      {
+        "function": "grafo_dijkstra",
+        "line_index": 63,
+        "name": "dist[idx_inicio]",
+        "phase": "write",
+        "pos": 2086,
+        "value": 0
+      }
+    ]
+  }
+}

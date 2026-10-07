@@ -1,5 +1,6 @@
 """Acceptance coverage for graph pedagogy phases 4 through 6."""
 from pathlib import Path
+from _graph_trace_contract import decode_graph_http_trace
 
 from app.domain.graph.pedagogy import build_graph_frame, validate_graph_frame
 from app.adapters.graph_adapter import GraphAdapter
@@ -11,7 +12,9 @@ def _operate(client, operation, payload):
         json={"operation": operation, "payload": payload},
     )
     assert response.status_code == 200
-    return response.get_json()
+    body = response.get_json()
+    body["execution_trace"] = decode_graph_http_trace(body["execution_trace"])
+    return body
 
 
 def _prepare_weighted_graph(client, *, directed=True):

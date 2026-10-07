@@ -13,6 +13,10 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      PYTHONUNBUFFERED: "1"
+      VISUALSTRUCT_E2E_DIAGNOSTICS: "1"
+      VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: .pytest-e2e-safe-diagnostics
 
     steps:
       - name: Checkout
@@ -32,8 +36,22 @@ jobs:
 
       - name: Install Playwright browsers
         run: |
-          python -m playwright install --with-deps chromium
+          python -m playwright install --with-deps chromium firefox
 
       - name: Run Playwright E2E tests
         run: |
-          python -m pytest -q tests/test_ui_playwright_e2e.py
+          python -B scripts/run_e2e_diagnostics.py --suite chromium tests/test_ui_playwright_e2e.py
+
+      - name: Run Firefox compatibility smoke tests
+        run: |
+          python -B scripts/run_e2e_diagnostics.py --suite firefox tests/test_playwright_firefox_smoke.py
+
+      - name: Preserve E2E diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-diagnostics
+          path: |
+            .pytest-e2e-safe-diagnostics/*.jsonl
+            .pytest-e2e-safe-diagnostics/*-result.json
+          if-no-files-found: warn

@@ -1,5 +1,6 @@
 """Acceptance tests for graph pedagogy phases 1-3."""
 import json
+from _graph_trace_contract import decode_graph_http_trace
 from pathlib import Path
 
 from app.domain.graph.pedagogy import GRAPH_EDGE_POLICY, GRAPH_FRAME_SCHEMA_VERSION, GRAPH_GUIDED_EXAMPLES, GRAPH_LEARNING_CATALOG, build_graph_frame, graph_frame_schema, validate_graph_frame
@@ -32,7 +33,7 @@ def test_real_graph_trace_exposes_canonical_frames(client):
     for operation,payload in (("create_graph",{"directed":False}),("insert_vertex",{"vertex":1}),("insert_vertex",{"vertex":2}),("insert_edge",{"origin":1,"target":2,"weight":4})):
         response=client.post("/graph/graph/operate",json={"operation":operation,"payload":payload})
         assert response.status_code==200
-    trace=client.post("/graph/graph/operate",json={"operation":"run_bfs","payload":{"start":1}}).get_json()["execution_trace"]
+    trace=decode_graph_http_trace(client.post("/graph/graph/operate",json={"operation":"run_bfs","payload":{"start":1}}).get_json()["execution_trace"])
     assert trace["pedagogy_schema_version"]==GRAPH_FRAME_SCHEMA_VERSION
     for step in trace["steps"]:
         frame=step["pedagogy"];validate_graph_frame(frame,source_code=trace["source_code"])

@@ -7,6 +7,9 @@ from typing import Any
 import pytest
 
 from app.services.graph_structure_service import GraphStructureService
+from app.services.trace import TraceEngine
+from _graph_trace_contract import decode_graph_http_trace
+from _final_graph_oracle import assert_final_graph, assert_observed_graph_frame
 
 
 BASE = [
@@ -58,9 +61,18 @@ def test_every_graph_operation_returns_a_consistent_trace(client: Any, operation
     response = _post(client, operation, payload)
     assert response.status_code == 200, response.get_json()
     body = response.get_json()
-    assert body["execution_trace"]["steps"]
-    assert body["execution_trace"]["steps"][-1]["state_after"] == body["visual_state"]
-    assert all(step["pedagogy"]["invariant"]["holds"] for step in body["execution_trace"]["steps"])
+    wire = body["execution_trace"]
+    trace = decode_graph_http_trace(wire)
+    assert trace["steps"]
+    assert trace["steps"][-1]["state_after"] == trace["final_state"] == body["visual_state"]
+    assert len(TraceEngine.validate_legacy_trace(trace)) == len(trace["steps"])
+    for previous, current in zip(trace["steps"], trace["steps"][1:]):
+        assert previous["state_after"] == current["state_snapshot"]
+    if "C_instruction_events" in wire:
+        assert trace["C_instruction_events"] == wire["C_instruction_events"]
+    assert_final_graph(body["visual_state"])
+    for index, step in enumerate(trace["steps"]):
+        assert_observed_graph_frame(step, trace, index)
 
 
 def test_graph_algorithms_return_expected_traversal_shortest_path_and_mst(client: Any) -> None:
