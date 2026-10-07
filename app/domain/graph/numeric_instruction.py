@@ -138,8 +138,8 @@ def build_graph_numeric_trace(*, operation_name: str, payload: dict[str,Any], so
     result_wrapper=after_state.get('last_result') or {};result=result_wrapper.get('result') or {}
     cycle_executed=operation_name=='run_bellman_ford' and isinstance(result,dict) and bool(result.get('has_negative_cycle'))
     if not success and not cycle_executed:
-        return _finish_numeric_trace(rejection_trace(trace,before_state,after_state),SnapshotPool(preserve_tuples=operation_name == 'run_dijkstra'),_compact)
-    program=Program(source_code);lines=source_code.splitlines();steps=[];pool=SnapshotPool(preserve_tuples=operation_name == 'run_dijkstra')
+        return _finish_numeric_trace(rejection_trace(trace,before_state,after_state),SnapshotPool(preserve_tuples=True),_compact)
+    program=Program(source_code);lines=source_code.splitlines();steps=[];pool=SnapshotPool(preserve_tuples=True)
     seed_vertices=[int(n['id']) for n in before_state.get('nodes',[])]
     marks={int(n['id']):int(n.get('marked',0)) for n in before_state.get('nodes',[])}
     arcs=[]
