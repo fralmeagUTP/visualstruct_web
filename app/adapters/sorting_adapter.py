@@ -6,6 +6,7 @@ import random
 from typing import Any
 
 from app.services.trace.engine import TraceEngine
+from app.services.sorting_source_contract import validate_sorting_source
 
 from app.adapters.base_adapter import BaseAdapter
 from app.domain.sorting import SORTING_ALGORITHMS, SortingExecutionError, SortingInterpreter
@@ -210,11 +211,13 @@ class SortingAdapter(BaseAdapter):
         return lookup
 
     def run(self, mode: str, *, source_code: str = "") -> dict[str, Any]:
-        """Run sorting simulation in fast or step mode."""
+        """Require explicit supported C before sorting in fast or step mode."""
         if mode not in {"fast", "step_by_step"}:
             raise ValueError("El modo debe ser 'fast' o 'step_by_step'.")
         if not self._array:
             raise ValueError("Debes crear primero un arreglo para ordenar.")
+
+        validate_sorting_source(self._algorithm_id, source_code)
 
         interpreter = SortingInterpreter(self._array, self._algorithm_id, counting_allocator=self._counting_allocator) if self._algorithm_id in {"counting_sort", "binsort"} else SortingInterpreter(self._array, self._algorithm_id)
         if self._algorithm_id == "radixsort":

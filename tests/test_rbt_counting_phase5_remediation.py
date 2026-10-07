@@ -4,6 +4,7 @@ import pytest
 
 from app.adapters.red_black_adapter import RedBlackAdapter
 from app.adapters.sorting_adapter import SortingAdapter
+from app.services.c_code_service import CCodeService
 from app.domain.sorting.tad_ordenamiento import ORDENAMIENTO_RANGO_MAX, SortingExecutionError, SortingInterpreter
 from app.services.hierarchical_structure_service import HierarchicalStructureService
 
@@ -44,7 +45,7 @@ def test_counting_rejection_is_identical_in_fast_and_step_modes(algorithm):
         adapter.execute("create_array", {"values": [-(2**31), 2**31 - 1]})
         adapter.execute("select_algorithm", {"algorithm_id": algorithm})
         with pytest.raises(SortingExecutionError, match="supera el máximo"):
-            adapter.execute("run", {"mode": mode, "source_code": ""})
+            adapter.execute("run", {"mode": mode, "source_code": CCodeService.get_structure_data("sorting_array")["operations"][algorithm]})
 
 
 @pytest.mark.parametrize(

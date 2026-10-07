@@ -10,6 +10,7 @@ from app.adapters.sorting_adapter import SortingAdapter
 from app.services.observability import observe_replay
 from app.domain.sorting import SortingExecutionError
 from app.services.c_code_service import CCodeService
+from app.services.sorting_source_contract import SortingSourceError
 from app.services.pseudocode_service import PseudocodeService
 from app.services.sorting_main_program import build_sorting_main
 
@@ -165,7 +166,8 @@ class SortingStructureService:
         adapter, valid_history = SortingStructureService._rebuild_adapter(structure_id, history)
         adapter._counting_allocator = counting_allocator
         adapter._radix_allocator = radix_allocator
-        didactic_data = SortingStructureService._didactic_content(structure_id)
+        accepted_before_state = adapter.to_visual_state()
+        didactic_data = (CCodeService.get_structure_data(structure_id) or {}) if operation_name in {"run", "step"} else SortingStructureService._didactic_content(structure_id)
         # Legacy step API reconstructs the last execution from its actual input.
         # GET/topology reconstruction itself never dispatches a historical run.
         if operation_name == "step" and valid_history and valid_history[-1]["operation"] == "run":
@@ -194,7 +196,7 @@ class SortingStructureService:
             source_code = str(
                 didactic_data.get("operations", {}).get(
                     source_algorithm,
-                    didactic_data.get("default_operation", ""),
+                    "",
                 )
             )
             payload = dict(payload)
@@ -207,7 +209,7 @@ class SortingStructureService:
             response = {
                 "success": False,
                 "message": message,
-                "visual_state": before_state if (
+                "visual_state": accepted_before_state if isinstance(error, SortingSourceError) else before_state if (
                     getattr(error, "execution_trace", None)
                     or (operation_name == "run" and (payload.get("algorithm_id") or before_state.get("algorithm")) in {"binsort", "radixsort"})
                 ) else adapter.to_visual_state(),
@@ -257,7 +259,7 @@ class SortingStructureService:
         parser = SortingAdapter()
         parsed = parser._parse_manual_values({"values": values})
         parser._validate_values(parsed)
-        didactic = SortingStructureService._didactic_content("sorting_array")
+        didactic = CCodeService.get_structure_data("sorting_array") or {}
 
         def execute(algorithm_id: str) -> dict[str, Any]:
             adapter = SortingAdapter()

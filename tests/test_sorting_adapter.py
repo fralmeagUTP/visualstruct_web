@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from app.adapters.sorting_adapter import SortingAdapter
+from app.services.c_code_service import CCodeService
 
 
 def test_sorting_adapter_supports_algorithms_from_c_contract() -> None:
@@ -29,12 +30,12 @@ def test_run_fast_and_step_by_step_reach_same_final_array() -> None:
     adapter_fast = SortingAdapter()
     adapter_fast.execute("create_array", {"values": "9,4,7,1,5"})
     adapter_fast.execute("select_algorithm", {"algorithm_id": "burbuja"})
-    fast = adapter_fast.execute("run", {"mode": "fast", "source_code": "void ordenar_burbuja(int a[], size_t n) {}"})
+    fast = adapter_fast.execute("run", {"mode": "fast", "source_code": CCodeService.get_structure_data("sorting_array")["operations"]["burbuja"]})
 
     adapter_step = SortingAdapter()
     adapter_step.execute("create_array", {"values": "9,4,7,1,5"})
     adapter_step.execute("select_algorithm", {"algorithm_id": "burbuja"})
-    step = adapter_step.execute("run", {"mode": "step_by_step", "source_code": "void ordenar_burbuja(int a[], size_t n) {}"})
+    step = adapter_step.execute("run", {"mode": "step_by_step", "source_code": CCodeService.get_structure_data("sorting_array")["operations"]["burbuja"]})
 
     assert fast["visual_state"]["items"] == step["visual_state"]["items"]
     assert fast["visual_state"]["items"] == sorted([9, 4, 7, 1, 5])

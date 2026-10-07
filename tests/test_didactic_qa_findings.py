@@ -439,7 +439,7 @@ def test_all_sorting_algorithms_preserve_multiset_and_match_both_modes() -> None
             adapter = SortingAdapter()
             adapter.execute("create_array", {"values": values})
             adapter.execute("select_algorithm", {"algorithm_id": algorithm})
-            result = adapter.execute("run", {"mode": mode, "source_code": ""})
+            result = adapter.execute("run", {"mode": mode, "source_code": CCodeService.get_structure_data("sorting_array")["operations"][algorithm]})
             output = result["visual_state"]["items"]
             assert output == sorted(values)
             assert Counter(output) == Counter(values)

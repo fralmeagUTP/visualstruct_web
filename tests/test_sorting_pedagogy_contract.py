@@ -9,6 +9,7 @@ import pytest
 
 from app.adapters.sorting_adapter import SortingAdapter
 from app.domain.sorting import SORTING_ALGORITHMS
+from app.services.c_code_service import CCodeService
 from app.domain.sorting.pedagogy import (
     PEDAGOGICAL_FRAME_SCHEMA_VERSION,
     PedagogicalFrameValidationError,
@@ -82,7 +83,7 @@ def test_condition_stack_pointer_and_loop_semantics_are_explicit() -> None:
     adapter = SortingAdapter()
     adapter.create_array([2, 1])
     adapter.select_algorithm("burbuja")
-    steps = adapter.run("step_by_step")["execution_trace"]["steps"]
+    steps = adapter.run("step_by_step", source_code=CCodeService.get_structure_data("sorting_array")["operations"][adapter.to_visual_state()["algorithm"]])["execution_trace"]["steps"]
     comparison = next(step["pedagogy"] for step in steps if step["pedagogy"]["source"]["line_token"] == "compare")
     pointer_assignment = next(step["pedagogy"] for step in steps if step["pedagogy"]["source"]["line_token"] == "swap_assign_a")
     assert comparison["condition"]["expression"] == "2 > 1"
@@ -97,7 +98,7 @@ def test_every_frame_is_self_contained_for_exact_reverse_navigation() -> None:
     adapter = SortingAdapter()
     adapter.create_array([3, 1, 2])
     adapter.select_algorithm("quicksort")
-    steps = adapter.run("step_by_step")["execution_trace"]["steps"]
+    steps = adapter.run("step_by_step", source_code=CCodeService.get_structure_data("sorting_array")["operations"][adapter.to_visual_state()["algorithm"]])["execution_trace"]["steps"]
     for index in range(1, len(steps)):
         assert steps[index]["state_snapshot"] == steps[index - 1]["state_after"]
         validate_pedagogical_frame(steps[index - 1]["pedagogy"])
@@ -110,7 +111,7 @@ def test_adapter_exposes_complete_pedagogy_on_every_frame(algorithm_id: str) -> 
     adapter = SortingAdapter()
     adapter.create_array([3, 1, 2])
     adapter.select_algorithm(algorithm_id)
-    trace = adapter.run("step_by_step")["execution_trace"]
+    trace = adapter.run("step_by_step", source_code=CCodeService.get_structure_data("sorting_array")["operations"][adapter.to_visual_state()["algorithm"]])["execution_trace"]
     assert trace["pedagogy_schema_version"] == PEDAGOGICAL_FRAME_SCHEMA_VERSION
     assert trace["learning_profile"]["objective"]
     for step in trace["steps"]:

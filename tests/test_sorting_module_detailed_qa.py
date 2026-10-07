@@ -79,7 +79,7 @@ def test_counting_algorithms_reject_excessive_range_without_mutating_input(algor
     adapter.create_array(values)
     adapter.select_algorithm(algorithm)
     with pytest.raises(SortingExecutionError, match="rango de conteo"):
-        adapter.run("fast")
+        adapter.run("fast", source_code=CCodeService.get_structure_data("sorting_array")["operations"][algorithm])
     assert adapter.to_visual_state()["items"] == values
 
 
