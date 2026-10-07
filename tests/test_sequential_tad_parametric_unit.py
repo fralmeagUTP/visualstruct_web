@@ -99,11 +99,15 @@ def test_tad_pila_push_pop_multiple_values(values: list[int]) -> None:
 def test_tad_pila_mostrar_prints(capsys: pytest.CaptureFixture[str]) -> None:
     ref = [None]
     pila_mostrar(ref[0])
-    assert "(vacia)" in capsys.readouterr().out
+    assert capsys.readouterr().out == "Pila vacia.\n"
+    assert ref[0] is None
     pila_apilar(ref, 10)
     pila_apilar(ref, 20)
+    top, tail = ref[0], ref[0].sgte
     pila_mostrar(ref[0])
-    assert "20 -> 10" in capsys.readouterr().out
+    assert capsys.readouterr().out == "\t20\n\t10\n"
+    assert ref[0] is top and top.sgte is tail
+    assert (top.nro, tail.nro, tail.sgte) == (20, 10, None)
 
 
 @pytest.mark.parametrize("values", [[5], [5, 6, 7], [1, 1, 2, 3]])
@@ -122,11 +126,16 @@ def test_tad_cola_enqueue_dequeue_multiple_values(values: list[int]) -> None:
 def test_tad_cola_mostrar_prints(capsys: pytest.CaptureFixture[str]) -> None:
     queue = Cola()
     cola_mostrar(queue)
-    assert "(vacia)" in capsys.readouterr().out
+    assert capsys.readouterr().out == "Cola: \n"
+    assert queue.delante is None and queue.atras is None
     cola_encolar(queue, 1)
     cola_encolar(queue, 2)
+    front, rear = queue.delante, queue.atras
     cola_mostrar(queue)
-    assert "1 <- 2" in capsys.readouterr().out
+    assert capsys.readouterr().out == "Cola: 1 2 \n"
+    assert queue.delante is front and queue.atras is rear
+    assert front.sgte is rear
+    assert (front.nro, rear.nro, rear.sgte) == (1, 2, None)
 
 
 def test_tad_lista_insertar_elemento_provider_variants() -> None:
