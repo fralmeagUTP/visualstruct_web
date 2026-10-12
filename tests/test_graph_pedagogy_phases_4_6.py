@@ -1,4 +1,5 @@
 """Acceptance coverage for graph pedagogy phases 4 through 6."""
+from _dijkstra_legacy_consumer_oracle import assert_dijkstra_legacy_consumer
 from pathlib import Path
 from _graph_trace_contract import decode_graph_http_trace
 
@@ -76,19 +77,25 @@ def test_random_graph_seed_reproduces_a_stable_prepared_input():
 
 
 def test_bfs_and_dfs_frames_expose_real_auxiliary_and_tree(client):
+    from _bfs_dfs_auxiliary_consumer_oracle import assert_traversal_consumer
     _prepare_weighted_graph(client, directed=False)
-    bfs = _operate(client, "run_bfs", {"start": "1"})["execution_trace"]
+    bfs_body = _operate(client, "run_bfs", {"start": "1"})
+    bfs = bfs_body["execution_trace"]
     bfs_frames = [step["pedagogy"] for step in bfs["steps"]]
     assert all(frame["auxiliary"]["kind"] == "queue" for frame in bfs_frames)
     assert any(frame["traversal"]["tree_edges"] for frame in bfs_frames)
     assert all(len(frame["traversal"]["discovery_order"]) == len(set(frame["traversal"]["discovery_order"])) for frame in bfs_frames)
     assert any(frame["table"]["previous"] for frame in bfs_frames)
 
-    dfs = _operate(client, "run_dfs", {"start": "1"})["execution_trace"]
+    dfs_body = _operate(client, "run_dfs", {"start": "1"})
+    dfs = dfs_body["execution_trace"]
     dfs_frames = [step["pedagogy"] for step in dfs["steps"]]
-    assert all(frame["auxiliary"]["kind"] == "recursive_stack" for frame in dfs_frames)
+    assert all(frame["auxiliary"]["kind"] == "recursi\u00f3n C" for frame in dfs_frames)
     assert any(frame["auxiliary"]["items"] for frame in dfs_frames)
     assert any(frame["traversal"]["tree_edges"] for frame in dfs_frames)
+
+    assert_traversal_consumer(bfs_body, "run_bfs")
+    assert_traversal_consumer(dfs_body, "run_dfs")
 
 
 def test_dijkstra_frames_show_priority_queue_relaxation_and_path(client):
@@ -96,30 +103,26 @@ def test_dijkstra_frames_show_priority_queue_relaxation_and_path(client):
     data = _operate(client, "run_dijkstra", {"start": "1", "end": "3"})
     assert data["result"]["path"] == [1, 2, 3]
     assert data["result"]["distance_to_destination"] == 3.0
-    frames = [step["pedagogy"] for step in data["execution_trace"]["steps"]]
-    assert all(frame["auxiliary"]["kind"] == "priority_queue" for frame in frames)
-    relaxation_frames = [frame for frame in frames if frame["relaxation"]]
-    assert relaxation_frames
-    assert any(frame["relaxation"]["candidate"] is not None for frame in relaxation_frames)
-    assert any(frame["relaxation"]["success"] is False for frame in relaxation_frames)
-    assert any(frame["auxiliary"]["iteration"] is not None for frame in relaxation_frames)
-    assert frames[-1]["table"]["previous"]["3"] == "2"
+    assert_dijkstra_legacy_consumer(data, "weighted")
 
 
 def test_bellman_ford_distinguishes_unreachable_and_reachable_negative_cycle(client):
     _prepare_weighted_graph(client)
     unreachable = _operate(client, "run_bellman_ford", {"start": "1", "end": "4"})
     assert unreachable["result"]["reachable"] is False
-    stages = {step["debug"].get("stage") for step in unreachable["execution_trace"]["steps"]}
-    assert "detect_unreachable" in stages
+    from _bellman_http_consumer_oracle import assert_bellman_http
+    assert_bellman_http(unreachable, "unreachable4", 200)
 
     _operate(client, "create_graph", {"directed": True})
     for origin, target, weight in (("1", "2", 1), ("2", "3", -3), ("3", "2", 1)):
-        _operate(client, "insert_edge", {"origin": origin, "target": target, "weight": weight})
-    negative = _operate(client, "run_bellman_ford", {"start": "1", "end": "3"})
+        prepared = _operate(client, "insert_edge", {"origin": origin, "target": target, "weight": weight})
+    response = client.post("/graph/graph/operate", json={"operation": "run_bellman_ford", "payload": {"start": "1", "end": "3"}})
+    assert response.status_code == 400
+    negative = response.get_json()
+    negative["execution_trace"] = decode_graph_http_trace(negative["execution_trace"])
     assert negative["result"]["has_negative_cycle"] is True
-    detection = [step["pedagogy"] for step in negative["execution_trace"]["steps"] if step["debug"].get("stage") == "detect_negative_cycle"]
-    assert detection and detection[0]["auxiliary"]["iteration"] is not None
+    assert negative["history"] == prepared["history"]
+    assert_bellman_http(negative, "cycle23", response.status_code)
 
 
 def test_ui_exposes_representation_traversal_relaxation_and_immutable_replay(client):

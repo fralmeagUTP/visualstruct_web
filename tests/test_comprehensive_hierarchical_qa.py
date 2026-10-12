@@ -6,6 +6,8 @@ from typing import Any
 
 import pytest
 
+from _hierarchical_frame_oracle import CASES as CAUSAL_CASES, assert_hierarchical_case
+
 from app.services.hierarchical_structure_service import HierarchicalStructureService
 
 
@@ -46,7 +48,11 @@ def test_every_hierarchical_operation_has_valid_state_and_trace(client: Any, str
     assert body["success"] is True
     assert body["execution_trace"]["steps"]
     assert body["execution_trace"]["steps"][-1]["state_after"] == body["visual_state"]
-    assert all(step["pedagogy"]["invariant"]["holds"] for step in body["execution_trace"]["steps"])
+    if (structure, operation) in CAUSAL_CASES:
+        seed = [int(item[1]["value"]) for item in setup]
+        assert_hierarchical_case(body, structure, operation, seed, payload)
+    else:
+        assert all(step["pedagogy"]["invariant"]["holds"] for step in body["execution_trace"]["steps"])
 
 
 @pytest.mark.parametrize("structure", ["abb", "avl", "red_black", "binary_heap"])

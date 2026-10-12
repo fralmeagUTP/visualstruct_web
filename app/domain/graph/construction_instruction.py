@@ -10,6 +10,7 @@ import re
 from typing import Any
 from .c_algorithm_subset import Program, GraphMachine, Token, Node, UNINIT, NULL
 from .numeric_instruction import variables
+from .integer_algorithms import integer_weight
 from .pedagogy import build_graph_frame, validate_graph_frame, graph_frame_schema, GRAPH_LEARNING_CATALOG
 from .snapshot_pool import validate_graph_logical_trace, SnapshotPool, GraphLogicalTrace
 from app.services.c_code_service import CCodeService
@@ -189,7 +190,8 @@ def build_graph_construction_trace(*, operation_name: str, payload: dict[str,Any
         elif operation_name in {'insert_edge','remove_edge'} and success:
             o,d=int(payload['origin']),int(payload['target'])
             fn='grafo_insertar_arco' if operation_name=='insert_edge' else 'grafo_eliminar_arco'
-            extra=', '+str(int(payload.get('weight',1))) if operation_name=='insert_edge' else ''
+            weight=payload.get('weight',1)
+            extra=', '+str(integer_weight(1 if weight is None or str(weight).strip()=='' else weight)) if operation_name=='insert_edge' else ''
             caller.append(f'    g = {fn}(g, {o}, {d}{extra});')
             if not before_state.get('directed') and o!=d:
                 caller.append(f'    g = {fn}(g, {d}, {o}{extra});')

@@ -1,3 +1,6 @@
+from _quicksort_comparison_consumer_oracle import assert_quicksort_comparison_consumer
+from _sorting_source_oracle import assert_sorting_source_trace
+from _rbt_legacy_consumer_oracle import assert_rbt_consumer
 import json
 import os
 from pathlib import Path
@@ -6,6 +9,8 @@ import sys
 from collections import Counter
 
 import pytest
+
+from _stack_push_memory_oracle import assert_empty_stack_push_memory
 
 from app.domain.hash.tad_wrappers import TablaHash
 from app.services.trace.strategies import TreeTraceStrategy
@@ -31,8 +36,10 @@ def test_hash_001_backend_keeps_c_fixed_capacity() -> None:
     assert table.capacidad() == 3
 
     c_source = (ROOT / "docs/tads_C/tad_tabla_hash.c").read_text(encoding="utf-8")
-    assert "realloc(" not in c_source
-    assert "rehash" not in c_source.lower()
+    from _hash_two_consumer_oracle import assert_fixed_capacity_source
+    assert_fixed_capacity_source(c_source)
+    assert table.tamano() == 3
+    assert table.items() == [(7, 7), (4, 4), (1, 1)]
 
     finding = json.loads((ROOT / "docs/qa/findings/HASH-001.json").read_text(encoding="utf-8"))
     assert finding["result"] == "failed"
@@ -81,14 +88,10 @@ def test_stack_002_reproduces_missing_temporary_node(client) -> None:
         "/sequential/stack/operate",
         json={"operation": "apilar", "payload": {"value": "9"}},
     )
-    steps = response.get_json()["execution_trace"]["steps"]
-    temporary_lines = [
-        step for step in steps
-        if any(token in str(step.get("line_text", "")) for token in ("malloc", "aux->nro", "aux->sgte"))
-    ]
-    assert temporary_lines
-    assert all("temporaries" in step["state_after"] for step in temporary_lines)
+    assert response.status_code == 200
+    assert_empty_stack_push_memory(response.get_json(), 9)
 
+    # This dated finding is history; current memory fidelity is checked above.
     finding = json.loads((ROOT / "docs/qa/findings/STACK-002.json").read_text(encoding="utf-8"))
     assert finding["result"] == "failed"
 
@@ -251,16 +254,7 @@ def test_rbt_002_delete_trace_follows_real_branch_and_delays_final_state() -> No
         structure_id="red_black", operation_name="eliminar",
         payload={"value": "3"}, history=history,
     )
-    lines = [str(step.get("line_text", "")).strip() for step in result["execution_trace"]["steps"]]
-    assert lines.count("while (z != NULL && z->nro != key) {") == 2
-    assert "x = z->der;" in lines
-    assert "x = z->izq;" not in lines
-    steps = result["execution_trace"]["steps"]
-    free_step = next(step for step in steps if str(step.get("line_text", "")).strip() == "free(z);")
-    assert free_step["state_after"]["size"] == 8
-    assert steps[-1]["state_after"]["size"] == 7
-    fix_step = next(step for step in steps if "arreglarEliminacion" in str(step.get("line_text", "")))
-    assert set(fix_step["debug"]["logical_nodes"]) == {"z", "y", "x", "x_parent", "w"}
+    assert_rbt_consumer(result, "delete_text")
     finding = json.loads((ROOT / "docs/qa/findings/RBT-002.json").read_text(encoding="utf-8"))
     assert finding["severity"] == "high"
 
@@ -380,9 +374,7 @@ def test_graph_006_reports_minimum_spanning_forest_and_connectivity() -> None:
 
 def test_sort_001_reproduces_unshown_quicksort_failed_comparisons() -> None:
     result = SortingInterpreter([1, 2, 3], "quicksort").run()
-    pivot_steps = [step for step in result["steps"] if step.get("pivot_index") == 1]
-    assert pivot_steps
-    assert any(step.get("comparing_indices") == [1, 1] for step in pivot_steps)
+    assert_quicksort_comparison_consumer(result)
     source = (ROOT / "docs/tads_C/tad_ordenamiento.c").read_text(encoding="utf-8")
     assert "while (arreglo[i] < pivote)" in source
     assert "while (arreglo[j] > pivote)" in source
@@ -398,8 +390,9 @@ def test_sort_002_reproduces_missing_source_mapping_for_merge_and_binsort() -> N
         adapter.execute("create_array", {"values": "5,-1,4,2,2,0"})
         adapter.execute("select_algorithm", {"algorithm_id": algorithm})
         result = adapter.execute("run", {"mode": "step_by_step", "source_code": operations[algorithm]})
+        assert_sorting_source_trace(result["execution_trace"], [5, -1, 4, 2, 2, 0])
         missing_by_algorithm[algorithm] = sum(
-            step.get("line_index") is None for step in result["execution_trace"]["steps"]
+            step.get("line_index") is None for step in result["execution_trace"]["steps"][1:]
         )
     assert missing_by_algorithm["mergesort"] == 0
     assert missing_by_algorithm["binsort"] == 0

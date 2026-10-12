@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from _priority_dequeue_memory_oracle import assert_priority_dequeue_lifetime
+
 from app.routes.help_routes import _enrich_help_with_c_code
 from app.services.c_code_service import CCodeService
 from app.services.help_service import HelpService
@@ -51,13 +53,13 @@ def test_dequeue_scans_every_node_stably_and_frees_only_after_unlink(client) -> 
 
     unlink = _line_steps(result, "objetivoPrev->sgte = objetivo->sgte;")[0]
     assert len(unlink["state_after"]["items"]) == 3
-    assert unlink["state_after"]["temporaries"]["objetivo"]["allocated"] is True
+    assert_priority_dequeue_lifetime(result)
     assert unlink["pedagogy"]["heap_transition"]["freed"] == []
 
     release = _line_steps(result, "free(objetivo);")[0]
     assert len(release["state_after"]["items"]) == 3
     assert len(release["pedagogy"]["heap_transition"]["freed"]) == 1
-    assert release["pedagogy"]["heap_transition"]["freed"][0]["fields"]["value"] == 20
+    assert release["pedagogy"]["heap_transition"]["freed"][0]["historical_fields"]["valor"] == 20
     assert result["execution_trace"]["final_state"] == result["visual_state"]
 
 

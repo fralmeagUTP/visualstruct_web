@@ -1,3 +1,6 @@
+from _rbt_legacy_consumer_oracle import assert_rbt_consumer
+from _stack_push_memory_oracle import assert_empty_stack_push_memory
+from _tree_intermediate_consumer_oracle import assert_tree_intermediate_consumer
 from pathlib import Path
 
 from app.adapters.sublist_adapter import SublistAdapter
@@ -18,20 +21,14 @@ def _tree_run(structure_id, values, operation, payload):
 
 def test_abb_successor_copy_precedes_successor_unlink():
     result = _tree_run("abb", [2, 1, 3], "eliminar", {"value": 2})
-    changed = [step for step in result["execution_trace"]["steps"] if step["state_snapshot"] != step["state_after"]]
-    assert [step["line_text"].strip() for step in changed] == [
-        "nodo->valor = temp->valor;",
-        "nodo->derecho = abb_eliminar(nodo->derecho, temp->valor);",
-    ]
-    copied = changed[0]["state_after"]["root"]
+    copied, unlinked = assert_tree_intermediate_consumer(result, "abb")
     assert copied["value"] == copied["right"]["value"] == 3
-    assert changed[1]["state_after"]["root"]["right"] is None
+    assert unlinked["right"] is None
 
 
 def test_avl_lr_exposes_first_rotation_with_recomputed_metadata():
     result = _tree_run("avl", [30, 10], "insertar", {"value": 20})
-    roots = [step["state_after"]["root"] for step in result["execution_trace"]["steps"]]
-    middle = next(root for root in roots if root and root["value"] == 30 and root.get("left", {}).get("value") == 20)
+    middle = assert_tree_intermediate_consumer(result, "lr")
     assert middle["left"]["left"]["value"] == 10
     assert middle["height"] == 3
     assert middle["balance_factor"] == -2
@@ -39,8 +36,7 @@ def test_avl_lr_exposes_first_rotation_with_recomputed_metadata():
 
 def test_avl_rl_exposes_first_rotation_with_recomputed_metadata():
     result = _tree_run("avl", [10, 30], "insertar", {"value": 20})
-    roots = [step["state_after"]["root"] for step in result["execution_trace"]["steps"]]
-    middle = next(root for root in roots if root and root["value"] == 10 and root.get("right", {}).get("value") == 20)
+    middle = assert_tree_intermediate_consumer(result, "rl")
     assert middle["right"]["right"]["value"] == 30
     assert middle["height"] == 3
     assert middle["balance_factor"] == 2
@@ -57,8 +53,7 @@ def test_rbt_recolors_only_on_the_corresponding_c_assignments():
 
 def test_rbt_rotation_is_applied_on_the_c_rotation_call():
     result = _tree_run("red_black", [10, 5], "insertar", {"value": 1})
-    changed = [step for step in result["execution_trace"]["steps"] if step["state_snapshot"] != step["state_after"]]
-    rotation = next(step for step in changed if step["line_text"].strip() == "rbt_rotar_dcha(arbol, a);")
+    rotation = assert_rbt_consumer(result, "rotation")
     assert rotation["state_after"]["root"]["value"] == 5
 
 
@@ -79,11 +74,8 @@ def test_heap_extract_exposes_replacement_and_sift_down_swap():
 
 def test_stack_trace_transports_temporary_allocation_value_and_link(client):
     response = client.post("/sequential/stack/operate", json={"operation": "apilar", "payload": {"value": 9}})
-    steps = response.get_json()["execution_trace"]["steps"]
-    by_line = {step["line_text"].strip(): step["state_after"] for step in steps}
-    assert by_line["ptrPila aux = (ptrPila) malloc(sizeof(struct NodoPila));"]["temporaries"]["aux"]["allocated"] is True
-    assert by_line["aux->nro = valor;"]["temporaries"]["aux"]["value"] == 9
-    assert by_line["aux->sgte = *p;"]["temporaries"]["aux"]["next"] == "NULL"
+    assert response.status_code == 200
+    assert_empty_stack_push_memory(response.get_json(), 9)
 
 
 def test_circular_single_node_renderer_keeps_self_link_contract():

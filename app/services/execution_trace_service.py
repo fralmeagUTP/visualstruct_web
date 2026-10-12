@@ -65,7 +65,7 @@ class ExecutionTraceService:
     _expand_generic_control_flow_indexes = staticmethod(ControlFlowPlanner.expand_generic)
 
     @staticmethod
-    def _printf_literal(line_text: str) -> str | None:
+    def _printf_literal(line_text: str, *, preserve_trailing_newlines: bool = False) -> str | None:
         """Return a literal printf output when it can be represented exactly.
 
         This covers diagnostic messages such as the empty-stack guard.  Calls
@@ -80,7 +80,8 @@ class ExecutionTraceService:
         literal = match.group(1)
         literal = literal.replace("\\\\", "\x00")
         literal = literal.replace("\\n", "\n").replace("\\t", "\t").replace('\\"', '"')
-        return literal.replace("\x00", "\\").rstrip("\n")
+        literal = literal.replace("\x00", "\\")
+        return literal if preserve_trailing_newlines else literal.rstrip("\n")
 
     @staticmethod
     def _expand_queue_execution_indexes(
@@ -484,7 +485,7 @@ class ExecutionTraceService:
             append(result, next((i for i in range(len(lines)-1, -1, -1) if lines[i].strip() == "}"), None))
             return result
 
-        if operation_name == "eliminar_elemento":
+        if operation_name in {"eliminar_elemento", "eliminar_primero"}:
             result = indexes_for([
                 "void lista_eliminar_elemento(",
                 "if (lista == null || *lista == null)",
@@ -1595,7 +1596,13 @@ class ExecutionTraceService:
                 step["phase"] = "progress" if not is_last else "end"
             if step_index < len(debug_steps) and isinstance(debug_steps[step_index], dict):
                 step["debug"] = debug_steps[step_index]
-            literal_output = ExecutionTraceService._printf_literal(line_text)
+            literal_output = ExecutionTraceService._printf_literal(
+                line_text,
+                preserve_trailing_newlines=(
+                    structure_id == "linked_list"
+                    and operation_name in {"buscar_elemento", "eliminar_repetidos"}
+                ),
+            )
             if (
                 structure_id == "linked_list"
                 and operation_name == "buscar_elemento"
@@ -1603,7 +1610,7 @@ class ExecutionTraceService:
                 and linked_search_hit_cursor < len(linked_search_hits)
             ):
                 step["console"] = [
-                    f"\n Encontrado en la posicion {linked_search_hits[linked_search_hit_cursor]}"
+                    f"\n Encontrado en la posicion {linked_search_hits[linked_search_hit_cursor]}\n"
                 ]
                 linked_search_hit_cursor += 1
             else:

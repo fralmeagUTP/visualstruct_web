@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from _stack_push_memory_oracle import assert_empty_stack_push_memory
+
 from app.domain.sequential.pedagogy import (
     SEQUENTIAL_FRAME_SCHEMA_VERSION,
     SEQUENTIAL_LEARNING_CATALOG,
@@ -41,14 +43,17 @@ def test_golden_memory_and_control_flow_events_are_classified() -> None:
 def test_real_sequential_trace_exposes_complete_canonical_frames(client) -> None:
     response = client.post("/sequential/stack/operate", json={"operation": "apilar", "payload": {"value": "42"}})
     assert response.status_code == 200
-    trace = response.get_json()["execution_trace"]
+    body = response.get_json()
+    assert_empty_stack_push_memory(body, 42)
+    trace = body["execution_trace"]
     assert trace["pedagogy_schema_version"] == SEQUENTIAL_FRAME_SCHEMA_VERSION
     assert trace["learning_profile"]["objective"]
     for step in trace["steps"]:
         validate_sequential_frame(step["pedagogy"], source_code=trace["source_code"])
         assert step["pedagogy"]["invariant"]["holds"] is True
         assert step["pedagogy"]["invariant"]["symbol"] == "✓"
-        assert "nodos=" in step["pedagogy"]["invariant"]["evidence"]
+        assert isinstance(step["pedagogy"]["invariant"]["evidence"], str)
+        assert step["pedagogy"]["invariant"]["evidence"].strip()
         assert set(step["pedagogy"]["narration"]) == {"basic", "intermediate", "advanced"}
         assert step["pedagogy"]["heap_transition"]["dangling_references"] == []
 

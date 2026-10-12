@@ -1,0 +1,178 @@
+{
+  "cases": [
+    {
+      "case": "empty",
+      "SHA": "6afec5e4d447ec4a9d58246fb3be184e07f9af2a936543afff6297df797324db",
+      "runs": {
+        "C17": {
+          "exit": 0,
+          "stdout": "state:[]\n",
+          "stderr": "",
+          "exit_provenance": "Completed original observer asserts exit0 before Doxygen discovery failure; exact logs recovered, no rerun"
+        },
+        "ownership": {
+          "exit": 0,
+          "stdout": "state:[]\n",
+          "stderr": "",
+          "exit_provenance": "Completed original observer asserts exit0 before Doxygen discovery failure; exact logs recovered, no rerun"
+        }
+      },
+      "alloc": 0,
+      "free": 0,
+      "live": 0,
+      "faults": [],
+      "scope": "3actualDOM+HTTP callers and emptyHTTP-only main; rejected query not recorded. Integrated setup Cima calls only."
+    },
+    {
+      "case": "top",
+      "SHA": "fcb59182cef9c7ec6c6018c7847a6b02c39b9b6870dea9fbb74f2521dda04f5f",
+      "runs": {
+        "C17": {
+          "exit": 0,
+          "stdout": "push:3\npush:17\npush:9\nstate:[9,17,3]\n",
+          "stderr": "",
+          "exit_provenance": "Completed original observer asserts exit0 before Doxygen discovery failure; exact logs recovered, no rerun"
+        },
+        "ownership": {
+          "exit": 0,
+          "stdout": "push:3\npush:17\npush:9\nstate:[9,17,3]\n",
+          "stderr": "OWNERSHIP 3 3 0\n",
+          "exit_provenance": "Completed original observer asserts exit0 before Doxygen discovery failure; exact logs recovered, no rerun"
+        }
+      },
+      "alloc": 3,
+      "free": 3,
+      "live": 0,
+      "faults": [
+        {
+          "point": 1,
+          "exit": 1,
+          "stderr": "Error: No se pudo asignar memoria.\nOWNERSHIP 0 0 0\n",
+          "exit_provenance": "Completed original observer asserts exit1 before Doxygen failure"
+        },
+        {
+          "point": 2,
+          "exit": 1,
+          "stderr": "push:3\nError: No se pudo asignar memoria.\nOWNERSHIP 1 1 0\n",
+          "exit_provenance": "Completed original observer asserts exit1 before Doxygen failure"
+        },
+        {
+          "point": 3,
+          "exit": 1,
+          "stderr": "push:3\npush:17\nError: No se pudo asignar memoria.\nOWNERSHIP 2 2 0\n",
+          "exit_provenance": "Completed original observer asserts exit1 before Doxygen failure"
+        }
+      ],
+      "scope": "3actualDOM+HTTP callers and emptyHTTP-only main; rejected query not recorded. Integrated setup Cima calls only."
+    },
+    {
+      "case": "bounds",
+      "SHA": "cfa453f421bf526914807d2f8f320203e57ebd72325763c5c7402c39d95e34a5",
+      "runs": {
+        "C17": {
+          "exit": 0,
+          "stdout": "push:2147483647\npush:0\npush:-2147483648\nstate:[-2147483648,0,2147483647]\n",
+          "stderr": "",
+          "exit_provenance": "Completed original observer asserts exit0 before Doxygen discovery failure; exact logs recovered, no rerun"
+        },
+        "ownership": {
+          "exit": 0,
+          "stdout": "push:2147483647\npush:0\npush:-2147483648\nstate:[-2147483648,0,2147483647]\n",
+          "stderr": "OWNERSHIP 3 3 0\n",
+          "exit_provenance": "Completed original observer asserts exit0 before Doxygen discovery failure; exact logs recovered, no rerun"
+        }
+      },
+      "alloc": 3,
+      "free": 3,
+      "live": 0,
+      "faults": [
+        {
+          "point": 1,
+          "exit": 1,
+          "stderr": "Error: No se pudo asignar memoria.\nOWNERSHIP 0 0 0\n",
+          "exit_provenance": "Completed original observer asserts exit1 before Doxygen failure"
+        },
+        {
+          "point": 2,
+          "exit": 1,
+          "stderr": "push:2147483647\nError: No se pudo asignar memoria.\nOWNERSHIP 1 1 0\n",
+          "exit_provenance": "Completed original observer asserts exit1 before Doxygen failure"
+        },
+        {
+          "point": 3,
+          "exit": 1,
+          "stderr": "push:2147483647\npush:0\nError: No se pudo asignar memoria.\nOWNERSHIP 2 2 0\n",
+          "exit_provenance": "Completed original observer asserts exit1 before Doxygen failure"
+        }
+      ],
+      "scope": "3actualDOM+HTTP callers and emptyHTTP-only main; rejected query not recorded. Integrated setup Cima calls only."
+    },
+    {
+      "case": "minus1",
+      "SHA": "969fab8bad7d4dede2750fdb55671f98fd4672dc542a676e4aa68ed42615bf66",
+      "runs": {
+        "C17": {
+          "exit": 0,
+          "stdout": "push:-1\nstate:[-1]\n",
+          "stderr": "",
+          "exit_provenance": "Completed original observer asserts exit0 before Doxygen discovery failure; exact logs recovered, no rerun"
+        },
+        "ownership": {
+          "exit": 0,
+          "stdout": "push:-1\nstate:[-1]\n",
+          "stderr": "OWNERSHIP 1 1 0\n",
+          "exit_provenance": "Completed original observer asserts exit0 before Doxygen discovery failure; exact logs recovered, no rerun"
+        }
+      },
+      "alloc": 1,
+      "free": 1,
+      "live": 0,
+      "faults": [
+        {
+          "point": 1,
+          "exit": 1,
+          "stderr": "Error: No se pudo asignar memoria.\nOWNERSHIP 0 0 0\n",
+          "exit_provenance": "Completed original observer asserts exit1 before Doxygen failure"
+        }
+      ],
+      "scope": "3actualDOM+HTTP callers and emptyHTTP-only main; rejected query not recorded. Integrated setup Cima calls only."
+    }
+  ],
+  "Doxygen_warnings": 0,
+  "documented_mains": 4,
+  "inputs": 6,
+  "public_Cima_doc_verified": true,
+  "documented_symbols": [
+    {
+      "file": "bounds_2main_8c.xml",
+      "name": "main",
+      "documented": true
+    },
+    {
+      "file": "empty_2main_8c.xml",
+      "name": "main",
+      "documented": true
+    },
+    {
+      "file": "minus1_2main_8c.xml",
+      "name": "main",
+      "documented": true
+    },
+    {
+      "file": "tad__pila_8c.xml",
+      "name": "pila_cima",
+      "documented": true
+    },
+    {
+      "file": "tad__pila_8h.xml",
+      "name": "pila_cima",
+      "documented": true
+    },
+    {
+      "file": "top_2main_8c.xml",
+      "name": "main",
+      "documented": true
+    }
+  ],
+  "limits": "Ownership7/7/0 and7controlledNULL belong setup/cleanup. No independent accepted query in caller; no OOM/sanitizer certification. Doxygen resumed only using installed tool in C artifact directory; all tested sources canonical D copies."
+}

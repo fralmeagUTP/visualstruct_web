@@ -243,6 +243,7 @@ def test_graph_trace_dijkstra_respects_main_loops_and_returns() -> None:
 
 def test_graph_trace_bellman_ford_respects_relax_passes_and_cycle_detection_branch() -> None:
     """Bellman-Ford trace must reflect pass loops and negative-cycle return branch."""
+    from _bellman_reachability_consumer_oracle import assert_bellman_consumer
     history: list[dict] = []
     history = _run_graph_op(history, "create_graph", {"directed": "false"})["history"]
     history = _run_graph_op(history, "generate_random_graph", {"vertices_count": "7", "seed": "484589473"})["history"]
@@ -252,8 +253,9 @@ def test_graph_trace_bellman_ford_respects_relax_passes_and_cycle_detection_bran
     lines = _trace_lines(bf)
     assert lines.count(_norm("for (i = 0; i < n - 1; i++) {")) >= 2
     assert lines.count(_norm("while (a != NULL) {")) >= 2
-    assert lines.count(_norm("if (u != -1 && v != -1 && dist[u] != INT_MAX) {")) >= 2
+    assert lines.count(_norm("if (u != -1 && v != -1 && alcanzable[u]) {")) >= 2
     assert _norm("return camino;") in lines
+    assert_bellman_consumer(bf)
 
     # Caso dirigido con ciclo negativo para validar rama de retorno temprano.
     history = []
@@ -268,7 +270,9 @@ def test_graph_trace_bellman_ford_respects_relax_passes_and_cycle_detection_bran
         history = _run_graph_op(history, "insert_edge", payload)["history"]
 
     bf_neg = _run_graph_op(history, "run_bellman_ford", {"start": "1", "end": "3"})
-    assert bf_neg["success"] is True
+    assert bf_neg["success"] is False
+    assert bf_neg["history"] == history
     neg_lines = _trace_lines(bf_neg)
     assert _norm("printf(\"Se detecto un ciclo negativo.\\n\");") in neg_lines
     assert _norm("return NULL;") in neg_lines
+    assert_bellman_consumer(bf_neg)

@@ -1,3 +1,5 @@
+from _quicksort_comparison_consumer_oracle import assert_quicksort_comparison_consumer
+from _sorting_source_oracle import assert_sorting_source_trace
 from pathlib import Path
 
 import pytest
@@ -114,11 +116,10 @@ def test_shortest_path_frames_transport_algorithm_tables(operation):
 
 
 def test_quicksort_emits_true_and_false_condition_evaluations():
-    steps = SortingInterpreter([1, 2, 3], "quicksort").run()["steps"]
-    evaluations = [step for step in steps if step.get("line_token") in {"move_i", "move_j"}]
-    assert evaluations
-    assert any(": False." in step["action"] for step in evaluations)
-    assert any(step["comparing_indices"] == [1, 1] for step in evaluations)
+    result = SortingInterpreter([1, 2, 3], "quicksort").run()
+    evaluations = assert_quicksort_comparison_consumer(result)
+    assert ("i", 1, 2, False) in evaluations
+    assert ("j", 1, 2, False) in evaluations
 
 
 @pytest.mark.parametrize("algorithm", ["mergesort", "binsort"])
@@ -128,15 +129,14 @@ def test_merge_and_bin_frames_all_map_to_real_c_lines(algorithm):
     adapter.execute("create_array", {"values": [5, -1, 4, 2, 2, 0]})
     adapter.execute("select_algorithm", {"algorithm_id": algorithm})
     trace = adapter.execute("run", {"mode": "step_by_step", "source_code": source})["execution_trace"]
-    lines = source.splitlines()
-    assert all(step["line_index"] is not None for step in trace["steps"])
-    assert all(" ".join(lines[step["line_index"]].split()) == " ".join(step["line_text"].split()) for step in trace["steps"])
+    assert_sorting_source_trace(trace, [5, -1, 4, 2, 2, 0])
 
 
 def test_console_is_transported_as_events_and_not_reconstructed_by_frontend():
     history = []
     result = HierarchicalStructureService.execute_operation("red_black", "insertar", {"value": 10}, history)
-    assert result["execution_trace"]["steps"][-1]["console"] == ["\tEl numero ha sido insertado"]
+    from _rn_console_consumer_oracle import assert_empty_rn_console
+    assert_empty_rn_console(result)
     for script in ("sequential.js", "hierarchical.js", "graph.js", "hash.js"):
         source = (ROOT / "static/js" / script).read_text(encoding="utf-8")
         assert "Array.isArray(step.console)" in source

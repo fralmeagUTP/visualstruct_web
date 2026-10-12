@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+from _bubble_canonical_consumer_oracle import assert_bubble_canonical_consumer
 import json
 from pathlib import Path
 from typing import Any
+
+from _stack_push_memory_oracle import assert_empty_stack_push_memory
 
 from app.services.graph_structure_service import GraphStructureService
 from app.services.hash_structure_service import HashStructureService
@@ -49,6 +52,7 @@ def _assert_trace(case: str, response: dict[str, Any]) -> None:
 
 def test_sequential_trace_golden() -> None:
     response = _execute(StructureService, "stack", [("apilar", {"value": 7})])
+    assert_empty_stack_push_memory(response, 7)
     _assert_trace("sequential", response)
     state = response["visual_state"]
     assert {"size": state["size"], "values": [item["value"] for item in state["items"]]} == GOLDEN["sequential"]["final"]
@@ -56,6 +60,8 @@ def test_sequential_trace_golden() -> None:
 
 def test_tree_trace_golden() -> None:
     response = _execute(HierarchicalStructureService, "avl", [("insertar", {"value": value}) for value in (30, 20, 10)])
+    from _graph_avl_golden_consumer_oracle import assert_golden_consumer
+    assert_golden_consumer(response, "tree")
     _assert_trace("tree", response)
     state = response["visual_state"]
     actual = {"size": state["size"], "root": state["root"]["value"], "inorder": state["traversals"]["inorden"]}
@@ -69,6 +75,8 @@ def test_graph_trace_golden() -> None:
         ("insert_vertex", {"vertex": 2}),
         ("insert_edge", {"origin": 1, "target": 2, "weight": 3}),
     ])
+    from _graph_avl_golden_consumer_oracle import assert_golden_consumer
+    assert_golden_consumer(response, "graph")
     _assert_trace("graph", response)
     state = response["visual_state"]
     edge = state["edges"][0]
@@ -81,6 +89,8 @@ def test_hash_trace_golden() -> None:
         ("create_table", {"capacity": 5}),
         ("insert", {"key": "1", "value": "1"}),
     ])
+    from _hash_two_consumer_oracle import assert_hash_empty_insert
+    assert_hash_empty_insert(response)
     _assert_trace("hash", response)
     state = response["visual_state"]
     items = [[entry["key"], entry["value"]] for bucket in state["buckets"] for entry in bucket["entries"]]
@@ -94,6 +104,7 @@ def test_sorting_trace_golden() -> None:
         ("select_algorithm", {"algorithm_id": "burbuja"}),
         ("run", {"mode": "fast"}),
     ])
+    assert_bubble_canonical_consumer(response, [3, 1, 2])
     _assert_trace("sorting", response)
     state = response["visual_state"]
     assert {"items": state["items"], "algorithm": state["algorithm"]} == GOLDEN["sorting"]["final"]

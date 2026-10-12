@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from _circular_insert_memory_oracle import assert_circular_insert_memory
+from _circular_delete_memory_oracle import assert_circular_delete_memory
+from _circular_clear_memory_oracle import assert_circular_clear_memory
+
 from app.routes.help_routes import _enrich_help_with_c_code
 from app.services.c_code_service import CCodeService
 from app.services.help_service import HelpService
@@ -30,14 +34,17 @@ def test_insertions_show_real_allocator_and_publish_only_at_pointer_assignment(c
     allocation = next(step for step in steps if "malloc(sizeof(LCirNodo))" in step["line_text"])
     publish = _matching(first, "lista->cabeza = nuevo;")[0]
     assert allocation["state_after"]["items"] == []
-    assert allocation["state_after"]["temporaries"]["nuevo"]["allocated"] is True
+    assert_circular_insert_memory(first, [], 4)
     assert len(publish["state_after"]["items"]) == 1
     assert first["execution_trace"]["final_state"] == first["visual_state"]
 
     second = _operate(client, "insertar_final", {"value": "9"})
     tail_link = _matching(second, "lista->cola->sgte = nuevo;")[0]
     new_tail = _matching(second, "lista->cola = nuevo;")[0]
-    assert len(tail_link["state_after"]["items"]) == 1
+    assert_circular_insert_memory(second, [4], 9)
+    assert len(tail_link["state_after"]["items"]) == 2
+    assert tail_link["pedagogy"]["memory_state"]["cantidad"] == 1
+    assert tail_link["pedagogy"]["memory_state"]["cola"] == "N1"
     assert len(new_tail["state_after"]["items"]) == 2
     assert new_tail["state_after"]["cola_sgte"] == "N1"
 
@@ -78,7 +85,10 @@ def test_delete_by_value_takes_only_first_match_and_frees_after_unlink(client) -
     assert [item["value"] for item in result["visual_state"]["items"]] == [4, 7]
     unlink = _matching(result, "anterior->sgte = actual->sgte;")[0]
     release = _matching(result, "free(actual);")[0]
-    assert len(unlink["state_after"]["items"]) == 2
+    assert_circular_delete_memory(result)
+    assert len(unlink["state_after"]["items"]) == 3
+    head_move = _matching(result, "lista->cabeza = actual->sgte;")[0]
+    assert len(head_move["state_after"]["items"]) == 2
     assert unlink["pedagogy"]["heap_transition"]["freed"] == []
     assert release["pedagogy"]["heap_transition"]["freed"][0]["fields"]["valor"] == 7
     assert result["execution_trace"]["final_state"] == result["visual_state"]
@@ -122,7 +132,10 @@ def test_clear_detaches_each_node_before_free_and_handles_singleton(client) -> N
     head_moves = _matching(result, "lista->cabeza = next;")
 
     assert len(frees) == 3
-    assert [len(step["state_after"]["items"]) for step in head_moves] == [2, 1]
+    assert_circular_clear_memory(result)
+    assert [len(step["state_after"]["items"]) for step in head_moves] == [3, 2]
+    tail_links = _matching(result, "lista->cola->sgte = lista->cabeza;")
+    assert [len(step["state_after"]["items"]) for step in tail_links] == [2, 1]
     assert all(step["pedagogy"]["heap_transition"]["freed"] for step in frees)
     assert result["visual_state"]["items"] == []
     assert result["visual_state"]["size"] == 0

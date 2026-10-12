@@ -138,7 +138,7 @@ class RadixInstructionEngine:
                         if self.cond(prefix+'_exp_guard',s['exp']>s['maximo']//10,f'{s["exp"]} > {s["maximo"]}//10'):
                             self.emit(prefix+'_break');break
                         s['exp']*=10;self.emit(prefix+'_exp_multiply')
-            s.update(block=None,maximo=None,exp=None);self.emit(prefix+'_block_exit')
+                s.update(block=None,maximo=None,exp=None);self.emit(prefix+'_block_exit')
         s['indice']=0;s['phase']='recombine';self.emit('caller_index_init');s['wi']=s['ng'];self.emit('negative_join_init')
         while self.cond('negative_join_test',s['wi']>0,f'{s["wi"]} > 0'):
             s['magnitud']=s['buffers']['negative']['cells'][s['wi']-1];self.emit('negative_magnitude_read')

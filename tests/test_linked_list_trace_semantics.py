@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from _linked_list_console_oracle import assert_lista_console
+from _linked_head_insert_memory_oracle import assert_linked_head_insert_memory
+
 
 def _operate(client: Any, operation: str, payload: dict[str, str]) -> dict[str, Any]:
     response = client.post(
@@ -34,7 +37,7 @@ def test_insert_at_head_publishes_q_only_at_lista_assignment(client: Any) -> Non
     by_line = {str(step["line_text"]).strip(): step for step in steps}
 
     assert _values(by_line["q->sgte = *lista;"]["state_after"]) == [10]
-    assert by_line["q->sgte = *lista;"]["state_after"]["temporaries"]["q"]["nro"] == 20
+    assert_linked_head_insert_memory(data)
     assert _values(by_line["*lista = q;"]["state_after"]) == [20, 10]
     assert data["execution_trace"]["final_state"] == data["visual_state"]
 
@@ -113,8 +116,7 @@ def test_search_reports_each_c_printf_position_and_skips_not_found_branch(client
     console = [line for step in data["execution_trace"]["steps"] for line in step.get("console", [])]
 
     assert lines.count('printf("\\n encontrado en la posicion %d\\n", i);') == 2
-    assert "if (!encontrado) {" not in lines
-    assert console == ["\n Encontrado en la posicion 1", "\n Encontrado en la posicion 3"]
+    assert_lista_console(data["execution_trace"]["steps"], "buscar_elemento")
 
 
 def test_delete_repeated_unlinks_and_frees_each_matching_node(client: Any) -> None:
@@ -128,4 +130,4 @@ def test_delete_repeated_unlinks_and_frees_each_matching_node(client: Any) -> No
     assert states.count([9, 7]) >= 1
     assert states.count([9]) >= 1
     assert lines.count("free(temp);") == 3
-    assert all("valores eliminados" not in line for line in lines[:-1])
+    assert_lista_console(steps, "eliminar_repetidos")

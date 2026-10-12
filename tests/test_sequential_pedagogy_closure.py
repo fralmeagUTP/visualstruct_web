@@ -18,6 +18,20 @@ def test_every_operation_returns_a_three_level_canonical_trace(client, structure
         response = client.post(f"/sequential/{structure_id}/operate", json={"operation": operation["name"], "payload": payload})
         assert response.status_code in {200, 400}
         data = response.get_json(); trace = data["execution_trace"]
+        if structure_id == "linked_list" and operation["name"] == "insertar_elemento":
+            from _linked_list_api_validation_consumer_oracle import assert_linked_list_mode_validation
+            assert operation.get("hidden") is True
+            assert_linked_list_mode_validation(data, response.status_code, payload)
+            continue
+        if structure_id == "linked_list" and operation["name"] in {"eliminar_inicio", "eliminar_final", "eliminar_posicion", "primero", "ultimo"}:
+            from _linked_list_api_validation_consumer_oracle import assert_linked_list_empty_validation
+            assert operation.get("hidden") is True
+            assert_linked_list_empty_validation(data, response.status_code, payload, operation["name"])
+            continue
+        if structure_id == "linked_list" and operation["name"] == "eliminar_primero":
+            from _linked_list_api_validation_consumer_oracle import assert_hidden_delete_empty_branch
+            assert operation.get("hidden") is True
+            assert_hidden_delete_empty_branch(data)
         assert trace["steps"]
         assert trace["final_state"] == data["visual_state"]
         for step in trace["steps"]:

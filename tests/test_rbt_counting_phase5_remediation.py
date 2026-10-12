@@ -1,3 +1,4 @@
+from _rbt_legacy_consumer_oracle import assert_rbt_consumer
 from collections import Counter
 
 import pytest
@@ -91,11 +92,4 @@ def test_rbt_delete_trace_tracks_logical_nodes_and_real_leaf_branch():
         result = HierarchicalStructureService.execute_operation("red_black", "insertar", {"value": value}, history)
         history = result["history"]
     result = HierarchicalStructureService.execute_operation("red_black", "eliminar", {"value": 3}, history)
-    steps = result["execution_trace"]["steps"]
-    lines = [str(step.get("line_text", "")).strip() for step in steps]
-    assert "x = z->der;" in lines and "x = z->izq;" not in lines
-    assert lines.count("while (z != NULL && z->nro != key) {") == 2
-    assert steps[-1]["state_after"]["size"] == 7
-    assert next(step for step in steps if str(step.get("line_text", "")).strip() == "free(z);")["state_after"]["size"] == 8
-    logical = [step["debug"]["logical_nodes"] for step in steps if step.get("debug", {}).get("logical_nodes")]
-    assert any(set(nodes) == {"z", "y", "x", "x_parent", "w"} for nodes in logical)
+    assert_rbt_consumer(result, "delete_int")

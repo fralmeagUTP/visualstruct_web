@@ -27,6 +27,8 @@ def build_priority_queue_front_trace(*, payload: dict[str, Any], source_code: st
         current.update(items=reachable,size=len(reachable),empty=not reachable,delante=head or 'NULL',atras=rear or 'NULL',cantidad=quantity)
         # Alias values are symbolic borrowed live-node IDs; return snapshots are outside local scope.
         current.update({k:(v or 'NULL') for k,v in aliases.items()})
+        # The candidate marker follows the executed alias store, not the final minimum.
+        current['out_index']=next((i for i,node in enumerate(heap) if node['id']==aliases.get('objetivo')), -1)
         current.update({k:v for k,v in out.items() if written[k]})
         return current
     def emit(event,token,condition=None):

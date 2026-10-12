@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from _bubble_canonical_consumer_oracle import assert_bubble_canonical_consumer
 from collections import Counter
 from pathlib import Path
 
@@ -11,6 +12,7 @@ from app.adapters.sorting_adapter import SortingAdapter
 from app.domain.sorting import SORTING_ALGORITHMS, SortingExecutionError
 from app.services.c_code_service import CCodeService
 from app.services.trace import TraceEngine
+from _sorting_source_oracle import assert_sorting_source_trace
 
 
 ALGORITHMS = [item["id"] for item in SORTING_ALGORITHMS]
@@ -57,10 +59,7 @@ def test_fast_and_step_modes_are_equivalent(algorithm: str) -> None:
 def test_every_didactic_step_maps_to_the_visible_c_source(algorithm: str) -> None:
     result = _run(algorithm, [5, 1, 4, 2, 3])
     trace = result["execution_trace"]
-    source_lines = trace["source_code"].replace("\r\n", "\n").split("\n")
-    for step in trace["steps"]:
-        assert isinstance(step["line_index"], int), (algorithm, step["debug"]["note"])
-        assert step["line_text"] == source_lines[step["line_index"]]
+    assert_sorting_source_trace(trace, [5, 1, 4, 2, 3])
 
 
 @pytest.mark.parametrize(
@@ -133,10 +132,11 @@ def test_visible_c_includes_swap_helper_when_it_is_executed(algorithm: str) -> N
 
 
 def test_trace_enters_validation_and_swap_helpers_with_real_transient_state() -> None:
-    trace = _run("burbuja", [2, 1])["execution_trace"]
-    notes = [step["debug"]["note"] for step in trace["steps"]]
+    result = _run("burbuja", [2, 1])
+    trace = result["execution_trace"]
+    assert_bubble_canonical_consumer(result, [2, 1])
     lines = [step["line_text"].strip() for step in trace["steps"]]
-    assert any("arreglo_valido comprueba" in note for note in notes)
+    assert any(step["pedagogy"]["source"]["function"] == "arreglo_valido" for step in trace["steps"])
     assert "return arreglo != NULL && n > 0;" in lines
     assert "if (a == NULL || b == NULL) return;" in lines
     assert "temporal = *a;" in lines

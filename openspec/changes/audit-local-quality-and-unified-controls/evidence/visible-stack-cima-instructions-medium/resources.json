@@ -1,0 +1,208 @@
+{
+  "samples": [
+    {
+      "case": "empty",
+      "repeat": 1,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 630603,
+      "JSON_bytes": 17102,
+      "instrumented_seconds": 0.014794000002439134
+    },
+    {
+      "case": "empty",
+      "repeat": 2,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 173026,
+      "JSON_bytes": 17102,
+      "instrumented_seconds": 0.004463600002054591
+    },
+    {
+      "case": "empty",
+      "scope": "two rejected HTTP POSTs including session mutation replay/serialization",
+      "python_peak_bytes": 183660,
+      "JSON_bytes": 1430,
+      "instrumented_seconds": 0.013505700000678189
+    },
+    {
+      "case": "single",
+      "repeat": 1,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 207140,
+      "JSON_bytes": 21025,
+      "instrumented_seconds": 0.006047399998351466
+    },
+    {
+      "case": "single",
+      "repeat": 2,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 223924,
+      "JSON_bytes": 21025,
+      "instrumented_seconds": 0.005974100000457838
+    },
+    {
+      "case": "single",
+      "scope": "two rejected HTTP POSTs including session mutation replay/serialization",
+      "python_peak_bytes": 316420,
+      "JSON_bytes": 1501,
+      "instrumented_seconds": 0.015029200003482401
+    },
+    {
+      "case": "top",
+      "repeat": 1,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 310648,
+      "JSON_bytes": 28897,
+      "instrumented_seconds": 0.008029299999179784
+    },
+    {
+      "case": "top",
+      "repeat": 2,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 329344,
+      "JSON_bytes": 28897,
+      "instrumented_seconds": 0.00750759999937145
+    },
+    {
+      "case": "top",
+      "scope": "two rejected HTTP POSTs including session mutation replay/serialization",
+      "python_peak_bytes": 445338,
+      "JSON_bytes": 1639,
+      "instrumented_seconds": 0.01566330000059679
+    },
+    {
+      "case": "duplicate",
+      "repeat": 1,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 258306,
+      "JSON_bytes": 24937,
+      "instrumented_seconds": 0.006631199998082593
+    },
+    {
+      "case": "duplicate",
+      "repeat": 2,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 278338,
+      "JSON_bytes": 24937,
+      "instrumented_seconds": 0.006476200003817212
+    },
+    {
+      "case": "duplicate",
+      "scope": "two rejected HTTP POSTs including session mutation replay/serialization",
+      "python_peak_bytes": 379929,
+      "JSON_bytes": 1567,
+      "instrumented_seconds": 0.015296400000806898
+    },
+    {
+      "case": "minus1",
+      "repeat": 1,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 203220,
+      "JSON_bytes": 21025,
+      "instrumented_seconds": 0.005442699999548495
+    },
+    {
+      "case": "minus1",
+      "repeat": 2,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 223924,
+      "JSON_bytes": 21025,
+      "instrumented_seconds": 0.005668000005243812
+    },
+    {
+      "case": "minus1",
+      "scope": "two rejected HTTP POSTs including session mutation replay/serialization",
+      "python_peak_bytes": 312325,
+      "JSON_bytes": 1501,
+      "instrumented_seconds": 0.01482899999973597
+    },
+    {
+      "case": "minimum",
+      "repeat": 1,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 204087,
+      "JSON_bytes": 21259,
+      "instrumented_seconds": 0.00643530000525061
+    },
+    {
+      "case": "minimum",
+      "repeat": 2,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 224626,
+      "JSON_bytes": 21259,
+      "instrumented_seconds": 0.0058211000068695284
+    },
+    {
+      "case": "minimum",
+      "scope": "two rejected HTTP POSTs including session mutation replay/serialization",
+      "python_peak_bytes": 316354,
+      "JSON_bytes": 1528,
+      "instrumented_seconds": 0.015590599999995902
+    },
+    {
+      "case": "maximum",
+      "repeat": 1,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 204076,
+      "JSON_bytes": 21233,
+      "instrumented_seconds": 0.005540099999052472
+    },
+    {
+      "case": "maximum",
+      "repeat": 2,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 224548,
+      "JSON_bytes": 21233,
+      "instrumented_seconds": 0.005939499998930842
+    },
+    {
+      "case": "maximum",
+      "scope": "two rejected HTTP POSTs including session mutation replay/serialization",
+      "python_peak_bytes": 317221,
+      "JSON_bytes": 1525,
+      "instrumented_seconds": 0.014981799999077339
+    },
+    {
+      "case": "bounds",
+      "repeat": 1,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 311956,
+      "JSON_bytes": 29333,
+      "instrumented_seconds": 0.007460799999535084
+    },
+    {
+      "case": "bounds",
+      "repeat": 2,
+      "scope": "private typed trace build including C extraction and JSON serialization, no HTTP/session",
+      "python_peak_bytes": 330652,
+      "JSON_bytes": 29333,
+      "instrumented_seconds": 0.007625399994140025
+    },
+    {
+      "case": "bounds",
+      "scope": "two rejected HTTP POSTs including session mutation replay/serialization",
+      "python_peak_bytes": 449991,
+      "JSON_bytes": 1693,
+      "instrumented_seconds": 0.01611449999472825
+    }
+  ],
+  "by_scope": {
+    "private typed trace build including C extraction and JSON serialization, no HTTP/session": {
+      "samples": 16,
+      "max_python_peak_bytes": 630603,
+      "max_JSON_bytes": 29333,
+      "max_instrumented_seconds": 0.014794000002439134
+    },
+    "two rejected HTTP POSTs including session mutation replay/serialization": {
+      "samples": 8,
+      "max_python_peak_bytes": 449991,
+      "max_JSON_bytes": 1693,
+      "max_instrumented_seconds": 0.01611449999472825
+    }
+  },
+  "baseline_rejected_API": {
+    "max_python_peak_bytes": 514445,
+    "max_JSON_bytes": 7747,
+    "max_instrumented_seconds": 0.025802600001043174
+  },
+  "limits": "Finite fixtures only; private trace and rejected API measured separately. No successful API queries/RSS/browser/unboundedhistory/SLA/leak/OOM/sanitizer proof."
+}

@@ -71,8 +71,12 @@ def test_every_graph_operation_returns_a_consistent_trace(client: Any, operation
     if "C_instruction_events" in wire:
         assert trace["C_instruction_events"] == wire["C_instruction_events"]
     assert_final_graph(body["visual_state"])
-    for index, step in enumerate(trace["steps"]):
-        assert_observed_graph_frame(step, trace, index)
+    if operation in {"remove_vertex", "run_kruskal"}:
+        from _graph_delete_kruskal_consumer_oracle import assert_graphdk_consumer
+        assert_graphdk_consumer({**body, "execution_trace": trace}, operation)
+    else:
+        for index, step in enumerate(trace["steps"]):
+            assert_observed_graph_frame(step, trace, index)
 
 
 def test_graph_algorithms_return_expected_traversal_shortest_path_and_mst(client: Any) -> None:

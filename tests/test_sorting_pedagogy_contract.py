@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from _sorting_catalog_consumer_oracle import assert_sorting_catalog_consumer
 import json
 from pathlib import Path
 
@@ -32,15 +33,9 @@ def _raw(token: str) -> dict[str, object]:
 
 
 def test_learning_catalog_covers_all_eleven_algorithms() -> None:
-    algorithm_ids = {item["id"] for item in SORTING_ALGORITHMS}
-    assert set(SORTING_LEARNING_CATALOG) == algorithm_ids
-    for profile in SORTING_LEARNING_CATALOG.values():
-        assert profile["objective"]
-        assert profile["prior"]
-        assert profile["mastery"]
-    assert set(SORTING_THEORY_CATALOG) == algorithm_ids
-    for theory in SORTING_THEORY_CATALOG.values():
-        assert set(theory) == {"best", "average", "worst", "memory", "stable", "in_place"}
+    assert_sorting_catalog_consumer(
+        SORTING_ALGORITHMS, SORTING_LEARNING_CATALOG, SORTING_THEORY_CATALOG,
+    )
 
 
 def test_published_schema_is_versioned() -> None:

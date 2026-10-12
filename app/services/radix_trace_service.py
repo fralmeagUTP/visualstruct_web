@@ -3,6 +3,7 @@ from __future__ import annotations
 from bisect import bisect_right
 from copy import deepcopy
 from app.services.counting_trace_service import CountingTrace, deep_size
+from app.services.sorting_source_contract import _without_comments
 from app.domain.sorting.pedagogy import (validate_pedagogical_frame, pedagogical_frame_schema, learning_profile, theory_profile)
 
 
@@ -14,7 +15,31 @@ def line_lookup(source: str) -> dict:
     helper=find('static int counting_por_digito(');wrapper=find('int ordenar_radixsort(');valid=find('static int arreglo_valido(')
     def bind(tokens,text,start):
         for token in tokens.split():result[token]=find(text,start or 0)
-    result.update(initial=None,negative_block_exit=None,positive_block_exit=None,radix_entry=wrapper,digit_entry=helper,valid_entry=valid)
+    # Scope exits belong to the actual entered C guard, not a synthetic line.
+    clean_lines = _without_comments(source).replace('\r\n', '\n').split('\n')
+    def closing_brace(start: int | None) -> int | None:
+        if start is None:
+            return None
+        depth = 0
+        opened = False
+        for index in range(start, len(clean_lines)):
+            for char in clean_lines[index]:
+                if char == '{':
+                    depth += 1
+                    opened = True
+                elif char == '}':
+                    depth -= 1
+                    if opened and depth == 0:
+                        return index
+        return None
+    actual_wrapper = next((i for i, row in enumerate(clean_lines) if 'int ordenar_radixsort(' in row), None)
+    wrapper_end = closing_brace(actual_wrapper)
+    def group_exit(name: str) -> int | None:
+        if actual_wrapper is None or wrapper_end is None:
+            return None
+        guard = next((i for i in range(actual_wrapper, wrapper_end + 1) if 'if (cant_' + name + ' > 0)' in clean_lines[i]), None)
+        return closing_brace(guard)
+    result.update(initial=None, negative_block_exit=group_exit('negativos'), positive_block_exit=group_exit('positivos'), radix_entry=wrapper, digit_entry=helper, valid_entry=valid)
     bind('valid_ptr valid_n valid_return','return arreglo != NULL && n > 0;',valid)
     bind('radix_declare','uint32_t *negativos, *positivos;',wrapper)
     bind('radix_invalid_guard','if (!arreglo_valido(arreglo, n))',wrapper)
