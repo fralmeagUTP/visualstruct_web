@@ -875,6 +875,8 @@ def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
 
 def test_playwright_hierarchical_comparison_practice_keyboard_and_accessibility() -> None:
     """Hierarchy uses the compact execution flow and keyboard step navigation."""
+    import re
+
     playwright_mod = pytest.importorskip("playwright.sync_api")
     with _live_server_url() as base_url:
         with playwright_mod.sync_playwright() as p:
@@ -885,14 +887,41 @@ def test_playwright_hierarchical_comparison_practice_keyboard_and_accessibility(
             assert page.locator("#hier-practice-mode").count() == 0
             page.fill("#h-field-value", "25")
             page.click("#hier-step-mode")
-            page.click("#hier-sim-step")
-            before=page.text_content("#hier-sim-counter")
+            checkpoint("manual_prepare_start", module="hier")
+            with page.expect_response(lambda response: response.request.method == "POST"
+                                      and response.url.split("?", 1)[0].endswith("/hierarchical/avl/operate")) as prepared:
+                page.click("#hier-sim-step")
+            assert prepared.value.status == 200
+            assert prepared.value.json().get("success") is True
+            page.wait_for_function(r"""() => {
+                const match = document.querySelector('#hier-sim-counter')?.textContent.trim().match(/^Paso:\s*(\d+)\s*\/\s*(\d+)$/);
+                return match && Number(match[1]) > 0 && Number(match[1]) < Number(match[2])
+                    && !document.querySelector('#hier-sim-step')?.disabled;
+            }""")
+            before = page.text_content("#hier-sim-counter") or ""
+            match = re.fullmatch(r"Paso:\s*(\d+)\s*/\s*(\d+)", before.strip())
+            assert match is not None
+            current, total = map(int, match.groups())
+            checkpoint("manual_navigation", module="hier", navigation_index=0, counter=before)
             page.locator("body").press("ArrowRight")
+            page.wait_for_function(r"""([expected, total]) => {
+                const match = document.querySelector('#hier-sim-counter')?.textContent.trim().match(/^Paso:\s*(\d+)\s*\/\s*(\d+)$/);
+                return match && Number(match[1]) === expected && Number(match[2]) === total;
+            }""", arg=[current + 1, total])
+            after = page.text_content("#hier-sim-counter") or ""
+            checkpoint("manual_navigation", module="hier", navigation_index=1, counter=after)
             assert page.text_content("#hier-sim-counter") != before
+            assert re.fullmatch(r"Paso:\s*(\d+)\s*/\s*(\d+)", after.strip()).groups() == (str(current + 1), str(total))
             page.locator("body").press("Home")
+            page.wait_for_function(r"""total => {
+                const match = document.querySelector('#hier-sim-counter')?.textContent.trim().match(/^Paso:\s*(\d+)\s*\/\s*(\d+)$/);
+                return match && Number(match[1]) === 0 && Number(match[2]) === total;
+            }""", arg=total)
+            checkpoint("manual_navigation", module="hier", navigation_index=2, counter=page.text_content("#hier-sim-counter") or "")
             assert "Paso: 0/" in (page.text_content("#hier-sim-counter") or "")
             assert page.locator("#hier-sim-prev").is_visible()
             assert page.locator("#hier-sim-step").is_visible()
+            checkpoint("manual_finish_end", module="hier", counter=page.text_content("#hier-sim-counter") or "")
             browser.close()
 
 

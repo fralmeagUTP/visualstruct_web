@@ -27,12 +27,18 @@ def test_assets_route_blocks_path_traversal(client) -> None:
     assert response.status_code in {400, 404}
 
 
-def test_help_unknown_structure_falls_back_safely(client) -> None:
-    """Unknown help structure should not crash and must render fallback text."""
+def test_help_unknown_structure_falls_back_safely(client, monkeypatch) -> None:
+    """Unknown help returns 404; registered help without C retains its placeholder."""
+    from app.services.c_code_service import CCodeService
+
     response = client.get("/help/sequential/no_existe")
-    assert response.status_code == 200
-    assert "Estructura no encontrada".encode("utf-8") in response.data
-    assert "No hay estructura C documentada".encode("utf-8") in response.data
+    assert response.status_code == 404
+
+    monkeypatch.setattr(CCodeService, "get_structure_data", staticmethod(lambda _structure: None))
+    registered = client.get("/help/sequential/stack")
+    assert registered.status_code == 200
+    assert "No hay estructura C documentada".encode("utf-8") in registered.data
+    assert "Estructura no encontrada".encode("utf-8") not in registered.data
 
 
 def test_session_history_is_trimmed_to_configured_max(client, app) -> None:
