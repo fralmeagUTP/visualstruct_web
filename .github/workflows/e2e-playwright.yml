@@ -12,9 +12,33 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: ${{ matrix.minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - group: graph-algorithms
+            suite: chromium
+            target: tests/test_ui_playwright_e2e.py
+            cases: "--case test_playwright_graph_execute_completes_algorithms_across_phases"
+            addopts: ""
+            minutes: 40
+          - group: chromium-general
+            suite: chromium
+            target: tests/test_ui_playwright_e2e.py
+            cases: ""
+            addopts: "--deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
+            minutes: 20
+          - group: firefox-general
+            suite: firefox
+            target: tests/test_playwright_firefox_smoke.py
+            cases: ""
+            addopts: ""
+            minutes: 20
     env:
       PYTHONUNBUFFERED: "1"
+      PYTEST_ADDOPTS: ${{ matrix.addopts }}
       VISUALSTRUCT_E2E_DIAGNOSTICS: "1"
       VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: e2e-safe-diagnostics
 
@@ -34,23 +58,17 @@ jobs:
           pip install -r requirements.txt
           pip install pytest-cov playwright
 
-      - name: Install Playwright browsers
-        run: |
-          python -m playwright install --with-deps chromium firefox
+      - name: Install selected Playwright browser
+        run: python -m playwright install --with-deps ${{ matrix.suite }}
 
-      - name: Run Playwright E2E tests
-        run: |
-          python -B scripts/run_e2e_diagnostics.py --suite chromium tests/test_ui_playwright_e2e.py
-
-      - name: Run Firefox compatibility smoke tests
-        run: |
-          python -B scripts/run_e2e_diagnostics.py --suite firefox tests/test_playwright_firefox_smoke.py
+      - name: Run complete E2E partition
+        run: python -B scripts/run_e2e_diagnostics.py --suite ${{ matrix.suite }} ${{ matrix.target }} ${{ matrix.cases }}
 
       - name: Preserve E2E diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2e-diagnostics
+          name: e2e-diagnostics-${{ matrix.group }}
           path: |
             e2e-safe-diagnostics/*.jsonl
             e2e-safe-diagnostics/*-result.json

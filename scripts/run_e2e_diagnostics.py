@@ -17,17 +17,25 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--suite", choices=("chromium", "firefox", "probe"), required=True)
     parser.add_argument("target")
+    parser.add_argument("--case", action="append", default=[], help="Select an existing test function in target; parameterized cases remain intact")
     args = parser.parse_args()
     target = Path(args.target).resolve()
     if not target.is_file() or target.suffix != ".py":
         parser.error("target must be an existing Python test file")
+    import ast
+    import re
+    names = {node.name for node in ast.parse(target.read_text(encoding="utf-8-sig")).body
+             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name.startswith("test_")}
+    if len(args.case) != len(set(args.case)) or any(not re.fullmatch(r"test_[A-Za-z0-9_]+", name) or name not in names for name in args.case):
+        parser.error("--case must name unique existing test functions in target")
+    selections = [str(target) + "::" + name for name in args.case] if args.case else [str(target)]
     directory = Path(os.environ.get("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", "e2e-safe-diagnostics")).resolve()
     directory.mkdir(parents=True, exist_ok=True)
     channel = directory / (args.suite + ".jsonl")
     offset = channel.stat().st_size if channel.exists() else 0
     env = dict(os.environ, PYTHONPATH=str(_ROOT) + os.pathsep + os.environ.get("PYTHONPATH", ""), VISUALSTRUCT_E2E_DIAGNOSTICS="1", VISUALSTRUCT_E2E_DIAGNOSTICS_DIR=str(directory), VISUALSTRUCT_E2E_DIAGNOSTICS_NAME=args.suite, PYTHONUNBUFFERED="1")
     # No tee, raw pytest output, longrepr or JUnit artifact: they may contain arbitrary secrets.
-    child = subprocess.Popen([sys.executable, "-B", "-m", "pytest", "-q", "--tb=no", "--no-summary", "-p", "scripts.e2e_diagnostics", str(target)],
+    child = subprocess.Popen([sys.executable, "-B", "-m", "pytest", "-q", "--tb=no", "--no-summary", "-p", "scripts.e2e_diagnostics", *selections],
                              cwd=target.parent, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     pending = b""
     while True:
