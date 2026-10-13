@@ -1,99 +1,138 @@
-name: Unit and Integration Tests
-
-on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
+name: Coverage only 55m audited c395f5f
+run-name: Coverage c395f5f only / ${{ github.ref_name }}
+'on':
+  workflow_dispatch: {}
+permissions:
+  contents: read
+concurrency:
+  group: coverage-only55-${{ github.sha }}
+  cancel-in-progress: false
 jobs:
-  unit-integration:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+  coverage-partition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        shard:
+        - a
+        - b
+    env:
+      PYTHONUNBUFFERED: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTEST_ADDOPTS: ''
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-          cache: "pip"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest-cov
-
-      - name: Select preinstalled GCC and gcov with condition coverage
-        shell: bash
-        run: |
-          set -euo pipefail
-          compiler="$(command -v gcc-14)"
-          coverage_tool="$(command -v gcov-14)"
-          "$compiler" --version
-          "$coverage_tool" --version
-          "$compiler" --help=common > "$RUNNER_TEMP/visualstruct-gcc-options.txt"
-          grep -q -- '-fcondition-coverage' "$RUNNER_TEMP/visualstruct-gcc-options.txt"
-          "$coverage_tool" --help > "$RUNNER_TEMP/visualstruct-gcov-options.txt"
-          grep -q -- '--conditions' "$RUNNER_TEMP/visualstruct-gcov-options.txt"
-          tools_dir="$RUNNER_TEMP/visualstruct-condition-coverage-tools"
-          mkdir -p "$tools_dir"
-          ln -s "$compiler" "$tools_dir/gcc"
-          ln -s "$coverage_tool" "$tools_dir/gcov"
-          echo "$tools_dir" >> "$GITHUB_PATH"
-
-      - name: Run unit/integration tests
-        run: |
-          python -m pytest -q tests -m "not e2e"
-
-      - name: Verify published-option coverage inventory
-        run: |
-          python scripts/build_app_quality_inventory.py --check
-
-  coverage:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    - name: Checkout reviewed workflow resources
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.sha }}
+        path: coverage-tools
+        persist-credentials: false
+    - name: Checkout exact audited SHA
+      uses: actions/checkout@v4
+      with:
+        ref: c395f5f70072d211fb0654af9b321294305e64b4
+        path: src
+        persist-credentials: false
+    - name: Setup frozen Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.10.22
+        cache: pip
+        cache-dependency-path: src/requirements.txt
+    - name: Install identical measurement dependencies
+      working-directory: src
+      run: |-
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest-cov==7.1.0 coverage==7.16.2
+    - name: Select original GCC and gcov condition coverage
+      shell: bash
+      run: |-
+        set -euo pipefail
+        compiler="$(command -v gcc-14)"
+        coverage_tool="$(command -v gcov-14)"
+        "$compiler" --version
+        "$coverage_tool" --version
+        "$compiler" --help=common > "$RUNNER_TEMP/visualstruct-gcc-options.txt"
+        grep -q -- '-fcondition-coverage' "$RUNNER_TEMP/visualstruct-gcc-options.txt"
+        "$coverage_tool" --help > "$RUNNER_TEMP/visualstruct-gcov-options.txt"
+        grep -q -- '--conditions' "$RUNNER_TEMP/visualstruct-gcov-options.txt"
+        tools_dir="$RUNNER_TEMP/visualstruct-condition-coverage-tools"
+        mkdir -p "$tools_dir"
+        ln -s "$compiler" "$tools_dir/gcc"
+        ln -s "$coverage_tool" "$tools_dir/gcov"
+        echo "$tools_dir" >> "$GITHUB_PATH"
+    - name: Run only the frozen coverage partition
+      working-directory: src
+      env:
+        COV55_SHARD: ${{ matrix.shard }}
+      run: |-
+        python ../coverage-tools/.github/coverage-only55/measure.py partition \
+          --manifest ../coverage-tools/.github/coverage-only55/selection.json \
+          --partition "$COV55_SHARD" \
+          --output "$GITHUB_WORKSPACE/.coverage-results/$COV55_SHARD"
+    - name: Retain raw data manifests XML and logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-only55-${{ matrix.shard }}-${{ github.run_id }}
+        path: .coverage-results/${{ matrix.shard }}/
+        include-hidden-files: true
+        if-no-files-found: error
+  coverage-combine-gates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    needs:
+    - coverage-partition
+    env:
+      PYTHONUNBUFFERED: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTEST_ADDOPTS: ''
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-          cache: "pip"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest-cov
-
-      - name: Select preinstalled GCC and gcov with condition coverage
-        shell: bash
-        run: |
-          set -euo pipefail
-          compiler="$(command -v gcc-14)"
-          coverage_tool="$(command -v gcov-14)"
-          "$compiler" --version
-          "$coverage_tool" --version
-          "$compiler" --help=common > "$RUNNER_TEMP/visualstruct-gcc-options.txt"
-          grep -q -- '-fcondition-coverage' "$RUNNER_TEMP/visualstruct-gcc-options.txt"
-          "$coverage_tool" --help > "$RUNNER_TEMP/visualstruct-gcov-options.txt"
-          grep -q -- '--conditions' "$RUNNER_TEMP/visualstruct-gcov-options.txt"
-          tools_dir="$RUNNER_TEMP/visualstruct-condition-coverage-tools"
-          mkdir -p "$tools_dir"
-          ln -s "$compiler" "$tools_dir/gcc"
-          ln -s "$coverage_tool" "$tools_dir/gcov"
-          echo "$tools_dir" >> "$GITHUB_PATH"
-
-      - name: Run coverage report
-        run: |
-          python -m pytest -m "not e2e and not performance" --cov=app --cov-report=term-missing --cov-report=json:coverage.json
-          python scripts/check_coverage_gates.py --report coverage.json
+    - name: Checkout reviewed workflow resources
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.sha }}
+        path: coverage-tools
+        persist-credentials: false
+    - name: Checkout exact audited SHA
+      uses: actions/checkout@v4
+      with:
+        ref: c395f5f70072d211fb0654af9b321294305e64b4
+        path: src
+        persist-credentials: false
+    - name: Setup frozen Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.10.22
+        cache: pip
+        cache-dependency-path: src/requirements.txt
+    - name: Install identical measurement dependencies
+      working-directory: src
+      run: |-
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest-cov==7.1.0 coverage==7.16.2
+    - name: Download both same-run required partitions
+      uses: actions/download-artifact@v4
+      with:
+        pattern: coverage-only55-*-${{ github.run_id }}
+        path: ${{ runner.temp }}/coverage-only55-inputs
+        merge-multiple: false
+    - name: Verify full execution union raw paths sources and original gates
+      working-directory: src
+      run: |-
+        python ../coverage-tools/.github/coverage-only55/measure.py combine \
+          --manifest ../coverage-tools/.github/coverage-only55/selection.json \
+          --inputs "$RUNNER_TEMP/coverage-only55-inputs" \
+          --output "$GITHUB_WORKSPACE/.coverage-results/combined"
+    - name: Retain combined coverage JSON raw inputs and gate evidence
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-only55-combined-${{ github.run_id }}
+        path: .coverage-results/combined/
+        include-hidden-files: true
+        if-no-files-found: error
