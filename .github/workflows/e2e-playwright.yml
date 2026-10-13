@@ -1,56 +1,69 @@
 name: E2E Playwright
-
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
   workflow_dispatch:
-
 jobs:
-  e2e:
+  pending-e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: ${{ matrix.minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - group: graph-1
+            suite: chromium
+            target: tests/test_ui_playwright_e2e.py
+            cases: "--case test_playwright_graph_execute_completes_algorithms_across_phases"
+            minutes: 40
+          - group: graph-2
+            suite: chromium
+            target: tests/test_ui_playwright_e2e.py
+            cases: "--case test_playwright_graph_export_jpg_captures_full_canvas_and_result_block"
+            minutes: 20
+          - group: graph-3
+            suite: chromium
+            target: tests/test_ui_playwright_e2e.py
+            cases: "--case test_playwright_graph_guided_level_and_mobile_context"
+            minutes: 20
+          - group: graph-4
+            suite: chromium
+            target: tests/test_ui_playwright_e2e.py
+            cases: "--case test_playwright_graph_mst_practice_comparison_keyboard_and_responsive"
+            minutes: 20
+          - group: remaining-chromium
+            suite: chromium
+            target: tests/test_ui_playwright_e2e.py
+            cases: "--case test_playwright_hash_step_navigation_and_export --case test_playwright_hierarchical_comparison_practice_keyboard_and_accessibility --case test_playwright_hierarchical_guided_level_and_mobile_context --case test_playwright_sequential_mobile_step_controls_are_available --case test_playwright_sequential_step_progress_keeps_visual_and_c_synchronized --case test_playwright_sorting_accessibility_keyboard_responsive_and_export --case test_playwright_sorting_all_algorithms_and_playback_controls --case test_playwright_sorting_compact_workspace_omits_removed_learning_widgets --case test_playwright_sorting_removed_practice_and_comparison_widgets --case test_playwright_sorting_specific_strategy_views_and_zero_axis --case test_playwright_sorting_step_navigation_and_theory_analysis --case test_playwright_stack_compact_pilot_keeps_primary_workspace_visible"
+            minutes: 20
+          - group: firefox
+            suite: firefox
+            target: tests/test_playwright_firefox_smoke.py
+            cases: "--case test_firefox_renders_each_learning_module_and_keyboard_target"
+            minutes: 20
     env:
       PYTHONUNBUFFERED: "1"
       VISUALSTRUCT_E2E_DIAGNOSTICS: "1"
       VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: e2e-safe-diagnostics
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-          cache: "pip"
-
+          cache: pip
       - name: Install project dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest-cov playwright
-
-      - name: Install Playwright browsers
-        run: |
-          python -m playwright install --with-deps chromium firefox
-
-      - name: Run Playwright E2E tests
-        run: |
-          python -B scripts/run_e2e_diagnostics.py --suite chromium tests/test_ui_playwright_e2e.py
-
-      - name: Run Firefox compatibility smoke tests
-        run: |
-          python -B scripts/run_e2e_diagnostics.py --suite firefox tests/test_playwright_firefox_smoke.py
-
-      - name: Preserve E2E diagnostics
+      - name: Install selected Playwright browser
+        run: python -m playwright install --with-deps ${{ matrix.suite }}
+      - name: Run exact pending cases
+        run: python -B scripts/run_e2e_diagnostics.py --suite ${{ matrix.suite }} ${{ matrix.target }} ${{ matrix.cases }}
+      - name: Preserve safe diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2e-diagnostics
+          name: e2e-diagnostics-${{ matrix.group }}
           path: |
             e2e-safe-diagnostics/*.jsonl
             e2e-safe-diagnostics/*-result.json
