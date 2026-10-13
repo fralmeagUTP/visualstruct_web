@@ -1,0 +1,23 @@
+# Cola encolar: checkpoint baseline LOW; MEDIUM pendiente
+
+Asignacióncoordination-queue-encolar-baseline-low-20261003,operationqueue.encolar-baseline-low,proyectoD:\MisProyectos\Web_VisualEstruct. Beforeexit0,after en evidencia. Sólobaseline aprobado; ningúnarchivo producto/C/H cambiado,223SHAidénticos. Nueva prioridadRNvalidadorcompleto llega al terminarbaseline: MEDIUMenuencolarqueda propuesto sinimplementar; recuperarcontratoRN separado antesescribirfuncionalidad.
+
+Recuperó evidence/native-queue-statements.json:23obs=10encolar+13desencolar,noequivalenciapointercertificadaantes. CuatroIDs previosencolar conservados/green; no otrasoperacionescerradas ejecutadas. Nuevo oráculo C17estricto sobrebytesC/HHTTPcanónicos,observador safe registry:14calls140events35conditions,5mallocNULLsimulados(4novacío+1vacío) yqNULL. Máscaras0→1→3,nro/sgteleídossólosiinit, IDscomparadossólomientrasvivos,registryNULLantesfree;rootcallerStructCola inicializado. OriginalbranchqNULL/mallocfault imprime errores yconserva cola,returnvoid. Native12alloc12free0live,cleanup sólo callerpostQA,nodeinit/guards/front/rear/aliasretorno;sinUB/OOMreal.
+
+Cuatrofixtures:vacío→9,uno[7]→-1,duplicado[7]→7,extremos[INT_MAX,-1]→INT_MIN,dosejecucionesnormales iguales cadauna. OchoAPIéxitoscoincidenCfinal.40observaciones valor+cardinalitycoinciden(no se suman10viejas);40proyeccionesfront/rearporIDnormalizado(initialFIFO+reservado,no valores):32matches8eventosdivergen. Alúltimostore q->atras=aux framefinalpierdeambosroots,delante/atras targetNone,heap siguevivo. NoequivalenciaCcompleta inferidadesdevalores.
+
+Trazaactual9frames cadaéxito vs12eventosnativosnormal;sinmallocopaqueenter/returnnireturnvoid,valor muestraAPIvalueenvezparamC,variablesdelante/atras tipanCPNodo*incorrecto,scope/init/validno declarados,qguarddireccioncorrectaperoattrs faltantes,ghostlocalt. Temporalauxid/camposvalue/nextsinmáscaras;publicadoheapN-hash yauxN1/N2sinmismaid,aliases/lifetimeinstruccionalnofiel. Fallos nativos síobservados,helperprivadoerrortraceactualnoequivalente;sinflagsmallocAPIinventadas.
+
+UI8callsdosvistas144adelante128atrás,snapshots exactos a su propia traza,punteros/heap/vars/call/consola ylínea;0erroresJS/extraPOST,5secciones.4historialesrecargan exactos conlen2/3/3/4;0/4trazaspreparadasrestauradas. Esto pruebaautoconsistenciaUI,nofidelidadC;recarga/replayrestauradosycallerraíces quedanrojos.
+
+CallerDOM de4historiasreal, cuerpo intacto conwrapperincludesstdio+tad_cola.h únicamente:4C17estricto,normal12alloc12free0live,12mallocNULLposicionesexit1/diagnósticoC/cleanup equilibrado/sólo éxitosanteriores. Doxygenreal6inputs(C/H+4mains):0warnings,4/4main documentados. No regresióncaller ni falta docs. mainHTTP404en4fixtures,noallowlistedCola;noCfuenteequivalente/compilacióninventada ni ADDEDcontrato descarga. HTTPsource/header200ybytesigualD;disponibilidadregistradacaller-availability.json.
+
+33IDsúnicos:29nuevos+4previosencolar;19pass14fail0xfail0.97s. Fallos:qscopecaller,valortipo/nombre/scope,tiposroots,máscaras3IDs,nro/sgtenames,mallocopaque,stableidentity,auxaliasvalid,8frontrearenddivs,voidreturn,ghostt,reloadprepared. PrimerQAUI asumió mainHTTP200heredadoPila;aborto trasprimerfixture,no defecto ni contrato queue añadido. Log/HTMLparcial conservados,corridaaceptada completa no se suma.
+
+Resources8finiteAPIcalls tracemalloc:658,901bytespeakPython,42,055bytesmaxJSON,.04621159999805968s maxinstrumented. Includesdispatch/session/serialization;noRSS/browser/Cpeak/SLA/depth/historyarbitrary/realOOMcertification. C/H/cierresHash11Sorting11limpiarPilaColaPriority/apilarcalificado/popintactos,C1ledger noeditado/globalcontador noincrementado. RNGraphdecisionesanteriores no elegidas enencolar. Preview5051se mantiene.
+
+Apilartrazabilidadantesencolar:seisSHAcontemporáneos30tests faltaban;guardareaperturaexactarevisióncalificada actual14calls124events27conditions32obs0divs yoneUIempty40/36realreloadNext. SHAantes/despuésequal,fourHTTPmainbytes exactos actuales aoriginalescompilados. No inferigualdadhistórica pormtimes ni llamar30testsrerun. Addendumcheckpoint/closuredecisionapilarconlímiteotras3UI/resourceshistóricosconservado;productoigual.
+
+PendienteMEDIUMacotado:queue-encolar-instructions-plan-medium-proposed.md. Prioridadnueva usuarioRNvalidarcompleto seatiendesegúndecisiónSDD,encolar14fallosquedanabiertos. Baseline no cierraCola ni auditoríaglobal;sin publicación.
+
+Evidencia evidence/visible-queue-encolar-baseline-low:summary/report/native-report/front-rear-projection/browserreport/callersDox/resources/regressions/IDs ymanifiestos.

@@ -1,0 +1,97 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "reconcile-remaining-historical-contracts",
+  "operation": "c1.remaining-documentary",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs/tads_C",
+    "tests",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/archive"
+  ],
+  "tasks": {
+    "c1-documentary": {
+      "objective": "Reconciliar conservadoramente once obligaciones históricas completas",
+      "role": "documentation",
+      "owner": "c1-documentary-author-01a0f0a7",
+      "requirements": [
+        "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/requirement-decisions.json"
+      ],
+      "base": [
+        "openspec/changes/reconcile-remaining-historical-contracts/instruction.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/proposal.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/design.md",
+        "openspec/continuity/ROLE-WORKFLOW.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/reconcile-remaining-historical-contracts"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix.json",
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/clarifications.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/proposed-audit-patch.md"
+      ],
+      "documentation": [
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/clarifications.md"
+      ],
+      "evidence": [
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/documentary-verification.json",
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review/independent-qa.json"
+      ],
+      "checks": [
+        "documentation-coherence"
+      ],
+      "next_step": "Diagnóstico/matriz documental aceptados y cerrados; once obligaciones históricas pendientes. No archivo ni nueva consolidación; decisiones/evidencia por dueño de auditoría.",
+      "state": "closed",
+      "approval": "openspec/changes/reconcile-remaining-historical-contracts/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

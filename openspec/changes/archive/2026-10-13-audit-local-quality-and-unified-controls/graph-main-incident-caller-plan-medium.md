@@ -1,0 +1,13 @@
+# Caller Graph: MEDIUM acotado, contrato existente
+
+Nueva asignación coordination-graph-main-incident-caller-medium-20261004 / graph.main-remove-incident-arcs. Instrucción de coordinación01a0fe61-3104-743a-b032-bcc289ad80cd autoriza aplicar candidato compatible y frames caller; el cierre de helper graph.vertex-insert-remove-trace y Graph6 se conserva. No reimplementar ni rerun sus familias. Cambios sólo generadorcaller y formattercompartido, extensión separada de framescaller para remove_vertex; tests focales y evidencia. C/H, API, enteros, contrato y resultados no cambian.
+
+1. Regresión PERMANENTE del mainHTTP real: insert_vertex1,insert_edge1→1 peso5,remove_vertex1. C antescleanupfinal debe0/0; baseline vigente0/1 se registra con sources/hashes y test rojo antes de implementar.
+2. Emitir filtrado caller después de g=grafo_eliminar_vertice. Shared literal Cbody para main y snippet/frames, dirigido/no dirigido, entrantes/salientes/lazo/todoslosincidentes, preservar restantes. No liberar nodoArc dos veces; enlace apunta sólo a g.a o sig de nodo conservado. Rawfunción sigue conservando arcos al retornar.
+3. Extender builder para eventos caller explícitos, locals/scopes/&&/|| corto circuito/reverse, sin atribuir frees a grafo_eliminar_vertice. Raw builder/oracles mantienen su default sin caller; publicTraceService solicita traducción para remove_vertex. Nada de helper/algorithms cambia. Registrar model/events primeroconCreturnarcosvivos, luegoCcallerfreesfinalAPI. Padre original protege los2baselineIDs/bytes.
+4. Fixture nativa oráculo + mainHTTP/DOMactualidénticos en freshapp/cacheprivado; ownershipregistrofree en copias observadoras, conteo y doblefreeguard sin leer liberados. Browser focal con callerframes/reverse y reloadsinPOST. No suites Graph6/otrasfamilias. Preview5051 listener12368/runtime previo a este nuevo cambio se conserva; no refrescar sin coordinación nueva de activación.
+5. Sólo filas/correspondencias propias y8criterios; checkpointMEDIUMparaLOW, guardafter y manifiesto; sin semántica nueva, despliegue/push/merge/archive. Modelo/esfuerzo solicitadoMEDIUM: no toolconmutación disponible; no afirmar cambio inexistente.
+
+## GRAPH-INCIDENT-CALLER-FINITE-ACCEPTED-20261004
+
+Cierre exclusivo de fixtures caller registrados; no cierre global ni activación5051. Pasos1–5 completados; baseline rojo y resultados conservados. Evidencia final: evidence/visible-graph-main-incident-caller-medium; checkpoint: graph-main-incident-caller-checkpoint-medium.md. LOW siguiente: activar runtime/aviso bajo nueva coordinación, preservar cache usuario; no reimplementar ni repetir suite cerrada.

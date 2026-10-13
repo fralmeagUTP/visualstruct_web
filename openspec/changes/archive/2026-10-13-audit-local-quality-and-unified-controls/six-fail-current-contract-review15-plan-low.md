@@ -1,0 +1,1 @@
+Classify6failures of13against currentrequirements,max15min,no product/expectationsmodifications. BFS/AVLdebug actualevent/state+contract; helpmeaningvswording. Evidence/realqualityblocks/minimumchanges. Preserve42.79partial994coverage. Then prioritize first30minSortingunitproposal byrequirementgain,noimplementation.

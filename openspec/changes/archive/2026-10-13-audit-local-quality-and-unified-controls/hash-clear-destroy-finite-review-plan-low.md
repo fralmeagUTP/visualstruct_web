@@ -1,0 +1,3 @@
+# Hash clear/destroy: revisión LOW autorizada
+
+Instrucción nueva coordinación 01a0fe61-3104-743a-b032-bcc289ad80cd. Revisar checkpoint MEDIUM/manifest/logs/164IDs únicos por unión/C592170/UI412396/callerreuse/vidas/scopes/guardas y recursos finitos. No rerun sin evidencia de cambio ni implementación en bloques cerrados. Si válido registrar cierre finito exclusivamente hash.clear.instructions y hash.destroy_table.instructions, Hash11/11; conservar historia, H1/C_H/global. Recuperar evidencia previa Pila/Colas/docs y proponer siguiente baseline sin iniciar MEDIUM. Confirmar identidad preview5051; before/after. Sin ADDED/newcontracts/publicación.

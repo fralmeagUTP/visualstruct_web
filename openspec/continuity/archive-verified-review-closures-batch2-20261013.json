@@ -1,0 +1,54 @@
+{
+  "schema": "continuity-archive-map-collection/v1",
+  "maps": [
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-codec-lifetime-support-test-repair/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-codec-lifetime-support-test-repair/",
+      "input_overrides": {},
+      "meaning": "Historical immutable sources resolve to preserved bytes; no active assignment."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-hierarchical-current-helper-oracles/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-hierarchical-current-helper-oracles/",
+      "input_overrides": {},
+      "meaning": "Historical immutable sources resolve to preserved bytes; no active assignment."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-linked-list-console-emitter/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-linked-list-console-emitter/",
+      "input_overrides": {},
+      "meaning": "Historical immutable sources resolve to preserved bytes; no active assignment."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-priority-format-current-c-oracle/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-priority-format-current-c-oracle/",
+      "input_overrides": {},
+      "meaning": "Historical immutable sources resolve to preserved bytes; no active assignment."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-radix-source-consumer/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-radix-source-consumer/",
+      "input_overrides": {},
+      "meaning": "Historical immutable sources resolve to preserved bytes; no active assignment."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-stdout-legacy-test-repair/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-stdout-legacy-test-repair/",
+      "input_overrides": {},
+      "meaning": "Historical immutable sources resolve to preserved bytes; no active assignment."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-coverage387-provenance-independent-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-coverage387-provenance-independent-quality/",
+      "input_overrides": {},
+      "meaning": "Historical immutable sources resolve to preserved bytes; no active assignment."
+    }
+  ]
+}

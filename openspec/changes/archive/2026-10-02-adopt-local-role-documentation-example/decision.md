@@ -1,0 +1,2 @@
+# Instrucción vigente y fronteras
+Delegación del hilo 01a0f0a7-80d9-722c-85ae-b3a1660740fc autoriza continuar adopción de roles restantes mediante mejora mínima local del propio arnés/manual. El núcleo anterior está cerrado y no se reimplementa. Se elige muestra documental HTML local (no UI existente del producto). No red, API pagada, agentes automáticos, app/auditoría/preview/publicación/merge/despliegue. LOW. QA existente al terminar.

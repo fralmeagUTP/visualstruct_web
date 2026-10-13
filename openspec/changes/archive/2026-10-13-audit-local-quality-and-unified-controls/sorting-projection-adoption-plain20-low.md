@@ -1,0 +1,3 @@
+# Adopción exacta engine40777 y única petición plain actual
+
+Coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: QAaceptóR1/coverageforecast/candidato40777aptoparaadopción. Aplicar SÓLOengine40777...,backup/diff,verificarSHA/bindingeffective/reporterSTANDARDcanonical yregresión2parespequeños+3copyhooks/defaultAPIindependiente. Sipasa,una única peticiónplaincanónicaBurbuja80..1,2GiB/max60s/HTTPcompleto/respuestaSHA/41646pasos. Máximo20minprimeracto,sinotroscambios/16/opt.18abierto/finalactualtiemponoprevio. Dictamen review-sorting-projection-diff-coverage-quality/evidence/independent-review/review.md.

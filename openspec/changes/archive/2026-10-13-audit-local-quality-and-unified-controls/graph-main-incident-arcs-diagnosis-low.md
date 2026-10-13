@@ -1,0 +1,31 @@
+# GRAPH-MAIN-INCIDENT-SELFLOOP-01: caller exportado no reproduce API
+
+Proyecto canónico D:\MisProyectos\Web_VisualEstruct. Hallazgo confirmado nuevo del caller, no reapertura semántica de Graph6 ni fallo de C crudo. Evidencia actual de preview5051 en evidence/visible-graph-vertex-preview-consolidation-low/incident-self-loop. ID estable GRAPH-MAIN-INCIDENT-SELFLOOP-01; estado abierto, severidad alta para equivalencia del main descargado (sin UB demostrado).
+
+## Entrada mínima y resultado real
+
+Sesión QA fresca, no dirigida por defecto, tres operaciones mutantes: insert_vertex{vertex:1}, insert_edge{origin:1,target:1,weight:5}, remove_vertex{vertex:1}. Un lazo requiere un único vértice y un único arco C; no hace falta create_graph ni segundo vértice. Cada respuesta API success=true. API después: nodes=[],edges=[],conteos0/0. main.c descargado coincide exactamente con main_c de respuesta y contiene las tres llamadas cronológicas.
+
+Se descargaron desde el5051 actual tad_grafo.c/h y tad_cola.c/h y sus bytes coinciden con D. main original y copia observadora compilan C17 -Wall -Wextra -Werror sin warnings; original ejecuta exit0. La observación insertada antes de su limpieza final imprime vertices=0,arcs=1 y ARC1 1 5. C conserva el arco cuyos extremos int ya no identifican un vértice del grafo. No son punteros a nodos de vértice ni lectura de free: el observer lee sólo ListaArco viva; la limpieza final ya existente libera ese arco. No se declara fuga ni sanitizers. La limpieza final del proceso no resuelve la divergencia en estados anteriores ni posteriores consultas/algoritmos.
+
+## Contratos aplicables, ya existentes
+
+openspec/specs/graph-structures/spec.md, Operaciones de construcción, escenario «eliminar vértice elimina aristas incidentes»: remove_vertex debe quitar el vértice y su arista del estado visual. app/domain/graph/tad_grafo.py filtra TODOS los arcos con origen==x o destino==x. Este contrato aprobado de la app sigue vigente; no se reabre la decisión numérica de pesos/algoritmos.
+
+docs/tads_C/tad_grafo.h documenta expresamente que eliminar vértice no elimina automáticamente arcos incidentes y que los extremos son identificadores int; grafo_eliminar_vertice en C sólo desenlaza/free NodoV y conserva g.a. Ese contrato individual fue revisado en criterio13; el15-fixture oráculo anterior lo preserva. Cambiarlo silenciosamente o hacer que la API conserve arcos rompería contratos distintos aprobados.
+
+app/services/graph_main_service.py trata insert_vertex/remove_vertex de igual forma: una sola llamada g=grafo_eliminar_vertice(g,x), sin traducir la retirada de arcos de la API. El main descargado sirve de reproducción de historial público; por ello falta una acción del CALLER, no un cambio del TAD. Proposal/design de esta auditoría aprobada requieren equivalencia C/backend/traza/UI y archivos realmente entregados. El aviso honesto «proyección API» en la traza explica esa diferencia, pero no hace equivalente el main ni cierra11/12/16/18/19.
+
+## Corrección mínima concreta y autorización
+
+Después del retorno de grafo_eliminar_vertice, emitir en main un bloque de caller que recorra ListaArco mediante ListaArco *enlace=&g.a. Si (*enlace)->origen==x o destino==x, guardar nodo vivo, desenlazar con *enlace=actual->sig y free(actual); en caso contrario avanzar enlace=&actual->sig. No leer actual después de free; sólo existe enlace a cabeza o a sig de un nodo conservado. Retira todos los incidentes, incluidos lazos, entrantes/salientes y espejos no dirigidos, preservando otros arcos y orden. El valor x normalizado debe proceder del payload actual; no inferir desde resultado futuro.
+
+Candidato concreto compilado sólo en evidencia: candidate-caller-after-return.c. Para esta misma entrada, imprime C_RETURN vertices=0 arcs=1 (contrato raw intacto), después PROBE vertices=0 arcs=0 (contrato API reproducido). Mantiene helper/inputs/eventos originales y el orden causal actual de la traza. El candidato anterior con limpieza antes del helper se conserva como alternativa equivalente sólo en resultado final; no es preferido porque cambia su preestado instruccional. Son dos probes de una MISMA fixture, no dos casos de cobertura. Ningún candidato está aplicado al producto.
+
+La solución preferida conserva API, C/H, firmas, enteros y decisiones Graph6; no requiere nueva elección semántica del usuario. La autorización integral de auditoría/arreglos cubre correcciones compatibles, pero este encargo LOW pide consolidación y diagnóstico, no modificar caller/modelo fuera del bloque cerrado. Siguiente asignación técnica acotada graph.main-remove-incident-arcs debe registrar alcance y caso rojo; no usar la guarda after ni cambiar ID para eludir el cierre de las dos funciones. Si se elige modificar el TAD crudo o la API, sí habría cambio semántico y consulta previa según proposal.
+
+## Impacto y siguiente prueba aplicable
+
+11: equivalencia native-main/API rota; registrar fixture exacta y corregir caller.12: vista/traza C del helper preservada, pero recepción de API borra arcos fuera de main; al corregirlo, añadir eventos caller con enlaces/free de arcos y reversa sin remutación, sin atribuirlos a helper ni inventar C.14: aviso Graph actualizado ya explica retirada API; manual/caller debe explicar traducción real una vez implementada, además de controles/ejemplos pendientes.16: arreglo compatible del caller sigue abierto;18: añadir regresión permanente roja del main HTTP real para esta entrada (0v/0a esperado, hoy0v/1a), luego C17+API+DOM/download/recarga y balance ownership focal; suite final global sólo cuando árbol estable.17: enlazar este contrato doble y diff/caso/decisión, conservar C1 documental con su dueño.19: entregar este hallazgo abierto y evidencia exacta, no dar cierre global por UI verde.22: caller/download es raíz activa, no código prescindible; añadir traducción de eliminación sin tocar otras dependencias ni hiddenAPI.
+
+Primer siguiente test: main descargado tras lazo y remove_vertex1, comparar C antes de cleanup final con API0/0. Después, casos dirigidos entrante/saliente y arco no incidente conservado, y no dirigido con sus dos arcos espejo, observando listas C completas (no equiparar conteo de aristas UI a cantidad de arcos raw). No rerun de seis algoritmos ni familias cerradas por este defecto del caller.

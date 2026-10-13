@@ -1,0 +1,3 @@
+# Adopción LOW de tres candidatos revisados
+
+Instrucción vigente coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: integrar exactamente tres candidatos revisados tras liberación2335/revisión2341. Ultimo, rechazo previoC de inputs inválidos Sublista y manualRN. UIretirado: ningún JS/C/H/firma/semántica nueva. Guardasbefore/after; previewcoordinado preservando sesiones. Nuevo binding QA14IDs:11focales+3rutas, pruebas finitas/consumidores previos reutilizables solamente conSHA/escenario/dependencias pertinentes.1938resultados previos preservados,2604pendientes no aprobados. Sin campaña global/commit/push/merge/deploy; fechaobjetivo05UTC no elimina requisitos. No afirmar criterio18 completo desde14IDs.

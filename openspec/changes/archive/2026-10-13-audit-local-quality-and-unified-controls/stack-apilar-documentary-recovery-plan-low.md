@@ -1,0 +1,5 @@
+# Pila apilar: recuperación documental LOW
+
+Desktop-FM conectado. Usuario ya se estableció de nuevo la conexión continua con las tareas. Recuperar MISMA auditoría en D:; verificar instrucciones, hashes, procesos y preview sin duplicar ni repetir30tests salvo cambios. Persistir checkpoint MEDIUM faltante tras verificación y guardaafter; luego LOWconsolidaciónfinite. C/H/cierres protegidos; no semánticas RN/Grafos/Dijkstra ni publicación.
+
+Reutilizar resultados guardados y verificar evidencia/fechas/hashes. No implementar ni volver a correr C/UI/30IDs. La desconexión impidió manifest/checkpoint/after; reportar ausencia de fotografía SHA final previa y límites de verificación retrospectiva. Registrar SHA fresco del producto, pruebas y evidencia, comprobar manifiestos de caller/native contra archivos reales. Conservar logs previos y reiniciar sólo preview si identidad antigua ausente y5051libre. Completar checkpoint de la operación anterior y after bajo esta asignación nueva; consolidación requiere binding y before propios.

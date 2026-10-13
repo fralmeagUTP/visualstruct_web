@@ -1,0 +1,3 @@
+# Scope
+
+Independent review exact7 files: strict full HTTP Graph decoding in3testfiles fixing5proven first-reference reads, preserving all assertions (after1PASS4laterFAIL honest); opt-in E2E nodeid/stage/http/shutdown/manual checkpoints, recurring90s diagnostic thread stacks, unchanged20min/actions/assertions, pipefail preserving failures, artifacts. Diagnostic subprocess timeout remains exit1; no browser campaign run. No runtime/C/Sorting/optimization/publication. Larger11hierarchy needs causal oracle deferred. Preserve two accepted lots; authorize no broader claims. Parent selects reviewer.

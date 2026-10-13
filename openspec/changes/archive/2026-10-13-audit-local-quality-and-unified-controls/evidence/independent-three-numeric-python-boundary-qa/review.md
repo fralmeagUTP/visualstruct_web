@@ -1,0 +1,33 @@
+# QA focal: Bellman-Ford, Prim y Kruskal Python/JSON
+
+Dictamen: ACEPTAR la reparación runtime focal. No defectos materiales encontrados ni expectativas debilitadas. Corrección documental requerida en un campo del ledger, detallada abajo. No aceptación deCIglobal/E2E, publicación oVPS. Proyecto canónico D:\MisProyectos\Web_VisualEstruct; change audit-local-quality-and-unified-controls; assignment coordination-three-numeric-python-boundary-independent-qa-low-20261007; operación audit.three-numeric-python-boundary-independent-qa. Revisor independiente.
+
+## Resultado comprobado
+
+67 bindings SHA/tamaño exactos. Recalculados hunks runtime contra originalesguardados: diffexacto deúnicamente numeric_instruction.py yexecution_trace_service.py.251hashesactuales coinciden conall_filesafter;249antes/despuésidénticos. C/H/algoritmos/adapters/UI/ruta/codec yPriorityQueueaceptada conservados. Extensión focal decontrato yaaceptadoDijkstra: preserve_tuplesTrue para4kernels, servicio_compactFalse retornaGraphLogicalTrace; ruta yaexistente normaliza sólowire. Ambasramasnormal/rechazo usanpooltipado. No cambios enProgram/GraphMachine, arithmetic, stores, source mapping ni ownership.
+
+Testspermanentes9IDs no sustituyen expectativas existentes. Completefinal==visual==últimopaso, TraceEnginecontinuidad/source, keysintdistances/previous,BFexpected{1:0,2:3,3:inf}/path[1,2]/cost3; PrimKruskal tuplasMST(1,2,3),2componentes/connectedFalse. HTTPreal exige igualdad completa decodificada, codecsamplingFalse/eventcount,clavesstr/Noneparainalcanzable yMSTlists.2invalidstart99sinC y1ciclonegativo real con successFalse yeventosC distinguen rechazoapp deejecuciónerror. NoJSONnormalizarambosladosPython paraocultardefecto. Otrasexpectativasexistentes noeditadas.
+
+XMLmisma9cohort:baseline6FAIL3PASS0skip,after9PASS;final19PASS0errors/fail/skip41.23sstdout (XML41.204s). Cohortfinal9nuevos+7Dijkstra previamenteaceptados+3goldensprecodecBF/BFcycle/Prim. No casosextra porrepeticiones. No nuevoexpected generado delcandidate. FrozenKruskal completo sigue sinterminal; batch20casos120.047sexit124 no prueba20PASS. Final19noequivale agregadogeneralGraphPASSoCIverde.
+
+Decodificador independiente stdlib verificó tresparescompletosnumeric-before-wire/numeric-after-wire, validando backwardrefs/keysunicos sinusar expand_graph_traceproducto: BF756frames755Cevents,Prim609/608,Kruskal466/465. Total1831frames1828eventos, todosloscamposJSON iguales, eventosCexactos, continuidad yfinalcoherentes. Memoria/aliases/scopes/condiciones/consola/source preservados. Tablas7142->7143,6239->6241,4536->4538puedencambiar IDs/bytes legítimamente; no byteidentityclaim. TiposPython respaldados porpruebadirecta aparte deJSON. No compilaciónnativa/certificaciónC nueva ni garantíasinputgrande/performance15s. Sólolectura/hash/JSONsavedQA, sinapp/tests nuevos ni casoslargos.
+
+##117fallos/85obligaciones: verificación y error de registro
+
+Ledger117filas117IDsúnicos/sumacategorías117 coincidecon117IDsFAILEDdeCIunitautoritatived1b6c07.81unresolved+19rawtransport+11initialframeC+1claveaditiva+2printfreview+1legacydetector+1malformedSorting+1agregadoGraph.85históricos únicos,83presentes en117;dosausentes no declaradoscerrados. Clasificación no convierte81enobsoletos/algobugs ni85enporcentaje. Las categorías justificadas deprimerassert requierenasercionesposteriores yexpectedindependiente antesdetestclosure.
+
+Error documental concreto: fila test_trace_contract_all_visible_graph_methods tiene error=run_bellman_ford yspecific_diagnosis correcto, pero current_CI_error aún dice run_dijkstra yCI_SHAd1b6c07. Log unitd1b6c07line3284/summary6890 demuestraBF. Actualizar current_CI_error alerrorBF exacto; conservar historical_919_error/independent_reviewDijkstra comohistoria. No sobrescribirlos como si fueranactuales. Esta incongruenciacampo no cambia eldefecto observado niaceptaciónruntime. Corrección debehacerla dueño ledger, noesteQA.
+
+Agregado6vertices/random/operacionessucesivas NO rerun: candidateejercita condicióntipadaBF/Prim/Kruskal en3vertices, no pasefunciónentera. No restar1de117ni anunciar116unitfail sinCI. Snapshotpack/tracepooltieneidentidad/owneresperada parafixtures, no certificationallconsumers/sessions.
+
+Detectorlegacy: inspecciónAST estáticaQA identifica0importsabsolutosexactos de abb/avl/rojo_negro/monticulo_binario y17modulosinstrucciónprefijados. Substring actualproducefalsepositive real. Ajuste posible: detectar móduloASTexacto/submóduloslegacyreales yresolverimportsrelativos correctos; conservar negativos conimportslegacyabsoluto/relativo. No desactivar test, renombrar17kernelsválidos ni inferir ausencia deimports dinámicos. Fuera deldiff runtime actual.
+
+## Siguiente bloqueo concreto paraCI
+
+Prioridad acotada: tests/test_sorting_adapter.py::test_run_fast_and_step_by_step_reach_same_final_array. Fuenteactual invocaBurbuja convoid ordenar_burbuja(int a[], size_t n) {}, cuerpo vacíoválidosintácticamente pero noimplementa algoritmo/instrucciones necesarias. En app/domain/sorting/burbuja_instructions.py:133, instruction_line_lookup usa nextsinmanejar ausencia; logfocalexistente0.42s yCI muestranStopIteration antesdecompararfinal. Esdefecto observable decontrato/fixture/adaptador; no demostracióndeordenincorrecto ni testobsoleto porasunción.
+
+Paso técnicofinito propuesto: definir alcance deentrada source_code. Siseadmitefallbackfuenteinválida, éste debe producirrechazoconcreto antesdeejecución sintrace/eventosinventados ni mutación; añadir negativo delstub/expectederror yestado preservado. Si equivalenciafast/step exige Ccanónico, ligar estetestaCactualdescargado yconservar igualdadfinal,sortedexpected ytrace/sourcecausal completos; elcuerpo vacío necesita untestnegativo separado deerrorcontrolado. No cambiar sortedexpected/relajar fuentes/ocultarStopIteration conframesfinales. Laentrada arbitraria ysourceguardnecesitan autorización focal/decisión técnicaantesdecambiar runtime/tests. Su resolución no basta para117:81otrosoráculos,31compatibilidades,printf/detector/agregado yE2E siguenpendientes.
+
+E2Ed1b6c07CANCELLEDexact20m0s, dependenciasbrowserSUCCESS, sinpytestresumen niúltimotest/frame/causainterna. No justificar aumentarbudget niatribuirinfra/productosólocancelación. Siguiente diagnóstico independiente pequeño3vertices1edge con tiempospreparación/HTTPdecode/click-render/cursorflushed bajo120s2GiB yrealnav/POSTpermitirá discriminar; planúnicamente, noejecutadoaquí. Nueveshistoricalresultados siguennoverificados;sincoverageCIactual traspytestfailure.
+
+Guardas before0 yafter0. Entregablespropiosreview.md/checks.json/guardas. Noproduct/testedits/Gitwrite/publicación/red/preview/native/browser/suiteslargas. Aceptaciónfocal utilizableparapasoposteriorautorizado, no cierre global.

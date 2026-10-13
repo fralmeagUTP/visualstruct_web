@@ -1,0 +1,5 @@
+# Instruccion vigente Insercion MEDIUM acotado
+
+Asignacion coordination-sorting-insercion-medium-20261002; operacion sorting.insercion-instructions. Coordinacion explicita nueva autoriza implementar sorting-insercion-instruction-review-plan.md (preparacion previa conservada, ya no bloquea implementacion actual). Mismas seis entradas <=4,162observacionesC y guardas separadas; sevenmainUIcallers existentes. Resolver seis regresiones de completitud sin reducir oracle ni xfail. Locals n/i/j/clave y scope de cuerpo, for/while operands cortocircuito/resultadocompuesto, desplazamiento y --j independientes, clave preservada, write-key/retornos, array real sin hueco ficticio. UI adelante/atras/rapido-a-pasos sin nueva ejecucion, source exacto, caller/historia actuales reutilizados.
+
+Baseline LOW completo no equivale a fidelidad Insercion; nuevo bloque implementacion, no evasion de cierre baseline. Cierres Intercambio/Seleccion/main y8otrosmetodos conservados. No cambiar C/H, numerosGrafos ni otrasdecisiones; mantener5secciones/5051/global13/22/docs121/208. MEDIUM terminado entrega aLOW. Sinpush/merge/despliegue.

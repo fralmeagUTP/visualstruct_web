@@ -1,0 +1,3 @@
+# Único diagnóstico aislado Dijkstra30/29
+
+Coordinador01a0fe61-3104-743a-b032-bcc289ad80cd autorizauna sola peticiónDijkstra30V/29arcosdirigidos1→30,pesos1,start1/end30,2GiBworkerreal/maxrequest60s,máximo15minpreparacióninforme. InstrumentarfasesEXCLUSIVAS/counters/stackprevioaltimeout,nobenchmarkgate/opt/otrasmediciones. Fuentescanónicas/traza/contratoíntegros. Medircausadominanteacotada,NOextrapolarotrosalgosnimutabilidadaliassafe. Sinpreview/Git/productchanges.

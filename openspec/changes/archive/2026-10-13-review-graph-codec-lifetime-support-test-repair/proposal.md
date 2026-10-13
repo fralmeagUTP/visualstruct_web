@@ -1,0 +1,3 @@
+# Independent Graph lifetime/support review
+
+Parent01a0fe61 authorizes distinctindependentQA ofexact6proposedpublicationfiles: two newGraphdecode/controltestsupportfiles, phase7onlytwo Carray-lifetime assertions/helper (Sortingfunctionbodiesunchanged), threestagedteacher docs (twoexactcanonical, closurebannerpreservesoriginalhistoricalbody).9purecodec+2realshortestpath+2fullassettests PASS; exploratorymatrix3FAILuniversalholds remainsunresolved andmatrixfileEXCLUDEDfromthispublication/QAfreeze. No newruntime/Cchanges/Sortingpolicy/optimization/broadtesting/QAauthorpublication. Checkrealcausal3v2edgefixtures, preservedallassertions/types/source/masks/pre-freeexpecteds andcurrent-runtimehash251. DedicatedQAchange keepsauthorpointer independent.

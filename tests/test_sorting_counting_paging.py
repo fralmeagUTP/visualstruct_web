@@ -10,7 +10,7 @@ from app import create_app
 from app.domain.sorting.tad_ordenamiento import SortingInterpreter
 
 ROOT=Path(__file__).resolve().parents[1]
-E=ROOT/'openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity'
+E=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity'
 
 def run(client, values):
     assert client.post('/api/ordenamiento/create-array',json={'values':values}).status_code==200

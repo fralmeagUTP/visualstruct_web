@@ -1,0 +1,14 @@
+# Shell: propuesta de bloque MEDIUM delimitado
+
+LOW completado, asignacion coordination-sorting-shell-baseline-low-20261002, operacion sorting.shell-baseline-low. Este plan prepara el bloque; no autoriza implementarlo sin nueva coordinacion/asignacion fina.
+
+Un solo metodo existente shell/ordenar_shell. C/H y contratos int32/1..80/void intactos. Oraculo actual instrumenta los cuerpos reales, no otro Shell: seis entradas single[7],ordered[1,2,3,4],reverse[4,3,2,1],duplicates[2,2,2],negative[-3,0,-1,0],extremes[INTMAX,INTMIN,0]. 322 observaciones nativas vs93frames,229omitidas/75frameslocals incompletos. Resultados y metricas finales6/6 coinciden. Dos guardas nativas19obs separadas de rechazoAPI/UIvacio. Referencias: evidence/visible-sorting-shell-baseline-low/{README.md,summary.json,native-current/report.json,browser/report.json,regression-baseline.log}.
+
+Implementacion propuesta, opt-in Shell, sin reabrir cuatro metodos cerrados:
+1. Frames inicial/declaracion/validacion/arreglo_valido/guarda; size_t intervalo sin inicializar hasta n/2. for exterior: prueba intervalo>0, cuerpo, /=2, prueba falsa final; no bajo flujo por restar intervalo sin guarda.
+2. i size_t declarado por cuerpo del intervalo; se retira antes de dividir intervalo. for i inicializacion/prueba/++i. Cada cuerpo declara int temporal y size_t j; retirarlos antes de ++i. Lecturas solo locales inicializados vigentes.
+3. While j>=intervalo primero, luego arreglo[j-intervalo]>temporal solo si verdadero; resultado compuesto separado. Contar comparaciones solo en segundo operando. Desplazamiento conserva duplicado real y temporal; j-=intervalo separado; escritura final y contadores al ejecutar cada asignacion. No celda vacia ficticia ni printf TAD.
+4. Estrategia Shell muestra intervalo numerico, i/j/temporal del frame actual; grupos por congruencia modulo intervalo solo mientrasintervalo>0. No inventar prefijo definitivo, un grupo parcial no certifica los demas; al cerrar intervalo existe propiedad de grupos gap-sorted, valores finales solo al retornar.
+5. Fuente/funcion/linea exactas, scopes/stack de helper/retornos, while/for internos suspendidos cuando aplique. Sin helperintercambiar: Shell desplaza. Consola TAD vacia; caller conserva printf real. Cinco secciones/controlestipoactual, avance/retroceso/modo rapido restauran traza sin nueva operacion.
+
+Validacion propuesta: resolver las seis regresiones causales permanentes sin xfail/debilitar, preservar comparacion de oracle/arrays/metricas y guardas;322frames igualeventosC. Chromium cadaestado ambos sentidos y controles, texto locales/condiciones/estrategia/fuente; callers reales C17/Doxygen, ownership0. Preservar artefactos actuales y hashes de cuatro cierres/C/H; no sumar casos/restauraciones/callers solapados. Limites seis<=4 y guardas registradas, no all-input/taggedstability/allocatorfault/globalclosure. Terminar MEDIUM y volverLOW despues del bloque.

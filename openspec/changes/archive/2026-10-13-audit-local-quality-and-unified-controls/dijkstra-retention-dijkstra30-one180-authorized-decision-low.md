@@ -1,0 +1,3 @@
+# Authorized successor observation of Dijkstra30
+
+Exact previous block: audit.dijkstra-branches-dijkstra30-one180-observed, closed finite MemoryError diagnostic, mandatorybefore NONCOMPLIANT. New evidence: numeric-packing-json-retention-independent-review/review.md focal accepts974hashes and two proven private lifetime corrections. Coordinator current instruction explicitly requests ONE experiment exact corrected version, effective2GiB/180experimental seconds. This is not reimplementation/retry of unchanged closed candidate and not retroactive remediation. Original reports, logs and incident preserved. Scope only this one new candidate observation; no adoption, other scenarios, Git/preview or fixed HTTP SLA.

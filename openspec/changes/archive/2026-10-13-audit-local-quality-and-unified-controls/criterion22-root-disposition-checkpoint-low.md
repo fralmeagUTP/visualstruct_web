@@ -1,0 +1,7 @@
+# Checkpoint parcial criterio22
+
+ProyectoDcanónico; asignación coordination-canonical-correspondence-and-roots-low-20261004, operation audit.canonical-correspondence. Criterio22 aceptado íntegro por obligación de raíces/retención, no por ejecución/testcounts. Fuente SDDread-only delegada y materialización propia source/hash/línea de imports/calls/dispatch/templates.180Pythonfiles,8JS cargadosbase,29templatesrenderedroots,211Cexports/helpers,11HTTPhidden tienen disposición explícita; 5fallbacks Pseudocode son consumidorescondicionales actuales. Se distingue QAroot/import/prod/UI/API y no se atribuye ejecución a candidatas.
+
+Todosretained; no códigos demostradosinnecesarios ni retiradaambigua propuesta. CCodeService239 elimina sospechaeliminar_primero; grafo_vacioexportretained ygapregexsinconsumidorUIactual documentado; no parserfixni rerunalgoritmos. Fuentesdeproducto/preview/C/H intactas. Sólo task22 marcada con decisión criterio22; estado derivado16/22, restantes11,12,14,16,18,19. Las pruebas de11/12 no se heredan de auditroots. DossiercanónicoC1/session-state entregado al coordinador para propietarioexterno; no toma de sus fuentes.
+
+Evidencia evidence/visible-canonical-correspondence-low/current-root-dispositions-criterion22.json, script/log ySDD-roots-review-received.json. Scope remainsopen: completar11/12/16 y selección mínima de pruebasfaltantes. Guardbeforecurrentexit0; after alhandoff.

@@ -1,0 +1,19 @@
+# Cola Frente: cierre LOW del núcleo privado en casos finitos
+
+## Queue Front finite private core closure LOW
+
+Canónico D:\MisProyectos\Web_VisualEstruct. Asignación coordination-queue-front-final-finite-consolidation-low-20261003, instrucción de coordinación01a0fe61-3104-743a-b032-bcc289ad80cd. Se cierra únicamente `cola_frente` / `queue.frente.instructions` para C/Python/raw/wrapper/adapter ytraza privada de los casos registrados. API/UI de consultas aceptadas quedan excluidas: operación no registrada, sin selector/player/historial propio/standalonecallerquery. Rechazo400validation0Csteps verificado no constituye exposición ni certificación de un player inexistente.
+
+80 IDs propios de este método pasan y se conservan:78originales+2nuevos privados front-only/rear-only.4IDsshared se cuentan una sola vez para la unión con el otro método:164=80Frente+80Final+4shared,160originales+4privatenuevos,overlap0,0skip/xfail. Baselinefallido ylogs/IDs originales conservados; no se suman reiteraciones como nuevoscasos. LOWrevisa hashes/evidencia, no repitepytest/C/browser/Doxygen ni cambia producto.
+
+Este método tiene22consultas C conservadas,66eventos y22condiciones de11fixtures x2, sin divergencias actuales. Vacía,single,FIFO,duplicados,-1enfrente/final,INT_MIN/MAX ydosrootsprivadasparciales inicializadas. Son CstructCola porvalor con nodos automáticos vivos, definidos aunque paresprivados no satisfagan invarianteAPI. No NULLqpointer inventado, indeterminados/deadpointers o ejecuciónUB. Raw coincide ywrapper conserva EstructuraVaciaErrorvacía,delegación novacía.
+
+Traza tipada: structqcopiado con identidad distinta delcallercola, ambos camposinitialized, aliases prestatarios a mismos nodos nro/sgte mask3. Guardpropia q.delante != NULL, sustitución usa valor de enlace; sólo lee rama seleccionada yretorna int. Scopeqended/callstack0,caller_resultpending fuera funciónC; roots/nodos/links/countreadonly,console[]0allocfree; no fakecountmember/outparam/const/localt.66eventos se contrastan con oráculo y línea completa sourceexacta. CorrecciónQA delobservadorLOW sólo admitió comentario C inline real yconfiguró sys.path; fallos previos conservados,no cambio original164IDs/producto.
+
+120/120manifestMEDIUM,378productofinales y5inputsC/H+3mains actuales coinciden SHA/bytes.377existentes:373protegidos+4autorizadosMEDIUM y1engine nuevo;LOW0productchanges. C/H,UI/routes/metadata/mainrenderer ycierres anteriores intactos. API de este método18rechazos400 en9fixtures yPOST/GET0targetdispatch/0journal; browser8rechazos en4contextos,5secciones/ambasviews/historyreadonly/0extraPOST0JSerrors. No queryNext/reverse aceptados probados.
+
+Caller compartido3DOMmains exactosincludesonly,C17strictpass;setup8alloc8free0live/8NULLcontrolados yDoxygen5inputs3main0warnings reutilizados con5inputs iguales,sin ejecutarlos de nuevo ni reauditarEncolar. MainHTTP404,vacíosinDOMmain,0queryrecords y0Front/Finalcalls. Ownership sólosetup de loscallers;kernel de consulta0malloc/free.
+
+Recursos actuales propios separados: private18muestras trace+Cextract+JSONsinHTTPsession máximoPython762918bytes/JSON31458bytes/0.016501400001288857s;9batchesdosPOSTrechazados replay/session/serialization máximoPython678222bytes/JSON1730bytes/0.021104499995999504s. Recursos sólo9fixturescoherentes;2parciales tienen evidencia tipada separada. No exitosaAPI/RSS/browsermemory/historyilimitada/SLA/OOM/sanitizer/universal leak claim.
+
+Este cierre aporta exactamente1export con coreprivadofinito. Amboscierres independientes reducen mapa9a7,20exportstotal/13finiteorcommunicatedcovered/7pendientes; no porcentaje,family/globalclosure,newcontrols/contracts. Sin Graphdecisiones/SDDblockedwrites/publicación/commit/push/merge/deploy/archive. Evidencia propia `evidence/visible-queue-front-final-finite-consolidation-low/review.json` ymanifest-current-verification.json.

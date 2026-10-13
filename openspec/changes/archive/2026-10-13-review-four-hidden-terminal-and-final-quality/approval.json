@@ -1,0 +1,10 @@
+{
+  "approved": true,
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "allowed_paths": [
+    "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review"
+  ],
+  "provenance": "openspec/continuity/assignments/coordination-four-hidden-terminal-repair-low-20261005.json",
+  "additional_authorization": "Latestcoordinatordelegationexplicitnewbinding/index/finalQA18coverage83/85/3performance/2604scenario+deps; preservedindesign",
+  "meaning": "Independentfinalscopeonly; nooriginalproduct/sessionsmutations,noglobalrestart"
+}

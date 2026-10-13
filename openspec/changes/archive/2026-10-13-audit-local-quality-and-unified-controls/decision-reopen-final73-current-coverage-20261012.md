@@ -1,0 +1,87 @@
+# Reapertura autorizada:73IDs exactos
+
+Operación audit.remaining-coverage-smaller-blocks; tarea remaining-coverage-smaller-blocks; assignment coordination-resume-repair-failures-r2-low-20261011.
+
+Motivo exacto: Cobertura actual de los73IDs fijados Cima65 y Counting paging8, con fuentes y14recursos congelados para resolver la brecha113sin ampliar selección.
+
+Coordinación aporta autorización explícita del usuario Sentinel_bf30bc561bf881919f81caa96e636d8c,2026-10-12 00:06UTC, como respuesta a la solicitud exacta73pruebas/únicobloque120s/2GiB: «Si .... lo autorizó,  sigue con las pruebas». Solicitud y respuesta completas en authorization.json.
+
+Única ejecución conjunta de65Cima+8Counting, conservar resultados históricos. Máximo120s total y2GiB por proceso Y WindowsJob. Timeout: terminarJob, preservarparcial y detener; no retry/reservas/expansión. No230bloqueados/Bellman900/JPEG, ni8IDs del permiso ya consumido. No algoritmos/C/UI/gates/exclusions/commit/push/deploy/closureglobal. Versionar actuales889fuentes y14recursos exactos.
+
+IDs exactos:
+
+- `tests/test_stack_cima_baseline_low.py::test_adapter_scalar_or_empty_exception_preserves_current_wrapper_contract[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_adapter_scalar_or_empty_exception_preserves_current_wrapper_contract[single]`
+- `tests/test_stack_cima_baseline_low.py::test_adapter_scalar_or_empty_exception_preserves_current_wrapper_contract[top]`
+- `tests/test_stack_cima_baseline_low.py::test_adapter_scalar_or_empty_exception_preserves_current_wrapper_contract[duplicate]`
+- `tests/test_stack_cima_baseline_low.py::test_adapter_scalar_or_empty_exception_preserves_current_wrapper_contract[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_adapter_scalar_or_empty_exception_preserves_current_wrapper_contract[minimum]`
+- `tests/test_stack_cima_baseline_low.py::test_adapter_scalar_or_empty_exception_preserves_current_wrapper_contract[maximum]`
+- `tests/test_stack_cima_baseline_low.py::test_adapter_scalar_or_empty_exception_preserves_current_wrapper_contract[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_repeated_private_queries_preserve_object_root_values_links_and_counter[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_repeated_private_queries_preserve_object_root_values_links_and_counter[single]`
+- `tests/test_stack_cima_baseline_low.py::test_repeated_private_queries_preserve_object_root_values_links_and_counter[top]`
+- `tests/test_stack_cima_baseline_low.py::test_repeated_private_queries_preserve_object_root_values_links_and_counter[duplicate]`
+- `tests/test_stack_cima_baseline_low.py::test_repeated_private_queries_preserve_object_root_values_links_and_counter[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_repeated_private_queries_preserve_object_root_values_links_and_counter[minimum]`
+- `tests/test_stack_cima_baseline_low.py::test_repeated_private_queries_preserve_object_root_values_links_and_counter[maximum]`
+- `tests/test_stack_cima_baseline_low.py::test_repeated_private_queries_preserve_object_root_values_links_and_counter[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_private_trace_short_circuit_condition_matches_native_NULL_guard[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_private_trace_short_circuit_condition_matches_native_NULL_guard[single]`
+- `tests/test_stack_cima_baseline_low.py::test_private_trace_short_circuit_condition_matches_native_NULL_guard[top]`
+- `tests/test_stack_cima_baseline_low.py::test_private_trace_short_circuit_condition_matches_native_NULL_guard[duplicate]`
+- `tests/test_stack_cima_baseline_low.py::test_private_trace_short_circuit_condition_matches_native_NULL_guard[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_private_trace_short_circuit_condition_matches_native_NULL_guard[minimum]`
+- `tests/test_stack_cima_baseline_low.py::test_private_trace_short_circuit_condition_matches_native_NULL_guard[maximum]`
+- `tests/test_stack_cima_baseline_low.py::test_private_trace_short_circuit_condition_matches_native_NULL_guard[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_private_parameter_ptrPila_aliases_live_root_with_typed_scope[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_private_parameter_ptrPila_aliases_live_root_with_typed_scope[single]`
+- `tests/test_stack_cima_baseline_low.py::test_private_parameter_ptrPila_aliases_live_root_with_typed_scope[top]`
+- `tests/test_stack_cima_baseline_low.py::test_private_parameter_ptrPila_aliases_live_root_with_typed_scope[duplicate]`
+- `tests/test_stack_cima_baseline_low.py::test_private_parameter_ptrPila_aliases_live_root_with_typed_scope[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_private_parameter_ptrPila_aliases_live_root_with_typed_scope[minimum]`
+- `tests/test_stack_cima_baseline_low.py::test_private_parameter_ptrPila_aliases_live_root_with_typed_scope[maximum]`
+- `tests/test_stack_cima_baseline_low.py::test_private_parameter_ptrPila_aliases_live_root_with_typed_scope[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_private_heap_exact_nro_sgte_initialized_fields_and_stable_query[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_private_heap_exact_nro_sgte_initialized_fields_and_stable_query[single]`
+- `tests/test_stack_cima_baseline_low.py::test_private_heap_exact_nro_sgte_initialized_fields_and_stable_query[top]`
+- `tests/test_stack_cima_baseline_low.py::test_private_heap_exact_nro_sgte_initialized_fields_and_stable_query[duplicate]`
+- `tests/test_stack_cima_baseline_low.py::test_private_heap_exact_nro_sgte_initialized_fields_and_stable_query[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_private_heap_exact_nro_sgte_initialized_fields_and_stable_query[minimum]`
+- `tests/test_stack_cima_baseline_low.py::test_private_heap_exact_nro_sgte_initialized_fields_and_stable_query[maximum]`
+- `tests/test_stack_cima_baseline_low.py::test_private_heap_exact_nro_sgte_initialized_fields_and_stable_query[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_private_int_return_ends_function_scope_without_erasing_caller_nodes[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_private_int_return_ends_function_scope_without_erasing_caller_nodes[single]`
+- `tests/test_stack_cima_baseline_low.py::test_private_int_return_ends_function_scope_without_erasing_caller_nodes[top]`
+- `tests/test_stack_cima_baseline_low.py::test_private_int_return_ends_function_scope_without_erasing_caller_nodes[duplicate]`
+- `tests/test_stack_cima_baseline_low.py::test_private_int_return_ends_function_scope_without_erasing_caller_nodes[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_private_int_return_ends_function_scope_without_erasing_caller_nodes[minimum]`
+- `tests/test_stack_cima_baseline_low.py::test_private_int_return_ends_function_scope_without_erasing_caller_nodes[maximum]`
+- `tests/test_stack_cima_baseline_low.py::test_private_int_return_ends_function_scope_without_erasing_caller_nodes[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_rejected_unregistered_query_has_no_fabricated_executed_C_call[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_rejected_unregistered_query_has_no_fabricated_executed_C_call[single]`
+- `tests/test_stack_cima_baseline_low.py::test_rejected_unregistered_query_has_no_fabricated_executed_C_call[top]`
+- `tests/test_stack_cima_baseline_low.py::test_rejected_unregistered_query_has_no_fabricated_executed_C_call[duplicate]`
+- `tests/test_stack_cima_baseline_low.py::test_rejected_unregistered_query_has_no_fabricated_executed_C_call[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_rejected_unregistered_query_has_no_fabricated_executed_C_call[minimum]`
+- `tests/test_stack_cima_baseline_low.py::test_rejected_unregistered_query_has_no_fabricated_executed_C_call[maximum]`
+- `tests/test_stack_cima_baseline_low.py::test_rejected_unregistered_query_has_no_fabricated_executed_C_call[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_existing_UI_rejects_query_without_new_feature_or_history_or_state_mutation[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_existing_UI_rejects_query_without_new_feature_or_history_or_state_mutation[top]`
+- `tests/test_stack_cima_baseline_low.py::test_existing_UI_rejects_query_without_new_feature_or_history_or_state_mutation[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_existing_UI_rejects_query_without_new_feature_or_history_or_state_mutation[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_real_DOM_HTTP_C17_caller_integrated_setup_queries_ownership_and_Doxygen[empty]`
+- `tests/test_stack_cima_baseline_low.py::test_real_DOM_HTTP_C17_caller_integrated_setup_queries_ownership_and_Doxygen[top]`
+- `tests/test_stack_cima_baseline_low.py::test_real_DOM_HTTP_C17_caller_integrated_setup_queries_ownership_and_Doxygen[bounds]`
+- `tests/test_stack_cima_baseline_low.py::test_real_DOM_HTTP_C17_caller_integrated_setup_queries_ownership_and_Doxygen[minus1]`
+- `tests/test_stack_cima_baseline_low.py::test_native_defined_readonly_repeat_samples_and_resources_are_finite_scoped`
+- `tests/test_sorting_counting_paging.py::test_cap_HTTP_first_middle_last_match_real_C_scalar_samples`
+- `tests/test_sorting_counting_paging.py::test_pages_backwards_legacy_step_reload_export_do_not_dispatch_or_append`
+- `tests/test_sorting_counting_paging.py::test_ownership_invalid_pages_expiry_and_reset`
+- `tests/test_sorting_counting_paging.py::test_old_trace_immutable_after_new_input_and_concurrent_session_reads`
+- `tests/test_sorting_counting_paging.py::test_storage_budget_and_concept_seek_without_logical_enumeration`
+- `tests/test_sorting_counting_paging.py::test_eighty_large_range_paged_final_metrics_and_budget`
+- `tests/test_sorting_counting_paging.py::test_dense_transport_preserves_frozen_C_event_and_before_contract[single]`
+- `tests/test_sorting_counting_paging.py::test_dense_transport_preserves_frozen_C_event_and_before_contract[ordered]`
+
+El bloque amplio registrado sigue not-signed-off: la guarda rechaza --reopen-reason/--decision-ref en operación abierta. Se conserva mismoID/assignment y se vincula esta excepción específica en context_sources con guardas before/after ordinarias. No modificar guarda, inventar cierre ni cambiarID para eludirlo.

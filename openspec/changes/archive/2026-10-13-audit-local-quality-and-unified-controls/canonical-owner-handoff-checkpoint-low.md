@@ -1,0 +1,9 @@
+# Checkpoint parcial: propietario canónico C1/session-state
+
+Asignación vigente coordination-canonical-correspondence-and-roots-low-20261004 / audit.canonical-correspondence;Dcanónico. Criterios11/12/16 enbinding,22SDDlectura añadido;estado15/22. No fuentescanónicas/producto/preview ni perfiles/tasksajenoseditados.
+
+Propietario identificado c1-documentary-author-01a0f0a7: aprobación/workflow20261003 de reconcile-remaining-historical-contracts restringen allowedpaths a esechange; diagnóstico cerrado. El expediente concrete documentary-owner-assignment-proposal-low.json conserva11textos20escenarios y actualiza motivos históricos con Graph6/Graph3/vertex/caller,Hash11,RNfullvalidator,Counting/Radix/sequentialqueryevidenciaactual. No auto-admisiones. Reapertura debe usar operationc1.remaining-documentary, marcador exacto ## Diagnóstico documental C1 cerrado y nueva decisión/assignment real, no cambiaroperationID.
+
+Session-state canónico contradice descripción mutating-only de consultas cronológicas yaaprobadas. Entregado dominio/archivos/aceptación/políticasfuente por módulo: no nuevojournal/store ni cambiofuncional, consultas explícitas completadas permitidas una vez, historialrepetido intacto, GET/rebuild sinredispatchconsultasguardadas ni nuevasentradas; metadatareadonly y mark/arrayeffects no son ceroevaluacionesinternas. Sugerido change/delta documental propio másadopcióncoordinada; no asumir permiso del propietario previo para specscanónicas.
+
+Coordinación puede asignar autor documental desde este expediente sin esperar trabajo técnico. Mientras, el auditor completa11/12/16 ymaterializa22SDD con fuentes/raízdisposición propia. Evidencia own evidence/visible-canonical-correspondence-low; guardbeforecurrentexit0. No bloque de ejecución, autorización vieja no se recicla.

@@ -1,0 +1,5 @@
+# Independent QA of final invariant and Python boundary candidate LOW
+
+Parent01a0fe61 requests independent QA before publishing new existing-contract hierarchical certification and Dijkstra Python/JSON boundary candidate. Review exact3Graph integration source diffs, targeted hierarchical test preserving two equalities with independent structural oracle and8corruption negatives, collision/codec/service/HTTP checks, saved504frames503Cevents wire equivalence and35focalPASS. Accepted cp_encolar remains SHAcdc7fa7d; no C/algorithm/UI modifications. New Python logical boundary limited to Dijkstra; other numeric production modes preserved. Review85unresolved ledger and bounded E2E plan; no general CI green or VPS claim. Own QA evidence only, distinct reviewer, no product/test/publication/optimization/native/large-suite writes or runs by default.
+
+- [ ] publication-final-invariants-python-boundary-independent-qa: exact source/diff/fixture/test review, contract compliance and finite limits; no author self-certification or publication.

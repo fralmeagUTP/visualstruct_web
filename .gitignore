@@ -1,4 +1,4 @@
-﻿.venv/
+.venv/
 .flask_session/
 .pytest_cache/
 __pycache__/
@@ -8,3 +8,8 @@ coverage.xml
 tmp_server_out.log
 tmp_server_err.log
 *.pyc
+
+# OpenSpec execution artifacts remain local; reviewed documents are explicitly selected.
+openspec/changes/**/evidence/
+openspec/changes/**/_preserved-original-remnant*/
+openspec/continuity/live-artifacts/

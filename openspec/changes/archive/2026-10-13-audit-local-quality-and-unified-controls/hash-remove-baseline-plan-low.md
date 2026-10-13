@@ -1,0 +1,3 @@
+# Hash remove baseline LOW autorizado
+
+Delegación01a0fe61-3104-743a-b032-bcc289ad80cd autoriza siguiente baselineLOW después de cierre finito get/contains. Mapa vigente hash-next-pending-map-after-query-closure-low.md selecciona remove/th_eliminar. C real/API/UI/caller: vacío/ausente/cabeza/medio/cola/negativos/int32extremos/repetición, anterior/enlaces/free/cantidad-- y guardas. Baseline sin cambio semántico/producto; regresiones permanentes rojas sinxfail y checkpoint antesMEDIUM. Preservar106IDs/C_H/H1/createinsert/getcontains/11Sorting/preview. No métodoscerrados rerun ni contratos/thresholds/publicación.

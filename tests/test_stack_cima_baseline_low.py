@@ -2,7 +2,7 @@
 from pathlib import Path
 import json
 import pytest
-E=Path(__file__).resolve().parents[1]/'openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-stack-cima-baseline-low'
+E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-stack-cima-baseline-low'
 M=E.parent/'visible-stack-cima-instructions-medium'
 CASES=['empty','single','top','duplicate','minus1','minimum','maximum','bounds']
 def report():return json.loads((E/'report.json').read_text(encoding='utf-8'))

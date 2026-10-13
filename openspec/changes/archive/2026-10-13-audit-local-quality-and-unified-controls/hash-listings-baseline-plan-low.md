@@ -1,0 +1,3 @@
+# Hash keys/values/items baseline LOW autorizado
+
+Nueva fase autorizada pordelegación01a0fe61-3104-743a-b032-bcc289ad80cd despuésdecierre finitoremove: siguiente mapa hash-next-pending-map-after-remove-closure-low.md. Baselineconjunto keys/values/items: ordenbucket/cadena/valoresduplicados/negativos/int32extremos/tabla vacía; C realth_formatear/th_append_text, bufferchar/size_t/guardas/truncamiento/APIproyecciones/traceUI/caller/history/replay. Distinguir proyección de paresC y retornoAPI de textoformateado, no inventar Ckeysfunciones existentes. MantenerH1/C_H/123IDs/5Hashfinite/11Sorting/preview. Sólo baseline yregresiones/checkpoint, no implementación/contracts/thresholds/newnormatives/no publicación.

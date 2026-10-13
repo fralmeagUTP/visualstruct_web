@@ -1,0 +1,3 @@
+# Autorización vigente de adopción documental
+
+Coordinación01a0fe61-3104-743a-b032-bcc289ad80cd acepta QA documental independiente y autoriza escritor real 01a0fad1-4046-71ae-990c-a53383e81006 a adoptar exclusivamente delta SHA0dd4170ae53e7c6b3ab6656e74eb98f7b3b6234f9bc8b0208a84346223e57e3f (3MODIFIED) y Purpose consecuente en openspec/specs/session-state/spec.md. Registrar binding/alcance dedicado antes de escribir; preservar canónico anterior,trazabilidadQA. Verificar lectura/diff/OpenSpec/guardas. No producto ni admisiones C1:1/12admitido11pendientes. didactic-conformance-remediation sin scope nuevo permanece intacto. Sin archivo de auditoría,preview,suites ni publicación.

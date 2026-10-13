@@ -1,0 +1,5 @@
+# Prioridad limpiar: baseline LOW autorizado
+
+Derivación fina de nueva instrucción LOW coordinación: comenzar siguiente baselineLOW no bloqueado del mapa con evidencia anterior para evitar reruns. Prioridad limpiar/cp_vaciar exclusivamente: empty/single/multiFIFO con valores/prioridades duplicados y negativos,repetición/reinserción,guardNULLnative. Observaraux/next/front/rear/cantidad/branches/lifetimes/retorno sinleeruninitialized o retiredptr;C/Hcontrato ycierresPila/Cola/Hash/Sorting intactos,no RNGraphdecision/newcontract/publish. Sólo baseline/rojos/checkpoint, no MEDIUMproducto.
+
+Recuperado priority-instruction-review16ops sólo desencolar/frente/566events, SHA viejo diferente; no oraclecp_vaciar ni cierre global. Testclear3nodos sólo valores/free/final. Cp_vaciar guardaNext antesfrontstore, rear seNULL antesúltimofree, cantidad disminuyeDESPUÉSfree y aux recupera next anteswhile. Fixturesconsistentes; guardcantidadfalse con cantidadinconsistente no API ni garantía. Browser/caller/resources/Doxygen deben marcarse pendientes si no acabados en esta fase inicial.

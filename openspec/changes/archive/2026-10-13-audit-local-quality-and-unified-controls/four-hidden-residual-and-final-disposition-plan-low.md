@@ -1,0 +1,3 @@
+# Consolidación focal y residual LOW
+
+Instrucción vigente coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: consolidar QA14/18rutas aceptada; precisar cuatro métodos ocultos eliminar_inicio/eliminar_final/mostrar/primero, evidencia/disposición. Distinguir requisito sinprueba, limitaciónadmitida y evidenciavigentereutilizable deQA18. Solo comprobacionesmínimas existentes/nuevas acotadas ydocumentación propia; no campañaglobal, no aprobar2604pendientes por omisión. Diagnosticar ycoordinar antes de nuevo cambiofuncional. Mantener producto/preview estable, no C/H/UI/semánticani Git/deploy. Preparar última revisión18/entrega19 con límites;05UTC no baja requisitos. QAindependientefocal actual aceptada,task/globalno cerrados.

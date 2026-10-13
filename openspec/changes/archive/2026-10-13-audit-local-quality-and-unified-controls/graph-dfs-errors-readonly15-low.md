@@ -1,0 +1,3 @@
+# Diagnóstico documental Graph/DFS sin repetir peticiones
+
+Coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: Burbuja15.8841s permaneceFAIL15,no repetir. Diagnosticar SÓLOlectura trazas/errores/fuentes delbloque16: dóndeMemoryErrorDFS yporquéBF/Dijkstra/Prim/Kruskal60s sólo siesevidencia. Siinsuficiente proponerUNdiagnósticorepresentativodiscriminantecompartido. Diferenciarestado/pedagogía/validación/algoritmoC. Máximo15min,sinnuevaspeticionesniproductchanges/bench/Git/preview. Entregar evidencia/correcciónmínimaposible sinatribuirsinmedir. IndicarbindingQApostadopción40777existente sinmodificarpaquetes. Sólo registrosoperativos/evidenciapropia obligatoria,nooldpackageschanges.

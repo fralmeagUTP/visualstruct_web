@@ -1,0 +1,26 @@
+{
+  "schema": "continuity-archive-map-collection/v1",
+  "maps": [
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-final-coverage535-sorting-runner-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-final-coverage535-sorting-runner-quality/",
+      "input_overrides": {},
+      "meaning": "Immutable dated evidence resolves to preserved bytes; no active assignment."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-global29-five-oracles-independent-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-global29-five-oracles-independent-quality/",
+      "input_overrides": {},
+      "meaning": "Immutable dated evidence resolves to preserved bytes; no active assignment."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-four-later-oracles/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-four-later-oracles/",
+      "input_overrides": {},
+      "meaning": "Immutable dated evidence resolves to preserved bytes; no active assignment."
+    }
+  ]
+}

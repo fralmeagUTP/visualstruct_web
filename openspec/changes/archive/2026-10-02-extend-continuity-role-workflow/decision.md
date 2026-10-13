@@ -1,0 +1,3 @@
+# Autorización y límites
+Usuario: «Listo. Entonces quiero que le agreguemos esa funcionalidad a lo que estamos haciendo». Delegación del hilo 01a0f0a7-80d9-722c-85ae-b3a1660740fc: implementar mínimo incremental con coordinador principal y roles especificaciones, código, QA independiente, diseño visual y documentación. Diseño mínimo recibido después de cerrar Hash; autorización sustituye aprobación rutinaria anterior.
+LOW por defecto; escalado requiere bloque/motivo/alcance y retorno LOW registrados. No lanzar agentes reales ni gastar APIs adicionales. Sin ampliación de acceso ni publicación/merge/despliegue. Registro de identidad no autentica persona/agente y registro de propiedad no impone aislamiento filesystem.

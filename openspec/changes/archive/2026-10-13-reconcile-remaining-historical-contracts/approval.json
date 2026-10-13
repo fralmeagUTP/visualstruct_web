@@ -1,0 +1,9 @@
+{
+  "approved": true,
+  "owner": "c1-documentary-author-01a0f0a7",
+  "allowed_paths": [
+    "openspec/changes/reconcile-remaining-historical-contracts"
+  ],
+  "provenance": "openspec/changes/reconcile-remaining-historical-contracts/instruction.md",
+  "meaning": "Delegación explícita vigente autoriza reconciliación documental y registro propio; no QA autocertificada"
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "SET_APPROVED_ACTIVE_CHANGE",
+  "operation": "SET_REGISTERED_OPERATION",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs/tads_C",
+    "tests",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/archive"
+  ],
+  "tasks": {}
+}

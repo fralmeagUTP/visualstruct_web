@@ -1,0 +1,9 @@
+# Cuatro trazas ocultas reparadas LOW
+
+Reparados exclusivamente eliminar_inicio/eliminar_final/mostrar/primero; nuevo modeloSHAcuerpoC, unbranch4dispatch, dosregresionespermanentes. C/H/API/firmas/semántica/callers/UIyUltimo/3reparaciones previasunchanged.12native fixturespreviosoráculoreusadoconHTTPsha; final13IDs passed21.44s,4contextosDOM172boundaries ambasvistas/direcciones,highlight/memoria/scopes/stdoutactualporprintf,sinPOSTde replay/erroresJS. EmptyAPIrechazaantesC ymostrarvacíoCwhilefalse. Eventoscondición/store separados de mismaCline; Scope_exit mostrar } explícito. Slotcalleralcerrarámbito, no leerpointerliberado.
+
+Primer error de desarrolloextraccióncondicióndesdetokenincompleto preservado/r1; corregido usandolíneaC completa,12passedr2 yDOMpassedr1. Precisadoslotcaller alretornar, final13capturadossinmutaciones posteriores. No suma de retries. Codificaciónindexownregistrosealteróporread_textsinUTF8,guarda bloqueóantesproducto;restauradas109strings,fallo/backup yguardarecovered0 preservados; noelusióncierres.
+
+Previewrefrescado una vezconenvprevio/PIDidentificado y3903sesionesbyteidénticas,health200. QAfinal aúnpending. Binding review-four-hidden-terminal-and-final-quality/audit.final-independent-quality/four-hidden-terminal-and-final-quality/coordination-four-hidden-terminal-final-quality-independent-qa-low-20261005, owner01a0ff54-79d7-7520-8e9f-224ef5ed700f qualityLOW, outputsprivados. Freeze/ZIPnuevo/source/context/baseline. Nuevo binding,no reutilizar14IDclosed.
+
+QA18 mantiene gate>=83global/85SortingGraphHashHeap conprocedenciaactualválida/no parcial,3performanceSINCOVERAGE120/30/600timeouts-presupuestosintactos,ASanUBSanbloqueados0 ejecuciones,disposición2604 por escenario/sources+dependencies;2470candidatos114impacto19deps1Bellmannoaprobados.No4542restart.Autor noejecutócampañaglobaladicional. Coordinacióndecideaceptación11/12/16/18/19despuésQAreal.

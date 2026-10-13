@@ -1,0 +1,5 @@
+# Cola Desencolar: revisión finita LOW autorizada
+
+Coordinación vigente01a0fe61-3104-743a-b032-bcc289ad80cd autoriza consolidar46pass/42original+4session,87reusedC19conditions/sourcehashestracefidelity/legacyoriginalpreserved. Verificar dosvistas142/1264reloadSiguientenoredispatch, currentbytescaller7balancedreuse, sinnewCexecutionclaim. Finite1334849Python/104280JSON límites explícitos. Si válido,cerrar únicamente operación queue.desencolar.instructions yactualizarremainingmapPrioridadDesencolar/etc; proponer siguiente baselineLOW recuperandoevidenciapreviaantespruebas. C/H/cierresRNHashSortingPilaColaPriority protegidos;Graphsemantics/SDDblockedwrites/publication prohibidos.
+
+Revisión de evidencia ydocumentos propios; no repetir implementaciónMEDIUM ni suites cerradas. Chequear manifiestos78MEDIUM/121baseline/230products/6QA,46IDs sin solapamientos,87orderedprojections/19conditions, UI/source/legacy/caller/resources. Reutilizar únicamente pruebas actuales vinculadas por hashes contemporáneos. before/after requeridos. Próximo baseline sólo propuesto, sin ejecución ni asignación nueva automática.

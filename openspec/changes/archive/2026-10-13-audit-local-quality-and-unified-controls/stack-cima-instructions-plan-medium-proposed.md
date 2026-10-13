@@ -1,0 +1,13 @@
+# Pila Cima — plan MEDIUM acotado propuesto, sin implementación LOW
+
+Nueva coordinación debe autorizar este plan antes de fixes. ProductoLOW376hashesintactos, C/H ycierresprior intactos. Baseline73IDs25pass48fail sinxfail; conservar IDs/red logs/fuentes ynoinflarcategorías.
+
+A. Añadir únicamente transcripción Python int pila_cima(ptrPila p): -1 siNone, si no nro. C no tiene int*outparam, boolsuccess, locals t ni constqualification deltypedef; no inventarlos. Wrapper Pila.cima conserva EstructuraVaciaError vacío ydelegación alraw sólo si novacío; no cambiar contrato adapter/API. AST deapilar/desapilar/mostrar/destruir yotrosTAD permanece.
+
+B. Motorprivado Cima fiel a función C mínima: parameterptrPila initializedborrowedroot,scopeactive/ended,root/idheaplive, fields nro/sgte+initializedmask3,ternary p==NULL evaluada antes delbranch, sólo p->nro si novacío; scalarintreturn -1/correcttop ycaller independiente despuésreturn,console[],0alloc/free yheap/count/linksreadonly. NullCreturn esválido aunque wrapperthrows; distinguir los contratos ynoinventarmásramas/exposición. Establecer representación tipada porfuente yexpected independiente16calls/48events; semántica rawC/adapterpreservada.
+
+C. Respuesta devalidación Cima no registrada debe representar rechazo sin call/return C ejecutadas. Corregir exclusivamente rama unsupported stack/cima antes delmotor deejecución, no ampliar catálogo ni ocultoAPI ni selector/playerUI. Conservar400/successfalse/message/history/structure/querydispatch0. Pruebas vivas2POST2GET mantienen0Cima; validación no tiene resultadofuture ni fakecalls. No introducirjournal paraqueries que no fueronaceptadas.
+
+D. Caller real: preservar3DOM/HTTP+1HTTP-only después rechazos y0consultasstandalone. Sus7pila_cima son ecos push integrados, noqueryreproduction ni closure Apilar. No crearcallerquery desde fabricatedhistory. No cambiar maincompiler/frontendasí porque unregistered methodrequires separate future authorization if desired. UIactual4contextos/five sections/readonlyreload/0extraPOST; no navegartrace Cima inexistente.
+
+E. Verificar mismos73IDs vivos sinxfail; sólo gapsnuevos definidos siaseguraIDinventorysin contar solapamientos. Recuperar nativo/eventos conSHAcurrent antesreruns, C/Hunchanged, protected376 except approved Python/service files/newengine. Reutilizarcaller/C/Doxygen ya válidos si sourcesSHAunchanged; medir recursossóloscopeexacto, reportarbefore514445bytesPython/7747JSON/0.0258026s rejectedAPI yprivatetrace porseparado si se mide nuevo. Checkpoint MEDIUMantesnuevaLOWconsolidación. NoGraph/SDDblocked/globalarchive/publicación. Mapa10permanece hasta cierreindependiente real.

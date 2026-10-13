@@ -1,0 +1,5 @@
+# DFS owned-pool transport independent QA
+
+Independent QA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f Sol LOW, READONLY offline. No imports/tests/browser/HTTP/benchmark/DFS30/adoption/product/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/current assignment and exact evidence binding; before/after guards. Write only own independent-review evidence and tracker. Review complete private source, existing public protocol/root subclass change, deterministic legacy bytes/typed expansion, full source-DAG validation including unreachable records, primitive normalization, fallbacks/invalid references, isolation and counts. Explicitly preserve failed JPG export evidence; no blanket consumer/export acceptance, latency/RAM claim or global closure. Three unique fixtures417steps and browser267 same chain case are overlapping, not additional unique fixtures. Additional encoded-DAG scans and retained source-pool peak risk remain. No automatic large retry or adoption; request coordinator next finite scope after verdict.
+
+Author report: openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-dfs-owned-pool-transport25-low/report.md

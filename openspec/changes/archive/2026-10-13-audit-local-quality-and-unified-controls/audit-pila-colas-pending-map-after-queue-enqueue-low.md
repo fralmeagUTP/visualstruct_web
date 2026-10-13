@@ -1,0 +1,9 @@
+# Mapa Pila/Colas tras baseline LOW Cola encolar
+
+Cola.encolar:baseline completo33ID19pass14fail,14C140events35conditions5mallocNULL/qNULL,40value/cardinalitymatches y8frontrearfinaldivs,8UI144/1284historyexact0traceexact. DOM4mainsC17/Dox4docs12balanced12NULLcontrolados;HTTPmain404real sincontractADDED.14rojosinstr/scope/init/identity/return/reload abiertos,MEDIUM propuesto queue-encolar-instructions-plan-medium-proposed.md sinimplementar. Evidencia visible-queue-encolar-baseline-low y checkpoint propio.
+
+Pila.apilar cierre finito CALIFICADO retrospectivamente: faltaSHAfinal contemporáneo30testshistóricos;comprobación acotadaactual14calls124events27conditions yoneUIempty40/36/realreloadNext,SHAantes/despuésequal,no30suite ni4UIrerun. Addendum stack-apilar-finite-closure-decision-low.md. Pila.desapilar comunicadoyPila/Cola/Prioridadlimpiar/Hash11/Sorting11cerradosscopefinito,conservar.
+
+Coladesencolar13observacionesviejas/incompletoqNULL/vacío/último,frontrear/num/free/scopes/returns;Prioridadencolarparcial,Prioridaddesencolar/frenteviejooracle30divs yDOMrootrojo porrecuperar;readonlyPila cima/Colafrente/final/priorityfrentehidden/helperspendientes,sinbotonesinventados.23viejasqueueobs=10encolar+13desencolar,no se suma10viejascon40nuevas.33IDsno33fixtures.
+
+Nueva PRIORIDAD autorizada: RNvalidarcompleto porusuario, excepciónC/Húnicamentevalidador/headernecesaria/backend/traza/main/pruebas/docs. SDDregistracontrato;recuperardecisiónantesimplementación,políticaduplicadosvigente,intABB/padres/ciclosy5reglasRN segúncontrato. Noejecutarmedencolarahora. Grafos/Dijkstra semánticasnuméricas/ciclos siguenpendientes;nootroC/H/noGraph/no publicar. Auditoríaglobal yC1 agregadopendientes,sin contador nuevo ni porcentaje tiempo.

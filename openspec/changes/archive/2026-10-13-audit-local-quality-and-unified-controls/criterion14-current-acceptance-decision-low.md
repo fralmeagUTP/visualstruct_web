@@ -1,0 +1,9 @@
+# Criterio14: contraste actual aceptado20261004
+
+Instrucción vigente autoriza evaluar14 ahora con adopciónsession-state ya verificada. Se acepta el criterio literal de contraste manual/ayudas con operaciones, controles, formatos y límites; no certifica comportamiento universal del intérprete ni handlers11/12/16/18.
+
+Evidencia propia: evidence/visible-preview-focal-criteria-consolidation-low/criterion14-current-contrast.json.13ayudasHTTP reales:12exactas a revisión semántica previa; Graph conserva aviso ownership actual ya aceptado en preview-UI-report.json del bloque previo.129snippets exactos a extracción vigente y hashes revisados, incluyendo fallback marcado disponible=false;26descargasHTTP idénticas aC/H canónicos sin cambios. ManualHTTP idéntico a effective-manual-after.html revisado. Contraste previo de109metadata/nombres/inputs/domino público-oculto, formatosint32, límitesSorting/Hash/Graph, errores, historial,ownership y controles vinculados en thirteen-help-effective-contrast-current.json permanece por estas identidades.
+
+Calleractual: Lista smoke5051 exacto al fixture12aceptado strictC17/native/ownership y recarga estable; Graphneighbors ejecuta modelo vigente y mantiene consulta fuera de main según contrato actual. Registrocaller-source-reuse.json. No se vuelve a compilar una fuente ya idéntica para inventar comprobación nueva. Adoptado session-state en openspec/changes/reconcile-session-query-history-documentation/adoption-report-20261004.md; no hay bloqueo documental pendiente de ese propietario.
+
+Faltantes documentados en inventarioactual son comprobaciones causales/controles de11/12/16 y QA18, no reconciliaciónsemántica pendiente de14. C1conserva1/12admitidas y11pendientes: esta aceptación no admite C1. Sólo casilla14 se marca; criterios11/12/16/18/19 continúanabiertos. No actualiza C/H ni producto ni altera autorizaciones previas.

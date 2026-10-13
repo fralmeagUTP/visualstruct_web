@@ -1,0 +1,3 @@
+# Frente Prioridad — consolidación LOW autorizada
+
+Nueva instrucción del coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: verificar125manifest/currenthash229protected4authorized2new,64IDsbaseline29/35 preservado,93obs39conditions,4C17mains9alloc/free0live9NULLDox0,querypersistGETnoredispatch yreadonly estructural. Reutilizar evidencia coninputs actuales sin rerun de bloques cerrados. Si válido cerrar casos finitos y actualizar mapa11→10 porcp_frente únicamente. Preparar próximo baseline LOW PilaCima con C público/adapter privado y rechazo público actual; no registrar operación UI/API ni cambiarproducto. NoGraph/SDD/publicación.

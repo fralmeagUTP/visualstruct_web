@@ -1,0 +1,97 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "extend-red-black-full-validation",
+  "operation": "rn.validation-contract",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs/tads_C",
+    "tests",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/archive"
+  ],
+  "tasks": {
+    "rn-contract-documentation": {
+      "objective": "Documentar contrato RN completo aprobado y aceptación segura",
+      "role": "documentation",
+      "owner": "rn-contract-documentary-author",
+      "requirements": [
+        "openspec/specs/hierarchical-structures/spec.md"
+      ],
+      "base": [
+        "openspec/changes/extend-red-black-full-validation/decision.md",
+        "openspec/changes/extend-red-black-full-validation/proposal.md",
+        "openspec/continuity/ROLE-WORKFLOW.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/extend-red-black-full-validation"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/extend-red-black-full-validation/design.md",
+        "openspec/changes/extend-red-black-full-validation/specs/hierarchical-structures/spec.md",
+        "openspec/changes/extend-red-black-full-validation/acceptance-plan.md",
+        "openspec/changes/extend-red-black-full-validation/c1-decision-addendum.md"
+      ],
+      "documentation": [
+        "openspec/changes/extend-red-black-full-validation/design.md",
+        "openspec/changes/extend-red-black-full-validation/acceptance-plan.md",
+        "openspec/changes/extend-red-black-full-validation/c1-decision-addendum.md"
+      ],
+      "evidence": [
+        "openspec/changes/extend-red-black-full-validation/evidence/history-clarification-verification.json",
+        "openspec/changes/extend-red-black-full-validation/evidence/history-clarification-qa-acceptance-transfer.json"
+      ],
+      "checks": [
+        "documentation-coherence"
+      ],
+      "next_step": "Entrega documental cerrada; auditor mantiene reconciliación session-state y cierre global. No archivar C1 ni este change por este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/extend-red-black-full-validation/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

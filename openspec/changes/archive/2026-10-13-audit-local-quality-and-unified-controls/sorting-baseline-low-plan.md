@@ -1,0 +1,5 @@
+# Ordenamientos inventario/baseline LOW autorizado
+
+Instrucción nueva:sorting_array independiente mientras decide usuario numéricosGrafos. Identificar11métodos reales ycontratos C/backend/main;vacío,único,repetidos,negativos,ordenados,inversos,límites seguros;documentación complejidad/estabilidad. Correcciones sólo generación/historial inequívocas,sin métodos nuevos ni decisiones pendientes. Preparar bloque instruccional acotado reusable. MantenerD:5051,sinpush/merge/despliegue,Grafosabiertos.
+
+Counting/Binsort:leer guardas y aritmética antes de rangos extremos,no agotar memoria ni ejecutar rango int desbordado. Radix:leer negación/exp antes de INT_MIN/MAX;limitar oráculo a operaciones C definidas y registrar exclusiones explícitas. Comparar resultado,status,Cstdout ybackend enrápido/paso por casos finitos;ordenfinal no demuestra estabilidad de registros iguales ni fidelidad instruccional. Historial/main compilados sobreHTTP real,ownership normal observado;replay/recarga no repetir ejecución. Doxygen/documentación revisados sóloalcance actual,sin cierresglobales.

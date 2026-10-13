@@ -1,0 +1,3 @@
+# Pila Cima — consolidación LOW autorizada
+
+Nueva instrucción del coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: verificar120manifest/currenthash,6callerinputsbytesigual,73IDsbaseline25/48conservado,16privatequeries48events16conditionsreadonly,400zeroCsteps/POSTGETexec0/nojournal/APIUIunexposed. Cerrar sólo núcleoprivado/C/Python/adapter ytrazaprivada conexclusiónAPIUI expresa. Si válido map10→9porpila_cimaúnicamente. Preparar siguienteLOWColaFrenteFinal gruposólosicoherente, IDs/source/conditions por método independientes, sin exposición. Sinproducto/retestsclosed/Graph/SDDblocked/publicación.

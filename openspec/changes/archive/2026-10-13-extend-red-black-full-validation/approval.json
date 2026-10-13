@@ -1,0 +1,9 @@
+{
+  "approved": true,
+  "owner": "rn-contract-documentary-author",
+  "allowed_paths": [
+    "openspec/changes/extend-red-black-full-validation"
+  ],
+  "provenance": "openspec/changes/extend-red-black-full-validation/decision.md",
+  "meaning": "Contrato documental autorizado; futuro técnico requiere asignación del auditor, no QA propia"
+}

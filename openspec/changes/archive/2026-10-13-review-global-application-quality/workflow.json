@@ -1,0 +1,113 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-global-application-quality",
+  "operation": "audit.global-independent-qa",
+  "roles": {
+    "specifications": {
+      "enabled": false,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "code": {
+      "enabled": false,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": false,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "documentation": {
+      "enabled": false,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs",
+    "tests",
+    "scripts",
+    "openspec/specs",
+    "openspec/changes/archive",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/review-global-application-quality/proposal.md",
+    "openspec/changes/review-global-application-quality/design.md",
+    "openspec/changes/review-global-application-quality/tasks.md",
+    "openspec/changes/review-global-application-quality/approval.json",
+    "openspec/changes/review-global-application-quality/workflow.json",
+    "openspec/changes/review-global-application-quality/review-freeze.json",
+    "openspec/changes/review-global-application-quality/source-package.zip"
+  ],
+  "tasks": {
+    "global-application-quality-independent-qa": {
+      "objective": "Revisión independiente global18 de producto estable y aplicabilidad11/12/16 para entrega19; no implementación",
+      "role": "quality",
+      "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+      "requirements": [
+        "openspec/changes/audit-local-quality-and-unified-controls/specs/application-quality-audit/spec.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/specs/visual-playback-ui/spec.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criteria-consolidation-global-QA-preparation-plan-low.md"
+      ],
+      "base": [
+        "openspec/changes/review-global-application-quality/design.md",
+        "openspec/changes/review-global-application-quality/approval.json",
+        "openspec/changes/review-global-application-quality/review-freeze.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/criteria-consolidation-global-QA-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-criteria-consolidation-global-QA-preparation-low/criteria11-12-16-assessment.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-criteria-consolidation-global-QA-preparation-low/reference-integrity.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-criteria-consolidation-global-QA-preparation-low/aggregate-correspondence-consolidated.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-criteria-consolidation-global-QA-preparation-low/criterion16-consolidated-union.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-criteria-consolidation-global-QA-preparation-low/route-consumer-recovered-bindings.json"
+      ],
+      "allowed_paths": [
+        "openspec/changes/review-global-application-quality/evidence/independent-review"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/review-global-application-quality/evidence/independent-review/review.md",
+        "openspec/changes/review-global-application-quality/evidence/independent-review/checks-report.json"
+      ],
+      "documentation": [
+        "openspec/changes/review-global-application-quality/evidence/independent-review/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/review-global-application-quality/evidence/independent-review/review-evidence.json"
+      ],
+      "checks": [
+        "independent-review"
+      ],
+      "next_step": "Reviewer real: propio before, SHA freeze, selección global18 registrada/aislada, checks realmente ejecutados, verify/after; coordinación acepta, no self-close.",
+      "state": "pending",
+      "approval": "openspec/changes/review-global-application-quality/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

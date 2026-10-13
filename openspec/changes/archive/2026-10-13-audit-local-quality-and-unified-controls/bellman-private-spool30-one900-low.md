@@ -1,0 +1,11 @@
+# ONE private BF30 completed spool trial LOW
+
+Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd afterQA2422 acceptedfocal authorizes ONE BF30 private sameC/steps directed1..30/29unit/start1/end30. Explicitly supersedes QA conservative180s/512MiB recommendation: private trial maximum900s request including generation/validation/fullspool/readback/HTTPconsumption, body1073741824B, same hardRAM2147483648B. Verifyreal localdisk reserves BEFORElaunch; no publiclimitschange/externalresources. Supervisorownedroots/fds/evidencepartial cleanup success/failure/cancel/timeout noforeignrecursiveerase. Onegzip body evidence copy ifcomplete, boundedsource/protocol/oracleownership/sessionverification. No retry/adoption/otherlarge/optimization/Git/preview. Gate exactbefore0 mechanically BEFOREjob/Popen and self2GiBbeforeimports. Ifinsufficientlocalspace donotlaunch reportblock. Separate oldnativeC timing fromvisualPython request; sourceNativeoracle reuse notfresh perinstructionCproof. QApackage after.
+
+- [x] bellman-private-spool-bellman30-one900: ONEtrial or explicitprelaunchblock; actualfullresponse/oracle/ownership/session/resource/ownedcleanup evidence then QA.
+
+Design: same accepted private spool source folder, runtimeinstance bodytotal1GiB/files1; disk reserve512MiB; budget1GiBspool +1GiB16MiBevidence +256MiBlogsmetadata +512MiBreserve =2.765625GiB free minimum. Raw body consumed once to streaminggzip1 evidencefile; no rawbodyduplicate/wholeJSONRAM. Supervised request900s; preparation separately bounded180s; totalworker cap1085s (no extra C/request time). Cooperative watchdog reporting plushardjob termination; timeout/crash rootledger validation and ownemptyrmdir, partialevidenceonlyidentitycheckedunlink. Nativefinaloracle existing33alloc4free29outputcost29 verifiedsameCfixture.
+
+Budget decision openspec/changes/audit-local-quality-and-unified-controls/bellman-private-spool30-one900-authorized-budget.md. CurrentQA openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-private-spool-independent-review/review.md; its old time/disk recommendations superseded ONLYby explicit new assignment, RAM/C/publiccontracts unchanged.
+
+Outcome: finite attempt failed before request; see evidence/visible-bellman-private-spool30-one900-low/report.md. No functional or capacity closure.

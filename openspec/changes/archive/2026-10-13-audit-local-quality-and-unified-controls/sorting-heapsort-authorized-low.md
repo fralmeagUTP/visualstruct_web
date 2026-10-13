@@ -1,0 +1,3 @@
+# Heap sort LOW autorizado
+
+Instruccion vigente del coordinador01a0f0a7-80d9-722c-85ae-b3a1660740fc: baselineLOW Heap sort, distinto delTADHeap. Reutilizarinfra, resultados/metrica/fidelidadcontroles/helper/callersUI C17Doxygen. Ajustessencillosonly, regresionesnoocultadas yplanMEDIUMdelimitado antesdesemantica. Preservarsiete cierres yC/H. Dguardas/evidencia ypreview5051loopbackactual; sinpublicacionmerge/despliegueni red. Seis entradas<=4 single/ordered/reverse/duplicates/negative/extremes, guardasnativas aparte, helper heapify real (hundir es nombre sintetico erróneo de pedagogia). Global13/22/docs121/208 permanecen. LOWnoautoriza bloquecompleto porinstruccion.

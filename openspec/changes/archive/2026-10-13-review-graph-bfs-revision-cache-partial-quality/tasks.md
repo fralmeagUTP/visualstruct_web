@@ -1,0 +1,7 @@
+- [x] Register actual independent owner with candidate993 and14baseline sources (not approval).
+- [ ] Run own before and verify binding/source/test/baseline provenance.
+- [ ] Review exact cache equivalence/invalidation/current26evidence; targeted check only if needed.
+- [ ] Validate existing plain13.1711725sFAIL without rerun.
+- [ ] Report coverage83/85 unaccredited and exact residual source IDs.
+- [ ] Review recovery/rollback plan without executing it.
+- [ ] Issue scoped partial acceptance matrix/limitations, own after,05UTC decision handoff; no audit closure.

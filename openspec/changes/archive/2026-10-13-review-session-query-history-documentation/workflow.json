@@ -1,0 +1,104 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-session-query-history-documentation",
+  "operation": "session-state.query-history-documentary-qa",
+  "roles": {
+    "specifications": {
+      "enabled": false,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ],
+      "disabled_reason": "Sólo revisión documental independiente, sin transferencia de implementación."
+    },
+    "code": {
+      "enabled": false,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ],
+      "disabled_reason": "Sólo revisión documental independiente, sin transferencia de implementación."
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": false,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ],
+      "disabled_reason": "Sólo revisión documental independiente, sin transferencia de implementación."
+    },
+    "documentation": {
+      "enabled": false,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ],
+      "disabled_reason": "Sólo revisión documental independiente, sin transferencia de implementación."
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs",
+    "tests",
+    "openspec/specs",
+    "openspec/changes/archive",
+    "openspec/changes/reconcile-session-query-history-documentation",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261004.json",
+    "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261004.md",
+    "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004",
+    "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-source-manifest-20261004.json"
+  ],
+  "tasks": {
+    "session-query-history-documentary-qa": {
+      "objective": "Revisar independientemente matriz C1 y delta session-state congelados",
+      "role": "quality",
+      "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+      "requirements": [
+        "openspec/changes/reconcile-session-query-history-documentation/specs/session-state/spec.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261004.json"
+      ],
+      "base": [
+        "openspec/changes/review-session-query-history-documentation/design.md",
+        "openspec/changes/review-session-query-history-documentation/review-freeze.json",
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-source-manifest-20261004.json",
+        "openspec/changes/reconcile-session-query-history-documentation/acceptance-plan.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004/review.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004/checks-report.json"
+      ],
+      "documentation": [
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004/review-evidence.json"
+      ],
+      "checks": [
+        "independent-review"
+      ],
+      "next_step": "Revisor real ejecuta before y revisión documental. Sin ejecución/aceptación declarada por preparador.",
+      "state": "pending",
+      "approval": "openspec/changes/review-session-query-history-documentation/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

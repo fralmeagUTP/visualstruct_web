@@ -1,0 +1,5 @@
+# Instrucción vigente documental C1
+
+Coordinación 01a0fe61-3104-743a-b032-bcc289ad80cd asigna al hilo real 01a0fad1-4046-71ae-990c-a53383e81006 como escritor documental actual, preservando identidad y snapshot histórico. Registrar coordination-c1-current-evidence-and-query-history-low-20261004. Misma operación c1.remaining-documentary/task c1-documentary. Actualizar once requisitos/veinte escenarios con evidencia vigente sin admisión automática; preservar C1-REM-06. Preparar expediente dedicado session-state sobre consultas cronológicas aprobadas y replay sin redispatch, sin cambiar semántica/producto. Devolver delta exacto y revisión antes de adoptar canónicos. Escrituras sólo change C1, expediente documental nuevo y asignaciones necesarias; no auditor/runtime/C/H/preview/pruebas. Guardas before/after; no eludir rechazo. Auditor mantiene11/12/16.
+
+Motivo exacto: Evidencia técnica aceptada posterior al snapshot20261003 y aclaración session-state de consultas cronológicas aprobadas; actualizar sólo diagnóstico documental y reconciliación íntegra demostrable

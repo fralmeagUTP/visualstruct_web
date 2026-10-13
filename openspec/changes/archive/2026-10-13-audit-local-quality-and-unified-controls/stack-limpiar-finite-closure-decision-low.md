@@ -1,0 +1,9 @@
+# Pila limpiar: cierre LOW de casos finitos
+
+Instrucción vigente coordination-stack-limpiar-finite-consolidation-low-20261003. Revisión propia evidence/visible-stack-limpiar-finite-consolidation-low/review.json confirma nueve archivos producto, 515 fuentes protegidas en su estado autorizado y 101 artefactos inmutables actuales. Recolección actual conserva20IDs,16originales+4disjuntos; reutiliza20/20 pass MEDIUM, no otra corrida ni sumatoria.
+
+Se cierra únicamente stack.limpiar.instructions para vacía, un nodo negativo, multinodo con duplicados/negativo, limpiar repetido y reinserción, más NULLroot nativo. Root ptrPila* alias al slotcaller; aux function-local indeterminado antesassignment/despuésfree; unlink antesfree con nodo detachedvivo; identidadlocal estable; campos/máscara retirados inválidos e historia aparte; retorno void cierra scope sin invalidar raízcaller. Eventos9calls76/25conditions coincidentes;8APIcalls72events más4NULLnative. UI8calls144forward128backdosvistas y4reloadexact,5secciones,0POSTextra/JSerrors. No reconstrucción o mutación desde cursor; GET no construye otra traza, conserva replay histórico existente.
+
+Cuatro mains reales byteverificados/C17strict/Doxygen0;8alloc8free0live;8fallosNULLmalloc simulados limpian antesreturn1. No OOMreal/UB/sanitizers. Máscaras semánticas noABI/padding; no todoslosint/profundidades/sesioneslargas. Exportmain restringe signed32 representable, APIactual intacta. Recursos finitos MEDIUM picoPython1.752.811bytes/JSON142.187bytes/max0,053s reusados, noRSS/SLA.
+
+No cierre totalPila/Colas ni auditoría global. Poppila ya cerrado se conserva; apilar evidencia parcial no ampliada. Hash11/11 y Sorting11/11 finitos, H1/C_H y decisionesRN/Grafos intactos. Global13/22/docs121/208/C1sin incremento. No nuevos contratos/especificaciones ni publicación.

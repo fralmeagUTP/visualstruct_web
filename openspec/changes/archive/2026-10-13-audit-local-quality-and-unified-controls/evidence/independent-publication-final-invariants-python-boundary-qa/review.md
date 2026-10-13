@@ -1,0 +1,35 @@
+# QA focal: invariantes finales y frontera Python/JSON
+
+Dictamen: ACEPTAR el candidato local para el alcance focal revisado. No se encontraron defectos materiales ni relajamiento injustificado de los tests. No autoriza publicación ni cierre de suiteglobal/E2E/VPS. Proyecto canónico D:\MisProyectos\Web_VisualEstruct; change audit-local-quality-and-unified-controls; asignación coordination-publication-final-invariants-python-boundary-independent-qa-low-20261007; operación audit.publication-final-invariants-python-boundary-independent-qa. Revisor distinto del autor técnico.
+
+## Evidencia propia
+
+99 bindings SHA/tamaño coincidentes. Diffs de cuatro fuentes existentes recalculados contra originalesguardados coinciden con los hunks correspondientes; tresfuentesGraph yuntestexistente más3archivos nuevos test/oráculo. Contra251fuentespublicadas:247sin cambios,3integracionesGraph nuevas ybuilderPriorityQueue previamenteaceptado SHAcdc7fa7dd731415bc6f294158af858ef35ecdc59f125e94aacdd70096aec3b5d intacto. C/H, intérprete/algoritmos, UI ybuildersjerárquicos intactos. Checks yguardas propias en esta carpeta.
+
+Decodificación independiente delarchivo wire-fixture-before-after.json, implementada sólo constdlib ysin llamar decoderproducto: tablasbackwardrefs válidas5387/5388objetos; ambastrazas completas decodificadas exactamente iguales,504frames503eventosC. Final==últimoestado ycontinuidad entretodoslosframes verificadas. Ninguna pérdida de memoria,debug,condiciones,eventos,consola,source ocontenido porproyección; IDs de tabla ypacketbytes pueden cambiar legítimamente. Elfixtureguardado esJSON: prueba equivalenciawire, no todoslostiposPython. Testdirecto yregistro de tipos respaldan lafronteraPython para este caso.
+
+XMLbefore18casos7FAIL11PASS0skip; XMLafter18PASS; final35PASS0fail/error/skip. stdoutfinal35passed11.96s, XML11.932s, harness12.234s: distintas capas demedición, no discrepancia material ni benchmarkalgoritmo. IDsfinales:4jerárquicos,8negativos,7boundary/rejection,1Dijkstrafrozen,6codecguards,9PriorityQueue. No sumar runsintermedios como casosextra. Evidencia final haceuso de sourceactual ygoldenDijkstraprecodec yaexistente; no goldenregenerado desdecandidate. Cohortbeforeusa3invariantesholdsNone deltestoriginal ynegativos/boundarydisponibles en ese momento; eltestjerárquico cambia explícitamente después, no se presenta como igualdad íntegra de fuentes de testbefore/after.
+
+## Certificación jerárquica
+
+Dos igualdades deestado se conservan; None se exige sólo aAVL/RN/Heap cuyosframescallerreturn no certifican estructura. ABB exigeTrue. La comprobación nueva es un oráculo independiente de estructura visual, no lectura deTrueenmetadata: BSTboundsglobales/enteros, ausencia deciclos/nodo compartido, tamaño/altura/vacío/inorden; AVLalturasrecalculadas,FEderecha-izquierda ybalance; RNraíznegra,coloresválidos,red-red yblackheight; heapminorder/array/árbolcompleto/capacidad. reportedvalidationTrue sigueexigido paraárboles, pero por sísolo no decidePASS. No fakeValidarC ni cambiosbuilder/invarianteNone.
+
+Se reevaluaron los ocho negativos usando exclusivamente las funciones puras deloráculoyfixtures extraídas porAST, sin pytest/app. Cada uno falla por la obligación prevista: heap_order:min-heaporder; heap_shape:array/árbol; avl_height:metadataaltura; avl_balance:balance; bst_order:upperbound; rn_root:colorraíz; rn_red_edge:red/red; rn_black_height:altura negra. Ninguno pasa sóloporque elfixture afirma validationTrue. Ciclos se rechazan estáticamente porseen; no caso adicional ejecutado de ciclo/parent.
+
+Este ajuste cumple contratosactuales que exigen invariantesreales ycoherenciafinal, sin imponer holdsTrue auncallerframe. No debilita lacomprobaciónsustantiva para estos4inputsinsertar10; laamplía frente abooleanmetadata. La vistaRN no contiene parent pointers: oráculo nuevo no los prueba, reportedvalidation yV3finito previo mantienen esacobertura. No nuevaQAdeRNalgoritmos/todasrotaciones/longsessions ni certificaciónnativa nueva.
+
+## Frontera Graph
+
+Dijkstra service pasa _compactFalse, recibe GraphLogicalTrace conpoolpropio; SnapshotPoolpreserve_tuplesTrue conserva clavesPythonint/tuplas yrecordsJSONnormalizan nombres. La rutaGraph yaexistente empaca ese pool, luego_json_safe transforma nofinitos aNone enHTTP. Testdirecto conservaigualdadcompleta sinJSONnormalizaramboslados, clavesint/distances exactas {1:0,2:3,3:inf},ruta[1,2]/costo3 yTraceEngine/continuidad. TestHTTPreal exigeJSONclavesstr, inalcanzableNone,codecactual,evento-count yfinal/último/visual completos. Rechazostart99sinC conservaGraphLogicalTrace yapplication_rejection/noexecution/emptyCevents/estadocorrecto.
+
+SnapshotPool ahora comprueba colisiones normalizadas también enmodotipado. Casos1vs'1',Truevs'true',Nonevs'null'negativos;bool/int/floatvalores, tuple/listwire yrefsnoenteras/forward/out-of-range cubiertos. No bypass devalidación, no descartarcolisiones,nopérdidadeeventos ni cambioC. Dijkstra conservaformasPythonqueconsumidores yaobservaban envisual_state; no nuevo contratoJSONdelservicio. Helpersfinish retornan GraphLogicalTrace enrutanoCompact; otrasoperacionesnuméricas enproducciónsiguencompactTrue/preserve_tuplesFalse. Rutaprivada_compactFalse deotrasoperacionespuedeahoraretornarsubclase, compatiblecomodictpero no probada globalmente; nobroadclaimdeABIuniversal.
+
+Prueba frozenDijkstra verifica campos/eventos completos contraesperadoprecodec,codecguardsexistentes siguen vigentes. LaigualdadHTTPdewireguardado complementa oráculos: no sólofinalstate o conteo504. IndependenciadelalgoritmoC no se renuevaaquí: kernels/intérprete/Cinmutables yoráculosnativos anteriores son evidenciahistórica acotada, no nueva compilación.
+
+## Límites y siguiente paso
+
+Eltest originalagregado acrossallvisibleGraphmethods no fue ejecutado: esteQA resuelve la concreta fallaDijkstra porconsumerdirecto yno declarafunciónagregadaPASS. Otroscuatrofrozenfixtures delbatchauxiliar permanecen sinresultado terminal:120.406s/exit124 yprogressdots no equivalenPASSni defectológico automático. Esaproporción no es porcentaje deltrabajo. 85casos siguenpending; elledgercurrentbinding conservaIDs/firstassertions, sinobsoleto porasunción.
+
+E2E20mincancelado sigue sincausapruebani nuevehistoricalresultados. Planbrowser3vertices1edgeconcheckpointflushed/realNextPrevious/postcount/120s2GiB es diagnóstico razonable, sólo propuesto/noejecutado yrequiere asignacióncorrespondiente; norecomiendaaumentarbudgets. 35focales no equivalenCIglobal actual, porcentajecobertura niGraph15spuro. ReparaciónColaPrioridad conservada porSHA y9regresiones; suaceptaciónanterior no se repite comocampaña nueva.
+
+Guarda propia before0 yafter0. QA sólo lecturas/hash/JSONdecodificación/comprobacionespurasdecorrupciones pequeñas yregistropropio; sinapp/native/browser/suiteslargas/producttests/publish/Gitmutaciones/preview. Coordinador puede usaraceptaciónfocal para siguiente pasopublicaciónautorizado yCIexactSHA; noborrarfailedlogs ni calculartotalunitnuevo restando fallos dehistorical124.

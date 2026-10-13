@@ -1,0 +1,8 @@
+{
+  "schema": "continuity-archive-map/v1",
+  "retired_prefix": "openspec/changes/review-sorting-direct-range-error-oracle/",
+  "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-direct-range-error-oracle/",
+  "input_overrides": {},
+  "meaning": "Resolve dated immutable assignments, hash manifests and historical references to preserved original bytes; retired review is not an active assignment.",
+  "retired_index_entry": "openspec/changes/archive-verified-review-closures-20261013/evidence/retired-continuity-entry.json"
+}

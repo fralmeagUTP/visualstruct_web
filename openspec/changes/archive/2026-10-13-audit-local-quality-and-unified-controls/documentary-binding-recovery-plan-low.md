@@ -1,0 +1,3 @@
+# Recuperación documental de bindings — LOW
+
+Asignación coordination-documentary-binding-recovery-low-20261004; operación documentation.symbols. Sólo documentos/ledger; runtime, tests, C/H y preview congelados. No repetir tests históricos ni conceder signoff por hash o lectura. Preservar evidencia original y versiones de reconciliación; producir adenda de procedencia y revisión explícita por símbolo. Recuperar Desapilar/RN19; Graph18 revisar fuente y alcance de evidencia histórica; Heap separar ausencia confirmada en un corpus definido de búsqueda incompleta. Guardas before/after; 13/22 permanece. Comentarios C/H esperan permiso del usuario gestionado por coordinación.

@@ -1,0 +1,5 @@
+# JPEG y trazas HTTP ocultas Lista
+
+Instruccion vigente coordinacion01a0fe61-3104-743a-b032-bcc289ad80cd: aplicar reparacion minima del JPEG vacio Sorting en interpreter_runtime.js y regresion focal vacia/no vacia. Completar tres trazas HTTP ocultas Lista insertar_elemento/insertar_posicion/eliminar_posicion con evidencia C/DOM aplicable, sin repetir suites intactas. Preservar sesiones,C/H,contratos. Actualizar matriz/enlaces11/12/16 sin cierres. Preparar consolidacionLOW y QAindependiente estable. Detener solo cambios fuera de autorizacion.
+
+Operacion audit.canonical-correspondence abierta. Casos caller12 previamente aceptados permanecen cerrados; las trazas HTTP no certificadas se examinan como alcance nuevo, no repeticion. JPEG candidato previo probado fuera de producto ahora expresamente autorizado. Solo escritor tecnico activo; ninguna delegacion ni despliegue. Fuentes: graph10-consolidation-preview-checkpoint-low.md, canonical-focal-finite-acceptance-decision-low.md y registros focales enlazados.

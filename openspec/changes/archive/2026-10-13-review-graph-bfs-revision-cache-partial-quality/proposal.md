@@ -1,0 +1,1 @@
+Review immutable BFS cache candidate993 and report scoped partial acceptance, existing failed5s performance and unaccredited83/85 coverage for05UTC decision. Preserve prior review and do not declare global closure.

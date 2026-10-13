@@ -1,0 +1,1 @@
+Diagnostica únicamente la causa compartida de los ocho StopIteration con source_code vacío, máximo10min. Contrasta contrato vigente adapter/harness y fuente C canónica. Conserva994 y expectativas. Propón reparación única de preparación con C real si procede; no ejecutar pruebas ni medición.

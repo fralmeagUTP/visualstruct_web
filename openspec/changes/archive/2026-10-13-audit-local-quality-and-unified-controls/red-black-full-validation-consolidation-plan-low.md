@@ -1,0 +1,3 @@
+# RN V3 consolidación LOW autorizada
+
+Delegación actual coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: revisar13filas aceptación,52regresiones/17fixtures,API/Cnative/UIreload/mainDoxygen/ownership7/7 ymapas8ramasrealdelete. Sin reimplementación ni repetir suitescerradas: validarhashes/evidenciaytipos,objetosvivos/cycles/shared,edgeints/stableops. Separar defecto funcionalfinito deinfraestructurasanitizer:leerlinkerrors ybuscarcompiladoresinstaladosalternativaspermitidas sininstalar. Entregarpaquete/hashpara revisiónindependiente. NoarchivehastaQAadecuada,noEncolarMEDIUM,noGraph/nootrosC/H/nopublish. C/H exception remains only implemented RNvalidator; no productedit in this LOW. Finitefunctionalclosure if evidenced, global/C1/sanitizer pending separate.

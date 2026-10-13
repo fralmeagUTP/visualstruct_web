@@ -1,0 +1,3 @@
+# Design
+
+Freeze onlysixproposedfiles andliteralinputcopies; exploratorymatrixnotpublishednotfrozenruntimepath. Distinctreviewerissuesownverdict. No authorassignmentpointerchange.

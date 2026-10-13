@@ -1,0 +1,19 @@
+# Cola Encolar: cierre LOW de casos finitos
+
+Coordinación autorizó consolidar y cerrar únicamente Encolar si la evidencia seguía vigente. Revisión realizada en D:\MisProyectos\Web_VisualEstruct, asignación `coordination-queue-encolar-finite-consolidation-low-20261003`, operación documental `queue.encolar-finite-consolidation-low`. No se reabrió ni modificó implementación en LOW.
+
+Queda cerrado `queue.encolar.instructions` para los casos registrados: vacío, singleton, duplicado y extremos enteros, dos inserciones por fixture; argumento qNULL y cinco fallos controlados mallocNULL privados. Motor `cola_encolar` con q=&cola y parámetros/locales tipados, malloc opaco, máscaras0→1→3 de nro/sgte, identidad estable temporal/publicado, aux hasta retorno y caller delantero/trasero vivos; rama vacía/no vacía y retorno void fieles. No se añadió un mecanismo de fallo público ni cambió FIFO o C/H.
+
+36IDs únicos pasan en LOW con SHA contemporáneos de siete fuentes QA:33baseline preservados+3 de sesión,0 nuevos frenteMEDIUM. No sumar36+36 ni33+36. El resultado histórico19pass14fail queda intacto;14divergencias normativas están resueltas por implementaciónMEDIUM y revisiónactual.133SHA baseline iguales;226SHA productoMEDIUM iguales;63artefactosMEDIUM iguales. El64º es stderr delpreviewactivo: conserva exactamente elprefijo conSHAoriginal y sólo añade líneas. `verified-hashes.json` califica explícitamente ese log vivo; no se afirma que su hash completo siga igual.
+
+La revisión de artefactos repite el contraste causal de14llamadasC/140eventos/35condiciones conservados con8trazasAPI+6fallosprivados. Máscaras/campos/enlaces/identidades/roots/consola/retorno coinciden;40observacionesfront/rear0divs. No hubo nueva ejecuciónC. Las8trazasUI tienenlosmismos12framesdebug queAPI:2vistas,192forward/176back,4reloadexactos dehistorialytraza,Siguientereal sinPOST adicional,0JSerrors y5secciones. Browser no reejecutadoLOW; evidencia vigente enlazada porSHA, incluidos harness ylogaceptado. Los144/128 históricos no se suman.
+
+Cuatro mainDOMMEDIUM idénticos porbytes a baseline. Se reutiliza C17estricto/Doxygen6inputs0warnings4main documentados/ownership12alloc12free0live/12posicionesNULLcontroladas sin éxitos falsos; no nuevas compilaciones o casos. HTTP C/H actual200 conbytesD/baseline iguales;queue/main sigue404, sin contratoADDED. Manual explica traza/recarga/scope/errores y es fuente deproducto verificada.
+
+Recursos:8muestrasMEDIUM conservadas, máximo2,173,488bytes de picoPython,157,734bytesJSON,0.0673815s instrumentado. Antes658,901/42,055/0.0462116. Incremento registrado; no certifica RSS, heapC/browser, memoria universal, leak, profundidad, historial arbitrario, OOMreal, sanitizers niSLA. Tampoco cubre cantidades inconsistentes/ABI/padding o todaCola.
+
+No se modificó producto enLOW. C/Htodos intactos y cierresRN/Hash/Sorting/Pila/limpiar preservados. No archivo/consolidaciónspecglobal/publicación/commit/push/merge/despliegue ni nuevo contador. LosdocumentosSDDbloqueados permanecen intactos; permiso deotroescritor sigue separado. Graph/Dijkstra decisionesnuméricas/ciclos pendientes. La excepciónC/HRN está terminada.
+
+EvidenciaLOW: `evidence/visible-queue-encolar-finite-consolidation-low/{review.json,verified-hashes.json,regressions-current.log,unique-test-ids.json,ID-overlap.json,current-QA-source-hashes.json,summary.json}`. FuenteshistóricasMEDIUM ybaseline preservadas. Este cierre reemplaza el estado pendiente de revisión delcheckpointMEDIUM para Encolar, sin borrar su fotografía.
+
+Siguiente propuesta exclusivamente: baselineLOW `priority_queue.encolar` según `priority-queue-encolar-baseline-plan-low-proposed.md`; no se ha empezado y requiere asignación/binding/before nuevos. No elegir la operación desde uncheckpoint viejo ni usar after para repetir un bloque cerrado.

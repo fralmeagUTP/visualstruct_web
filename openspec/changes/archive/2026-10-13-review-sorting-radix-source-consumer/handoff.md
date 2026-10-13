@@ -1,0 +1,3 @@
+# Independent Radix source consumer handoff
+
+Operation qa.sorting-radix-source-consumer; assignment coordination-sorting-radix-source-consumer-independent-qa-low-20261007; task sorting-radix-source-consumer-independent-qa. Exact one-call/one-import correction to legitimate consumer actualC, all original assertASTs identical. Review initial/final hashes, old/new test and focal1FAIL->1PASS evidence; no product/native C/broadcampaign or nextpush. Author report ../audit-local-quality-and-unified-controls/evidence/visible-sorting-radix-source-consumer-low/report.md. Parent selects independent reviewer.

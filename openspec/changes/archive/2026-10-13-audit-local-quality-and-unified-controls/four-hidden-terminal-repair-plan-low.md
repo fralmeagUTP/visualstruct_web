@@ -1,0 +1,3 @@
+# Reparación exclusiva cuatro métodos ocultos LOW
+
+Coordinación01a0fe61-3104-743a-b032-bcc289ad80cd autoriza reparar eliminar_inicio/primero/eliminar_final/mostrar de Lista, modelo/dispatch exclusivo y regresionescausales/player desde12casosC17diagnosticados. MantenerC/H/API/semántica/UIrestante/lista7casoscerrados/Ultimo yQA14aceptados. No suitesglobales ni familiasintactas. QAparalela solodisposiciónhistórica sinprobar inputs enmutación. Antes/after obligatorio, modeloSHAcuerpoC, evidencia baselinepreservada, freeze/bindingindependientefocalfinal. Preview/sesionespreservados; refreshsólocoordinado. Objetivo05UTCsinrebajarrequisitosQA18.

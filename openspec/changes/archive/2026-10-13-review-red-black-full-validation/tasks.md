@@ -1,0 +1,3 @@
+- [ ] Independent bounded checks against current SHA, readonly RN product.
+- [ ] ReportRN-IMPL-01 andactualsanitizeravailability.
+- [ ] Deliver ownverificationinputs/results andaftergate; nofinalarchive.
