@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-insercion-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T12:39:33.639855+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.insercion-baseline-low",
+  "task": "LOW consolidate Seleccion by reading preserved evidence; bounded Insercion baseline and next implementation plan",
+  "instruction": "Return LOW; consolidate Seleccion without repeating closed cases; prepare next existing simple method Insercion with comparison/shift/temporary/index baseline; reuse verified infrastructure/callers; implement only if simple LOW or delimit bounded MEDIUM; maintain D:5051,numerical decisions apart,no push/merge/deploy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-insercion-authorized-low.md"
+}

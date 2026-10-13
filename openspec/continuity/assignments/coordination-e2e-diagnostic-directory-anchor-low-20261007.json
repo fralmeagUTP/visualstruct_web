@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-e2e-diagnostic-directory-anchor-low-20261007",
+  "issued_at_utc": "2026-10-07T04:04:43.093981+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.e2e-diagnostic-directory-anchor",
+  "task": "e2e-diagnostic-directory-anchor",
+  "instruction": "Latest parent01a0fe61 authorizes exactCI diagnosis after accepted joint publication. Ecb CI terminal: zero E2Eevents, source proves relative channel directory diverges under pytest child cwd=tests. Necessary diagnostic-only minimal path anchoring repair in runner and meaningful relative-cwd regression; no underlying browser hang claim. Two-file candidate frozen for new independent focal QA; do not publish before acceptance. Preserve accepted components, C/runtime/Sorting/algorithms/20min; no local browser/longbattery. Verified backup/atomic continuity replacement/readback.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/e2e-diagnostic-directory-anchor-low.md"
+}

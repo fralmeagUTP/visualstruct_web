@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-remaining59-shared-cause-readonly-low-20261007",
+  "issued_at_utc": "2026-10-07T02:41:25.694209+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.remaining59-shared-cause-readonly",
+  "task": "remaining59-shared-cause-readonly",
+  "instruction": "Parent01a0fe61 authorizes onlyindependentreadonlydiagnosis of59remainingfirstfailures andE2E whilethreeQAinputs frozen. Logs/staticcode/approvedcontracts togroup sharedcauses andminimumnextrepair, no newbroadaudit/longbatteries/product/test/QAinputwrites. Ownclassificationevidence only. SortingA/Bpendingseparate; no sourcepolicychoices. E2Efirsttwo boundedpassalreadyknown; identifyobservability/unboundedwait candidateswithoutclaimingcause. No publicationorVPSinthisdiagnosticoperation.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/remaining59-shared-cause-readonly-low.md"
+}

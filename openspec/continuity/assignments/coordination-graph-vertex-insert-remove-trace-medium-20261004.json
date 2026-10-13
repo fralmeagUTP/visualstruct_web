@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-vertex-insert-remove-trace-medium-20261004",
+  "issued_at_utc": "2026-10-04T10:01:15.680393+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.vertex-insert-remove-trace",
+  "task": "Repair only insert_vertex/remove_vertex branch/state/highlight trace fidelity; native causal oracle and focal player/reverse/reload verification; preserve C/H/contracts/Graph6 and hand off LOW",
+  "instruction": "Procede con binding propio y MEDIUM acotado para corregir exclusivamente fidelidad de traza/resaltado en Insertar y Eliminar vértice Graph: dos regresiones confirmadas resaltan ramas C no ejecutadas. Conserva algoritmos C/H, contratos, resultado funcional y alcance existente. Registra baseline2fallos IDs inalterados, comparación C eventos condiciones y verificación player incluyendo reversa/recarga sin redispatch si afectado; añade pruebas focales variantes necesarias sin reruns familias cerradas. Reconcilia matriz517 y criterios después, evidencia exacta, no cerrar14 por HTTP sólo. Mantén ayudas129snippets109ops aceptadas y eliminación sospecha alias documentada. Entrega hito para LOW con residual global.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-vertex-insert-remove-trace-plan-medium.md",
+  "supersedes": "openspec/continuity/assignments/coordination-eight-criteria-matrix-manual-low-20261004.json"
+}

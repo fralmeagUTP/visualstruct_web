@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-four-later-oracles-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T15:32:05.221262+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sorting-four-later-oracles",
+  "operation": "qa.sorting-four-later-oracles",
+  "task": "sorting-four-later-oracles-independent-qa",
+  "instruction": "# Four later Sorting oracle causes\n\nParent after accepted publication authorizes diagnosis and only inequivalent-current-C/oracle repairs with small proof and independent QA before next push. Four prior categories: range message, heapsort partial-property assertion, burbuja loop label, quicksort obsolete pivot token. Include counting sibling of binsort same message only. No algorithm, C, event, timing or E2E changes.\n\n- [ ] sorting-four-later-oracles: current C causal diagnosis, small baseline/repair evidence and QA handoff.\n",
+  "scope_ref": "openspec/changes/review-sorting-four-later-oracles/review-scope.md"
+}

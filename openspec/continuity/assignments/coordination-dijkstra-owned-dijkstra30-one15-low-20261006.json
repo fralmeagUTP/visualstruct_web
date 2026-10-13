@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra-owned-dijkstra30-one15-low-20261006",
+  "issued_at_utc": "2026-10-06T07:03:10.518786+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dijkstra-owned-dijkstra30-one-observed",
+  "task": "dijkstra-owned-dijkstra30-one-observed",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd explicitly authorizes ONE private accepted-equivalent Dijkstra30 directedchain1..30/29unitarcs/start1/end30. Self-specific Job2GiB beforeimports/request60s/process180s; minimal phase/memory observation to localize failure. Fullresponse/HTTP/posttimeroracle/memoryownershipfrees/sessioncontract/hashes ifcomplete. Ifincomplete preserve exact observedpoint and demonstratedcause, NOretry/resourcesincrease/adoption/otherthree largealgorithms. Consolidated QA with diagnosticpairs and thisresult,currentbinding.15minutesmax. Preserve educationalC/algorithm/types/order/conditions/memory/frees/returns; noGit/preview5051.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dijkstra-owned-dijkstra30-one15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dijkstra-owned-small-http-reverse10-low-20261006.json"
+}

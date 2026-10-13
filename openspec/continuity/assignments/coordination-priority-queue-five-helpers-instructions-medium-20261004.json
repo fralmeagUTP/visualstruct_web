@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-five-helpers-instructions-medium-20261004",
+  "issued_at_utc": "2026-10-04T00:39:22.151879+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority-queue.five-helpers-instructions-medium",
+  "task": "Implement five private Priority helper traces and Python C fidelity under bounded MEDIUM",
+  "instruction": "Aceptada consolidación Mostrar por separado, alcance privado API/UI excluidas, mapa7→5. Ejecuta MEDIUM acotado propuesto de los cinco auxiliares de prioridad: inicializar,vacia,contar,copiar_items,formatear. Conserva148IDs y baseline86pass62fail, identifica por método resultados y corrige fidelidad por instrucción y divergencias existentes Python/C sin cambiar C/H ni ampliar API/UI. Verifica pruebas y manifest/guardas, entrega para LOW. No modificar Bellman-Ford/Prim/APIciclos: pregunta específica enviada sigue sin respuesta. Aprovecha cierres históricos comprobables sin repetir suites completas injustificadamente. Conserva preview y entrega antes cualquier bloqueo real.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-five-helpers-instructions-plan-medium-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-five-helpers-baseline-low-20261004.json"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-bellman20-saved-ui-delivery-stop-low-20261006",
+  "issued_at_utc": "2026-10-06T16:22:05.768160+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.bellman20-saved-ui",
+  "task": "bellman20-saved-ui20",
+  "instruction": "New coordinator priority from user: no more optimizations/redesign/longtrials; finish only already-running saved BF20 UI safely and prepare immediate verified documentary delivery with visual-preparation delay explicit. Do not assert optimization impossible, adoption,22/22 or pendingPASS. Prim/Kruskal Ccorrectness accepted by coordination, visualization stillpending. Preserve sessions/processes/evidence. No31min regeneration.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/bellman20-saved-ui20-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-bellman20-saved-ui20-low-20261006.json"
+}

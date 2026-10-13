@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-counting-consolidated-review-low-20261002",
+  "issued_at_utc": "2026-10-02T20:01:44.680251+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.counting-expanded-fidelity",
+  "task": "LOW consolidated Counting closure review and Binsort baseline preparation",
+  "instruction": "Realiza revisiónLOW consolidada Counting del dominioampliado: comprueba trazabilidadrequisitos/entradasadmitidas/casosfelicesyerrores,59IDs únicos,sources/hashes/últimocódigo ylímites32bit/digest/fallosimuladoclaros. Evita repetir suiteslongassinrazón; ejecuta soloregresiónfinalafectadanecesaria. Decide cierreacotadoconcriterioexplicito ylista cualquierhueco real, no continúesfragmentandoporformalismossinfalloreal. Conserva8cierresguardasD:preview5051. Si listo, documentaCounting9/11conalcance exacto y prepara siguienteLOWBinsort. Sinpush/merge/desplegar/red.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-review-authorized-low.md"
+}

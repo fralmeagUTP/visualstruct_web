@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-eight-criteria-matrix-manual-low-20261004",
+  "issued_at_utc": "2026-10-04T09:10:45.861177+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "documentation.manual",
+  "task": "Reconcile current aggregate matrices and effective manual/help, apply authorized documentary corrections, publish exact eight open criterion IDs/residuals and minimal integration/dependency sequence with read-only SDD support separation",
+  "instruction": "Aceptado criterio13 cerrado y14/22 derivado. Continúa cierre de los8criterios abiertos del checkpoint: prioriza reconciliación de matrices agregadas y manual/ayudas con fuentes actuales, sin repetir suites válidas. Puedes aplicar correcciones documentales ya autorizadas, no nueva semántica/alcance. Devuelve pronto IDs/títulos y pendiente concreto de cada uno de8, secuencia mínima de pruebasintegración/dependencias y decisionesfinalesdealcance sólo si realmenteimprescindibles. Distingue trabajo que puede paralelizar revisión sólolectura con apoyoSDD sin conflicto. No cerrar validaciónglobalporcompilación, ni pedirotraautorizaciónpara lo yaaprobado. Meta terminar auditoría dentroalcanceexistente.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/eight-criteria-matrix-manual-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary-nonfunction-global-criteria-low-20261004.json"
+}

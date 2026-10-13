@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dfs-transport-jpg-canonical-integration-qa-low-20261006",
+  "issued_at_utc": "2026-10-06T06:04:40.812398+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.dfs-transport-jpg-canonical-integration-independent-quality",
+  "task": "dfs-transport-jpg-canonical-integration-independent-quality",
+  "instruction": "IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No appimports/tests/browser/HTTP/DFS30/adoptionchanges/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/currentassignment/scope/exactbinding; guardsbeforeafter; writeONLYown evidence/dfs-transport-jpg-canonical-integration-independent-review andtracker. Review effectivecanonicaladoption3productfiles/backups/accepted-stage/adopted-source/finaldiffs andimports; builderASTacceptedexceptproductimport, helperNEWoneoptionalnumeric_C_memorycompound_nodesassignment afterroot correctsrealintegrationregression, noDFSschema/educationalCchange, JSexactacceptedone-lineXMLSerializer. PreserveoldQAimmutablebindings, remappingchangedcanonicalDFS/JSexplicit, newhelperincluded. Review24PASS freshfocal9archivedfixtures1131overlap/typed3comparisons/eightcorrupttable+3primitivecontrols and preservedinitialharness/productfailures. Validateactualcoverage7.14standardreporter20262/24343=83.235427%,187modules/4exclusions, oldDFSdataentirelyremoved(freshonly) and185unchangedSHA/lines/contexts/report exact, newhelper45/45/DFS226of231fivelegitimatemisses/roots85. No83.15automatic/wholepytest/nativeproof. Saved40MBresponseUIoneinterceptNOserverPOST/backendDFS; actualcanonicalJSbrowserload12147/8DOMtargets incldeep30andreturncaller/realnextprev/toggle/fullDAGsealread-only/exportJPEG2379487bytes8400x19328/samecontextexit/Cdownload/pageerrorzero. Pause/seekhooks distinctrealcontrols, Clinepresent notallhighlight/pixelcert. JPEGlargeimagePillowwarningpreserved noredispatch/noresourcesincrease. NEWstatsdelta requiresverdict; noautomaticglobalGraph20of22closure orotheralgorithmsaction.",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dfs-owned-transport-dfs30-one-qa-low-20261006.json"
+}

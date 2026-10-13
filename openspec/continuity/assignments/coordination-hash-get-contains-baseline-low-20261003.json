@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-get-contains-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T00:24:29.293796+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.get-contains-baseline-low",
+  "task": "Next authorized baseline LOW Hash get/contains after finite create/insert closure",
+  "instruction": "Nueva fase de la delegación actual: después cierre finito create/insert,baseline LOW get/contains C real/API/trace/UI/caller/errors, sinsemánticachange. Fixtures no nueva cobertura create/insert. Conservar98IDs,C/H,H1,11Sorting. Hallazgos rojos sinxfail/checkpoint antesMEDIUM.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-get-contains-baseline-plan-low.md"
+}

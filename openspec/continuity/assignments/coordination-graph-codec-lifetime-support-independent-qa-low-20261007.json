@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-codec-lifetime-support-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T02:34:47.371838+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-codec-lifetime-support-test-repair",
+  "operation": "qa.graph-codec-lifetime-support-test-repair",
+  "task": "graph-codec-lifetime-support-independent-qa",
+  "instruction": "Parent01a0fe61 authorizes distinctindependentQA ofexact6proposedpublicationfiles: two newGraphdecode/controltestsupportfiles, phase7onlytwo Carray-lifetime assertions/helper (Sortingfunctionbodiesunchanged), threestagedteacher docs (twoexactcanonical, closurebannerpreservesoriginalhistoricalbody).9purecodec+2realshortestpath+2fullassettests PASS; exploratorymatrix3FAILuniversalholds remainsunresolved andmatrixfileEXCLUDEDfromthispublication/QAfreeze. No newruntime/Cchanges/Sortingpolicy/optimization/broadtesting/QAauthorpublication. Checkrealcausal3v2edgefixtures, preservedallassertions/types/source/masks/pre-freeexpecteds andcurrent-runtimehash251. DedicatedQAchange keepsauthorpointer independent.",
+  "scope_ref": "openspec/changes/review-graph-codec-lifetime-support-test-repair/review-scope.md"
+}

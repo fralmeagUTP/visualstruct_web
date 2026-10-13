@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.numeric-packing-json-retention-independent-quality",
+  "task": "numeric-packing-json-retention-independent-quality",
+  "assignment_id": "coordination-numeric-packing-json-retention-qa-low-20261006",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-packing-json-retention-independent-review",
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-tracker.md"
+  ]
+}

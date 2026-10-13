@@ -1,0 +1,4 @@
+# Transferencia verificable por identidad
+Fuente e79b7cc y JUnit2026-08-23 tienen los dos escenarios precisos. Comparar motor/modelos/compatibilidad normalizando BOM/CRLF y símbolos AST de normalización/resolución/testcases/helper. Hay cambios en otras partes de strategies y un mensaje de otra prueba; no usar hash completo como si fuera idéntico. Emitir las diferencias y comparar solo símbolos que causan el contrato admitido.
+Cotejar llamadas actuales a TraceEngine en servicio común y SortingAdapter. JUnit prueba escenarios finitos, no toda causalidad. SHA actual y hashes de pruebas permiten invalidar transferencia cuando cambie lo relevante.
+Consolidar un solo requisito íntegro vía OpenSpec archive y conservar catálogo pendiente en este archivo. No editar specs actuales Hash ni estados/casillas históricas. No alterar tareas/evidencia de auditoría. Excepción de pruebas: instrucción vigente permite solo tooling aislado, no suites de aplicación.

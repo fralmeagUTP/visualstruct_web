@@ -1,0 +1,17 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary306-delta20-independent-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T19:13:21.540714+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "change": "review-documentary-successors-and-criteria11-12-16-18-quality",
+  "operation": "audit.documentary-successors-criteria-quality",
+  "task": "documentary-successors-criteria11-12-16-18-independent-review",
+  "instruction": "# QA sucesora: delta306 y correspondencias, máximo20min LOW\n\nOwner/writer01a0ff54-79d7-7520-8e9f-224ef5ed700f. Misma operación audit.documentary-successors-criteria-quality/task documentary-successors-criteria11-12-16-18-independent-review. Asignación coordination-documentary306-delta20-independent-qa-low-20261005. Max20min desde freshbefore propio. Preservar las dos revisiones anteriores y sus outputs; no repetirlas.\n\nPaquete nuevo documentary306-corrections-review.zip, SHA25676c87e810ab539059d05c95d901d67d3b3d10d66c7f635e5196b5ce424251c13, manifest27b1c332eb5824847237562bc731af6f99cc82343069ec978dda6ad11b04f46e; rutas exactas en evidence-binding.json. Sólo revisar306errores corregidos y normalización sistemática de sus links/copias687: método/estructura+caso exacto/repeticiones propias; zeroC rechazos no ligado a querypositiva;8inicializar por NULL/escrituras/borrowedreset;4callersPila cima integrada count/ownership;1Doxygen warnings/XMLsin atribuirC17/ownership. Evaluar consistencia entre registros, predicates reales y fuente específica. No aprobación por ID/SHA ni por resta381.\n\nRevisar propuestas de correspondencia Bellmanvigente (Cloops/a-loop/reachability/diagnóstico antes NULL, APIerror/historial; noNA de todo el test, no viejo seedPASS) y Kruskalmain actual (literal/ASTgenerador rama noalcanzada/QA posterior DOMHTTPownership/tokensC, límites pipelinecompartido). No nuevo execution ni generalización de entradas/contratos.\n\nEXCLUIDOS: volver a verificar registro58/procedencia687PASS históricos aceptados,213vínculos antiguos,1000/1715/ZIPs viejos,18/23cadenas,2604AST,23filas/40NA y adopciones previas. Son antecedentes, no nueva revisión. No interpretar1704 como defectos o campaña. BFS totalmente excluido, incluso propuesta/candidato/rendimiento/SID/HMAC. No tests/importapp/runtime/C/native/browser/request/cobertura/perfil/benchmark/variante; scripts y archivos guardados son lectura sólo, no ejecutarlos. No producto/autor/paquetes/QAprevia/index/bindings/5051/Git/deploy/integración/cierre global.\n\nFreshbefore/after propios con nueva asignación. Únicas salidas evidence/independent-review-delta306; review-tracker.md sólo append de enlace al nuevo dictamen, conservando contenido/dictámenes anteriores. Emitir aceptar/retener/rechazar delta y límites concretos dentro20min; no ampliar bloque. Preflight/guardas de coordinación no son revisión QA.\n",
+  "scope_ref": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary-corrections-delta20-independent-qa-low-20261005.json",
+  "maximum_minutes": 20
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T10:46:37.821458+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.baseline",
+  "task": "LOW sorting_array inventory/native/backend/generated main/history/documentation baseline; scoped instruction plan",
+  "instruction": "Identify11real sorting methods and C/backend/main contracts; validate empty/single/duplicates/negative/sorted/reverse/safe limits and complexity/stability docs. Only unambiguous generation/history repairs. Prepare reusable bounded instruction next block. Keep numericalGraph decisions pending,D:5051,no push/merge/deploy,no closed repeats.",
+  "provenance": "Explicit coordination instruction supersedes Kruskal; prior assignments retained.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-baseline-low-plan.md"
+}

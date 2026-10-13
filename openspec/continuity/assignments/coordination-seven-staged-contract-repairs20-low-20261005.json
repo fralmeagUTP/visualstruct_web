@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-seven-staged-contract-repairs20-low-20261005",
+  "issued_at_utc": "2026-10-05T11:38:41.526680+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "seven-staged-contract-repairs-focal-group-QA",
+  "instruction": "Execute groupedrepair only7tests4modules staging20min perdiagnostic; preservehistorycontract/helpmeaning/MSTCcausaloracles officialdecode; notenumrenaming/assertdeletion. PreserveoriginalsFAIL/diffjustifications. Runonly7verify999intact. IfallPASS frozenQAgroup plusfinitecoverageproposal noadopt/noexecution. IfFAILreportcause/nochainedunplannedfix. NoBFSmeasurement.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/seven-staged-contract-repairs20-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-wide176-seven-fail-diagnostic15-low-20261005.json"
+}

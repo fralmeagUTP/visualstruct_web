@@ -1,0 +1,317 @@
+{
+  "schema": "visualstruct-documentary-review-freeze/v1",
+  "observed_at_utc": "2026-10-04T14:29:29.838586+00:00",
+  "author": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "reviewer": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "frozen_sources": [
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/000-execution_trace_service.py",
+      "source": "app/services/execution_trace_service.py",
+      "sha256": "e94ec7d800f81cbcbca57df3a9f1d27ec2da5b3578c1c72280809ec529ff6d29"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/001-graph_structure_service.py",
+      "source": "app/services/graph_structure_service.py",
+      "sha256": "a7803420c73b4f9dd3b1570ae8f8acd26b9e475e2462e01e1f1c81d279794855"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/002-hash_structure_service.py",
+      "source": "app/services/hash_structure_service.py",
+      "sha256": "f9f86f865722adcde4efae8ec0d18aeda5d22f953d0274f7d98850dde57f05d7"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/003-hierarchical_structure_service.py",
+      "source": "app/services/hierarchical_structure_service.py",
+      "sha256": "c12f88f8f32be62f17c47e747a9630134ca12d2e2b50e095d1f34e3b27390497"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/004-session_service.py",
+      "source": "app/services/session_service.py",
+      "sha256": "3d20e24e66109c1ea3f88ba817cd8def51976a6638b381cac704050eceb8306a"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/005-sorting_structure_service.py",
+      "source": "app/services/sorting_structure_service.py",
+      "sha256": "13d4174cbd2541086d05e40cbc8afba629c60fa28c8a83691dccfabc12a4781c"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/006-structure_service.py",
+      "source": "app/services/structure_service.py",
+      "sha256": "aed03002a9fb6803353d7287fb98b92fed67d56d28d9e343ff93d4114b26f787"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/007-comprehensive-app-quality-results-v1.json",
+      "source": "docs/qa/comprehensive-app-quality-results-v1.json",
+      "sha256": "482ae1b1e66f59ae9f873c5cf49c04b10605102d2b818ee9b610ab916ea7284e"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/008-remediation-closure-report-v1.json",
+      "source": "docs/qa/remediation-closure-report-v1.json",
+      "sha256": "1a3acf3206a9007770c56de385657c85d87efcad84d146bdb9b387e0d5f34e1a"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/009-remediation-gates.md",
+      "source": "docs/qa/remediation-gates.md",
+      "sha256": "693e364eb2ae5462b99222fdd594f77c424e3e4339a3f8cf54a477b237f9fd56"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/010-remediation-regression-matrix-v1.json",
+      "source": "docs/qa/remediation-regression-matrix-v1.json",
+      "sha256": "99dfa1375247b15b7cc0641d873685dc6cb35e190af94a343898e139d745548a"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/011-spec.md",
+      "source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "sha256": "552929ebaa2f1276b1d831252982c865f8e2fcc693edf7fd5d82fe3eb76168d5"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/012-spec.md",
+      "source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "sha256": "a5fc25baad2f949a356418c71001656391262a9374ea5899ae7c067974f0dd20"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/013-decision.md",
+      "source": "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md",
+      "sha256": "384a4fe454cfdd6fb9fe57db7f6f2c687b1b72e03ea6f0d2b1fe3fed8a4dc85b"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/014-canonical-correspondence-final-bounded-checkpoint-low.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+      "sha256": "fdcf20b83c70874b85201b1372ca3869263a440049d90cde20bd8f1f9f39fcba"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/015-verification.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/successful-search-history-review/verification.md",
+      "sha256": "0e4134906416452398c428260733b62d3a1105526498c41b799e919ea1679b9c"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/016-aggregate-correspondence-final-current.json",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+      "sha256": "c34b160205c841191cf473e48fea3b1dab5d09dc8df387e615300973835cfd42"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/017-criteria-final-bounded-checkpoint.json",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json",
+      "sha256": "78393cb61d94444421e54bfa86cf2fa47e55e0ba744475583435ec868794df9f"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/018-criterion16-diff-requirement-regression-register.json",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+      "sha256": "19a898dc310f6303737b17fb0349098a6c98fa3edd1aa6b08f1d2be10a22b118"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/019-minimal-missing-proof-selection-current.json",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+      "sha256": "da22b053da4d0b2023528386ca3094f9e5310e0f23b6f8e4938aea25b5a1b4db"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/020-rendered-control-correspondence-current.json",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+      "sha256": "00445a0c283962a54907c52f2ba69e9f5fa5b36dbe141470332df64761dd4ee5"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/021-README.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md",
+      "sha256": "b8611d782eaf9ef261df54dd8f73a40216c03e08760d1c935733ab412334d4d7"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/022-README.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md",
+      "sha256": "ad622587ea78e1dcfa05517c8f1ba9ede818163eb233a3e33f4f4122cdb98b2d"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/023-graph-dijkstra-numeric-contract-decision.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md",
+      "sha256": "3765805a5f8d41ee2c7758fcf9f9394e3ce13bdd58204f48204b4b01ad491684"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/024-graph-incident-preview-and-criteria-checkpoint-low.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/graph-incident-preview-and-criteria-checkpoint-low.md",
+      "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/025-graph-main-incident-caller-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/graph-main-incident-caller-checkpoint-medium.md",
+      "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/026-graph-three-adjustments-block1-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/graph-three-adjustments-block1-checkpoint-medium.md",
+      "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/027-graph-three-adjustments-block2-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/graph-three-adjustments-block2-checkpoint-medium.md",
+      "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/028-graph-three-adjustments-block3-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/graph-three-adjustments-block3-checkpoint-medium.md",
+      "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/029-hash-clear-destroy-instructions-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/hash-clear-destroy-instructions-checkpoint-medium.md",
+      "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/030-hash-listings-instructions-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/hash-listings-instructions-checkpoint-medium.md",
+      "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/031-hash-query-instructions-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md",
+      "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/032-hash-remove-instructions-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/hash-remove-instructions-checkpoint-medium.md",
+      "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/033-hash-stats-instructions-checkpoint-medium.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/hash-stats-instructions-checkpoint-medium.md",
+      "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/034-queue-front-final-consolidation-checkpoint-low.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/queue-front-final-consolidation-checkpoint-low.md",
+      "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/035-red-black-full-validation-consolidation-checkpoint-low.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/red-black-full-validation-consolidation-checkpoint-low.md",
+      "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/036-sorting-counting-expanded-integration-checkpoint.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-expanded-integration-checkpoint.md",
+      "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/037-sorting-counting-scope-correction-decision.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md",
+      "sha256": "1306f89e084438f2633c34eb83227d8805fdc462d6d01ac6f7e17dde5768ee7d"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/038-sorting-radix-consolidated-closure-decision.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md",
+      "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/039-stack-cima-consolidation-checkpoint-low.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/stack-cima-consolidation-checkpoint-low.md",
+      "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/040-tasks.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/tasks.md",
+      "sha256": "e09ee5da997a6d9ae880720a916479cb591d87c2e2d397199c228e0d5b6a61a3"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/041-validation-plan.md",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md",
+      "sha256": "f9df5b57273b2e5e43ee1caf2627e54d626021468e28c042c5fd0a9b690d600c"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/042-history-clarification-decision.md",
+      "source": "openspec/changes/extend-red-black-full-validation/history-clarification-decision.md",
+      "sha256": "cba899e3bd83484f62579238ab2550115a7be873923798f69822e5a312bf965b"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/043-instruction-20261004.md",
+      "source": "openspec/changes/reconcile-remaining-historical-contracts/instruction-20261004.md",
+      "sha256": "9f47b99026a6f7e16cb5839c59968207d7ad9da98cc75c0bd25bc0a58d7d7461"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/044-matrix-20261003.json",
+      "source": "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261003.json",
+      "sha256": "8a7046539a8588f3ad5b9b2ea0ad7490ab0acfd6a9e31d01b6e7cfc7159ef208"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/045-reconciliation-status.md",
+      "source": "openspec/continuity/reconciliation-status.md",
+      "sha256": "16bd0f7aa06b53fcaca2b764b5097c6a149610fe451dca3b556d46f0ed03631f"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/046-spec.md",
+      "source": "openspec/specs/didactic-conformance-remediation/spec.md",
+      "sha256": "e0b5634baceb132eba8b848372ae387b78d9de297c2a2944884c86228b6d9e6d"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/047-spec.md",
+      "source": "openspec/specs/graph-structures/spec.md",
+      "sha256": "94527c8810d9425ad41ea69b96c42c8d8bb153ddce3ba98d9e32f77228e29464"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/048-spec.md",
+      "source": "openspec/specs/hash-table/spec.md",
+      "sha256": "de0929ded20c62df5415008cadfdbae46ef7eda13762b2f055726870e425bd58"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/049-spec.md",
+      "source": "openspec/specs/session-state/spec.md",
+      "sha256": "c13f9f60d8e0379f591e57ec885f4c7a45441097d40eb85df38b6f7f37e537b9"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/050-build_app_quality_inventory.py",
+      "source": "scripts/build_app_quality_inventory.py",
+      "sha256": "d430cda06aadd95cecdee1b705a944989faf76474befdd5fb372c752f696d344"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-20261004/051-test_phase7_trace_contract_remediation.py",
+      "source": "tests/test_phase7_trace_contract_remediation.py",
+      "sha256": "adcc0d7448b281adbeddd7c7dd985d73ef8aada534d2c08d2747c50dc425f4c7"
+    }
+  ],
+  "review_inputs": [
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261004.json",
+      "sha256": "c34838e781462a0c47ae7e3b91a4a2cca7b4ef92e57c4437059ef4f928c2f502"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261004.md",
+      "sha256": "5d655dbee801279f8551f71b31312b036aafaf214d3276d5453b87810a7cfdd2"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-source-manifest-20261004.json",
+      "sha256": "a58785883204e1b8b2143204ffc9cb0ac5e0040dd15b36865d6aff5f3e1fc964"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/evidence/documentary-verification-20261004.json",
+      "sha256": "04bd702aa83f8a380044b939abfb82f4c92a9be6f5d99ad42f338b3bbab3a82e"
+    },
+    {
+      "file": "openspec/changes/reconcile-remaining-historical-contracts/re-qa-request-20261004.md",
+      "sha256": "4673e96dd88862101074efdcc9d44db0071aeffd927c2e61b79b49b00d8e9be8"
+    },
+    {
+      "file": "openspec/changes/reconcile-session-query-history-documentation/proposal.md",
+      "sha256": "b9620f791668c06f0027d1ae931a94b7dec0816f20c7279d84e741fbd06ea264"
+    },
+    {
+      "file": "openspec/changes/reconcile-session-query-history-documentation/design.md",
+      "sha256": "33d01a7060eb39e3cb5a18244563bc350d59343f49dc46974a2a6bb1432e7617"
+    },
+    {
+      "file": "openspec/changes/reconcile-session-query-history-documentation/tasks.md",
+      "sha256": "159690d7944b35d00b15613c781efb9304d438ebf68ac08eff0e3ca77f3b5382"
+    },
+    {
+      "file": "openspec/changes/reconcile-session-query-history-documentation/acceptance-plan.md",
+      "sha256": "3f18f894c4ce3bd1be1a0ed2a63454e254d45f9518e9757eab8a4e9871bc1e16"
+    },
+    {
+      "file": "openspec/changes/reconcile-session-query-history-documentation/specs/session-state/spec.md",
+      "sha256": "0dd4170ae53e7c6b3ab6656e74eb98f7b3b6234f9bc8b0208a84346223e57e3f"
+    },
+    {
+      "file": "openspec/changes/reconcile-session-query-history-documentation/source-binding.json",
+      "sha256": "4f438410f24e1aa7ed1a6cc7f683f2c8f7120e522986448024c9dd887b60b761"
+    }
+  ],
+  "policy": "No modificar52copias ni matriz/delta durante revisión. Copias fechadas por fuente, no snapshot atómico del repo. Fuentes técnicas vivas pueden cambiar; revisión identifica divergencia sin actualizar el freeze ni sustituir pruebas.",
+  "adoption_authorized": false,
+  "acceptance": "pending"
+}

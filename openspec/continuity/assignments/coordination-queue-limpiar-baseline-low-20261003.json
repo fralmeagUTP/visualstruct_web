@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-limpiar-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T05:25:30.506403+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.limpiar-baseline-low",
+  "task": "Begin finite LOW queue.limpiar native baseline and regressions",
+  "instruction": "Derivado de instrucción vigente coordinación LOW20261003: comenzar siguiente baselineLOWno bloqueado delmapa sinreabrircierres. Alcance fino Cola limpiar/cola_vaciar: recuperar evidencia, observar vacío/single/multi/repetición/reinserción y NULL nativo, raíz/q.delante/q.atras/aux/lifetimes/guards, registrar divergencias y tests rojos sin implementar. No leer ptr retirado, OOMreal ni reabrir encolar/desencolar/Hash11/Sorting11/pop/C_H/contratos/RN/Grafos.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-limpiar-baseline-plan-low.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-prim-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T10:22:20.795547+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.prim",
+  "task": "LOW independent Prim native/backend/caller/history/ownership/documentation baseline",
+  "instruction": "Continue LOW graph.prim; connected/disconnected, ties, permitted weights and safe limits; history/caller ownership and documentation; only unambiguous history/generation fixes. Hold shared numeric semantics, preserve closed work and preview5051. Report shared Bellman/Dijkstra options without another user question. No push/merge/deploy.",
+  "provenance": "Explicit new coordination instruction 2026-10-02 supersedes Bellman baseline assignment; prior record retained.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-prim-baseline-plan.md"
+}

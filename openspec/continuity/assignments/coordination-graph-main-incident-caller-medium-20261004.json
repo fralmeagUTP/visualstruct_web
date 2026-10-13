@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-main-incident-caller-medium-20261004",
+  "issued_at_utc": "2026-10-04T10:57:09.249346+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.main-remove-incident-arcs",
+  "task": "Correct only Graph incident-arc caller translation and source-faithful caller frames after raw C return; baseline permanent HTTP native regression, focal ownership/native/UI/reload; preserve C/H/API/contracts/Graph6 and deliver LOW milestone",
+  "instruction": "Continúa corrección MEDIUM acotada del caller Graph y frames para traducir contrato APIretiraincidentes tras retornoCconservaarcos, sin modificar C/H ni API ni contratos. Primero registra regresión permanente mainHTTP con1,lazo(1,1,5),eliminar1 y0/0 antescleanupfinal; preserva baselineC0/1. Aplica candidato probado sóloevidencia al generadorcaller, DOM/HTTPidénticos,instantescallee/callerfieles,sin atribuir aC la limpieza caller. Verifica entradas dirigidas/no dirigidas,incidentesentrantes/salientes/lazo yownershipliberaciónúnica para evitar doblefree. Mínima suite focal y recarga/player si afectado, no reabrirGraph6algoritmos. Entrega hitoLOW ymatrizactualizada conservando semánticaexistente.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-main-incident-caller-plan-medium.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-vertex-preview-consolidation-low-20261004.json"
+}

@@ -1,0 +1,44 @@
+{
+  "UTC": "2026-10-05T19:13:21.540714+00:00",
+  "assignment_id": "coordination-documentary306-delta20-independent-qa-low-20261005",
+  "assignment_source": "openspec/continuity/assignments/coordination-documentary306-delta20-independent-qa-low-20261005.json",
+  "inputs": {
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/report.md": "f904a832db9107dc8537aa3e09cf4ab143b901f9a3a3aadc35fd8f6443362b13",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/687-specific-corrected-method-scenario-obligations.json": "4205f44e3c8f14c57d34b99fc4f5d424578b67ce414aa4beb98ced37217d1fbb",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/criterion18-corrected-method-scenario-dispositions.json": "b426a2e9bd5d380065abbd13033025a4e81d6727ede23a3515c941aafc7f3ab8",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/306-before-after-correction-records.json": "064c866fe37180ec599a72de1ad225f3aea1d81bfa4dcba2d6ffd6050dd5588b",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/method-scenario-obligation-validation.json": "6bebd472dedce62ead15eb4fdb49607361d44ebc9d746cea8678099a58e7495a",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/Bellman-live-and-Kruskal-current-correspondences.json": "6fb80a8f5c70080f49d5cb023015bb0ba13484aafbb4382fc11440fbb16193b1",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/final-documentary-validation.json": "d248e2f380ad425b823c5da6d4d4016573f9657850df67429ed251320671f9e6",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/manifest.json": "27b1c332eb5824847237562bc731af6f99cc82343069ec978dda6ad11b04f46e",
+    "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review/review.md": "a2056e72f3a26051e88de61262c58ed2ed0e5a02aaa5088be2560f592cba70a5",
+    "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review-delta20/review.md": "a508f82f0595bdf4b56cd967f7c9a6fcce1b6035b0be89c448f7a860826fdc25"
+  },
+  "input_count": 10,
+  "packet": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/documentary306-corrections-review.zip",
+  "packet_SHA256": "76c87e810ab539059d05c95d901d67d3b3d10d66c7f635e5196b5ce424251c13",
+  "manifest": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/manifest.json",
+  "manifest_SHA256": "27b1c332eb5824847237562bc731af6f99cc82343069ec978dda6ad11b04f46e",
+  "accepted_prior_reviews_preserved": [
+    {
+      "file": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review/review.md",
+      "SHA256": "a2056e72f3a26051e88de61262c58ed2ed0e5a02aaa5088be2560f592cba70a5"
+    },
+    {
+      "file": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review-delta20/review.md",
+      "SHA256": "a508f82f0595bdf4b56cd967f7c9a6fcce1b6035b0be89c448f7a860826fdc25"
+    }
+  ],
+  "supersedes_preserved_binding": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/previous-QA-delta20-evidence-binding.json",
+  "write_scope": [
+    "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review-delta306",
+    "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-tracker.md (append only)"
+  ],
+  "product_source_write_authorized": false,
+  "execution_authorized": false,
+  "new_measurements_authorized": false,
+  "BFS_excluded": true,
+  "accepted_verifications_excluded": true,
+  "author_preflight_is_NOT_QA": true,
+  "maximum_minutes": 20
+}

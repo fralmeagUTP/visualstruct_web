@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-dequeue-legacy-memory-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T20:47:13.427959+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-priority-dequeue-legacy-memory-consumer",
+  "operation": "qa.priority-dequeue-legacy-memory-consumer",
+  "task": "priority-dequeue-legacy-memory-independent-qa",
+  "instruction": "Independent focal review of exactly test_dequeue_scans_every_node_stably_and_frees_only_after_unlink and lifetime helper/controls; native stable scan, unlink/copy/free chronology, negative coordinated memory corruptions, preserved product/responses/prior lots. No product writes/publication/retries/global/long campaigns.",
+  "scope_ref": "openspec/changes/review-priority-dequeue-legacy-memory-consumer/review-scope.md"
+}

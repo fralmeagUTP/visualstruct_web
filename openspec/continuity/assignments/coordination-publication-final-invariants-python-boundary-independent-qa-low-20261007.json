@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publication-final-invariants-python-boundary-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T01:03:37.479549+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publication-final-invariants-python-boundary-independent-qa",
+  "task": "publication-final-invariants-python-boundary-independent-qa",
+  "role": "quality",
+  "instruction": "Parent01a0fe61 requests independent QA before publishing new existing-contract hierarchical certification and Dijkstra Python/JSON boundary candidate. Review exact3Graph integration source diffs, targeted hierarchical test preserving two equalities with independent structural oracle and8corruption negatives, collision/codec/service/HTTP checks, saved504frames503Cevents wire equivalence and35focalPASS. Accepted cp_encolar remains SHAcdc7fa7d; no C/algorithm/UI modifications. New Python logical boundary limited to Dijkstra; other numeric production modes preserved. Review85unresolved ledger and bounded E2E plan; no general CI green or VPS claim. Own QA evidence only, distinct reviewer, no product/test/publication/optimization/native/large-suite writes or runs by default.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publication-final-invariants-python-boundary-independent-qa-low.md",
+  "independent_reviewer_required": true
+}

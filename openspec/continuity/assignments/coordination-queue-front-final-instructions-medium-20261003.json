@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-front-final-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T23:02:37.156901+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.frente-final-instructions-medium",
+  "task": "Implement independent readonly queue Front Final raw typed traces and unsupported validation without public exposure",
+  "instruction": "ImplementaMEDIUMColaFrente/Finalplanacotado IDsmétodosindependientes Frente78(33/45),Final78(22/56),4sharedchecks union160 exactoverlap0. CorrigePythoncola_final/private traceguardstypesaliases/scopes/reject400zeroCsteps,noAPIUIexposurenopersistqueries.22Cqueries66events22condpermethod readonly/caller3DOMC17 8/8/0NULL8Dox0preserve. Mantén377productprotectedexcept4scopedPythonraw/wrapper/service/newengine,C_Hclosedmethodsintact. Baseline retained,finite resources/privateexclusionclear;checkpointantesLOW. Planprivatepartialroots gapIDsnewindependent if needed (not original4shared countedagain). No publish/SDDblocked/Graphdecisions.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-front-final-instructions-plan-medium-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-queue-front-final-baseline-low-20261003.json"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dfs-transport-validation-jpg-delta-qa-low-20261006",
+  "issued_at_utc": "2026-10-06T05:35:00.018387+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.dfs-transport-validation-jpg-delta-independent-quality",
+  "task": "dfs-transport-validation-jpg-delta-independent-quality",
+  "instruction": "IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLY offline. No imports/tests/browser/HTTP/DFS30/adoption/product/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/current assignment and exactbinding; before/afterguards. Write only own evidence/dfs-transport-validation-jpg-delta-independent-review and tracker. Review minimal primitive_key correction including unreachable invalid primitives, prior five controls and saved-wire equality, unchangedbuilder, full249sourceSHA. Inspect capturedSVGs/XMLparse/error and sameDOM/traceSHAs, baseline saved-wire equivalence (NOTfreshbaselineexecution), isolatedXMLSerializer validSVG/realJPEG/buttondownload, unchangedtrace/noactualserverPOST/noDFSregeneration. Preserveoriginalfailures plus routeharnesserror and rawSVGassertfailure resolvedoffline through complete style-declaration normalization. Do not assert rawSVG equality, globalexporter/pixelcertification, timing/RAM guarantee or closedglobal20/22. Exactdeltaacceptance only; noautomaticDFS30/adoption; canonical untouched.",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dfs-owned-pool-transport-independent-qa-low-20261006.json"
+}

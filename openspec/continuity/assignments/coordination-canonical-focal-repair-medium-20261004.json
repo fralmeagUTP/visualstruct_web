@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-canonical-focal-repair-medium-20261004",
+  "issued_at_utc": "2026-10-04T14:40:17.269425+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "MEDIUM bounded repair rawHeap utilities, hidden positional List callers and Graphneighbors instruction builder; finite red-before green-after regressions and milestones, preserve C/H/contracts/closed bodies then return LOW",
+  "instruction": "Asigna y ejecuta MEDIUM acotado de reparación builder/callers según canonical-focal-findings-repair-scope-low.md: Graph neighbors resaltado de5líneasnoejecutadas,3callersaliasesLista(1estadoincorrecto2nocompilan),RawHeap divergenciasPython/C de8/15comparables. Conserva contratos públicos/privados y C/H; corrige traducción/caller/modelofielC dentro auditoría. Preserva baseline yIDs por bloque, regresiones quefallenantes/pasendespués,compilaciónC17/callerDOMHTTPyownership si afectado. Si reparar exige nuevadecisiónsemántica o cambiarC/H, detén sóloese tramo y explica; no hacerlo silenciosamente. Prioriza hito por bloque, no esperar todos. C1QA corre en documentoscongelados separados. RetornaLOWparaaceptación finita ymatriz actualizada;no declararcierrecompleto por testsparciales.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/canonical-focal-repair-plan-medium.md",
+  "supersedes": "openspec/continuity/assignments/coordination-canonical-focal-verification-low-20261004.json"
+}

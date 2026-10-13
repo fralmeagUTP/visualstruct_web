@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-burbuja-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T13:09:53.659025+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.burbuja-baseline-low",
+  "task": "LOW exact inventory/baseline of existing Bubble variants and representative callers; simple fixes or bounded MEDIUM; report three recorded method closures",
+  "instruction": "Return LOW; inventory existing Burbuja variants only, controls/comparisons/swaps/early stop baseline as coherent block if shared; reuse infrastructure,representative inputs/callers; simple LOW adjustments or delimit MEDIUM; preserve Intercambio/Seleccion/Insercion closures,global13/22,D:5051,OpenSpecguards,no push/merge/deploy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-burbuja-authorized-low.md"
+}

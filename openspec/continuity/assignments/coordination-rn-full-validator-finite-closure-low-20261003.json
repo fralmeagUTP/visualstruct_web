@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rn-full-validator-finite-closure-low-20261003",
+  "issued_at_utc": "2026-10-03T16:44:12.049970+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "red-black.validate-full-consolidation-low",
+  "task": "Record authorized finite RN V3 closure after genuine independent QA; preserve all limits and sources",
+  "instruction": "# RN V3 cierre funcional finito LOW autorizado\n\nParent01a0fe61-3104-743a-b032-bcc289ad80cd traslada QAindependiente funcional/documental ACEPTable16:41:53tests4traces5registrychecks,callerC17 3alloc/free0live,223/1031hashcoincidentes ybeforeverifyafter0. Consolida sólo cierreRNfullvalidatorfinito enlazandoQA yRN-IMPL-01resuelto;limitsanitizer/global separados. Sinproductedits/testreruns/archive. Después revisarplanMEDIUMEncolarcontrabaseline14fallos sinrepetirlo;proponerbloque/checkpointajusteMEDIUMsi vigente ysincontratonuevo. OtrasC/Hintactas,no publish. Revisorqualityownworkflow/reportreadonlypreservados.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/red-black-full-validator-finite-closure-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-rn-review-coordination-low-20261003.json"
+}

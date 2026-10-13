@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-mergesort-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T15:14:08.423468+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.mergesort-baseline-low",
+  "task": "LOW Merge sort existing inventory baseline, native/UI/metrics/downloaded callers; preserve six closures; delimit MEDIUM",
+  "instruction": "Continuar LOW con siguiente pendiente, contrato/baseline nativo visual métricas callers, ajustes sencillos solamente, plan MEDIUM delimitado. D guardas/evidencia, preview5051 loopback, sin publicación merge despliegue o red. Informar cinco nombres pendientes.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-mergesort-authorized-low.md"
+}

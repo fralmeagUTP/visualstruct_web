@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-quicksort-medium-20261002",
+  "issued_at_utc": "2026-10-02T14:32:55.731980+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.quicksort-instructions",
+  "task": "Bounded MEDIUM Quick recursive typedscopes/helperalias/singlecall386events,sixcases;originalsevenregressions/UI/Ccallers;returnLOW",
+  "instruction": "Implement approved Quick bounded plan,fidelity/recursion/scopes/actualhelperalias/single[7],resolve seven strong original regressions,actualC/UI/restoration/callers;preservecontracts/fiveclosures;canonicalDguards/evidence/owned5051loopbackrefresh,no publishmergedeploynetworkchanges;returnLOWafterclosure.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-quicksort-authorized-medium.md"
+}

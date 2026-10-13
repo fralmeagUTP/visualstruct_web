@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-unresolved-graph-controls-integration-low-20261004",
+  "issued_at_utc": "2026-10-04T16:04:58.718566+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "LOW recover valid evidence then verify only unresolved10Graph operations/control-route-mode cells and integration16; report required MEDIUM defect scope",
+  "instruction": "# Celdas Graph/control e integración LOW\n\nInstrucción vigente de coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: continuar únicamente inventario no resuelto,10operacionesGraph ycontroles/rutas/modos sinoutcomeactual,despuésintegración16. Primero recuperarvínculosválidos,luego sólofaltantes; cadafila cerradofinito/NAconmotivo/defecto. Informar10nombres/subbloque alprimerhito. Defectobuilder/modelo requiringMEDIUM: reportaralcance,sinreparaciónsilenciosa. No Graph6/neighbors/aliascaller/rawHeapaccepted reruns; no nuevodominio/C-H/semánticas. Producto/previewusuario preservados; pruebas privadas.\n\nOperación audit.canonical-correspondence abierta, mismo binding vigente revisado. Fuentes: inventoryexhaustivo previo, finiteacceptancedecision, criterio14accepted, proposal/design/deltas/tasksactuales. Criterios11/12/16/18/19abiertos. Completar evidencia específica sólo dentrodeestasfilas; no seleccionar trabajo desdecheckpoint.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/unresolved-graph-controls-integration-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-preview-focal-and-criteria-consolidation-low-20261004.json"
+}

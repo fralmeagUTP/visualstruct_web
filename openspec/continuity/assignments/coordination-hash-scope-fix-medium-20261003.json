@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-scope-fix-medium-20261003",
+  "issued_at_utc": "2026-10-03T00:12:20.158987+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.create-insert-scope-fix-medium",
+  "task": "Hash two scoped parameter representation fixes and C17/UI proof MEDIUM",
+  "instruction": "MEDIUM acotado: separar parámetrocapacidad/campo struct; representar const TablaHash*tabla propio helper y scopes/types/aliases por instrucción C17/UI/replay sinredispatch. Preservar93IDs+2regresiones sinxfail,C/H/11Sorting; checkpoint antes cierre y luegoLOW; no baseline siguiente/publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-scope-fix-plan-medium.md"
+}

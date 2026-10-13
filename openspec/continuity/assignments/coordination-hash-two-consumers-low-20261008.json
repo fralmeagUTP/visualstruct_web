@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-two-consumers-low-20261008",
+  "issued_at_utc": "2026-10-08T01:37:49.241723+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.hash-two-consumers",
+  "task": "hash-two-consumers",
+  "instruction": "Only original HASH-001 fixed-capacity collision fixture3 keys1,4,7 and goldenHash create5 insert1->1. Consumer-only causal current C/H1 checks and small mutation controls; preserve original fixtures, historical findings, accepted27/pending24. No engine/C edits, closed native/UI rerun, all-visible methods, global tests, QA substitution, publication or optimization.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-two-consumers-low.md"
+}

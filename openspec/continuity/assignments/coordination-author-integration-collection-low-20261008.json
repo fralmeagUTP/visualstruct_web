@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-author-integration-collection-low-20261008",
+  "issued_at_utc": "2026-10-08T11:49:51.168264+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.author-integration-collection",
+  "task": "author-integration-collection",
+  "instruction": "Resume approved author evidence: verify final consolidated author manifest and all66links; compile linked Python sources without pyc, import/collect exactly66original IDs without running tests or scenarios. Existing author checks permit bounded syntax/import/collection; Jobhard2GiB/120s before app imports, fresh guards. No fullsuite, long cases,66corrections repeat, independentQA/deniedrecords retries, deniedSDD/push, permission/routing changes, optimization or expansion. Report errors and minimal regression/coverage gate evidence costs; collection is not PASS. Preserve27accepted39pendingQA.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-author-integration-collection-low/scope.md"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-delete-kruskal-consumers-low-20261008",
+  "issued_at_utc": "2026-10-08T02:03:57.453062+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.graph-delete-kruskal-consumers",
+  "task": "graph-delete-kruskal-consumers",
+  "instruction": "Only original comprehensiveGraph consistentTrace remove_vertex and run_kruskal parameter IDs. Original undirected triangle vertices1,2,3 edges1-2=1,2-3=2,1-3=5; delete3 / MST unchanged. Diagnose strict partial frame consumer with actual C and minimal consumer-only correction and mutation controls. Preserve every other parameter path/function and accepted27/pending31. No C/engine algorithm changes, closed native/UI rerun, broad tests, QA registration/substitution, publication, optimization or expansion.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-delete-kruskal-consumers-low.md"
+}

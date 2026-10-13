@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-dfs-history-context-low-20261002",
+  "issued_at_utc": "2026-10-02T08:03:50.836124+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.dfs",
+  "task": "LOW graph.dfs: repair validated historical mark snapshots, native mutation fidelity/session isolation, minimal shared BFS/DFS history regression, caller/docs and evidenced closure",
+  "instruction": "Explicitly authorized correct cross-call graph marks against actual C: validated snapshots without query redispatch, appropriate mutation handling and session separation. Test twoDFS,BFS-to-DFS,mutation,reload,failures,invalidsessiondata; sharedregressiononlynecessary. Preserve C semantics/closedBFS instruction implementation; delimit MEDIUM only if genuinely difficult. D:5051/OpenSpec, no publication.",
+  "provenance": "Explicit coordination instruction following graph.bfs LOW closure; preserves immutable earlier assignments.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-dfs-history-marks-context-decision.md"
+}

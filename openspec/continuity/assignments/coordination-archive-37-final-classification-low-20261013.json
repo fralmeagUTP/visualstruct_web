@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-archive-37-final-classification-low-20261013",
+  "issued_at_utc": "2026-10-13T19:48:45.758285+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "archive-verified-review-closures-20261013",
+  "operation": "documentation.archive-verified-reviews",
+  "task": "archive-verified-reviews",
+  "instruction": "Revisar integralmente37changes restantes, clasificar todos, archivar cerrados propios, conservar pendientes reales concretos. No pruebas ni desarrollo ni publicación. Desktop-FM conectado y autorizado confirmado por coordinación.",
+  "scope_ref": "openspec/changes/archive-verified-review-closures-20261013/scope.md"
+}

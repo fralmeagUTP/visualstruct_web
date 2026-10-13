@@ -1,0 +1,28 @@
+{
+  "activation": "DRAFT: coordinator must assign actual independent owner and register; not an enabled task or approval",
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-graph-limit30-and-boundary-quality",
+  "operation": "audit.graph-limit30-independent-quality",
+  "task": "graph-limit30-and-boundary-quality",
+  "author": "/root",
+  "source_authorization": "openspec/continuity/assignments/coordination-graph-educational-limit30-low-20261005.json",
+  "quality_role": "LOW independent of writer",
+  "allowed_paths": [
+    "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review"
+  ],
+  "protected": [
+    "app",
+    "tests",
+    "docs",
+    "static",
+    "templates",
+    "scripts",
+    "openspec/changes/audit-local-quality-and-unified-controls"
+  ],
+  "source_files": [
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-educational-limit30-low/checkpoint.md",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-educational-limit30-low/source-delta-register.json",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-educational-limit30-low/source-delta.diff"
+  ],
+  "require_actual_assignment_id_owner_before_after": true
+}

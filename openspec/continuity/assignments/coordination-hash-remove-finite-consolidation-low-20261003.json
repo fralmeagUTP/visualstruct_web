@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-remove-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T01:55:07.326000+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.remove-finite-consolidation-low",
+  "task": "LOW review Hash remove finite closure/H1/no rejected expansion; next mapped baseline",
+  "instruction": "Delegaci\u00f3n01a0fe61-3104-743a-b032-bcc289ad80cd: consolidar123IDs \u00fanicosverdes/23CAPIresultados436eventos/UIcaller, verificartypes/scopes/resources y19rerunssolapadossin sumar. Revisar denegaci\u00f3ndeltaADDED: notasno normativas no introducen requisitos ni expansi\u00f3nimplementada. Correcci\u00f3n estrictaH1; si haycambioreal noaprobado separarlo/reportarlo,sinrodeo. Si suficiente cerrar s\u00f3loremove(Hash5/11) e iniciar siguientebaselineLOWkeys/values/items delmapa. L\u00edmitessanitizadores/sessionlarga/campa\u00f1aglobal expl\u00edcitos. Sinpublicaci\u00f3n ni repetirSorting/cierres.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-remove-finite-consolidation-plan-low.md"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-phase8-limits-consumer-low-20261008",
+  "issued_at_utc": "2026-10-08T04:00:28.797082+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.phase8-limits-consumer",
+  "task": "phase8-limits-consumer",
+  "instruction": "Correct only last original Phase8 limits consumer; retain/report historical1000000bytes excess. Separate functional faithful completeJSON/session300/realtransport from informative timings and size. No product/C/algorithm/truncation/optimization changes. Focal actual RNHTTP permitted under hard2GiB/120s; no global campaign. Preserve27accepted38pendingQA1pending unless all original functional obligations demonstrated, then pendingQA only.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/phase8-limits-consumer-low.md"
+}

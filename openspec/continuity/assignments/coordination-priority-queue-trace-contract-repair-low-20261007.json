@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-trace-contract-repair-low-20261007",
+  "issued_at_utc": "2026-10-07T00:16:46.878076+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.encolar.instructions",
+  "task": "priority-queue-trace-contract-repair",
+  "instruction": "Parent01a0fe61 authorizes ONLY concrete PriorityQueue trace-contract integration repair after independent QA, small before-fail/after-pass regression full trace/ownership/state; no C/algorithm changes, no publication until independent QA, no optimization/longcases/VPS. Document existing hierarchical holds and Dijkstra key contracts without changing ambiguous expectations; new semantic decision stops that part. <=25minutes.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-trace-contract-repair-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-publish-main-919b802-independent-qa-low-20261006.json"
+}

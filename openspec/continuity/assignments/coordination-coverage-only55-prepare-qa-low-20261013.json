@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-coverage-only55-prepare-qa-low-20261013",
+  "issued_at_utc": "2026-10-13T16:16:43.728187+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.github-vps-qualified-delivery",
+  "task": "github-vps-qualified-delivery",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-coverage-only55-prepare-QA-low-20261013/scope.md",
+  "instruction": "User Sentinel_58916043f39c8191bcf40d555977bb02 si...loautorizo: prepareONLYtemporarycoverage-onlyworkflow isolatedbranch checkouttargetc395f5f;2disjointwholemodulepartitions exact1556selectorIDs25min each +combine/gates5min=55,no retries. Preservemeasurementconfig/83global/85fourcomponents/rawdata/manifests/XML/logs/sourcepathchecks. Deliverdiffhashesmanifest/staticQA BEFORE publication/dispatch; awaitQAconforme. AfterQA authorization coversonebranchpublish/onecampaign. No app/test/mainchanges/unitE2EC17campaigns/VPS/document. Avoidautomaticbranchtriggers; historicaltimeoutunchanged.",
+  "user_message": "Sentinel_58916043f39c8191bcf40d555977bb02",
+  "verbatim_user_authorization": "si... lo autorizo"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-pq-shared-runtime-defects-low-20261007",
+  "issued_at_utc": "2026-10-07T03:09:37.940074+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.pq-shared-runtime-defects",
+  "task": "pq-shared-runtime-defects",
+  "instruction": "Parent01a0fe61 authorizes minimal repairs of already demonstrated priority-queue/shared sequential runtime final-projection and cleanup freed-event defects among27 classified causes; small guarded proof and independent batch binding. Freeze Graph QA inputs, no C/Sorting/optimization/new audit/publication. Inspect E2E763 terminal logs without long rerun; report index recovery uncertainty. Index writes require verified backup, atomic replace, readback.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/pq-shared-runtime-defects-low.md"
+}

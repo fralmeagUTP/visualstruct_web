@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-observed-invariant-repair1-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T03:04:59.676804+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-observed-invariant-test-repair",
+  "operation": "qa.graph-observed-invariant-repair1",
+  "task": "graph-observed-invariant-repair1-independent-qa",
+  "instruction": "Independent review of repaired graph observation oracle and exact four frozen files. Prior rejected variant and verdict preserved. Check exact fabricated/empty-memory counterexample, causal event/source/ledger/storage negatives, phase-specific memory requirements, legitimate transient None and explicit False rejection. Evidence: 23 pure controls pass plus all 1498 frames of five saved real HTTP traces; other 14 matrix cases not run. Postincrement and caller-pointer writes require actual preceding event/scoped storage. No C/runtime/Sorting changes, no publication or broad campaign. Parent selects independent reviewer; author results are not acceptance.",
+  "scope_ref": "openspec/changes/review-graph-observed-invariant-test-repair/repair1-review-scope.md"
+}

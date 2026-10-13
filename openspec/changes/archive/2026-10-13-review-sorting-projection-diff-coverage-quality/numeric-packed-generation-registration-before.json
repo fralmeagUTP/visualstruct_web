@@ -1,0 +1,1603 @@
+{
+  "schema": "visualstruct-continuity/v1",
+  "phase": "before",
+  "purpose": "before-work-preconditions",
+  "generated_at_utc": "2026-10-06T12:06:45.869347+00:00",
+  "project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.numeric-packed-generation-independent-quality",
+  "assignment": {
+    "schema": "visualstruct-assignment/v1",
+    "assignment_id": "coordination-numeric-packed-generation-qa-low-20261006",
+    "issued_at_utc": "2026-10-06T12:06:44.877421+00:00",
+    "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+    "change": "review-sorting-projection-diff-coverage-quality",
+    "operation": "audit.numeric-packed-generation-independent-quality",
+    "task": "numeric-packed-generation-independent-quality",
+    "instruction": "IndependentQA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline integration after accepted1994. No imports/tests/app/algorithms/HTTP/browser/native/benchmark/large/product/adoption/Git/preview. Ownbeforeafter; writeONLYreview/tracker. Verify exact current producer adapter vs approved interner, inherited educationalC/evaluator/branch sources unchanged;20same livecases7267steps7247events WHOLEwire/logical/typed/ID/order/source/Cmemory/ownership/input/machine detach exact, APIreject unchanged originalSnapshotPool/no wrapper. ALLroundtrip/normalize/globalvalidate and allrecord/index validators retained. Explicit readonly semantic stateIDsharing2values2identities in4measured traces (cache onlyneeded stateIDs, notall historicalsteps), releasedsuccess/globalerror; temporaryothermaterializations detached; standardmutators/read-only/dictbaseAPIbypass outsidecontract; _compactFalsebuiltinsteps exact. EventJournal pendingraw+EventTape+u32roots consistentprefix through12sixthcallbackfaults inDij/BF stagesbeforeafterevent/root/pendingclear/nodeindex, fivecommitprefix+sixthpending sameexception/partialCmemory/events/input/callbackdetach. Validextra nodes/texts allowedfailedrequestdisposable, NOTgeneralOOMrollback/heapCrollback/reuse. Typedhash0 alias/signedzero/readonly/lifetimeGCdisabled andretainhistory/cacheevictionnegatives;4frameerrors+global756error. SevenHTTPpairs4success/API400/JSONMemoryError/latepackerror samebody/status/contenttype/session, originalsprivatecache6historybefore7success6errors; supplementalTWOrepeatedfixtures realResponsebuffers andDijINSIDEpackMemoryErrorafterallrowsvalidated. Inspect additiveclarification inherited six_paired_small_cases key7or2 andsupplemental copiedserializerflag NOTadditionalencodererrorproof; twofixturefailures retained andcorrected notproductdefects; no overlapcoverageaddition. Sixfinalharness before0 gatedBEFOREjob/Popen self2GiBbeforeimports exit0; wrongassignmentACTUAL2nodownstream shell1. Actualidentityunion fullmach/cache/arena/index/tapes/validation/scratch/rehashbothbuffers: gennew1693648/1907638/1974005/1749801 vsbestpriorO4400374/5257225/5640953/5100830; validationnew1967491/2270915/2367368/2139498 twoIDs, NOTpeak/time. BF7274nodes748texts actualindex294912B, arenaoffset660291B/events58677B/root3024B. Measuredpublictableduplicate text/ref initialregression retained before-public-target-sharing; ONLYcausefixed textID/nodeIDsharing duringtargetconstruction, BFpack23.03MBto10.17MB checkpoints. Existing publictable/events+fullJSON retained, afterreturncontrolledtransportstrbytes14.45MBBF nearlybaselineO14.43MB; realHTTPResponseunion13.607318MB str2.180435MBbytes2.180419MB poolmachinegone. HTTPcomparatorolderbranch differsfromObaseline; no crossphasefixturepercentages. Closure/allocator/GC/encoderinternals/OSexcluded, nopeak/capacityclaim. ALLprior1994inputsimmutable; frozenpreviousQAacceptance. Preservebudget1.473GiBSCENARIO notBF30viability, allhypothesesunchanged. Decidefiniteprivateintegrationaptitude andremainingpublicationlimits ONLY; noadoption/BF30/large/global20of22closure/futureboundedserializer signoff. Any future serializer requiresownassignment/QA preservingbody/statusheaders/errors/session; no visibleHTTPstreamingauthorized. Historicallate81.597s NONCOMPLIANTunchanged.",
+    "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-scope.md",
+    "supersedes": "openspec/continuity/assignments/coordination-numeric-packed-interner-qa-low-20261006.json"
+  },
+  "global_tasks": {
+    "completed": 0,
+    "total": 29,
+    "meaning": "top-level tasks, not time or operation coverage"
+  },
+  "latest_task_heading": "# Tasks",
+  "operations": {
+    "audit.sorting-projection-diff-coverage-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/tasks.md",
+      "closed_marker": null,
+      "scope": "# QA independiente R1 corregido y cobertura staged sucesora\n\nOwner/writer01a0ff54-79d7-7520-8e9f-224ef5ed700f,SolLOW,m\u00e1ximo20min documental. Changereview-sorting-projection-diff-coverage-quality;operationaudit.sorting-projection-diff-coverage-independent-quality;tasksorting-projection-diff-coverage-independent-review;assignmentcoordination-sorting-projection-diff-coverage-independent-qa-low-20261006. Pedido coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: corregirs\u00f3loR1diff,preservarhist\u00f3rico/renovarbindings,prepararcoverageforecastexactfinal sinadoptar/bench/otrascorrecciones. Autor prepara binding, no dictaQA.\n\nVerificarR1correct UTF8-sig derivado desde snapshots measuredc9e82...final40777c2d4c7e42a372bf236411b481108d83249a89ddbcb8ee2fb9c418e0ece3 SINeditarfuentes, hunkigualdiffQAprevio. Artefactofalsohist\u00f3rico ymanifest/bindings277anteriores intactos/supersedidosparaunSHA,mappingoldpath\u2192newhistoricalcopy ydiffcorrectcurrentSHA.No4mensajesfalsamente corregidos. Dictamenpreviofuncionalfinito40777aceptado,difffalloR1; nodaR1aceptadoporfotograf\u00eda.\n\nFuentesexactaspropuestasS\u00d3LOengine40777vs can\u00f3nicoe11de016ecf23907d25e25bb76fb3f3e40bd4d0622b12f9bbce014d40a2ec7fc,copiaadapterd4af...id\u00e9ntica.212canonical SHAintactos,NOadopci\u00f3n/latenciafinal. Covcan\u00f3nicaaceptada20140/24226 permanece. Nueva staged-only20166/24252=83.15190499752597%;denom24226-122+148(+26engine),num20019otros185+147engine;engine147/148missing205 expl\u00edcito,4086globalmissing/4exclusions/186files,line-only7.14.0. RootsSorting399/417,Graph251/260,Hash128/129,Heap142/151 yadapter248/275unchanged>=85/global>=83. Noexclusionnueva/contador535inflado.\n\nAcceptedbaselineunionrawSHA97f249a2923a115e4e02db48205efb7afc684b25f78c2dc5af99e7711ba0aeea ycanonicalreport1c4062d9f5949ecf980daa480e747faa6f9c575a6ab986f0ed52a3f48490b347.185unchanged EXACTlines/contextlists. Engine193textl\u00edneasid\u00e9nticasinclindent+ASTowner,mapeodeterminista,oldexecuted170..178drop9 yrecolecci\u00f3nfreshfallbackreal; sincreditviejoahelpernewconditions. FreshONLYengineexactSHA109/23/3checks+2pairsexistentesrecolectadosparacoverage,NOlatency/nocampa535/16,nosumarnuevosIDs.\n\nForecastreporterprivadoPythonParsertextsnapshotSOLOengine: noactualcanonicalclaim. SegundoSTANDARDreporter sobreactualSTAGEDengine +185canonical,normalize\u00fanicopath,reproducetotals+all186line/missing/excluded/summary; nooverride.All186context/lines reconstruidosotraforma perctxline(noSQLauthor),vac\u00edosincluidos,ctxlistsnormalizadasporordennombres(exactasociaciones,noignorarcontextos). Mechanicalauthorpreflightv4NOQA; v1/v2/v3fallosdeverifieremptyfile/APIempty/order preservados,sin modificarproductos/datacov paraarreglar.\n\nQAlectura/SHA/AST/JSON/SQLite/gzip/binding/diff, sinappimport/test/harness/runtime/native/C/browser/HTTP/bench/profile/coverageEJECUCI\u00d3N/procesos/Git/preview/adopci\u00f3n. Permitido inspeccionar y ejecutar \u00daNICAMENTE verify_staged_successor.py --output <carpetaQApropia\u00fanicanueva> paraanalisis/recombinaci\u00f3nOFFLINE(reportstandardparser,noappimports). SalidasS\u00d3LO openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/independent-review yreview-tracker.md; nonewbind/index/autor/producto/tasks edits. Before/after ownexactIDs, sourcechange\u21d2reread/coordinate,nofalsifyingSHA.\n\nDictaminar aceptar/retener/rechazarpaqueteR1/covforecast/candidatoexact concondicionesantesdefuturaadopci\u00f3n; noadoptar/repetirbenchmark como requisito autom\u00e1tico. FinalSINlatencia:15.7711sdelSHAprevio c9e82...FAIL,nousarcomoactual40777.Preview5051noinspectadointacto,Heap/Graph/DFSfuera,18abierto/19parcial/20de22sin cambios.\n",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/proposal.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/design.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence-binding.json",
+        "openspec/continuity/assignments/coordination-sorting-projection-diff-coverage-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": "sorting-projection-diff-coverage-independent-review",
+      "task_status": "pending"
+    },
+    "audit.sorting-projection-post-adoption-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-tasks.md",
+      "closed_marker": null,
+      "scope": "# Independent QA after actual adoption\n\nCoordinator 01a0fe61-3104-743a-b032-bcc289ad80cd requested this successor binding. Owner 01a0ff54-79d7-7520-8e9f-224ef5ed700f, Sol LOW. Review ONLY existing post-adoption evidence, SHA/JSON/AST/gzip/coverage data offline; no app imports, tests, requests, benchmark, profile, coverage collection, product edits, Git or preview changes. Maximum 15 minutes. Before/after guards with the exact successor assignment and operation. Write ONLY own evidence/post-adoption-independent-review and post-adoption-review-tracker.md. Do not alter historical bindings or author packages.\n\nReview actual canonical engine40777 adoption and effective binding, exact accepted diff/backup/remapping, actual STANDARD canonical coverage 20166/24252 (83.15190499752597%), finite existing copy-hook/small-pair results and the ONLY actual plain Burbuja80: 15.884078000002773 seconds, FAIL15, 41646 steps. Prior measured candidate 15.7710722 FAIL15 and earlier staged forecast remain historical, never current latency. Check all 261 existing manifest inputs plus manifest SHA. Review report.md, canonical-verification.json, canonical-successor-coverage.json, adoption-receipt.json, final-checks.json and plain result/effective-worker-limit. Do not repeat tests or measurement. No global closure; criterion18 open,19 partial,20/22 unchanged. Author supplies binding, not independent verdict.\n",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-sorting-projection-post-adoption-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": "sorting-projection-post-adoption-independent-quality",
+      "task_status": "pending"
+    },
+    "audit.criterion18-three-layer-native-operational-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-tasks.md",
+      "closed_marker": null,
+      "scope": "# Independent QA: current criterion18 and finite native/operational results\n\nCoordinator01a0fe61-3104-743a-b032-bcc289ad80cd requested binding; owner01a0ff54-79d7-7520-8e9f-224ef5ed700f, Sol LOW, maximum15minutes READONLYoffline. New operation audit.criterion18-three-layer-native-operational-independent-quality; task criterion18-three-layer-native-operational-independent-quality; assignment coordination-criterion18-three-layer-native-operational-independent-qa-low-20261006. This successor authorizes only independent review of three-layer user criterion/quoted acta, current11SortingnativeexistingHTTP comparison, current6Graphnative/ownership and ONEHeapSort80operational response. Priorstaging/postadoptionQA bindings preserved, this review is not a new sourceadoption verdict.\n\nRead root/openSpecAGENTS/project/continuityREADME,currentassignment andbinding; before/after exactIDs. Inspect SHA/C/AST/JSON/gzip oracles/commands/limits offline; no product changes, app imports, tests, nativeprogram/harnessexecution, HTTP, browser/profile/benchmark/coverage collection, Git/preview. Write ONLY own evidence/criterion18-three-layer-independent-review and criterion18-three-layer-review-tracker.md. No authorpackages/bindings/index/tasks edits, no oldQAtracker overwritten.\n\nNormativequotes: Sorting has no15SLA, timesinformativeN/method/equipment/complexity; Graph prior15algorithm-only existing30cap retained, no universalNguarantee/80Sortingapprovedmax. Sources/currentacta exact; previousfullHTTPdecision superseded but intact. LayersCnativeseparatefromPythoninstructionmodel; preparation/validationJSON separate; browserrender/replayhuman unmeasured. MemoryErrors/timeouts notautomaticallyPASS. Check newacta changes missingGraphnative status finiteonly, no globalclosure/20of22change.\n\nSixGraphnative30/29 chaincases: BFS/DFS/Prim/Kruskalundirected58storedarcs, Dijkstra/BFdirected29start1/end30; independent chaincoverage/pathcost29/traversal1..30/unmarkedoutput/borroweddataandmarksoracles. Firstplus100predefinedcalls, QPC0.1us, no timeroverheadsubtraction, startupcompileIOcalleroracles outsidekernel, malloc/freeinside. Separateuntimedallocobserver trackedalloc/free/outputowned, aftercallerfree0; no assumeuniversalfailurepaths/UBproof. Nativetiming is notwebalgorithm/interpreter latency.\n\nHeapSort80ONEactualcanonical40777/d4af testclientrequest16.982881s informative,200/success/output1..80/9879steps/125508219bytes/rawSHAfee15bb2c39e1e012d99536e08bdd830ae20ed2d55ff2eb3cf139c3c6053f8ba. Actualworker22620 specificJobVisualStructHeapSortCurrent80_22924 member2GiB verified, nooverlay/profiler/coverage/retry. SavedresponsegzipstreamSHA checked; validationcurrentguardTRUE. NativeHeapmetrics reused710comp/386swaps/1158movesmatchweb; do not repeat. PreviousMemoryError1743/56db notrewritten; currentcaseabsence is notcausalexclusiveengineproof/generalclosure/browserusability. DFS/4Graphinstructiontimeouts remainpending.\n\nCurrent11SortingC80..1 informational, historical10HTTPreportengine1743/adapter56db versuscurrentBurbuja40777; RadixHTTP80extremes differsfromC80..1, nativeobservercounterpolicy differsfromweb. No allalgorithmslowspeedclaim/ratio/subtraction. Inspect preservedinitialharnessfailurefiles and correcteduniqueIDs notaddduplicatecases. No reuseold15HTTPFAIL ascurrentSortingSLA. Verify bindinginputs/currentappC212unchanged and filepathsDcanonical. Verdict accept/retain/reject WITHfinite scope/limitations, noauthorautomaticQA/no automaticoperationalglobalclosure.\n",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-criterion18-three-layer-native-operational-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": "criterion18-three-layer-native-operational-independent-quality",
+      "task_status": "pending"
+    },
+    "audit.heapsort80-saved-response-browser-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-tasks.md",
+      "closed_marker": null,
+      "scope": "Independent read-only offline QA of saved HeapSort80 current UI browser evidence. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f, Sol LOW. Read root/openSpec AGENTS, project, continuity README, assignment, scope and bindings; exact before/after IDs. No browser, tests, app import, HTTP, native harness, profile, benchmark, product modifications or preview5051. Review 250 UI source hashes, saved response integrity, existing scripts/JSON/screenshots and finite claims. Preserve original completed=false selector failure and separate lightweight navigation context: do not certify leaving same large-response page. Play/pause/distant seek use runtime audit hook; visible next/previous/toggle/method controls are actual clicks. Fourteen observations are seven indices in both directions, not exhaustive9879. Local1.474372s includes transfer/parse/player/render, not pure rendering or backend preparation. Retained response step_by_step served to UI fast request, no fresh fast execution. No universal usability, memory/persistence/fidelity or globalclosure. Sorting timing informative without15SLA; Graph pending unchanged. Write ONLY own evidence/heapsort80-saved-response-browser-independent-review and heapsort80-saved-browser-review-tracker.md; do not edit source author evidence, bindings/index/tasks or previous QA outputs. Verdict accept/retain/reject with explicit limitations.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-heapsort80-saved-response-browser-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-publication-candidate-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd requests independent QA before DFS30/adoption. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f, Sol LOW. READONLY offline review, no additional campaign, tests, browser, HTTP, native execution, app imports, profile/benchmark, resources increase, product or author-evidence edits. Read root/OpenSpec AGENTS/project/continuity README, current assignment/scope/bindings and exact before/after guards. Write ONLY own evidence/dfs-publication-candidate-independent-review and dfs-publication-candidate-review-tracker.md. Preserve all prior review bindings/tasks/outputs.\n\nReview exact private dfs_instruction-isolated.py and isolated.diff against unchanged canonical dfs_instruction.py and existing snapshot_pool.py. Candidate uses request-local SnapshotPool(preserve_tuples=True) after every completed step, copies first step/pedagogy before attaching initial_frame; educational C, instructions and validator bodies unchanged. Check six preselected unique cases and954total steps (chain3,cycle3,disconnected,self-loop,prior-marks,raw-missing-start), full JSON bytes and complete type/key-order equality. Raw missing start is direct C-model fixture, not API acceptance. Existing verify_dfs.py executes normal frame validation and TraceEngine legacy validation, read-only boundary checks, historical publication SHA seals, free before/live/after-retired membership and output detachment after original before/after mutation. Inspect actual artifacts and oracle logic rather than infer closure from flags.\n\nSpecifically assess alias compatibility: pool changes internal Python-container aliases relative to baseline. Public JSON is identical and synchronous read-only validators are exercised, but externally mutating published shared nodes is NOT certified. No universal read-only consumer proof; request a focused inventory if adoption requires it. Pool clones mutable input rather than caching source identities; no suppressed historical mutations/free events. Temporary pool records/keys released on return, returned graph remains shared dict/list.\n\nMemory estimate is sys.getsizeof over unique reachable identities from returned trace (including reachable keys/primitives), not tracemalloc/RSS/process peak, and excludes temporary pool/allocator/serialization. Six returned-graph reductions77.02-93.15percent are informative; observer historical seals add quadratic harness work, so no timing claim. No DFS30 rerun, no HTTP/browser/large JSON completion or all failure-path proof, no transport/schema change, no adoption. Four numeric operational pipelines unresolved;20/22 unchanged. Sorting no15SLA; Graph pure algorithm criterion distinct from preparation. Verdict accept/retain/reject finite isolated evidence, explicitly state adoption restrictions and next necessary verification, never imply global operational closure.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-publication-candidate-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-publication-consumers-dfs30-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd requested successorQA after consumer inventory and ONEcandidateDFS30. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f Sol LOW. READONLYoffline, no new campaign, tests, imports, browser, HTTP, nativeexecution, resourceincrease, product/adoption/Git/preview. Read currentassignment/scope/bindings, root/openSpecAGENTS/project/continuityREADME; before/afterexactIDs. Write only evidence/dfs-publication-consumers-dfs30-independent-review and dfs-publication-consumers-dfs30-review-tracker.md. PriorQA/candidate outputs and bindings preserved.\n\nReview supported-path consumer inventory217source lines and manually examined success call chain, existing267stepfixture mutation-proof (NOalgorithm rerun), actualTraceEngine validation/routepool pack/full expansion/_json_safe/SessionService/Flaskserialization read-only, exact shared/unshared transportJSON. Sessionpersists copiedhistory, nottrace. ExistingJSdecoder freezescompoundobjects/stepwrappers; browserNOTexecuted, arbitraryexternalmutation/extensionsNOTcertified. Check implications of candidateinternalaliaschanges, no hiddenconsumerwriter.\n\nONEacceptedcandidateSHA9e7d5ff296efcab3d81d4928f29e44bf5ae1942461ab04187dbf7a04b6644a46 privateoverlayDFS30undirected30/29chainweights1,start1. WorkeractualPID22852 verified JobVisualStructDFSCandidate30_19800 limit2147483648flags8448 before appimports; launcherven v parentPID20948 differs, membership independentlyverified. CanonicalC/app249SHAunchanged. Requestendedoperationaltimeout60s/exit124, no retry. NOcompleteHTTPresponse/SHA/bytes/steps/finalstate/ownership or phase localization; unavailable is not0/PASS. Process97.484s includes setup/startup outsidetimer, wallUTCrequesttoend60.456782s includes0.5s watchdogpoll/terminalmetadata, notpureCexecution or15HTTPcriterion. NoMemoryErroremitted doesnotprove30memoryfixed. Check actual harnesscommands and stalehistoricalcasefields explained bycases-provenance.md, not current authorization/SLA. Original request-start.json/preparation/overlay/limit logs retained; no profiler/coverage/quadraticseals duringrequest.\n\nVerdict finiteconsumercompatibility and operationaltimeout separately. Do not authorize adoption or globalclosure from smallretainedmemory improvement. NativeCcorrectnesspreviously acceptednotrerun; allfiveGraphoperationalpending includingDFS timeout,20/22unchanged,Sortingtimeinformative. Review next proposed investigation (route freshpool/reintern/reuseownedpublication) as planonly, not measured phase or permission to retry. Preserveprior sixcase/954steps acceptance and priorQAconditions; no new uniquealgorithm cases inferred fromconsumer267steps reuse.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-publication-consumers-dfs30-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-owned-snapshot-publication-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorized private DFS owned snapshot successor and independentQA BEFORE anotherDFS30/adoption. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f Sol LOW. READONLYoffline, no tests/imports/browser/HTTP/nativeexecution/diagnostic/benchmark/resourcesincrease/canonicalproduct/adoption/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME and thisassignment/scope/bindings; guardexactbefore/afterIDs. Write ONLY evidence/dfs-owned-snapshot-publication-independent-review and dfs-owned-snapshot-publication-review-tracker.md. PreservepreviousQA/bindings/tasks/authorevidence.\n\nReview successor.diff (acceptedprivate->newprivate) andcanonical-to-successor.diff. No C/publicformat changes. Private successor publishes detachedbefore once, fullold/new snapshot captures twiceEVERYemit and interns them; sharesownedroots in memorydebug/instructionstate/pedagogystate; no mutable source identitycache/old=previousnew substitution. snapshot and22helperfunctionASTs unchanged except enclosingbuilder/emit. Firststep/pedagogy detach before initialframe unchanged. ExistingSnapshotPool preserve_tuples typedkey/order policy, modelmutation/free/recursion/return/error guards unchanged.\n\nNine selectedsmallcases1131totalsteps inclusive1APIrejection;six priorfixtures954reused and3additional177steps (singlevertex54,APIreject1,alias122), not extra954sum or nativecampaign. Fulltyped/keyorder/JSON equality versus oldprivate; six also match originalarchivedtracebytes. Everyframe builder/validator read-only and normalvalidation/TraceEngine bodyexecute. HistorySHAseals priorpublishedsteps at nextsteppublication, free/live/retired membership; alloracles read actual scripts. APIerrorpreparationcatch broad, so finitefixture+unchangedrejectionAST, not comprehensiveexceptiontaxonomy. Aliasspecificfixture(vertices0/2) completecompoundidentityrelationshipgraph equals oldprivate/newprivate; ownedmemory/visualrootidentitiesasserted; all19mutablebefore/aftercontainerscleared afterbuild without outputchange. Supportedreadonlypublication, no arbitraryoutputmutation/customcallbackpurity universalclaim.\n\nActualbetweeneventdiscontinuities in seven successfulC-model traces are returned-before-leave andpublished-before-caller (two each), preservednotstitchedaway; rawmissing-startNULL hasnodifferinggap. Rootdfsassignment inventoried but no differingsnapshotfield in selectedcases. Examine mutation-capture-source-proof.json and gz actualfields against report, noassume sourceASTalonecorrectness.\n\nRecursive intern dispatch visits930818->663754,267064avoided28.6913percentaggregate; selectednonrejection25.07-30.17percent. Publicinterncalls INCREASE(oneold/step versusfournew/step+before), so use visits notfewerrootcallclaim. Five fewerdeepcopyboundarycalls per1130C-modelsteps=5650avoided; API3 unchanged. Retaineduniqueobject/sys.getsizeofgraphcounts EQUALeacholdprivate/newcase: no repeated77-93percentgain/noRAMorlatencyprediction. Expensivehistoricalsealingobservernotapplicationtiming. NoDFS30inthisblock; preservedoldplain+diagnostic60timeouts NOTsolved/adopted, nativekernelcriterionseparate/no15HTTP.249canonicalSHAunchanged,20/22unchanged,fournumericpending. Existingconsumerinventory/source-unchanged read-only supportingevidence linked; evaluate anycompatibilitygap rather than automaticadoption.\n\nVerdict finitecompatibility/counts accept/retain/reject; explicitlimits/requirednextverification. QAacceptance is not automaticproductadoption/globalclosure/permission to retry largecase. NewDFS30 would require currentexplicitcoordination scope after thisreview.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-owned-snapshot-publication-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-owned-dfs30-focal-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd requests coherentQA of corrected rejectionoracle and ONEactualacceptedownedDFS30 timeout. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f Sol LOW. READONLYoffline, no new tests/imports/browser/HTTP/nativeexecution/profiler/diagnostic/benchmark/resourcesincrease/canonicalchanges/adoption/Git/preview. Read currentassignment/bindings/scope/root/OpenSpecAGENTS/project/continuityREADME; exactbefore/afterguards. Write only evidence/dfs-owned-dfs30-focal-independent-review anddfs-owned-dfs30-focal-review-tracker.md. Preserveoldreviews/bindings/tasks/authorevidence.\n\nReview rejection-harness-correction.diff/verify_rejection_corrected.py actualspecificVerticeNoEncontradoError catch with elseAssertionError, two negativecontrols proving successfulcallfails andownAssertionErrorpropagates. One realmissingstart fixture oldprivate/successorcomplete typed/order/JSONsame1step/SHAca935947..., priorAPIJSONSHA unchanged, productuntouched. This corrects priororaclegap, notnewindependentalgorithmcase/9casererun/universalexceptiontaxonomy.\n\nONEactualacceptedSHA d0edcd71db4708cb0da27661ea9e64cf077dbbc6f578348e9af6e1dae22c80c4 DFS30undirected30/29chainweight1/start1, privatefactory/session andoverlayONLYsuccessbuilder. Membershipactualworker22192specificJobVisualStructDFSOwned30_720 verified2GiB2147483648flags8448beforeappimports;launcherven v parent14240 notactualworker, source/overlayfileschecked. Validators/C/rejection/codec unchanged,249canonicalSHAintact.60setuprequests37.5451126soutsideinterval.\n\nActualrequestoperationaltimeout60s/exit124, no completeHTTPresponse/SHA/bytes/fullsteps/finalstate/ownershiporacle, allunavailable NOT0/PASS. RequestUTC04:43:20.877813/controllerend04:44:21.341015 span60.463202s includes0.5swatchdoggrace/terminalmetadata; process98.437s includesoutsideprep. No profiler/coverage/tracemalloc/pervisitcount/seal/peakmeasure; coarseexistingworker/prep/request/resultmarkers only. Olddiagnosticphase39.42s intern is OLDprivateSHA, notremeasuredorsoldasprecisephaseofnewtimeout. Memoryerrorabsence notmemoryviability/plateauproof. Ninecasecompatibility/visitreductionacceptedpreviously remainsfinite, notDFS30completion/latencyprediction.\n\nInitiallaunchPythonIndentationError beforeworker-start/imports/prep/request, preservedinitialharness/logs/campaign/allowedflagand explanation. Correctonlyindent thencompile; ONEactualDFSoperation/noalgorithmretry; reviewcountsanctioncurrentassignment andstalehistoricalcases.json draftauthorization/15fields provenance note. No deletingpreviousfault toproduceapass.\n\nVerdict separate rejectionoracle compatibility fromcensoredoperationaloutcome. Noadoption/globalclosure/DFSresolution/resourceincrease/retryauthorizedbyQA. AllfiveGraphoperationalpending,20/22unchanged, pureCcriterionseparate/no15HTTP orSortingSLA. Nextwrite-awareownedcaptureinventory/smallproof/QA is planonly, notimplemented. PreservepreviousownedcandidateQAconditions/accepted327sources9JSON1131steps withoutaddingcountsagain.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-owned-dfs30-focal-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-owned-branch-capture-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd requested exactprivatewrite-awarebranchDFS QA before newlargerun/adoption. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f Sol LOW. READONLYoffline,no tests/imports/browser/HTTP/nativeexecution/profile/benchmark/diagnostic/resourcesincrease/product/adoption/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/currentassignment/scope/bindings; guardexactbefore/afterIDs. Write ONLY evidence/dfs-owned-branch-capture-independent-review anddfs-owned-branch-capture-review-tracker.md; preserveallpriorQA/tasks/bindings/authorevidence.\n\nExactprivateSHA aa869a73f02a45a8c842bc1c0df4496bc2af5aa9cc58c34b7bcc233564f17d75 replaces fullsnapshotclone/traversal withownedbranchcache. write-inventory.md maps everymodelwrite, dirtynode/frame/stack/retired/mark/progress revisions. Cache holdsONLYdetachedpoolownedrecords, NEVERmutableinputidentities. Ordinarymutablesmodelunchanged. Immutablegraphv/a/noFIFOqueuepubonce; retiredappend-onlyrows pubonce; liveheap/frame branches reusenormaltypedownedrecords bysymbolicnonreusedID/dirtyset; chains actualselector+heaprevision walkliveheap whenneeded. Scalarreturned/published/counters/dfs-headstorage readfreshEVERYsnapshot, stilltwo captures/emit,no old=previousnew shortcut. Root/headstorage actualcomputed, outsideemitreturn/published gaps preserved. Dirtysamevaluewritecanreintern branch; structuralpoolreusesvalue,no eventomission. Visualcopy unchanged.\n\nReview bothdiffs canonical->branches andfailedowned->branches, ASTpreservationproof strippingONLYprivate dirtykeywords/touch/freechanged-frame tracking leavesexistingmodelhelpers/emit/rejection identical; onlybuilder/snapshotremainchanged. Assess inventory completeness/caching assumptions ratherthan inferuniversalvalidityfromAST. Future newmodelwriters require invalidationupdates; no genericautomaticmutationtrackingpromise. C/source/guards/free/recursion/error/order/narration/returns/publicdictlist/format/codec/validatorsunaltered.249canonicalSHAunchanged.\n\nNineREUSEDselectedcases1131steps inclusive1APIreject, notnewnativecampaign/noextraoldcounts. Complete typed/keyorder/JSON equalfailedownedvariant; sixalsoexactoriginalarchivedbaselinebytes. Fulltracesgz/SHA/results/scripts linked. Normalframevalidation+TraceEngine, readonlybuilder/validatorboundaries, historicalpublishedstepseals/free/live/retiredmembership. Newtest-onlyFRESHoriginalsnapshotoracle reconstructsactualmutableheap/frame/retired/discovery/parents/counters/selectors atEVERYbranchsnapshotpub:2260checks two/1130C-modelsteps. Graphoracleusesdetachedownedgraph backedbyimmutablev/a sourceinventory, notclaimedruntimegraphmutationtest. Standardcopy.deepcopyoraclework excluded frommodulecopyboundarycounts; no poolintern inoracle. Eachcachehitmustmatchcompletefreshstateonexercisedwrites. Supportedconsumerchainreadonlyexistingproofsourceslinked; arbitraryexternalmutatingextensions/customcallbacks notuniversallycertified.\n\nAliasfixture completecompoundidentitygraph equalold/new, ownedmemory/visualrefsasserted;19originalmutableinputcontainersclearedafterbuild/outputunchanged. Seven successcases twoactualbetweeneventgaps(returned,published), rawNULL/APIerrornone. APIcatch specificVerticeNoEncontradoError/elseacceptancefailure preserved fromcorrectedharness, oldnegativecontrolprooflinkednotrerun/summed;rejectionASTunchanged.\n\nCountersfailedowned663754->410049recursivevisits(-253705,-38.2227percent),moduledeepcopyboundary28938->1633(-27305,-94.3569percent). Rootinterncallsincrease, newpoolintern constructs changedrecords; do NOTcallallcopyeliminated/38percentlatency. Allreturneduniqueobjects/sys.getsizeofretentionEQUAL eachcase; privatecache/pooltemporary notincluded, nopeak/stabilization/latency/DFS30measurement inthisblock. Prior60timeouts remainoperationalfailures; substantialfiniteworkcount savings not proofDFS30finishes orpermissionforluckyretry. Smalltestquadraticseals/oracle are NOTbenchmark.\n\nVerdict finitebranchcompatibility/inventory/countersaccept-retain-rejectwithexplicitlimits/requiredverification. Noautomaticadoption/largepermission/globalclosure; allfiveGraphoperationalpending,20/22unchanged;pureCnativetimecriterionseparate,no15HTTP/SortingSLA.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-owned-branch-capture-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-branches-dfs30-one-observed-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd requestedONE observedprivatebranchDFS30acceptedSHA/evidencebinding. IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f Sol LOW, READONLYoffline. No tests/imports/browser/HTTP/diagnostic/profile/benchmark/nativeexecution/resourcesincrease/product/adoption/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/currentassignment/scope/binding; exactbefore/afterguards. Write only evidence/dfs-branches-dfs30-one-observed-independent-review anddfs-branches-dfs30-one-observed-review-tracker.md; preserveallpreviousoutputs/bindings/tasks/authorevidence.\n\nONEacceptedprivateaa869a73f02a45a8c842bc1c0df4496bc2af5aa9cc58c34b7bcc233564f17d75successDFSbuilderoverlay, bodyunchanged/C/rejection/validators/codecnormal. Undirected30/29chainweights1/start1. Realworker2040specificJobVisualStructDFSBranches30_8836membership2GiB2147483648flags8448beforeimports, launcher6860distinct;249canonicalSHAunchanged, no retry/adoption. Explicitcoordinatorlightphase/step/memoryobserver authorization preserved; thisisOBSERVEDinstrumentedrequest NOTplainbenchmark. Observerbackgroundnominal1s sysframesREADnames/localslensteps,WindowsGetProcessMemoryInfo; nopervisitcounter/profiler/decorators/oracle/historyseals. Sourceclearsloc/trace soobserverdoesnotretainmodel; correctionappliedBEFORErequest/import, noalgorithmrerun. Inspectsource/artifacts/hashes/currentassignment ratherthaninfercapability.\n\n55actualsamples, completedstepcount12147fromexactcandidatebuilderthenroutepacktrace, notgenericstepsfield. Lastgeneration46.980769s,globalvalidation1sample,firstpack49.627790s,last60.724517transport_pack. Timestampsarenotexclusivephasedurations/CPUattribution. Builderreturned; completedglobalTraceEnginevalidation inferredfromunchangedsupportedroutecallorder corroboratedactualsample, novalidatorbypass. At60timeoutexit124 NOHTTPcomplete response/status/rawSHA/bytes/fulltrace/finalownershiporacle available. GeneratedstepCOUNTisnotretainedcomplete trace. pool_records79018/liveheap144STALElastbuildervaluesafterbuilderreturned, notcurrenttransportpool/finalCmemory/freecounts. Guard againstclosure/allstateoracleclaim.\n\nPrivateUsage first61116416,last/maxsample708395008(675.5781MiB), maxobservedWindowsPeakPagefileUsage717836288(684.5820MiB), actualworker sampled counters NOTallprocess/system/finalmargin/stabilization. Memorybelow2GiBatcutoffbutnorunfinalsafetyproof. Samplephasecounts reflectvariableGIL/IOoverheadnotexclusivepercent. Existingplain/diagnosticfailures intact notretroactivelyreclassified. Currenttrialstopsintransportpack;sourcecanonicalroutecreatesfreshpool forplaintrace, andidentityshortcutrecognizestargetownedobjectsonly, matchingobservedstack. OwnedpoolhandoffexistingGraphLogicalTrace/snapshot_poolprotocol isNEXTPLANONLY, notimplemented, Pythonrootclasscompatibilitymustbeassessedratherthansilentlychanged.\n\nVerdictfinitegeneration/validation/progress/memoryobservationversusincompleteoperation separately. Noautomaticadoption/DFSresolved/globalclosure/resourceincrease/retry. AllfiveGraphcompleteoperationalpending20/22unchanged; pureCnativetimecriterionseparate/no15HTTP/SortingSLA. PreviousbranchQA342input/ninecases1131steps acceptancepreservednotrerun/summed.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-branches-dfs30-one-observed-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-owned-pool-transport-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-tasks.md",
+      "closed_marker": null,
+      "scope": "Independent QA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f Sol LOW, READONLY offline. No imports/tests/browser/HTTP/benchmark/DFS30/adoption/product/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/current assignment and exact evidence binding; before/after guards. Write only own independent-review evidence and tracker. Review complete private source, existing public protocol/root subclass change, deterministic legacy bytes/typed expansion, full source-DAG validation including unreachable records, primitive normalization, fallbacks/invalid references, isolation and counts. Explicitly preserve failed JPG export evidence; no blanket consumer/export acceptance, latency/RAM claim or global closure. Three unique fixtures417steps and browser267 same chain case are overlapping, not additional unique fixtures. Additional encoded-DAG scans and retained source-pool peak risk remain. No automatic large retry or adoption; request coordinator next finite scope after verdict.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-owned-pool-transport-independent-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-transport-validation-jpg-delta-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLY offline. No imports/tests/browser/HTTP/DFS30/adoption/product/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/current assignment and exactbinding; before/afterguards. Write only own evidence/dfs-transport-validation-jpg-delta-independent-review and tracker. Review minimal primitive_key correction including unreachable invalid primitives, prior five controls and saved-wire equality, unchangedbuilder, full249sourceSHA. Inspect capturedSVGs/XMLparse/error and sameDOM/traceSHAs, baseline saved-wire equivalence (NOTfreshbaselineexecution), isolatedXMLSerializer validSVG/realJPEG/buttondownload, unchangedtrace/noactualserverPOST/noDFSregeneration. Preserveoriginalfailures plus routeharnesserror and rawSVGassertfailure resolvedoffline through complete style-declaration normalization. Do not assert rawSVG equality, globalexporter/pixelcertification, timing/RAM guarantee or closedglobal20/22. Exactdeltaacceptance only; noautomaticDFS30/adoption; canonical untouched.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-transport-validation-jpg-delta-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-owned-transport-dfs30-one-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLY offline. No imports/tests/browser/HTTP/DFS30/adoption/product/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/currentassignment/exactbinding; before/afterguards; write only own evidence/dfs-owned-transport-dfs30-one-independent-review and tracker. VerifyONE exactacceptedbuilder/helperprivate request, actualworker24336 selfspecificJob2GiBbeforeimports, normalvalidators/codec; preservewrapperPID16104 discrepancy insteadofattributingactualworkeridentity. Complete responseHTTP200/54.046245observed/40348289bytes/SHA/12147steps/result1..30; independentlyexpand savedrefs/data offline. Lightobservernotbenchmark49samples/max1286807552notfinalpeak/system/margin guarantee, stalepool/heap fields andsamplingnotCPU. Review saved complete response and posttimer full-expansion/finiteJSON/return/frees/callerownership/history. Harness exit1 wrong entire-session assertion afterresponse saved, derivedcanonicaloneDFS+signedmarkeffect/prefix preserved; no cleanexitclaim/no retry. Preserve two existing betweeneventreturned/publishedmetadata gaps, notuniversalstate-equality. Historicalcasesauthorization fields superseded separately. No globalGraph/20of22closure/automaticadoption/benchmark or browserJPG certification. No new algorithm execution.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-owned-transport-dfs30-one-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dfs-transport-jpg-canonical-integration-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No appimports/tests/browser/HTTP/DFS30/adoptionchanges/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/currentassignment/scope/exactbinding; guardsbeforeafter; writeONLYown evidence/dfs-transport-jpg-canonical-integration-independent-review andtracker. Review effectivecanonicaladoption3productfiles/backups/accepted-stage/adopted-source/finaldiffs andimports; builderASTacceptedexceptproductimport, helperNEWoneoptionalnumeric_C_memorycompound_nodesassignment afterroot correctsrealintegrationregression, noDFSschema/educationalCchange, JSexactacceptedone-lineXMLSerializer. PreserveoldQAimmutablebindings, remappingchangedcanonicalDFS/JSexplicit, newhelperincluded. Review24PASS freshfocal9archivedfixtures1131overlap/typed3comparisons/eightcorrupttable+3primitivecontrols and preservedinitialharness/productfailures. Validateactualcoverage7.14standardreporter20262/24343=83.235427%,187modules/4exclusions, oldDFSdataentirelyremoved(freshonly) and185unchangedSHA/lines/contexts/report exact, newhelper45/45/DFS226of231fivelegitimatemisses/roots85. No83.15automatic/wholepytest/nativeproof. Saved40MBresponseUIoneinterceptNOserverPOST/backendDFS; actualcanonicalJSbrowserload12147/8DOMtargets incldeep30andreturncaller/realnextprev/toggle/fullDAGsealread-only/exportJPEG2379487bytes8400x19328/samecontextexit/Cdownload/pageerrorzero. Pause/seekhooks distinctrealcontrols, Clinepresent notallhighlight/pixelcert. JPEGlargeimagePillowwarningpreserved noredispatch/noresourcesincrease. NEWstatsdelta requiresverdict; noautomaticglobalGraph20of22closure orotheralgorithmsaction.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dfs-transport-jpg-canonical-integration-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.four-numeric-owned-publication-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No imports/tests/browser/HTTP/native/30node/adoption/product/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/currentassignment/scope/exactbinding; guardsbeforeafter; writeONLYown evidence/four-numeric-owned-publication-independent-review andtracker. ReviewPRIVATEsharednumericcallbackownedbefore/pending andactualold/new EACHcallback, GraphMachine/Program/educationalCunchanged, otherfunctionsASTexact, acceptedOwnedTransportPoolderived NumericOwnedPool extra producerstep/final_state rootreplay preserveslegacynumericwhole-steprecords/order/IDs, validatesALLsourceprimitives/refs. Successfulproducerrequiresownedstep/finalroot; rejectionoriginalpool unchanged. Verify20maininputs7267steps(full19cases6599+onefiniteDijkstra668), FULLtypedlogical/wire/refs/stats/events/Cmemory/free/returns/allsteps/normalvalidators, 4syntheticsuccessFalseAPIrenderingsNOTactualHTTPAPIpolicytests. VerifyfourseparateACTUALLYsuppliedinputaliasmarker/read-onlyframe/validator controls correctinsufficientouterkwargsprobeinmain; variantsnotcounted20. ElevenmalformedDAGnegativecontrols. Preservebetweeneventgaps/outsideemitmutations andnewnonnulldijkstracaller2. Countsperalg11.76..14.17%GENERATIONinternsaved withADDITIONALDAGvalidation/normalization, unchangedpackintern; notnetCPU/latency/RAM/largeviabilitypromise, nativepureCseparate. Retaininitialmojibakedefectivecandidate/diff/failedtraces/localizednote; explicitUTF8regeneration noCchanges.250canonSHAintact. Noadoptionorautomatic30nodecampaign/global20of22closure. CandidatePARTIALandmayneedactualsnapshotheap/framepreparation optimization afterQA.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-four-numeric-owned-publication-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dijkstra-owned-small-http-pair-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No appimports/tests/browser/HTTP/native/timing/adoption/30/product/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/currentassignment/exactbinding; beforeafterguards; writeONLYown evidence/dijkstra-owned-small-http-pair-independent-review andtracker. ReviewoneABsmallpair exactacceptedcandidate/helper/effectivecanonicalbaseline, sixprepoutside+onefullPOSTeach/2freshworkers11240and14088 specificselfJob2GiBbeforeimports. PreservewrapperPID22404/19016 discrepancy/consolelegacysecondsnullbutplain-resultactualrequest_seconds valid; no inventedlineage/phases. OfflineverifyWHOLEraw1995667bytesSHA4a5ead1446cdf00846f59658dba400d25b7cb50ce4bad5383308725a67d7418e EXACTequal/all668refs/states/results/8alloc6free2callerowned/sessionprefix6+oneDijkstra. Fulltimerbaseline1.8333454000239726/candidate1.7691138999944087,64.2315ms/3.5035% lower singleABpair AMBIGUOUS/no confidence/variance/ordercontrol, no phaseprofiling/counters/oracleinsideclock. No convincingbenefit/regression/DAGattribution/margin/30proof.250canonSHAintact; bothworkerexit0/no retry. Decisionkeeppprivate/noadoption/no30. ProposedONEinverseBApair NOTEXECUTED requiresnextcoordinatorassignment; conditionalvalidation-normalizationfusion ideaNOTimplemented, mustretainunreachablevalidation/backwardkeys/primitives/safetystats/rootorder andofflinefullsaved20proofbeforetiming. Noautomaticcampaign/global20of22closure; pureCseparate/no15HTTP/SortingSLA.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dijkstra-owned-small-http-pair-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dijkstra-owned-small-http-consolidated-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator requested ONE consolidated offline QA package for prior AB and new reversed BA, no intermediate per-measurement review. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLY offline. No appimports/tests/browser/HTTP/native/benchmark/30/adoption/product/Git/preview. Read AGENTS/OpenSpec/project/continuity/currentassignment/exactbinding; guardsbeforeafter. WriteONLY own independent-review evidence and tracker. Verify allfour complete1995667byteJSON exactSHA/668steps; newhistoryprefix/worker2GiB/sources unchanged, accepted privatebuilder/helper. Preserve wrapperPID discrepancies and legacy console null; actualselfproof authoritative. AB gain3.50percent reverses BA candidate1.50percent slower; diagnostic ambiguous, notgeneralbenefit/phase/RAM/30proof. No additional smallrepeats. Review explicitnextdecisionONEprivate30trial samehistoricalchain/limits/proofs, proposalonlyrequiresnextassignment; no30executed/adoption. Historical627inputs preserved.20of22 unchanged/pureCseparate/no15HTTPSortingSLA.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dijkstra-owned-small-http-consolidated-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dijkstra-owned-pairs-and30-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator requested ONE consolidated offlineQA of diagnosticAB/BApairs+ONE observedprivateDijkstra30. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No imports/tests/browser/HTTP/native/benchmark/30retry/adoption/product/Git/preview. Read AGENTS/OpenSpec/project/continuity/currentassignment/exactbinding; guardsbeforeafter; writeONLYown review evidence/tracker. Preserve prior669hashinputs and first627. Four smallcompleteJSON exact1995667bytesSHA/668steps, signreversal ambiguous notgeneralbenefit. Verify acceptedprivatebuilder/helperand250sourceSHA/effective20784selfJob2GiB beforeimports/wrapper20512discrepancy. ONE30 directedchain1..30unit/start1/end30 supervisor60stimeoutexit124/noresponse/HTTPstatus/fulltrace/oracle/finalCmemoryfreeownership/sessionafter.55lightsamples last60.0010118generation_snapshot_capture encoded261/_snapshot_heap267/snapshot275/emit292;8137steps61519records incomplete/stalecounts.33internsamplesNOTCPU attribution/solecause. maxsample418648064bytes NOTfinalallprocesspeak/RAMcauseguarantee. Preservestaleharnessno_observer/no_samplingflags correctedseparately/consolelegacynull; OBSERVEDnotplain. No validatorbypass/educationalCchanges. Finiteprevious equivalence remains;30completionFAILED. Next boundedimmutable heap/frame preparationproposal ONLYnotimplemented/noautomaticretry/otherthree/adoption/global20of22closure. PureCseparate/no15HTTPSortingSLA.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dijkstra-owned-pairs-and30-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.four-numeric-branch-capture-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator requested consolidatedQA newPRIVATEsharedfour numericimmutablebranch candidate plus priorONE30timeout and ambiguousAB/BA. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No imports/tests/browser/HTTP/native/benchmark/30/adoption/product/Git/preview. Read AGENTS/OpenSpec/project/continuity/currentassignment/exactbinding; beforeafterguards. WriteONLYownreviewevidence/tracker. Preserve697priorinputs and operationalfailurelimits. Verify completehelper/inventory: inheritedCexecution/copied_evalASTexactexcept2assignmentnotifications; emitdelegatesactiontheninvalidates; invokefinallyoutsideemitframepop; scalarsfresh/actualoldnewseparate; registeractualheapfield/itemtargetidentityNOTsourcecontentcache; detachedpoolownedbranchpromotion exactorder, boundedmapclear/livecachefree; finalsamepoolheaprootshortcut.20maininputs7267steps7247Cevents FULLsavedlogical/wirebytes/typeddecoded/allrefsIDs/order/stats/states/normalvalidators/freeretiredownership;4syntheticrejectionrenderingNOTHTTPpolicy. Fouractualinputalias/read-onlyvariantsincltupleboolintfloatnegativezero, everymainactualmachinesourceclearedoutputsdetached.12normal/failallocation1/2directCmodelcases fouralgorithmscomparefullactualevents/oldnew/final+returnfreememory;3missinginvalidationcontrolsMUSTdetect; aliases/unknownphase/primitivecontrols;11malformedDAGinclunreachableprimitive. Firstpasshelper20results/propertyevidencepreserved, finalrootshortcutfullreverification. InitialnegativeharnessimportfailureBEFOREtests/rootpathfixandstaleconsolefooter acknowledged. No nativeUB. Concreteheapnodeencodingreductions notwalltime/peak; matchedinterncountsEXCLUDEfiniteDijreturnwherepreviouscountabsent; remainingframes/pedagogy/listchange/DAGscansandcache/mutableconsumer/futuresinkrisks.250canonicalSHAunchanged/noCtype/order/conditions/memoryfree/returnchange. Prior30exit124/60s lastgenerationheapencoding8137incompletesteps399.25MiBobserved/noHTTPoracleownershipsessionafter;ABgain3.50percent/BAloss1.50ambiguous notgeneralbenefit. CurrentcandidateNOTtried30/adopted; independentverdictonly,noautomaticretry/otherlarge/global20of22closure/resourceschange; pureCseparate/no15HTTPSortingSLA.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-four-numeric-branch-capture-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dijkstra-branches-dijkstra30-one-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator requested ONE acceptedexactbranchDijkstra30 andconsolidatedcurrentQA. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No imports/tests/browser/HTTP/native/benchmark/30retry/adoption/product/Git/preview. Read AGENTS/OpenSpec/project/continuity/currentassignment/exactbinding; guardsbeforeafter. WriteONLYownreviewevidence/tracker. Verifyaccepted3SHA8b4a4f94/d2824010/32022801 exacteffectivebranchmoduleand780preservedinputs+prioracceptedreview. ONEprivate directed1..30unit29arcs/start1/end30,60prepoutside/freshworker11540selfJob2GiBbeforeimports/wrapper3348distinct. Supervisor nominalrequest60s(0.5poll/lastsample60.3975notexacthardcut) exit124/noHTTPcomplete/status/rawhash/fulltrace/oracle/finalCownershipfrees/sessionafter/UIartifact.55lightsamples33intern:32whole-stepcallback225/1publish_snapshot108+callback164;12copy11variablecallback185/1callstack188;lastsameinternstep/12724partialpublications93617records nottrace/Ceventtotal. Sourcefreshvariables/callstack/pedagogycopies+recursivewhole-stepintern remains, NOsubtree/exclusiveCPU/solecause/semanticCfailureclaim. Samplemax634126336bytes604.75MiB NOTfinalallprocesspeak/RAMcauseguarantee. Currentacceptedembeddedcapture_work metadata unchanged,noCountNewrecursiveprofiler,henceOBSERVEDnotplainbenchmark.250canonSHAunchanged/noalgorithm/resource/protocol/sessioncontractchange. OldAB/BAsignreversal ambiguous andprevious8137timeout retained, partialprogressNOTnetlatencyproof. Newreadonlyvariables/callstackownerbranchreductionproposal ONLY, heapdependentdescriptorinvalidations/framepop/statsaliases mustpassfullsavedfiniteproof beforefuturelarge. No implementation/retry/adoption/other30/global20of22closure.60experimentalstopNOTuserSLA/pureCcriterion.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dijkstra-branches-dijkstra30-one-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dijkstra-branches-dijkstra30-one180-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator requestsONEsameaccepted3SHAbranchDijkstra30/180sexperiment2GiB andconsolidatedQA. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No imports/tests/browser/HTTP/native/benchmark/scenario/retry/adoption/product/Git/preview. Read AGENTS/OpenSpec/project/continuity/currentassignment/exactbinding; guardsbeforeafter; writeONLYownreview/tracker. Preserve810previousinputs+readonly180reassessment. Verifyeffective8992selfJob2GiBbeforeimports/wrapper6880distinct/exactsources unchanged250. ONErequest/60prepoutside/process360cap,180experimentalNOTuserSLA. Actualexit1MemoryErrorJSONencoder graphroute272, NOTtimeout/nooperationalstop. Generated22430steps observed110.265normalization; pack111.403..118.261INSIDEbuilderfinish, observerbuilder_returnedflagnottruefirstpack; heuristicgeneration_pedagogy110.265actuallyglobalnormalization perstack. JSONtraceback provesnormalbuilder/finishvalidate/pack/_json_safe returnedbutNOretainedfulltrace/events/oracle/finalmemoryownershipfree/HTTPstatus/rawhash/UIresponse. last119.7159s notcompletedtimer/process141.156 includesprep/error. MaxPrivate2006.546875MiB/observedhistoricalprocesscommithighwater2047.67578125MiB339968bytesbelowcap supportsJSONresourceexhaustion, NOTexclusivecopy/cycleattribution/systempeak/algorithmCdefect. Nativeexistingoracle notnewcurrentvalidation; preparedofflineverifierNOTexecuted. Owntrustedcacheoffline decode persistedhistoryexact60/noDijkstraquery, notsuccess61orinRAMsessionproof. MATERIALworkflowincident: initialbeforeREJECTED unsupportedreopenflags(newsuccessor); shellcontinuedlaunchedsingleauthorizedharness; correctedbefore0LATEafterstartat81s, notcleanmandatorypreexecutionguard. Originalrejection/timeline/latecheckpoint preserved, assessproceduralgap separately; after0reportonly/no secondpetition. No existinghistory/log/source retroactivechanges. Nextpool/DAG/JSONretentionmemoryreviewPROPOSALonly,nolifetimeoptimization/retry/increase/adoption/other30/global20of22closure. PureCvsvisualizationseparate/no inventedHTTP SLA.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dijkstra-branches-dijkstra30-one180-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.numeric-packing-json-retention-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-tasks.md",
+      "closed_marker": null,
+      "scope": "Coordinator authorizesONLYprivatepacking/JSONretentioncorrection+smallproofs+effectiveguardcondition, NOnew30/adoption. IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No imports/tests/browser/HTTP/native/benchmark/30/product/Git/preview. Read AGENTS/OpenSpec/project/continuity/currentassignment/exactbinding; guardsbeforeafter; writeONLYownreview/tracker. Preserve853oldinputs+QAacceptedMemoryErrorbutrejectedinitial/81.597slatebefore; no retrocleanclaim. Verifytwoactualcycles machine\u2194callbackownspool/steps andchild\u2194visitself/source/tokenkeys/memo, default-GCfourHTTPsuccess actualsource+distincttargetcoexistence; corrected sourcepool/machine gone atencoder.16lifecyclevariants fouralg\u00d7baseline/corrected/omitmachine/omitpack, GCdisabledONLYsensitivity notproductionpeak/time;8negativeomissions restoreactualretentionwithexactbytes. NewbuilderfinallycallbackNoneAFTERactualinvoke/errors, packingASTbodyexactinsidefinallyclearslocalfunctioncells; no forcedGC/poolrecords/cacheclear/serializerstreaming/protocolchange. SharedBranchMachineexactaccepted; sourceASTwholebuilderexactafterunwrap. Fullsaved20/7267/7247 typedlogical/wire/ref/order/stats/allstate/frees/return/sourceclear/outsideemitgaps,4aliases/read-onlytupleboolintfloat-0controls;11malformedDAG+exactold/newerrortype/message;4callbackfailures partialCmemory/events same/cleanupconfirmed. SixsmallpairedHTTP successes4alg+actualnegativeDijk400+injectedencoderMemoryError, exactbytes/status/session6prefix+1orsame6rollback;84POSTtotalPRIVATEnot30/benchmark. OriginalFlaskprovider/_json_safe/sessioncode unchanged, injectionsnotrealmemorypressureproof. Gate source exactcurrentbefore0 REQUIRED beforejob/Popen, rejectionexitno downstream: actualnegativewrongassignment1/nojob/selflimit/marker, separatepositive0;7harnessprebefore0+exit0/self2GiB beforeappimports. Entrydoesnotinterceptalltools/futuremustreusefreshscope dependency. OldlatebeforestillNONCOMPLIANT. No30peak/time/proportionalbenefitguarantee; DURINGpackrequiredsource/target/tempcoexist, output/JSONbuffersremain; nextlargeonlyafterQAacceptsandcoordinationassigns.250canonSHAunchanged/noCsemanticorderstepsmemoryfree/typeschange/global20of22closure.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-numeric-packing-json-retention-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dijkstra-retention-dijkstra30-one180-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW, READONLYoffline current974historicinputs+ONE correctedcandidateDijkstra30 package. No appimports/tests/HTTP/native/benchmark/browser/product/large/adoption/Git/preview. ReadAGENTS/currentassignment/scope/bindings; beforeafter; writeONLYownreview/tracker. Verifynewexactprivate3sources and canonical250, mechanicalexactcurrentguard0 BEFOREjob/Popen/actual2GiBselfmembershipBEFOREimports, ONE directed1..30 unit29 start1 end30 actual180experimentalstop/no retries. Assess actualcampaignstatus/rawcompleteSHA/finitepublicDAGtypedrefs/order/stats/allcapturedCevents/source/line/memory/free/alloc if available, finalnativeoracle reuse62alloc33free29caller cost29 versus limits NO freshperinstructionnativeoractualcallerfree; session60prefix61onlyifproved; UIreusebinding notbrowser acceptance. If incomplete doNOTcertify fulltrace orUI. Memorysamples/stackphase/historicalPeakPagefile observed versus limits; no exclusivecausality/timepeakguarantee/pureCtiming/HTTP15SLA. Additivecorrectionnegativeexit2 preserves974inputs; oldlate81.597s beforestillNONCOMPLIANT. No canonicaladoption/global20of22closure.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dijkstra-retention-dijkstra30-one180-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.dijkstra-saved-ui-bellman30-phase20-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline1028historicalinputspreserved plusTWOSEPARATEresults. No imports/tests/HTTP/native/benchmark/browser/product/large/adoption/Git/preview. Ownbeforeafter writeONLYreview/tracker. A)DijkstraexactacceptedgziprawSHA360468c...76400052bytes canonicalassets22430steps UI threeharnessattempts preserved: initialmatcherexpectsnumberbutcanonicalcollectPayloadstrings0served; secondabsentrepeatcontrolafterexactload/NextPrev; thirdcompletion1interceptedrawbody ZEROserverPOST, no backendDijregeneration. UIactualexecutionNextPrev/toggle; runtimeplaypause/seekhooks separately notnonexistentproductcontrols repeat/pause/progress/home/end all0.206937containertraceSHAseal69,236,870bytes stable, sampledDOMlivefields/kinds/retired/frames/sourcehighlightforwardreverse firststep/deep/firstfree/final/caller; cursor-1controlnotallinitialframeDOM/all22430DOM/nativeinstructioncertification. CdownloadEOLnormalized/JPG8400x6478 valid/visuallydirected30chain/samecontextABBexit; replayprivatepageinitialNoDirselector differssavedactualdirected, ORIGINALsession/reload/controlstatefidelitynotcertified.2GiBUIworkerbeforeimports perprocessnotaggregate; posthocjobclosed givesNOmemorypeak. B)ONEBellmanFord30 exactaccepted3SHA directed1..30unit29start1end30 ownfreshassignment mechanicalbefore0 BEFOREjob/Popen self2GiBbeforeimports experimental180request/360process prepoutside no retry. AssessACTUALstatus/fullresponseprotocoltypedrefsorder/source/allcapturedCevents/memory/frees/ownership/session/UIartifact ifcomplete elsefailedlimits. ExistingnativeFINALoracle33alloc4free29caller cost29 sameCsourcefixture only, nofreshnativeperinstruction/callerfree; noBellmanbrowserperformed. Exactrawhash/wholetraceproof ifavailable. Memorysamplesstackphase/historicalPeakPagefileobserved notexhaustivepeak/CPUphasepercent/pureCtime/HTTP15SLA or universalcapacity. Preserveold81.597slatebeforeNONCOMPLIANCE/negativeexit2; noPrimKruskal/adoption/global20of22closure.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-review-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-evidence-binding.json",
+        "openspec/continuity/assignments/coordination-dijkstra-saved-ui-bellman30-phase20-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.numeric-deferred-record-publication-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline1111history+private representationfinalcandidate+deferredonlystage preserved. No imports/tests/HTTP/browser/native/benchmark/large/product/adoption/Git/preview. ReadAGENTS/currentassignment/bindings; ownbeforeafter writeONLYreview/tracker. Verifycanonical250/corebuilder2912047+BranchMachined282 unchanged, packASTonly3representation substitutions: DeferredSOURCErecordsweakowner/normalizationrows reconstructed/mutationmaterializes/preserveTuplesfallback; append-onlycompacttypedTokenIndex hashONLYaccelerator everycollisionhit fulltokenreconstruction/equality fromimmutableownednodes, forcedhashzero typedminuszero/order/boolint/tuple/repeatpack/source-materialize and omittedcomparisonnegative; immutableone-perIDtransportmarker standard8mutators/deepcopysafe ordinaryGraphSnapshotRecords publiccodec JSONallbytes unchanged, no sourceproxy/publicPythonmutableinternalAPIpromise or dictbypassuniversality. Finalfull20/7267/7247completebytes/typedstates/refs/order/stats/allmemory/events/frees/returns/inputclear,4aliasesreadonly,11DAG +exact11error4callback controls;6pairedsmallHTTP84POST existingprovider/errors/sessionfullassertions but no retainedrawHTTPartifacts, initialfinalHTTPfoldercollisionBEFOREPOST preserved/freshdirs rerun, overlappingstagefixturesNOTsummed.7finalguard0beforejob/self2GiBbeforeimports/exit0 exactcurrent sourcehashes; historicallate81.597s remainsNONCOMPLIANT. SOURCE+trace sysgraph82-83%savings,target49-51% in4smallcases NOTpeak/time/30benefit. ExistingDijkstra161877records/2037905refs/raw76.4MB parsed781MBgraph budget vsliveencoder different; BFstatic1740lookup/26970compare/157470eventsformula14smallhelperchecks plusotherCevents. Smallratio lookup-only source+target2.594GBEXTRAPOLATION NOTbound/proofimpossible; fullBF2GiB unresolved/source-target-scratch-JSONcoexistence. No newBF30/adoption/PrimKruskal/global20of22closure. Review scopedNEXTproposal canonicalencodedhistory withtypedDAGviews avoidduplicatelogicalrealizations, possiblyexactformatspoolbeforeheaders to preserveerrors/session ifnecessary, NONEimplemented/authorizedlarge. UIadditivecorrection modulehierarchicalonly noABBoperation, original1111hashes intact.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-evidence-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-review-binding.json",
+        "openspec/continuity/assignments/coordination-numeric-deferred-record-publication-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.numeric-owned-canonical-history-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline preserve1342historicinputs+new private owned canonical-history candidate. No imports/tests/HTTP/browser/native/benchmark/large/product/adoption/Git/preview. ReadAGENTS/currentassignment/bindings; ownbeforeafter writeONLYown review/tracker. Verifybuilder only finish helper import binding/Cevaluator and Branch unchanged; full logical validator FIRST and original ALLsource-record typed/reference/unreachable validator AST retained; capability-gated private consuming pack progressively clears source slots and replaces source owned step roots with encodedheaders, returned steps same root, identities kept until complete, ordinarypack/_compactFalse unchanged nonconsuming. NO encoded-only producer: generation still retainslogicalDAG. Complete defaultcompactTrue20cases7267steps7247events exactarchivewire/expandedtypedstates/refs/order/stats/source/memory/alloc/free/return and actualinput/live-sourceclear;4overlappingalias11errors4callbacks11malformed ordinary+owned, forcedhashzero types/minuszero/repeatpack/materialization/8markerimmutability/deepcopy/weaklifetime;64stepgenericcapability/rootownership and omittedsource/historyrelease negative sensitivity SAMEbytes NOTalgorithmcoverage. SixpairedsmallHTTP84POST preservesfullbyte/status/session/JSONMemoryError; second6pair actualproviderobject+str observation overlaps. FailedfirstJSONobservation cachelib longWindows path atlastpair preserved; shortfresh j paths retry completed.10positive harness currentguard0 mechanically BEFOREjob/Popen effectiveSELF2GiBbeforeimports/exit0; wrongassignmentnegativeactual1 no downstream distincthistoricnegative2/late81.597sNONCOMPLIANCE. JointONEidentityunion finitepool/trace/raw/target/keys/refs/memo checkpoints21-22percent maxsample savings, NOTprocesspeak excludes recursive locals/internalencoderchunks/allocator/GC. Controlledoutput+str+bytes union NOTproduction peak; actualFlask postdumps samples measuredexistingprovider sourcepool/machinedead. Prior49-51 wholeTRANSPORT nottable; old2.416GiB separaterootssum doublecounts possible NOTimpossibility. Newlookup-onlysmallratio joint2.119GiB/buffers2.798GiB scenario NOTbound orBF30fit. Canonical250 and original1342 unchanged; noBF30/adoption/global20of22closure. Assess boundaries/proof and nextcapacitydecision ONLY.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-evidence-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-review-binding.json",
+        "openspec/continuity/assignments/coordination-numeric-owned-canonical-history-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.numeric-event-canonical-dag-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline preserve1582 priorinputs+event-time encodedDAG finite candidate and technicalblocker. No imports/tests/HTTP/browser/native/benchmark/large/product/adoption/Git/preview. ReadAGENTS/currentassignment/bindings; ownbeforeafter writeONLYownreview/tracker. Verifybuilder exactonly helper import+EventHistory initialization, Branch evaluator/C250bytes unchanged. Every completed validated event publisheswhole-step intoONE legacycanonical encodedtable orderedtypedpostorderIDs withintegerhistoryroots; no retainedhistorical logicalCstates, temporarySnapshotPool normalizes/detaches currentproducer, machineactivecache remains. EventHistory weakowner/materializeone explicitordinarymutableTEMPstep alteringit cannotchange encodedhistory; _compactFalse explicitfullbuiltinlegacy materialization exact. RecursivevisitfinallyNone preventsnewhistorycycle; initial20 strongowner/closure equivalence stage preserved NOTadditionalcoverage. FINAL20/7267/7247fullarchivewire+typedlogical/ref/order/stats/source/memory/alloc/free/returns/input/live-sourcecleared exact;4alias11error4callback, hashzero typednegativezero/tuple8markers/deepcopy/noGCpoollifetime11unreachableerrors/omittedcollisionnegative. Originalallframe/globalvalidators retained, no skips. Latepublicationfault5completedstepsDij/BF exactprefix/memory/events/callbackdetached/inputreadonly. SixpairedsmallHTTP84POST; twooverlapping7pairbuffer/errorobservations preservebytes/status/session6to7or6, candidate faultINSIDEsecondconsole/headerpacking whilebaselinecomparatorfaultAFTERpackcomplete uservisiblefailure equal butnotinternaltiming. No rawHTTPartifacts retained, fullharnessassertions/SHA.9FINAL guardedharnesses+1initial before0mechanicallygatesjob/Popen/self2GiBbeforeimports/all0; negativeACTUAL2nojob, previousclaim1 correctedadditively preserve1582/historicincidents/late81.597sNONCOMPLIANT. Generation ONEidentityunion actualstack+machinecache/events/rootIDs/DAG/currentstep checkpoints ADVERSE prior4.40/5.26/5.64/5.10MB ->7.80/9.53/10.35/9.39MB; actualBFretainhistorynegative samebytes36.76MB, confirmsreleasebutNOToptimization. GlobalBFvalidator semanticlist baseline2rootIDs vsnew758 forSAME2values, union5.49->11.23MB actualdecode lifetime duplication unresolved. ProcessPrivate/historicalPeak sampled multiarmworker NOTfixtureexclusivepeak; syshgraph excludesclosures/in-progressinterner/encoderchunks/allocator/GC, no forcedGCrequests onlybetweenarms. ExistingFlask postdumps union actualobject+str9.76/10.49/11.52/10.49MB sourcepool/machinedead; controlledoutput+str+bytes separate NOTproductionpeak. BFlookup-only smallscenario1.849GiBgen/2.179GiBvalidation NOTbounds/fit/impossibility; no30/margin. Technicalblocker expandedtransport overhead early +semanticduplication; no compactinternal/spool/viewoptimization implemented. Assessfinite equivalence/ownership and blockers only; doNOTcertifyBF30/adoption/global20of22.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-evidence-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-review-binding.json",
+        "openspec/continuity/assignments/coordination-numeric-event-canonical-dag-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.numeric-packed-interner-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline1864history+preserved20minbudget+actual packed_interner finite component. No imports/app/tests/algorithms/HTTP/browser/native/benchmark/large/product/adoption/Git/preview. ReadAGENTS/currentassignment/bindings; ownbeforeafter writeONLYreview/tracker. Verify actual16Bslot bytearray node/text openaddress hash64ID32occupied32/load0.70/exact FULLnormalizedrecord/text comparisons everyhit, zeroFPandID0 valid, pow2growth/oldnewbuffers; arenas/u64offsets/u32IDs, intboolfloat/signedzero/IEEEinf/bigint/unicode exact andlegacyNanhex equivalence NOTpayloadbitpromise, dictorderedkey normalization/tupletolist. No persistent Python peredge orrefobject cache. SharedIDs/localrowreadonlysameIDmarkers/localmaterializationaliasmemo, sourceinput/temporarymutation cannotchangearena,8markerimmutability/deepcopy andGCdisablednocycle. FrozenRef directdictbaseAPI bypass outsidecontract. Full20SAVEDpacketwireSHA/bytes/IDs/order/stats/source/memory/returns7267steps7247events exact; NOnew C/validator/application execution. Existing smallsingleton allnode/textFPzero fullwire. Both exactcomparison omissions negative detected. Allunreachable node/text index+row validators,11same legacyerrors, finiteNode/Text/index/tape/u32bounds,5corruptions,11injectedprefixfailures includingcountallocation BEFOREslotcommit; failednode encoding canretainvalidextraText entries/disposablefailedrequestnotuniversalOOMtransactionguarantee. RawCevent tape wrappers notpublic DAG, APIrejectwhole-stepwrappermissing usesseparatecompactfallbackheaders, no extracanonicalrows. Parent forbidsgeneration/spoolintegration; modulechunks ONLYofflineSHAverification no HTTPstreaming authorization. Actualsingleidentityunion REALarenas/tapes/rootkind/fallback/metadata/allocatedindexes+rehasholdnewpendingkey samples Dijkstra892667final971694max, BF1076424both, Prim1128849both,Kruskal1100083both; graphNOTprocesspeak excludesoriginalparsedsource andencoder/allocator/GC. BFactualindexes294912B/7274nodes748texts matchespriorcapacityhere, tapes82.615Bstep vs68hypothesis; ADDITIVE250kdelta3.65MB gives1.473GiB SCENARIO notBF30fit, ALLprior15nodes/1.5x10x/512MiBruntime/64MiBtexts/25pctgrowth/384semantic/16buffer assumptions preserved. InitialAPIwrapperloaderbug/source/log/firstcase retained thenfixed; initialtextomissionstimulus SAMEtextx couldnotdetecttextcompareerror originalretained correctedalphas; preCounterhardening successfulstage preserved; repeatsNOTnewcases.3FINALreleaseharnesses currentbefore0 gatedbeforejob/Popen self2GiBbeforeimports/exit0; negativeACTUAL2nodownstream; historical81.597slateNONCOMPLIANT unchanged. FinalsourceSHA6b5be3397fe4983a11a700d8c782ccd2afd6fe122cc818451ad83750eff0915a. Decidefinitecomponent suitability for separatelyscopedPRIVATE integration ONLY; noBF30/adoption/global20of22/newHTTPserializer signoff. Futureboundedserialization MUSTpreservebody/status/headers/errors/session andbe reviewedBEFOREuse.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-evidence-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-review-binding.json",
+        "openspec/continuity/assignments/coordination-numeric-packed-interner-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    },
+    "audit.numeric-packed-generation-independent-quality": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-tasks.md",
+      "closed_marker": null,
+      "scope": "IndependentQA owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline integration after accepted1994. No imports/tests/app/algorithms/HTTP/browser/native/benchmark/large/product/adoption/Git/preview. Ownbeforeafter; writeONLYreview/tracker. Verify exact current producer adapter vs approved interner, inherited educationalC/evaluator/branch sources unchanged;20same livecases7267steps7247events WHOLEwire/logical/typed/ID/order/source/Cmemory/ownership/input/machine detach exact, APIreject unchanged originalSnapshotPool/no wrapper. ALLroundtrip/normalize/globalvalidate and allrecord/index validators retained. Explicit readonly semantic stateIDsharing2values2identities in4measured traces (cache onlyneeded stateIDs, notall historicalsteps), releasedsuccess/globalerror; temporaryothermaterializations detached; standardmutators/read-only/dictbaseAPIbypass outsidecontract; _compactFalsebuiltinsteps exact. EventJournal pendingraw+EventTape+u32roots consistentprefix through12sixthcallbackfaults inDij/BF stagesbeforeafterevent/root/pendingclear/nodeindex, fivecommitprefix+sixthpending sameexception/partialCmemory/events/input/callbackdetach. Validextra nodes/texts allowedfailedrequestdisposable, NOTgeneralOOMrollback/heapCrollback/reuse. Typedhash0 alias/signedzero/readonly/lifetimeGCdisabled andretainhistory/cacheevictionnegatives;4frameerrors+global756error. SevenHTTPpairs4success/API400/JSONMemoryError/latepackerror samebody/status/contenttype/session, originalsprivatecache6historybefore7success6errors; supplementalTWOrepeatedfixtures realResponsebuffers andDijINSIDEpackMemoryErrorafterallrowsvalidated. Inspect additiveclarification inherited six_paired_small_cases key7or2 andsupplemental copiedserializerflag NOTadditionalencodererrorproof; twofixturefailures retained andcorrected notproductdefects; no overlapcoverageaddition. Sixfinalharness before0 gatedBEFOREjob/Popen self2GiBbeforeimports exit0; wrongassignmentACTUAL2nodownstream shell1. Actualidentityunion fullmach/cache/arena/index/tapes/validation/scratch/rehashbothbuffers: gennew1693648/1907638/1974005/1749801 vsbestpriorO4400374/5257225/5640953/5100830; validationnew1967491/2270915/2367368/2139498 twoIDs, NOTpeak/time. BF7274nodes748texts actualindex294912B, arenaoffset660291B/events58677B/root3024B. Measuredpublictableduplicate text/ref initialregression retained before-public-target-sharing; ONLYcausefixed textID/nodeIDsharing duringtargetconstruction, BFpack23.03MBto10.17MB checkpoints. Existing publictable/events+fullJSON retained, afterreturncontrolledtransportstrbytes14.45MBBF nearlybaselineO14.43MB; realHTTPResponseunion13.607318MB str2.180435MBbytes2.180419MB poolmachinegone. HTTPcomparatorolderbranch differsfromObaseline; no crossphasefixturepercentages. Closure/allocator/GC/encoderinternals/OSexcluded, nopeak/capacityclaim. ALLprior1994inputsimmutable; frozenpreviousQAacceptance. Preservebudget1.473GiBSCENARIO notBF30viability, allhypothesesunchanged. Decidefiniteprivateintegrationaptitude andremainingpublicationlimits ONLY; noadoption/BF30/large/global20of22closure/futureboundedserializer signoff. Any future serializer requiresownassignment/QA preservingbody/statusheaders/errors/session; no visibleHTTPstreamingauthorized. Historicallate81.597s NONCOMPLIANTunchanged.",
+      "evidence": [],
+      "context_sources": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-evidence-binding.json",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-review-binding.json",
+        "openspec/continuity/assignments/coordination-numeric-packed-generation-qa-low-20261006.json"
+      ],
+      "task_prefix": null,
+      "task_status": null
+    }
+  },
+  "sources": [
+    {
+      "path": "openspec/AGENTS.md",
+      "sha256": "c973027f29e7c94b95797c37d122fbd7a4522efcbf5532050477f339aada3295",
+      "bytes": 2974,
+      "mtime_ns": 1787119423094376600
+    },
+    {
+      "path": "openspec/project.md",
+      "sha256": "07983ee8c71c21bbbe9455630f4efe0901141a0f5e9da0c28405cd25b5e06087",
+      "bytes": 5003,
+      "mtime_ns": 1790957315125377900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/proposal.md",
+      "sha256": "1c3106264c8be115b6cc313ad9541b86f5ba57f69f3309c31ecb6fde2ca44647",
+      "bytes": 159,
+      "mtime_ns": 1791247715280573700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/design.md",
+      "sha256": "e8450204bfde17de44eaa637f0d96e269db488962a8d57c833324e1141d96126",
+      "bytes": 176,
+      "mtime_ns": 1791247715280573700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/tasks.md",
+      "sha256": "4bcdded499537fbebb341cd5204b3cf4161a3fccca4b9b291c77d1d9a7c61f75",
+      "bytes": 137,
+      "mtime_ns": 1791247715280573700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/review-scope.md",
+      "sha256": "935b4ad9b9b72ce237dedac05f8ff310489002611cf0ec175669dbde28ecc428",
+      "bytes": 3608,
+      "mtime_ns": 1791247715280573700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/review-tracker.md",
+      "sha256": "cacc731fdac6b2489b11f5903b4d3bbea82f8733429ccdf4241939de158d14bb",
+      "bytes": 485,
+      "mtime_ns": 1791247983543011900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/review-binding.json",
+      "sha256": "eedab7ac9932a50302dcc56c1e6986d3c11267d9a3898db2a1103090e789ea7d",
+      "bytes": 843,
+      "mtime_ns": 1791247715343124900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence-binding.json",
+      "sha256": "b7c3fdc11edd30486b2c3652eff87ea07aa26294713a1874b4ac26551b4cb83d",
+      "bytes": 39152,
+      "mtime_ns": 1791247715342127000
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-sorting-projection-diff-coverage-independent-qa-low-20261006.json",
+      "sha256": "5a3403131eb4eb4d15bc9a4d7cbf25258a02946cf5941aa57a5f477a21114379",
+      "bytes": 4202,
+      "mtime_ns": 1791247715343124900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-review-scope.md",
+      "sha256": "371c071fcb452dc8a4441d53a14cbbebdeaab723ad0d01913090c4ca7f659e83",
+      "bytes": 1410,
+      "mtime_ns": 1791249354562678700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-tasks.md",
+      "sha256": "b21d05b62818afe415dae0e272ab770cf1515f5027f61074652b352dd4e779df",
+      "bytes": 264,
+      "mtime_ns": 1791249354563646800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-review-tracker.md",
+      "sha256": "6cf5d9dac41f4c97c159decbe023cf3826ef285db6bb7ac6a67fe5704ae869ae",
+      "bytes": 505,
+      "mtime_ns": 1791249675626230100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-review-binding.json",
+      "sha256": "95b1b5ffeab8fd1fc52479de120bbe796d8319e1a350dd6c7db2bfd729887f40",
+      "bytes": 900,
+      "mtime_ns": 1791249354564647100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-evidence-binding.json",
+      "sha256": "a29d646b55c5c6d99c913ba502be4b9a8a2e8b67e703ea00adb3fb0daed827d7",
+      "bytes": 35326,
+      "mtime_ns": 1791249354564647100
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-sorting-projection-post-adoption-independent-qa-low-20261006.json",
+      "sha256": "8a3b61760b5ed4fd0c138eafff7b00d70baa04a53157bdc20e060fe0d3c78f4e",
+      "bytes": 2212,
+      "mtime_ns": 1791249354565646800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-review-scope.md",
+      "sha256": "ffe7f27116f065e86b5d6429b878e555c86cf6c710d5d44d3a1c7dfbcefa786d",
+      "bytes": 3514,
+      "mtime_ns": 1791253863322477400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-tasks.md",
+      "sha256": "ee593f5e387703f97b51ccbac94b45a7973882c05dbfdd49cd289c02c4e65630",
+      "bytes": 428,
+      "mtime_ns": 1791253863322477400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-review-tracker.md",
+      "sha256": "6d8d72c93d46463b6d9b01f27f09cbfafaf428cac9198cceb6ea1234fe97133b",
+      "bytes": 633,
+      "mtime_ns": 1791254365395945000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-review-binding.json",
+      "sha256": "57bd23998678f473cc2a7f589186503d0e7b65b035a32fd130190655de6290ba",
+      "bytes": 970,
+      "mtime_ns": 1791253863382383900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-evidence-binding.json",
+      "sha256": "f975873e718cf0c6647b0389da64139c3b7cc3451fe24ad304b43a12f521f139",
+      "bytes": 37825,
+      "mtime_ns": 1791253863382383900
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-criterion18-three-layer-native-operational-independent-qa-low-20261006.json",
+      "sha256": "c5fdb39470c7cfaf27901b7c168fa3859a03c0ca98b9062c266bc7b7d1666ac1",
+      "bytes": 4356,
+      "mtime_ns": 1791253863383352100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-scope.md",
+      "sha256": "616da346f7de0130dba61c91a1e54b15e9ab49e91fe502770dfe47a49d581f32",
+      "bytes": 1434,
+      "mtime_ns": 1791255274637184200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-tasks.md",
+      "sha256": "214397bd43fcd06fa01b08d538d138830201cb08ac59395d5ca6cc76d9f4a2cc",
+      "bytes": 530,
+      "mtime_ns": 1791255290904247700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-tracker.md",
+      "sha256": "59028838555342420c7df26be980d595f3e8aaf78172d7af87f67f4469bd67f8",
+      "bytes": 628,
+      "mtime_ns": 1791255572272314000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-binding.json",
+      "sha256": "38fe91a4754aff37f9e35e8985123a42baaa5563550d90ee59d03448e487484a",
+      "bytes": 954,
+      "mtime_ns": 1791255274701295400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-evidence-binding.json",
+      "sha256": "5740b594bea7eda8edcb460a000adac5e27a8b233535be840c1ef36610961c9d",
+      "bytes": 32327,
+      "mtime_ns": 1791255274701295400
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-heapsort80-saved-response-browser-independent-qa-low-20261006.json",
+      "sha256": "7881cd4d84d10a7c85e72ea8c262e6482429a521de5c8dfccbef31937acdda89",
+      "bytes": 2202,
+      "mtime_ns": 1791255274636183000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-review-scope.md",
+      "sha256": "c6bea281785f76b28cac503f6e5c4907f575656ff173e159f75e2756271fa552",
+      "bytes": 2929,
+      "mtime_ns": 1791259914739653700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-tasks.md",
+      "sha256": "3bbe34c3b4808f62546a9723bb945765d00f9c2487ffc5cb42bb6259fa0af350",
+      "bytes": 634,
+      "mtime_ns": 1791259914739653700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-review-tracker.md",
+      "sha256": "14a886eba3ae5e92f10d4eb6acfb27e21b4f7a1bd0749ea0d1f1b57fb915d93b",
+      "bytes": 388,
+      "mtime_ns": 1791260241830235000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-review-binding.json",
+      "sha256": "f2e8a012eb4bd7f086d0d1213ea5ad067264620f922c3cd72f05188933b2ccfc",
+      "bytes": 925,
+      "mtime_ns": 1791259914785993800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-evidence-binding.json",
+      "sha256": "1cda899fdd462387d55004bfbe57a7a362e565869d5d66fb6524f126df5c407c",
+      "bytes": 33984,
+      "mtime_ns": 1791259914785993800
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-publication-candidate-independent-qa-low-20261006.json",
+      "sha256": "c0c5b9a017db9fc235d00273938b0c26948846862d245984d887bf883125515e",
+      "bytes": 3664,
+      "mtime_ns": 1791259914739653700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-review-scope.md",
+      "sha256": "b630eb3614ff9a1635dc19226617fa18ddbc8b13edf7ba9c17412db565ce624b",
+      "bytes": 2733,
+      "mtime_ns": 1791260634390295200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-tasks.md",
+      "sha256": "33b850bd7308ee8104b305f0f34cdc3f20724ac484e46783e94206bc80f030da",
+      "bytes": 759,
+      "mtime_ns": 1791260634390295200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-review-tracker.md",
+      "sha256": "eef2d46c26d8fd5c6f4cc73459517bccd6ae21a62cc3b3368d9a7a554d4cf172",
+      "bytes": 69,
+      "mtime_ns": 1791260634391295600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-review-binding.json",
+      "sha256": "fbcb741a7cc4f31b6c8b03969ebadc2d4d1739ef16c6efa459ce86d5577469b1",
+      "bytes": 967,
+      "mtime_ns": 1791260634449295200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-evidence-binding.json",
+      "sha256": "441517a85dbee071d5849ad29b5acfb0a34778a45f01acfed847df2e00eff32e",
+      "bytes": 40372,
+      "mtime_ns": 1791260634449295200
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-publication-consumers-dfs30-independent-qa-low-20261006.json",
+      "sha256": "b32a6366052b9ad5bed3fe1461d0efb011f7007c84c46528a9da5fd71847da74",
+      "bytes": 3485,
+      "mtime_ns": 1791260634390295200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-review-scope.md",
+      "sha256": "16e139c02176576022006e6af60ccf7646e7befdb01202c0e1773fff4f1f1b20",
+      "bytes": 3670,
+      "mtime_ns": 1791261426681532200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-tasks.md",
+      "sha256": "1e37bdc6a9f936baaa246f8ae0be59fb92fba0a92f9a689f6d158cc9f86781c8",
+      "bytes": 884,
+      "mtime_ns": 1791261426681532200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-review-tracker.md",
+      "sha256": "7453e8d9633fbc32666267129f889300666bf93e0519cc26c8371d21649630f7",
+      "bytes": 320,
+      "mtime_ns": 1791261578273695000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-review-binding.json",
+      "sha256": "7b865b2b3033cf74729c9883ea14b639054055aec951706fff293cdb241cf7bd",
+      "bytes": 960,
+      "mtime_ns": 1791261426747532500
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-evidence-binding.json",
+      "sha256": "5111e030adc9faa0466d7de2c2af3e0e09cb643ccfeb210915deca10a3f949db",
+      "bytes": 44811,
+      "mtime_ns": 1791261426747532500
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-owned-snapshot-publication-independent-qa-low-20261006.json",
+      "sha256": "b4088285d2e0f1566b17b547f52bbaacd4db4e827168a9447ca5e08f041f3cf0",
+      "bytes": 4423,
+      "mtime_ns": 1791261426680531800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-review-scope.md",
+      "sha256": "a9575cb8b73777b422e286411fd3c38457130e4b55bf43148a87da905aeee097",
+      "bytes": 3084,
+      "mtime_ns": 1791261964629119700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-tasks.md",
+      "sha256": "ae1cfea1f215ef20fc47481a0bf18da7776596d87b0075124812dcd957d10002",
+      "bytes": 985,
+      "mtime_ns": 1791261964629119700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-review-tracker.md",
+      "sha256": "cfa5f71d2235b9a4870e1e90e3f3d2576f377253eb34075f119130ef36a6b918",
+      "bytes": 67,
+      "mtime_ns": 1791261964629119700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-review-binding.json",
+      "sha256": "a18c27d30d2454b28d52aed9e34939df08e14fa415825ee29fe4d459effac530",
+      "bytes": 897,
+      "mtime_ns": 1791261964694626200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-evidence-binding.json",
+      "sha256": "8d847252828c74dd1d8293bc582ddd6227dd7183392458004fb12167f8318069",
+      "bytes": 46203,
+      "mtime_ns": 1791261964694626200
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-owned-dfs30-focal-independent-qa-low-20261006.json",
+      "sha256": "06e8e413c45ff876706fed9bc0530333cfcf419a88f1c1ef177ec90a78207477",
+      "bytes": 3794,
+      "mtime_ns": 1791261964628119400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-review-scope.md",
+      "sha256": "c714492cd86bd8f6c71f82bc4d6c7bbd3998a22818bfee4eeb0c05950d6ecac1",
+      "bytes": 4267,
+      "mtime_ns": 1791262622496792400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-tasks.md",
+      "sha256": "b0fccad8207bd1b102406f67cf9597bca958e17edcc797e9335fa4c5bd86c88e",
+      "bytes": 1108,
+      "mtime_ns": 1791262622496792400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-review-tracker.md",
+      "sha256": "731af7587404012fe91f85325a5fb47bd120efdb5900fcd31b9a2a76b78880a9",
+      "bytes": 384,
+      "mtime_ns": 1791262800082019700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-review-binding.json",
+      "sha256": "6ee3a9b1b0d461c6b9e136b508efe28bdd47bfcb37f063987949cffaddc51d76",
+      "bytes": 918,
+      "mtime_ns": 1791262622565803500
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-evidence-binding.json",
+      "sha256": "b72d37928d8b0bdd3d4683a97b4bf015bf661a03ad5e19cff65639c452d9b4ca",
+      "bytes": 47703,
+      "mtime_ns": 1791262622564803100
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-owned-branch-capture-independent-qa-low-20261006.json",
+      "sha256": "d7ef66a1dbc8b9567941e1efc51b077275f6caa2955275ad41f0d2dca9810e0f",
+      "bytes": 4993,
+      "mtime_ns": 1791262622495788800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-review-scope.md",
+      "sha256": "e89fdfd1999bf18fdbb379ddf07afb89d3afdc98d3f5a7ed66ff81401c71bc75",
+      "bytes": 3293,
+      "mtime_ns": 1791263350630491600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-tasks.md",
+      "sha256": "fcb6fa5cfd091a19d446a10b5c4dee1f469035ff0cf3f58d0897e73c97918c27",
+      "bytes": 1234,
+      "mtime_ns": 1791263350630491600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-review-tracker.md",
+      "sha256": "cab0d0dd98dc07683b3bf3d263420c797bba4b8885f2bcdb11f1dc8ead060fa4",
+      "bytes": 76,
+      "mtime_ns": 1791263350631492100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-review-binding.json",
+      "sha256": "1dc27118b299c7cd060bfddaff32cf243c7417535837002d50a588fb0a728c29",
+      "bytes": 967,
+      "mtime_ns": 1791263350694491900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-evidence-binding.json",
+      "sha256": "81dd8fca6c15cfa2017af3e889412bb3f0deb8bf668ce2c53ea20d1677ca4f16",
+      "bytes": 43563,
+      "mtime_ns": 1791263350694491900
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-branches-dfs30-one-observed-independent-qa-low-20261006.json",
+      "sha256": "ee9c06a4007ed8f48c13ce75f8d00f1c7b4e599dfb31ba8e474393f2053d1b5b",
+      "bytes": 4049,
+      "mtime_ns": 1791263350630491600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-scope.md",
+      "sha256": "98171c2360352d8fbbe313694add2af675eb5e43d226fbf8120d9f0729e3b76b",
+      "bytes": 1169,
+      "mtime_ns": 1791264216150320500
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-tasks.md",
+      "sha256": "e388624fdbe71328f4900ae4c8b8a7a9eff2bfac7593635bd3ea0fc98dbcc7ec",
+      "bytes": 1333,
+      "mtime_ns": 1791264216151308800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-tracker.md",
+      "sha256": "913a85d2ec4e870f6ae0cbcee8d8ba212aac60c8ac4ea1b9fb134489633949ad",
+      "bytes": 332,
+      "mtime_ns": 1791264494142244100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-binding.json",
+      "sha256": "3721d8faac7b8a967559cc5cc454c00eacb33559b1107f122bb4ca8d5865d535",
+      "bytes": 920,
+      "mtime_ns": 1791264216153310400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-evidence-binding.json",
+      "sha256": "a451b02bf76518ab024e774e5e6eb5747e82d752da160b2f07c2f3623cfe8f05",
+      "bytes": 49828,
+      "mtime_ns": 1791264216226408900
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-owned-pool-transport-independent-qa-low-20261006.json",
+      "sha256": "7631aa9477f70151cad9e487721fac692a36130a3c15d688ccc24e707cca5f09",
+      "bytes": 1714,
+      "mtime_ns": 1791264216152309500
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-scope.md",
+      "sha256": "18eb1feee23cb0333018cd23e4b1b4951d1b97476fb51e0c8d70770859c17c81",
+      "bytes": 1214,
+      "mtime_ns": 1791264900017417300
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-tasks.md",
+      "sha256": "008509f93cc027a005bfe730bf53cfcce49408d14435bab4deedd90439d8af3f",
+      "bytes": 1424,
+      "mtime_ns": 1791264900018387700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-tracker.md",
+      "sha256": "7fb54ac79a006e318647e4584d972aae6aa49c4681273b2912bf0a669e2afab6",
+      "bytes": 304,
+      "mtime_ns": 1791265162316440800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-review-binding.json",
+      "sha256": "c7046744e288b185a75a740b0c4553232ed4d011e0554d147c04b23b5c76f89c",
+      "bytes": 964,
+      "mtime_ns": 1791264900019386100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-evidence-binding.json",
+      "sha256": "a7a04677d43a33a78d1e43450da2779525b38a72f99ae4018806aacd3ce644a9",
+      "bytes": 55985,
+      "mtime_ns": 1791264900090089100
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-transport-validation-jpg-delta-qa-low-20261006.json",
+      "sha256": "fd2d50863ef76362a536cd9a27c60263164526582f9f542c1e4f513969b8cd11",
+      "bytes": 1797,
+      "mtime_ns": 1791264900018387700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-scope.md",
+      "sha256": "adb9b3dd26d762914ec31a1f501f0480f751a3a1211b3c0a391c975fb4e8b67c",
+      "bytes": 1486,
+      "mtime_ns": 1791265588938274300
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-tasks.md",
+      "sha256": "69f497d5702cda0b77a23a73cf71a3590fc7e7e46c145ad439b8cbe1d21721f8",
+      "bytes": 1521,
+      "mtime_ns": 1791265588939274600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-tracker.md",
+      "sha256": "48298ff7975cfaed3bcc91b22d63856bda73774f88e24dc6fc8e6ec42beca4f2",
+      "bytes": 357,
+      "mtime_ns": 1791265914992719600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-review-binding.json",
+      "sha256": "05067f0cf71bda4633701923b192a103cf1b72dc1b5be4d2771e126051dd937a",
+      "bytes": 929,
+      "mtime_ns": 1791265588940274400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-evidence-binding.json",
+      "sha256": "bde29269f2f91f54256de5c7a03f9d6db31c2a99d88128a27470345548af7a56",
+      "bytes": 65104,
+      "mtime_ns": 1791265589018276200
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-owned-transport-dfs30-one-qa-low-20261006.json",
+      "sha256": "786a78a3c8bb337315a70a4a7737cdb74a79f27ee73bc7514d4054f2366fb032",
+      "bytes": 2044,
+      "mtime_ns": 1791265588939274600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-scope.md",
+      "sha256": "3aacae2902fc04de201ec839e7eb943e78022199f957d3dd3c536df28a84643f",
+      "bytes": 1847,
+      "mtime_ns": 1791266680805130000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-tasks.md",
+      "sha256": "7206a9e2363aaabc4945c53ba2788190847c6e854a992f9020b78cb1ef0256b4",
+      "bytes": 1646,
+      "mtime_ns": 1791266680812398900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-tracker.md",
+      "sha256": "a212423b38b70e0e880b5122f30e5d520055a1d74c1dee4b4ade9ab50b96b60a",
+      "bytes": 363,
+      "mtime_ns": 1791267279226928600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-review-binding.json",
+      "sha256": "97dfdc24732de8da68b58503b553ff6eeb3068fd5a747cf29b16e3a660571c12",
+      "bytes": 999,
+      "mtime_ns": 1791266680812949400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-evidence-binding.json",
+      "sha256": "2d6e30efbb11eb1c06383aedab99ebe54e02ec402d429c51d7604ebb1087d454",
+      "bytes": 80655,
+      "mtime_ns": 1791266721717950200
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dfs-transport-jpg-canonical-integration-qa-low-20261006.json",
+      "sha256": "d6d34457606d5f4617b25ef53acdb756ac60e182790ddfb380b18bb92d05b830",
+      "bytes": 2422,
+      "mtime_ns": 1791266680812949400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-scope.md",
+      "sha256": "00c05c47735df055dcc5f61dc88c7d691c7209c73a892542c3db738d6b2acb7b",
+      "bytes": 1862,
+      "mtime_ns": 1791268381233435400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-tasks.md",
+      "sha256": "9d512213c5722b9ca401355d5507340fcd364935fae97e25bb7a9941b0886f4b",
+      "bytes": 1773,
+      "mtime_ns": 1791268381233435400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-tracker.md",
+      "sha256": "41a8f722d7372096edf1d3186f44e6b533f0b1fe99bb8b6c6f0652c58782a9df",
+      "bytes": 242,
+      "mtime_ns": 1791269347086007700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-review-binding.json",
+      "sha256": "e98ca691409ccbea155f0e73423e7cb914a4cb07a49bafb4a44c7c9e24c2e51e",
+      "bytes": 936,
+      "mtime_ns": 1791268381234403900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-evidence-binding.json",
+      "sha256": "c6fba9dc9cdd3bf6adc40558beb3c6314729450de02e4a00175ef8c7f8830421",
+      "bytes": 98286,
+      "mtime_ns": 1791268604824655600
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-four-numeric-owned-publication-qa-low-20261006.json",
+      "sha256": "25fe5a0cc35bc2bd41b4bf9c6d87dc65dca4807b45b87da9b6ea410ed55fecc3",
+      "bytes": 2409,
+      "mtime_ns": 1791268381233435400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-scope.md",
+      "sha256": "061aa0530559d7cb285a549bca68f1963f19f8ac775df8b786409164f5228908",
+      "bytes": 1675,
+      "mtime_ns": 1791269719374174800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-tasks.md",
+      "sha256": "da6578996565715f6c60f0cf1beebbe8b480b76645c131015406022e6dc43fb3",
+      "bytes": 1891,
+      "mtime_ns": 1791269719374174800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-tracker.md",
+      "sha256": "75e2f472de205d0c9fa6081143e4421ef532d547f2e0b3632888bfed2116025a",
+      "bytes": 22,
+      "mtime_ns": 1791269719374174800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-review-binding.json",
+      "sha256": "171b23b0ea45a5f4ed0ddc4e38b1aafeb67aa354fd43525c09c086172de04a7c",
+      "bytes": 936,
+      "mtime_ns": 1791269719380613200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-evidence-binding.json",
+      "sha256": "792ac427422915e711cd8ed4af6db6f61dce2a573a48900f5ef91e2cd9d97fb6",
+      "bytes": 108668,
+      "mtime_ns": 1791269719540786000
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dijkstra-owned-small-http-pair-qa-low-20261006.json",
+      "sha256": "5b17bdb3d66e3ce1d33ddadfa068b58648864e5dd8aa9fb127efd1ba213a5f37",
+      "bytes": 2226,
+      "mtime_ns": 1791269719374174800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-scope.md",
+      "sha256": "eed54c1e31f9148a9ab8791256aa9eabe6af675319f90c6d77729566353e8ca0",
+      "bytes": 1192,
+      "mtime_ns": 1791270071281641300
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-tasks.md",
+      "sha256": "236d1d1ad36a4fdcbc3ac5594e3dfdcf4a32465db7558981d8d5ea37e50193cd",
+      "bytes": 2019,
+      "mtime_ns": 1791270071282609900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-tracker.md",
+      "sha256": "58e766ec12469a59e8b1df722b401d0fe9871c20d58c6fd6d23f1ef49704d939",
+      "bytes": 82,
+      "mtime_ns": 1791270071282609900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-review-binding.json",
+      "sha256": "0ca2f840603a18d4471fc2e763d8362aed723daaddd4064563294a97fde82533",
+      "bytes": 992,
+      "mtime_ns": 1791270071282609900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-evidence-binding.json",
+      "sha256": "f9e37af0e48f504d305dc6901eb19bbfddf65616475e056195b6149b0b058278",
+      "bytes": 117607,
+      "mtime_ns": 1791270071441459900
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dijkstra-owned-small-http-consolidated-qa-low-20261006.json",
+      "sha256": "37f6266488fb5b63458b538da480e9296917512ebd9672ce4f8c20cbc08a6d7b",
+      "bytes": 1771,
+      "mtime_ns": 1791270071283609700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-scope.md",
+      "sha256": "535fe9eb30373bb829826cd4e27ae92c607f8bbb6e758f3630e5da7825a97df6",
+      "bytes": 1583,
+      "mtime_ns": 1791270408221937300
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-tasks.md",
+      "sha256": "3f023f2afd20d650c245a85d269f3db5655b1d5261e44c81e4ad0e4840552f13",
+      "bytes": 2128,
+      "mtime_ns": 1791270408222938400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-tracker.md",
+      "sha256": "7ebc5a89caecbe9086304d12878b2f5b85dd4066fe84c571e90e256d10a9ace2",
+      "bytes": 95,
+      "mtime_ns": 1791270408222938400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-review-binding.json",
+      "sha256": "7b67af4c5e72e3633a5fbacfb91b86aff2df33b827a1e11b935a77b419545d5f",
+      "bytes": 908,
+      "mtime_ns": 1791270408222938400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-evidence-binding.json",
+      "sha256": "ec5052afedf1cbbd2745392b7768498bab7250130b36bfb1b3eda8490683156a",
+      "bytes": 123571,
+      "mtime_ns": 1791270408389479300
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dijkstra-owned-pairs-and30-qa-low-20261006.json",
+      "sha256": "6a70cf2c97abd358800e6aed37d1ba03a88d951e255d6e8b26e2a07231169e17",
+      "bytes": 2123,
+      "mtime_ns": 1791270408223937900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-scope.md",
+      "sha256": "8e9a0235fa5fd1b6a65140cc3b8184fc9d11d15acea3cf5b20f383bf6526c5c0",
+      "bytes": 2366,
+      "mtime_ns": 1791271421133509400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-tasks.md",
+      "sha256": "3a58d30c7ff6c099e76d8467abdcc561412229ae1110949fcce9beee67f802a1",
+      "bytes": 2259,
+      "mtime_ns": 1791271421133509400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-tracker.md",
+      "sha256": "55e3307279940a0291b704cef2d7fd1635da577832b59332cf06c96edfe19a4f",
+      "bytes": 351,
+      "mtime_ns": 1791271739766416600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-review-binding.json",
+      "sha256": "ede6fff8c719104a86489af64f8f8b0a27465e55a87dacd90f9caf908dd31e76",
+      "bytes": 915,
+      "mtime_ns": 1791271421134478600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-evidence-binding.json",
+      "sha256": "042827c46c4d216680cf8167b337b908c1ae1ee954cdd34276c5ace24345b99b",
+      "bytes": 141411,
+      "mtime_ns": 1791271421325703700
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-four-numeric-branch-capture-qa-low-20261006.json",
+      "sha256": "49cc9b66b6d9fbb0b78abd68a15e2d64506c135bc411b190291bee33830478d1",
+      "bytes": 2887,
+      "mtime_ns": 1791271421135513000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-scope.md",
+      "sha256": "0d5b3cbd6e20010a6fb5323f7d225779117ab4f72378e378d07f927718a9affc",
+      "bytes": 1915,
+      "mtime_ns": 1791272167781268700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-tasks.md",
+      "sha256": "95ab865b102daf91b95784dcf45e1081a07d012425010a509aa8b1081660a88b",
+      "bytes": 2400,
+      "mtime_ns": 1791272167781268700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-tracker.md",
+      "sha256": "7f5e6a775f93047c6ad3cdb869774bf538072471df2000a6e4eba2a3921ea4f5",
+      "bytes": 92,
+      "mtime_ns": 1791272167782244200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-review-binding.json",
+      "sha256": "6c96303ff458a3feb980cc83b2ae716d0a1fb350c6574b597881c949073d3f2a",
+      "bytes": 950,
+      "mtime_ns": 1791272167782244200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-evidence-binding.json",
+      "sha256": "ca5a370f3c97391164f3a0ce570f2f03911f0af625c96d21dfec7043d380051f",
+      "bytes": 147883,
+      "mtime_ns": 1791272167977446700
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dijkstra-branches-dijkstra30-one-qa-low-20261006.json",
+      "sha256": "086f71f6c6cafbe2afc35d418696f876146314b4c49c95de16820eedd8ce7743",
+      "bytes": 2468,
+      "mtime_ns": 1791272167783243000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-scope.md",
+      "sha256": "5c50f65eae527fedd66e5487cbd2a6d4c4a06f5c40dbc0384b7659b6b8a70aaf",
+      "bytes": 2229,
+      "mtime_ns": 1791273155314419500
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-tasks.md",
+      "sha256": "7ed7eb8d59ee2324b99ea0c6e4d84a1492491ca7cb3fb3c33c628d6060284f7b",
+      "bytes": 2535,
+      "mtime_ns": 1791273155315448400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-tracker.md",
+      "sha256": "407c551d8e55f565f454b615650e9a2eea8a3a1e4d1572ec0810551dce5d014b",
+      "bytes": 425,
+      "mtime_ns": 1791273407785113600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-review-binding.json",
+      "sha256": "1db46ecf0784dcf6be13499697fae1534b7006dbd2d067c0988a53315c37ec0e",
+      "bytes": 971,
+      "mtime_ns": 1791273155315448400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-evidence-binding.json",
+      "sha256": "14980ba42cd3624351051227d11101ffb7c6ec1e7c251fa528d57473adf2835e",
+      "bytes": 157117,
+      "mtime_ns": 1791273155553612100
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dijkstra-branches-dijkstra30-one180-qa-low-20261006.json",
+      "sha256": "03131e10860f72f3e8dd35d11137aa6acc1febfee6db880844544d389428ed90",
+      "bytes": 2776,
+      "mtime_ns": 1791273155316419600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-scope.md",
+      "sha256": "ffde851ce2d00b54f426c169d073980efe394b8d495a847d78533189c9a11fdb",
+      "bytes": 2407,
+      "mtime_ns": 1791274838045530100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-tasks.md",
+      "sha256": "57a6ac00e3add8d077210612bb63034c2d2b2b86a43cb06d32c9e044901722d4",
+      "bytes": 2664,
+      "mtime_ns": 1791274838045530100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-tracker.md",
+      "sha256": "18ae7a0289a37fe3ee9aff7b81a3004183d6e3be45e2a08b11b63454eeb26f15",
+      "bytes": 464,
+      "mtime_ns": 1791275189159936400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-review-binding.json",
+      "sha256": "4af533265db5108f0f41cfb4dfa93942e25a60e564f195c6535cee1b5edde3a3",
+      "bytes": 936,
+      "mtime_ns": 1791274838046523900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-evidence-binding.json",
+      "sha256": "893af706861ddc74df355a3c8f5cb122738aec366a1ad68a53143a21b38567e8",
+      "bytes": 183844,
+      "mtime_ns": 1791274838313757700
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-numeric-packing-json-retention-qa-low-20261006.json",
+      "sha256": "c4b6ff461305cc5fe0b52ea22dd3e172de1e698dd28b9790ad74ee339f4cd102",
+      "bytes": 2937,
+      "mtime_ns": 1791274838046523900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-scope.md",
+      "sha256": "f531a3baf655299efe1ba701573b3e56180c6ae16eb0f019a9265f6eb1f60819",
+      "bytes": 1348,
+      "mtime_ns": 1791275793775713100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-tasks.md",
+      "sha256": "4ae0ef83494057de549cd8580806fa6c2f73db84d7ee520c63af0d949eb76a07",
+      "bytes": 2815,
+      "mtime_ns": 1791275793780740500
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-tracker.md",
+      "sha256": "393ce820aef8d886dadb33973ff8902405026abe0edf532aa8278bb7aaa9a763",
+      "bytes": 432,
+      "mtime_ns": 1791276041272110000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-review-binding.json",
+      "sha256": "7aa944babf9faa1aea6fdac13eabd3ae987b4901fa45ad9a9a930bc703f4e99d",
+      "bytes": 978,
+      "mtime_ns": 1791275793783740000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-evidence-binding.json",
+      "sha256": "ef0d27e525664cc339a3c632582442d584ad21aba1e6cadddf83c566a320b46a",
+      "bytes": 196855,
+      "mtime_ns": 1791275793783740000
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dijkstra-retention-dijkstra30-one180-qa-low-20261006.json",
+      "sha256": "49886450c8f5dc04419f4f856da5d99386d8273461f5da0d9133dae3ba00c27d",
+      "bytes": 1906,
+      "mtime_ns": 1791275793783740000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-scope.md",
+      "sha256": "f7ada2dfea3a404c835281fa3de53d529f72d927ff1bef04c2bc301d4774b7ce",
+      "bytes": 2218,
+      "mtime_ns": 1791276944129537200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-tasks.md",
+      "sha256": "f0bda371655525f52ea81797a257dc50d04b40f3322f4f53f94ca1706570d98e",
+      "bytes": 2963,
+      "mtime_ns": 1791276944135537100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-tracker.md",
+      "sha256": "fd2ec670b8b5dbb4301350a3ef33dc95693d9866d6d4b1739ed5d403ba45e336",
+      "bytes": 400,
+      "mtime_ns": 1791277273860419600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-review-binding.json",
+      "sha256": "33278290bde86fface5a34786085609db9d2ac70518c94e0240668d3e624a182",
+      "bytes": 971,
+      "mtime_ns": 1791276944142054400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-evidence-binding.json",
+      "sha256": "d9883108bdbefdbc9af69b62f29853d5772733e642b479c4988a8a316c411cd5",
+      "bytes": 217760,
+      "mtime_ns": 1791276944141054200
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-dijkstra-saved-ui-bellman30-phase20-qa-low-20261006.json",
+      "sha256": "83be1c933e23abecff876b70202d143538a3810b60dbe5ad8f2f008b70f55836",
+      "bytes": 2757,
+      "mtime_ns": 1791276944142054400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-scope.md",
+      "sha256": "9ec413afa7c24a1f641fbf3f1a1414160f04559a0506d7da504ddd9f37de7224",
+      "bytes": 2426,
+      "mtime_ns": 1791279174550839400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-tasks.md",
+      "sha256": "e7ca836788b477d760b2d063ad458cdec49a1c6effdb3ad3c1df1a431bb37340",
+      "bytes": 3113,
+      "mtime_ns": 1791279174556840200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-tracker.md",
+      "sha256": "c84350251eaec247680cd09577c6667f995f3fb61da45e5d2bfc8496ce7f15a6",
+      "bytes": 435,
+      "mtime_ns": 1791279522364454100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-evidence-binding.json",
+      "sha256": "67881259fb05c9a141cc55317e66e8a8edcb85d40cc4a0ec6675070f2e223ede",
+      "bytes": 272695,
+      "mtime_ns": 1791279174560839600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-review-binding.json",
+      "sha256": "179662280b6c8191572c1288a3d64c8a871a48c90e1f66cc3dd9e7cf62d34fe2",
+      "bytes": 971,
+      "mtime_ns": 1791279174560839600
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-numeric-deferred-record-publication-qa-low-20261006.json",
+      "sha256": "075dc2da17bc87e7a63d4480633ac013be5bbbd70c539bd5b76aea12f6bb4a97",
+      "bytes": 2987,
+      "mtime_ns": 1791279174561839900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-scope.md",
+      "sha256": "f111b1a78216af211be55035ce5d0539690513452dfd84d5ef9afc2acc4349b8",
+      "bytes": 2547,
+      "mtime_ns": 1791281267451722000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-tasks.md",
+      "sha256": "ca4ba6fa6876c24937e534640eebb6218ea8867c3e074bd2ed3b723a58e69084",
+      "bytes": 3266,
+      "mtime_ns": 1791281300252638200
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-tracker.md",
+      "sha256": "ae32918c3163e1f2cabef52a003d583bd98e930a619f3c673fbfa0180c8d1ecc",
+      "bytes": 402,
+      "mtime_ns": 1791281728126975700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-evidence-binding.json",
+      "sha256": "3efdc627840d3954a4066ebf4eae2ce72bbe644c65018a371d10782b3768dbc1",
+      "bytes": 328114,
+      "mtime_ns": 1791281267895712300
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-review-binding.json",
+      "sha256": "79ad60a0332fa02c226ae2d4b595b02175000c3fd357ec38cd6dc4970aa439ac",
+      "bytes": 941,
+      "mtime_ns": 1791281267895712300
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-numeric-owned-canonical-history-qa-low-20261006.json",
+      "sha256": "36ad2243378162e4a7fede4894475e6182ca63e59d9267066508fefd93c62da6",
+      "bytes": 3078,
+      "mtime_ns": 1791281267452690600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-scope.md",
+      "sha256": "8db864fadde8595b16f85f13b2a61a12425a352ed35e70f7f1fbca5abe67233d",
+      "bytes": 3184,
+      "mtime_ns": 1791282991272669800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-tasks.md",
+      "sha256": "355067e87a799bf9e1cef12a1981446a26200225543857090bf7873db6c0c617",
+      "bytes": 3440,
+      "mtime_ns": 1791282991272669800
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-tracker.md",
+      "sha256": "da3581aa6fabf3d26b8ef65a98f1efbeda975cd0d2220185219cc4cb038a5795",
+      "bytes": 635,
+      "mtime_ns": 1791283598015719400
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-evidence-binding.json",
+      "sha256": "fe14ef8d0fbc85f422fe419aed9f9727ae6c86da1936c21f2b4fa3009b5326e8",
+      "bytes": 394781,
+      "mtime_ns": 1791282991786862700
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-review-binding.json",
+      "sha256": "3dc1ecb72e31a8a8cf6abec97fe66288867ac9612208ed98e7db7fb1cf15674c",
+      "bytes": 913,
+      "mtime_ns": 1791282991787834900
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-numeric-event-canonical-dag-qa-low-20261006.json",
+      "sha256": "d8b143d5dc8c5fe27bb0bc71e7b23c2e99122165b679785b6b3da774f4918622",
+      "bytes": 3676,
+      "mtime_ns": 1791282991271668900
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-scope.md",
+      "sha256": "f0f72d854f91ef78d5d5db7ca19c0821eb53bd4f57317302a54d189ef5d5b82f",
+      "bytes": 3173,
+      "mtime_ns": 1791286881136144600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-tasks.md",
+      "sha256": "922c031fffca852864281541e531427fe665cf9a4b163b1906975f398e10829f",
+      "bytes": 3584,
+      "mtime_ns": 1791286881137144600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-tracker.md",
+      "sha256": "9e82c1d3b1d4831e9329248442974e6e8fabe6c9b2329ed73715d2e912a9560e",
+      "bytes": 555,
+      "mtime_ns": 1791287246033923500
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-evidence-binding.json",
+      "sha256": "fc23bc55cf404da7ee328ddfd85a4412d2daa76bdc0de51705e56caf69c0924a",
+      "bytes": 423257,
+      "mtime_ns": 1791286881671151000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-review-binding.json",
+      "sha256": "27a22e96855d05957095b245ad009e613fe7c5ed7969d3f8c488eacc32eb7c87",
+      "bytes": 885,
+      "mtime_ns": 1791286881672120600
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-numeric-packed-interner-qa-low-20261006.json",
+      "sha256": "25f52fd8fa1da89705ceee990651674f13d1446941d81be6a13693de94b1aeb8",
+      "bytes": 3671,
+      "mtime_ns": 1791286881136144600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-scope.md",
+      "sha256": "f14cf5f36c983d431da2ebd75b9c4ace09dd6061653c3dc24c678ec793493c85",
+      "bytes": 3481,
+      "mtime_ns": 1791288404878421000
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-tasks.md",
+      "sha256": "b7bd2f541c7bbafa4cf54e4c42edd80198ac573f0056e39e76f901cab6828928",
+      "bytes": 3786,
+      "mtime_ns": 1791288404879422100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-tracker.md",
+      "sha256": "9f60a90524fdf4bed690a05bc834aa1f9599d58e862072fd415d9f0ef11d3a4c",
+      "bytes": 186,
+      "mtime_ns": 1791288404879422100
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-evidence-binding.json",
+      "sha256": "efec59f47e508c945ce7259f2705edb5aa41a59c0ba36114c6d7b8284112b5d8",
+      "bytes": 479079,
+      "mtime_ns": 1791288405507426600
+    },
+    {
+      "path": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-review-binding.json",
+      "sha256": "7c8ddfe7916e73565ef50847c5108118877555ec8953b10670332bdd4c9b889d",
+      "bytes": 899,
+      "mtime_ns": 1791288405508426600
+    },
+    {
+      "path": "openspec/continuity/assignments/coordination-numeric-packed-generation-qa-low-20261006.json",
+      "sha256": "18de3356cec7d345e5029bb4e49c6b0036968bd21e5a338d7c992cb8b932dfd9",
+      "bytes": 3984,
+      "mtime_ns": 1791288404879422100
+    }
+  ],
+  "reopen": null,
+  "limits": [
+    "Source declarations and evidence existence are not functional verification.",
+    "Only registered blocks are classified; unknown blocks fail closed.",
+    "No inference of approval, active process, next action or universal coverage.",
+    "Hashes cover listed documents, not every product file or git commit.",
+    "Concurrent edits after the final read remain possible; rerun before action.",
+    "Unregistered new logs do not invalidate a checkpoint; registered edits require a fresh read."
+  ]
+}

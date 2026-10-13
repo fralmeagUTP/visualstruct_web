@@ -1,0 +1,19 @@
+{
+  "focal": [
+    "tests/test_graph_validation_copy_regression.py",
+    "tests/test_graph_boundary_equivalence_regression.py",
+    "tests/test_graph_educational_capacity_regression.py",
+    "tests/test_graph_educational_capacity_e2e.py",
+    "tests/test_graph_boundary_transport_e2e.py",
+    "tests/test_trace_engine.py"
+  ],
+  "performance": [
+    "tests/test_checkpoint_reconstruction_performance.py::test_reconstruction_p95_stays_below_200_ms_for_all_families",
+    "tests/test_comprehensive_quality_qa.py::test_common_views_and_small_trace_complete_within_local_quality_budget",
+    "tests/test_security_and_session_limits.py::test_graph_bfs_performance_smoke"
+  ],
+  "known_blocker": "30/29BFS42.578s>5",
+  "coverage": "Plan only: provenance/current denominator/minimum segments and commands;83/85 unchanged; execution expansion requires coordination.",
+  "prior_selection_source": "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review/coverage-selection-before.json",
+  "execution_policy": "Scoped review only; reuse verified evidence with exact source provenance, targeted rerun only for unresolved final-cache or boundary concerns. No automatic full suites/performance/global coverage campaign."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-clear-destroy-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T03:49:00.119186+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.clear-destroy-instructions-medium",
+  "task": "MEDIUM causal clear/destroy lifetime and guard fidelity",
+  "instruction": "Continuar MEDIUMclear/destroy para5fallos baseline (tipos/scopes,pointersafterfree,guardasnotexecutedC). Preservar16IDs11pass5red,terminales/reinserción/recreación/10C17Doxcallers47alloc-free0vivos,9Hashcierres/11Sorting/H1/C_H. Verificar vidas/scopes/pointers antes/despuésfree,Ccallbacks,UIreplayno redispatch,NULLguards sinleer retirados. CheckpointIDsúnicos/recursoslímites antesLOW;sinADDED/contratos/publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-clear-destroy-instructions-plan-medium.md"
+}

@@ -1,0 +1,100 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "reconcile-remaining-historical-contracts",
+  "operation": "c1.remaining-documentary",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs/tads_C",
+    "tests",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/archive"
+  ],
+  "tasks": {
+    "c1-documentary": {
+      "objective": "Actualizar matriz C1 con evidencia técnica nueva posterior al cierre20261002",
+      "role": "documentation",
+      "owner": "c1-documentary-author-01a0f0a7",
+      "requirements": [
+        "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/requirement-decisions.json"
+      ],
+      "base": [
+        "openspec/changes/reconcile-remaining-historical-contracts/instruction-20261003.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/reopen-documentary-20261003.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix.json",
+        "openspec/continuity/ROLE-WORKFLOW.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/reconcile-remaining-historical-contracts"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261003.json",
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261003.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/auditor-package-20261003.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/snapshot-impact-20261003.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-source-manifest-20261003.json",
+        "openspec/changes/reconcile-remaining-historical-contracts/re-qa-request-20261003.md"
+      ],
+      "documentation": [
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261003.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/auditor-package-20261003.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/snapshot-impact-20261003.md"
+      ],
+      "evidence": [
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/documentary-snapshot-verification-20261003.json",
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/re-qa-acceptance-transfer-20261003.json"
+      ],
+      "checks": [
+        "documentation-coherence"
+      ],
+      "next_step": "Actualización documental20261003 aceptada como snapshot histórico fechado; C1 1/12admitido,11pendientes. Sin archivo/cumplimiento nuevo. Decisiones usuario RN/Grafos y paquete por único auditor.",
+      "state": "closed",
+      "approval": "openspec/changes/reconcile-remaining-historical-contracts/approval-20261003.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

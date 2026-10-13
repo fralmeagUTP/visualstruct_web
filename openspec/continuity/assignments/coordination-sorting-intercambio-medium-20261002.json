@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-intercambio-medium-20261002",
+  "issued_at_utc": "2026-10-02T11:06:58.226187+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.intercambio-instructions",
+  "task": "MEDIUM bounded Intercambio instruction implementation and independent native/browser replay verification; LOW handoff afterward",
+  "instruction": "Implement only Intercambio comparisons/indices/partial assignments/array replay according to actual C and bounded plan. Validate empty/single/duplicates/negative/reverse; main stays pending with concrete minimal proposal. D:5051 before/after,no push/merge/deploy; return LOW after semantics.",
+  "provenance": "Explicit new coordination implementation instruction supersedes sorting baseline; prior records retained.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-intercambio-authorized-medium.md"
+}

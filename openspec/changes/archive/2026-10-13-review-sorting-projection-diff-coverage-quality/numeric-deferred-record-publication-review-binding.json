@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.numeric-deferred-record-publication-independent-quality",
+  "task": "numeric-deferred-record-publication-independent-quality",
+  "assignment_id": "coordination-numeric-deferred-record-publication-qa-low-20261006",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-deferred-record-publication-independent-review",
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-tracker.md"
+  ]
+}

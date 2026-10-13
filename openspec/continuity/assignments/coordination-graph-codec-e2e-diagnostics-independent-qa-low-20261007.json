@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-codec-e2e-diagnostics-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T03:22:42.651699+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-codec-e2e-diagnostics",
+  "operation": "qa.graph-codec-e2e-diagnostics",
+  "task": "graph-codec-e2e-diagnostics-independent-qa",
+  "instruction": "Independent review exact7 files: strict full HTTP Graph decoding in3testfiles fixing5proven first-reference reads, preserving all assertions (after1PASS4laterFAIL honest); opt-in E2E nodeid/stage/http/shutdown/manual checkpoints, recurring90s diagnostic thread stacks, unchanged20min/actions/assertions, pipefail preserving failures, artifacts. Diagnostic subprocess timeout remains exit1; no browser campaign run. No runtime/C/Sorting/optimization/publication. Larger11hierarchy needs causal oracle deferred. Preserve two accepted lots; authorize no broader claims. Parent selects reviewer.",
+  "scope_ref": "openspec/changes/review-graph-codec-e2e-diagnostics/review-scope.md"
+}

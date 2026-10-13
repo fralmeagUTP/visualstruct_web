@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-local-preservation-commit-approved-low-20261013",
+  "issued_at_utc": "2026-10-13T22:49:36.841417+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "archive-verified-review-closures-20261013",
+  "operation": "documentation.local-preservation-commit",
+  "task": "guardar-registro-local",
+  "instruction": "Commit solo local aprobado, selección explícita revisada, cero pendientes. Excluir configuración privada, ZIP, evidencia/logs/sesiones sin borrar. No push ni despliegue.",
+  "scope_ref": "openspec/changes/archive-verified-review-closures-20261013/local-preservation-commit-plan.md"
+}

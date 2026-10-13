@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-listings-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T02:01:42.751672+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.keys-values-items-baseline-low",
+  "task": "LOW baseline Hash listing projections versus real C formatter/buffers/UI/caller",
+  "instruction": "Nueva fase autorizada pordelegaci\u00f3n01a0fe61-3104-743a-b032-bcc289ad80cd despu\u00e9sdecierre finitoremove: siguiente mapa hash-next-pending-map-after-remove-closure-low.md. Baselineconjunto keys/values/items: ordenbucket/cadena/valoresduplicados/negativos/int32extremos/tabla vac\u00eda; C realth_formatear/th_append_text, bufferchar/size_t/guardas/truncamiento/APIproyecciones/traceUI/caller/history/replay. Distinguir proyecci\u00f3n de paresC y retornoAPI de textoformateado, no inventar Ckeysfunciones existentes. MantenerH1/C_H/123IDs/5Hashfinite/11Sorting/preview. S\u00f3lo baseline yregresiones/checkpoint, no implementaci\u00f3n/contracts/thresholds/newnormatives/no publicaci\u00f3n.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-listings-baseline-plan-low.md"
+}

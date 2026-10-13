@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-remaining63-first-E2E-diagnosis-low-20261007",
+  "issued_at_utc": "2026-10-07T02:05:07.989867+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.remaining63-first-E2E-diagnosis",
+  "task": "remaining63-first-E2E-diagnosis",
+  "instruction": "Parent01a0fe61 requests bounded diagnosis of63unresolved andE2Estall, shared causes usinglogs/code andonlynecessary smallreproductions. QA parallelread-only40contractconflicts. Sortingunchangedpendinguser, no ambiguousassertionchanges/requirementweakening/longsuite/newbroad audit. Determine E2Epreparation/firstcase/unboundedwait withactualevidence, no speculativeproduct attribution. Check canonicalexistence/pertinence before missingGitHubsupportrestoration proposal. Own evidence/binding, no publish/VPS.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/remaining63-first-E2E-diagnosis-low.md"
+}

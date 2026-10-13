@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-source-A-resume-low-20261007",
+  "issued_at_utc": "2026-10-07T14:09:56.267871+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting-source-A-approved",
+  "task": "sorting-source-A-approved",
+  "instruction": "NEW user explicit approval via parent01a0fe61 transcript: Mary asks clearerror/noexecution if noC; user says Si loapruebo. ImplementoptionA requiredcomplete supportedrealC, rejectabsent/blank/explicitemptybody early, nofallback/interpreter/events/fakesuccess/history. Updatecontract/delta and legitimateconsumers toactualfullC preservingallasserts. Exact14firstsourceboundaryIDs identified, notpromisedPASS14. Small guardedbaseline/regressions, independentQA beforepublication. NoE2Eseparation/SLA/algorithmoptimization/longcampaign. Publication42da terminal evidence closed andpreserved. Desktop recovered, parentrequires resume exactSortingA. E2Edivisionexplicitlyrejected: do notimplement oraskagain. Verifiedremote42da81FAIL1224PASS; interruptedrejectiondocumentabsent. No unrelatedcleanup/AISEF/arnes/VPS.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-source-A-approved-low.md"
+}

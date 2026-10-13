@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-kruskal-causal-narration-independent-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T12:14:24.151645+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.kruskal-causal-narration-quality",
+  "task": "kruskal-causal-narration-MST-v2-independent-review",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW independent",
+  "instruction": "Coordinator requests coherent QA package/binding for causal Kruskal rejection narration, same scenarios, no tests/coverage/integration. Preserve prior review; author preflight not independent verdict.",
+  "scope_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/kruskal-causal-narration-MST-v2-review-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-seven-staged-contract-repairs-independent-qa-low-20261005.json"
+}

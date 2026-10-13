@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-counting-integration-medium-20261002",
+  "issued_at_utc": "2026-10-02T18:15:54.772690+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.counting-expanded-fidelity",
+  "task": "Counting compatible paging/player/virtual buckets integration and bounded regression gates",
+  "instruction": "Integración MEDIUM delimitada del checkpoint Counting: transporte paginado, reproductor y buckets virtualizados compatibles; contratos admitidos y otros TAD preservados, sin dependencias/servicios/red nuevos. Eliminar corte4 sólo con HTTP/UI funcionales; cinco regresiones API, páginas, backwards/seek, contadores/no redispatch/concurrencia y recursos rango1m/n80. Preservar16tests/siete muestrasC/ocho cierres. GuardasD, actualizar preview5051 al terminar; no push/merge/despliegue. Decisión de producto fuera contrato: detener sólo esa parte y reportar. Volver LOW al terminar.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-integration-authorized-medium.md"
+}

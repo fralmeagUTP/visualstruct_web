@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-front-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T21:32:07.267510+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.frente-instructions-medium",
+  "task": "Implement scoped readonly priority Front private guards typed trace and exact completed-query caller reproduction",
+  "instruction": "Nueva autorización MEDIUM del coordinador: baseline64IDs29pass35fail; corregir guardasprivadas/const/scopes/aliases/outputparams/callerqueryrepro exactasCsemantics sin mutación estructural. Journal deconsultas exitosas necesario para callerrepro autorizado; rebuild no redispatch queries. Operaciónoculta permanece, no UIfeature nueva. Mantener233productoSHAexcept scope autorizado raw/service/traces/caller; C_H y nueve mutantes cerrados,Graph/SDD/publicación intactos. Checkpoint antesLOW. No inflar mapa11 porproyecciones internas.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-front-instructions-plan-medium-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-front-baseline-low-20261003.json"
+}

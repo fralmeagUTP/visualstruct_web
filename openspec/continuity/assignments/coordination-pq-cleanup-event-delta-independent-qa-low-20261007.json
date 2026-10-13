@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-pq-cleanup-event-delta-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T03:13:16.582762+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-pq-cleanup-event-delta",
+  "operation": "qa.pq-cleanup-event-delta",
+  "task": "pq-cleanup-event-delta-independent-qa",
+  "instruction": "Independent review of exact two files correcting proven cp_vaciar cumulative freed-event metadata. Check previous-live-minus-current-live IDs and preserved cumulative history, all C/runtime state/source outputs unchanged except event metadata. Before3FAIL1PASS/after4PASS guarded proof; no global or other59 closure. Graph QA input files excluded and frozen. No publication, broad suites, C/Sorting/optimization; parent chooses reviewer.",
+  "scope_ref": "openspec/changes/review-pq-cleanup-event-delta/review-scope.md"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bellman-only-consumer-low-20261008",
+  "issued_at_utc": "2026-10-08T02:48:13.904555+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.graph-bellman-traversal-consumers",
+  "task": "graph-bellman-traversal-consumers",
+  "instruction": "Continue only original interpreter Bellman passes/cycle ID using saved captures and partial handoff. Original random7 seed484589473 and directed cycle3 unchanged. Complete minimal causal real alcanzable guard consumer/oracle with pure positive/negative controls; at most final Bellman ID alone under hard2GiB/120s. BFS/DFS remains pending. No joint baseline repeat, C/service/semantic changes, new long scenarios, formal QA, publication or campaigns.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-bellman-only-consumer-low.md"
+}

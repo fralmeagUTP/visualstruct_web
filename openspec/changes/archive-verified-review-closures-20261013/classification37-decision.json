@@ -1,0 +1,726 @@
+{
+  "instruction": "Clasificación final de37restantes, sin nuevos ensayos/desarrollo/publicación; disposición administrativa de cierres propios y bindings sustituidos.",
+  "closed": {
+    "audit-local-quality-and-unified-controls": {
+      "status": "finite-verified-change",
+      "reason": "22/22tareas aceptadas finitasconreservas poracta19 y entregafinal; CIc395/cobertura55 ypublicacióndocumental8e73son sucesores. No pendiente de más algoritmos. Para archivo coherente: corregir vocabulario normativoHashDEBE->MUST y dos escenariosRN limitados sustituidos porV3 explícita; preservarspecs anteriores yreservaGraph15s/noLSan/CountingXML/C1sinadmisiones. Archivo no certifica todoslosescenarios normativos.",
+      "evidence": [
+        "openspec/changes/audit-local-quality-and-unified-controls/avl-fe-decision-proposal.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/bellman-http-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/bellman-validation-textcache-cleanup-scope-correction.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/bubble-canonical-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/burbuja80-post-adoption10-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-focal-findings-repair-scope-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-focal-finite-acceptance-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-owner-handoff-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/circular-clear-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/circular-delete-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/circular-insert-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criteria18-19-final-max15-technical-handoff-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criterion14-current-acceptance-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criterion17-consultation-acceptance-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criterion18-sorting-informative-three-layer-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criterion22-root-disposition-acceptance-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/decision-reopen-final73-current-coverage-20261012.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/decision-reopen-priority-eight-current-coverage-20261011.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/design.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/dijkstra-legacy-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/dijkstra-retention-dijkstra30-one180-authorized-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/dijkstra30-one180-authorized-reopen-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/documentary-c-h-criterion13-acceptance-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/documentary26-graph-comment-scope-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/eight-criteria-early-handoff-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/five-criteria-final-proposal15-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-approved-integer-dijkstra-contract-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-avl-golden-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-bellman-only-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-bellman-prim-integer-cycle-approved-decision-medium.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-bellman-traversal-consumers-partial-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-bfs-dfs-only-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-delete-kruskal-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dfs-history-marks-context-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-educational-limit30-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-max15-only8-current-user-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-vertex-preview-refresh-reopen-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph10-missing-instruction-medium-scope-proposal-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-baseline-decision-gate-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-clear-destroy-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-listings-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-next-pending-map-after-scope-review-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-remove-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-scope-fix-checkpoint-medium.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-scope-fix-plan-medium.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-stats-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-two-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-visible-method-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/hierarchical-frame-oracle-freed-card-reopen-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/joint-nine-targets-conditional-adoption-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/joint-ten-staging-conditional-adoption-plan-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/linked-head-insert-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/linked-list-canonical-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/linked-list-console-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/linked-list-console-emitter-reopen-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/linked-list-console-emitter-reopen-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/linked-list-hidden-delete-alias-causal-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/MST-exact-adoption-stable193-coverage30-plan-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/phase8-duplicates-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/phase8-duplicates-consumer-partial-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/phase8-limits-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/phase8-limits-diagnosis-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/phase8-size-provenance-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-dequeue-live-card-uniqueness-delta-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-dequeue-memory-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-front-candidate-delta-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-front-candidate-reopen-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-contar-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-copiar-items-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-desencolar-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-encolar-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-formatear-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-front-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-inicializar-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-limpiar-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-trace-contract-repair-reopen-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-vacia-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/proposal.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/publish-main-shell-EOL-reopen-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/queue-desencolar-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/queue-encolar-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/queue-final-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/queue-frente-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/queue-limpiar-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/queue-mostrar-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/quicksort-comparison-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/rbt-legacy-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/red-black-full-validator-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/red-black-validation-extension-proposal.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/red-black-validation-limit-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/rn-console-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/runtime15-user-approved-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-boundary-radix-fidelity-reopen-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-catalog-consumer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-resource-bound-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-review-authorized-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-main-minimal-proposal.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-mapping-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-projection-adoption-current-acta-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-projection-adoption-plain20-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-instruction-budget-decision-pending.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-metrics-and-representation-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-source-A-preprocessor-repair-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-source-A-user-approved-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-validation-adoption-coverage-successor-acta-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-validation-adoption-coverage25-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting17-exact-adoption-wide-coverage-plan-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/stack-apilar-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/stack-apilar-traceability-reopen-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/stack-canonical-golden-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/stack-cima-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/stack-limpiar-finite-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/stack-mostrar-finite-private-closure-decision-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/stack-push-consumer-initial-parameters-delta-decision.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/thirteen-global-traces-sorting-unit-proposal30-plan-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/three-reviewed-adoption-kruskal-narration15-plan-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/three-reviewed-repairs-canonical-adoption-plan-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/three-reviewed-tests-adoption-freeze-plan-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/tree-intermediate-consumers-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-priority-queue-trace-contract-repair-qa/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-publication-final-invariants-python-boundary-qa/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-publish-main-919b802-qa/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-graph-three-approved-adjustments/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-RN-implementation/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-three-numeric-python-boundary-qa/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary-successors17-applicability-low/REVIEW.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-proposed-final-current-coverage-selection-low-20261011/reviewable-authorization-request.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-rejected12-tests-remaining-coverage-low-20261010/reviewer-handoff.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-remaining63-first-E2E-diagnosis-low/review40-binding-created-checkpoint.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criterion19-finite-QA-acceptance-final-acta-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criteria18-acceptance-and19-RN-V3-documentary-addendum-low.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/entrega-parcial-visualstruct-20261006.md"
+      ]
+    },
+    "extend-red-black-full-validation": {
+      "status": "finite-verified-change",
+      "reason": "V3 yRN-IMPL-01 aceptados con53QA/17fixtures y decisiónfinita; apartados implementaciónpendiente son históricos. Delta3requisitos coherente con cierre; sanitizers/ABIuniversales son reservas, no pendientes de implementarV3.",
+      "evidence": [
+        "openspec/changes/extend-red-black-full-validation/c1-decision-addendum.md",
+        "openspec/changes/extend-red-black-full-validation/decision.md",
+        "openspec/changes/extend-red-black-full-validation/design.md",
+        "openspec/changes/extend-red-black-full-validation/handoff.md",
+        "openspec/changes/extend-red-black-full-validation/history-clarification-decision.md",
+        "openspec/changes/extend-red-black-full-validation/proposal.md",
+        "openspec/changes/extend-red-black-full-validation/tasks.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/red-black-full-validator-finite-closure-decision-low.md"
+      ]
+    },
+    "reconcile-remaining-historical-contracts": {
+      "status": "finite-verified-change",
+      "reason": "Alcance propio es diagnóstico/matriz ydelta sólo si demostrable: diagnósticoaceptadocerrado, actualizaciónQA20261004aceptadayadopciónsession-stateefectuada; entregafinalpublicada8e73d74. C1conserva1/12y11obligacionespendientes en catálogo/continuidad; archivar diagnóstico noadmite esas11ni certifica suscontratos.",
+      "evidence": [
+        "openspec/changes/reconcile-remaining-historical-contracts/closure-decision.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/design.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/proposal.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/tasks-20261003.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/tasks-20261004.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/tasks.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004/review.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004/review.md",
+        "openspec/changes/reconcile-session-query-history-documentation/adoption-report-20261004.md"
+      ]
+    },
+    "reconcile-session-query-history-documentation": {
+      "status": "finite-verified-change",
+      "reason": "TresMODIFIED yPurpose yaadoptados; requisitoscompletos comparados idénticos al canonical actual. Archivarsinreaplicar; no admitir automáticamenteC1.",
+      "evidence": [
+        "openspec/changes/reconcile-session-query-history-documentation/adoption-decision-20261004.md",
+        "openspec/changes/reconcile-session-query-history-documentation/adoption-instruction-20261004.md",
+        "openspec/changes/reconcile-session-query-history-documentation/adoption-report-20261004.md",
+        "openspec/changes/reconcile-session-query-history-documentation/design.md",
+        "openspec/changes/reconcile-session-query-history-documentation/proposal.md",
+        "openspec/changes/reconcile-session-query-history-documentation/tasks-adoption-20261004.md",
+        "openspec/changes/reconcile-session-query-history-documentation/tasks.md"
+      ]
+    },
+    "review-bfs-persistent-isolated-prototype-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-bfs-persistent-isolated-prototype-quality/design.md",
+        "openspec/changes/review-bfs-persistent-isolated-prototype-quality/proposal.md",
+        "openspec/changes/review-bfs-persistent-isolated-prototype-quality/review-scope.md",
+        "openspec/changes/review-bfs-persistent-isolated-prototype-quality/review-tracker.md",
+        "openspec/changes/review-bfs-persistent-isolated-prototype-quality/tasks.md",
+        "openspec/changes/review-bfs-persistent-isolated-prototype-quality/evidence/independent-review/review.md"
+      ]
+    },
+    "review-c1-session-query-history-documentation": {
+      "status": "superseded-unused-binding",
+      "reason": "superseded-binding-20261004.md retira expresamente el binding preliminar no ejecutado. Archivo como antecedente sustituido, sin inventar ejecución o aceptación QA.",
+      "evidence": [
+        "openspec/changes/review-c1-session-query-history-documentation/design.md",
+        "openspec/changes/review-c1-session-query-history-documentation/proposal.md",
+        "openspec/changes/review-c1-session-query-history-documentation/tasks.md"
+      ]
+    },
+    "review-documentary-successors-and-criteria11-12-16-18-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/design.md",
+        "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/proposal.md",
+        "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-scope.md",
+        "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-tracker.md",
+        "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/tasks.md",
+        "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review/review.md",
+        "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review-delta20/review.md",
+        "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review-delta306/review.md"
+      ]
+    },
+    "review-four-hidden-terminal-and-final-quality": {
+      "status": "completed-focal-review",
+      "reason": "Revisión ejecutada terminó en dictamenfailed/rejectedglobal con aceptaciones finitas y liberación de freeze. Sus reparaciones recibieron QA sucesora y el alcance final18/19 tiene aceptación explícita posterior; archivo del dictamenhistórico, sin convertirlo aPASS.",
+      "evidence": [
+        "openspec/changes/review-four-hidden-terminal-and-final-quality/design.md",
+        "openspec/changes/review-four-hidden-terminal-and-final-quality/proposal.md",
+        "openspec/changes/review-four-hidden-terminal-and-final-quality/tasks.md",
+        "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review/review.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/review.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/rejected12-independent-review-20261010.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criterion19-finite-QA-acceptance-final-acta-low.md"
+      ]
+    },
+    "review-global-application-quality": {
+      "status": "completed-focal-review",
+      "reason": "Revisión ejecutada terminó en dictamenfailed/rejectedglobal con aceptaciones finitas y liberación de freeze. Sus reparaciones recibieron QA sucesora y el alcance final18/19 tiene aceptación explícita posterior; archivo del dictamenhistórico, sin convertirlo aPASS.",
+      "evidence": [
+        "openspec/changes/review-global-application-quality/design.md",
+        "openspec/changes/review-global-application-quality/proposal.md",
+        "openspec/changes/review-global-application-quality/tasks.md",
+        "openspec/changes/review-global-application-quality/evidence/independent-review/review.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/review.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/rejected12-independent-review-20261010.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/criterion19-finite-QA-acceptance-final-acta-low.md"
+      ]
+    },
+    "review-graph-bfs-phases-private-diagnostic-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-graph-bfs-phases-private-diagnostic-quality/design.md",
+        "openspec/changes/review-graph-bfs-phases-private-diagnostic-quality/diagnostic-scope.md",
+        "openspec/changes/review-graph-bfs-phases-private-diagnostic-quality/diagnostic-tracker.md",
+        "openspec/changes/review-graph-bfs-phases-private-diagnostic-quality/proposal.md",
+        "openspec/changes/review-graph-bfs-phases-private-diagnostic-quality/tasks.md"
+      ]
+    },
+    "review-graph-bfs-revision-cache-partial-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-graph-bfs-revision-cache-partial-quality/design.md",
+        "openspec/changes/review-graph-bfs-revision-cache-partial-quality/proposal.md",
+        "openspec/changes/review-graph-bfs-revision-cache-partial-quality/tasks.md",
+        "openspec/changes/review-graph-bfs-revision-cache-partial-quality/evidence/independent-review/review.md"
+      ]
+    },
+    "review-graph-codec-e2e-diagnostics": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-graph-codec-e2e-diagnostics/channel-delivery-handoff.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/channel-delivery-review-scope.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/design.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/handoff.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/proposal.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/review-scope.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/safe-diagnostics-handoff.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/safe-diagnostics-review-scope.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/tasks.md",
+        "openspec/changes/review-graph-codec-e2e-diagnostics/evidence/independent-review/review.md"
+      ]
+    },
+    "review-graph-fused-intern-adoption-quality": {
+      "status": "completed-focal-review",
+      "reason": "Familia de dictámenes concluidos: bloqueo de taskbinding reparado, Sorting17 portabilidad reaceptada, MSTnarraciónv2reaceptada. Recomendaciones/adopciones futuras no son tareas de implementación deQA. Corrección documentalv2:35datos+manifest(36entradas), no47de v1; scopes incluyen llaves yfor. Esta disposición conserva esa aclaración sin alterar bindings congelados.",
+      "evidence": [
+        "openspec/changes/review-graph-fused-intern-adoption-quality/avl-causal-stages-sorting17-review-scope.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/avl-causal-stages-sorting17-review-tasks.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/avl-hint-package-review-scope.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/avl-hint-package-review-tasks.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/design.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/joint-package-review-scope.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/joint-package-review-tasks.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/kruskal-causal-narration-MST-v2-review-scope.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/kruskal-causal-narration-MST-v2-review-tasks.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/proposal.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/seven-staged-contract-repairs-review-scope.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/seven-staged-contract-repairs-review-tasks.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/tasks.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/avl-causal-stages-sorting17-independent-qa-low/review.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/avl-hint-five-expectations-independent-qa-low/review-blocked.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/avl-hint-five-expectations-independent-qa-low/review.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/independent-review/review.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/joint-fused-fixtures-review/review.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/kruskal-causal-narration-MST-v2-independent-qa-low/review.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/seven-staged-contract-repairs-independent-qa-low/review.md",
+        "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/avl-causal-stages-sorting17-independent-qa-low/review-v2-sorting-portability/review.md"
+      ]
+    },
+    "review-graph-limit30-and-boundary-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-graph-limit30-and-boundary-quality/design.md",
+        "openspec/changes/review-graph-limit30-and-boundary-quality/proposal.md",
+        "openspec/changes/review-graph-limit30-and-boundary-quality/tasks.md",
+        "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/review.md"
+      ]
+    },
+    "review-graph-observed-invariant-test-repair": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-graph-observed-invariant-test-repair/design.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/handoff.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/proposal.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/repair1-handoff.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/repair1-review-scope.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/repair2-handoff.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/repair2-review-scope.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/review-scope.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/tasks.md",
+        "openspec/changes/review-graph-observed-invariant-test-repair/evidence/independent-review/review.md"
+      ]
+    },
+    "review-graph-three-approved-adjustments": {
+      "status": "completed-focal-review",
+      "reason": "QA externa acepta treshitossujetos aDOC01/DOC02; graph-qa-documentary-consolidation-addendum-low.md confirma ambascorrecciones en guías. Workflowpendingpreparatorio no es estado actual.",
+      "evidence": [
+        "openspec/changes/review-graph-three-approved-adjustments/design.md",
+        "openspec/changes/review-graph-three-approved-adjustments/proposal.md",
+        "openspec/changes/review-graph-three-approved-adjustments/tasks.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-graph-three-approved-adjustments/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-qa-documentary-consolidation-addendum-low.md"
+      ]
+    },
+    "review-hierarchical-frame-oracle-fidelity": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-hierarchical-frame-oracle-fidelity/design.md",
+        "openspec/changes/review-hierarchical-frame-oracle-fidelity/freed-card-delta-handoff.md",
+        "openspec/changes/review-hierarchical-frame-oracle-fidelity/handoff.md",
+        "openspec/changes/review-hierarchical-frame-oracle-fidelity/proposal.md",
+        "openspec/changes/review-hierarchical-frame-oracle-fidelity/review-scope.md",
+        "openspec/changes/review-hierarchical-frame-oracle-fidelity/tasks.md",
+        "openspec/changes/review-hierarchical-frame-oracle-fidelity/evidence/freed-card-independent-review/review.md",
+        "openspec/changes/review-hierarchical-frame-oracle-fidelity/evidence/independent-review/review.md"
+      ]
+    },
+    "review-main-0ddfea30-contract-classification": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-main-0ddfea30-contract-classification/design.md",
+        "openspec/changes/review-main-0ddfea30-contract-classification/handoff.md",
+        "openspec/changes/review-main-0ddfea30-contract-classification/proposal.md",
+        "openspec/changes/review-main-0ddfea30-contract-classification/review-scope.md",
+        "openspec/changes/review-main-0ddfea30-contract-classification/tasks.md",
+        "openspec/changes/review-main-0ddfea30-contract-classification/evidence/independent-review/review.md"
+      ]
+    },
+    "review-pq-cleanup-event-delta": {
+      "status": "completed-focal-review",
+      "reason": "Aceptación focal completa y nota runtime-label-clarification.md satisface aclaración append-only exigida; logs originales intactos.",
+      "evidence": [
+        "openspec/changes/review-pq-cleanup-event-delta/design.md",
+        "openspec/changes/review-pq-cleanup-event-delta/handoff.md",
+        "openspec/changes/review-pq-cleanup-event-delta/proposal.md",
+        "openspec/changes/review-pq-cleanup-event-delta/review-scope.md",
+        "openspec/changes/review-pq-cleanup-event-delta/tasks.md",
+        "openspec/changes/review-pq-cleanup-event-delta/evidence/independent-review/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-pq-shared-runtime-defects-low/runtime-label-clarification.md"
+      ]
+    },
+    "review-priority-dequeue-legacy-memory-consumer": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-priority-dequeue-legacy-memory-consumer/design.md",
+        "openspec/changes/review-priority-dequeue-legacy-memory-consumer/proposal.md",
+        "openspec/changes/review-priority-dequeue-legacy-memory-consumer/review-scope.md",
+        "openspec/changes/review-priority-dequeue-legacy-memory-consumer/tasks.md",
+        "openspec/changes/review-priority-dequeue-legacy-memory-consumer/evidence/independent-review/review.md",
+        "openspec/changes/review-priority-dequeue-legacy-memory-consumer/evidence/live-card-independent-review/review.md"
+      ]
+    },
+    "review-red-black-full-validation": {
+      "status": "completed-focal-review",
+      "reason": "Workflow dirige sus outputs a audit-local/evidence/independent-review-RN-implementation: QA documental y funcional finitaACCEPT; cierreV3posterior explícito. Sin evidencia propia era ubicación planificada, no trabajo sin hacer.",
+      "evidence": [
+        "openspec/changes/review-red-black-full-validation/design.md",
+        "openspec/changes/review-red-black-full-validation/proposal.md",
+        "openspec/changes/review-red-black-full-validation/tasks.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-RN-implementation/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/red-black-full-validator-finite-closure-decision-low.md"
+      ]
+    },
+    "review-runtime15-criteria18-19-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-runtime15-criteria18-19-quality/design.md",
+        "openspec/changes/review-runtime15-criteria18-19-quality/proposal.md",
+        "openspec/changes/review-runtime15-criteria18-19-quality/review-scope.md",
+        "openspec/changes/review-runtime15-criteria18-19-quality/review-tracker.md",
+        "openspec/changes/review-runtime15-criteria18-19-quality/tasks.md",
+        "openspec/changes/review-runtime15-criteria18-19-quality/evidence/independent-review/review.md"
+      ]
+    },
+    "review-runtime15-sixteen-focal-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-runtime15-sixteen-focal-quality/design.md",
+        "openspec/changes/review-runtime15-sixteen-focal-quality/proposal.md",
+        "openspec/changes/review-runtime15-sixteen-focal-quality/review-scope.md",
+        "openspec/changes/review-runtime15-sixteen-focal-quality/review-tracker.md",
+        "openspec/changes/review-runtime15-sixteen-focal-quality/tasks.md",
+        "openspec/changes/review-runtime15-sixteen-focal-quality/evidence/independent-review/review.md"
+      ]
+    },
+    "review-sequential-final-logical-projection": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-sequential-final-logical-projection/design.md",
+        "openspec/changes/review-sequential-final-logical-projection/handoff.md",
+        "openspec/changes/review-sequential-final-logical-projection/proposal.md",
+        "openspec/changes/review-sequential-final-logical-projection/review-scope.md",
+        "openspec/changes/review-sequential-final-logical-projection/tasks.md",
+        "openspec/changes/review-sequential-final-logical-projection/evidence/independent-review/review.md"
+      ]
+    },
+    "review-session-query-history-documentation": {
+      "status": "completed-focal-review",
+      "reason": "Workflow apunta a QA externa exacta que acepta delta/matriz; adopciónposterior4/4 satisface la espera de coordinación. Estado pending del preparador quedó desactualizado.",
+      "evidence": [
+        "openspec/changes/review-session-query-history-documentation/design.md",
+        "openspec/changes/review-session-query-history-documentation/proposal.md",
+        "openspec/changes/review-session-query-history-documentation/tasks.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004/review.md",
+        "openspec/changes/reconcile-session-query-history-documentation/adoption-report-20261004.md"
+      ]
+    },
+    "review-sorting-boundary-radix-fidelity": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-sorting-boundary-radix-fidelity/design.md",
+        "openspec/changes/review-sorting-boundary-radix-fidelity/handoff.md",
+        "openspec/changes/review-sorting-boundary-radix-fidelity/proposal.md",
+        "openspec/changes/review-sorting-boundary-radix-fidelity/review-scope.md",
+        "openspec/changes/review-sorting-boundary-radix-fidelity/tasks.md",
+        "openspec/changes/review-sorting-boundary-radix-fidelity/evidence/independent-review/review.md"
+      ]
+    },
+    "review-sorting-projection-diff-coverage-quality": {
+      "status": "completed-focal-review",
+      "reason": "R1,adopciónycoveragefocal aceptados; familia preserva intentos fallidos/privados noadoptados. ÚltimaQA19acepta correcciónRN_V3ydeclara sin otro defecto obligatorio/nueva campaña. MAX15/probar8/no más optimización sustituye solicitudesexperimentales30. No declararprivateBF20,DFS30,Dijkstra30o15s universales certificados.",
+      "evidence": [
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/criterion18-three-layer-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/design.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-branches-dfs30-one-observed-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-branch-capture-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-dfs30-focal-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-snapshot-publication-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-candidate-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-publication-consumers-dfs30-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-jpg-canonical-integration-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-transport-validation-jpg-delta-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one180-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-pair-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-retention-dijkstra30-one180-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-branch-capture-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/four-numeric-owned-publication-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-deferred-record-publication-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-owned-canonical-history-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-interner-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packing-json-retention-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-private-spool-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-private-spool-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-private-spool-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/post-adoption-tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/proposal.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/review-scope.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/review-tracker.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/tasks.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/bellman-fastpath-textcache20-budget-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/bellman-fastpath-textcache20-complete-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/bellman-owned-field-fastpath-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/bellman-private-spool20-one900-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/bellman-validation-textcache-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/criterion18-three-layer-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dfs-owned-branch-capture-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dfs-owned-pool-transport-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dfs-owned-snapshot-publication-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dfs-owned-transport-dfs30-one-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dfs-publication-candidate-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dfs-transport-jpg-canonical-integration-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dfs-transport-validation-jpg-delta-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dijkstra-branches-dijkstra30-one180-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dijkstra-retention-dijkstra30-one180-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dijkstra-saved-ui-bellman30-phase20-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/final-max15-documentary-QA19-delta-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/final-max15-preview-coverage-delivery-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/four-numeric-branch-capture-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/four-numeric-owned-publication-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/graph-max15-focal8-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/heapsort80-saved-response-browser-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-deferred-record-publication-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-event-canonical-dag-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-owned-canonical-history-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-packed-generation-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-packed-interner-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-packing-json-retention-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-private-spool-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/post-adoption-independent-review/review.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/final-max15-documentary-QA19-delta-independent-review/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-max15-only8-current-user-decision-low.md"
+      ]
+    },
+    "review-sorting-projection-identity-candidate-quality": {
+      "status": "completed-focal-review",
+      "reason": "Retención documentalR1resuelta por diff UTF8 regenerado, R1-correction/evidence-remapping y QA sucesora del change projection-diff. FAIL15 de SHA medido sigue histórico, sin atribuirlo a final.",
+      "evidence": [
+        "openspec/changes/review-sorting-projection-identity-candidate-quality/design.md",
+        "openspec/changes/review-sorting-projection-identity-candidate-quality/proposal.md",
+        "openspec/changes/review-sorting-projection-identity-candidate-quality/review-scope.md",
+        "openspec/changes/review-sorting-projection-identity-candidate-quality/review-tracker.md",
+        "openspec/changes/review-sorting-projection-identity-candidate-quality/tasks.md",
+        "openspec/changes/review-sorting-projection-identity-candidate-quality/evidence/independent-review/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-projection-diff-coverage20-low/report.md",
+        "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/independent-review/review.md"
+      ]
+    },
+    "review-sorting-source-A-approved": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-sorting-source-A-approved/design.md",
+        "openspec/changes/review-sorting-source-A-approved/handoff.md",
+        "openspec/changes/review-sorting-source-A-approved/preprocessor-repair-handoff.md",
+        "openspec/changes/review-sorting-source-A-approved/preprocessor-repair-review-scope.md",
+        "openspec/changes/review-sorting-source-A-approved/proposal.md",
+        "openspec/changes/review-sorting-source-A-approved/review-scope.md",
+        "openspec/changes/review-sorting-source-A-approved/tasks.md",
+        "openspec/changes/review-sorting-source-A-approved/evidence/independent-review/review.md",
+        "openspec/changes/review-sorting-source-A-approved/evidence/preprocessor-repair-independent-review/review.md"
+      ]
+    },
+    "review-sorting-validation-adoption-coverage-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-sorting-validation-adoption-coverage-quality/design.md",
+        "openspec/changes/review-sorting-validation-adoption-coverage-quality/proposal.md",
+        "openspec/changes/review-sorting-validation-adoption-coverage-quality/review-scope.md",
+        "openspec/changes/review-sorting-validation-adoption-coverage-quality/review-tracker.md",
+        "openspec/changes/review-sorting-validation-adoption-coverage-quality/tasks.md",
+        "openspec/changes/review-sorting-validation-adoption-coverage-quality/evidence/independent-review/review.md"
+      ]
+    },
+    "review-sorting-validation-incremental-candidate-quality": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-sorting-validation-incremental-candidate-quality/design.md",
+        "openspec/changes/review-sorting-validation-incremental-candidate-quality/proposal.md",
+        "openspec/changes/review-sorting-validation-incremental-candidate-quality/review-scope.md",
+        "openspec/changes/review-sorting-validation-incremental-candidate-quality/review-tracker.md",
+        "openspec/changes/review-sorting-validation-incremental-candidate-quality/tasks.md",
+        "openspec/changes/review-sorting-validation-incremental-candidate-quality/evidence/independent-review/review.md"
+      ]
+    },
+    "review-stack-push-legacy-memory-consumers": {
+      "status": "completed-focal-review",
+      "reason": "Dictamen propio emitido y alcance focal concluido; se conserva la no aceptación de obligaciones globales y condiciones de futuras adopciones, que no eran implementación encomendada a esta revisión.",
+      "evidence": [
+        "openspec/changes/review-stack-push-legacy-memory-consumers/design.md",
+        "openspec/changes/review-stack-push-legacy-memory-consumers/handoff.md",
+        "openspec/changes/review-stack-push-legacy-memory-consumers/initial-parameters-delta-handoff.md",
+        "openspec/changes/review-stack-push-legacy-memory-consumers/proposal.md",
+        "openspec/changes/review-stack-push-legacy-memory-consumers/review-scope.md",
+        "openspec/changes/review-stack-push-legacy-memory-consumers/tasks.md",
+        "openspec/changes/review-stack-push-legacy-memory-consumers/evidence/independent-review/review.md",
+        "openspec/changes/review-stack-push-legacy-memory-consumers/evidence/initial-parameters-independent-review/review.md"
+      ]
+    },
+    "review-three-repairs-and-route-consumers": {
+      "status": "completed-focal-review",
+      "reason": "Tresreparaciones y14IDs aceptados; pending39 acepta27yrechaza12. Reevaluación10oct acepta12reparadosyresuelveF01/F02:39aceptadosfinitos, sin sumarlos dosveces ni inferir cobertura global.",
+      "evidence": [
+        "openspec/changes/review-three-repairs-and-route-consumers/design.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/proposal.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/tasks.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/review.md"
+      ]
+    },
+    "sorting-explicit-supported-source": {
+      "status": "finite-verified-change",
+      "reason": "Contrato explícito/preprocesamientocon67regresionesaceptados; cuatrofallos previos sepresentaron comoseparados y review-sorting-four-later-oracles acepta5IDs/fourcategories. Deltaexacto ya incluido tambiénen auditoría; consolidarsólo una vez.",
+      "evidence": [
+        "openspec/changes/sorting-explicit-supported-source/design.md",
+        "openspec/changes/sorting-explicit-supported-source/proposal.md",
+        "openspec/changes/sorting-explicit-supported-source/tasks.md",
+        "openspec/changes/archive/2026-10-13-review-sorting-four-later-oracles/evidence/independent-review/review.md",
+        "openspec/changes/review-sorting-source-A-approved/evidence/preprocessor-repair-independent-review/review.md"
+      ]
+    },
+    "sorting-trace-source-boundaries": {
+      "status": "finite-verified-change",
+      "reason": "Corrección de initial/llaves/grupossaltados aceptada por review-sorting-boundary-radix-fidelity:24IDsfinitos, sin defectos focalespendientes. Tarea QA sinmarcar eshistórica.",
+      "evidence": [
+        "openspec/changes/sorting-trace-source-boundaries/design.md",
+        "openspec/changes/sorting-trace-source-boundaries/proposal.md",
+        "openspec/changes/sorting-trace-source-boundaries/tasks.md",
+        "openspec/changes/review-sorting-boundary-radix-fidelity/evidence/independent-review/review.md"
+      ]
+    }
+  },
+  "pending": {
+    "audit-didactic-c-trace-fidelity": {
+      "status": "pending-real",
+      "reason": "Su propio informe exige antes del cierre integral eventos semánticos/intermedios2.1, cada reserva/reasignación/liberación2.3 y matriz instrumentadaASan/UBSan2.5. CI posterior13harnesses finitos no demuestra esa matriz de eventos completa; no se deduce cierre desde casillas9.6.",
+      "evidence": [
+        "docs/qa/didactic-c-trace-audit.md",
+        "docs/qa/didactic-c-trace-results.json",
+        "openspec/changes/audit-didactic-c-trace-fidelity/tasks.md"
+      ]
+    },
+    "redesign-stack-learning-workspace": {
+      "status": "pending-real",
+      "reason": "Piloto no tiene aceptación íntegra: diseño conserva ocho etapas frente a las cinco aprobadas actuales; tareas1.4 ya dicencinco. Falta disposición explícita del contrato de tres áreas/tableta/móvil y evidencia de sus controles sticky/tabs/teclado/foco/contraste/no-scroll y aprobación4.5. QA global finita y UI smoke no prueban esos escenarios concretos del piloto.",
+      "evidence": [
+        "openspec/changes/redesign-stack-learning-workspace/design.md",
+        "openspec/changes/redesign-stack-learning-workspace/tasks.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/specs/visual-playback-ui/spec.md"
+      ]
+    }
+  },
+  "limits": "Archivo de QA histórica no convierte rejected/timeout/MemoryError enPASS. C1normativo11pendientes permanece en catálogo/continuidad; no crear contador ni admisiones. Solo consolidación de deltas técnicos previamenteverificados."
+}

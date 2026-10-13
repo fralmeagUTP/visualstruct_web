@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-counting-native-fault-low-20261002",
+  "issued_at_utc": "2026-10-02T18:53:54.475486+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.counting-expanded-fidelity",
+  "task": "Counting LOW independent native outside-four oracles and safe native/HTTP fault gates",
+  "instruction": "LOW: ocho oráculos C completos fuera4 yfault probes seguros Counting; digest/streaming y muestras justificadas para n80/rango1m sin materializar todos eventos. Verificar fallos/reintentos/páginasobsoletas/ownership/reload dentro integración vigente, sin debilitar regresiones. Defecto semántico complejo: delimitar MEDIUM. Preservar ocho cierres,C/H,preview5051loopback yguardasD. Sinpush/merge/despliegue/red; no inventar cierre.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-native-fault-authorized-low.md"
+}

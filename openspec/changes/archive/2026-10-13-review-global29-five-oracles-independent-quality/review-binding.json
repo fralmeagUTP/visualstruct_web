@@ -1,0 +1,25 @@
+{
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-global29-five-oracles-independent-quality",
+  "operation": "audit.global29-five-oracles-independent-review",
+  "task": "global29-five-oracles-independent-review",
+  "assignment_id": "coordination-global29-five-oracles-independent-qa-low-20261005",
+  "assignment_source": "openspec/continuity/assignments/coordination-global29-five-oracles-independent-qa-low-20261005.json",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW independent reviewer",
+  "scope_ref": "openspec/changes/review-global29-five-oracles-independent-quality/review-scope.md",
+  "tasks_ref": "openspec/changes/review-global29-five-oracles-independent-quality/tasks.md",
+  "tracker_ref": "openspec/changes/review-global29-five-oracles-independent-quality/review-tracker.md",
+  "evidence_binding": "openspec/changes/review-global29-five-oracles-independent-quality/evidence-binding.json",
+  "allowed_paths": [
+    "openspec/changes/review-global29-five-oracles-independent-quality/evidence/independent-review",
+    "openspec/changes/review-global29-five-oracles-independent-quality/review-tracker.md"
+  ],
+  "source_writes_authorized": false,
+  "independent_private_exact29_rerun_authorized": true,
+  "maximum_minutes": 25,
+  "required_guard": "own fresh before/after, not author preflight",
+  "author_assignment_not_used": true,
+  "BFS_binding_not_used": true
+}

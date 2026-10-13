@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-QA-retained-criteria-correction25-low-20261005",
+  "issued_at_utc": "2026-10-05T18:24:22.133842+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.qa-retained-criteria-documentary-correction",
+  "task": "QA-retained-criteria-correction25",
+  "instruction": "Coordinator01a0fe61:25min onlydocumentary corrections after acceptedfinite/retainedglobal QA. Addmissingtwoacceptedtestchange chains tocriterion16; dispose remaining2391 byspecificnormativeobligation/currentconsumer/fixture/scenario with existingevidence, noID/SHAapproval/no newtests orassumption2391defects/requiredexecutions. Ifnotresolvable, returnminimal demonstratedmissingobligations andreason, notgenericlist. BFSadoptionrejected: readQAandprovide concretebounded pedagogicpersistentmaps hypothesisONLY, no implementation/newvariant/request/measurement/profiling. Keepcanonical/acceptedpackages/QAimmutable.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/QA-retained-criteria-correction25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-two-delivered-package-QA-bindings10-low-20261005.json"
+}

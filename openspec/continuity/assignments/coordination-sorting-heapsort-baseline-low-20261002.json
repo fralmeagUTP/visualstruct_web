@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-heapsort-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T15:56:26.274876+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.heapsort-baseline-low",
+  "task": "LOW Heap sort existing algorithm baseline, controls/helper/results/metrics/UI and downloaded callers; preserve seven closures and delimit MEDIUM",
+  "instruction": "ContinuaLOWbaselineHeap sort distintoTADHeap. VerificacontratosresultadosmetricscontroleshelpercallersC17Doxygen, ajustessencillosyplanMEDIUMsi divergencias. Dguardasevidencia, preview5051loopbackactual, preserve7closures; sinpublicacionmergedeployred.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-heapsort-authorized-low.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-seleccion-medium-20261002",
+  "issued_at_utc": "2026-10-02T12:16:59.474029+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.seleccion-instructions",
+  "task": "MEDIUM bounded Seleccion instruction implementation and independent C/UI replay; reuse actual main; finish for LOW",
+  "instruction": "Implement Seleccion comparisons/min index/conditional partial swap/scopes/caller/rewind from actual C with bounded cases; do not change C or expand methods; maintain D:5051,no push/merge/deploy; semantic completion then LOW handoff.",
+  "provenance": "Explicit latest coordination authorizes previously preparation-only Seleccion plan. Prior assignments and closures retained.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-seleccion-authorized-medium.md"
+}

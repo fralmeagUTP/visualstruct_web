@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-apilar-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T07:35:52.531570+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack.apilar-baseline-low",
+  "task": "Baseline missing stack push guards allocation field init and aliases with actual UI/caller evidence",
+  "instruction": "Continúa LOW Pila.apilar según mapa únicamente guardas/reserva/inicialización/aliases no cubiertos. Recupera cualquier apilar previo y explica laguna precisa para evitar reabrir cierre. Compara C/API/UI caller real fidelidad instrucción/historial/reload/faultresources; regresiones rojas y sin xfail. C/H y limpiarPilaColaPriority/Hash/Sortingclosed intactos. Baseline+planMEDIUM si falla,sin contratos nuevos/no publish. Mantén mapa familias actualizado en subtask pero no tiempos/porcentajes inventados.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-apilar-baseline-plan-low.md"
+}

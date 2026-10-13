@@ -1,0 +1,22 @@
+{
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/candidate-freeze.json": "906a0e608d289bc25f8c652e49e8db664075d2e5cb29548e551c4dcb2b14da84",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/checkpoint.json": "8cacce5529aa27f797441a1f0e272cf2df4e9884dc52cafd0b6803cbd4daa272",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/checkpoint.md": "1f26186f0013de889e351a23440c4605e0657affea583dc2c3e082ad6dedbb2c",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/source-delta.diff": "d2c924a450e28356a4f1f1916c73a27173d5ef82230012ffeb7d4510a0afa22e",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/baseline-manifest.json": "a93d1dffc619d80f37d8e5ecb3a889cb602ab3a34d8a007cc8ee4b70bc9b2275",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/equivalence-v5.xml": "4304c16ce67f2bfb18af838936dc59542ccade5cec40aeb705fd31f38985712a",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/final-browser-numeric-codec.xml": "9c1270783dbdccd0f6d543f8ed9fd77858ef1970c6c8c1d0375c5770bafa9a0e",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/plain-gate-v5/exit.json": "2d46503d0b9fde90e57b1d0fd77c1c1227676d7ab82da1a921f935b6d7f225c9",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/plain-gate-v5/stdout.log": "e864c1e878718e83336a42b5a3f6dd529dc2fc48fd4b714ff55980368e863e79",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/plain-gate-v5/gate.xml": "b4f8f99f37db4a9d5db229d724aa83518079154ce2a25f9ece72b3b9d732458c",
+  "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/review.md": "f724e9d5f7f7f7b2ba256b216a03f652a02c6474dd04e75026e5bc125106bed7",
+  "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/review-evidence.json": "c9ddd54d35675d1b36acc21910ee10dcdf08027096ec7d2a3f6baeef91b27f4e",
+  "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/numeric-fixture-positional-provenance-independent.json": "26234ec1006440fd95bd15e03fe207507b8ed27c0d6931ca93868284d8c88050",
+  "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/minimum-coverage-plan.json": "84c72975cf99f3dbe722e47901296167504860e01093655cdcb6ab1c63965a2d",
+  "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/coverage-current-denominator-plan.json": "294c221299fe78b4c79f4b0c22c59e7efe1c9699dc46adae37a763a6260083e0",
+  "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review/review.md": "b3641adf928a771b556318caec071d1b9f8b0969c33bf988633012e27d40c7cb",
+  "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review/pending-case-dispositions.json": "88704d94191199ca75ba6ec8e5740601bedb6a6a1ec46c060dddc4daaa7ea67d",
+  "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review/current-failure-disposition.json": "504248ba5bdcfba92aa451e0bd7e7ef7765c77896b214101b954dd074d61d963",
+  "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-four-hidden-residual-and-final-disposition-low/QA18-obligation-disposition-current.json": "2538cca1a171c9504bdc0a78381c0ee497fcd97aad6080fa9cce6921febf12d9",
+  "openspec/changes/audit-local-quality-and-unified-controls/current-operation-contract.md": "7cfbc8284253c6f03a050428298ef8fbc0555a3202ac1f32d7648b5bb9fb781c"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary-delta20-QA-binding-low-20261005",
+  "issued_at_utc": "2026-10-05T18:47:44.414180+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.qa-retained-criteria-documentary-correction",
+  "task": "documentary-delta20-QA-binding",
+  "instruction": "Ajuste m\u00ednimo de coordinaci\u00f3n autorizado por01a0fe61: asignaci\u00f3n sucesora QA delta20min para01a0ff54, misma operaci\u00f3n documental, ZIP560c7d9b6ed409c8eb7f8ad3a3e6c58ffcc80c25fae15394f88f26ff092949bb y manifest/fuentes nuevas; scope/evidence-binding/assignment_source coherentes, preservar asignaci\u00f3n y dictamen previos. Excluir pruebas, verificaciones ya aceptadas y BFS. Ninguna otra correcci\u00f3n.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/documentary-delta20-QA-binding-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-QA-retained-criteria-correction25-low-20261005.json"
+}

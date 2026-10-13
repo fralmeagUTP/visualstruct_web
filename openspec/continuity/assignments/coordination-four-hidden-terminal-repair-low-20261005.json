@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-four-hidden-terminal-repair-low-20261005",
+  "issued_at_utc": "2026-10-05T00:28:46.650993+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "Repairexclusive4hiddenListmethods/native12caseplayerregressions/freezeindependentQA",
+  "instruction": "# Reparación exclusiva cuatro métodos ocultos LOW\n\nCoordinación01a0fe61-3104-743a-b032-bcc289ad80cd autoriza reparar eliminar_inicio/primero/eliminar_final/mostrar de Lista, modelo/dispatch exclusivo y regresionescausales/player desde12casosC17diagnosticados. MantenerC/H/API/semántica/UIrestante/lista7casoscerrados/Ultimo yQA14aceptados. No suitesglobales ni familiasintactas. QAparalela solodisposiciónhistórica sinprobar inputs enmutación. Antes/after obligatorio, modeloSHAcuerpoC, evidencia baselinepreservada, freeze/bindingindependientefocalfinal. Preview/sesionespreservados; refreshsólocoordinado. Objetivo05UTCsinrebajarrequisitosQA18.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/four-hidden-terminal-repair-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-four-hidden-residual-and-final-disposition-low-20261005.json"
+}

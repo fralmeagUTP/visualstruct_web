@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-shell-medium-20261002",
+  "issued_at_utc": "2026-10-02T14:02:21.562163+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.shell-instructions",
+  "task": "Bounded MEDIUM Shell instruction trace sixcases322events;resolve six strong regressions/UI/callers,preservefourclosures;returnLOW",
+  "instruction": "Implement Shell delimited plan, original six regressions without weakening, actual C/locals/scopes/UI no redispatch/real callers;canonicalD,guards,evidence,owned5051loopbackrefresh asneeded;no networkfirewallpublishmergedeploy;returnLOW after semanticblock.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-shell-authorized-medium.md"
+}

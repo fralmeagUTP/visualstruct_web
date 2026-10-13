@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-global29-five-oracles-repair25-low-20261005",
+  "issued_at_utc": "2026-10-05T13:50:30.467195+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "global29-five-oracles-repair-rerun25",
+  "instruction": "Corregir5or\u00e1culos obsoletos justificados por contrato/Cevento sin debilitar aserciones ni producto; reejecutar29IDs y entregardiff/justificaciones/resultados/cobertura compatible separada runmixto. Agrupar siguientes eliminaci\u00f3n/fixup sincampa\u00f1aamplia;25min. Defecto real reportar antescambiarcontrato. BFSestructural pendiente.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/global29-five-oracles-repair25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-global29-existing-anchors-execution30-low-20261005.json"
+}

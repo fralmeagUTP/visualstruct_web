@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-align-canonical-main-approved-low-20261013",
+  "issued_at_utc": "2026-10-13T22:35:12.401958+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "archive-verified-review-closures-20261013",
+  "operation": "documentation.align-canonical-main",
+  "task": "alinear-checkout-main",
+  "instruction": "Alineación explícitamente aprobada; preservar rama original, contenidos por hashes, evidencia y sesiones. Adoptar main a227bd4 en rama nueva local/reconcile-main-20261013. Sin push ni despliegue.",
+  "scope_ref": "openspec/changes/archive-verified-review-closures-20261013/align-canonical-main-plan.md"
+}

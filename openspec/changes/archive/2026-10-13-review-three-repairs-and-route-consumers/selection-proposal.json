@@ -1,0 +1,19 @@
+{
+  "selectors": [
+    "tests/test_qa_three_repairs_candidate.py",
+    "tests/test_audit_rbt_insert_contract_low.py::test_actual_help_and_manual_explain_range_and_owned_final_cleanup",
+    "tests/test_sorting_routes.py::test_sorting_compare_uses_two_isolated_copies_of_one_input",
+    "tests/test_graph_pedagogy_phases_7_9.py::test_compare_route_and_learning_regions",
+    "tests/test_hierarchical_pedagogy_closure.py::test_compare_route_validates_inputs"
+  ],
+  "expected_unique_ids": 14,
+  "meaning": "11focales+3consumidores exactos; registration/collection is not execution",
+  "campaign_restart": false,
+  "original_cutoff": {
+    "completed_teardowns": 1938,
+    "pending_unapproved": 2604,
+    "actual_call_outcomes": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+    "each_pending_ID": "openspec/changes/review-global-application-quality/evidence/independent-review/minimal-close-strategy-20261004T2332.json"
+  },
+  "additional_assertions_same_cases": "Reviewer must compare complete visual_state and history on invalid Sublist contexts, not only length; reuse original three red findings by SHA. No UI productfix."
+}

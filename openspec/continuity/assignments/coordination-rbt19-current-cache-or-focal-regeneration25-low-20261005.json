@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rbt19-current-cache-or-focal-regeneration25-low-20261005",
+  "issued_at_utc": "2026-10-05T13:59:17.118891+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "rbt19-current-cache-or-focal-regeneration25",
+  "instruction": "Localizar evidenciaRNcongruente para19IDs eliminaci\u00f3n/fixup; no cach\u00e9C/Hincompatible. Si ninguna v\u00e1lida regenerar\u00fanicamentefocalnecesario auditor\u00edaautorizada;25min. C/Hcontratos y test5or\u00e1culos estable paraQA. Reportarresultados/cobertura/trazabilidad. NoBFSestructural.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/rbt19-current-cache-or-focal-regeneration25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-global29-five-oracles-repair25-low-20261005.json"
+}

@@ -1,0 +1,2123 @@
+{
+  "schema": "c1-remaining-reconciliation/v1",
+  "observed_at_utc": "2026-10-04T14:24:16.863914+00:00",
+  "project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "source_catalog": "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/requirement-decisions.json",
+  "historical_total": 12,
+  "previously_admitted_untouched": [
+    "C1-REM-06"
+  ],
+  "reviewed_remaining": 11,
+  "reviewed_scenarios": 20,
+  "new_admitted": 0,
+  "remaining_pending": 11,
+  "interpretation": "Once textos/veinte escenarios preservados. Hash11/Sorting11/Graph6 y RN full aceptados finitamente; motivos viejos supersedidos, sin admisión automática ni cierre global.",
+  "items": [
+    {
+      "id": "C1-QA-01",
+      "requirement": "Inventario exhaustivo y verificable",
+      "original_source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "original_source_line": 9,
+      "original_source_sha256": "552929ebaa2f1276b1d831252982c865f8e2fcc693edf7fd5d82fe3eb76168d5",
+      "original_text": "### Requirement: Inventario exhaustivo y verificable\n\nEl sistema de QA MUST generar un manifiesto versionado a partir de los contratos registrados de rutas, adaptadores, algoritmos, fases y controles de interfaz. Cada elemento publicado MUST tener al menos un caso de prueba trazable y un oráculo definido.\n\n#### Scenario: nueva operación publicada\n\n- **GIVEN** un adaptador registra una operación nueva\n- **WHEN** se ejecuta la verificación de inventario\n- **THEN** la verificación falla hasta que se asigne una prueba con datos y resultado esperado a dicha operación\n\n#### Scenario: control visible sin cobertura E2E\n\n- **GIVEN** un control de reproducción o aprendizaje está presente en la interfaz\n- **WHEN** se genera el manifiesto\n- **THEN** queda asociado a una prueba Playwright o se informa como cobertura faltante",
+      "canonical_capability": null,
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "Current source inventory517 includes306registered options+211rawC. Controls without names are explicitly residual69, not silent omission. Auto-generated QAcase labels still are not fixture/executed-oracle bindings; validate_inventory only checks strings, not real case existence. Retain first-scenario gate gap.",
+      "scenarios": [
+        {
+          "name": "nueva operación publicada",
+          "text": "#### Scenario: nueva operación publicada\n\n- **GIVEN** un adaptador registra una operación nueva\n- **WHEN** se ejecuta la verificación de inventario\n- **THEN** la verificación falla hasta que se asigne una prueba con datos y resultado esperado a dicha operación\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Falta demostrar fallo automático ante operación nueva sin prueba real, fixture y oráculo; nombres generados no demuestran cobertura.",
+          "evidence_refs": [
+            "scripts/build_app_quality_inventory.py:1-260",
+            "scripts/build_app_quality_inventory.py:1-260",
+            "scripts/build_app_quality_inventory.py:1-260"
+          ],
+          "previous_missing_evidence": "Prueba existente con fixture/esperado, enlace verificable y fallo al añadir operación no cubierta.",
+          "previous_evidence_refs": [
+            "scripts/build_app_quality_inventory.py:32-51",
+            "scripts/build_app_quality_inventory.py:150-169",
+            "scripts/build_app_quality_inventory.py:202-219"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Fallo automático por operación nueva sin prueba real enlazada, con fixture/esperado."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "control visible sin cobertura E2E",
+          "text": "#### Scenario: control visible sin cobertura E2E\n\n- **GIVEN** un control de reproducción o aprendizaje está presente en la interfaz\n- **WHEN** se genera el manifiesto\n- **THEN** queda asociado a una prueba Playwright o se informa como cobertura faltante",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "109 controles nombrados (49 con observación DOM histórica) y69 contextos sin ID están enumerados; faltan enlaces ruta/modo/resultado o faltante explícito para cada elemento.",
+          "evidence_refs": [
+            "scripts/build_app_quality_inventory.py:1-260",
+            "scripts/build_app_quality_inventory.py:1-260",
+            "scripts/build_app_quality_inventory.py:1-260"
+          ],
+          "previous_missing_evidence": "Todos los controles visibles: prueba E2E vinculada o fila explícita faltante, incluidos sin identificador.",
+          "previous_evidence_refs": [
+            "scripts/build_app_quality_inventory.py:32-51",
+            "scripts/build_app_quality_inventory.py:150-169",
+            "scripts/build_app_quality_inventory.py:202-219"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Enumerar controles sin ID y vincular E2E real o faltante explícito."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "scripts/build_app_quality_inventory.py:32-51",
+        "scripts/build_app_quality_inventory.py:150-169",
+        "scripts/build_app_quality_inventory.py:202-219"
+      ],
+      "evidence_refs": [
+        "scripts/build_app_quality_inventory.py:1-260",
+        "scripts/build_app_quality_inventory.py:1-260",
+        "scripts/build_app_quality_inventory.py:1-260"
+      ],
+      "new_evidence_refs": [],
+      "previous_status": "NOT_DEMONSTRATED",
+      "auditor_latest_delta": "Current source inventory517 includes306registered options+211rawC. Controls without names are explicitly residual69, not silent omission. Auto-generated QAcase labels still are not fixture/executed-oracle bindings; validate_inventory only checks strings, not real case existence. Retain first-scenario gate gap.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Sin evidencia nueva de un gate inventario→test/fixture/esperado. Los106 IDs Hash reales no validan por sí solos el generador de cobertura.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-QA-02",
+      "requirement": "Cobertura funcional de todos los módulos",
+      "original_source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "original_source_line": 25,
+      "original_source_sha256": "552929ebaa2f1276b1d831252982c865f8e2fcc693edf7fd5d82fe3eb76168d5",
+      "original_text": "### Requirement: Cobertura funcional de todos los módulos\n\nLa campaña MUST ejecutar todas las estructuras, operaciones, algoritmos, fases, comparadores, reinicios y ayudas expuestos por los módulos secuencial, jerárquico, grafos, hash y ordenamiento. Para cada opción MUST incluir, cuando aplique, estado vacío, normal, límite e inválido.\n\n#### Scenario: algoritmo de ordenamiento registrado\n\n- **GIVEN** un algoritmo incluido en el catálogo de ordenamiento\n- **WHEN** se ejecuta la campaña\n- **THEN** se prueba con entradas vacía, un elemento, repetidos, ordenada, inversa, negativa y de límite\n- **AND** se comprueba que el resultado final está ordenado y coincide entre ejecución rápida y reproducción\n\n#### Scenario: operación de grafo por fase\n\n- **GIVEN** una operación permitida en una fase de grafos\n- **WHEN** se ejecuta el caso asociado\n- **THEN** la API acepta o rechaza la operación conforme a sus precondiciones\n- **AND** la vista y la traza representan el resultado correspondiente",
+      "canonical_capability": null,
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "Sorting11 andHash11 finite closures replace historic partialHash4/Hash7pending reasons; Graph6 accepted kernels do not cover all construction/query/phase/entry domains. Reconcile precise accepted input classes and fast/replay/UI NA from latest source-bound matrix.",
+      "scenarios": [
+        {
+          "name": "algoritmo de ordenamiento registrado",
+          "text": "#### Scenario: algoritmo de ordenamiento registrado\n\n- **GIVEN** un algoritmo incluido en el catálogo de ordenamiento\n- **WHEN** se ejecuta la campaña\n- **THEN** se prueba con entradas vacía, un elemento, repetidos, ordenada, inversa, negativa y de límite\n- **AND** se comprueba que el resultado final está ordenado y coincide entre ejecución rápida y reproducción\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Sorting11 cerrado finitamente; falta mapping íntegro once algoritmos × siete clases de entrada × rápido/replay, con rechazos aplicables justificados.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Once algoritmos: vacío/un elemento/repetidos/ordenado/inverso/negativo/límite y comparación rápido/replay cuando aplican. Binsort/Radix pendientes; Counting parcial.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Mapear once algoritmos y cada clase vacía/uno/duplicados/ordenada/inversa/negativa/límite al ID y rápido/replay. Vacío rechazado por dominioUI no equivale a caso ignorado: justificar escenario aplicable/APIrechazo. Reutilizar cierres existentes."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "operación de grafo por fase",
+          "text": "#### Scenario: operación de grafo por fase\n\n- **GIVEN** una operación permitida en una fase de grafos\n- **WHEN** se ejecuta el caso asociado\n- **THEN** la API acepta o rechaza la operación conforme a sus precondiciones\n- **AND** la vista y la traza representan el resultado correspondiente",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Seis algoritmos Graph y ajustes aceptados no cubren once operaciones de construcción/consultas sin familia propia ni todas las entradas/fases.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Todas las operaciones por fase con precondiciones/API/vista/traza en una revisión coherente. BFS/DFS finitos no prueban Dijkstra/Bellman-Ford/Prim/Kruskal/construcción.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Matriz por fase/operación Grafos pendiente másHash7; pruebas finales coherentes de comparadores/reset/help y otras opciones, no sólo nombre del módulo."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+        "openspec/specs/graph-structures/spec.md:48-54"
+      ],
+      "evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+        "openspec/specs/graph-structures/spec.md:1-118"
+      ],
+      "new_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+      ],
+      "previous_status": "PARTIAL",
+      "auditor_latest_delta": "Sorting11 andHash11 finite closures replace historic partialHash4/Hash7pending reasons; Graph6 accepted kernels do not cover all construction/query/phase/entry domains. Reconcile precise accepted input classes and fast/replay/UI NA from latest source-bound matrix.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Once Sorting cerrados bajo dominioUI1..80/int32 y entorno observado; Hash4/11 cerrado finitamente, seven pendientes. La campaña global/variantes/no aplicables sigue sin cierre.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-QA-03",
+      "requirement": "Fidelidad C, estado y traza",
+      "original_source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "original_source_line": 43,
+      "original_source_sha256": "552929ebaa2f1276b1d831252982c865f8e2fcc693edf7fd5d82fe3eb76168d5",
+      "original_text": "### Requirement: Fidelidad C, estado y traza\n\nPara cada operación evaluada, la campaña MUST contrastar el resultado C o su harness equivalente, el estado de dominio/backend, el historial, la consola, los frames y la visualización. Un frame MUST representar solo una instrucción o rama efectivamente ejecutada.\n\n#### Scenario: reproducción de una operación mutante\n\n- **GIVEN** una operación mutante con traza disponible\n- **WHEN** el usuario recorre desde Inicio hasta Final y luego retrocede\n- **THEN** cada estado restaurado coincide con el frame correspondiente\n- **AND** Final coincide con la ejecución rápida, el historial y la visualización\n\n#### Scenario: llamada auxiliar del código C\n\n- **GIVEN** una instrucción C que invoca una función auxiliar\n- **WHEN** esa llamada es ejecutada\n- **THEN** la traza identifica llamada, cuerpo ejecutado y retorno conforme al contrato didáctico del módulo",
+      "canonical_capability": null,
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "Raw vertex andincidentcaller separately accepted; Graph3 approved fault/compact/main adjustments independent QA accepted, Hashall11 andRNfullvalidator sources now available. Do not reopen those; global per-option/event/view correspondences still explicit.",
+      "scenarios": [
+        {
+          "name": "reproducción de una operación mutante",
+          "text": "#### Scenario: reproducción de una operación mutante\n\n- **GIVEN** una operación mutante con traza disponible\n- **WHEN** el usuario recorre desde Inicio hasta Final y luego retrocede\n- **THEN** cada estado restaurado coincide con el frame correspondiente\n- **AND** Final coincide con la ejecución rápida, el historial y la visualización\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "517 filas conservan niveles de evidencia; quedan correspondencias por opción/evento/modelo/vista y utilidades rawHeap construir/eliminar_valor, con buffers válidos.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Restauración, consola, historial, rápido y ambas vistas de cada operación evaluada sobre fuentes coherentes; Counting fuera del corte carece instruction_event.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Conservar evidencia Sorting yHash4 con IDs exactos; completar operaciones restantes, vistas e historial en revisión pertinente. ConsultasHash largas/arbitrarias no certificadas."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "llamada auxiliar del código C",
+          "text": "#### Scenario: llamada auxiliar del código C\n\n- **GIVEN** una instrucción C que invoca una función auxiliar\n- **WHEN** esa llamada es ejecutada\n- **THEN** la traza identifica llamada, cuerpo ejecutado y retorno conforme al contrato didáctico del módulo",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Callees y callers Graph actualizados tienen evidencia aceptada finita; completar mapping de llamadas auxiliares restantes sin sustituir ejecución por referencias.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Llamada/cuerpo/retorno real de helpers en familias restantes; Dijkstra sigue sin modelo C fiel por instrucción.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Cuerpo/retorno/helper/alias por las operaciones pendientes (Hash7, Grafos,etc.). No reabrir helperscerrados sin defecto nuevo."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+        "openspec/specs/graph-structures/spec.md:48-54"
+      ],
+      "evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+        "openspec/specs/graph-structures/spec.md:1-118"
+      ],
+      "new_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+      ],
+      "previous_status": "PARTIAL",
+      "auditor_latest_delta": "Raw vertex andincidentcaller separately accepted; Graph3 approved fault/compact/main adjustments independent QA accepted, Hashall11 andRNfullvalidator sources now available. Do not reopen those; global per-option/event/view correspondences still explicit.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Sorting ya no queda bloqueado por cutoff Counting/Bin/Radix; nuevos oráculos causales/scopes/transporte documentados. Hashqueries ahora C/evento/UI/caller finitos; Grafos yotras operaciones impiden contrato global.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-QA-04",
+      "requirement": "Calidad no funcional y reporte",
+      "original_source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "original_source_line": 60,
+      "original_source_sha256": "552929ebaa2f1276b1d831252982c865f8e2fcc693edf7fd5d82fe3eb76168d5",
+      "original_text": "### Requirement: Calidad no funcional y reporte\n\nLa campaña MUST ejecutar accesibilidad, seguridad, rendimiento y compatibilidad definidos, y producir resultados reproducibles. Las dependencias ausentes de infraestructura MUST distinguirse de los fallos de producto.\n\n#### Scenario: navegador E2E no instalado\n\n- **GIVEN** un entorno sin navegador de Playwright\n- **WHEN** se ejecuta la campaña E2E\n- **THEN** el resultado se clasifica como bloqueo de infraestructura con comando de resolución\n- **AND** no se clasifica como defecto funcional\n\n#### Scenario: informe de hallazgo\n\n- **GIVEN** una prueba no aprobada\n- **WHEN** se publica el informe\n- **THEN** incluye operación, entrada, esperado, observado, severidad, causa probable, ubicación y prueba/corrección recomendadas\n- **AND** no modifica código de producción como consecuencia del hallazgo",
+      "canonical_capability": null,
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "Installed Chromium works; sanitizer link absence and harness readiness/import errors clearly separated from product failures. Original browser-missing negative scenario still requires existing artifact or applicable gate evidence, not availability alone. No approved SLA inferred.",
+      "scenarios": [
+        {
+          "name": "navegador E2E no instalado",
+          "text": "#### Scenario: navegador E2E no instalado\n\n- **GIVEN** un entorno sin navegador de Playwright\n- **WHEN** se ejecuta la campaña E2E\n- **THEN** el resultado se clasifica como bloqueo de infraestructura con comando de resolución\n- **AND** no se clasifica como defecto funcional\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Chromium disponible no demuestra el escenario negativo de navegador ausente; falta artefacto reproducible de clasificación/comando.",
+          "evidence_refs": [
+            "docs/qa/comprehensive-app-quality-results-v1.json:1-18",
+            "docs/qa/remediation-gates.md:1-18",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25"
+          ],
+          "previous_missing_evidence": "Registro reproducible del entorno sin browser con comando de resolución y clasificación infraestructura. Firefox ausente histórico no prueba por sí solo todo el escenario.",
+          "previous_evidence_refs": [
+            "docs/qa/comprehensive-app-quality-results-v1.json:8-16",
+            "docs/qa/remediation-gates.md:7-17",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:17-20",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Clasificación infraestructura con comando de resolución para navegador ausente; no inferirlo de configuraciónCI."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "informe de hallazgo",
+          "text": "#### Scenario: informe de hallazgo\n\n- **GIVEN** una prueba no aprobada\n- **WHEN** se publica el informe\n- **THEN** incluye operación, entrada, esperado, observado, severidad, causa probable, ubicación y prueba/corrección recomendadas\n- **AND** no modifica código de producción como consecuencia del hallazgo",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Los informes existentes distinguen infraestructura y defecto; falta cobertura íntegra de accesibilidad/seguridad/rendimiento/compatibilidad y reporte según alcance definido.",
+          "evidence_refs": [
+            "docs/qa/comprehensive-app-quality-results-v1.json:1-18",
+            "docs/qa/remediation-gates.md:1-18",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25"
+          ],
+          "previous_missing_evidence": "Informe por fallo con operación/entrada/esperado/observado/severidad/causa/ubicación/prueba recomendada; trazabilidad de accesibilidad, seguridad, rendimiento y compatibilidad finales.",
+          "previous_evidence_refs": [
+            "docs/qa/comprehensive-app-quality-results-v1.json:8-16",
+            "docs/qa/remediation-gates.md:7-17",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:17-20",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Informes completos por fallo ycampaigna accesibilidad/seguridad/rendimiento/compatibilidad final. MedidasHash0.265s oRadix9.09s no corresponden a un SLAaprobado."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "docs/qa/comprehensive-app-quality-results-v1.json:8-16",
+        "docs/qa/remediation-gates.md:7-17",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:17-20",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+      ],
+      "evidence_refs": [
+        "docs/qa/comprehensive-app-quality-results-v1.json:1-18",
+        "docs/qa/remediation-gates.md:1-18",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25"
+      ],
+      "new_evidence_refs": [],
+      "previous_status": "PARTIAL",
+      "auditor_latest_delta": "Installed Chromium works; sanitizer link absence and harness readiness/import errors clearly separated from product failures. Original browser-missing negative scenario still requires existing artifact or applicable gate evidence, not availability alone. No approved SLA inferred.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Nuevas medidas Sorting/Hash son mediciones finitas de trazas/JSON/tracemalloc, noSLA/RSS/campaña nofuncional completa. Sin nueva evidencia de seguridad/compatibilidad/screenreader/sanitizers.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-REM-01",
+      "requirement": "Un único contrato ejecutable por operación",
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_source_line": 5,
+      "original_source_sha256": "a5fc25baad2f949a356418c71001656391262a9374ea5899ae7c067974f0dd20",
+      "original_text": "### Requirement: Un único contrato ejecutable por operación\nCada operación pública que se presente como interpretación C MUST tener una función o composición\nC explícita, y el backend, adapter, traza, consola y frontend MUST aplicar la misma semántica,\ntipos, validaciones, orden y política de errores.\n\n#### Scenario: implementaciones con igual resultado y algoritmo distinto\n- **GIVEN** una operación cuyo C y backend producen el mismo resultado mediante algoritmos distintos\n- **WHEN** la aplicación genera la explicación paso a paso\n- **THEN** la operación se considera no conforme\n- **AND** se corrige una capa para ejecutar el contrato canónico, no se fabrica una traza equivalente\n\n#### Scenario: operación sin implementación C\n- **GIVEN** una operación pública marcada como interpretación C\n- **WHEN** no existe implementación o composición C compilable\n- **THEN** la operación MUST implementarse y mapearse en C o retirarse explícitamente de ese contrato",
+      "canonical_capability": "openspec/specs/didactic-conformance-remediation/spec.md",
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "Historic Dijkstra/Graph/Hash pending-decisions reasons superseded by integer/Dijkstra and Bellman/Prim approvals plus Graph3/currentcaller closures. All publishedC fallback/orchestration/alias mappings still need exact per-operation domain disposition.",
+      "scenarios": [
+        {
+          "name": "implementaciones con igual resultado y algoritmo distinto",
+          "text": "#### Scenario: implementaciones con igual resultado y algoritmo distinto\n- **GIVEN** una operación cuyo C y backend producen el mismo resultado mediante algoritmos distintos\n- **WHEN** la aplicación genera la explicación paso a paso\n- **THEN** la operación se considera no conforme\n- **AND** se corrige una capa para ejecutar el contrato canónico, no se fabrica una traza equivalente\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Igualdad final no sustituye fidelidad de algoritmo; mantener correspondencia por instrucción y resolver gaps de construcción Graph/rawHeap/aliases.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:1-7",
+            "openspec/specs/hash-table/spec.md:1-94",
+            "openspec/continuity/reconciliation-status.md:1-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Reconciliar empate/infinito/suma Dijkstra y verificar cada capa según decisión; resultado igual no valida algoritmo distinto.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54",
+            "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:3-7",
+            "openspec/specs/hash-table/spec.md:71-93",
+            "openspec/continuity/reconciliation-status.md:10-16",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Decisión Grafos y corrección de mismasemántica por capa; los cierres Sorting no resuelven Dijkstra."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "operación sin implementación C",
+          "text": "#### Scenario: operación sin implementación C\n- **GIVEN** una operación pública marcada como interpretación C\n- **WHEN** no existe implementación o composición C compilable\n- **THEN** la operación MUST implementarse y mapearse en C o retirarse explícitamente de ese contrato",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Raíces/fallbacks/hidden APIs retenidos con criterio22 aceptado; falta disposición completa por operación pública y composición C efectiva.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:1-7",
+            "openspec/specs/hash-table/spec.md:1-94",
+            "openspec/continuity/reconciliation-status.md:1-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Inventario actual de composiciones C compilables por operación pública y decisión expresa para fallbacks no C.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54",
+            "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:3-7",
+            "openspec/specs/hash-table/spec.md:71-93",
+            "openspec/continuity/reconciliation-status.md:10-16",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Mapping por todas las operaciones públicas marcadasC, composiciones compilables o retirada explícita; sieteHash restantes yfallbacks requieren mapa."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+        "openspec/specs/graph-structures/spec.md:48-54",
+        "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:3-7",
+        "openspec/specs/hash-table/spec.md:71-93",
+        "openspec/continuity/reconciliation-status.md:10-16",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3"
+      ],
+      "evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+        "openspec/specs/graph-structures/spec.md:1-118",
+        "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:1-7",
+        "openspec/specs/hash-table/spec.md:1-94",
+        "openspec/continuity/reconciliation-status.md:1-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8"
+      ],
+      "new_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+      ],
+      "previous_status": "PARTIAL_WITH_DIVERGENCES",
+      "auditor_latest_delta": "Historic Dijkstra/Graph/Hash pending-decisions reasons superseded by integer/Dijkstra and Bellman/Prim approvals plus Graph3/currentcaller closures. All publishedC fallback/orchestration/alias mappings still need exact per-operation domain disposition.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Contrato/algoritmoSorting respaldado por cierres11 en dominio observado; HashH1 y4métodos con C equivalente registrado. Grafos tipos/empates/límites divergentes mantiene obligación global no demostrada.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-REM-02",
+      "requirement": "Aritmética y memoria definidas en los límites",
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_source_line": 21,
+      "original_source_sha256": "a5fc25baad2f949a356418c71001656391262a9374ea5899ae7c067974f0dd20",
+      "original_text": "### Requirement: Aritmética y memoria definidas en los límites\nLos TAD C y sus transcripciones MUST evitar comportamiento indefinido y MUST validar tamaños y\nrangos antes de reservar memoria, produciendo errores equivalentes y reproducibles en todas las\ncapas.\n\n#### Scenario: Radix Sort contiene INT_MIN\n- **GIVEN** un arreglo que contiene `INT_MIN`\n- **WHEN** se ejecuta Radix Sort bajo UBSan\n- **THEN** no ocurre overflow al obtener su magnitud\n- **AND** el resultado conserva el multiconjunto y queda ordenado\n\n#### Scenario: rango de conteo excesivo\n- **GIVEN** pocos valores con una amplitud mayor que el límite documentado\n- **WHEN** se solicita Counting Sort o Bin Sort\n- **THEN** C y backend rechazan la entrada antes de reservar el arreglo de conteos\n- **AND** la consola y la traza muestran el mismo error tipado",
+      "canonical_capability": "openspec/specs/didactic-conformance-remediation/spec.md",
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "ExpandedCounting/Radix finite INT_MIN/error/native/paging closures replace historic restricted evidence. UBSan/ASan not linkable; literal UBSan scenario not certified. Preserve actualtool limitation and never run invalid99over5 Heap or integer conversion UB.",
+      "scenarios": [
+        {
+          "name": "Radix Sort contiene INT_MIN",
+          "text": "#### Scenario: Radix Sort contiene INT_MIN\n- **GIVEN** un arreglo que contiene `INT_MIN`\n- **WHEN** se ejecuta Radix Sort bajo UBSan\n- **THEN** no ocurre overflow al obtener su magnitud\n- **AND** el resultado conserva el multiconjunto y queda ordenado\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "INT_MIN tiene cierre nativo finito Radix; UBSan no enlazable, por lo que escenario literal bajo UBSan sigue sin certificación.",
+          "evidence_refs": [
+            "docs/qa/comprehensive-app-quality-results-v1.json:1-18",
+            "docs/qa/remediation-gates.md:1-18",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Log ejecutado UBSan para Radix INT_MIN, multiconjunto/orden y equivalencia de transcripción actual.",
+          "previous_evidence_refs": [
+            "docs/qa/comprehensive-app-quality-results-v1.json:8-16",
+            "docs/qa/remediation-gates.md:7-17",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:17-20",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "LogUBSan real de RadixINT_MIN,multiconjunto/orden ycorrespondencia actual. No ejecutar conversiones inseguras; reutilizarfixtures, runnerLinux si disponible según autorización del auditor."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "rango de conteo excesivo",
+          "text": "#### Scenario: rango de conteo excesivo\n- **GIVEN** pocos valores con una amplitud mayor que el límite documentado\n- **WHEN** se solicita Counting Sort o Bin Sort\n- **THEN** C y backend rechazan la entrada antes de reservar el arreglo de conteos\n- **AND** la consola y la traza muestran el mismo error tipado",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Counting/Bin rango y fallos tienen cierres ampliados; mapear rechazo antes de reserva y error tipado consola/traza, preservando dominio y límites aceptados.",
+          "evidence_refs": [
+            "docs/qa/comprehensive-app-quality-results-v1.json:1-18",
+            "docs/qa/remediation-gates.md:1-18",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Counting y Bin: rechazo excesivo antes de reserva en C/backend y mismo error tipado consola/traza; límites size_t32/fullspan no verificados.",
+          "previous_evidence_refs": [
+            "docs/qa/comprehensive-app-quality-results-v1.json:8-16",
+            "docs/qa/remediation-gates.md:7-17",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:17-20",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Count/Binerrorrango ycallocNULL están apoyados por oráculos yerrorstate; enlazarIDexacto/mismoerror/consola por escenario. Falta acreditaciónsanitizada yotras plataformas no inferidas."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "docs/qa/comprehensive-app-quality-results-v1.json:8-16",
+        "docs/qa/remediation-gates.md:7-17",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:17-20",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+        "openspec/specs/graph-structures/spec.md:48-54"
+      ],
+      "evidence_refs": [
+        "docs/qa/comprehensive-app-quality-results-v1.json:1-18",
+        "docs/qa/remediation-gates.md:1-18",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+        "openspec/specs/graph-structures/spec.md:1-118"
+      ],
+      "new_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+      ],
+      "previous_status": "NOT_DEMONSTRATED",
+      "auditor_latest_delta": "ExpandedCounting/Radix finite INT_MIN/error/native/paging closures replace historic restricted evidence. UBSan/ASan not linkable; literal UBSan scenario not certified. Preserve actualtool limitation and never run invalid99over5 Heap or integer conversion UB.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "RadixINT_MIN magnituduint32/recomposición yCount/Binrangoantesreserva conerror/replay ya tienen evidencia no sanitizada yrazonamientoC17. El requisito pide UBSan explícito yloscierres excluyen sanitizers/ABI32bit.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-REM-03",
+      "requirement": "Contrato coherente para grafos",
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_source_line": 38,
+      "original_source_sha256": "a5fc25baad2f949a356418c71001656391262a9374ea5899ae7c067974f0dd20",
+      "original_text": "### Requirement: Contrato coherente para grafos\nGrafos MUST definir de manera única dirección, tipo de peso, aristas duplicadas, extremos ausentes,\norden de recorridos, pesos inválidos, conectividad y significado de MST/bosque.\n\n#### Scenario: arista con atributos no representables\n- **GIVEN** una arista cuya dirección o peso no puede representarse en el contrato C activo\n- **WHEN** se intenta insertar\n- **THEN** se rechaza sin mutar el grafo o se almacena exactamente mediante el contrato C extendido\n- **AND** consola, estado interno y visualización muestran el mismo valor efectivo\n\n#### Scenario: grafo desconectado para MST\n- **GIVEN** un grafo no dirigido con más de un componente\n- **WHEN** termina Prim o Kruskal\n- **THEN** el resultado se identifica como bosque mínimo y reporta sus componentes\n- **AND** no se presenta como árbol abarcador completo",
+      "canonical_capability": "openspec/specs/didactic-conformance-remediation/spec.md",
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "Integerweights/int32/range/no fractionaltruncation, Dijkstra/Bellman/Prim cycles and sourceorder approved; Prim/Kruskal finite forest/component/caller/nativeUI refs exist. Candidate for owner full scenario re-evaluation; no audit-self-admission or universalproof inferred.",
+      "scenarios": [
+        {
+          "name": "arista con atributos no representables",
+          "text": "#### Scenario: arista con atributos no representables\n- **GIVEN** una arista cuya dirección o peso no puede representarse en el contrato C activo\n- **WHEN** se intenta insertar\n- **THEN** se rechaza sin mutar el grafo o se almacena exactamente mediante el contrato C extendido\n- **AND** consola, estado interno y visualización muestran el mismo valor efectivo\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Política entera/int32 y decisiones Graph resueltas; falta vinculación íntegra de dirección/duplicados/extremos/orden/peso/conectividad a escenarios y opciones de construcción.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Rechazo sin mutación de dirección/peso no representable o contrato C extendido exacto, rango/finitud y mismas representaciones.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Rechazo sinmutación de atributos norepresentables o Cextendido exacto; decisión de pesos/rango/finitud ytipoportátil."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "grafo desconectado para MST",
+          "text": "#### Scenario: grafo desconectado para MST\n- **GIVEN** un grafo no dirigido con más de un componente\n- **WHEN** termina Prim o Kruskal\n- **THEN** el resultado se identifica como bosque mínimo y reporta sus componentes\n- **AND** no se presenta como árbol abarcador completo",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Prim/Kruskal poseen cierres finitos de bosque/componentes; falta cotejo explícito de cada cláusula con IDs/caller/consola/vista, sin inferir universalidad.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Prim/Kruskal desconectados: bosque mínimo, componentes explícitos, API/traza/DOM y no etiqueta árbol completo. Baselines no cierran obligación.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Bosquemínimo/componentes/mensaje PrimKruskal desconectados con API/traza/DOM; baseline no es cierre."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+        "openspec/specs/graph-structures/spec.md:48-54",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+      ],
+      "evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+        "openspec/specs/graph-structures/spec.md:1-118",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25"
+      ],
+      "new_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+      ],
+      "previous_status": "CONTRADICTORY_PENDING_DECISION",
+      "auditor_latest_delta": "Integerweights/int32/range/no fractionaltruncation, Dijkstra/Bellman/Prim cycles and sourceorder approved; Prim/Kruskal finite forest/component/caller/nativeUI refs exist. Candidate for owner full scenario re-evaluation; no audit-self-admission or universalproof inferred.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Sin decisión numéricaGrafos nueva; specdecimal, APIrechazo, fueraint aceptado yInfinity500 permanecen en la evidencia leída. CierresHash no cambianesecontrato.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-REM-04",
+      "requirement": "Contrato coherente para hash y secuenciales",
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_source_line": 54,
+      "original_source_sha256": "a5fc25baad2f949a356418c71001656391262a9374ea5899ae7c067974f0dd20",
+      "original_text": "### Requirement: Contrato coherente para hash y secuenciales\nHash, pila, cola, prioridad y listas MUST compartir entre C y backend el dominio de datos, función\nde índice, política de capacidad, orden, desempate, consultas y ciclo de vida.\n\n#### Scenario: índice hash reproducible\n- **GIVEN** la misma clave, capacidad y estado inicial en procesos diferentes\n- **WHEN** C y backend calculan el bucket\n- **THEN** ambos producen el mismo índice determinista y la misma cadena de colisión\n\n#### Scenario: snippet de consulta\n- **GIVEN** una consulta de cima, frente o final mostrada en el panel C\n- **WHEN** se compila el fragmento con el header publicado\n- **THEN** todos sus símbolos existen y la ejecución devuelve el valor presentado por la UI",
+      "canonical_capability": "openspec/specs/didactic-conformance-remediation/spec.md",
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "HashH1/all11 andsequentialquerysnippets/nativecallers now accepted finite; bind actual multi-process bucket cases andcima/frente/final headers/nativeDOM sources, not substituteHash for originalseqscenario.",
+      "scenarios": [
+        {
+          "name": "índice hash reproducible",
+          "text": "#### Scenario: índice hash reproducible\n- **GIVEN** la misma clave, capacidad y estado inicial en procesos diferentes\n- **WHEN** C y backend calculan el bucket\n- **THEN** ambos producen el mismo índice determinista y la misma cadena de colisión\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Hash11/H1 cerrado finitamente; falta vínculo exacto escenario multiproceso bucket/cadena y contrato compartido de todas las estructuras secuenciales.",
+          "evidence_refs": [
+            "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:1-7",
+            "openspec/specs/hash-table/spec.md:1-94",
+            "openspec/continuity/reconciliation-status.md:1-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Comparación C/backend en procesos distintos para mismas claves/capacidad/colisiones con hashes/versiones actuales.",
+          "previous_evidence_refs": [
+            "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:3-7",
+            "openspec/specs/hash-table/spec.md:71-93",
+            "openspec/continuity/reconciliation-status.md:10-16",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "C17 nativo ybackend finitos cubren índice/colisiones; acreditar mapping de proceso/seed/capacidad de ambos ejecutores ydeterminismo entreprocesos, buscar evidenciaexistente antesdenuevaejecución."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "snippet de consulta",
+          "text": "#### Scenario: snippet de consulta\n- **GIVEN** una consulta de cima, frente o final mostrada en el panel C\n- **WHEN** se compila el fragmento con el header publicado\n- **THEN** todos sus símbolos existen y la ejecución devuelve el valor presentado por la UI",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Cima/frente/final tienen snippets/callers finitos; mapear símbolos del header publicado y resultado nativo/DOM para cada consulta aplicable.",
+          "evidence_refs": [
+            "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:1-7",
+            "openspec/specs/hash-table/spec.md:1-94",
+            "openspec/continuity/reconciliation-status.md:1-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Snippet DOM real cima/frente/final compilado con header publicado, ejecución y comparación UI para consultas aplicables.",
+          "previous_evidence_refs": [
+            "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:3-7",
+            "openspec/specs/hash-table/spec.md:71-93",
+            "openspec/continuity/reconciliation-status.md:10-16",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "ConsultasHash mainactual ya imprimevaloresC/intercalados; escenariooriginal cita cima/frente/final secuenciales: enlazar snippetsDOM reales+headers+ejecución/UI de esosTAD sin sustituirlos porHash."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:3-7",
+        "openspec/specs/hash-table/spec.md:71-93",
+        "openspec/continuity/reconciliation-status.md:10-16",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+      ],
+      "evidence_refs": [
+        "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md:1-7",
+        "openspec/specs/hash-table/spec.md:1-94",
+        "openspec/continuity/reconciliation-status.md:1-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25"
+      ],
+      "new_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+      ],
+      "previous_status": "PARTIAL",
+      "auditor_latest_delta": "HashH1/all11 andsequentialquerysnippets/nativecallers now accepted finite; bind actual multi-process bucket cases andcima/frente/final headers/nativeDOM sources, not substituteHash for originalseqscenario.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Hash4/11 finitamente verificado: índicecolisiones/negativos/int32/capacidadfija/scopes yqueries. No sólo H1textual; faltaobligacióncombinadaHash+secuenciales+índiceentrediferentesprocesos.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-REM-05",
+      "requirement": "Estado visual causado por eventos C",
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_source_line": 68,
+      "original_source_sha256": "a5fc25baad2f949a356418c71001656391262a9374ea5899ae7c067974f0dd20",
+      "original_text": "### Requirement: Estado visual causado por eventos C\nCada frame MUST ser una proyección del snapshot posterior a un evento C real. Temporales, enlaces,\nrotaciones, colores, intercambios, relajaciones y liberaciones MUST aparecer en el orden causal y\ncon identidad lógica estable.\n\n#### Scenario: operación compuesta\n- **GIVEN** una rotación doble, fix-up, sift o relajación con varios eventos mutantes\n- **WHEN** se reproduce paso a paso\n- **THEN** existe un frame por cada mutación didácticamente relevante\n- **AND** ningún frame adelanta el estado final a la llamada de la subrutina\n\n#### Scenario: nodo único circular\n- **GIVEN** una lista circular de un elemento cuyo C enlaza `next` al mismo nodo\n- **WHEN** se renderiza el snapshot posterior\n- **THEN** el autoenlace es visible y HEAD/COLA conservan la misma identidad",
+      "canonical_capability": "openspec/specs/didactic-conformance-remediation/spec.md",
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "AVL/RN/Heap/Sorting composedcausal events andcircularsingleton finiteclosures preserved. Link exact originalautoedge/head/tail nativeDOM case to scenario; do not repeatfamilies or inferarbitrarypointer safety.",
+      "scenarios": [
+        {
+          "name": "operación compuesta",
+          "text": "#### Scenario: operación compuesta\n- **GIVEN** una rotación doble, fix-up, sift o relajación con varios eventos mutantes\n- **WHEN** se reproduce paso a paso\n- **THEN** existe un frame por cada mutación didácticamente relevante\n- **AND** ningún frame adelanta el estado final a la llamada de la subrutina\n\n",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Cierres compuestos AVL/RN/Heap/Sorting preservados; falta cobertura íntegra de frames mutantes e identidad lógica por operación evaluada.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Mutaciones/intermedios/identidades/alias/retornos por cada operación compuesta; Counting fuera del corte y Dijkstra siguen pendientes.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Noadelantar mutaciones enoperacionescompuestas pendientes; reutilizar Sorting11 yárboles/heap casoscerrados. Mappingpor requisito yvista sin extrapolarabitrarias sesiones/campos."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        },
+        {
+          "name": "nodo único circular",
+          "text": "#### Scenario: nodo único circular\n- **GIVEN** una lista circular de un elemento cuyo C enlaza `next` al mismo nodo\n- **WHEN** se renderiza el snapshot posterior\n- **THEN** el autoenlace es visible y HEAD/COLA conservan la misma identidad",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Vincular caso exacto singleton Circular con autoenlace visible y HEAD/COLA idénticos; no sustituir por cierre agregado de familia.",
+          "evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Prueba nativa y DOM actual del circular único con autoenlace y HEAD/COLA mismo ID, referenciada directamente al escenario. Cierre de familia sin mapping exacto insuficiente.",
+          "previous_evidence_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Enlazar circularúnico(autoenlaceHEAD/COLA) aloráculo yDOM existente; no repetirfamilia completa."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+        "openspec/specs/graph-structures/spec.md:48-54"
+      ],
+      "evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+        "openspec/specs/graph-structures/spec.md:1-118"
+      ],
+      "new_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+      ],
+      "previous_status": "PARTIAL",
+      "auditor_latest_delta": "AVL/RN/Heap/Sorting composedcausal events andcircularsingleton finiteclosures preserved. Link exact originalautoedge/head/tail nativeDOM case to scenario; do not repeatfamilies or inferarbitrarypointer safety.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Count/Bin/Radix ahora causalidad/deltas/scopes/errores por dominioUI ampliado; Hashget/contains450frames/425restauraciones sinconsolafutura. Grafosrelajación yfamiliaspendientes siguenabiertos.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-REM-07",
+      "requirement": "Consola derivada de ejecución",
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_source_line": 98,
+      "original_source_sha256": "a5fc25baad2f949a356418c71001656391262a9374ea5899ae7c067974f0dd20",
+      "original_text": "### Requirement: Consola derivada de ejecución\nLa consola didáctica MUST consumir exclusivamente eventos de salida producidos por instrucciones C\nalcanzadas y MUST reconstruirse determinísticamente al avanzar, retroceder o reiniciar.\n\n#### Scenario: mensaje técnico sin printf\n- **GIVEN** un mensaje descriptivo de traza que no procede de una salida C\n- **WHEN** se reproduce la operación\n- **THEN** el mensaje puede aparecer en historial técnico\n- **AND** no aparece como salida equivalente a `printf`",
+      "canonical_capability": "openspec/specs/didactic-conformance-remediation/spec.md",
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "Latest Graphvertex/caller/no-printf andnumerichelper consoleevent prefixes now explicit. Wholeapp emitters still need exact mapping; technicalmessages remain nonC, no globaladmission from newcaller.",
+      "scenarios": [
+        {
+          "name": "mensaje técnico sin printf",
+          "text": "#### Scenario: mensaje técnico sin printf\n- **GIVEN** un mensaje descriptivo de traza que no procede de una salida C\n- **WHEN** se reproduce la operación\n- **THEN** el mensaje puede aparecer en historial técnico\n- **AND** no aparece como salida equivalente a `printf`",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Graphvertex/caller y helpers tienen prefijos/no-printf explícitos; falta mapping de todos los emisores para certificar exclusividad y reconstrucción global.",
+          "evidence_refs": [
+            "app/services/execution_trace_service.py:1-1720",
+            "tests/test_phase7_trace_contract_remediation.py:1-94",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+            "openspec/specs/graph-structures/spec.md:1-118",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+            "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+          ],
+          "previous_missing_evidence": "Prueba negativa descriptivo-sin-printf para todos los paths emisores, captura de salidas C alcanzadas y prefijos exactos avanzar/retroceder/reiniciar.",
+          "previous_evidence_refs": [
+            "app/services/execution_trace_service.py:1469-1484",
+            "tests/test_phase7_trace_contract_remediation.py:58-65",
+            "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+            "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+            "openspec/specs/graph-structures/spec.md:48-54",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Mappingno-printf→consolavacía/técnicohistorial yprefijos avanzar/retroceder/reiniciar para todoslosemisores. CierresSorting/Hash4 son evidencia local, no todaapp."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "app/services/execution_trace_service.py:1469-1484",
+        "tests/test_phase7_trace_contract_remediation.py:58-65",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:5-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-3",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:9-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:7-13",
+        "openspec/specs/graph-structures/spec.md:48-54",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25"
+      ],
+      "evidence_refs": [
+        "app/services/execution_trace_service.py:1-1720",
+        "tests/test_phase7_trace_contract_remediation.py:1-94",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-correction-decision.md:1-31",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-expanded-fidelity/README.md:1-8",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-numeric-contract-decision.md:1-38",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-dijkstra-history-caller-low/README.md:1-13",
+        "openspec/specs/graph-structures/spec.md:1-118",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25"
+      ],
+      "new_evidence_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-consolidated-closure-decision.md:7-35",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-closure-decision.md:7-25",
+        "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-closure-decision.md:7-27",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-finite-closure-decision-low.md:7-19",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-closure-decision-low.md:3-13",
+        "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-checkpoint-medium.md:7-23"
+      ],
+      "previous_status": "PARTIAL",
+      "concurrent_change_impact": "Dispatch dedicado Hashremove leído; fallback genérico persiste. Sinprueba nueva no cambiaPARTIAL; véase snapshot-impact-20261003.md.",
+      "auditor_latest_delta": "Latest Graphvertex/caller/no-printf andnumerichelper consoleevent prefixes now explicit. Wholeapp emitters still need exact mapping; technicalmessages remain nonC, no globaladmission from newcaller.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "Sortingdocumenta consola sinprintf yHashqueries salida inicializada/indeterminada C/caller/DOM sinconsolafutura. Genericfallback previo no demuestra totalidad; falta procedenciacausal/no-printf en todaslasrutas.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    },
+    {
+      "id": "C1-REM-08",
+      "requirement": "Cierre verificable de los hallazgos QA",
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_source_line": 108,
+      "original_source_sha256": "a5fc25baad2f949a356418c71001656391262a9374ea5899ae7c067974f0dd20",
+      "original_text": "### Requirement: Cierre verificable de los hallazgos QA\nCada uno de los 29 `case_id` publicados MUST conservar su fixture mínimo, prueba de regresión y\nevidencia antes/después; un caso sólo puede cerrarse cuando la divergencia desaparece sin eliminar\no debilitar el oráculo.\n\n#### Scenario: cierre de un hallazgo\n- **GIVEN** un hallazgo del backlog P0, P1 o P2\n- **WHEN** se propone marcarlo como corregido\n- **THEN** su regresión pasa en la capa afectada y en integración\n- **AND** C17, sanitizers y reproducción UI no muestran una divergencia equivalente",
+      "canonical_capability": "openspec/specs/didactic-conformance-remediation/spec.md",
+      "requirement_present_in_canonical": false,
+      "status": "PARTIAL_CURRENT_NOT_ADMITTED",
+      "observed": "Retain29originalfixture/regression/baseline oracles; current finiteproof union is not29closed automatically. Sanitizer limitation literal and fixedpendinggate historical precedence need explicit ownermapping, not reopenall.",
+      "scenarios": [
+        {
+          "name": "cierre de un hallazgo",
+          "text": "#### Scenario: cierre de un hallazgo\n- **GIVEN** un hallazgo del backlog P0, P1 o P2\n- **WHEN** se propone marcarlo como corregido\n- **THEN** su regresión pasa en la capa afectada y en integración\n- **AND** C17, sanitizers y reproducción UI no muestran una divergencia equivalente",
+          "status": "PENDING_FULL_REQUIREMENT_RECONCILIATION",
+          "missing_evidence": "Falta correspondencia29 IDs originales→fixture/oráculo/regresión antes/después/capa/integración/C17/UI; sanitizers siguen limitación literal. Estados históricos closed/fixed_pending_gate requieren precedencia explícita, no reapertura masiva.",
+          "evidence_refs": [
+            "docs/qa/remediation-closure-report-v1.json:1-36",
+            "docs/qa/remediation-regression-matrix-v1.json:1-355",
+            "docs/qa/remediation-gates.md:1-18",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+            "docs/qa/comprehensive-app-quality-results-v1.json:1-18",
+            "docs/qa/remediation-gates.md:1-18",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265"
+          ],
+          "previous_missing_evidence": "Mapping29IDs a fixture/prueba/oráculo antes/después y resultados capa+integración+C17/sanitizers/UI en versión pertinente; resolver estados históricos sin borrar evidencias.",
+          "previous_evidence_refs": [
+            "docs/qa/remediation-closure-report-v1.json:5-9",
+            "docs/qa/remediation-regression-matrix-v1.json:7-26",
+            "docs/qa/remediation-gates.md:7-17",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+            "docs/qa/comprehensive-app-quality-results-v1.json:8-16",
+            "docs/qa/remediation-gates.md:7-17",
+            "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:17-20"
+          ],
+          "previous_snapshot_20261003": {
+            "status": "PENDING_NOT_ADMITTED",
+            "missing_evidence": "Mapping29caseIDsfixtures/regresiones antesdespués e integraciónC17/sanitizers/UI pertinentes. Resolver precedencia29closed/fixed_pending_gate sin marcar29reabiertos ni contar nuevamente106IDs."
+          },
+          "current_mapping_refs": [
+            "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+          ],
+          "mapping_is_execution_proof": false
+        }
+      ],
+      "decision": "Sin admisión nueva: conservar texto y escenarios íntegros; gaps actuales por escenario. Cierres técnicos aceptados no se repiten.",
+      "admitted": false,
+      "previous_evidence_refs": [
+        "docs/qa/remediation-closure-report-v1.json:5-9",
+        "docs/qa/remediation-regression-matrix-v1.json:7-26",
+        "docs/qa/remediation-gates.md:7-17",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:12-21",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:20-25",
+        "docs/qa/comprehensive-app-quality-results-v1.json:8-16",
+        "docs/qa/remediation-gates.md:7-17",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:17-20"
+      ],
+      "evidence_refs": [
+        "docs/qa/remediation-closure-report-v1.json:1-36",
+        "docs/qa/remediation-regression-matrix-v1.json:1-355",
+        "docs/qa/remediation-gates.md:1-18",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265",
+        "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md:1-25",
+        "docs/qa/comprehensive-app-quality-results-v1.json:1-18",
+        "docs/qa/remediation-gates.md:1-18",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md:1-265"
+      ],
+      "new_evidence_refs": [],
+      "previous_status": "NOT_DEMONSTRATED",
+      "auditor_latest_delta": "Retain29originalfixture/regression/baseline oracles; current finiteproof union is not29closed automatically. Sanitizer limitation literal and fixedpendinggate historical precedence need explicit ownermapping, not reopenall.",
+      "latest_evidence_candidates": [
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block1-checkpoint-medium.md",
+          "sha256": "d85231cc83309b5aa1d3dfd8d3184123d8f86adf320bfd7b733462bf94eccc06"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block2-checkpoint-medium.md",
+          "sha256": "fca258f60bfd91fe47a296cdf19acc0ba6be747652825d6539932e13d3932155"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-three-adjustments-block3-checkpoint-medium.md",
+          "sha256": "c882042db995918d290385923b2a8ad83b81372dc23c3ce124042f755eb0dcf6"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-main-incident-caller-checkpoint-medium.md",
+          "sha256": "2e402501be968c6bf341d33c11ee9ba18a7cf49334e9f7c100cb78ce2ed41a80"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\graph-incident-preview-and-criteria-checkpoint-low.md",
+          "sha256": "ae022874239a98c45766e1f1c7603f0b9999bfc7822aa62d9395a8976a211e2c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-query-instructions-checkpoint-medium.md",
+          "sha256": "62ca6b724116b0bf7a721c3fc53f65b3168c47472d595fa023664ea2946fac90"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-remove-instructions-checkpoint-medium.md",
+          "sha256": "6a67111e15e7a43252dcc1df1ae2e8846176a8f483c8a014ff4a46b8b7d40535"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-listings-instructions-checkpoint-medium.md",
+          "sha256": "bfe41ff9e755b586f3c8e1ddd979b9bf4cb4300097c881846216511e1e32b566"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-stats-instructions-checkpoint-medium.md",
+          "sha256": "581dc13d222f9588d5d00a272f23787034b14fd461c0d8d2e2a5929a8ac7407c"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\hash-clear-destroy-instructions-checkpoint-medium.md",
+          "sha256": "deee7824a01fd38bab54d5010995f0e47c5f337dd7c6f41628a4ec2c1e36dfea"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\red-black-full-validation-consolidation-checkpoint-low.md",
+          "sha256": "aaf5009c38a14bdb7282d2114d487118e856e3925f17d225dc61901b85428f6d"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-counting-expanded-integration-checkpoint.md",
+          "sha256": "ddba2fc5b16553e210819429f4eca29b8f703d54c4bff86ae984e8a08fb0f531"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\sorting-radix-consolidated-closure-decision.md",
+          "sha256": "ceceaeb20b03d3d2f4861e89d73090384ee80c9e684383f5e7c683697d28f577"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\queue-front-final-consolidation-checkpoint-low.md",
+          "sha256": "015b73c3ca4b2ee7d0e3ffc1f8d49acf28db73ad24767e7c1e8ff15f927a8308"
+        },
+        {
+          "file": "openspec\\changes\\audit-local-quality-and-unified-controls\\stack-cima-consolidation-checkpoint-low.md",
+          "sha256": "1a92bd289efe0d2193d298c98f4ef30cb778e7f5fe8bed2114711c83126a5da9"
+        }
+      ],
+      "admission_by_auditor": false,
+      "owner_action": "Read full requirement/scenarios, bind actual accepted evidence to each; preserve prior frozen report. Admit only complete obligation with remaining quantifiers/limits justified; otherwise current precise gap.",
+      "previous_observed_20261003": "106Hash y59Count/60Bin/48Radix no equivalen29IDsremediation. SupersesiónlegacyHash200→400 yRadixbudget documentadas conservanID yoriginales, no excusan gates sanitizerfaltantes.",
+      "current_mapping_refs": [
+        "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-final-bounded-checkpoint-low.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/aggregate-correspondence-final-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/rendered-control-correspondence-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criterion16-diff-requirement-regression-register.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/minimal-missing-proof-selection-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-canonical-correspondence-low/criteria-final-bounded-checkpoint.json"
+      ]
+    }
+  ],
+  "previous_matrix": "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261003.json",
+  "instruction": "openspec/changes/reconcile-remaining-historical-contracts/instruction-20261004.md",
+  "revision": "current-evidence-query-history-20261004",
+  "new_evidence_summary": {
+    "scope": "Accepted finite closures and current mapping; no new functional test execution",
+    "current_checkpoint": "16/22 at frozen checkpoint; not elapsed time or live global status",
+    "Hash_remaining_exact": "No pending Hash family inferred from old snapshot; whole-contract mapping remains"
+  },
+  "snapshot_policy": {
+    "kind": "dated-per-source-documentary-snapshot",
+    "manifest": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-source-manifest-20261004.json",
+    "claims_live_total_freshness": false
+  }
+}

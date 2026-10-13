@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-avl-hint-five-expectations-independent-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T09:44:02.463270+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.avl-hint-five-expectations-quality",
+  "task": "avl-hint-five-expectations-and-prior-sorting-fixture-review",
+  "scope_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/avl-hint-package-review-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-joint-fused-fixtures-independent-qa-low-20261005.json",
+  "instruction": "Explicit coordinator: activate review binding only; sealed package/994 frozen inputs; no tests/repackage/product edits. QA owner own before/after; independent verdict pending.",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW independent"
+}

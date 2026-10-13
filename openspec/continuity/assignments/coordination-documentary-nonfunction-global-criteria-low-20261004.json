@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary-nonfunction-global-criteria-low-20261004",
+  "issued_at_utc": "2026-10-04T08:40:09.610511+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "documentation.symbols",
+  "task": "Review 34 file XML nonfunction declarations plus associated enums/structs/fields/macros; comments only as required, then assess all nine global acceptance criteria against current exact evidence and classify remaining decisions versus authorized tests",
+  "instruction": "Recibidos26/26contratos,DesapilarSHArecuperado,Heap20pass. Continúa revisión documental de34miembrosnofunción fuera del ledgerfuncional, dentro del alcance comentariosC/H aprobado. Incluye enums/structs/campos/macros existentes sólo en comentarios; no cambiar definiciones,layout,firmas oejecución. Usa evidenciaexistente y equivalenciatokens/preprocesado/objetos si haycomentarios;sinrepetirsuites. Al terminar prepara evaluación de cadauna delas9casillas globales con criterio,evidenciaactual,pendienteexacto y posibilidaddeaceptación. Necesitamos pasar devalidacionessímbolos a cierre decriterios, sinmarcarporconteo ni ampliar200vertices. Identifica cualquierlímitequeexijadecisiónfinalusuario vs pruebaautorizadapendiente. Únicoescritor/previewconservado.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/documentary-nonfunction-global-criteria-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary26-stack-heap-evidence-low-20261004.json"
+}

@@ -1,0 +1,9 @@
+# Hash H1: consultas get/contains, checkpoint MEDIUM
+
+`get` ausente responde HTTP400 según la spec vigente; `contains` ausente devuelve false con HTTP200. No cambian los resultados del kernel C. Las consultas no alteran el historial mutante. Un journal separado conserva las llamadas efectivamente ejecutadas, incluidas repeticiones y get ausente, para el caller descargado. Las entradas rechazadas antes de llamar al C no se incorporan. La recarga conserva caller y última traza; Reiniciar los elimina.
+
+`th_buscar` recibe `const TablaHash *`, clave int y `int *valor`. Sólo escribe la salida al encontrar una clave. El caller inicializa output; no imprime un valor ausente. `th_contiene` declara dummy_valor indeterminado y pasa su dirección; la traza conserva su máscara sin leerlo y retira ese almacenamiento al retornar. Los scopes de `th_contiene`, `th_buscar` y `th_indice` muestran tipos, alias de tabla, locales y retornos por instrucción. Un residuo C negativo se normaliza sólo si es menor que cero: -6 y -9 con capacidad3 producen cero sin esa escritura.
+
+Paso anterior/Siguiente y reabrir el modo restauran snapshots sin redispatch. Las cinco secciones muestran salida inicializada/indeterminada, scopes, memoria, código y costos. El C no imprime durante la consulta; los printf del caller son observaciones posteriores. El caller reproduce queries intercaladas con actualizaciones y limpia nodos/arreglo en éxito o fallo de reserva.
+
+Esto sustituye sólo la afirmación histórica de que el caller omite consultas de la guía de creación/inserción. No reabre ese bloque. La comprobación es finita: journal sin cuota propia y truncamiento del historial mutante pueden limitar retención; no se certifican sesiones arbitrarias, cadenas enormes, RSS/SLA ni OOM. Doxygen sin advertencias no constituye cierre documental global.

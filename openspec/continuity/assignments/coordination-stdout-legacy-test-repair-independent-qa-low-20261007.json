@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stdout-legacy-test-repair-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T02:24:35.205985+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-stdout-legacy-test-repair",
+  "operation": "qa.stdout-legacy-test-repair",
+  "task": "stdout-legacy-test-repair-independent-qa",
+  "instruction": "Parent01a0fe61 explicitly requests independentQA binding for exacttwo-test-file16PASSstdout/legacyrepair. Distinctreviewer verifies frozenbefore/afterSHA/diffs/exactCprintf/no-mutation, ASTabsolute/relative/package/submodule/BOM controls and16JUnitIDs, hard2GiB120sfreshbeforeworker evidence,251runtimeunchanged. Read-onlyruntime/testfiles; ownQAevidence/tracker only. No Sorting,C/product changes, publication/native/browser/longruns, globalCIclosure. Author technicalpointer remains latestGraphcodec/lifetime/supportoperation.",
+  "scope_ref": "openspec/changes/review-stdout-legacy-test-repair/review-scope.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-cima-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T22:29:06.554296+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack.cima-finite-consolidation-low",
+  "task": "Consolidate finite private stack Cima core excluding public API UI and propose coherent queue Front Final LOW baseline",
+  "instruction": "# Pila Cima — consolidación LOW autorizada\n\nNueva instrucción del coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: verificar120manifest/currenthash,6callerinputsbytesigual,73IDsbaseline25/48conservado,16privatequeries48events16conditionsreadonly,400zeroCsteps/POSTGETexec0/nojournal/APIUIunexposed. Cerrar sólo núcleoprivado/C/Python/adapter ytrazaprivada conexclusiónAPIUI expresa. Si válido map10→9porpila_cimaúnicamente. Preparar siguienteLOWColaFrenteFinal gruposólosicoherente, IDs/source/conditions por método independientes, sin exposición. Sinproducto/retestsclosed/Graph/SDDblocked/publicación.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-cima-finite-review-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-stack-cima-instructions-medium-20261003.json"
+}

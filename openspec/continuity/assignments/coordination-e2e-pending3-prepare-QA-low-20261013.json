@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-e2e-pending3-prepare-QA-low-20261013",
+  "issued_at_utc": "2026-10-13T02:51:09.459033+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.github-vps-qualified-delivery",
+  "task": "github-vps-qualified-delivery",
+  "instruction": "Prepare exact minimal3case test/workflow diff and staticchecks for INDEPENDENT QA BEFORE publication/CI. Sorting keep10algorithms/data5,-3,0,2,1/manual/zeroaxis/bars/scopes; frame-real displayoracle. GraphAPI prepare same4v4e verified session/order/weights/direction/history/count; ALL manualBFS/Dijkstra/Prim steps unchanged. JPEG same8v11e API setup withlastmutation realUI and allscroll/dimension/format/sizeassertions. Document omittedUIsetup and JSexport notbutton/pixelcertification. Only3originalIDs;3jobs20/40/20,maxparallel2/max80runner-min/no retry. Dedicatedbranch,no main/merge/VPS/productalgorithm changes. ConditionalONECI alreadyapproved afterindependentQAconforme; thisturnpreparepatchonly.",
+  "user_message": "Sentinel_2b68825af044819198404c793dcc5696",
+  "user_time_UTC": "2026-10-13 02:49 UTC",
+  "verbatim_user_authorization": "Si... Lo autoriz\u00f3",
+  "approved_question": "Esto reduce la preparaci\u00f3n lenta, pero no demostrar\u00eda los clics de construcci\u00f3n que se sustituyen por API. El test JPEG tampoco comprueba el bot\u00f3n de descarga ni compara p\u00edxeles. \u00bfAutorizas preparar y revisar el cambio y luego ejecutar una sola vez esos3casos, con l\u00edmites20,40,20 minutos,sin reintentos? Rama de pruebas,sin cambiar main niVPS.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-e2e-pending3-prepare-QA-low-20261013/authorization.json"
+}

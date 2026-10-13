@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-heapsort80-saved-response-browser-independent-qa-low-20261006",
+  "issued_at_utc": "2026-10-06T02:54:34.636183+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.heapsort80-saved-response-browser-independent-quality",
+  "task": "heapsort80-saved-response-browser-independent-quality",
+  "instruction": "Independent read-only offline QA of saved HeapSort80 current UI browser evidence. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f, Sol LOW. Read root/openSpec AGENTS, project, continuity README, assignment, scope and bindings; exact before/after IDs. No browser, tests, app import, HTTP, native harness, profile, benchmark, product modifications or preview5051. Review 250 UI source hashes, saved response integrity, existing scripts/JSON/screenshots and finite claims. Preserve original completed=false selector failure and separate lightweight navigation context: do not certify leaving same large-response page. Play/pause/distant seek use runtime audit hook; visible next/previous/toggle/method controls are actual clicks. Fourteen observations are seven indices in both directions, not exhaustive9879. Local1.474372s includes transfer/parse/player/render, not pure rendering or backend preparation. Retained response step_by_step served to UI fast request, no fresh fast execution. No universal usability, memory/persistence/fidelity or globalclosure. Sorting timing informative without15SLA; Graph pending unchanged. Write ONLY own evidence/heapsort80-saved-response-browser-independent-review and heapsort80-saved-browser-review-tracker.md; do not edit source author evidence, bindings/index/tasks or previous QA outputs. Verdict accept/retain/reject with explicit limitations.",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-criterion18-three-layer-native-operational-independent-qa-low-20261006.json"
+}

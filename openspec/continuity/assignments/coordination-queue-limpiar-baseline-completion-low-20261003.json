@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-limpiar-baseline-completion-low-20261003",
+  "issued_at_utc": "2026-10-03T05:32:49.162712+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.limpiar-baseline-completion-low",
+  "task": "Complete bounded LOW Cola limpiar browser/reload, actual caller, resources and MEDIUM plan",
+  "instruction": "Completa LOWbaselineCola.limpiar acotado:pendientesbrowser/reload,callerreal yrecursosinstrumentados,conservando9Ccalls92events7regresionesrojas. No corregirproductoantesdelimitarMEDIUM,no repetirPila.limpiar/Hash/Sorting cerrados. Reutiliza evidencia/callers vigentessi hashescoinciden; diferenciapruebasQA vsproducto. EntregacheckpointcompletoyplanMEDIUMcongapsconcretos. C/H/contratos/nopublicar.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-limpiar-baseline-completion-plan-low.md"
+}

@@ -1,0 +1,14 @@
+{
+  "UTC": "2026-10-05T09:44:02.463270+00:00",
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-avl-hint-five-expectations-group-low/avl-hint-five-expectations-grouped-QA.zip",
+  "package_sha256": "9c84617137bfd5c6d5f3c93d11fca6415973089b401a3636c5e5eb12501e4e7f",
+  "package_bytes": 1306490,
+  "package_entries": 64,
+  "data_entries_sha_verified": 63,
+  "freeze": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-avl-hint-five-expectations-group-low/new-product-freeze.json",
+  "freeze_sha256": "2767bcd94ecd93e1fcc6334de699e701d6cf3936746ba7b360e234abc2b96cf7",
+  "inputs_verified": 994,
+  "current_coverage_measured": false,
+  "historical_coverage_only": 42.7884615
+}

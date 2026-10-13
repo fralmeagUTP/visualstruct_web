@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-query-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T00:32:48.766469+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.get-contains-instructions-medium",
+  "task": "Bounded Hash query fidelity/API error/replay/caller ownership MEDIUM",
+  "instruction": "MEDIUM autorizado get/contains: corregirHTTPausente400,normresiduo0,scopes/alias/types/output; C/API/UI/callerownership/replay. Preservar24resultados/3regresiones/98IDs/createinsert cerrado/C_H/11Sorting,H1. Noexpandirsemántica/RN/Grafos/publicación;checkpointantesLOW.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-query-instructions-plan-medium.md"
+}

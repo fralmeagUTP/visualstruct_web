@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-binsort-consolidated-review-low-20261002",
+  "issued_at_utc": "2026-10-02T21:25:51.045395+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.binsort-expanded-fidelity",
+  "task": "LOW consolidated Binsort scope/representation/evidence review",
+  "instruction": "Consolida Binsort en LOW a partir de sorting-binsort-instructions-checkpoint-medium.md y la evidencia existente. Verifica alcance real de entradas aceptadas y rutas de error, límites de memoria/representación, IDs únicos y hashes actuales; no confundas pruebas de muestras con fidelidad general ni introduzcas recortes a fixtures. Aclara qué fallos fueron simulados y qué plataformas se comprobaron. No repitas suites cerradas salvo cambios o una razón concreta. Si la evidencia permite el cierre, registra su alcance y actualiza el progreso a 10/11; si quedan brechas, delimítalas sin declarar cierre. Comprueba que la vista local5051 contiene las correcciones y conserva C/H y los nueve cierres. Después de un cierre justificado, prepara e inicia el baseline LOW de Radix dentro del alcance aprobado y avisa del cierre de Binsort antes de continuar. No push, merge ni despliegue.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-review-authorized-low.md"
+}

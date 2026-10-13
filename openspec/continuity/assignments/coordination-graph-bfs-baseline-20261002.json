@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bfs-baseline-20261002",
+  "issued_at_utc": "2026-10-02T05:53:30.007799+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.bfs",
+  "task": "LOW: inventario seis algoritmos; baseline nativo BFS y documentación/descargas/historial; preparar MEDIUM acotado si corresponde",
+  "instruction": "Delegación vigente: continúa LOW con Grafos, registra asignación/operación antes de actuar; baseline BFS vacío/desconectado/ciclos/negativos/repetición, fix -1 ya implementado; no reabrir árboles; Hash y Validar RN pendientes. Sin push/merge/despliegue.",
+  "provenance": "Registro de la instrucción explícita de coordinación recibida; conserva asignaciones previas, no infiere aprobación de otros contratos.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md"
+}

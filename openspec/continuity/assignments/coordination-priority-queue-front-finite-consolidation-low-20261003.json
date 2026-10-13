@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-front-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T21:53:04.634587+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.frente-finite-consolidation-low",
+  "task": "Consolidate finite priority Front evidence in LOW and propose next pending baseline",
+  "instruction": "# Frente Prioridad â€” consolidaciÃ³n LOW autorizada\n\nNueva instrucciÃ³n del coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: verificar125manifest/currenthash229protected4authorized2new,64IDsbaseline29/35 preservado,93obs39conditions,4C17mains9alloc/free0live9NULLDox0,querypersistGETnoredispatch yreadonly estructural. Reutilizar evidencia coninputs actuales sin rerun de bloques cerrados. Si vÃ¡lido cerrar casos finitos y actualizar mapa11â†’10 porcp_frente Ãºnicamente. Preparar prÃ³ximo baseline LOW PilaCima con C pÃºblico/adapter privado y rechazo pÃºblico actual; no registrar operaciÃ³n UI/API ni cambiarproducto. NoGraph/SDD/publicaciÃ³n.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-front-finite-review-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-front-instructions-medium-20261003.json"
+}

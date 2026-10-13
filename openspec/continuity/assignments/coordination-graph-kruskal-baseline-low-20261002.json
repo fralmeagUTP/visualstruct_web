@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-kruskal-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T10:35:05.943483+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.kruskal",
+  "task": "LOW independent Kruskal native/backend/caller/history/ownership/documentation and global documentation inventory",
+  "instruction": "Continue LOW graph.kruskal connected/disconnected/ties/negative/symmetric/safe limits; C17 history ownership docs; update global documentary inventory with evidence. Only unambiguous generation/history fixes, no numerical/decimal contracts, no closed-family reruns. D:5051 no push/merge/deploy.",
+  "provenance": "Explicit new coordination instruction supersedes Prim assignment; prior records preserved.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-kruskal-baseline-plan.md"
+}

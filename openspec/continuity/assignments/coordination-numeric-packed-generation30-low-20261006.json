@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-numeric-packed-generation30-low-20261006",
+  "issued_at_utc": "2026-10-06T11:49:19.643144+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.numeric-private-packed-generation",
+  "task": "numeric-private-packed-generation",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd afterQA1994 accepts packed interner authorizes PRIVATE producer integration preserving sharedsemanticID and consistent root/event publication; measure ONE union machine/arena/index/validators/buffers on SAME20smallcases; exactallsteps/wire/errors/session/alias/repeatedstates. NoBF30/adoption/C/API/Git/preview/resourceincrease. Effective2GiB and mechanicalexactbefore0 BEFOREexecution. Max30min; fix only measuredcause ifbudgetfails; noarchitecturalexploration. Serializerexisting; noHTTPstreaming.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/numeric-packed-generation30-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-numeric-packed-interner30-low-20261006.json"
+}

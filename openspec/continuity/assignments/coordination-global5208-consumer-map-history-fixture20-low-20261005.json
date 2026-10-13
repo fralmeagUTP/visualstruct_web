@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-global5208-consumer-map-history-fixture20-low-20261005",
+  "issued_at_utc": "2026-10-05T13:28:40.062384+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "global5208-consumer-map-history-fixture-readonly-repair20",
+  "instruction": "Bloque m\u00e1ximo20min lectura/mapa finito5208missing y reparaci\u00f3n s\u00f3lofixture historial si evidencia demuestra error. Conservar contratos aprobados eventos/replay/datos; no producto/denominador/exclusiones ni BFSestructural. Entregar consumidores/requisitos/gruposfactibles/costes, distinguir decisiones reales de falta evidencia; sin campa\u00f1a abierta.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/global5208-consumer-map-history-fixture20-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-global-consumer-group-plan-execution30-low-20261005.json"
+}

@@ -1,0 +1,40 @@
+{
+  "activation": "REGISTERED byexplicitcoordinator; reviewer ownbefore required",
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.graph-fused-intern-adoption-quality",
+  "task": "isolated-fused-intern-adoption-review",
+  "assignment_id": "coordination-graph-fused-intern-adoption-independent-qa-low-20261005",
+  "assignment_source": "openspec/continuity/assignments/coordination-graph-fused-intern-adoption-independent-qa-low-20261005.json",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "author": "/root",
+  "quality_role": "LOW independent",
+  "scope_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/design.md",
+  "allowed_paths": [
+    "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/independent-review"
+  ],
+  "protected": [
+    "app",
+    "tests",
+    "docs",
+    "static",
+    "templates",
+    "scripts",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/review-graph-bfs-revision-cache-partial-quality"
+  ],
+  "baseline_freeze": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/candidate-freeze.json",
+  "baseline_freeze_sha256": "906a0e608d289bc25f8c652e49e8db664075d2e5cb29548e551c4dcb2b14da84",
+  "candidate_source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-fused-intern-isolated-low/snapshot_pool_candidate.py",
+  "candidate_source_sha256": "a560ffadf1922ca8c6df7a106447a101b48a8510c930767ff5bf98934f152b8f",
+  "candidate_package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-fused-intern-isolated-low/isolated-candidate-package.zip",
+  "candidate_package_sha256": "e778a54a738947ffcf515f60b96afa510e3bca0899108bc1d6766b47fd6a078d",
+  "evidence_binding": "openspec/changes/review-graph-fused-intern-adoption-quality/evidence-binding.json",
+  "candidate_integrated": false,
+  "benchmark_repeat_authorized": false,
+  "coverage_execution_authorized": false,
+  "fixture_changes_authorized": false,
+  "adoption_recommendation_only": true,
+  "gate5s_passed": false
+}

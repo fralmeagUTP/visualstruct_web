@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bfs-closure-low-20261002",
+  "issued_at_utc": "2026-10-02T06:38:36.114033+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.bfs",
+  "task": "LOW: recoger99991, consolidar documentación/caller/evidencia y preview propio; cerrar únicamente BFS probado y preparar asignación DFS",
+  "instruction": "Asignación explícita graph.bfs LOW: recoger sesión99991 sin duplicar, verificar caso8/final; consolidar documentación/caller/evidencia D:, actualizar solo preview propio y comprobar backend. Guardas before/after, cierre BFS solo probado. Después preparar DFS mediante nueva asignación, sin reabrir árboles/listas ni alterar Hash/RNValidar. Sin push/merge/despliegue.",
+  "provenance": "Registro de la instrucción explícita de coordinación recibida; conserva asignaciones previas, no infiere aprobación de otros contratos.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md"
+}

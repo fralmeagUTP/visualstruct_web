@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rn-full-validator-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T15:09:05.589399+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "red-black.validate-full-baseline-low",
+  "task": "Baseline full RN validator against approved V3 native invariants before scoped implementation, preserve previous finite method closures",
+  "instruction": "RNpriorityconfirmed porusuario:valida todasreglasRN incluyendoheightnegra/enlaces. V3contratoSDDaprobado5reglas+ABBnoduplicados/padres/ciclos/sharedlive;int rbt_validar(RBT raiz). ExcepciónC/HsóloRNvalidador/backend/traza/main/tests/docs. Primero checkpointencolarterminado;baselinenegativospositivos yplanimplementación. Rotacionesmapeoreal, no asumirdefectosnideterminar8casosporplantilla, preservealgos/cierres;noGraph/no publish. ModeloLOWpor defecto, MEDIUMacotado sihacefalta.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/red-black-full-validation-baseline-plan-low.md"
+}

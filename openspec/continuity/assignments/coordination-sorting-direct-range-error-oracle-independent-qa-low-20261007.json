@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-direct-range-error-oracle-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T05:13:54.031535+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sorting-direct-range-error-oracle",
+  "operation": "qa.sorting-direct-range-error-oracle",
+  "task": "sorting-direct-range-error-oracle-independent-qa",
+  "instruction": "Independent focal review onefile/onefunction/twoIDs direct SortingInterpreter rangerejection oracle. CurrentCguard beforecalloc,1000000cap,ASCII message, fail-on-allocation sentinel and unchangedinput/state. Source14IDs including sharedadapter rejection function unmodified. No Sortingalgorithm/product/sourcecontract/SLA/E2Echanges. Initial binding before author edits; final manifest tofollow. Reviewer independent, noauthorverdict.",
+  "scope_ref": "openspec/changes/review-sorting-direct-range-error-oracle/review-scope.md"
+}

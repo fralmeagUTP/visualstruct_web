@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra-retention-dijkstra30-one180-low-20261006",
+  "issued_at_utc": "2026-10-06T08:29:54.155716+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dijkstra-retention-dijkstra30-one180-observed",
+  "task": "dijkstra-retention-dijkstra30-one180-observed",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd after focal QA acceptance974/20cases7267steps authorizes ONE Dijkstra30 exactretentioncandidate, effective2GiB BEFOREimports and experimentalrequest180s. Exactcurrentbeforeexit0 mechanically required beforejob/process; any rejection aborts. Directed1..30/29unitarcs start1 end30. Preparation outside request timer; processcap360. No retry/adoption/otherlarge/product/Git/preview. Verify complete response ifexists rawhash/fullprotocoltypes/order/allsteps/Cevents/ownership/frees/session/observedmemory, saveUIartifact; nofreshnativeperinstructionoracle orbrowser. Preserve prior late81.597s NONCOMPLIANCE; correct oldnegative exit to2 via additive record without rewriting974hash inputs. Global20of22 open; pureC timing distinct/noHTTP15SLA.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dijkstra-retention-dijkstra30-one180-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-numeric-packing-json-retention30-low-20261006.json"
+}

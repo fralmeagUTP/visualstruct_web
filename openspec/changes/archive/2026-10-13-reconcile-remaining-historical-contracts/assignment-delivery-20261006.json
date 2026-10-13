@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-audit-partial-delivery-documentary-low-20261006",
+  "issued_at_utc": "2026-10-06T04:08:29.173854+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "owner": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "writer_thread_id": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "change": "reconcile-remaining-historical-contracts",
+  "operation": "c1.remaining-documentary",
+  "task": "c1-documentary",
+  "instruction": "Delegación vigente coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: usuario pide continuar hasta terminar; apoyo documental únicamente a entrega auditoría, máximo20min. Auditor01a0fc18-c146-7460-b83f-47a215e630cf único escritor funcional. Preparar un documento parcial propio con qué corregido/verificado/pendiente, apertura/comprobación local,límites y referencias actuales. No arnés/AISEF ni producto,C/H,tests,matrices/checklist/actas auditor/paquetes congelados; no suites,preview,publicación,Git,cierre ni cancelación. Criterio14cerrado;20/22 y11/12/16aceptados finitamente;83.1519%coverage;11Sorting/6Graph Ccasosprobados;Sorting sinSLA fijo,Graph ejecución pura separada. DFSMemoryError/cuatroGraphtimeouts en reparación;Heap80/UIguardada focalaceptados. No repetir evidencia técnica.",
+  "scope_ref": "openspec/changes/reconcile-remaining-historical-contracts/instruction-delivery-20261006.md"
+}

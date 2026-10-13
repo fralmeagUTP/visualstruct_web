@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sequential-final-logical-projection-low-20261007",
+  "issued_at_utc": "2026-10-07T04:16:12.024290+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sequential-final-logical-projection",
+  "task": "sequential-final-logical-projection",
+  "instruction": "Parent01a0fe61 authorizes independent shared already-proven3runtimefinalprojection defects among exactEcb90failureIDs: PQdequeue/PQfront/queueDequeue final Croot/local/output keys leak into public logical snapshot, PQdequeue emptyout_index inherited0 vsrequired-1. Minimal return-only C-derived projection and preserved physical memory/scopes/outputs/free history; no copyingfutureafter_state, no intermediate Cevent alteration. Original asserts/contracts kept; tiny bounded differential before/after and empty/multi/tie/readonly proof; independentQA before publication. Current4deliveryQAinputs frozen. No Sorting/C/algorithm/optimization/browser/newaudit/longsuite/publication.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sequential-final-logical-projection-low.md"
+}

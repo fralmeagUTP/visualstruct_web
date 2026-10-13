@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-joint-fused-fixtures-independent-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T07:31:21.482499+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.graph-fused-fixtures-joint-quality",
+  "task": "joint-fused-fixtures-expectations-current-C-review",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW independent",
+  "instruction": "Explicitcoordinator activatespreparedjointpackagereview forninedestinations/oracleportability/adoptionauthorization; documentation/read-onlyverdict only. No productintegration/no pytest/native/browser/benchmark/coverage/no threecoveragelections. Reviewerownbeforeafter; no newpackageifhashvalid. PreserveoldQAandhistory; recommendationnotcopyauthorization.",
+  "scope_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/joint-package-review-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-fused-intern-adoption-independent-qa-low-20261005.json"
+}

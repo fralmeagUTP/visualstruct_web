@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.numeric-packed-generation-independent-quality",
+  "task": "numeric-packed-generation-independent-quality",
+  "assignment_id": "coordination-numeric-packed-generation-qa-low-20261006",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-packed-generation-independent-review",
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-packed-generation-tracker.md"
+  ]
+}

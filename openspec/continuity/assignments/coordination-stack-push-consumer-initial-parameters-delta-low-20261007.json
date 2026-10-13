@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-push-consumer-initial-parameters-delta-low-20261007",
+  "issued_at_utc": "2026-10-07T20:23:05.989038+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.stack-push-legacy-memory-consumers",
+  "task": "stack-push-legacy-memory-consumers",
+  "instruction": "Parent authorizes only two QA-proved omissions in same Apilar test consumer lot: reject nonempty initial stack disappearing at entry, require initialized valid typed parameters in proper scope from entry; coordinated negatives, small focal verification and new independent QA delta binding. No engine/C/accepted lot changes, no publication or denied-action retry.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-push-consumer-initial-parameters-delta-decision.md"
+}

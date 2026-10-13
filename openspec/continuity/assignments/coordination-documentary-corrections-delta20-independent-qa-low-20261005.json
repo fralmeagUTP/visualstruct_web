@@ -1,0 +1,17 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary-corrections-delta20-independent-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T18:48:45.041193+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "change": "review-documentary-successors-and-criteria11-12-16-18-quality",
+  "operation": "audit.documentary-successors-criteria-quality",
+  "task": "documentary-successors-criteria11-12-16-18-independent-review",
+  "instruction": "# Revisión independiente del delta documental, máximo20min LOW\n\nOwner/writer QA01a0ff54-79d7-7520-8e9f-224ef5ed700f. Misma operación audit.documentary-successors-criteria-quality y task documentary-successors-criteria11-12-16-18-independent-review. Asignación sucesora coordination-documentary-corrections-delta20-independent-qa-low-20261005; conserva la asignación anterior y dictamen evidence/independent-review/review.md. Límite20min desde el freshbefore propio del owner; no extender.\n\nSólo delta visible-QA-retained-criteria-correction25-low: registro16 56→58 y dos cadenas omitidas con autorización/beforeafter/diff/regresión existente;687 disposiciones de escenarios y sus límites de deriva compartida; disposición del oráculo Bellman supersedido y tres callers Kruskal; pertinencia de las ausencias concretas y de la incertidumbre residual1704. Revisar obligación/consumidor/fixture/asserts y razón de reutilización/NA, sin aceptar por IDs/SHA ni exigir2391ejecuciones. El report completo contiene material fuera de este scope: ignorar íntegramente su apartado BFS.\n\nPaquete documental: openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-QA-retained-criteria-correction25-low/documentary-corrections-review.zip SHA256560c7d9b6ed409c8eb7f8ad3a3e6c58ffcc80c25fae15394f88f26ff092949bb. Manifest y fuentes delimitados por evidence-binding.json. SHA/CRC del ZIP ya confirmado por QA; no repetirlo. No repetir verificaciones canónicas1000/1715/ZIPs, cadenas18/23, AST2604 o adopciones/23finite/40NA ya aceptadas. Se pueden consultar esos dictámenes como antecedentes; no reabrirlos.\n\nEXCLUIDOS: BFS, propuesta/mapas/prototipo/SID/HMAC/rendimiento y su QA; toda prueba, app import/runtime, C/native/browser, requests, cobertura, perfiles, benchmark, nueva variante, cambios producto o autor/paquetes/QA previa,5051/Git/deploy/adopción/cierres globales. No ejecutar scripts del paquete. Únicamente lectura documental/JSON/XML/AST necesaria para el delta no revisado; no campañas ni revalidaciones aceptadas.\n\nFreshbefore/after propios con asignación nueva obligatorios. Salidas exclusivas evidence/independent-review-delta20; review-tracker.md sólo append con enlace al dictamen delta, sin sustituir dictamen anterior ni su contenido. Emitir aceptar/retener/rechazar delta y límites; no certificar auditoría global. La coordinación de bindings y sus guardas NO es ejecución QA.\n",
+  "scope_ref": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary-successors-criteria-independent-qa-low-20261005.json",
+  "maximum_minutes": 20
+}

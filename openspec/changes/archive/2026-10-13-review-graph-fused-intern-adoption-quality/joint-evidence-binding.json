@@ -1,0 +1,169 @@
+{
+  "UTC": "2026-10-05T07:31:21.482499+00:00",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.graph-fused-fixtures-joint-quality",
+  "task": "joint-fused-fixtures-expectations-current-C-review",
+  "package_sha256": "b51d825938069cc2f96c10d064f3111d1b5ce9a74d0bfe66bd368ffbc95c55f2",
+  "sources": {
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/joint-fused-fixtures-current-C-review-package.zip": {
+      "sha256": "b51d825938069cc2f96c10d064f3111d1b5ce9a74d0bfe66bd368ffbc95c55f2",
+      "bytes": 5931201
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package-receipt.json": {
+      "sha256": "7d7fd1d63db686a207f91344d17b24d807fa37e507a6393aa0cb598cfa7c4f64",
+      "bytes": 810
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/sealed-manifest.json": {
+      "sha256": "4673d831fd01ab8027a7c85232d3cf50c693cda7a7ec26fc8c8fb73a6426a6a7",
+      "bytes": 9333
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/payload-and-history-manifest.json": {
+      "sha256": "f0215384dfd178ae3b1f2edf19f21538b29f2b4497c89a5bcc5117005b56b007",
+      "bytes": 8679
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/adoption-targets.json": {
+      "sha256": "97363cab5a7611fc16a719e56f5dd61ae2c784de36da2c80649b5f399775e4ad",
+      "bytes": 6436
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/graph-oracle-location-only.diff": {
+      "sha256": "59408898aedf0e7f979c3184ad1a05cf306a3caddac5b136f2adecf56e17a859",
+      "bytes": 667
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/README.md": {
+      "sha256": "13c0378572cba9e42d60abf4cf8f7148625b7b65e38f081ec0233f036f66e954",
+      "bytes": 9474
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/coverage-selection-plan.json": {
+      "sha256": "8d3927cac265e3555e012e8022c2422c94bf02e288dcf66ea3e58332ebd74b6f",
+      "bytes": 23942
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/candidate-freeze.json": {
+      "sha256": "906a0e608d289bc25f8c652e49e8db664075d2e5cb29548e551c4dcb2b14da84",
+      "bytes": 120432
+    },
+    "openspec/changes/review-graph-fused-intern-adoption-quality/review-binding.json": {
+      "sha256": "94ed348303cf4fbd460f268b7675270dc5f3f459a132a0510e88a4015646ec2a",
+      "bytes": 2288
+    },
+    "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/independent-review/review.md": {
+      "sha256": "e5a25831febd865cea344c5800634c5920dc9d786add52a67a04ca76c40f6ff6",
+      "bytes": 6982
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/app/domain/graph/snapshot_pool.py": {
+      "sha256": "a560ffadf1922ca8c6df7a106447a101b48a8510c930767ff5bf98934f152b8f",
+      "bytes": 8709
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/tests/fixtures/graph_snapshot_expanded/bellman_ford.json.gz": {
+      "sha256": "d88f364ce52fd786f9ed11e72dac23c059eb3467709b598e807cc63ec070de1a",
+      "bytes": 266583
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/tests/fixtures/graph_snapshot_expanded/bellman_cycle.json.gz": {
+      "sha256": "5f3458687e4344d1118b4fc15bc7b1394f40f54cc40b43c8cf6c25a323e42e70",
+      "bytes": 192390
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/tests/fixtures/graph_snapshot_expanded/prim.json.gz": {
+      "sha256": "32ec8d2736583cf94f29f427a5764bac0f66cb2b4565097306efda8753907f26",
+      "bytes": 332095
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/tests/fixtures/graph_snapshot_expanded/dijkstra.json.gz": {
+      "sha256": "4568b1e0b179a4e53c16d5a74ce9b6c8622188b96780a8444e92fa120da53b1a",
+      "bytes": 198944
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/tests/fixtures/graph_snapshot_expanded/kruskal.json.gz": {
+      "sha256": "14b35182502c3365be7b3bc4cff106093ea4b415cbf127afe50f17c1ee9aa589",
+      "bytes": 268933
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/tests/test_graph_domain_coverage_extended.py": {
+      "sha256": "fd6846e7663ed3d32f4f46a88701df4f34018785a1d59c230c86eedc9d355f49",
+      "bytes": 7197
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/tests/test_sorting_domain_coverage.py": {
+      "sha256": "f6810c8de3c73c8449881d3071eceea5a47f39e0130daa40170ac5d4b4819de7",
+      "bytes": 3578
+    },
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-joint-fused-fixtures-package-plan-low/package/proposed/tests/fixtures/current_c_domain_oracles/graph_993_mst.json": {
+      "sha256": "592487a5abfb3e73f7f8cd5f9701c8724c9fa79fd99f86dc357b66dc6ff94c59",
+      "bytes": 2432
+    }
+  },
+  "targets": [
+    {
+      "destination": "app/domain/graph/snapshot_pool.py",
+      "before_sha256": "d0ff8f7be064cd496edb2922b18ac0cdce9ebc6e72f7401de795179d863e5fe3",
+      "proposed_sha256": "a560ffadf1922ca8c6df7a106447a101b48a8510c930767ff5bf98934f152b8f",
+      "package_source": "proposed\\app\\domain\\graph\\snapshot_pool.py",
+      "source_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-fused-intern-isolated-low/snapshot_pool_candidate.py",
+      "status": "previousQApartialrecommendation-only; notadopted"
+    },
+    {
+      "destination": "tests/fixtures/graph_snapshot_expanded/bellman_ford.json.gz",
+      "before_sha256": "bb2879d4ceba86ee7f2ed54cc56fc930654a6c579355dc3cf310808c0cc39084",
+      "proposed_sha256": "d88f364ce52fd786f9ed11e72dac23c059eb3467709b598e807cc63ec070de1a",
+      "package_source": "proposed\\tests\\fixtures\\graph_snapshot_expanded\\bellman_ford.json.gz",
+      "source_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-staged-fixtures-initial-coverage20-low/stage/fixtures/graph_snapshot_expanded/bellman_ford.json.gz",
+      "status": "stage5literalPASS; jointQArequired"
+    },
+    {
+      "destination": "tests/fixtures/graph_snapshot_expanded/bellman_cycle.json.gz",
+      "before_sha256": "0990af4433b53cfeba7d43269e5f4c4571a11c2a094fb455311e54cf9a9d3950",
+      "proposed_sha256": "5f3458687e4344d1118b4fc15bc7b1394f40f54cc40b43c8cf6c25a323e42e70",
+      "package_source": "proposed\\tests\\fixtures\\graph_snapshot_expanded\\bellman_cycle.json.gz",
+      "source_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-staged-fixtures-initial-coverage20-low/stage/fixtures/graph_snapshot_expanded/bellman_cycle.json.gz",
+      "status": "stage5literalPASS; jointQArequired"
+    },
+    {
+      "destination": "tests/fixtures/graph_snapshot_expanded/prim.json.gz",
+      "before_sha256": "09623305d05527cbddaf3b50fe177433024494e18024b37f59e6dab113989568",
+      "proposed_sha256": "32ec8d2736583cf94f29f427a5764bac0f66cb2b4565097306efda8753907f26",
+      "package_source": "proposed\\tests\\fixtures\\graph_snapshot_expanded\\prim.json.gz",
+      "source_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-staged-fixtures-initial-coverage20-low/stage/fixtures/graph_snapshot_expanded/prim.json.gz",
+      "status": "stage5literalPASS; jointQArequired"
+    },
+    {
+      "destination": "tests/fixtures/graph_snapshot_expanded/dijkstra.json.gz",
+      "before_sha256": "a485a69d4e3aeb9100012ca4116c307c769ec243f47913aae76232c77ab53f0e",
+      "proposed_sha256": "4568b1e0b179a4e53c16d5a74ce9b6c8622188b96780a8444e92fa120da53b1a",
+      "package_source": "proposed\\tests\\fixtures\\graph_snapshot_expanded\\dijkstra.json.gz",
+      "source_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-staged-fixtures-initial-coverage20-low/stage/fixtures/graph_snapshot_expanded/dijkstra.json.gz",
+      "status": "stage5literalPASS; jointQArequired"
+    },
+    {
+      "destination": "tests/fixtures/graph_snapshot_expanded/kruskal.json.gz",
+      "before_sha256": "341b54aac63048fb7da2baee5ae9220d951a12b648193284e98f69db2689e018",
+      "proposed_sha256": "14b35182502c3365be7b3bc4cff106093ea4b415cbf127afe50f17c1ee9aa589",
+      "package_source": "proposed\\tests\\fixtures\\graph_snapshot_expanded\\kruskal.json.gz",
+      "source_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-staged-fixtures-initial-coverage20-low/stage/fixtures/graph_snapshot_expanded/kruskal.json.gz",
+      "status": "stage5literalPASS; jointQArequired"
+    },
+    {
+      "destination": "tests/test_graph_domain_coverage_extended.py",
+      "before_sha256": "253ed861bea8be2bfe49f7b4b60fede74d225ac2672661e6ef4690019481f03a",
+      "proposed_sha256": "fd6846e7663ed3d32f4f46a88701df4f34018785a1d59c230c86eedc9d355f49",
+      "package_source": "proposed\\tests\\test_graph_domain_coverage_extended.py",
+      "last_tested_sha256": "3ab696a90bc5e776e56cbf4ae9f2c8584915848c6c6a9dedb27a70b7487c8100",
+      "source_ref": "openspec\\changes\\audit-local-quality-and-unified-controls\\evidence\\visible-kruskal-raw-current-C-stage10-low\\stage\\test_graph_domain_coverage_extended.py",
+      "status": "graph:onlyoraclelocationadjustedUNEXECUTED; sorting:exactprevious4PASSrelevantcases",
+      "last_tested_in_joint_configuration": false
+    },
+    {
+      "destination": "tests/test_sorting_domain_coverage.py",
+      "before_sha256": "fbef7f220ba1e8b7bdb80e5d84efdedf146160ed71bb57612306573473ee1558",
+      "proposed_sha256": "f6810c8de3c73c8449881d3071eceea5a47f39e0130daa40170ac5d4b4819de7",
+      "package_source": "proposed\\tests\\test_sorting_domain_coverage.py",
+      "last_tested_sha256": "f6810c8de3c73c8449881d3071eceea5a47f39e0130daa40170ac5d4b4819de7",
+      "source_ref": "openspec\\changes\\audit-local-quality-and-unified-controls\\evidence\\visible-five-staged-expectations-api-coverage20-low\\stage\\test_sorting_domain_coverage.py",
+      "status": "exactprevious3PASSsortingcases; jointQArequired",
+      "last_tested_in_joint_configuration": false
+    },
+    {
+      "destination": "tests/fixtures/current_c_domain_oracles/graph_993_mst.json",
+      "before_sha256": null,
+      "requires_before_absent": true,
+      "proposed_sha256": "592487a5abfb3e73f7f8cd5f9701c8724c9fa79fd99f86dc357b66dc6ff94c59",
+      "package_source": "proposed\\tests\\fixtures\\current_c_domain_oracles\\graph_993_mst.json",
+      "source_ref": "openspec\\changes\\audit-local-quality-and-unified-controls\\evidence\\visible-kruskal-raw-current-C-stage10-low\\native-current\\report.json",
+      "status": "newdurabletestdata; C/Hrowsbyteboundcurrent; noappchange"
+    }
+  ],
+  "limits": "Documentation/runtimepath review only; no currentjointexecution claim; originalcoverage993 historical ifadoption later."
+}

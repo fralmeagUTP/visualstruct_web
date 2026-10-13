@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra-branches-dijkstra30-one180-low-20261006",
+  "issued_at_utc": "2026-10-06T07:42:39.950177+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dijkstra-branches-dijkstra30-one180-observed",
+  "task": "dijkstra-branches-dijkstra30-one180-observed",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd explicitlyauthorizesONE sameQAacceptedprivatebranchDijkstra30 directedchain1..30/29unit/start1/end30/request180experimentalNOTuserSLA,2GiBeffectivebeforeimports/allCstepspreserved. NOcandidate/sourceoptimization/retry/adoption/other30/Git/preview. Minimalphase/memoryobserver. Process360allowsprep+request+posttimerartifactsave, notextrarequest. Ifcomplete savewholeHTTPraw/SHA/reusableUI thenofflinealltrace/type/order/ownershipfreereturn/sessioncontract/nativeexistingoracle. Ifincomplete exactobservedpoint/resources notunsupporteddefectclaim. ConsolidatedQAbinding. UsercontinuetofinishandexplicitpureCvsvisualization distinction supportscope.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dijkstra-branches-dijkstra30-one180-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dijkstra180-evidence-reassessment5-low-20261006.json"
+}

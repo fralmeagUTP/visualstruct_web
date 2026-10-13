@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-encolar-medium-readiness-low-20261003",
+  "issued_at_utc": "2026-10-03T16:49:40.215150+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.encolar-medium-readiness-low",
+  "task": "Propose bounded enqueue MEDIUM correction against existing14fail baseline, without reexecution or product changes",
+  "instruction": "# Encolar readiness LOW, ajuste MEDIUM propuesto\n\nDelegación actualparent01a0fe61-3104-743a-b032-bcc289ad80cd despuésQA/cierreRNfinito:retomarplanMEDIUMEncolarbaseline14fallos sinrepetirbaseline. SóloverificarvigenciaC/H/artefactos/rutas yproponerbloque/checkpointacotado;NOimplementarEncolar enestaLOW. RNclosedfinite/otrasoperacionespreservadas. ActualCcola_encolar(structCola*q,intvalor)NodoCola*nro/sgte,void,guardqNULL/mallocNULL/FIFOvigentes. Propuesta nonewcontract/noC-H/noAPIflagfault/noendpointHTTPmain. AntesMEDIUM nuevainstrucción/asignación/before ySHAactualesD postRN;nocheckpointbaselineglobal223igual porque12RNcambioslegítimosse preservan.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-encolar-medium-readiness-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-rn-full-validator-finite-closure-low-20261003.json"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bellman-ford-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T09:53:55.080268+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.bellman-ford",
+  "task": "LOW independent Bellman-Ford native/backend/caller/documentation baseline; numeric decision held",
+  "instruction": "Inventory actual C/backend/caller contracts and native baseline with allowed negative weights, reachable/unreachable negative cycles, disconnected graphs, ties and safe integer limits. Observe shared numerical dependencies without choosing pending decimal contract. Verify history/download/documentation, preserve openDijkstra andclosedBFS/DFS, D:5051, no push/merge/deploy.",
+  "provenance": "Explicit coordination continuation while user decides Dijkstra integer/decimal contract.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-bellman-ford-baseline-plan.md"
+}

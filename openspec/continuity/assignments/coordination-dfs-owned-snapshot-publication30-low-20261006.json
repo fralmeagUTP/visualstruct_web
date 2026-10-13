@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dfs-owned-snapshot-publication30-low-20261006",
+  "issued_at_utc": "2026-10-06T04:30:47.268684+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dfs-owned-snapshot-publication-candidate",
+  "task": "dfs-owned-snapshot-publication-candidate",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes30min isolated DFS successor candidate: one owned publication per capturedsnapshot/reusepedagogy after measuredintern/copy bottleneck. Capture ALLactualpre/poststates and between-eventreturn/free/publishedchanges; nevercachemutableinput. Reuse finite equivalence tests/addonlysmallaffectedownership/alias/history/errorcases. No C/publicformat/canonicalmods/DFS30/Git/deploy/preview. Deliver full equivalenttrace/diff, measuredvisit/retentioncounts notlatencyinference and complete independentQA binding owner01a0ff54-79d7-7520-8e9f-224ef5ed700f beforeanotherDFS30/adoption. Stop if contractcannotpreserved.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dfs-owned-snapshot-publication30-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dfs30-candidate-phase-stack15-low-20261006.json"
+}

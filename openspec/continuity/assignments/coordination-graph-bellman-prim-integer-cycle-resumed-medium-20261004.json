@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bellman-prim-integer-cycle-resumed-medium-20261004",
+  "issued_at_utc": "2026-10-04T01:41:54.201832+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.bellman-prim-integer-cycle-approved-medium",
+  "task": "Implement approved Bellman-Ford/Prim C repairs and cycle API error; verify Dijkstra and Kruskal contracts without other C changes",
+  "instruction": "Aceptados los cinco cierres privados finitos con326IDs únicos,mapa5→0 sinAPIUI/global. Continúa ahora MEDIUM Grafos conforme al plan audit-next-sequence-after-priority-helpers-low.md y aprobaciones documentadas. Corrige Bellman-Ford y Prim acotadamente en C, sincroniza Python/trazas/API/callers/docs necesarios; conserva estructuras y firmas públicas, pesos enteros. API de ciclos HTTP400successfalse diagnóstico sin historial exitoso. Verifica Dijkstra con reglas C aprobadas y Kruskal en su contrato, sin ampliar C/H fuera de las funciones autorizadas. Si surge cambio adicional C no autorizado, informa y continúa independientes. Evidencia antes/después con casos extremos reproducidos, invariantes y coherencia visual/persistencia. Entrega hitos por algoritmo y checkpoint revisable, evita ocultar resultados hasta final. Único escritor, preview preservado, no nuevas ampliaciones AISEF/arnés.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/audit-next-sequence-after-priority-helpers-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-five-helpers-finite-consolidation-low-20261004.json",
+  "original_graph_authorization": "openspec/continuity/assignments/coordination-graph-bellman-prim-integer-cycle-approved-medium-20261004.json"
+}

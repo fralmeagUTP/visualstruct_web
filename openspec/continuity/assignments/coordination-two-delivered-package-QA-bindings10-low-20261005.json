@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-two-delivered-package-QA-bindings10-low-20261005",
+  "issued_at_utc": "2026-10-05T18:01:18.596915+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.package-review-binding-coordination",
+  "task": "two-delivered-package-QA-bindings10",
+  "instruction": "Coordinator01a0fe61 explicitly requests only independentreviewbindings for QA01a0ff54-79d7-7520-8e9f-224ef5ed700f, documentary11/12/16/18package and isolatedBFSprototype package. Exactpaths/IDs and existingevidence explanationrepresentation/10.52%improvement.10min, no newvariant/BFSrequest/measurement/profiling/product; canonicalandpackagesimmutable.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/two-delivered-packages-QA-bindings10-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-BFS-structural-isolated-prototype45-low-20261005.json"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-limpiar-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T07:02:58.459247+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.limpiar-instructions-medium",
+  "task": "Repair bounded priority cleanup instruction fidelity reload and actual caller",
+  "instruction": "Continúa MEDIUM Prioridad.limpiar propuesto: 10 fallos22IDs(16original+6newdisjoint),scopes alias identity postfree returns/reloadtrace/mainNULLfalsesuccess/Doxmains. RespetaC/H yfinitecontrato,bothviews,replayreload no redispatch,callerrealownership diagnostics nonzero onNULL. Verifica9C153events41conditions32observaciones yresourcesmeasured without unboundedclaims. Preserva219protectedHashSortingPilaCola closures. CheckpointbeforeLOW,no contract ADDED/publish.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-limpiar-instructions-plan-medium.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-avl-abb20-current25-low-20261005",
+  "issued_at_utc": "2026-10-05T14:58:47.866509+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "avl-abb20-current25",
+  "instruction": "# AVL/ABB20 consumidores actuales LOW\n\nInstrucci\u00f3n vigente coordinaci\u00f3n01a0fe61-3104-743a-b032-bcc289ad80cd: ejecutar selecci\u00f3n focal propuesta20IDs AVL/ABB, m\u00e1ximo25min, evidencia nativa congruente/contratos/fuentes/denominador preservados. Entregar resultados, cobertura compatible y d\u00e9ficit83 diferenciando nuevosIDs/reejecuciones; paquete \u00fanico de procedencia para revisi\u00f3n independiente sin repetir campa\u00f1as. BFS estructural pendiente usuario.\n\nOperaci\u00f3n audit.canonical-correspondence abierta. Fuente selecci\u00f3n previa visible-rbt-query-clear20-current-low/next-proposed20-not-executed.json: AVLlimpiar5,AVLinorden5,ABBhojas5,ABBaltura5; veinteIDs disjuntos367previos, regresiones existentes no cambios/reapertura implementaci\u00f3n cerrada. Guardasbefore/after; nativefixtures actuales s\u00f3loscope20, producto reconstruido bajo cobertura, asserts originales sin cambio. app186/24154/4exclusiones y1000inputs congelados. Ning\u00fan C/H/contrato/producto/tests/Git/deploy/browser/preview5051.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/avl-abb20-current25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-rbt-query-clear20-current25-low-20261005.json"
+}

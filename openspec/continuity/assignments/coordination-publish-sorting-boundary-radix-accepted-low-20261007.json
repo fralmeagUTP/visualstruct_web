@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-sorting-boundary-radix-accepted-low-20261007",
+  "issued_at_utc": "2026-10-07T17:36:09.851027+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-sorting-boundary-radix-accepted",
+  "task": "publish-sorting-boundary-radix-accepted",
+  "instruction": "Parent explicitly authorizes publication of the independently accepted Sorting boundary/Radix lot to main by exact reviewed diff and normal push, immediate SHA notification, exact terminal CI and failed-ID comparison against 1f25d9c66FAIL. Then identify the next shared cause from existing evidence only. No C/algorithm optimization, E2E split, new broad audit, long local tests, unrelated changes, mass evidence or VPS deployment.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-sorting-boundary-radix-accepted-low.md"
+}

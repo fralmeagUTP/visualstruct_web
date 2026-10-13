@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.dijkstra-branches-dijkstra30-one-independent-quality",
+  "task": "dijkstra-branches-dijkstra30-one-independent-quality",
+  "assignment_id": "coordination-dijkstra-branches-dijkstra30-one-qa-low-20261006",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dijkstra-branches-dijkstra30-one-independent-review",
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-branches-dijkstra30-one-tracker.md"
+  ]
+}

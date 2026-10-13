@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-approved-integer-dijkstra-contract-low-20261003",
+  "issued_at_utc": "2026-10-03T23:45:35.855550+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.approved-integer-dijkstra-contract-low",
+  "task": "Record approved integer graph weights and existing native Dijkstra rules in specification delta without algorithm changes",
+  "instruction": "UsuarioYAconfirmópesosenterosrepresentablesfielesC yreglasactualesCdeDijkstra: «Sí, confirma los pesos enteros ... Sí, confírmalos» y«Pesos enteros está bien». Coordinaciónordena reconciliar especificaciones ydocumentarempates/INT_MAX/overflow,continuarGrafosdespuésMostrar concheckpoints seguros. No pregunta/esperadepesos. ReportarantescambiosalgoritmosC_Hfueraautoridad. BellmanFordrepresentation/cycleerror aúnpendientes. RNdocumentalhandoffclosed,no permisoRNblocker;ASanUBSan/session-state/C1globalpendientes. NoAISEF/SDDotrospropietarios/publicación. Este LOWpublica decisión/deltaconfirmados sinclaimruntimeparidadsinverificar.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-approved-integer-dijkstra-contract-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-stack-queue-show-baseline-low-20261003.json"
+}

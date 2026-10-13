@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.dfs-owned-pool-transport-independent-quality",
+  "task": "dfs-owned-pool-transport-independent-quality",
+  "assignment_id": "coordination-dfs-owned-pool-transport-independent-qa-low-20261006",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dfs-owned-pool-transport-independent-review",
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-pool-transport-review-tracker.md"
+  ]
+}

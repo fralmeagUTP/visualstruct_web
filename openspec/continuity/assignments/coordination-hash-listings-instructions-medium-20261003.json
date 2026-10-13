@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-listings-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T02:21:39.529185+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.keys-values-items-instructions-medium",
+  "task": "MEDIUM listings real formatter scopes and chronological callers",
+  "instruction": "Ejecuta MEDIUM Hash keys/values/items delimitado: corregir 3 regresiones cuerpos/scopes ausentes y consultas omitidas caller; preservar H1, C/H, 123 IDs previos y 8 nuevos; distinguir proyección API de formateador C, verificar instrucciones/helpers/tipos/memoria/scopes, replay sin redispatch, ownership/Doxygen. Sin delta ADDED, nuevos contratos, publicación ni cierre antes de LOW.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-listings-instructions-plan-medium.md"
+}

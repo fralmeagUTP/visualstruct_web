@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra-owned-small-http-pair15-low-20261006",
+  "issued_at_utc": "2026-10-06T06:51:23.947483+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dijkstra-owned-small-http-pair",
+  "task": "dijkstra-owned-small-http-pair",
+  "instruction": "Coordinator authorizesONE smallbaseline/candidateDijkstrapairalreadyvalidated0,2,9/0to2to9unitweights, fullprivatePOSTuntilJSONconsumed SAME2GiBresources/normalvalidators, prepoutsidetimer. No counters/profiling/phases ifdistortcomparison, nophaseattributionwithoutmeasurement.15minmax. Verifyfullresponseequal andnoisevsconvincinggain; noadoption/30/defaultcampaign/retries. IfDAGscanscancelbenefit identifyoneprivatesafeboundedsimplification andnextminimaltrial, nochaincampaign. C/publicprotocol/resources/canonical/preview/Gitintact. Currentusercontinueallauthorizesfocalpair.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dijkstra-owned-small-http-pair15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-four-numeric-owned-publication30-low-20261006.json"
+}

@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.dijkstra-saved-ui-bellman30-phase20-independent-quality",
+  "task": "dijkstra-saved-ui-bellman30-phase20-independent-quality",
+  "assignment_id": "coordination-dijkstra-saved-ui-bellman30-phase20-qa-low-20261006",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/dijkstra-saved-ui-bellman30-phase20-independent-review",
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-saved-ui-bellman30-phase20-tracker.md"
+  ]
+}

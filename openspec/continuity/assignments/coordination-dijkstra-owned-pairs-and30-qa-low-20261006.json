@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra-owned-pairs-and30-qa-low-20261006",
+  "issued_at_utc": "2026-10-06T07:06:48.222938+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.dijkstra-owned-pairs-and30-independent-quality",
+  "task": "dijkstra-owned-pairs-and30-independent-quality",
+  "instruction": "Coordinator requested ONE consolidated offlineQA of diagnosticAB/BApairs+ONE observedprivateDijkstra30. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLYoffline. No imports/tests/browser/HTTP/native/benchmark/30retry/adoption/product/Git/preview. Read AGENTS/OpenSpec/project/continuity/currentassignment/exactbinding; guardsbeforeafter; writeONLYown review evidence/tracker. Preserve prior669hashinputs and first627. Four smallcompleteJSON exact1995667bytesSHA/668steps, signreversal ambiguous notgeneralbenefit. Verify acceptedprivatebuilder/helperand250sourceSHA/effective20784selfJob2GiB beforeimports/wrapper20512discrepancy. ONE30 directedchain1..30unit/start1/end30 supervisor60stimeoutexit124/noresponse/HTTPstatus/fulltrace/oracle/finalCmemoryfreeownership/sessionafter.55lightsamples last60.0010118generation_snapshot_capture encoded261/_snapshot_heap267/snapshot275/emit292;8137steps61519records incomplete/stalecounts.33internsamplesNOTCPU attribution/solecause. maxsample418648064bytes NOTfinalallprocesspeak/RAMcauseguarantee. Preservestaleharnessno_observer/no_samplingflags correctedseparately/consolelegacynull; OBSERVEDnotplain. No validatorbypass/educationalCchanges. Finiteprevious equivalence remains;30completionFAILED. Next boundedimmutable heap/frame preparationproposal ONLYnotimplemented/noautomaticretry/otherthree/adoption/global20of22closure. PureCseparate/no15HTTPSortingSLA.",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-pairs-and30-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dijkstra-owned-small-http-consolidated-qa-low-20261006.json"
+}

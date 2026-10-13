@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary26-stack-heap-evidence-low-20261004",
+  "issued_at_utc": "2026-10-04T07:39:36.009108+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "documentation.symbols",
+  "task": "Resolve nominal 26 individual documentary endorsements against exact contracts/evidence; recover historical stack native input; locate or execute focused native Heap build/remove audit regressions without product edits",
+  "instruction": "Acabo de leer handback67comentarios actualizados con13unidadesC equivalentes,26descargasexactas,inventario211. Recibido; no repetir ese bloque. Continúa siguiente paso acotado: resolver26endorsementsindividuales mediante contrato/evidenciaexacta y recuperar fuente nativa históricaDesapilar. Precisa diferencia entre evidencia recuperada anteriormente y fuente todavía faltante. ParaHeap construir/eliminar, busca artefactos existentes y si no hay prueba suficiente prepara/ejectua regresión focal de auditoría sin cambiar runtimeC/H; documenta casos/límites,no reabrirfamiliascerradas. No nuevos cambiosalgorítmicos sin permiso. Entrega lista nominal26,quécierras yquéfaltareal; revisa las9casillas amplias sólo contra criterios completos. Únicoescritor,previewconservado.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/documentary26-stack-heap-evidence-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary-comments-families-low-20261004.json"
+}

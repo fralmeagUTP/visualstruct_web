@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-direct-range-error-oracle-low-20261007",
+  "issued_at_utc": "2026-10-07T05:13:54.021000+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting-direct-range-error-oracle",
+  "task": "sorting-direct-range-error-oracle",
+  "instruction": "Parent01a0fe61 permits minimum independent Sorting23firstcause repair excluding14sourceboundaryIDs. Only direct SortingInterpreter excessive-range test2IDs: currentASCIItext oracle and realnoallocator/unchangedinput proof, existing1000000cap/Cguards. No adapter sourceA/B, algorithms, product, E2E, othertests, SLA, publication orlongcampaign. Freeze acceptedABB/RN and pendingPQformat QA.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-direct-range-error-oracle-low.md"
+}

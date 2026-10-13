@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-QA18-graph-boundary-optimization-low-20261005",
+  "issued_at_utc": "2026-10-05T01:26:04.890717+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "OptimizeGraphboundarypreservingvalidation/equivalence/fullBFS/packageQA",
+  "instruction": "Optimize focal Graph boundary, authorized coordinator 01a0fe61-3104-743a-b032-bcc289ad80cd 20261005. Preserve baseline/exact events/C states/order/validation/errors/replay/gates. No C/H/semantic change, no globalcampaign. Compare identical inputs then original100vertices99arcsBFS with phases/private timeout; package for independentQA. Previous diagnosis report is evidence, not gate. Preserve closed four repairs. Functions: snapshot_pool.validate_graph_logical_trace, TraceStep.from_legacy, LegacyTraceAdapter round_trip/to_semantic/to_public, GraphTraceStrategy.normalize_steps; optional read-only borrowing confined to synchronous Graph validation, defaults copying unchanged. Retain all conversions/roundtrip comparisons/type/engine checks. If insufficient, measure before widening.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/QA18-graph-boundary-optimization-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-QA18-two-timeout-diagnosis-low-20261005.json"
+}

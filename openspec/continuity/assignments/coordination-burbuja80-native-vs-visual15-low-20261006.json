@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-burbuja80-native-vs-visual15-low-20261006",
+  "issued_at_utc": "2026-10-06T02:07:37.509963+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.burbuja80-native-vs-visual-diagnostic",
+  "task": "burbuja80-native-vs-visual-diagnostic",
+  "instruction": "# Verify C Burbuja80 versus preparing instructional visualization\n\nExplicit user request via coordinator01a0fe61-3104-743a-b032-bcc289ad80cd: verify whether80..1algorithm is fast but visual explanation request slow. Maximum15minutes. Reuse earlier instrumented phases with exact historical SHA labels; measure CURRENT downloaded C pure kernel with output oracle and correct metrics. Separate compile/processstartup/I/O/timingresolution, one predefined small repeated batch for resolution (not best-run selection). No product/gate15/adoption/redesign; current minimal profile only if indispensable. FullHTTP15.8841 measured currentengine40777; rendering/human advance excluded. Own evidence/continuity only; no Git/preview.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/burbuja80-native-vs-visual15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dijkstra-publication-viability20-low-20261006.json"
+}

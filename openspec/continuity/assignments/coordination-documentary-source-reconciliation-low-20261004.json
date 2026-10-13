@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary-source-reconciliation-low-20261004",
+  "issued_at_utc": "2026-10-04T06:39:34.052724+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "documentation.symbols",
+  "task": "Inventory new Graph helper, reconcile 38 Graph documentary source records preserving prior signoffs, recover evidence for 67 SDD read reviews and map real gaps for nine global criteria without C/H edits",
+  "instruction": "Recibida consolidación Graph finita y13/22. Continúa sólo trabajo documental ya autorizado fuera de C/H: inventario del nuevo helper, reconciliación de38hashesGraph con fuentesestables conservando referencias previas y señalando qué signoffs quedan invalidados/requierenrevisión; matriz fuentesvigentes/evidencia por criterio sin marcar completado por lectura. Reutiliza67lecturasSDD para ordenar bloques y recuperar evidencias específicas faltantes. NO editar comentariosC/H todavía: acabo de pedir aprobación explícita al usuario para comentariosexclusivos sin código. No ampliar200verticesni instalar. Producto runtime/C/H congelado. Entrega delta documental y lista de pendientes realmente necesarios para nueve casillas, distinguiendohuecorecuperación de prueba faltante.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/documentary-source-reconciliation-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-qa-documentary-consolidation-low-20261004.json"
+}

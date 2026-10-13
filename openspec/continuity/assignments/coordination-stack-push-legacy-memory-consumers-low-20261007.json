@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-push-legacy-memory-consumers-low-20261007",
+  "issued_at_utc": "2026-10-07T20:13:49.544980+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.stack-push-legacy-memory-consumers",
+  "task": "stack-push-legacy-memory-consumers",
+  "instruction": "Parent authorizes a small pending sequential memory group from existing1f25d9c66FAIL inventory: test_stack_002_reproduces_missing_temporary_node and test_stack_trace_transports_temporary_allocation_value_and_link. Reproduce only those current consumers and fix demonstrated legacy expectation using actual approved C/push_memory contract, preserving strict lifetime/field/alias/publication checks and negative controls. No reimplementation/repetition of closed Apilar engine, nativeC/algorithms, accepted Sorting/Radix9files or hierarchical delta. Own binding/guards; small2GiB/120s focal tests and independent QA handoff. No global audit, optimization, AISEF, harness extension, longE2E or commit/push/deploy/retries.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-push-legacy-memory-consumers-low.md"
+}

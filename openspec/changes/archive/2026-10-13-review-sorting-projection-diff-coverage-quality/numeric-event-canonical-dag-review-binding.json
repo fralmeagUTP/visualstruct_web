@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.numeric-event-canonical-dag-independent-quality",
+  "task": "numeric-event-canonical-dag-independent-quality",
+  "assignment_id": "coordination-numeric-event-canonical-dag-qa-low-20261006",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/numeric-event-canonical-dag-independent-review",
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/numeric-event-canonical-dag-tracker.md"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-source-A-preprocessor-repair-low-20261007",
+  "issued_at_utc": "2026-10-07T15:03:45.820550+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting-source-A-approved",
+  "task": "sorting-source-A-preprocessor-repair",
+  "instruction": "Independent focal rejection: canonical functions inside #if 0 incorrectly admitted; parent explicitly authorizes concrete repair. No self acceptance, publication, optimizations or original failure repairs.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-source-A-preprocessor-repair-low.md"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-visible-method-consumer-low-20261008",
+  "issued_at_utc": "2026-10-08T03:06:20.697692+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.hash-visible-method-consumer",
+  "task": "hash-visible-method-consumer",
+  "instruction": "Only original tests/test_interpreter_subroutines_cross_module.py::test_trace_contract_all_visible_hash_methods, original seed capacity17 keys1->10,2->20 and original visible-operation order/payloads. Reproduce and contrast current C/integer fixed-capacity contract; minimum consumer repair and focal pure controls. Preserve27accepted35pendingQA and every other shared function/lot. No C/engine expansion, closed native/UI reruns, other IDs or latency, QAdenied registration/retry, acceptance/publication/optimization/global campaigns. Hard2GiB Job before imports and120s supervisor.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-visible-method-consumer-low.md"
+}

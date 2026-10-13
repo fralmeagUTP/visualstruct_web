@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-encolar-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T18:45:12.470266+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.encolar-finite-consolidation-low",
+  "task": "Consolidate finite priority enqueue evidence in LOW and propose next unblocked baseline",
+  "instruction": "# Priority Encolar: revisión finita LOW\n\nInstrucción vigente de coordinación 01a0fe61-3104-743a-b032-bcc289ad80cd: consolidar 46 IDs, 42 originales; reutilizar 242 eventos C/48 condiciones, 72 observaciones, dos vistas y cuatro reloads/Next sin redispatch. Verificar hashes actuales y trazabilidad. C/H y mains intactos; memoria finita 4,978,137 bytes Python y JSON 367,728 bytes, sin garantía universal.\n\nRevisión documental/evidencia solamente, sin repetir implementación ni pruebas cerradas. Verificar manifiestos MEDIUM/base/producto/QA, IDs únicos, proyección causal y visual, caller/Doxygen reutilizados. Si válidos, cerrar únicamente priority_queue.encolar.instructions y registrar mapa pendiente y propuesta siguiente baseline LOW Cola Desencolar recuperando evidencia previa. Preservar RN/Hash/Sorting y cierres anteriores; Graph/Dijkstra y permiso SDD pendientes, sin tocar documentos bloqueados ni publicar.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-encolar-finite-review-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-encolar-instructions-medium-20261003.json"
+}

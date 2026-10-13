@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-final-max15-documentary-QA19-delta-low-20261006",
+  "issued_at_utc": "2026-10-06T17:18:32.273661+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.final-max15-documentary-QA19-delta",
+  "task": "final-max15-documentary-QA19-delta",
+  "instruction": "Parent01a0fe61 authorizes only own documentary correction: verify accepted RN V3, additive correction preserving frozen465 inputs, record accepted criterion18 and prepare QA19 delta. No code/tests/optimization/preview/SDD file or alternative route around denied SDD write; SDD user approval pending.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/final-max15-documentary-QA19-delta-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-final-max15-preview-coverage-delivery-low-20261006.json"
+}

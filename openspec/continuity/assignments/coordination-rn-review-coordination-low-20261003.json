@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rn-review-coordination-low-20261003",
+  "issued_at_utc": "2026-10-03T16:28:16.739357+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "red-black.review-coordination-low",
+  "task": "Register independent RN quality workflow without changing functional ownership; document history-contract finding",
+  "instruction": "# RN revisión independiente: coordinación LOW\n\nNueva instrucción parent01a0fe61-3104-743a-b032-bcc289ad80cd: registrar binding/asignación para revisor01a0ff54-79d7-7520-8e9f-224ef5ed700f sin reasignar dueño funcional. Read-only RN, pruebasacotadas yreportespropios evidence/independent-review-RN-implementation, sin preview/appmutations; registro de QA separadoenchange review-red-black-full-validation, calidad, permitted own outputs. Analizar RN-IMPL-01 nohistorial vsconsultasregistradas,proponer distinciónsin cambiossemánticos;SDDownerclarificaráo decisiónpendiente. No sourceedits ni suitesrepetidas porautor,noarchive/cierrefinalhastaQA.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/red-black-independent-review-coordination-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-rn-full-validator-consolidation-low-20261003.json"
+}

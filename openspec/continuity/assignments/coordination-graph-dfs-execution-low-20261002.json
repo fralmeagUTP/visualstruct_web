@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-dfs-execution-low-20261002",
+  "issued_at_utc": "2026-10-02T07:12:43.503403+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.dfs",
+  "task": "LOW: execute DFS C/backend/caller/history/documentation baseline; fix straightforward proven defects and delimit harder instruction review",
+  "instruction": "Continue LOW exclusively graph.dfs using registered guard. Execute preparation contracts C/backend/caller, real recursion, neighbor order, marks, disconnected/cycles/negative/repeat, downloads/history/documentation. Reuse closed BFS without rerun unless justified shared regression. Simple fixes or bounded MEDIUM scope. D: preview5051; no push/merge/deployment; pending decisions separate.",
+  "provenance": "Explicit coordination instruction following graph.bfs LOW closure; preserves immutable earlier assignments.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-dfs-baseline-preparation.md"
+}

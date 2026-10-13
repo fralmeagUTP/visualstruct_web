@@ -1,0 +1,378 @@
+{
+  "source_inputs": {
+    "docs\\tads_C\\tad_monticulo_binario.c": "08d9d2c881cd6161503db2ed652bea14eb970c091f513e4da5b68cce4676e725",
+    "docs\\tads_C\\tad_monticulo_binario.h": "fb54a710a226eb1ac194f79829d79a217626da733b44f052651d997c01c80bd4",
+    "app\\domain\\hierarchical\\tad_monticulo_binario.py": "923f4031828eb117f8246ca4e102d0ccd46c49159d39ce6443a890789291d073"
+  },
+  "cases": [
+    {
+      "case_id": "build-zero-preserves",
+      "fixture": {
+        "id": "build-zero-preserves",
+        "op": "build",
+        "values": [],
+        "quantity": 0
+      },
+      "expected": {
+        "ok": 0,
+        "array": [
+          4,
+          6,
+          5
+        ],
+        "quantity": 3,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "build-negative-preserves",
+      "fixture": {
+        "id": "build-negative-preserves",
+        "op": "build",
+        "values": [
+          4
+        ],
+        "quantity": -1
+      },
+      "expected": {
+        "ok": 0,
+        "array": [
+          4,
+          6,
+          5
+        ],
+        "quantity": 3,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "build-null-values-preserves",
+      "fixture": {
+        "id": "build-null-values-preserves",
+        "op": "build",
+        "values": null,
+        "quantity": 1
+      },
+      "expected": {
+        "ok": 0,
+        "array": [
+          4,
+          6,
+          5
+        ],
+        "quantity": 3,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "build-one-new-reserve",
+      "fixture": {
+        "id": "build-one-new-reserve",
+        "op": "build",
+        "values": [
+          4
+        ],
+        "quantity": 1
+      },
+      "expected": {
+        "ok": 1,
+        "array": [
+          4
+        ],
+        "quantity": 1,
+        "capacity": 10
+      }
+    },
+    {
+      "case_id": "build-five-max",
+      "fixture": {
+        "id": "build-five-max",
+        "op": "build",
+        "values": [
+          4,
+          9,
+          3,
+          8,
+          7
+        ],
+        "quantity": 5,
+        "type": 1
+      },
+      "expected": {
+        "ok": 1,
+        "array": [
+          9,
+          8,
+          3,
+          4,
+          7
+        ],
+        "quantity": 5,
+        "capacity": 10
+      }
+    },
+    {
+      "case_id": "build-five-min",
+      "fixture": {
+        "id": "build-five-min",
+        "op": "build",
+        "values": [
+          4,
+          9,
+          3,
+          8,
+          7
+        ],
+        "quantity": 5
+      },
+      "expected": {
+        "ok": 1,
+        "array": [
+          3,
+          7,
+          4,
+          8,
+          9
+        ],
+        "quantity": 5,
+        "capacity": 10
+      }
+    },
+    {
+      "case_id": "build-eleven-doubles",
+      "fixture": {
+        "id": "build-eleven-doubles",
+        "op": "build",
+        "values": [
+          8,
+          3,
+          10,
+          1,
+          6,
+          11,
+          2,
+          9,
+          5,
+          7,
+          4
+        ],
+        "quantity": 11
+      },
+      "expected": {
+        "ok": 1,
+        "array": [
+          1,
+          3,
+          2,
+          5,
+          4,
+          11,
+          10,
+          9,
+          8,
+          7,
+          6
+        ],
+        "quantity": 11,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "build-null-heap",
+      "fixture": {
+        "id": "build-null-heap",
+        "op": "build",
+        "values": [
+          4
+        ],
+        "quantity": 1,
+        "null_heap": true
+      },
+      "expected": {
+        "ok": 0,
+        "array": [
+          4,
+          6,
+          5
+        ],
+        "quantity": 3,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "delete-missing",
+      "fixture": {
+        "id": "delete-missing",
+        "op": "delete",
+        "seed": [
+          1,
+          3,
+          2,
+          8,
+          7,
+          9
+        ],
+        "value": 42
+      },
+      "expected": {
+        "ok": 0,
+        "array": [
+          1,
+          3,
+          2,
+          8,
+          7,
+          9
+        ],
+        "quantity": 6,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "delete-last",
+      "fixture": {
+        "id": "delete-last",
+        "op": "delete",
+        "seed": [
+          1,
+          3,
+          2,
+          8,
+          7,
+          9
+        ],
+        "value": 9
+      },
+      "expected": {
+        "ok": 1,
+        "array": [
+          1,
+          3,
+          2,
+          8,
+          7
+        ],
+        "quantity": 5,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "delete-down",
+      "fixture": {
+        "id": "delete-down",
+        "op": "delete",
+        "seed": [
+          1,
+          3,
+          2,
+          8,
+          7,
+          9
+        ],
+        "value": 1
+      },
+      "expected": {
+        "ok": 1,
+        "array": [
+          2,
+          3,
+          9,
+          8,
+          7
+        ],
+        "quantity": 5,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "delete-up",
+      "fixture": {
+        "id": "delete-up",
+        "op": "delete",
+        "seed": [
+          1,
+          8,
+          2,
+          9,
+          10,
+          3,
+          4
+        ],
+        "value": 9
+      },
+      "expected": {
+        "ok": 1,
+        "array": [
+          1,
+          4,
+          2,
+          8,
+          10,
+          3
+        ],
+        "quantity": 6,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "delete-first-duplicate",
+      "fixture": {
+        "id": "delete-first-duplicate",
+        "op": "delete",
+        "seed": [
+          1,
+          3,
+          3,
+          8,
+          7,
+          9
+        ],
+        "value": 3
+      },
+      "expected": {
+        "ok": 1,
+        "array": [
+          1,
+          7,
+          3,
+          8,
+          9
+        ],
+        "quantity": 5,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "delete-empty",
+      "fixture": {
+        "id": "delete-empty",
+        "op": "delete",
+        "seed": [],
+        "value": 1
+      },
+      "expected": {
+        "ok": 0,
+        "array": [],
+        "quantity": 0,
+        "capacity": 20
+      }
+    },
+    {
+      "case_id": "delete-null-heap",
+      "fixture": {
+        "id": "delete-null-heap",
+        "op": "delete",
+        "seed": [],
+        "value": 1,
+        "null_heap": true
+      },
+      "expected": {
+        "ok": 0,
+        "array": [],
+        "quantity": 0,
+        "capacity": 20
+      }
+    }
+  ],
+  "provenance": "Actual16C17native oracle baseline;15Pythoncomparablecases excluding forcednativeallocatorfailure"
+}

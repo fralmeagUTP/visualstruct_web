@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-accepted-trace-repairs-low-20261007",
+  "issued_at_utc": "2026-10-07T01:12:10.215751+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-accepted-trace-repairs",
+  "task": "publish-accepted-trace-repairs",
+  "instruction": "# Publish accepted focal repairs\n\nParent01a0fe61 authorizes GitHub main publication of independently accepted PriorityQueue and Dijkstra/final invariant repairs, preserving foreign changes, no force, permanent sources/tests only. Verify exact SHA and terminal CI;85/aggregate Graph/E2E remain open. No VPS deployment on partial CI. No optimization or long local campaign.\n\n- [ ] publish-accepted-trace-repairs: verify accepted diff, publish exact main commit and diagnose terminal CI.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-accepted-trace-repairs-low.md"
+}

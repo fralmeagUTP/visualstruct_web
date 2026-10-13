@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-bellman-small-profile10-low-20261006",
+  "issued_at_utc": "2026-10-06T13:46:36.158753+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.bellman-small-profile-generation-costs",
+  "task": "bellman-small-profile-generation-costs",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes ONLY one existing SMALL Bellman fixture profile (tests arguments bellman_ford3nodes756steps) callcounts/times materialization,normalization,hashing/probing,framevalidation. No20/30/HTTP/spool/native/browser/functionalchanges/optimization/adoption. Report measured dominantcause/minimalproposedcorrection preservingC/steps. Wholephase<=600s, one profiledbuild cooperative9s generation watchdog, supervisor30s totalchild; hard2GiB job selfverified beforeimports, mechanicalbefore0. Compare saved smallwire hash after profile if complete; otherwise preserve partial profile, no retry.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/bellman-small-profile10-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-bellman-private-spool20-one900-low-20261006.json"
+}

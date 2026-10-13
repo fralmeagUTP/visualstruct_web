@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-result-BFS-phase-diagnostic-binding-low-20261005",
+  "issued_at_utc": "2026-10-05T13:07:30.104494+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "sorting-compatible-result-and-BFS-private-diagnostic-QA-binding",
+  "instruction": "Continue authorizedSortingreport/compatiblegates then register separate executableQA binding for01a0ff54-79d7-7520-8e9f-224ef5ed700f. ONE privateBFS30/29 phase diagnostic15min on isolatedSHA0598decfcf786ab0c66ea56d60e5e110d03540bb388220cd19c4d6c4bd8da721 baseline999freezeSHA3f634662e73c292ca05b5b6193fab0b5a2a7b8f424882cf00aa72c5ab3323bc5; doNOTexecute author. Preserveproduct. Exclusivephase timers, calibratealone nosecondBFS; nocoverage/per-callprofiler/innerlogs. Only diagnostic decides unapprovedstructuralproposal. Do not reuseMSTreadonly review.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-result-BFS-phase-diagnostic-binding-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-sorting-semantic-gap30-low-20261005.json"
+}

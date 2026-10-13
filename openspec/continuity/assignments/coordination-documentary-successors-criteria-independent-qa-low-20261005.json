@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary-successors-criteria-independent-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T18:02:53.165735+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "change": "review-documentary-successors-and-criteria11-12-16-18-quality",
+  "operation": "audit.documentary-successors-criteria-quality",
+  "task": "documentary-successors-criteria11-12-16-18-independent-review",
+  "instruction": "# Revisión independiente sólolectura\n\nOwner/writer 01a0ff54-79d7-7520-8e9f-224ef5ed700f, quality Sol LOW.\n\nMatriz11/12 finite23rows with18actualsourcechanges/23contiguoussuccessoredges,40NAcontext; criterion16 original34+22successorproductrecords=56 with whole-originalvertexlimit;2604case dispositions/931function-obligation-consumer groups,196PASS535+3existingjointstagedPASS+14prioracceptedrows,2391localdocumentaryapplicability judgments. Validate currentassertions/param/consumers/fixtures/approvedsuccessors; notID/SHAautomaticapproval. Reviewactualreasonfor reuse/nonapplicability/absence, no2391testcampaign/no globalclosure.\n\nPaqueteinmutable: openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary-successors17-applicability-low/independent-review-package.zip SHA256 de4bd38f3bac9aeca126fd07f28e9218704fee15a6a414d7a09ce6906ccf587b.\n\nSólo SHA/CRC/ZIP/AST/JSON/gzip/XML/eventos ycomparaciónoffline de evidencia ya existente. Inspeccionar antes cualquier scriptverificador; NO importación/app/runtime/prototipo/tests, pytest/C/native/browser/BFS/request/cobertura/profiling/calibración/benchmark, ni nueva variante. No ejecutar scripts run/measure/build incluidos como fuentes; revisar por AST/texto. No modificar app/tests/docs/static/templates/scripts/paquetes/candidatos ni auditoríaautor/index/bindings/QAanteriores. No5051/Git/deploy/adopción/cierres globales.\n\nAntes/after propios obligatorios con asignación vigente deestechange. Preflightdecoordinación NO esejecución/revisiónQA. Salidas exclusivas openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review y openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-tracker.md. Emitir aceptar/retener/rechazar finito con hallazgos, razones y límites; cambiosnecesarios antesaprobar, no nueva campaña implícita.\n",
+  "scope_ref": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-scope.md"
+}

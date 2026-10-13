@@ -1,0 +1,11 @@
+{
+  "phase_start": "2026-10-06T12:14:02.254636+00:00",
+  "phase_deadline": "2026-10-06T12:44:02.254636+00:00",
+  "technical_report_after_completed_UTC": "2026-10-06T12:43:02.282390+00:00",
+  "technical_work_completed_within_30min": true,
+  "QA_registration_completed_UTC": "2026-10-06T12:44:15.652367+00:00",
+  "QA_registration_over_deadline_seconds": 13.397731,
+  "strict_whole_phase_30min_NOT_compliant": true,
+  "extension_only_QA_hash_binding_registration_and_reporting_no_app_or_tests": "No functional command was running; seven final harnesses had finished exit0. Before gates remain valid; this does not erase the timing excess.",
+  "frozen2422_inputs_unchanged": true
+}

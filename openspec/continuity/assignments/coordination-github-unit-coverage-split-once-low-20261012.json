@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-github-unit-coverage-split-once-low-20261012",
+  "issued_at_utc": "2026-10-12T23:09:50.317503+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.github-vps-qualified-delivery",
+  "task": "github-vps-qualified-delivery",
+  "instruction": "Apply only approved workflow diff separating coverage job, 30-minute coverage bound and identical selectors/gates; publish and perform ONE push-triggered CI execution, no dispatch or retries. Verify static workflow, exact remote commit and run; monitor terminal. No algorithms, gates, tests locally, VPS, Factor6, blocked local cases or documentary bypass.",
+  "user_message": "Sentinel_252aaff2afe88191828598817dfd281e",
+  "user_time_UTC": "2026-10-12 23:09 UTC",
+  "verbatim_user_authorization": "Si",
+  "approved_question": "La propuesta es separar la cobertura en otro trabajo, mantener los mismos criterios y darle hasta 30 minutos. Esto repetir\u00e1 la suite en GitHub. \u00bfAutorizas aplicar ese cambio y lanzar una ejecuci\u00f3n?",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-github-unit-coverage-split-once-low-20261012/authorization.json"
+}

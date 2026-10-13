@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-coverage387-provenance-independent-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T15:11:47.802651+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-coverage387-provenance-independent-quality",
+  "operation": "audit.coverage387-provenance-independent-review",
+  "task": "coverage387-provenance-independent-review",
+  "instruction": "# Revisi\u00f3n independiente procedencia cobertura387 LOW\n\nPropietario QA01a0ff54-79d7-7520-8e9f-224ef5ed700f. Paquete congelado de10rawsPASS delbloqueAVL/ABB20:387IDs \u00fanicos,18852/24154,186m\u00f3dulos/4exclusiones,78,0491844%,1196para83. Revisar hashes/canonicalD,fuentes/tests,metadataexit/XML/events,IDs disjuntos,config/exclusiones,rawcoverage l\u00edneas/contextos,selecci\u00f3ncorrected29vsfailedmixed/QA5aceptada ytripletasnativecacheporSHA. Comprobarrecombinaci\u00f3n sincampa\u00f1as usandoherramienta privada. Copia privateverifiercon\u00fanico outputQA; originalverifierautor creaauthor-recombine-check yaexistente,no reutilizar/alterar paquete. M\u00e1ximo25min. No pytest/nativo/browser/BFSdiagnostic/benchmark ni implementar. Authorpreflightno es veredictoindependiente. Gate83a\u00fanFAIL; noQA18/global/fidelidaduniversal/performanceDoxygen/archivo. Nuevosbloquesautor est\u00e1naparte yNOampl\u00edan este387.\n\nEscrituras s\u00f3lo evidence/independent-review yreview-tracker.md delchangepropio; ownfreshbefore/after. No editarbindings/assignments/index/sharedaudit/product/tests/C/H/package/preview5051/Git/deploy. Si discrepancia congelaci\u00f3n reportarBLOCKED/INVALID, no reparar evidenciadelautor ni debilitarasserts.\n",
+  "scope_ref": "openspec/changes/review-coverage387-provenance-independent-quality/review-scope.md",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f"
+}

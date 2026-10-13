@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-pq-format-sorting-policy-inventory-low-20261007",
+  "issued_at_utc": "2026-10-07T05:04:00.705450+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.pq-format-sorting-policy-inventory",
+  "task": "pq-format-sorting-policy-inventory",
+  "instruction": "Parent01a0fe61: freeze ABB/RN file and E2E proposal for independent QA. Minimum independent nonSorting exact C priority formatter test oracle repair with own guarded QA; clarify37Sorting vs13empty-source policy IDs, no Sorting/product/E2E changes, ambiguous criteria or broadcampaign. No publication.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/pq-format-sorting-policy-inventory-low.md"
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-runtime15-authorized-contrast25-low-20261005",
+  "issued_at_utc": "2026-10-05T22:28:44.177236+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.qa-retained-criteria-documentary-correction",
+  "task": "runtime15-authorized-contrast25",
+  "instruction": "Nuevo usuario explícito: máximo15segundos para cualquier algoritmo en alcanceeducativo admitido; Graphmax30permanece. Cancelar segundo prototipoBFS/noadoptaraislados. Actualizar especificación/criterio/actarendimiento, conservar mediciónplaincompletacontraza/noavancehumanoplayer/exactitud/memoria/cobertura. Contrastar mediciones existentes y sólo fallos/ausenciasreales, no universalizarBFS11.728. Preparar QA18/entrega19 conbindingautorización correcto. Máximo25min documental, no repetir campañas; si falta prueba focal imprescindible informar antesdecampaña.",
+  "transcript_evidence": "Mary por voz: «Lo que sigue bloqueando es BFS: con 30 nodos y 29 aristas está en unos11,73segundos, cuando el máximo permitido es5».\nUsuario: «No, Mary, pero mira que yo con esos11segundos no tengo problema, lo puedes dejar así».\nUsuario: «Con que no se demore más de... un algoritmo que no se demore más de15segundos, para mí está bien. Listo».\nUsuario: «Sí, y en cualquier algoritmo lo».\nUsuario: «máximo demora... debe ser15segundos».",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/runtime15-authorized-contrast25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-criteria11-12-16-QA-acceptance-record10-low-20261005.json"
+}

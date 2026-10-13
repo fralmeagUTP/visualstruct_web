@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bfs-revision-cache-low-20261005",
+  "issued_at_utc": "2026-10-05T04:03:59.039747+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "BFSimmutable-revision-cache-equivalence-HTTPcost-checkpoint",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd explicitly authorizes minimum immutable revision cache candidate for BFS frames/retired and proven invalidation, retaining every event/validator/semantic value/type/order. QA previous freeze992 accepted47focal cases. Read independent BFS-cost-first-diagnostic/minimum-coverage-plan. Compare complete before/after and current DOM, separate tracebuild from HTTPcost; no broadcampaign, no C/H/algorithms/threshold edits. Publish material partial result before04:40UTC. If5snotverified sayso. Productfreeze for previousQA superseded only for this authorized optimization; previousreview sources/evidence unchanged. Coverage83/85 remainspending, no measurements authorized. Solewriter/root,LOW; noGit/deploy/preview5051touch.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-bfs-revision-cache-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-educational-limit30-low-20261005.json"
+}

@@ -1,0 +1,11 @@
+{
+  "assignment": "openspec/changes/reconcile-remaining-historical-contracts/assignment-20261004.json",
+  "workflow": "openspec/changes/reconcile-remaining-historical-contracts/workflow-20261004.json",
+  "operation": "c1.remaining-documentary",
+  "task": "c1-documentary",
+  "author_thread": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "frozen_manifest": "openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-source-manifest-20261004.json",
+  "canonical_adoption_authorized": false,
+  "independent_review": "pending",
+  "product_execution_now": false
+}

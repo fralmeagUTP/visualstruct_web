@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-quicksort-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T14:15:35.143451+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.quicksort-baseline-low",
+  "task": "LOW next existing Quick sort bounded native baseline/UI/callers, preservefiveclosures,causal regressions and delimitedMEDIUMifneeded",
+  "instruction": "ReturnLOW,next existing sorting inventory method. Reuse infrastructure,confirmcontracts/results/metrics/instructioncontrols/actualcallers;recordcausal regressions,no hiding. SimpleLOWfixesonly,delimitMEDIUMbeforesemanticblock. D/guards/evidence/owned5051loopbackcurrent,no publishmergedeploynetworkchanges.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-quicksort-authorized-low.md"
+}

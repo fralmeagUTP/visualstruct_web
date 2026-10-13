@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-heapsort80-saved-response-browser20-low-20261006",
+  "issued_at_utc": "2026-10-06T02:42:24.271625+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.heapsort80-saved-response-browser-usability",
+  "task": "heapsort80-saved-response-browser-usability",
+  "instruction": "# One isolated currentUI saved HeapSort80 usability check\n\nCoordinator01a0fe61-3104-743a-b032-bcc289ad80cd: independentQAthree-layers acceptedfinitecriteria/native/Heap, remainingGraphoperationalandlarge-responseusability. Maximum20min: verifyCURRENTUIversion; use existing125508219byteHeapSort80response inprivateFlaskfactory/browser/session/ephemeralport, no backendregeneration/newcostlyHTTP. Observepayloadload,render/play/pause/next/previous/seekfinal/methodandstructureswitch/pageconsoleerrors usingexistingPlaywrightworkflow. Lightweightsetup allowed, run interceptedonlytoserveexactretainedbytes; othercostlyPOSTblocked. Do not touchpreview5051/userprocesses/sessions. No appcode/redesign/adoption/bench/globalclosure. Iftool/runtimecannotloadwithoutbackendgeneration reportlimit, donotgenerateautomatically. Owncontinuity/evidence only.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/heapsort80-saved-response-browser20-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph6-native-heapsort80-operational20-low-20261006.json"
+}

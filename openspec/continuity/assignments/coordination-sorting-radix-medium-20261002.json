@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-radix-medium-20261002",
+  "issued_at_utc": "2026-10-02T22:05:57.142949+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.radix-instructions",
+  "task": "MEDIUM Radix instruction/memory/error/bounded replay implementation with checkpoint before closure",
+  "instruction": "Continúa MEDIUM Radix delimitado en baseline/checkpoint: corrige21fallos de instrucciones, helper/memoria, resaltado, métricas, MemoryError y replay. Conserva39IDs originales,C/H,diez cierres ytodo contrato UI sin fixtures. VerificaC,representación acotada,errores y replay sin reejecución; distingue simulaciones/plataforma/límites. Entrega checkpoint antes de cierre, luego LOW consolidará; confirma preview5051final. Sinpush/merge/despliegue.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-authorized-medium.md"
+}

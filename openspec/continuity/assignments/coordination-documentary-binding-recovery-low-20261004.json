@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary-binding-recovery-low-20261004",
+  "issued_at_utc": "2026-10-04T07:03:22.042997+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "documentation.symbols",
+  "task": "Recover stack native source binding and RN19 documentary QA handoff; review Graph18 historical signoffs against stable sources without automatic acceptance; distinguish absent Heap native proofs from search gaps",
+  "instruction": "Recibido delta documental39Graph y795protegidosintactos. Continúa recuperación de vínculos/documentación fuera deC/H: enlaza evidencia históricaDesapilar con hashverificado y19registrosRN conQA/handoffvigente, revisa18signoffsGraph contra fuenteestable preservandohistórico y sin aceptaciónautomática. Identifica pruebasnativasHeap construir/eliminar realmenteausentes vs nohalladas, sin implementar nuevafunción. Sóloactualizacionesdocumentales/ledger autorizadas, runtimeC/Hcongelado; comentariosseguimosesperandoautorización (usuarioacaba depreguntarquéfalta). Devuelve cierresdocumentales justificados y residuales porcriterio, evitando repetir testshistóricos.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/documentary-binding-recovery-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary-source-reconciliation-low-20261004.json"
+}

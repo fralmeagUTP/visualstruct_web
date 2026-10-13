@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-kruskal-causal-narration-repair20-low-20261005",
+  "issued_at_utc": "2026-10-05T12:09:38.852191+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "kruskal-causal-narration-repair-focal-QA",
+  "instruction": "Coordinator authorizes only causal Kruskal cycle rejection narration when actual C roots coincide. No algorithm/condition/Cevent/state/edge selection changes; explain actualdiscard. PreserveFAIL/restoredassertion. Max20min regressionaffectedcase+acceptance/no-cyclecontrol and full dataequivalence exceptnarration. FrozenQApackage/binding samescenarios; noMSTtestadoption untilQAaccept. No coverage/benchmark/features.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/kruskal-causal-narration-repair20-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-three-reviewed-adoption-kruskal-narration15-low-20261005.json"
+}

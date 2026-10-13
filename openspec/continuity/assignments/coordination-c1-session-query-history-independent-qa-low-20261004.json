@@ -1,0 +1,14 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-c1-session-query-history-independent-qa-low-20261004",
+  "issued_at_utc": "2026-10-04T14:29:29.838586+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "prepared_by": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "change": "review-c1-session-query-history-documentation",
+  "operation": "c1.session-query-history-independent-qa",
+  "task": "c1-session-query-history-independent-qa",
+  "instruction": "Coordinación01a0fe61-3104-743a-b032-bcc289ad80cd asigna QA documental independiente al hilo real 01a0ff54-79d7-7520-8e9f-224ef5ed700f. Autor documental01a0fad1-4046-71ae-990c-a53383e81006 distinto. Revisar matriz C1 once requisitos/veinte escenarios, cero admisiones, preservación REM06/históricos y delta session-state exacto3MODIFIED contra52fuentes congeladas. Verificar políticas por módulo, consultas explícitas repetidas/False válido, fallos excluidos según contrato, GET/replay sin redispatch pero permitiendo metadatos/validadores/effectos existentes, ausencia de nuevo almacenamiento/semántica. No certificar checkpoints/rendimiento ajenos. Comprobar SHA freeze antes/después; cualquier modificación de entrada congela aceptación y requiere coordinar, no editar delta. Sólo escribir reportes/logs propios en openspec/changes/review-c1-session-query-history-documentation/evidence/independent-review. Ninguna suite técnica/native/browser/runtime/preview/C/H/app/canónicos/auditor/archivo/publicación. Este binding prepara QA; no declara ejecutada ni aceptada. El revisor debe ejecutar su propio before con este task/assignment/workflow y verificar realmente, luego verify y after. Sin close por sí mismo ni adopción. Evidencia independiente real: check=independent-review,executed boolean,result truthful,exit_code,observed_at_utc,inputs SHA EXACTOS requisitos+base+deliverables+documentation deduplicados. Revisión de documentación es comprobación estática real, no prueba funcional nueva.",
+  "scope_ref": "openspec/changes/review-c1-session-query-history-documentation/design.md"
+}

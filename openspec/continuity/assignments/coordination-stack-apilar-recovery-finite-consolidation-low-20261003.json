@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-apilar-recovery-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T14:12:45.301157+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack.apilar-finite-consolidation-low",
+  "task": "Review recovered finite stack push evidence and consolidate only recorded cases; propose next pending baseline",
+  "instruction": "Desktop-FM reconectado. Usuario: ya se estableció de nuevo la conexión continua con las tareas. Tras recuperar checkpoint yafter, consolidar LOW Pila.apilar finite verificando hashes/evidencia vigente y fuentes, sin repetir30tests/C/UI salvo cambios. No cerrar por estado de herramienta. Luego proponer o seguir próximo baselineLOW pendientePilaColas según mapa conservando Hash11Sorting11 y limpiarPilaColaPriority. C/H protegidos; RN/Grafos/Dijkstra esperan respuesta específica; sin push/merge/deploy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-apilar-finite-review-plan-low.md"
+}

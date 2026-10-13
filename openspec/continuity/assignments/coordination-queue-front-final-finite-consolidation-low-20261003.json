@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-front-final-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T23:16:29.143260+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.frente-final-finite-consolidation-low",
+  "task": "Consolidate independent finite private queue Front and Final cores without public API UI exposure",
+  "instruction": "ConsolidaLOWFrente/Final independientepormétodo164IDs160original+4privateoverlap0,44C132events44conds no divergence,API4000steps/nocontrolsqueryrecordsnew. Verifymanifest120/currenthash/privatecore/excludedAPIUI/readonly/currentfinite resources per method,callerC/H8/8/0Doxreusedhashessafe. Ifsufficientclose2privatecoreoperationsonly9->7map,list exactremaining y nextLOW proposed (MostrarPila/Cola orPriorityhelpersgroup)withoutnewexposure/contract. NoSDDblockedwrites/Graphdecisions/publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-front-final-implementation-checkpoint-medium.md",
+  "supersedes": "openspec/continuity/assignments/coordination-queue-front-final-instructions-medium-20261003.json"
+}

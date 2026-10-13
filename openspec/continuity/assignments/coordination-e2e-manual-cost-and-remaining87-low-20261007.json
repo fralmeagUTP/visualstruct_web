@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-e2e-manual-cost-and-remaining87-low-20261007",
+  "issued_at_utc": "2026-10-07T04:56:43.108576+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.e2e-manual-cost-and-remaining87",
+  "task": "e2e-manual-cost-and-remaining87",
+  "instruction": "Focal read-only E2E manual replay cost/test input/contract investigation; propose decision before acceptance scope changes. Classify current87 failure common causes against exact terminal evidence, Sorting excluded; select only minimum justified test repair with own QA if unambiguous. No product/algorithm optimization, long local campaign, arbitrary timeout increase or publication. Preserve prior closed work and QA inputs.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/e2e-manual-cost-and-remaining87-low.md"
+}

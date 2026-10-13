@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-main-919b802-independent-qa-low-20261006",
+  "issued_at_utc": "2026-10-06T23:59:50.531423+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-main-919b802-independent-qa",
+  "task": "publish-main-919b802-independent-qa",
+  "role": "quality",
+  "instruction": "Parent01a0fe61 requests independent QA review of publication exact919b8025ee3d82b0b368158c4db9961610ff4e61 and corrected six case diagnoses/source bindings. Read exact terminal CI logs/diffs/failure ledgers and canonical251hashbinding. Not historical C1/reconcile. Read-only runtime/tests, own QA evidence only; no runtime changes, assertion relaxation, new push/deploy, VPS, or full local suite. Distinguish proven fixture/environment/representation/current-contract mismatches from unproven material defects; 85 unresolved cases are not obsolete by assumption. Reviewer must differ from technical author. Coordinator selects actual reviewer; this record does not issue a QA verdict.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-main-919b802-independent-qa-low.md",
+  "supersedes": null,
+  "review_subject_sha": "919b8025ee3d82b0b368158c4db9961610ff4e61",
+  "independent_reviewer_required": true
+}

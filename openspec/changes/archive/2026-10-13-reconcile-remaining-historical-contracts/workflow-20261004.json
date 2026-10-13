@@ -1,0 +1,96 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "reconcile-remaining-historical-contracts",
+  "operation": "c1.remaining-documentary",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs/tads_C",
+    "tests",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/archive"
+  ],
+  "tasks": {
+    "c1-documentary": {
+      "objective": "Reconciliar snapshot C1 y preparar delta documental de historial de consultas aprobado",
+      "role": "documentation",
+      "owner": "c1-documentary-writer-01a0fad1-4046-71ae-990c-a53383e81006",
+      "requirements": [
+        "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/requirement-decisions.json"
+      ],
+      "base": [
+        "openspec/changes/reconcile-remaining-historical-contracts/instruction-20261004.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/reopen-current-evidence-20261004.md",
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261003.json",
+        "openspec/continuity/ROLE-WORKFLOW.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/reconcile-remaining-historical-contracts",
+        "openspec/changes/reconcile-session-query-history-documentation"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261004.json",
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261004.md",
+        "openspec/changes/reconcile-session-query-history-documentation/specs/session-state/spec.md"
+      ],
+      "documentation": [
+        "openspec/changes/reconcile-remaining-historical-contracts/matrix-20261004.md",
+        "openspec/changes/reconcile-session-query-history-documentation/acceptance-plan.md"
+      ],
+      "evidence": [
+        "openspec/changes/reconcile-remaining-historical-contracts/evidence/documentary-verification-20261004.json"
+      ],
+      "checks": [
+        "documentation-coherence"
+      ],
+      "next_step": "Preparar delta exacto y solicitar revisión independiente antes de adopción canónica; no cerrar por propia revisión",
+      "state": "active",
+      "approval": "openspec/changes/reconcile-remaining-historical-contracts/approval-20261004.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

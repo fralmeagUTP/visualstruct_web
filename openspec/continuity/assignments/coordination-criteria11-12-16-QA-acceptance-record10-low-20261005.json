@@ -1,0 +1,19 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-criteria11-12-16-QA-acceptance-record10-low-20261005",
+  "issued_at_utc": "2026-10-05T19:39:57.171895+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.qa-retained-criteria-documentary-correction",
+  "task": "criteria11-12-16-QA-acceptance-record",
+  "instruction": "Coordinator01a0fe61 comunica aceptación explícitaQA19:38,turn01a10d91-8ff6-7607-ac7e-a2792be3dd68:11/12/16 satisfechos como tareasdeauditoría en alcancefinito acordado,sin requisitoobligatorioconcretopendiente. Actualizar sólo acta/checklist,referenciarQAturn/dictámenesprevios; preservar límites estadosnoobservados/pipelinecompleto,originalvertexausente,filasnoejecutadasnoPASS.19entregaparcial,18abiertoBFS30/29inicio1plain<5s. Verificarconteo. Máximo10min,sinproducto/pruebas/varianteBFS.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/criteria11-12-16-finite-QA-acceptance-acta-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-five-criteria-final-proposal15-low-20261005.json",
+  "QA_result_turn_id": "01a10d91-8ff6-7607-ac7e-a2792be3dd68",
+  "QA_result_time_as_reported": "2026-10-05 19:38",
+  "only_authorized_acceptances": [
+    11,
+    12,
+    16
+  ]
+}

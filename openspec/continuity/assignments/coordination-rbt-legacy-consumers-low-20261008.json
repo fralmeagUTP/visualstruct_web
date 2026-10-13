@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rbt-legacy-consumers-low-20261008",
+  "issued_at_utc": "2026-10-08T00:44:49.726402+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.rbt-legacy-consumers",
+  "task": "rbt-legacy-consumers",
+  "instruction": "Only three original RN legacy consumers: insertion [10,5]+1 and two deletion [7,3,18,10,22,8,11,26]-3 consumers. Reproduce all failures, contrast C physical stores and contract before minimal consumer fixes. Strict focal memory/source/branch/rotation controls, preserve accepted27 and pending10 incl shared function bytes. No engine edits without demonstrated defect and coordination; no formalQA substitution, denied records/retry, publication/global/E2E/optimization/expansion.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/rbt-legacy-consumers-low.md"
+}

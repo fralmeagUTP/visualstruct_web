@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-radix-budget-low-20261002",
+  "issued_at_utc": "2026-10-02T22:48:54.303160+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.radix-budget-low",
+  "task": "LOW Radix logical budget provenance and bounded resource diagnosis; no test change",
+  "instruction": "Revisar LOW origen y contrato del presupuesto Radix <5000 sin cambiar prueba ni reducir trazas. Separar pasos lógicos/materializados, comprobar límites/memoria/páginas/rendimiento en UI1..80/int32, proponer resolución fundada. Conservar original/evidencia, diez cierres y preview; sin cierre oculto/push/merge/deploy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-budget-review-authorized-low.md"
+}

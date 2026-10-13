@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-dfs-errors-readonly15-low-20261006",
+  "issued_at_utc": "2026-10-06T01:00:24.422553+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.graph-dfs-existing-error-readonly",
+  "task": "graph-dfs-existing-error-readonly",
+  "instruction": "# Diagnóstico documental Graph/DFS sin repetir peticiones\n\nCoordinador01a0fe61-3104-743a-b032-bcc289ad80cd: Burbuja15.8841s permaneceFAIL15,no repetir. Diagnosticar SÓLOlectura trazas/errores/fuentes delbloque16: dóndeMemoryErrorDFS yporquéBF/Dijkstra/Prim/Kruskal60s sólo siesevidencia. Siinsuficiente proponerUNdiagnósticorepresentativodiscriminantecompartido. Diferenciarestado/pedagogía/validación/algoritmoC. Máximo15min,sinnuevaspeticionesniproductchanges/bench/Git/preview. Entregar evidencia/correcciónmínimaposible sinatribuirsinmedir. IndicarbindingQApostadopción40777existente sinmodificarpaquetes. Sólo registrosoperativos/evidenciapropia obligatoria,nooldpackageschanges.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-dfs-errors-readonly15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-sorting-projection-adoption-plain20-low-20261006.json"
+}
