@@ -97,7 +97,7 @@ def _advance_once(page, prefix: str) -> None:
     page.click(next_selector)
 
 
-def _finish_manual_trace(page, prefix: str) -> None:
+def _finish_manual_trace(page, prefix: str, observe=None) -> None:
     """Finish by navigation, checking progress rather than triggering another operation."""
     checkpoint("manual_prepare_start", module=prefix)
     _enable_manual_mode(page, prefix)
@@ -109,6 +109,8 @@ def _finish_manual_trace(page, prefix: str) -> None:
         text = page.text_content(counter) or ""
         match = __import__("re").search(r"Paso:\s*(\d+)\s*/\s*(\d+)", text)
         assert match is not None, text
+        if observe is not None:
+            observe(int(match[1]), int(match[2]))
         if int(match[1]) == int(match[2]):
             assert page.locator(selector).is_disabled()
             checkpoint("manual_finish_end", module=prefix, counter=text)
@@ -499,6 +501,80 @@ def test_playwright_hash_interpreter_controls_workflow() -> None:
             browser.close()
 
 
+def _assert_graph_fixture(state, history, vertices, edges, expected_history, unmarked=False):
+    """Check public logical state and chronological calls, not cached model output."""
+    assert state["structure"] == "graph" and state["directed"] is False
+    assert [node["id"] for node in state["nodes"]] == list(vertices)
+    assert [node["label"] for node in state["nodes"]] == list(vertices)
+    assert [node["value"] for node in state["nodes"]] == list(vertices)
+    assert all(type(edge["weight"]) in (int, float) for edge in state["edges"])
+    assert [(edge["source"], edge["target"], edge["weight"]) for edge in state["edges"]] == [
+        (origin, target, float(weight)) for origin, target, weight in edges
+    ]
+    assert state["weighted"] is any(float(weight) != 1.0 for _, _, weight in edges)
+    assert state["metadata"]["vertices_count"] == len(vertices)
+    assert state["metadata"]["edges_count"] == len(edges)
+    assert state["metadata"]["is_empty"] is (not vertices)
+    if unmarked:
+        assert all(node["marked"] == 0 for node in state["nodes"])
+    assert len(history) == len(expected_history)
+    assert [{"operation": step["operation"], "payload": step["payload"]} for step in history] == expected_history
+
+
+def _seed_graph_via_public_api(page, base_url, vertices, edges):
+    """Same browser session, same calls/data/order; construction UI clicks are not tested."""
+    initial = page.evaluate("() => window.GRAPH_VIEW_MODEL")
+    _assert_graph_fixture(initial["visual_state"], initial["history"], [], [], [], unmarked=True)
+    history, inserted_vertices, inserted_edges = [], [], []
+    operations = [("insert_vertex", {"vertex": vertex}) for vertex in vertices]
+    operations += [("insert_edge", {"origin": origin, "target": target, "weight": weight})
+                   for origin, target, weight in edges]
+    for operation, payload in operations:
+        # page.request shares the BrowserContext cookie jar; no private model/session injection.
+        response = page.request.post(base_url + "/graph/graph/operate",
+                                     data={"operation": operation, "payload": payload})
+        assert response.status == 200
+        data = response.json()
+        assert data["success"] is True
+        history.append({"operation": operation, "payload": dict(payload)})
+        if operation == "insert_vertex":
+            inserted_vertices.append(payload["vertex"])
+        else:
+            inserted_edges.append((payload["origin"], payload["target"], payload["weight"]))
+        _assert_graph_fixture(data["visual_state"], data["history"],
+                              inserted_vertices, inserted_edges, history, unmarked=True)
+        response.dispose()
+    assert len(operations) == len(vertices) + len(edges)
+    page.reload(wait_until="networkidle")
+    restored = page.evaluate("() => window.GRAPH_VIEW_MODEL")
+    _assert_graph_fixture(restored["visual_state"], restored["history"], vertices, edges, history, unmarked=True)
+    _wait_didactic_mode(page, "full")
+    return history
+
+
+def _graph_operate_response(response):
+    return response.request.method == "POST" and response.url.split("?", 1)[0].endswith("/graph/graph/operate")
+
+
+def _sorting_frame_observation(page):
+    """Observe rendered frame and live/released views without changing the cursor."""
+    return page.evaluate("""() => ({
+      text: document.querySelector('#sorting-strategy-view')?.textContent || '',
+      stack: document.querySelector('#sorting-call-stack')?.textContent || '',
+      variables: Array.from(document.querySelectorAll('#sorting-variable-table tr td:first-child'),
+                            node => node.textContent.trim()),
+      countLive: !!document.querySelector('#sorting-strategy-view [data-count-live="true"]'),
+      countReleased: !!document.querySelector('#sorting-strategy-view [data-count-live="false"]'),
+      countCells: document.querySelectorAll('#sorting-strategy-view [data-count-index]').length,
+      heapChildren: !!document.querySelector('#sorting-strategy-view [data-children]:not([data-children=""])'),
+      heapN: document.querySelector('#sorting-strategy-view [data-heap-n]')?.getAttribute('data-heap-n'),
+      suffixCount: document.querySelectorAll('#sorting-strategy-view [data-suffix-index]').length,
+      radixLive: !!document.querySelector('#sorting-strategy-view [data-radix-buffer][data-live="true"]'),
+      radixCells: document.querySelectorAll('#sorting-strategy-view [data-radix-index]').length,
+      radixCounts: !!document.querySelector('#sorting-strategy-view [data-radix-counts]')
+    })""")
+
+
 def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
     """Execute operation reaches each graph algorithm's final canonical state."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
@@ -508,35 +584,40 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
 
-            # 1) Build a base graph in construction phase.
+            # Fixture only: the omitted construction clicks are not UI evidence.
             page.goto(f"{base_url}/graph/graph/construccion", wait_until="networkidle")
             page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
-            for value in ["1", "2", "3", "4"]:
-                page.select_option("#graph-operation-select", "insert_vertex")
-                page.wait_for_selector("#g-op-field-vertex", timeout=5000)
-                page.fill("#g-op-field-vertex", value)
-                _enable_manual_mode(page, "graph")
-                page.click("#graph-sim-play")
-                _wait_graph_mutation_final(page, "vertice")
+            vertices = ["1", "2", "3", "4"]
+            edges = [("1", "2", "3"), ("2", "3", "2"), ("3", "4", "4"), ("1", "4", "15")]
+            expected_history = _seed_graph_via_public_api(page, base_url, vertices, edges)
+            assert len(expected_history) == 8
+            ui_requests = []
 
-            for origin, target, weight in [("1", "2", "3"), ("2", "3", "2"), ("3", "4", "4"), ("1", "4", "15")]:
-                page.select_option("#graph-operation-select", "insert_edge")
-                page.wait_for_selector("#g-op-field-origin", timeout=5000)
-                page.fill("#g-op-field-origin", origin)
-                page.fill("#g-op-field-target", target)
-                page.fill("#g-op-field-weight", weight)
-                _enable_manual_mode(page, "graph")
-                page.click("#graph-sim-play")
-                _wait_graph_mutation_final(page, "arista")
+            def record_ui_operation(request):
+                if request.method == "POST" and request.url.split("?", 1)[0].endswith("/graph/graph/operate"):
+                    ui_requests.append(request.post_data_json)
+
+            page.on("request", record_ui_operation)
 
             # 2) Traversals phase (BFS), executed to the final frame.
             page.goto(f"{base_url}/graph/graph/recorridos", wait_until="networkidle")
             page.select_option("#graph-algorithm-select", "run_bfs")
             page.fill("#g-alg-field-start", "1")
             _enable_manual_mode(page, "graph")
-            page.click("#graph-sim-play")
+            with page.expect_response(_graph_operate_response) as operation_response:
+                page.click("#graph-sim-play")
             _finish_manual_trace(page, "graph")
+            result_response = operation_response.value
+            assert result_response.status == 200
+            result_data = result_response.json()
+            assert result_data["success"] is True
+            expected_history.append({'operation': 'run_bfs', 'payload': {'start': '1'}})
+            assert ui_requests == expected_history[8:]
+            _assert_graph_fixture(result_data["visual_state"], result_data["history"],
+                                  vertices, edges, expected_history)
+            _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
+                                  result_data["history"], vertices, edges, expected_history)
             _wait_status_contains(page, "#graph-message-box", "BFS")
             result_text = page.text_content("#graph-visual-state") or ""
             assert ("Recorrido" in result_text) or ("BFS" in result_text)
@@ -547,8 +628,19 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
             page.fill("#g-alg-field-start", "1")
             page.fill("#g-alg-field-end", "4")
             _enable_manual_mode(page, "graph")
-            page.click("#graph-sim-play")
+            with page.expect_response(_graph_operate_response) as operation_response:
+                page.click("#graph-sim-play")
             _finish_manual_trace(page, "graph")
+            result_response = operation_response.value
+            assert result_response.status == 200
+            result_data = result_response.json()
+            assert result_data["success"] is True
+            expected_history.append({'operation': 'run_dijkstra', 'payload': {'start': '1', 'end': '4'}})
+            assert ui_requests == expected_history[8:]
+            _assert_graph_fixture(result_data["visual_state"], result_data["history"],
+                                  vertices, edges, expected_history)
+            _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
+                                  result_data["history"], vertices, edges, expected_history)
             _wait_status_contains(page, "#graph-message-box", "Dijkstra")
 
             # 4) MST phase (Prim).
@@ -556,10 +648,23 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
             page.select_option("#graph-algorithm-select", "run_prim")
             page.fill("#g-alg-field-start", "1")
             _enable_manual_mode(page, "graph")
-            page.click("#graph-sim-play")
+            with page.expect_response(_graph_operate_response) as operation_response:
+                page.click("#graph-sim-play")
             _finish_manual_trace(page, "graph")
+            result_response = operation_response.value
+            assert result_response.status == 200
+            result_data = result_response.json()
+            assert result_data["success"] is True
+            expected_history.append({'operation': 'run_prim', 'payload': {'start': '1'}})
+            assert ui_requests == expected_history[8:]
+            _assert_graph_fixture(result_data["visual_state"], result_data["history"],
+                                  vertices, edges, expected_history)
+            _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
+                                  result_data["history"], vertices, edges, expected_history)
             _wait_status_contains(page, "#graph-message-box", "Prim")
 
+            assert len(expected_history) == 11
+            page.remove_listener("request", record_ui_operation)
             browser.close()
 
 
@@ -576,14 +681,6 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
             page.locator('label[for="didactic-mode-switch"]').click()
             _wait_didactic_mode(page, "full")
 
-            for value in [str(v) for v in range(1, 9)]:
-                page.select_option("#graph-operation-select", "insert_vertex")
-                page.wait_for_selector("#g-op-field-vertex", timeout=5000)
-                page.fill("#g-op-field-vertex", value)
-                _enable_manual_mode(page, "graph")
-                page.click("#graph-sim-play")
-                _wait_graph_mutation_final(page, "vertice")
-
             ring_edges = [
                 ("1", "2", "4"),
                 ("2", "3", "7"),
@@ -596,15 +693,40 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
             ]
             extra_edges = [("1", "6", "11"), ("2", "7", "12"), ("3", "8", "13")]
 
-            for origin, target, weight in ring_edges + extra_edges:
-                page.select_option("#graph-operation-select", "insert_edge")
-                page.wait_for_selector("#g-op-field-origin", timeout=5000)
-                page.fill("#g-op-field-origin", origin)
-                page.fill("#g-op-field-target", target)
-                page.fill("#g-op-field-weight", weight)
-                _enable_manual_mode(page, "graph")
+            vertices = [str(v) for v in range(1, 9)]
+            edges = ring_edges + extra_edges
+            expected_history = _seed_graph_via_public_api(page, base_url, vertices, edges[:-1])
+            assert len(expected_history) == 18
+            ui_requests = []
+
+            def record_ui_operation(request):
+                if request.method == "POST" and request.url.split("?", 1)[0].endswith("/graph/graph/operate"):
+                    ui_requests.append(request.post_data_json)
+
+            page.on("request", record_ui_operation)
+            origin, target, weight = edges[-1]
+            page.select_option("#graph-operation-select", "insert_edge")
+            page.wait_for_selector("#g-op-field-origin", timeout=5000)
+            page.fill("#g-op-field-origin", origin)
+            page.fill("#g-op-field-target", target)
+            page.fill("#g-op-field-weight", weight)
+            _enable_manual_mode(page, "graph")
+            with page.expect_response(_graph_operate_response) as operation_response:
                 page.click("#graph-sim-play")
-                _wait_graph_mutation_final(page, "arista")
+            _wait_graph_mutation_final(page, "arista")
+            result_response = operation_response.value
+            assert result_response.status == 200
+            result_data = result_response.json()
+            assert result_data["success"] is True
+            expected_history.append({"operation": "insert_edge", "payload": {
+                "origin": origin, "target": target, "weight": weight}})
+            assert len(expected_history) == 19
+            assert ui_requests == expected_history[18:]
+            _assert_graph_fixture(result_data["visual_state"], result_data["history"],
+                                  vertices, edges, expected_history)
+            _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
+                                  result_data["history"], vertices, edges, expected_history)
+            # JS export observes geometry/format/size, not the download button or pixel equality.
 
             result_text = page.text_content("#graph-visual-state") or ""
             assert "Vértices" in result_text
@@ -646,6 +768,7 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
             assert str(export_meta["exported"]["dataPrefix"]).startswith("data:image/jpeg;base64,")
             assert int(export_meta["exported"]["dataLength"]) > 5000
 
+            page.remove_listener("request", record_ui_operation)
             browser.close()
 
 
@@ -930,41 +1053,93 @@ def test_playwright_sorting_compact_workspace_omits_removed_learning_widgets() -
 
 
 def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
-    """Representative algorithm families must expose distinct visual strategies."""
+    """Observe distinct real C families while live, then enforce ended scopes."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
     with _live_server_url() as base_url:
         with playwright_mod.sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(viewport={"width": 1280, "height": 900})
             page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
-            page.fill("#sorting-manual-values", "5,-3,0,2,1")
-            page.click("#sorting-create-array")
-            _wait_status_contains(page, "#sorting-message-box", "Arreglo creado")
-            assert page.locator(".sorting-zero-axis").count() == 5
-            assert page.locator(".sorting-item-bar.is-negative").count() == 1
-            assert page.locator(".sorting-item-bar.is-zero").count() == 1
             expected = {
                 "seleccion": "Mínimo provisional",
                 "insercion": "Clave:",
                 "burbuja": "Pasada:",
-                "shell": "Intervalo (gap)",
-                "quicksort": "Subproblema activo",
-                "mergesort": "División/fusión activa",
+                "shell": "Intervalo:",
+                "quicksort": "Pivote local:",
+                "mergesort": "Division/fusion activa",
                 "heapsort": "hijos:",
                 "counting_sort": "Frecuencias",
-                "binsort": "Urnas",
-                "radixsort": "Dígito activo",
+                "binsort": "Frecuencias",  # The real C wrapper delegates Counting; no invented urnas.
+                "radixsort": "Magnitudes uint32_t",
             }
+            local_names = {
+                "seleccion": {"i", "j", "indice_menor"},
+                "insercion": {"i", "j", "clave"},
+                "burbuja": {"i", "j", "hubo_intercambio"},
+                "shell": {"intervalo", "i", "j", "temporal"},
+                "quicksort": {"primero", "ultimo", "i", "j", "pivote"},
+                "mergesort": {"izquierda", "medio", "derecha", "i", "j", "k"},
+                "heapsort": {"i", "raiz", "mayor", "izquierdo", "derecho"},
+                "counting_sort": {"minimo", "maximo", "rango", "i", "indice"},
+                "binsort": {"minimo", "maximo", "rango", "i", "indice"},
+                "radixsort": {"i", "indice", "maximo", "exp", "magnitud", "valor", "digito"},
+            }
+            assert len(expected) == 10
             for algorithm, marker in expected.items():
+                # Every family receives the original mixed input, not its predecessor's sorted array.
+                page.fill("#sorting-manual-values", "5,-3,0,2,1")
+                page.click("#sorting-create-array")
+                _wait_status_contains(page, "#sorting-message-box", "Arreglo creado")
+                assert page.locator(".sorting-zero-axis").count() == 5
+                assert page.locator(".sorting-item-bar.is-negative").count() == 1
+                assert page.locator(".sorting-item-bar.is-zero").count() == 1
+                assert [int(text.split("]", 1)[1]) for text in page.locator(".sorting-item-label").all_text_contents()] == [5, -3, 0, 2, 1]
                 page.select_option("#sorting-algorithm", algorithm)
                 _enable_manual_mode(page, "sorting")
+                seen = {"family": False, "active_scope": False, "countLive": False,
+                        "heapChildren": False, "radixLive": False, "radixCounts": False,
+                        "cursor": None, "total": None}
+
+                def observe_frame(current, total):
+                    if seen["cursor"] is None:
+                        assert current == 0
+                        seen["total"] = total
+                    else:
+                        assert current == seen["cursor"] + 1 and total == seen["total"]
+                    seen["cursor"] = current
+                    frame = _sorting_frame_observation(page)
+                    active = bool(frame["stack"].strip()) and "Sin llamadas activas." not in frame["stack"]
+                    seen["active_scope"] |= active
+                    seen["family"] |= active and marker in frame["text"]
+                    for field in ("countLive", "heapChildren", "radixLive", "radixCounts"):
+                        seen[field] |= active and frame[field]
+
                 page.click("#sorting-sim-play")
-                _finish_manual_trace(page, "sorting")
-                assert marker in (page.text_content("#sorting-strategy-view") or "")
+                _finish_manual_trace(page, "sorting", observe=observe_frame)
+                assert seen["cursor"] == seen["total"]
+                assert seen["active_scope"] and seen["family"], algorithm
+                page.wait_for_function("() => (document.querySelector('#sorting-call-stack')?.textContent || '').includes('Sin llamadas activas.')")
+                final = _sorting_frame_observation(page)
+                assert "Sin llamadas activas." in final["stack"]
+                assert not (set(final["variables"]) & local_names[algorithm]), algorithm
+                assert [int(text.split("]", 1)[1]) for text in page.locator(".sorting-item-label").all_text_contents()] == [-3, 0, 1, 2, 5]
+                assert page.locator(".sorting-zero-axis").count() == 5
+                assert page.locator(".sorting-item-bar.is-negative").count() == 1
+                assert page.locator(".sorting-item-bar.is-zero").count() == 1
                 if algorithm == "burbuja":
                     strategy = page.text_content("#sorting-strategy-view") or ""
                     assert "Retorno void al caller" in strategy
                     assert "j: —" in strategy and "hubo_intercambio: —" in strategy
+                elif algorithm == "heapsort":
+                    assert seen["heapChildren"]
+                    assert final["heapN"] == "0" and final["suffixCount"] == 5
+                elif algorithm in {"counting_sort", "binsort"}:
+                    assert seen["countLive"]
+                    assert not final["countLive"] and final["countReleased"] and final["countCells"] == 0
+                    assert "Conteo liberado; sin lectura de memoria." in final["text"]
+                elif algorithm == "radixsort":
+                    assert seen["radixLive"] and seen["radixCounts"]
+                    assert not final["radixLive"] and final["radixCells"] == 0 and not final["radixCounts"]
             browser.close()
 
 
