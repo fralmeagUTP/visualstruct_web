@@ -377,6 +377,8 @@ def sequential_help() -> str:
 @help_bp.get("/sequential/<structure_id>")
 def structure_help(structure_id: str) -> str:
     """Render a specific structure help page."""
+    if not any(item["id"] == structure_id for item in StructureService.list_structures()):
+        abort(404)
     data = HelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template("help/structure.html", help_data=data, structure_id=structure_id)
@@ -393,6 +395,8 @@ def hierarchical_help() -> str:
 @help_bp.get("/hierarchical/<structure_id>")
 def hierarchical_structure_help(structure_id: str) -> str:
     """Render one hierarchical structure help page."""
+    if not any(item["id"] == structure_id for item in HierarchicalStructureService.list_structures()):
+        abort(404)
     data = HierarchicalHelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(
@@ -413,6 +417,8 @@ def graph_help() -> str:
 @help_bp.get("/graph/<structure_id>")
 def graph_structure_help(structure_id: str) -> str:
     """Render one graph structure help page."""
+    if not any(item["id"] == structure_id for item in GraphStructureService.list_structures()):
+        abort(404)
     data = GraphHelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(
@@ -433,6 +439,8 @@ def hash_help() -> str:
 @help_bp.get("/hash/<structure_id>")
 def hash_structure_help(structure_id: str) -> str:
     """Render one hash structure help page."""
+    if not any(item["id"] == structure_id for item in HashStructureService.list_structures()):
+        abort(404)
     data = HashHelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(
@@ -453,6 +461,8 @@ def sorting_help() -> str:
 @help_bp.get("/sorting/<structure_id>")
 def sorting_structure_help(structure_id: str) -> str:
     """Render one sorting structure help page."""
+    if not any(item["id"] == structure_id for item in SortingStructureService.list_structures()):
+        abort(404)
     data = SortingHelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(

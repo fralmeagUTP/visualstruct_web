@@ -42,10 +42,6 @@ def test_unknown_public_structures_return_not_found(client, path: str) -> None:
     assert client.get(path).status_code == 404
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="QA-ROUTE-HELP-UNKNOWN: las rutas de ayuda aceptan estructuras inexistentes en vez de responder 404.",
-)
 @pytest.mark.parametrize(
     "path",
     [
@@ -56,7 +52,7 @@ def test_unknown_public_structures_return_not_found(client, path: str) -> None:
     ],
 )
 def test_unknown_structure_help_routes_must_return_not_found(client, path: str) -> None:
-    """Known defect: help routes need the same structure validation as visual routes."""
+    """Unregistered help identifiers return a controlled 404."""
     assert client.get(path).status_code == 404
 
 
