@@ -7,8 +7,9 @@ from _sorting_source_oracle import assert_sorting_source_trace
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-mapping-consumers-low/positive-fixtures.json"
 VALUES=[5,-1,4,2,2,0]
 
+from scripts.published_test_inputs import audit_input_path
 def trace(algorithm):
-    caps=json.loads(P.read_text(encoding="utf-8"));key="tests/test_phase7_trace_contract_remediation.py::test_merge_and_bin_frames_all_map_to_real_c_lines["+algorithm+"]"
+    caps=json.loads(audit_input_path(P).read_text(encoding="utf-8"));key="tests/test_phase7_trace_contract_remediation.py::test_merge_and_bin_frames_all_map_to_real_c_lines["+algorithm+"]"
     return deepcopy(caps[key][0])
 
 @pytest.mark.parametrize("algorithm",("mergesort","binsort"))

@@ -7,10 +7,11 @@ from _linked_list_console_oracle import assert_lista_console
 
 FIXTURES = Path(__file__).resolve().parents[1] / "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-linked-list-console-consumers-low/console-reopen/positive-fixtures.json"
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize("operation", ["buscar_elemento", "eliminar_repetidos"])
 @pytest.mark.parametrize("mutation", [None, "truncate", "duplicate", "late", "missing", "wrong_source", "leading"])
 def test_exact_console_controls(operation, mutation):
-    steps = deepcopy(json.loads(FIXTURES.read_text(encoding="utf-8"))[operation])
+    steps = deepcopy(json.loads(audit_input_path(FIXTURES).read_text(encoding="utf-8"))[operation])
     emitted = next(s for s in steps if s.get("console"))
     if mutation == "truncate": emitted["console"][0] = emitted["console"][0].rstrip("\n")
     elif mutation == "duplicate": emitted["console"] *= 2

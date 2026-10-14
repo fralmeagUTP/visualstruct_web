@@ -10,9 +10,10 @@ CASES=[('singleton-initial',0),('child-middle-distinct',1)]
 def meta(case):
  if case[1]==0:return {'seed':[(7,[3])],'operation':'eliminar_padre','payload':{'parent':7},'expected':[]}
  return {'seed':[(7,[3,4,5])],'operation':'eliminar_hijo','payload':{'parent':7,'child':4},'expected':[{'parent':7,'children':[3,5]}]}
+from scripts.published_test_inputs import audit_input_path
 def compare(data,case):
- binding=json.loads((E/'source-bindings.json').read_text(encoding='utf-8'));assert hashlib.sha256((R/'docs/tads_C/tad_sublista.c').read_bytes()).hexdigest()==binding['tad_sublista.c']
- events=[x for x in json.loads((E/'sublist-two-events.json').read_text(encoding='utf-8')) if x['case']==case[1]];fs=data['execution_trace']['steps'];mapping={0:'NULL',1:'P1',2:'H1.1',3:'H1.2',4:'H1.3'};cursor=0
+ binding=json.loads((audit_input_path(E/'source-bindings.json')).read_text(encoding='utf-8'));assert hashlib.sha256((audit_input_path(R/'docs/tads_C/tad_sublista.c')).read_bytes()).hexdigest()==binding['tad_sublista.c']
+ events=[x for x in json.loads((audit_input_path(E/'sublist-two-events.json')).read_text(encoding='utf-8')) if x['case']==case[1]];fs=data['execution_trace']['steps'];mapping={0:'NULL',1:'P1',2:'H1.1',3:'H1.2',4:'H1.3'};cursor=0
  for event in events:
   if event['line']=='FINAL':continue
   indices=[i for i in range(cursor,len(fs)) if fs[i]['line_text'].strip()==event['line']];assert indices;index=indices[0];cursor=index+1;f=fs[index];m=f['pedagogy']['memory_state'];expected=[]
@@ -59,9 +60,10 @@ def test_required_allocation_failure_C_API(residual58_client,residual58_app,monk
  (tmp_path/'allocation-failure-proof.json').write_text(json.dumps(proof,indent=2),encoding='utf-8')
  assert conforms,proof
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('case',CASES,ids=lambda x:x[0])
 def test_new_required_sublist_C_API_animation(controls40_page,tmp_path,case):
- page,context,base=controls40_page;source=(R/'tests/_audit_hash_query_medium_browser.py').read_text(encoding='utf-8-sig');page.add_init_script(source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__sub'))
+ page,context,base=controls40_page;source=(audit_input_path(R/'tests/_audit_hash_query_medium_browser.py')).read_text(encoding='utf-8-sig');page.add_init_script(source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__sub'))
  errors=[];posts=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:posts.append(r.url) if r.method=='POST' and '/operate' in r.url else None)
  m=meta(case)
  for parent,children in m['seed']:

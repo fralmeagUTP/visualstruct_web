@@ -3,8 +3,9 @@ from pathlib import Path
 import json,hashlib,re
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-queue-limpiar-baseline-completion-low'
 M=E.parent/'visible-priority-queue-limpiar-instructions-medium'
-if (M/'caller-ownership/report.json').exists():E=M
-def read(name):return json.loads((E/name).read_text(encoding='utf-8-sig'))
+from scripts.published_test_inputs import audit_input_path
+if (audit_input_path(M/'caller-ownership/report.json')).exists():E=M
+def read(name):return json.loads((audit_input_path(E/name)).read_text(encoding='utf-8-sig'))
 def test_eight_actions_both_views_reverse_exact_no_redispatch_and_five_sections():
  rows=read('browser/report.json');assert len(rows)==4 and sum(r['actions'] for r in rows)==8
  assert sum(r['forward_same_trace_two_views'] for r in rows)==(296 if E==M else 280) and sum(r['back_same_trace_two_views'] for r in rows)==(280 if E==M else 264)
@@ -14,8 +15,8 @@ def test_reload_keeps_exact_prepared_cleanup_trace():
 def test_four_actual_DOM_mains_C17_repeated_clear_ownership_balanced():
  rows=read('caller-ownership/report.json');assert len(rows)==4 and sum(r['alloc_free_live'][0] for r in rows)==sum(r['alloc_free_live'][1] for r in rows)==8
  for r in rows:
-  p=E/'actual-callers'/r['case']/'main.c';assert r['strict_C17_original'] and r['DOM_body_unchanged'] and hashlib.sha256(p.read_bytes()).hexdigest()==r['sha256']
-  assert len(re.findall(r'^    cp_vaciar\(&cp\);$',p.read_text(encoding='utf-8-sig'),re.M))==2 and r['alloc_free_live'][2]==0
+  p=E/'actual-callers'/r['case']/'main.c';assert r['strict_C17_original'] and r['DOM_body_unchanged'] and hashlib.sha256(audit_input_path(p).read_bytes()).hexdigest()==r['sha256']
+  assert len(re.findall(r'^    cp_vaciar\(&cp\);$',audit_input_path(p).read_text(encoding='utf-8-sig'),re.M))==2 and r['alloc_free_live'][2]==0
  assert sum(len(r['NULL_faults']) for r in rows)==8
  assert all(f['alloc_free_live'][0]==f['alloc_free_live'][1] and f['alloc_free_live'][2]==0 for r in rows for f in r['NULL_faults'])
 def test_caller_failed_allocation_returns_failure_without_false_applied():

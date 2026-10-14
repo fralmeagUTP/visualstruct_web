@@ -4,8 +4,9 @@ import json
 import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-stack-apilar-baseline-low'
 M=E.parent/'visible-stack-apilar-instructions-medium'
-if (M/'caller-ownership/report.json').exists():E=M
-def read(name):return json.loads((E/name).read_text(encoding='utf-8-sig'))
+from scripts.published_test_inputs import audit_input_path
+if (audit_input_path(M/'caller-ownership/report.json')).exists():E=M
+def read(name):return json.loads((audit_input_path(E/name)).read_text(encoding='utf-8-sig'))
 def rows():return read('report.json')
 def sample():return next(r for r in rows() if r['case']=='empty' and r['repeat']==1)
 def frame(line):
@@ -24,7 +25,7 @@ def test_safe_native_guards_faults_partial_masks_and_lifetimes():
  faults=[n for n in ns if n['event']=='allocator_NULL_return'];assert len(faults)==5
  for sid in [r['native_sample'] for r in rows()]:
   events=[n for n in ns if n['sample']==sid];aid=next(n for n in events if n['event']=='aux_allocated')['aux_id'];assert [next(h['mask'] for h in n['live'] if h['id']==aid) for n in events if n['event'] in ['aux_allocated','value_assigned','link_assigned']]==[0,1,3]
- assert 'OWNERSHIP 12 12 0' in (E/'native/stderr.log').read_text(encoding='utf-8')
+ assert 'OWNERSHIP 12 12 0' in (audit_input_path(E/'native/stderr.log')).read_text(encoding='utf-8')
 def test_p_is_pointer_to_caller_storage_not_top_node_or_NULL():
  p=pointer(frame('if (p == NULL) {'),'p');assert p['type']=='ptrPila *' and p['target'] and p.get('valid') is True and p.get('scope')=='pila_apilar'
 def test_valid_empty_root_guard_never_substitutes_NULL_equal_NULL():

@@ -7,6 +7,7 @@ from test_controls40_real_flows import controls40_page
 from test_allocation_transport_fix import UI_FAULTS
 R=Path(__file__).resolve().parents[1]
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('fault',UI_FAULTS,ids=lambda x:x[0])
 def test_fast_error_equals_cached_replay_without_new_objects(controls40_page,monkeypatch,tmp_path,fault):
  page,context,base=controls40_page;name,family,operation,payload,module,class_name,field=fault

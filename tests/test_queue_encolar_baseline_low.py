@@ -3,7 +3,8 @@ from pathlib import Path
 import json
 import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-queue-encolar-instructions-medium'
-def read(n):return json.loads((E/n).read_text(encoding='utf-8-sig'))
+from scripts.published_test_inputs import audit_input_path
+def read(n):return json.loads((audit_input_path(E/n)).read_text(encoding='utf-8-sig'))
 def sample():return read('report.json')[0]
 def frame(token):
  fs=sample()['data']['execution_trace']['steps']
@@ -22,7 +23,7 @@ def test_safe_native14calls140events35conditions_guard_fault_masks_and_ownership
  assert sum(n['event']=='allocator_NULL_return' for n in ns)==5
  for sid in [r['native_sample'] for r in read('report.json')]:
   events=[n for n in ns if n['sample']==sid];aid=next(n for n in events if n['event']=='aux_allocated')['aux_id'];assert [next(h['mask'] for h in n['live'] if h['id']==aid) for n in events if n['event'] in ['aux_allocated','value_assigned','link_assigned']]==[0,1,3]
- assert 'OWNERSHIP 12 12 0' in (E/'native/stderr.log').read_text(encoding='utf-8-sig')
+ assert 'OWNERSHIP 12 12 0' in (audit_input_path(E/'native/stderr.log')).read_text(encoding='utf-8-sig')
 def test_q_borrows_live_typed_initialized_caller_struct_address():
  p=pointer(frame('if (q == NULL)'), 'q');assert p['type']=='struct Cola *' and p['target']=='&cola' and p.get('scope')=='cola_encolar' and p.get('initialized') is True and p.get('valid') is True
 

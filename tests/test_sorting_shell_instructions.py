@@ -12,9 +12,10 @@ E=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-cont
 def observed(tmp_path_factory):
  out=tmp_path_factory.mktemp('shell-instructions');return out,audit(out)
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(CASES))
 def test_every_native_clause_local_lifetime_shortcircuit_group_and_source(case,observed):
- out,r=observed;d=json.loads((out/(case+'.json')).read_text(encoding='utf-8'));trace=d['response']['execution_trace'];steps=trace['steps'];native=d['native'];n=len(CASES[case]);previous={}
+ out,r=observed;d=json.loads((audit_input_path(out/(case+'.json'))).read_text(encoding='utf-8'));trace=d['response']['execution_trace'];steps=trace['steps'];native=d['native'];n=len(CASES[case]);previous={}
  assert r['instruction_fidelity'] and len(steps)==len(native)
  for idx,(step,c) in enumerate(zip(steps,native)):
   event=c['event'];token=event['token'];frame=step['pedagogy'];state=step['state_after'];context=state['shell_context'];variables={v['name']:v for v in frame['variables']}
@@ -61,23 +62,23 @@ def test_every_native_clause_local_lifetime_shortcircuit_group_and_source(case,o
 
 @pytest.mark.parametrize('case',list(CASES))
 def test_actual_UI_complete_replay_numeric_gap_locals_and_real_C_callers(case):
- r=json.loads((E/'browser-first/report.json').read_text(encoding='utf-8'));row=next(x for x in r['rows'] if x['case']==case)
+ r=json.loads((audit_input_path(E/'browser-first/report.json')).read_text(encoding='utf-8'));row=next(x for x in r['rows'] if x['case']==case)
  assert row['forward_reverse_restorations']==2*row['instructions'] and row['replay_extra_POSTs']==0 and row['page_errors']==[]
  assert row['gap_indices_temporal_scope_match_C'] and row['fast_to_step_preserved'] and row['technical_views_visible'] and row['five_stages'] and row['actual_main_elements']==1 and row['reload_main_preserved']
  assert row['caller']['strict_C17'] and row['caller']['doxygen_warnings']==0 and row['caller']['arrays']==[CASES[case],sorted(CASES[case])]
  assert row['caller']['allocations']==row['caller']['frees']==row['caller']['live']==0 and r['empty_UI_rejected'] and r['empty_caller']['successful_native_runs']==0
- d=json.loads((E/'browser-first'/(case+'.json')).read_text(encoding='utf-8'))
+ d=json.loads((audit_input_path(E/'browser-first'/(case+'.json'))).read_text(encoding='utf-8'))
  for capture in d['captures']:
   variables=d['response']['execution_trace']['steps'][capture['cursor']]['pedagogy']['variables']
   assert all(var['scope'] in cells[3] for var,cells in zip(variables,capture['shown']['variables']))
 
 def test_original_regressions_oracle_bytes_and_four_closed_modules_unchanged():
  import hashlib
- assert (ROOT/'tests/test_sorting_shell_baseline_low.py').read_bytes()==(E/'before/tests/test_sorting_shell_baseline_low.py').read_bytes()
+ assert (audit_input_path(ROOT/'tests/test_sorting_shell_baseline_low.py')).read_bytes()==(audit_input_path(E/'before/tests/test_sorting_shell_baseline_low.py')).read_bytes()
  baseline=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-shell-baseline-low/native-current'
- for name in ['observed.c','native.jsonl','tad_ordenamiento.c','tad_ordenamiento.h']:assert (E/'native-first'/name).read_bytes()==(baseline/name).read_bytes()
- h=json.loads((ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-burbuja-instructions/implementation-hashes.json').read_text(encoding='utf-8'))['files']
- for rel in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py','app/domain/sorting/insercion_instructions.py','app/domain/sorting/burbuja_instructions.py']:assert hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()==h[rel]
+ for name in ['observed.c','native.jsonl','tad_ordenamiento.c','tad_ordenamiento.h']:assert (audit_input_path(E/'native-first'/name)).read_bytes()==(audit_input_path(baseline/name)).read_bytes()
+ h=json.loads((audit_input_path(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-burbuja-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
+ for rel in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py','app/domain/sorting/insercion_instructions.py','app/domain/sorting/burbuja_instructions.py']:assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==h[rel]
 
 def test_existing_step_API_preserves_input_and_readonly_history():
  c=create_app().test_client();c.post('/api/ordenamiento/create-array',json={'values':[4,3,2,1]});run=c.post('/api/ordenamiento/run',json={'algorithm_id':'shell','mode':'fast'}).get_json()

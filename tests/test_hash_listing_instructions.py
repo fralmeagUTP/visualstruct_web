@@ -4,12 +4,13 @@ from pathlib import Path
 from tests.test_hash_listings_baseline_low import setup
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-listings-instructions-medium'
 
+from scripts.published_test_inputs import audit_input_path
 def test_C_observer_writes_counters_guards_and_types():
- rows=json.loads((E/'native-observer-report.json').read_text(encoding='utf-8'))
+ rows=json.loads((audit_input_path(E/'native-observer-report.json')).read_text(encoding='utf-8'))
  assert len(rows)==39 and sum(r['matched_native_events'] for r in rows)==352
  assert sum(r['matched_full_instruction_events'] for r in rows)==2953
  assert all(r['final_bytes_match'] and r['allocations']==r['frees']==0 for r in rows)
- assert 'default:0)' in (E/'native-observer/observer.c').read_text(encoding='utf-8')
+ assert 'default:0)' in (audit_input_path(E/'native-observer/observer.c')).read_text(encoding='utf-8')
 
 def test_scoped_formatter_storage_aliases_and_no_kernel_console(client):
  setup(client,'mixed')

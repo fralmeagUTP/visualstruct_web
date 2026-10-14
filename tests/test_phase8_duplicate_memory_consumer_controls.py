@@ -6,7 +6,8 @@ from _phase8_duplicate_memory_consumer_oracle import assert_duplicate_sublist,as
 from _rbt_legacy_consumer_oracle import assert_rbt_consumer
 ROOT=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-phase8-duplicates-consumer-low"
 FILES={"stack":"duplicates-final-1-call-1-stack-apilar-service.json","sublist":"duplicates-final-1-call-5-sublist-insertar_padre-service.json","mergesort":"duplicates-final-1-call-9-sorting_array-run-service.json","RN":"duplicates-final-1-call-12-red_black-insertar-service.json"}
-def load(case):return json.loads((ROOT/FILES[case]).read_text(encoding="utf-8"))
+from scripts.published_test_inputs import audit_input_path
+def load(case):return json.loads((audit_input_path(ROOT/FILES[case])).read_text(encoding="utf-8"))
 def check(case,body):
     if case=="stack":assert_empty_stack_push_memory(body,7)
     elif case=="sublist":assert_duplicate_sublist(body)

@@ -4,6 +4,7 @@ import pytest
 from test_controls40_real_flows import controls40_page
 from test_residual58_focal_cases import residual58_app
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('activation',['click','keyboard'])
 def test_graph_main_actual_activation(controls40_page,tmp_path:Path,activation:str)->None:
  page,context,base=controls40_page;page.goto(base+'/graph/graph',wait_until='networkidle');loc=page.locator('main a[href="/help/source/graph/main"].link')

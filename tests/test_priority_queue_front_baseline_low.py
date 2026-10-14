@@ -7,7 +7,8 @@ import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-queue-front-instructions-medium'
 CASES=['front','interior','rear','equal-front','equal-interior','several-updates','single','empty']
 NORMAL=CASES[:-1]
-def read(name):return json.loads((E/name).read_text(encoding='utf-8-sig'))
+from scripts.published_test_inputs import audit_input_path
+def read(name):return json.loads((audit_input_path(E/name)).read_text(encoding='utf-8-sig'))
 @cache
 def data(name):
     from app import create_app
@@ -113,7 +114,7 @@ def test_raw_Python_front_matches_defined_private_C_guard_and_output_contract(na
     assert all(y['console']==[] for y in trace['steps'])
 
 def test_new_native_private_observer_proves_const_types_readonly_and_no_target_allocation():
-    r=read('new-native-gap-report.json');assert r['calls']==7 and r['events']==49 and r['conditions']==11 and r['signature_types_C17'] and r['ownership']=='OWNERSHIP 6 6 0';events=[json.loads(x) for x in (E/'new-native-gaps/events.jsonl').read_text().splitlines()]
+    r=read('new-native-gap-report.json');assert r['calls']==7 and r['events']==49 and r['conditions']==11 and r['signature_types_C17'] and r['ownership']=='OWNERSHIP 6 6 0';events=[json.loads(x) for x in (audit_input_path(E/'new-native-gaps/events.jsonl')).read_text().splitlines()]
     for sample in range(7):
         rows=[x for x in events if x['sample']==sample];first=rows[0];assert all((x['items'],x['count'],x['front'],x['rear'],x['heap'])==(first['items'],first['count'],first['front'],first['rear'],first['heap']) for x in rows)
         if sample<5:assert rows[-1]['return']==0 and not rows[-1]['value_written'] and not rows[-1]['priority_written']

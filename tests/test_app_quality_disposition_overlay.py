@@ -3,6 +3,7 @@ from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
+from scripts.published_test_inputs import recorded_input_root, audit_input_path
 import pytest
 from scripts.app_quality_disposition_overlay import apply_disposition_overlay, inventory_identity
 from scripts.build_app_quality_inventory import validate_executable_bindings, validate_inventory
@@ -21,7 +22,7 @@ def registered():
     return inventory, bindings, overlay
 
 def apply(data):
-    return apply_disposition_overlay(*data, project_root=ROOT)
+    return apply_disposition_overlay(*data, project_root=recorded_input_root())
 
 def test_registered_overlay_preserves_originals_and_accounts_every_active_id(registered):
     before = deepcopy(registered)
@@ -64,4 +65,4 @@ def test_overlay_cannot_bypass_executable_or_evidence_gate(registered, corruptio
 
 def test_historical_sources_remain_byte_identical():
     for row in load(BASE / "bindings-disposition-overlay/raw-preservation-after-archive.json"):
-        assert hashlib.sha256((ROOT / row["path"]).read_bytes()).hexdigest() == row["sha256"]
+        assert hashlib.sha256(audit_input_path(ROOT / row["path"]).read_bytes()).hexdigest() == row["sha256"]

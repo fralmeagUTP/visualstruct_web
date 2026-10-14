@@ -7,7 +7,8 @@ from functools import cache
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-queue-desencolar-instructions-medium'
 CASES=['front','interior','rear','equal-front','equal-interior','several-updates','single','empty']
 NORMAL=CASES[:-1]
-def read(name):return json.loads((E/name).read_text(encoding='utf-8'))
+from scripts.published_test_inputs import audit_input_path
+def read(name):return json.loads((audit_input_path(E/name)).read_text(encoding='utf-8'))
 @cache
 def data(name):
     # Fresh isolated API execution: stored reports remain evidence, never the sole product oracle.
@@ -68,7 +69,7 @@ def test_python_C_transcription_matches_defined_native_private_guard_and_counter
     expected=next(x['native_final'] for x in read('new-native-gap-report.json')['cases'] if x['case']==name);assert {'return':result,'items':items,'count':q.cantidad if q else 0,'value':v[0] if v else None,'priority':p[0] if p else None}==expected
 
 def test_new_native_gap_types_safe_lifetimes_and_initialized_output_guards():
-    report=read('new-native-gap-report.json');assert report['calls']==8 and report['ownership']=='OWNERSHIP 7 7 0' and report['signature_types_C17'];events=[json.loads(x) for x in (E/'new-native-gaps/events.jsonl').read_text(encoding='utf-8').splitlines()]
+    report=read('new-native-gap-report.json');assert report['calls']==8 and report['ownership']=='OWNERSHIP 7 7 0' and report['signature_types_C17'];events=[json.loads(x) for x in (audit_input_path(E/'new-native-gaps/events.jsonl')).read_text(encoding='utf-8').splitlines()]
     for sample in range(5):
         rows=[x for x in events if x['sample']==sample];assert rows[-1]['return']==0 and not rows[-1]['value_written'] and not rows[-1]['priority_written'];assert all(x['aliases']==[None]*4 for x in rows)
 @pytest.mark.parametrize('name',['front','rear','single'])

@@ -7,7 +7,8 @@ from test_controls40_real_flows import controls40_page
 from test_queue_intermediate_residual_focal import C_tokens
 R=Path(__file__).resolve().parents[1]
 F=R/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sublist-insertions-review/final/sublist-native0/audit-evidence/native-sublist-visible'
-REVIEW=json.loads((F/'review.json').read_text(encoding='utf-8'))
+from scripts.published_test_inputs import audit_input_path
+REVIEW=json.loads((audit_input_path(F/'review.json')).read_text(encoding='utf-8'))
 CASES=[('parent-empty',17),('parent-tail',0),('child-first',2),('child-tail',1),('delete-empty',19),('parent-head-delete',4),('parent-interior-delete',5),('parent-tail-delete',6),('child-head-delete',8),('child-tail-delete',9),('parent-leaves-unit',23)]
 
 def meta(case):return REVIEW['cases'][case[1]]
@@ -27,7 +28,7 @@ def identities(rows):
  return mapping
 
 def compare(data,case):
- assert C_tokens((F/'downloaded.c').read_bytes())==C_tokens((R/'docs/tads_C/tad_sublista.c').read_bytes())
+ assert C_tokens((audit_input_path(F/'downloaded.c')).read_bytes())==C_tokens((audit_input_path(R/'docs/tads_C/tad_sublista.c')).read_bytes())
  rows=[r for r in REVIEW['rows'] if r['native']['case']==case[1]];mapping=identities(rows);fs=data['execution_trace']['steps'];cursor=0
  for row in rows:
   e=row['native'];matches=[i for i in range(cursor,len(fs)) if fs[i]['line_text'].strip()==e['line']];assert matches,(case,e['line']);i=matches[0];cursor=i+1;f=fs[i];state=f['state_snapshot'] if e['line'].startswith(('if ','while ','return ')) or e['condition'] in {-3,-6} else f['state_after'];expected=[]
@@ -57,9 +58,10 @@ def test_sublist_C_current_API(residual58_client,tmp_path,case):
  seed(residual58_client,case);m=meta(case);response=residual58_client.post('/sequential/sublist/operate',json={'operation':m['operation'],'payload':m['payload']});assert response.status_code==200
  (tmp_path/'sublist-api-proof.json').write_text(json.dumps(compare(response.get_json(),case),indent=2),encoding='utf-8')
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('case',CASES,ids=lambda x:x[0])
 def test_sublist_C_API_animation(controls40_page,tmp_path,case):
- page,context,base=controls40_page;source=(R/'tests/_audit_hash_query_medium_browser.py').read_text(encoding='utf-8-sig');page.add_init_script(source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__sub'))
+ page,context,base=controls40_page;source=(audit_input_path(R/'tests/_audit_hash_query_medium_browser.py')).read_text(encoding='utf-8-sig');page.add_init_script(source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__sub'))
  errors=[];posts=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:posts.append(r.url) if r.method=='POST' and '/operate' in r.url else None)
  m=meta(case)
  for parent,children in m['seed']:

@@ -3,9 +3,10 @@ from pathlib import Path
 import json
 import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-queue-limpiar-baseline-low'
+from scripts.published_test_inputs import audit_input_path
 def rows():
  current=E.parent/'visible-queue-limpiar-instructions-medium/report.json'
- return [r for r in json.loads((current if current.exists() else E/'report.json').read_text(encoding='utf-8')) if 'data' in r]
+ return [r for r in json.loads((audit_input_path(current if current.exists() else E/'report.json')).read_text(encoding='utf-8')) if 'data' in r]
 def multi(): return next(r for r in rows() if r['case']=='multi' and r['repeat']==1)
 def frame(line): return next(f for f in multi()['data']['execution_trace']['steps'] if f['line_text'].strip()==line)
 def pointer(f,name): return next(p for p in f['pedagogy']['pointers'] if p['name']==name)
@@ -16,10 +17,10 @@ def test_finite_final_empty_repeat_reinsert_match_original_C(case):
   assert r['C_API_final_match'] and r['data']['success'] and r['data']['visual_state']['items']==[]
   assert all(x['match'] for x in r['instruction_comparison'])
 def test_native_NULL_guard_and_rear_shadow_never_read_retired_storage():
- ns=json.loads((E/'native-report.json').read_text());assert len(ns)==92 and len({n['sample'] for n in ns})==9
+ ns=json.loads((audit_input_path(E/'native-report.json')).read_text());assert len(ns)==92 and len({n['sample'] for n in ns})==9
  null=[n for n in ns if n['root_argument_NULL']];assert [n['event'] for n in null]==['entry','aux_declared','root_guard','return']
  retired=[n for n in ns if not n['rear_valid'] and not n['root_argument_NULL']];assert len(retired)==12 and all(n['rear_id']==-1 for n in retired)
- assert 'OWNERSHIP 8 8 0' in (E/'native/stderr.log').read_text()
+ assert 'OWNERSHIP 8 8 0' in (audit_input_path(E/'native/stderr.log')).read_text()
 def test_aux_declared_is_function_scoped_uninitialized_not_NULL():
  p=pointer(frame('struct NodoCola *aux;'),'aux');assert p['type']=='struct NodoCola *' and p.get('initialized') is False and p.get('valid') is False and p.get('scope')=='cola_vaciar'
 def test_aux_assignment_borrows_existing_head_identity():

@@ -1,9 +1,11 @@
 """Current hierarchical cached-trace navigation, without resurrecting retired buttons."""
+import pytest
 import re
 from playwright.sync_api import expect
 from test_controls40_real_flows import controls40_page
 from test_residual58_focal_cases import residual58_app
 
+@pytest.mark.e2e
 def test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace(controls40_page):
  page,context,base=controls40_page;page.goto(base+'/hierarchical/abb',wait_until='networkidle')
  page.select_option('#operation-select','insertar');page.locator('[name="value"]').fill('7');page.click('#hier-step-mode')

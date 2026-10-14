@@ -5,7 +5,8 @@ import pytest
 from app.domain.sequential import tad_cola_prioridad as raw
 ROOT=Path(__file__).resolve().parents[1]
 E=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-queue-five-helpers-baseline-low'
-ROWS=json.loads((E/'report.json').read_text(encoding='utf-8'))
+from scripts.published_test_inputs import audit_input_path
+ROWS=json.loads((audit_input_path(E/'report.json')).read_text(encoding='utf-8'))
 @pytest.mark.parametrize('row',ROWS,ids=[r['ID'] for r in ROWS])
 def test_priority_helper_matches_native(row):
     cfg=row['fixture']; nodes=[raw.CPNodo(v,p) for v,p in cfg['nodes']]

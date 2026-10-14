@@ -5,9 +5,10 @@ from pathlib import Path
 import pytest
 from _circular_delete_memory_oracle import assert_circular_delete_memory
 FIXTURE=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-circular-delete-consumer-low/positive-fixture.json"
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize("mutation", [None,"duplicate_heap","duplicate_address","duplicate_pointer","wrong_initial","early_root","late_root","wrong_bypass","early_free","wrong_freed_identity","duplicate_retired","missing_free","usable_freed_alias","early_count","late_count","null_parameter","wrong_value_parameter","wrong_source_branch"])
 def test_first_match_controls(mutation):
-    body=deepcopy(json.loads(FIXTURE.read_text(encoding="utf-8")))
+    body=deepcopy(json.loads(audit_input_path(FIXTURE).read_text(encoding="utf-8")))
     steps=body["execution_trace"]["steps"];f=steps[9]["pedagogy"];first,middle,last=[n["id"] for n in f["heap_objects"]]
     if mutation=="duplicate_heap":
         f["heap_objects"].append(deepcopy(f["heap_objects"][0]));f["heap_transition"]["after"]=deepcopy(f["heap_objects"])
@@ -35,7 +36,7 @@ def test_first_match_controls(mutation):
 
 @pytest.mark.parametrize("defect",["items","size","empty","identities","head","heap_link","memory_projection"])
 def test_public_projection_corruption_with_next_snapshot_synchronized(defect):
-    body=deepcopy(json.loads(FIXTURE.read_text(encoding="utf-8"))); check=lambda:assert_circular_delete_memory(body)
+    body=deepcopy(json.loads(audit_input_path(FIXTURE).read_text(encoding="utf-8"))); check=lambda:assert_circular_delete_memory(body)
     steps=body["execution_trace"]["steps"]; s=steps[5]
     public=s["state_after"]
     if defect in {"items","memory_projection"}:

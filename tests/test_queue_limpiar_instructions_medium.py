@@ -30,9 +30,10 @@ def test_rear_invalid_only_after_last_free_until_store_and_fields_history_never_
    if not n['alive']:assert not n['fields_valid'] and n['initialized_mask']==0 and n['fields']=={'nro':None,'sgte':None} and n['historical_fields']
   if d['token']=='root_assigned':assert d['aux']['valid'] and any(n['alive'] and n['status']=='detached' and n['id']==d['aux']['value'] for n in d['heap'])
  assert invalid==['node_free','while_guard','front_NULL_store'];assert fs[-1]['debug']['scopes']==[] and fs[-1]['pedagogy']['call_stack']==[]
+from scripts.published_test_inputs import audit_input_path
 def test_actual_DOM_caller_reports_NULL_failure_before_applied_and_documentation_present():
- rows=json.loads((E/'caller-ownership/report.json').read_text());assert len(rows)==4 and sum(len(r['NULL_faults']) for r in rows)==8
+ rows=json.loads((audit_input_path(E/'caller-ownership/report.json')).read_text());assert len(rows)==4 and sum(len(r['NULL_faults']) for r in rows)==8
  for r in rows:
   assert r['DOM_body_unchanged'] and r['strict_C17_original'] and r['alloc_free_live'][0]==r['alloc_free_live'][1] and r['alloc_free_live'][2]==0
   assert all(f['exit']==1 and f['alloc_free_live'][0]==f['alloc_free_live'][1] and f['alloc_free_live'][2]==0 and not f['failed_operation_announced_applied'] for f in r['NULL_faults'])
- d=json.loads((E/'caller-doxygen.json').read_text());assert d['warning_lines']==0 and d['documented_main_count']==4
+ d=json.loads((audit_input_path(E/'caller-doxygen.json')).read_text());assert d['warning_lines']==0 and d['documented_main_count']==4

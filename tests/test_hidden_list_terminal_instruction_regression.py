@@ -6,7 +6,8 @@ from app import create_app
 from app.config import Config
 ROOT=Path(__file__).resolve().parents[1]
 BASE=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-four-hidden-residual-and-final-disposition-low'
-BASELINE=json.loads((BASE/'four-hidden-native-HTTP-baseline.json').read_text(encoding='utf-8'))
+from scripts.published_test_inputs import audit_input_path
+BASELINE=json.loads((audit_input_path(BASE/'four-hidden-native-HTTP-baseline.json')).read_text(encoding='utf-8'))
 @pytest.fixture(scope='module')
 def app(tmp_path_factory):
  out=Path(os.environ.get('HIDDEN_TERMINAL_OUT',str(tmp_path_factory.mktemp('terminal'))));out.mkdir(parents=True,exist_ok=True)

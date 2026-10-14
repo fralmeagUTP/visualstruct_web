@@ -6,7 +6,8 @@ import pytest
 from _bubble_canonical_consumer_oracle import assert_bubble_canonical_consumer
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-bubble-canonical-consumers-low/positive-fixtures.json"
 CASES={"golden":("tests/test_execution_trace_golden.py::test_sorting_trace_golden",[3,1,2]),"phase8":("tests/test_phase8_visual_integration.py::test_all_13_tads_frames_are_source_mapped_continuous_and_causal[sorting]",[3,1,2,1]),"helpers":("tests/test_sorting_module_detailed_qa.py::test_trace_enters_validation_and_swap_helpers_with_real_transient_state",[2,1])}
-def body(case):return deepcopy(json.loads(P.read_text(encoding="utf-8"))[CASES[case][0]])
+from scripts.published_test_inputs import audit_input_path
+def body(case):return deepcopy(json.loads(audit_input_path(P).read_text(encoding="utf-8"))[CASES[case][0]])
 def step(b,token):return next(s for s in b["execution_trace"]["steps"] if s["pedagogy"]["source"]["line_token"]==token)
 @pytest.mark.parametrize("case",tuple(CASES))
 def test_frozen_original_causal_trace(case):assert_bubble_canonical_consumer(body(case),CASES[case][1])

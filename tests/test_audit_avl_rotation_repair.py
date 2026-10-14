@@ -51,10 +51,11 @@ def invariant(event):
  if seen!=set(nodes):errors.append({'kind':'unreachable_live','ids':sorted(set(nodes)-seen)})
  return errors,tree
 
+from scripts.published_test_inputs import audit_input_path
 def build_probe(out):
  out.mkdir(exist_ok=True);client=create_app().test_client()
  for kind,suffix in [('source','c'),('header','h')]:
-  raw=client.get('/help/source/avl/'+kind).data;assert raw==(Path(__file__).resolve().parents[1]/'docs/tads_C'/('tad_avl.'+suffix)).read_bytes();(out/('tad_avl.'+suffix)).write_bytes(raw)
+  raw=client.get('/help/source/avl/'+kind).data;assert raw==(audit_input_path(Path(__file__).resolve().parents[1]/'docs/tads_C'/('tad_avl.'+suffix))).read_bytes();(out/('tad_avl.'+suffix)).write_bytes(raw)
  ops=CCodeService.get_structure_data('avl')['operations'];helper=SOURCE+'\n#define printf audit_printf\n'+''.join(ops[op]+'\n' for op in ['maximo','inorden','validar'])+'\n#undef printf\n'+TAIL
  (out/'oracle.c').write_text(helper,encoding='utf-8');gcc=shutil.which('gcc');assert gcc;flags=['-std=c17','-Wall','-Wextra','-Wpedantic','-Werror']
  for cmd in [[gcc,*flags,'-Dmalloc=audit_malloc','-Dfree=audit_free','-Dprintf=audit_printf','-c',str(out/'tad_avl.c'),'-o',str(out/'tad.o')],[gcc,*flags,str(out/'oracle.c'),str(out/'tad.o'),'-o',str(out/'oracle.exe')]]:
@@ -69,7 +70,7 @@ def run_probe(exe,tapes):
 @pytest.fixture(scope='module')
 def avl_repair_review(tmp_path_factory):
  out=tmp_path_factory.mktemp('avl-rotation-repair');exe=build_probe(out);repo=Path(__file__).resolve().parents[1]
- baseline=json.loads((repo/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-avl-native-documentation-baseline-low/avl-native-baseline-low/endpoint-review.json').read_text(encoding='utf-8'))['cases'];assert len(baseline)==77
+ baseline=json.loads((audit_input_path(repo/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-avl-native-documentation-baseline-low/avl-native-baseline-low/endpoint-review.json')).read_text(encoding='utf-8'))['cases'];assert len(baseline)==77
  tapes=[[('I',v) for v in c['seed']]+[(OPS[c['operation']],c['payload'].get('value',0))] for c in baseline]
  # Insert/delete representative prefixes, including all four root/interior rotations and full drains.
  for seed in [[30,20,10],[10,20,30],[30,10,20],[10,30,20],[50,30,70,20,40,60,80,35,37],list(range(-12,13)),list(range(12,-13,-1)),[-2147483648,0,2147483647,-1,1]]:

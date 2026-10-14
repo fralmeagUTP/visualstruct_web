@@ -4,7 +4,8 @@ import json
 import pytest
 from app import create_app
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-stack-apilar-instructions-medium'
-def read(name):return json.loads((E/name).read_text(encoding='utf-8-sig'))
+from scripts.published_test_inputs import audit_input_path
+def read(name):return json.loads((audit_input_path(E/name)).read_text(encoding='utf-8-sig'))
 def test_all124_native_events27conditions_and6_direct_guard_traces_match():
  d=read('native-comparison.json');assert (d['calls'],d['events'],d['conditions'],d['original_observations'],d['divergences'])==(14,124,27,32,0) and all(o['match'] for o in d['matches'])
  fs=read('direct-fault-traces.json');assert len(fs)==6 and {f['sample'] for f in fs}=={2,5,8,11,12,13}
@@ -36,4 +37,4 @@ def test_prepared_push_GET_no_build_failure_preserve_and_cleanup_namespaces_do_n
 def test_DOM_equals_canonical_HTTP_and_real_next_button_works_after_reload_without_POST():
  rs=read('browser/report.json');assert len(rs)==4 and all(r['reload_real_next_button_replay'] and r['extra_POSTs']==0 for r in rs)
  for r in rs:
-  p=E/'actual-callers'/r['case'];assert (p/'DOM-body.txt').read_text(encoding='utf-8-sig')==(p/'HTTP-main.c').read_text(encoding='utf-8-sig')==(p/'main.c').read_text(encoding='utf-8-sig')
+  p=E/'actual-callers'/r['case'];assert (audit_input_path(p/'DOM-body.txt')).read_text(encoding='utf-8-sig')==(audit_input_path(p/'HTTP-main.c')).read_text(encoding='utf-8-sig')==(audit_input_path(p/'main.c')).read_text(encoding='utf-8-sig')

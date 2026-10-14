@@ -4,19 +4,20 @@ import re,json,subprocess,shutil
 from test_graph_bfs_documentation import run_doxygen
 from app.domain.sorting.pedagogy import theory_profile
 
+from scripts.published_test_inputs import audit_input_path
 def test_download_docs_complexity_and_native_ownership(client,tmp_path):
  root=Path(__file__).resolve().parents[1];files=[]
  for kind,ext in [('source','c'),('header','h')]:
   r=client.get('/help/source/sorting_array/'+kind);assert r.status_code==200;p=tmp_path/('tad_ordenamiento.'+ext);p.write_bytes(r.data);files.append(p)
-  s=p.read_text(encoding='utf-8-sig');assert s.count('@note Arreglo NULL o n==0')==11
+  s=audit_input_path(p).read_text(encoding='utf-8-sig');assert s.count('@note Arreglo NULL o n==0')==11
   assert 'heapify recursivo usa pila O(log n)' in s and 'inversion final del grupo negativo' in s and 'Delegacion exacta a Counting Sort' in s
  run_doxygen(tmp_path,files)
  assert theory_profile('radixsort')['stable'] is False
  assert 'pila' in theory_profile('heapsort')['memory'] and 'peor' in theory_profile('quicksort')['memory']
  before=root/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-baseline-low/native-api-before'
  strip=lambda s:re.sub(r'/\*.*?\*/|//[^\n]*','',s,flags=re.S)
- assert strip((before/'tad_ordenamiento.c').read_text(encoding='utf-8-sig'))==strip((tmp_path/'tad_ordenamiento.c').read_text(encoding='utf-8-sig'))
- original=(before/'observed-main.c').read_text(encoding='utf-8');assert original.count('printf("CASE ')==110
+ assert strip((audit_input_path(before/'tad_ordenamiento.c')).read_text(encoding='utf-8-sig'))==strip((audit_input_path(tmp_path/'tad_ordenamiento.c')).read_text(encoding='utf-8-sig'))
+ original=(audit_input_path(before/'observed-main.c')).read_text(encoding='utf-8');assert original.count('printf("CASE ')==110
  (tmp_path/'ownership.h').write_text('#include <stddef.h>\nvoid *owned_malloc(size_t);\nvoid *owned_calloc(size_t,size_t);\nvoid owned_free(void*);\nvoid ownership_done(void);\n',encoding='utf-8')
  observer=r"""#include <stdlib.h>
 #include <stdio.h>

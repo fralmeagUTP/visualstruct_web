@@ -4,9 +4,10 @@ from pathlib import Path
 import pytest
 from _phase8_limits_consumer_oracle import assert_complete_trace_json, metric
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.fixture
 def rn_body():
-    return json.loads(Path("openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-phase8-duplicates-consumer-low/duplicates-final-2-call-12-red_black-insertar-service.json").read_text(encoding="utf-8"))
+    return json.loads(audit_input_path(Path("openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-phase8-duplicates-consumer-low/duplicates-final-2-call-12-red_black-insertar-service.json")).read_text(encoding="utf-8"))
 
 def test_saved_complete_rn_excess_remains_reported(rn_body):
     encoded = assert_complete_trace_json(rn_body)

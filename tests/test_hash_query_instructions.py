@@ -4,11 +4,12 @@ import json
 import pytest
 BASE=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-get-contains-baseline-low'
 CASES=[('empty',3,[]),('chain',3,[(1,10),(4,40),(7,70)]),('negative',3,[(-1,-10),(-4,-40),(-6,-60)]),('extremes',3,[(-2147483648,2147483647),(2147483647,-2147483648)])]
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case,capacity,pairs',CASES)
 def test_hash_queries_match_retained_native_each_instruction(client,case,capacity,pairs):
     client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':capacity}})
     for key,value in pairs:client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':key,'value':value}})
-    fixtures=json.loads((BASE/'report.json').read_text(encoding='utf-8'))
+    fixtures=json.loads((audit_input_path(BASE/'report.json')).read_text(encoding='utf-8'))
     for fixture in [r for r in fixtures if r['case']==case]:
         response=client.post('/hash/hash_table/operate',json={'operation':fixture['operation'],'payload':{'key':fixture['key']}});data=response.get_json()
         assert data['result']==fixture['result']

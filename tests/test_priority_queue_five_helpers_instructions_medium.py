@@ -10,8 +10,9 @@ from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.domain.sequential.priority_queue_helpers_instruction import build_priority_helper_trace
 ROOT=Path(__file__).resolve().parents[1];E=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-queue-five-helpers-instructions-medium';L=E.parent/'visible-priority-queue-five-helpers-baseline-low'
-spec=importlib.util.spec_from_file_location('priority_helpers_oracle_compare',E/'compare_private.py');observer=importlib.util.module_from_spec(spec);spec.loader.exec_module(observer)
-ROWS=json.loads((L/'report.json').read_text());NATIVE={r['ID']:r for r in json.loads((E/'native-event-inventory.json').read_text())};METHODS=['inicializar','vacia','contar','copiar_items','formatear']
+from scripts.published_test_inputs import audit_input_path
+spec=importlib.util.spec_from_file_location('priority_helpers_oracle_compare',audit_input_path(E/'compare_private.py'));observer=importlib.util.module_from_spec(spec);spec.loader.exec_module(observer)
+ROWS=json.loads((audit_input_path(L/'report.json')).read_text());NATIVE={r['ID']:r for r in json.loads((audit_input_path(E/'native-event-inventory.json')).read_text())};METHODS=['inicializar','vacia','contar','copiar_items','formatear']
 @pytest.mark.parametrize('row',ROWS,ids=['PQ5I-'+r['ID'].removeprefix('PQ5-') for r in ROWS])
 def test_typed_statement_memory_scope_buffer_matches_native(row):
  trace=observer.make_trace(row);observer.compare(row,trace,NATIVE[row['ID']])

@@ -27,8 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest-cov
+          pip install -r requirements-test.txt
 
       - name: Select preinstalled GCC and gcov with condition coverage
         shell: bash
@@ -72,8 +71,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest-cov
+          pip install -r requirements-test.txt
 
       - name: Select preinstalled GCC and gcov with condition coverage
         shell: bash

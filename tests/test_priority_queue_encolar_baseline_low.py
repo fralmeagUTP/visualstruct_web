@@ -3,7 +3,8 @@ from pathlib import Path
 import json
 import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-queue-encolar-instructions-medium'
-def read(name):return json.loads((E/name).read_text(encoding='utf-8-sig'))
+from scripts.published_test_inputs import audit_input_path
+def read(name):return json.loads((audit_input_path(E/name)).read_text(encoding='utf-8-sig'))
 def sample():return read('report.json')[0]
 def frames():return sample()['data']['execution_trace']['steps']
 def frame(line):return next(f for f in frames() if f['line_text'].strip()==line and ('malloc(' not in line or f['event_type']=='allocator_success_return'))
@@ -27,7 +28,7 @@ def test_safe_native14calls242events48conditions_with_initialized_fields_only():
  ns=read('native-report.json');assert len(ns)==242 and len({n['sample'] for n in ns})==14 and sum(n['condition']!=-1 for n in ns)==48
  for r in read('report.json'):
   ns=r['native_events'];aid=next(n for n in ns if n['event']=='helper_new_allocated')['helper_new_id'];assert [next(h['mask'] for h in n['live'] if h['id']==aid) for n in ns if n['event'] in ['helper_new_allocated','value_assigned','priority_assigned','link_assigned']]==[0,1,3,7]
- assert (E/'native/stderr.log').read_text(encoding='utf-8-sig').strip()=='OWNERSHIP 12 12 0'
+ assert (audit_input_path(E/'native/stderr.log')).read_text(encoding='utf-8-sig').strip()=='OWNERSHIP 12 12 0'
 
 def test_native_NULL_root_returns_false_before_helper_or_allocation():
  ns=[n for n in read('native-report.json') if n['root_NULL']];assert [n['event'] for n in ns]==['entry','new_declared','root_guard','return_false'] and all(not n['live'] for n in ns)

@@ -3,9 +3,10 @@ from pathlib import Path
 import json,pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-stack-limpiar-baseline-low'
 UI_E=E.parent/'visible-stack-limpiar-instructions-medium'
+from scripts.published_test_inputs import audit_input_path
 def ui_report():
- path=(UI_E if (UI_E/'browser/report.json').exists() else E)/'browser/report.json'
- return json.loads(path.read_text(encoding='utf-8'))
+ path=(UI_E if (audit_input_path(UI_E/'browser/report.json')).exists() else E)/'browser/report.json'
+ return json.loads(audit_input_path(path).read_text(encoding='utf-8'))
 CASES={'empty':[],'single':[-1],'multi':[7,-2,7],'reinsert':[7,-2,7]}
 def execute(client,op,**payload):
  r=client.post('/sequential/stack/operate',json={'operation':op,'payload':payload});assert r.status_code==200;d=r.get_json();assert d['success'];return d
@@ -19,20 +20,20 @@ def test_final_empty_repeat_and_reinsert_match_original_C(client,case):
  prepare(client,case)
  for repeat in [1,2]:
   if case=='reinsert' and repeat==2:execute(client,'apilar',value=8)
-  d=execute(client,'limpiar');n=next(r for r in json.loads((E/'report.json').read_text(encoding='utf-8')) if r['case']==case and r['repeat']==repeat)['native_events'][-1];assert d['visual_state']['items']==n['root_values']==[] and d['visual_state']['size']==0
+  d=execute(client,'limpiar');n=next(r for r in json.loads((audit_input_path(E/'report.json')).read_text(encoding='utf-8')) if r['case']==case and r['repeat']==repeat)['native_events'][-1];assert d['visual_state']['items']==n['root_values']==[] and d['visual_state']['size']==0
 
 def test_independent_C_free_order_live_detached_node_and_NULL_guard():
- ns=json.loads((E/'native-report.json').read_text(encoding='utf-8'));assert len(ns)==76
+ ns=json.loads((audit_input_path(E/'native-report.json')).read_text(encoding='utf-8'));assert len(ns)==76
  for sid in range(8):
   frames=[n for n in ns if n['sample']==sid];assert frames[-1]['root_values']==[]
   assigned=[n for n in frames if n['event']=='root_assigned'];freed=[n for n in frames if n['event']=='node_free'];assert len(assigned)==len(freed)
   for a,f in zip(assigned,freed):
    assert a['root_ids']==f['root_ids'] and a['aux_valid'] and not f['aux_valid'];assert a['aux_id'] not in a['root_ids'] and a['aux_id'] in [h['id'] for h in a['live']];assert len(a['live'])==len(f['live'])+1
  guard=[n for n in ns if n['sample']==8];assert [n['event'] for n in guard]==['entry','aux_declared','root_guard','return'] and guard[-2]['condition']==1 and guard[-1]['frees']==0
- assert (E/'native/stderr.log').read_text(encoding='utf-8').strip()=='OWNERSHIP 8 8 0'
+ assert (audit_input_path(E/'native/stderr.log')).read_text(encoding='utf-8').strip()=='OWNERSHIP 8 8 0'
 
 def test_root_changes_at_assignment_before_free_not_after(client):
- frames=trace(client)['steps'];native=[n for n in json.loads((E/'native-report.json').read_text(encoding='utf-8')) if n['sample']==4 and n['event']=='root_assigned'];fs=[f for f in frames if f['line_text'].strip()=='*p = aux->sgte;'];assert len(fs)==len(native)==3
+ frames=trace(client)['steps'];native=[n for n in json.loads((audit_input_path(E/'native-report.json')).read_text(encoding='utf-8')) if n['sample']==4 and n['event']=='root_assigned'];fs=[f for f in frames if f['line_text'].strip()=='*p = aux->sgte;'];assert len(fs)==len(native)==3
  for n,f in zip(native,fs):assert values(f)==n['root_values']
 
 def test_unlinked_aux_still_alive_before_free(client):

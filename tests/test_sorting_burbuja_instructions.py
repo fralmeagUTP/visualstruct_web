@@ -14,9 +14,10 @@ EVIDENCE=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unifi
 def observed(tmp_path_factory):
  out=tmp_path_factory.mktemp('burbuja-instructions');return out,audit(out)
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(CASES))
 def test_every_C_instruction_flag_scopes_neighbors_and_early_break(case,observed):
- out,report=observed;data=json.loads((out/(case+'.json')).read_text(encoding='utf-8'));trace=data['response']['execution_trace'];steps=trace['steps'];native=data['native'];n=len(CASES[case]);confirmed=set()
+ out,report=observed;data=json.loads((audit_input_path(out/(case+'.json'))).read_text(encoding='utf-8'));trace=data['response']['execution_trace'];steps=trace['steps'];native=data['native'];n=len(CASES[case]);confirmed=set()
  assert report['instruction_fidelity'] and len(steps)==len(native)
  for index,(step,c) in enumerate(zip(steps,native)):
   frame=step['pedagogy'];event=c['event'];token=event['token'];state=step['state_after'];variables={v['name']:v for v in frame['variables']};bubble=state['bubble_context']
@@ -67,7 +68,7 @@ def test_every_C_instruction_flag_scopes_neighbors_and_early_break(case,observed
 
 @pytest.mark.parametrize('case',list(CASES))
 def test_actual_browser_all_frames_controls_neighbors_flag_and_C_callers(case):
- report=json.loads((EVIDENCE/'browser-first/report.json').read_text(encoding='utf-8'));row=next(r for r in report['rows'] if r['case']==case)
+ report=json.loads((audit_input_path(EVIDENCE/'browser-first/report.json')).read_text(encoding='utf-8'));row=next(r for r in report['rows'] if r['case']==case)
  assert row['forward_reverse_restorations']==2*row['instructions'] and row['replay_extra_POSTs']==0 and row['page_errors']==[]
  assert row['flag_indices_helper_parameters_match_C'] and row['fast_to_step_preserved'] and row['technical_views_visible'] and row['five_stages']
  assert row['actual_main_elements']==1 and row['reload_main_preserved'] and row['caller']['strict_C17'] and row['caller']['doxygen_warnings']==0
@@ -75,14 +76,14 @@ def test_actual_browser_all_frames_controls_neighbors_flag_and_C_callers(case):
  assert report['empty_UI_rejected'] and report['empty_caller']['successful_native_runs']==0
 
 def test_original_seven_causal_regressions_closed_modules_and_C_H_unchanged():
- assert (ROOT/'tests/test_sorting_burbuja_baseline_low.py').read_bytes()==(EVIDENCE/'before/tests/test_sorting_burbuja_baseline_low.py').read_bytes()
+ assert (audit_input_path(ROOT/'tests/test_sorting_burbuja_baseline_low.py')).read_bytes()==(audit_input_path(EVIDENCE/'before/tests/test_sorting_burbuja_baseline_low.py')).read_bytes()
  previous=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-insercion-instructions/before'
  for relative in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py']:
-  assert (ROOT/relative).read_bytes()==(previous/relative).read_bytes()
+  assert (audit_input_path(ROOT/relative)).read_bytes()==(audit_input_path(previous/relative)).read_bytes()
  baseline=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-burbuja-baseline-low/native-after'
  for name in ['tad_ordenamiento.c','tad_ordenamiento.h']:
-  assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,__import__('hashlib').sha256((baseline/name).read_bytes()).hexdigest())
- for name in ['observed.c','native.jsonl']:assert (EVIDENCE/'native-current'/name).read_bytes()==(baseline/name).read_bytes()
+  assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,__import__('hashlib').sha256((audit_input_path(baseline/name)).read_bytes()).hexdigest())
+ for name in ['observed.c','native.jsonl']:assert (audit_input_path(EVIDENCE/'native-current'/name)).read_bytes()==(audit_input_path(baseline/name)).read_bytes()
 
 def test_step_API_preserves_original_input_without_new_history(observed):
  client=create_app().test_client();client.post('/api/ordenamiento/create-array',json={'values':[2,1,3,4]})

@@ -14,9 +14,10 @@ EVIDENCE=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unifi
 def observed(tmp_path_factory):
  out=tmp_path_factory.mktemp('insercion-instructions');return out,audit(out)
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(CASES))
 def test_each_instruction_locals_scope_control_partial_shift_and_source(case,observed):
- out,report=observed;data=json.loads((out/(case+'.json')).read_text(encoding='utf-8'));trace=data['response']['execution_trace'];steps=trace['steps'];native=data['native']
+ out,report=observed;data=json.loads((audit_input_path(out/(case+'.json'))).read_text(encoding='utf-8'));trace=data['response']['execution_trace'];steps=trace['steps'];native=data['native']
  assert report['instruction_fidelity'] and len(steps)==len(native)
  for index,(step,c) in enumerate(zip(steps,native)):
   frame=step['pedagogy'];event=c['event'];token=event['token'];state=step['state_after'];variables={v['name']:v for v in frame['variables']}
@@ -62,13 +63,13 @@ def test_existing_step_api_preserves_original_input_and_does_not_add_run():
 
 def test_closed_intercambio_seleccion_modules_and_c_h_unchanged():
  for relative in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py']:
-  assert (ROOT/relative).read_bytes()==(EVIDENCE/'before'/relative).read_bytes()
+  assert (audit_input_path(ROOT/relative)).read_bytes()==(audit_input_path(EVIDENCE/'before'/relative)).read_bytes()
  baseline=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-insercion-baseline-low/native-current'
- for extension in ['c','h']:assert_historical_protected_hash(ROOT,'docs/tads_C/tad_ordenamiento.'+extension,hashlib.sha256((baseline/('tad_ordenamiento.'+extension)).read_bytes()).hexdigest())
+ for extension in ['c','h']:assert_historical_protected_hash(ROOT,'docs/tads_C/tad_ordenamiento.'+extension,hashlib.sha256((audit_input_path(baseline/('tad_ordenamiento.'+extension))).read_bytes()).hexdigest())
 
 @pytest.mark.parametrize('case',list(CASES))
 def test_actual_browser_complete_replay_clave_j_real_array_and_callers(case):
- report=json.loads((EVIDENCE/'browser-first/report.json').read_text(encoding='utf-8'));row=next(r for r in report['rows'] if r['case']==case)
+ report=json.loads((audit_input_path(EVIDENCE/'browser-first/report.json')).read_text(encoding='utf-8'));row=next(r for r in report['rows'] if r['case']==case)
  assert row['forward_reverse_restorations']==2*row['instructions'] and row['replay_extra_POSTs']==0 and row['page_errors']==[] and row['fast_to_step_preserved'] and row['technical_views_visible']
  assert row['real_array_no_fictitious_hole'] and row['clave_j_all_frames_match_C'] and row['reload_main_preserved'] and row['five_stages']
  assert row['actual_main_elements']==1 and row['caller']['strict_C17'] and row['caller']['doxygen_warnings']==0 and row['caller']['allocations']==row['caller']['frees']==row['caller']['live']==0

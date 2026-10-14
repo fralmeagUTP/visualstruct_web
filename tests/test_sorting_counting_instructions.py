@@ -9,9 +9,10 @@ ROOT=Path(__file__).resolve().parents[1];E=ROOT/'openspec/changes/archive/2026-1
 @pytest.fixture(scope='module')
 def full(tmp_path_factory):
     out=tmp_path_factory.mktemp('counting-full');audit(out);return out
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(CASES))
 def test_native_instruction_scope_alias_before_source_and_memory(case,full):
-    d=json.loads((full/(case+'.json')).read_text(encoding='utf-8'));source=d['response']['execution_trace']['source_code'];canonical=(ROOT/'docs/tads_C/tad_ordenamiento.c').read_text(encoding='utf-8')
+    d=json.loads((audit_input_path(full/(case+'.json'))).read_text(encoding='utf-8'));source=d['response']['execution_trace']['source_code'];canonical=(audit_input_path(ROOT/'docs/tads_C/tad_ordenamiento.c')).read_text(encoding='utf-8')
     for function in ['ordenar_counting_sort','obtener_minimo_maximo','arreglo_valido']:assert function_body(canonical,function) in source
     declared=False;helper_declared=False;previous={};filled=written=consumed=0
     for idx,(s,c) in enumerate(zip(d['response']['execution_trace']['steps'],d['native'])):
@@ -57,7 +58,7 @@ def test_native_instruction_scope_alias_before_source_and_memory(case,full):
 def test_native_zeroing_partial_write_decrement_ties_retirement_and_oracle_reuse(full):
     counts=dict(zero=0,partial=0,tie=0,freed=0,invalid_bucket=0)
     for case,values in CASES.items():
-        d=json.loads((full/(case+'.json')).read_text(encoding='utf-8'));native=d['native']
+        d=json.loads((audit_input_path(full/(case+'.json'))).read_text(encoding='utf-8'));native=d['native']
         for idx,c in enumerate(native):
             token=c['token'];s=d['response']['execution_trace']['steps'][idx]
             if token=='count_init':counts['zero']+=1;assert c['conteo']==[0]*c['rango'] and c['array']==values
@@ -71,23 +72,23 @@ def test_native_zeroing_partial_write_decrement_ties_retirement_and_oracle_reuse
             if token=='range_limit':assert c['condition'] is False and native[idx+1]['token']=='size_guard'
             if token=='count_free':counts['freed']+=1;assert c['conteo'] is None and all(x==0 for x in native[idx-1]['conteo']) and c['allocations']==c['frees']==1
     assert all(counts.values())
-    for name in ['observed.c','native.jsonl']:assert (full/name).read_bytes()==(LOW/'native-final'/name).read_bytes()
+    for name in ['observed.c','native.jsonl']:assert (audit_input_path(full/name)).read_bytes()==(audit_input_path(LOW/'native-final'/name)).read_bytes()
     for name in ['tad_ordenamiento.c','tad_ordenamiento.h']:
-        assert (full/name).read_bytes()==(ROOT/'docs/tads_C'/name).read_bytes()
-        assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,hashlib.sha256((LOW/'native-final'/name).read_bytes()).hexdigest())
+        assert (audit_input_path(full/name)).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/name)).read_bytes()
+        assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,hashlib.sha256((audit_input_path(LOW/'native-final'/name)).read_bytes()).hexdigest())
 @pytest.mark.parametrize('case',list(CASES))
 def test_actual_full_browser_and_callers_with_native_calloc_fault(case):
-    r=json.loads((E/'browser-final-current/report.json').read_text());row=next(x for x in r['rows'] if x['case']==case)
+    r=json.loads((audit_input_path(E/'browser-final-current/report.json')).read_text());row=next(x for x in r['rows'] if x['case']==case)
     assert row['forward_reverse_restorations']==2*row['instructions'] and row['replay_extra_POSTs']==0 and row['page_errors']==[] and row['five_stages'] and row['reload_main_preserved'] and row['JSON_exact_cursor_state_main_preserved'] and row['typed_scopes_calloc_free_and_buckets_match_C']
     c=row['caller'];assert c['strict_C17'] and c['doxygen_warnings']==0 and c['allocations']==c['frees']==1 and c['live']==0 and c['successful_native_runs']==1
     assert c['first_allocation_failure']==dict(returncode=1,allocations=0,frees=0,live=0,no_success_array_after_failure=True)
     assert r['empty_UI_rejected'] and r['empty_caller']['successful_native_runs']==0
 
 def test_original_IDs_and_eight_closed_modules_preserved_and_64bit_limit():
-    original=json.loads((E/'original-regressions.json').read_text());assert hashlib.sha256((ROOT/original['path']).read_bytes()).hexdigest()==original['sha256']
-    protected=json.loads((LOW/'protected-closed-modules.json').read_text());assert len(protected)==8
-    for rel,sha in protected.items():assert hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()==sha
-    assert '_Static_assert(sizeof(size_t)==8' in (ROOT/'tests/_audit_counting_limits.py').read_text(encoding='utf-8-sig')
+    original=json.loads((audit_input_path(E/'original-regressions.json')).read_text());assert hashlib.sha256((audit_input_path(ROOT/original['path'])).read_bytes()).hexdigest()==original['sha256']
+    protected=json.loads((audit_input_path(LOW/'protected-closed-modules.json')).read_text());assert len(protected)==8
+    for rel,sha in protected.items():assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==sha
+    assert '_Static_assert(sizeof(size_t)==8' in (audit_input_path(ROOT/'tests/_audit_counting_limits.py')).read_text(encoding='utf-8-sig')
 
 
 def test_outside_small_scope_keeps_existing_path_without_full_bucket_snapshot(monkeypatch):

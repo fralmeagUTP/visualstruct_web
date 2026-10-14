@@ -4,7 +4,8 @@ import json
 import pytest
 from _bellman_http_consumer_oracle import assert_bellman_projection
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-bellman-http-consumers-low"
-FIXTURES=json.loads((P/"original-three-query-projections.json").read_text(encoding="utf-8"))
+from scripts.published_test_inputs import audit_input_path
+FIXTURES=json.loads((audit_input_path(P/"original-three-query-projections.json")).read_text(encoding="utf-8"))
 @pytest.mark.parametrize("case",list(FIXTURES))
 def test_original_projection(case):assert_bellman_projection(FIXTURES[case])
 @pytest.mark.parametrize("case",list(FIXTURES))

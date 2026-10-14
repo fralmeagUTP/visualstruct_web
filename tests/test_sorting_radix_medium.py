@@ -74,10 +74,11 @@ def test_radix_declared_scopes_previous_values_and_unsigned_aliases():
  assert all(next(v for v in f['pedagogy']['variables'] if v['name']=='maximo')['previous'] is None for token in ['negative_max_exp_init','positive_max_exp_init'] for f in bytoken[token])
 
 
+from scripts.published_test_inputs import audit_input_path
 def test_radix_large_paging_boundaries_concepts_export_ownership_and_no_redispatch(monkeypatch):
  app,c=prepare([-2147483648,2147483647]*40);d=run(c).get_json();t=d['execution_trace'];assert t['schema']=='counting-paged-trace/v1' and t['step_count']==11408 and 'steps' not in t
  assert t['manifest']['codec']=='radix-delta-tape/v1' and t['manifest']['retained_bytes']<64*1024*1024 and len(t['initial_page']['steps'])==16
- native=[json.loads(s) for s in (E/'native-expanded/native.jsonl').read_text(encoding='utf-8').splitlines()];native=[r for r in native if r.get('case')==40 and 'token'in r]
+ native=[json.loads(s) for s in (audit_input_path(E/'native-expanded/native.jsonl')).read_text(encoding='utf-8').splitlines()];native=[r for r in native if r.get('case')==40 and 'token'in r]
  def forbid(*a,**kw):raise AssertionError('saved page ran sorting')
  monkeypatch.setattr(SortingInterpreter,'run',forbid)
  with c.session_transaction() as session:owner=session['counting_owner']
@@ -107,6 +108,6 @@ def test_radix_transport_rejection_preserves_history(monkeypatch):
 
 
 def test_radix_native_report_success_errors_and_maximum_are_not_universal_proof():
- report=json.loads((E/'native-expanded/report.json').read_text(encoding='utf-8'));assert len(report['cases'])==16
+ report=json.loads((audit_input_path(E/'native-expanded/report.json')).read_text(encoding='utf-8'));assert len(report['cases'])==16
  assert all(r['exact_selected_events'] and r['exact_declared_memory_observations'] and r['outcome']['live']==0 for r in report['cases'])
  assert not report['real_memory_exhaustion']

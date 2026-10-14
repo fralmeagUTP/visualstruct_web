@@ -3,6 +3,7 @@ from pathlib import Path
 import sys,json,subprocess,shutil,hashlib,struct,time
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from app import create_app
+from scripts.published_test_inputs import audit_input_path
 from app.domain.sorting.counting_sparse_instructions import run_counting_sparse_trace
 from app.domain.sorting.counting_sparse_tape import expand_small
 CHANGE=ROOT/'openspec/changes/audit-local-quality-and-unified-controls'
@@ -10,18 +11,18 @@ OLD=CHANGE/'evidence/visible-sorting-counting-baseline-low/native-final'
 E=CHANGE/'evidence/visible-sorting-counting-native-fault-low'
 CASES={'n5_k5':[5,4,3,2,1],'n2_k6':[0,5],'n8_k17':[0,16,8,0,16,4,12,8],'n80_k1':[2]*80,'n80_k80':list(range(79,-1,-1)),'near_min':[-2147483643,-2147483648],'near_max':[2147483647,2147483642],'n2_k1001':[0,1000]}
 MASK=(1<<64)-1;NULL=0xD1B54A32D192ED03
-TOKENS=sorted({json.loads(line)['token'] for line in (OLD/'native.jsonl').read_text().splitlines()})
+TOKENS=sorted({json.loads(line)['token'] for line in audit_input_path(OLD/'native.jsonl').read_text().splitlines()})
 TOKEN_ID={name:i for i,name in enumerate(TOKENS)}
 PACK=struct.Struct('<18Q')
 
 def native_base():
-    return (OLD/'observed.c').read_text(encoding='utf-8').split('int main(void){')[0]
+    return audit_input_path(OLD/'observed.c').read_text(encoding='utf-8').split('int main(void){')[0]
 
 def compile_source(out,code):
     out.mkdir(parents=True,exist_ok=True)
     for ext in ['c','h']:
         data=(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext)).read_bytes()
-        assert data==(OLD/('tad_ordenamiento.'+ext)).read_bytes()
+        assert data==audit_input_path(OLD/('tad_ordenamiento.'+ext)).read_bytes()
         (out/('tad_ordenamiento.'+ext)).write_bytes(data)
     (out/'observed.c').write_text(code,encoding='utf-8')
     cmd=[shutil.which('gcc'),'-std=c17','-O2','-Wall','-Wextra','-Wpedantic','-Werror',str(out/'observed.c'),'-o',str(out/'observed.exe')]

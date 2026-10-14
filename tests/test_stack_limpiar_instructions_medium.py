@@ -24,15 +24,16 @@ def test_saved_cleanup_reloads_without_trace_dispatch_and_invalidates_only_on_mu
  execute(client,'limpiar');assert prepared(client)
  assert client.post('/sequential/stack/reset').status_code==200 and prepared(client) is None
 
+from scripts.published_test_inputs import audit_input_path
 def test_actual_HTTP_main_matches_compiled_C_artifact_and_ownership_faults(client):
  for value in [7,-2,7]:execute(client,'apilar',value=value)
- execute(client,'limpiar');execute(client,'limpiar');r=client.get('/help/source/stack/main');assert r.status_code==200 and r.data==(E/'callers/multi.c').read_bytes() and r.headers['Cache-Control']=='private, no-store'
+ execute(client,'limpiar');execute(client,'limpiar');r=client.get('/help/source/stack/main');assert r.status_code==200 and r.data==(audit_input_path(E/'callers/multi.c')).read_bytes() and r.headers['Cache-Control']=='private, no-store'
  page=client.get('/sequential/stack');assert 'stack-main-download' in page.text and '/help/source/stack/main' in page.text
- rows=json.loads((E/'caller-ownership/report.json').read_text(encoding='utf-8'));assert len(rows)==4 and sum(len(row['NULL_faults']) for row in rows)==8
+ rows=json.loads((audit_input_path(E/'caller-ownership/report.json')).read_text(encoding='utf-8'));assert len(rows)==4 and sum(len(row['NULL_faults']) for row in rows)==8
  for row in rows:
-  source=E/'callers'/(row['case']+'.c');assert hashlib.sha256(source.read_bytes()).hexdigest()==row['sha256'];assert row['actual_product_main'] and row['strict_C17_original'] and row['alloc_free_live'][0]==row['alloc_free_live'][1] and row['alloc_free_live'][2]==0
+  source=E/'callers'/(row['case']+'.c');assert hashlib.sha256(audit_input_path(source).read_bytes()).hexdigest()==row['sha256'];assert row['actual_product_main'] and row['strict_C17_original'] and row['alloc_free_live'][0]==row['alloc_free_live'][1] and row['alloc_free_live'][2]==0
   assert all(f['exit']==1 and f['alloc_free_live'][0]==f['alloc_free_live'][1] and f['alloc_free_live'][2]==0 for f in row['NULL_faults'])
- assert json.loads((E/'caller-doxygen.json').read_text(encoding='utf-8'))['warnings']==0
+ assert json.loads((audit_input_path(E/'caller-doxygen.json')).read_text(encoding='utf-8'))['warnings']==0
 
 def test_duplicate_nodes_keep_identity_and_root_stays_live_at_final_void_return(client):
  for value in [7,-2,7]:execute(client,'apilar',value=value)

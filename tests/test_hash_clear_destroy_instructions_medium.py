@@ -10,8 +10,9 @@ def setup(client,name,cap,pairs):
  execute(client,'create_table',capacity=cap)
  for k,v in pairs:execute(client,'insert',key=k,value=v)
  if name=='destroyed':execute(client,'destroy_table')
+from scripts.published_test_inputs import audit_input_path
 def compare(t,sid):
- native=[json.loads(line) for line in (E/'native-instructions/events.jsonl').read_text(encoding='utf-8').splitlines()];ns=[n for n in native if n['sample']==sid]
+ native=[json.loads(line) for line in (audit_input_path(E/'native-instructions/events.jsonl')).read_text(encoding='utf-8').splitlines()];ns=[n for n in native if n['sample']==sid]
  assert [n['event'] for n in ns]==[f['debug']['token'] for f in t['steps']]
  for n,f in zip(ns,t['steps']):
   d=f['debug'];root=d['root'];arr=d['bucket_array'];live={h['id']:h for h in d['heap'] if h['alive']}

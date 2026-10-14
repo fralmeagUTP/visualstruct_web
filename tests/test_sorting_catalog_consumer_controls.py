@@ -4,7 +4,8 @@ import json
 import pytest
 from _sorting_catalog_consumer_oracle import assert_sorting_catalog_consumer
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-catalog-consumer-low/catalog-consumer-baseline-values.json"
-def data():return json.loads(P.read_text(encoding="utf-8"))
+from scripts.published_test_inputs import audit_input_path
+def data():return json.loads(audit_input_path(P).read_text(encoding="utf-8"))
 def test_frozen_catalog_schema():
     d=data();assert_sorting_catalog_consumer(d["algorithms"],d["learning"],d["theory"])
 @pytest.mark.parametrize("defect",("missing_algorithm","duplicate_algorithm","learning_coverage","empty_objective","missing_theory","unknown_field","note_on_other","missing_note","empty_note","wrong_note","integer_boolean","empty_complexity","radix_stable"))

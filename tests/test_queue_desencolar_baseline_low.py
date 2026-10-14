@@ -13,10 +13,11 @@ def execution(client,request):
     return name,data
 
 def _step(data,token):return next(s for s in data['execution_trace']['steps'] if token in s['line_text'])
+from scripts.published_test_inputs import audit_input_path
 def test_native_current_safe12calls87events19conditions():
-    d=json.loads((E/'native-summary.json').read_text(encoding='utf-8'));assert (d['calls'],d['events'],d['conditions'])==(12,87,19);assert d['ownership']=='OWNERSHIP 7 7 0'
+    d=json.loads((audit_input_path(E/'native-summary.json')).read_text(encoding='utf-8'));assert (d['calls'],d['events'],d['conditions'])==(12,87,19);assert d['ownership']=='OWNERSHIP 7 7 0'
 def test_historical_dequeue_executable_tokens_compatible_not_pointer_coverage():
-    d=json.loads((E/'historical-comparison.json').read_text(encoding='utf-8'));assert d['dequeue_executable_tokens_equal'] and d['all_executable_tokens_equal'];assert d['old_SHA']!=d['current_SHA']
+    d=json.loads((audit_input_path(E/'historical-comparison.json')).read_text(encoding='utf-8'));assert d['dequeue_executable_tokens_equal'] and d['all_executable_tokens_equal'];assert d['old_SHA']!=d['current_SHA']
 def test_dequeue_final_value_and_FIFO_match_C(execution):
     name,d=execution;assert d['success'] and d['result']==CASES[name][0];assert [x['value'] for x in d['visual_state']['items']]==CASES[name][1:]
 def test_empty_guard_condition_true_without_predeclared_locals(client):
@@ -54,10 +55,10 @@ def test_reload_keeps_prepared_dequeue_trace_without_builder(client,execution,mo
     text=response.data.decode('utf-8');decoder=json.JSONDecoder();model=decoder.raw_decode(text.split('window.SEQ_VIEW_MODEL =',1)[1].lstrip())[0];assert model.get('prepared_dequeue_trace')==d['execution_trace']
 @pytest.mark.parametrize('name',list(CASES))
 def test_actual_DOM_caller_C17_ownership_and_Doxygen(name):
-    d=json.loads((E/'caller-report.json').read_text(encoding='utf-8'));row=next(x for x in d['cases'] if x['case']==name);assert row['C17_exit']==0 and row['ownership_exit']==0 and row['allocs']==row['frees'] and row['live']==0;assert d['documented_mains']==4 and d['Doxygen_warnings']==0
+    d=json.loads((audit_input_path(E/'caller-report.json')).read_text(encoding='utf-8'));row=next(x for x in d['cases'] if x['case']==name);assert row['C17_exit']==0 and row['ownership_exit']==0 and row['allocs']==row['frees'] and row['live']==0;assert d['documented_mains']==4 and d['Doxygen_warnings']==0
 
 def test_actual_UI_both_views_and_four_reloads_real_Next():
-    rows=json.loads((E/'browser/report.json').read_text(encoding='utf-8'));assert len(rows)==4
+    rows=json.loads((audit_input_path(E/'browser/report.json')).read_text(encoding='utf-8'));assert len(rows)==4
     for d in rows:assert d['five_numbered_sections_match'] and not d['JS_errors'] and d['extra_POSTs']==0 and d['history_reload_equal'] and d['reload_trace_equal'] and d['reload_next_clicked']
 
 

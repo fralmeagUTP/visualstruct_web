@@ -15,9 +15,10 @@ def client(values):
  return c
 def run(c):
  return c.post('/api/ordenamiento/run',json={'algorithm_id':'binsort','mode':'step_by_step'})
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(CASES))
 def test_binsort_native_result_and_delegate_metrics(case):
- oracle=json.loads((E/'native'/(case+'.json')).read_text(encoding='utf-8'));r=run(client(CASES[case]))
+ oracle=json.loads((audit_input_path(E/'native'/(case+'.json'))).read_text(encoding='utf-8'));r=run(client(CASES[case]))
  assert r.status_code==200
  d=r.get_json();expected=oracle['outcome']
  assert d['result']['array']==expected['array']
@@ -26,7 +27,7 @@ def test_binsort_native_result_and_delegate_metrics(case):
  assert d['result']['metrics']['swaps']==0
 @pytest.mark.parametrize('case',list(CASES))
 def test_binsort_native_instruction_count_and_wrapper_return(case):
- oracle=json.loads((E/'native'/(case+'.json')).read_text(encoding='utf-8'))
+ oracle=json.loads((audit_input_path(E/'native'/(case+'.json'))).read_text(encoding='utf-8'))
  c=client(CASES[case]);d=run(c).get_json();trace=d['execution_trace']
  total=trace.get('step_count',len(trace.get('steps',[])))
  assert total==len(oracle['native']),'delegate controls/call/return must not be replaced by aggregated frames'

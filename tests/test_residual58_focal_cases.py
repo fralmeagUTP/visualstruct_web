@@ -71,6 +71,7 @@ API_CASES=[row for row in CASES if not row['id'].startswith('control:')]
 def test_residual58_concrete_api_case(residual58_client,row):
  run_case(residual58_client,row)
 
+@pytest.mark.e2e
 def test_residual58_export_scale_real_downloads(residual58_app,tmp_path):
  from PIL import Image
  from playwright.sync_api import sync_playwright

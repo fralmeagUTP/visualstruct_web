@@ -7,22 +7,23 @@ from test_controls40_real_flows import controls40_page
 from test_sequential_acceptance_criteria_focal import FAULTS
 R=Path(__file__).resolve().parents[1];E=R/'openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence'
 NOMINAL=[('stack','apilar',{'value':21},'apilar',{'value':23}),('queue','encolar',{'value':21},'encolar',{'value':23}),('priority_queue','encolar',{'value':21,'priority':2},'encolar',{'value':23,'priority':1}),('linked_list','insertar_final',{'value':21},'insertar_inicio',{'value':23}),('circular_list','insertar_final',{'value':21},'insertar_final',{'value':23}),('sublist','insertar_padre',{'parent':21},'insertar_hijo',{'parent':21,'child':23})]
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',NOMINAL,ids=lambda x:x[0])
 def test_nominal_response_is_unchanged(residual58_client,tmp_path,case):
  family,seed,seed_payload,operation,payload=case;url='/sequential/'+family+'/operate';assert residual58_client.post(url,json={'operation':seed,'payload':seed_payload}).status_code==200
  response=residual58_client.post(url,json={'operation':operation,'payload':payload});assert response.status_code==200;data=response.get_json();assert data['success'] is True and len(data['history'])==2
  target=E/'allocation-nominal-before'/f'{family}.json'
  if os.environ.get('VS_CAPTURE_ALLOCATION_BASELINE')=='1':
-  assert not target.exists();target.parent.mkdir(exist_ok=True);target.write_text(json.dumps(data,indent=2,ensure_ascii=False),encoding='utf-8')
- else:assert data==json.loads(target.read_text(encoding='utf-8'))
- (tmp_path/'nominal-proof.json').write_text(json.dumps({'family':family,'complete_response_equal_to_before':os.environ.get('VS_CAPTURE_ALLOCATION_BASELINE')!='1','baseline_sha256':hashlib.sha256(target.read_bytes()).hexdigest()}),encoding='utf-8')
+  assert not audit_input_path(target).exists();target.parent.mkdir(exist_ok=True);target.write_text(json.dumps(data,indent=2,ensure_ascii=False),encoding='utf-8')
+ else:assert data==json.loads(audit_input_path(target).read_text(encoding='utf-8'))
+ (tmp_path/'nominal-proof.json').write_text(json.dumps({'family':family,'complete_response_equal_to_before':os.environ.get('VS_CAPTURE_ALLOCATION_BASELINE')!='1','baseline_sha256':hashlib.sha256(audit_input_path(target).read_bytes()).hexdigest()}),encoding='utf-8')
 
 @pytest.mark.parametrize('fault',FAULTS,ids=lambda x:x[0])
 def test_delivered_failure_trace_is_C_NULL_not_success(tmp_path,fault):
  from app.services.trace.engine import TraceEngine
  from app.services.execution_trace_service import ExecutionTraceService
  name,family,op,payload,module,class_name,field=fault
- records=[json.loads(p.read_text(encoding='utf-8')) for p in (E/'allocation-transport-applied-fix-owned').rglob('allocation-failure-proof.json')]
+ records=[json.loads(audit_input_path(p).read_text(encoding='utf-8')) for p in (audit_input_path(E/'allocation-transport-applied-fix-owned')).rglob('allocation-failure-proof.json')]
  record=next(x for x in records if x['case']==name);body=record['body'];trace=body['execution_trace'];assert record['status']==400 and body['success'] is False and trace['success'] is False and trace['mutates'] is False
  assert body['error']['code']==trace['error']['code']=='allocation_failed' and trace['error']['object_created'] is False
  assert trace['final_state']==body['visual_state'];TraceEngine.validate_legacy_trace_readonly(trace)
@@ -50,10 +51,11 @@ def test_metadata_memory_error_is_not_relabelled_as_constructor_failure(monkeypa
 
 import importlib
 UI_FAULTS=[FAULTS[i] for i in [0,3,5,6,7,8,9]]
+@pytest.mark.e2e
 @pytest.mark.parametrize('fault',UI_FAULTS,ids=lambda x:x[0])
 def test_failed_reservation_is_playable_without_new_objects(controls40_page,monkeypatch,tmp_path,fault):
  page,context,base=controls40_page;name,family,operation,payload,module,class_name,field=fault
- inject=(R/'tests/_audit_hash_query_medium_browser.py').read_text(encoding='utf-8-sig').split('INJECT="""')[1].split('"""')[0].replace('__hash','__allocation');page.add_init_script(inject)
+ inject=(audit_input_path(R/'tests/_audit_hash_query_medium_browser.py')).read_text(encoding='utf-8-sig').split('INJECT="""')[1].split('"""')[0].replace('__hash','__allocation');page.add_init_script(inject)
  seeds=[('insertar_padre',{'parent':7}),('insertar_hijo',{'parent':7,'child':3})] if family=='sublist' else [('insertar_final',{'value':7}),('insertar_final',{'value':8})]
  if family=='stack':seeds=[('apilar',{'value':7})]
  elif family=='queue':seeds=[('encolar',{'value':7})]

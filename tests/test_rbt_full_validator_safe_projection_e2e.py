@@ -9,6 +9,7 @@ from app.domain.hierarchical.rbt_query_instruction import build_rbt_query_trace
 from _audit_rbt_full_validator_baseline_low import CASES
 from test_rbt_full_validator_reload_e2e import INJECT
 from test_audit_avl_main_e2e import avl_server
+@pytest.mark.e2e
 @pytest.mark.parametrize('name,desc',CASES[6:],ids=[x[0] for x in CASES[6:]])
 def test_full_rn_safe_invalid_projection_browser(avl_server,tmp_path,name,desc):
  from playwright.sync_api import sync_playwright

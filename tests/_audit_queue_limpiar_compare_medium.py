@@ -6,8 +6,9 @@ from app import create_app
 from app.domain.sequential.queue_cleanup_instruction import build_queue_cleanup_trace
 E=R/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-queue-limpiar-instructions-medium';L=E.parent/'visible-queue-limpiar-baseline-low'
 
+from scripts.published_test_inputs import audit_input_path
 def compare(trace:dict,sample:int) -> dict:
-    native=[n for n in json.loads((L/'native-report.json').read_text(encoding='utf-8')) if n['sample']==sample]
+    native=[n for n in json.loads((audit_input_path(L/'native-report.json')).read_text(encoding='utf-8')) if n['sample']==sample]
     frames=trace['steps'];assert [n['event'] for n in native]==[f['debug']['token'] for f in frames]
     identities=dict(zip(native[0]['root_ids'],[h['id'] for h in frames[0]['debug']['heap']]))
     for n,f in zip(native,frames):
@@ -41,7 +42,7 @@ def collect() -> tuple[list[dict],list[dict]]:
         for value in values:c.post('/sequential/queue/operate',json={'operation':'encolar','payload':{'value':value}})
         for repeat in [1,2]:
             if name=='reinsert' and repeat==2:c.post('/sequential/queue/operate',json={'operation':'encolar','payload':{'value':8}})
-            d=c.post('/sequential/queue/operate',json={'operation':'limpiar','payload':{}}).get_json();trace=d['execution_trace'];comparisons.append(compare(trace,sample));original=next(r for r in json.loads((L/'report.json').read_text(encoding='utf-8')) if r['case']==name and r['repeat']==repeat);rows.append({'case':name,'repeat':repeat,'sample':sample,'data':d,'native_events':original['native_events'],'C_API_final_match':not d['visual_state']['items'],'instruction_comparison':original['instruction_comparison']});sample+=1
+            d=c.post('/sequential/queue/operate',json={'operation':'limpiar','payload':{}}).get_json();trace=d['execution_trace'];comparisons.append(compare(trace,sample));original=next(r for r in json.loads((audit_input_path(L/'report.json')).read_text(encoding='utf-8')) if r['case']==name and r['repeat']==repeat);rows.append({'case':name,'repeat':repeat,'sample':sample,'data':d,'native_events':original['native_events'],'C_API_final_match':not d['visual_state']['items'],'instruction_comparison':original['instruction_comparison']});sample+=1
 
     t=rows[0]['data']['execution_trace'];raw=build_queue_cleanup_trace(payload={},source_code=t['source_code'],code_title=t['code_title'],before_state=t['final_state'],after_state=t['final_state'],success=True,message='',null_root=True);comparisons.append(compare(raw,8));rows.append({'case':'NULL-root-native','sample':8,'trace':raw})
     return rows,comparisons

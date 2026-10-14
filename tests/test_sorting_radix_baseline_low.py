@@ -30,7 +30,8 @@ def run(c):return c.post('/api/ordenamiento/run',json={'algorithm_id':'radixsort
 
 
 
-def oracle(case):return json.loads((E/'native'/(case+'.json')).read_text(encoding='utf-8'))
+from scripts.published_test_inputs import audit_input_path
+def oracle(case):return json.loads((audit_input_path(E/'native'/(case+'.json'))).read_text(encoding='utf-8'))
 
 @pytest.mark.parametrize('case',list(CASES))
 
@@ -161,7 +162,7 @@ def test_radix_maximum_admitted_digit_domain_completes_without_fixture_cutoff():
  values=[-2147483648,2147483647]*40;d=SortingInterpreter(values,'radixsort').run();assert d['final_state']['items']==sorted(values)
 
  # Approved LOW correction: logical C events are not transport frame/payload limits.
- native_rows=[json.loads(line) for line in (E.parent/'visible-sorting-radix-instructions/native-expanded/native.jsonl').read_text(encoding='utf-8').splitlines()]
+ native_rows=[json.loads(line) for line in (audit_input_path(E.parent/'visible-sorting-radix-instructions/native-expanded/native.jsonl')).read_text(encoding='utf-8').splitlines()]
  native=[row for row in native_rows if row.get('case')==40 and 'token' in row]
  outcome=next(row for row in native_rows if row.get('outcome')=='maximum')
  assert native and len(d['steps'])==len(native)==d['metrics']['steps']

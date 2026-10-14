@@ -12,9 +12,10 @@ EVIDENCE=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unifi
 def observed(tmp_path_factory):
  out=tmp_path_factory.mktemp('insercion-baseline');return out,audit(out)
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(CASES))
 def test_final_metrics_and_every_existing_mutation_match_native(case,observed):
- out,report=observed;data=json.loads((out/(case+'.json')).read_text(encoding='utf-8'));row=next(r for r in report['rows'] if r['case']==case)
+ out,report=observed;data=json.loads((audit_input_path(out/(case+'.json'))).read_text(encoding='utf-8'));row=next(r for r in report['rows'] if r['case']==case)
  assert row['final_and_metrics_match'] and row['projected_array_differences']==0
  assert data['response']['visual_state']['items']==data['fast_response']['visual_state']['items']==sorted(CASES[case])
  for projection in data['projection']:
@@ -25,7 +26,7 @@ def test_final_metrics_and_every_existing_mutation_match_native(case,observed):
 
 def test_native_shortcircuit_and_empty_api_rejection(observed):
  out,report=observed;assert report['native_guard_cases']==2 and report['native_guard_observations']==19 and report['api_empty_rejected']
- native=[json.loads(line) for line in (out/'native.jsonl').read_text().splitlines()]
+ native=[json.loads(line) for line in (audit_input_path(out/'native.jsonl')).read_text().splitlines()]
  assert not any(row['event']['token']=='valid_n' for row in native if row['case']==7)
  for index,row in enumerate(native):
   if row['event']['token']=='while_left' and not row['condition']:
@@ -35,7 +36,7 @@ def test_native_shortcircuit_and_empty_api_rejection(observed):
 def test_c_h_downloads_doxygen_unchanged(observed):
  out,report=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
  for extension in ['c','h']:
-  assert (out/('tad_ordenamiento.'+extension)).read_bytes()==(ROOT/'docs/tads_C'/('tad_ordenamiento.'+extension)).read_bytes()
+  assert (audit_input_path(out/('tad_ordenamiento.'+extension))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+extension))).read_bytes()
 
 
 def test_repeated_insertion_history_and_get_preserve_original_caller(monkeypatch):
@@ -50,17 +51,17 @@ def test_repeated_insertion_history_and_get_preserve_original_caller(monkeypatch
 
 @pytest.mark.parametrize('case',list(CASES))
 def test_recorded_actual_browser_and_downloaded_caller_baseline(case):
- report=json.loads((EVIDENCE/'browser/report.json').read_text(encoding='utf-8'));row=next(r for r in report['rows'] if r['case']==case)
+ report=json.loads((audit_input_path(EVIDENCE/'browser/report.json')).read_text(encoding='utf-8'));row=next(r for r in report['rows'] if r['case']==case)
  assert row['coarse_restorations']==2*row['coarse_steps'] and row['replay_extra_POSTs']==0 and row['page_errors']==[] and row['main_preserved_after_reload'] and row['five_stages']
  assert row['caller']['strict_C17'] and row['caller']['doxygen_warnings']==0 and row['caller']['allocations']==row['caller']['frees']==row['caller']['live']==0
  assert row['caller']['arrays']==[CASES[case],sorted(CASES[case])]
- for filename,checksum in row['caller']['source_hashes'].items():assert hashlib.sha256((EVIDENCE/'browser'/case/filename).read_bytes()).hexdigest()==checksum
+ for filename,checksum in row['caller']['source_hashes'].items():assert hashlib.sha256((audit_input_path(EVIDENCE/'browser'/case/filename)).read_bytes()).hexdigest()==checksum
  assert report['empty_UI_rejected'] and report['empty_caller']['successful_native_runs']==0
 
 @pytest.mark.parametrize('case',list(CASES))
 def test_every_insertion_instruction_is_represented_with_actual_locals(case,observed):
  """Must fail until the new trace preserves actual C clauses, locals and shortcircuit."""
- out,_=observed;data=json.loads((out/(case+'.json')).read_text(encoding='utf-8'));steps=data['response']['execution_trace']['steps'];native=data['native']
+ out,_=observed;data=json.loads((audit_input_path(out/(case+'.json'))).read_text(encoding='utf-8'));steps=data['response']['execution_trace']['steps'];native=data['native']
  assert len(steps)==len(native),f'{case}: C has {len(native)} observed transitions, UI trace has {len(steps)}'
  for step,c in zip(steps,native):
   assert step['debug'].get('instruction_event')==c['event']

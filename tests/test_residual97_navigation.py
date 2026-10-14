@@ -24,6 +24,7 @@ def reveal_with_public_control(page,loc)->None:
   break
  assert loc.is_visible(),'No reachable current public flow for this source anchor'
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('row',CASES,ids=lambda row:row['family']+'::'+row['id'])
 def test_residual97_actual_anchor_navigation_or_download(controls40_page,tmp_path:Path,row:dict)->None:
  page,context,base=controls40_page;page.goto(base+row['page'],wait_until='networkidle');loc=page.locator(row['selector']).nth(row['occurrence']);assert loc.count()==1,'Source anchor no longer rendered in current contract'
@@ -55,6 +56,7 @@ def test_residual97_hierarchical_reset_removes_owned_tree(residual58_client)->No
  assert post_operation(residual58_client,'hierarchical','abb','altura')['result']==0
 
 
+@pytest.mark.e2e
 def test_review122_graph_main_download_keyboard_with_mouse_gap(controls40_page,tmp_path:Path)->None:
  page,context,base=controls40_page;page.goto(base+'/graph/graph',wait_until='networkidle')
  loc=page.locator('main a[href="/help/source/graph/main"].link')

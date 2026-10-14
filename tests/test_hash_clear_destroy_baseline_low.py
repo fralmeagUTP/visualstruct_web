@@ -2,8 +2,9 @@
 from pathlib import Path
 import json,pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-clear-destroy-baseline-low'
+from scripts.published_test_inputs import audit_input_path
 def fixture(client,case):
- row=next(x for x in json.loads((E/'report.json').read_text(encoding='utf-8')) if x['case']==case)
+ row=next(x for x in json.loads((audit_input_path(E/'report.json')).read_text(encoding='utf-8')) if x['case']==case)
  client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':row['created_capacity']}})
  for k,v in row['pairs']:client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':k,'value':v}})
  if case=='destroyed':client.post('/hash/hash_table/operate',json={'operation':'destroy_table','payload':{}})
@@ -13,9 +14,9 @@ def fixture(client,case):
 def test_terminal_roots_and_repeated_operations_match_actual_C(client,case,operation):
  fixture(client,case)
  for repeat in [1,2]:
-  n=next(x['native'] for x in json.loads((E/'report.json').read_text(encoding='utf-8')) if x['case']==case and x['operation']==operation and x['repeat']==repeat);d=client.post('/hash/hash_table/operate',json={'operation':operation,'payload':{}}).get_json();state=d['execution_trace']['final_state'];assert d['success'] and state['metadata']['capacity']==n['capacity'] and state['metadata']['size']==n['size'];assert not any(b['entries'] for b in state['buckets'])
+  n=next(x['native'] for x in json.loads((audit_input_path(E/'report.json')).read_text(encoding='utf-8')) if x['case']==case and x['operation']==operation and x['repeat']==repeat);d=client.post('/hash/hash_table/operate',json={'operation':operation,'payload':{}}).get_json();state=d['execution_trace']['final_state'];assert d['success'] and state['metadata']['capacity']==n['capacity'] and state['metadata']['size']==n['size'];assert not any(b['entries'] for b in state['buckets'])
 def test_actual_C_free_order_guard_repetition_and_final_ownership():
- rows=json.loads((E/'report.json').read_text(encoding='utf-8'));native=json.loads((E/'native-report.json').read_text(encoding='utf-8'))
+ rows=json.loads((audit_input_path(E/'report.json')).read_text(encoding='utf-8'));native=json.loads((audit_input_path(E/'native-report.json')).read_text(encoding='utf-8'))
  assert native[-1]['allocations']==native[-1]['frees']==26 and native[-1]['live']==0
  for row in rows:
   events=row['free_order'];assert len(events)==row['native']['frees_this_call']
@@ -43,7 +44,7 @@ def test_reinsert_or_recreate_then_clear_destroy_matches_native_C(client,operati
  fixture(client,'collision');first=client.post('/hash/hash_table/operate',json={'operation':operation,'payload':{}}).get_json();assert first['success']
  if operation=='destroy_table':client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':5}})
  inserted=client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':8,'value':80}}).get_json();assert inserted['success'];assert inserted['visual_state']['metadata']['capacity']==(3 if operation=='clear' else 5) and inserted['visual_state']['metadata']['size']==1
- row=next(x for x in json.loads((E/'recreation-report.json').read_text(encoding='utf-8')) if x['operation']==operation);n=row['native_target_records'][1];d=client.post('/hash/hash_table/operate',json={'operation':operation,'payload':{}}).get_json();assert d['visual_state']['metadata']['capacity']==n['capacity'] and d['visual_state']['metadata']['size']==0
+ row=next(x for x in json.loads((audit_input_path(E/'recreation-report.json')).read_text(encoding='utf-8')) if x['operation']==operation);n=row['native_target_records'][1];d=client.post('/hash/hash_table/operate',json={'operation':operation,'payload':{}}).get_json();assert d['visual_state']['metadata']['capacity']==n['capacity'] and d['visual_state']['metadata']['size']==0
  identity=row['native_allocation_identity'];assert (identity[1]==identity[2]) is (operation=='clear')
 
 @pytest.mark.parametrize('operation',['clear','destroy_table'])

@@ -5,6 +5,7 @@ import pytest
 from test_audit_avl_main_e2e import avl_server
 ROOT=Path(__file__).resolve().parents[1]
 INJECT=(ROOT/'tests/_audit_hash_query_medium_browser.py').read_text(encoding='utf-8-sig').split('INJECT="""')[1].split('"""')[0].replace('__hash','__rn')
+@pytest.mark.e2e
 @pytest.mark.parametrize('seed',[[],[10],[-2147483648,0,2147483647]])
 def test_full_rn_exact_reload_and_next(avl_server,tmp_path,seed):
  from playwright.sync_api import sync_playwright

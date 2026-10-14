@@ -43,12 +43,13 @@ def oracle(root):
   right=visit(n.der,n,n.nro,hi)
   return left+(n.rbt_color=='n') if right==left else 0
  return root is None or (root.rbt_color=='n' and visit(root,None,None,None)>0)
+from scripts.published_test_inputs import audit_input_path
 def run(out):
  out.mkdir(parents=True,exist_ok=True);client=create_app().test_client()
  raw=client.get('/help/source/red_black/source');header=client.get('/help/source/red_black/header')
  assert raw.status_code==header.status_code==200
- assert raw.data==(ROOT/'docs/tads_C/tad_rojo_negro.c').read_bytes()
- assert header.data==(ROOT/'docs/tads_C/tad_rojo_negro.h').read_bytes()
+ assert raw.data==(audit_input_path(ROOT/'docs/tads_C/tad_rojo_negro.c')).read_bytes()
+ assert header.data==(audit_input_path(ROOT/'docs/tads_C/tad_rojo_negro.h')).read_bytes()
  (out/'tad_rojo_negro.c').write_bytes(raw.data);(out/'tad_rojo_negro.h').write_bytes(header.data)
  exported=bool(re.search(rb'\bint\s+rbt_validar\s*\(',header.data))
  helper='' if exported else CCodeService._build_red_black_data()['operations']['validar']

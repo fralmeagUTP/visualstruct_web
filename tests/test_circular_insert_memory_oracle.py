@@ -5,10 +5,11 @@ from copy import deepcopy
 import pytest
 from _circular_insert_memory_oracle import assert_circular_insert_memory
 FIXTURE = Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-circular-insert-consumer-low/positive-fixtures.json"
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize("case", [0,1])
 @pytest.mark.parametrize("mutation", [None,"duplicate_heap","duplicate_address","duplicate_pointer","wrong_initial","initialized_early","wrong_value","early_alias","null_parameter","wrong_constructor_parameter","early_publication","early_quantity","wrong_branch_index"])
 def test_insertion_controls(case, mutation):
-    body = deepcopy(json.loads(FIXTURE.read_text(encoding="utf-8"))[case])
+    body = deepcopy(json.loads(audit_input_path(FIXTURE).read_text(encoding="utf-8"))[case])
     steps = body["execution_trace"]["steps"]
     f = steps[4]["pedagogy"]
     if mutation == "duplicate_heap":
@@ -39,7 +40,7 @@ def test_insertion_controls(case, mutation):
 @pytest.mark.parametrize("case",[0,1])
 @pytest.mark.parametrize("defect",["items","size","empty","identities","head","heap_link","memory_projection"])
 def test_public_projection_corruption_with_next_snapshot_synchronized(case, defect):
-    body=deepcopy(json.loads(FIXTURE.read_text(encoding="utf-8"))[case]); check=lambda:assert_circular_insert_memory(body, [] if not case else [4], 4 if not case else 9)
+    body=deepcopy(json.loads(audit_input_path(FIXTURE).read_text(encoding="utf-8"))[case]); check=lambda:assert_circular_insert_memory(body, [] if not case else [4], 4 if not case else 9)
     steps=body["execution_trace"]["steps"]; s=steps[6]
     public=s["state_after"]
     if defect in {"items","memory_projection"}:

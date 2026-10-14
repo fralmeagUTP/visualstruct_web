@@ -26,4 +26,7 @@
 - [ ] 5.3 Consolidar únicamente requisitos implementados/verificados y archivar mediante OpenSpec; retirar bindings y conservar logs/mapas.
 
 ## Publicación del estado actual autorizada posteriormente
-- [ ] github-publication: preparar y publicar estado verificado, comprobar SHA remoto/CI; sin despliegue ni implementar propuesta.
+- [x] github-publication: preparar y publicar estado verificado, comprobar SHA remoto/CI; sin despliegue ni implementar propuesta.
+
+## Diagnóstico posterior de portabilidad CI
+- [ ] ci-portability: identificar errores exactos, corrección segura o necesidad de autorización material y conclusión E2E; sin despliegue con CI fallido.

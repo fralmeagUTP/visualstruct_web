@@ -5,7 +5,8 @@ import pytest
 import test_graph_boundary_equivalence_regression as oracle
 from app.domain.graph import bfs_instruction as bfs
 BEFORE=Path(__file__).parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/before/app/domain/graph/bfs_instruction.py'
-spec=importlib.util.spec_from_file_location('app.domain.graph._revision_cache_before',BEFORE)
+from scripts.published_test_inputs import audit_input_path
+spec=importlib.util.spec_from_file_location('app.domain.graph._revision_cache_before',audit_input_path(BEFORE))
 baseline=importlib.util.module_from_spec(spec);spec.loader.exec_module(baseline)
 @pytest.mark.parametrize('case',range(len(oracle.BFS_CASES)))
 def test_revision_cache_preserves_complete_before_after_and_transport(monkeypatch,case):

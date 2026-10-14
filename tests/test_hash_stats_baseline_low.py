@@ -2,8 +2,9 @@
 from pathlib import Path
 import json,pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-stats-baseline-low'
+from scripts.published_test_inputs import audit_input_path
 def fixture(client,case):
- row=next(x for x in json.loads((E/'report.json').read_text(encoding='utf-8')) if x['case']==case)
+ row=next(x for x in json.loads((audit_input_path(E/'report.json')).read_text(encoding='utf-8')) if x['case']==case)
  client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':row['created_capacity']}})
  for k,v in row['pairs']:client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':k,'value':v}})
  if case=='destroyed':client.post('/hash/hash_table/operate',json={'operation':'destroy_table','payload':{}})
@@ -12,7 +13,7 @@ def fixture(client,case):
 def test_stats_integer_fields_match_native_C_and_API_projection(client,case):
  row=fixture(client,case);d=client.post('/hash/hash_table/operate',json={'operation':'stats','payload':{}}).get_json();n=row['native'];assert d['result']['capacity']==n['capacity'] and d['result']['size']==n['size'];state=d['execution_trace']['final_state'];assert state['metadata']['collisions']==n['collisions'] and state['metadata']['occupied_buckets']==n['occupied']
 def test_stats_retained_C_buffer_prefixes_and_guard_observations():
- rows=json.loads((E/'buffer-report.json').read_text(encoding='utf-8'));assert len(rows)==27
+ rows=json.loads((audit_input_path(E/'buffer-report.json')).read_text(encoding='utf-8'));assert len(rows)==27
  for case in range(4):
   full=bytes.fromhex(next(x['hex'] for x in rows if x['case']==case and x['buffer_capacity']==512)).split(b'\0',1)[0]
   for x in [r for r in rows if r['case']==case]:

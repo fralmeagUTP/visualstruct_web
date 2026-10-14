@@ -9,15 +9,16 @@ R=Path(__file__).resolve().parents[1]
 B=R/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence'
 CASES=[('empty-insert','encolar',[],{'value':9,'priority':3},0),('different-insert','encolar',[(7,2)],{'value':-1,'priority':-1},3),('equal-insert','encolar',[(7,1)],{'value':7,'priority':1},6),('interior-extract','desencolar',[(10,3),(20,1),(30,2)],{},1),('equal-extract','desencolar',[(10,3),(20,1),(30,1)],{},4),('empty-extract','desencolar',[],{},7)]
 
+from scripts.published_test_inputs import audit_input_path
 def proof_source(operation):
  folder=B/('visible-priority-queue-'+operation+'-baseline-low')
  for ext in ['c','h']:
   old=folder/('native/tad_cola_prioridad.'+ext if operation=='encolar' else 'current-tad_cola_prioridad.'+ext)
-  assert C_tokens(old.read_bytes())==C_tokens((R/'docs/tads_C'/('tad_cola_prioridad.'+ext)).read_bytes())
+  assert C_tokens(audit_input_path(old).read_bytes())==C_tokens((audit_input_path(R/'docs/tads_C'/('tad_cola_prioridad.'+ext))).read_bytes())
  return folder
 
 def compare_insert(data,sample,folder):
- native=[n for n in json.loads((folder/'native-report.json').read_text(encoding='utf-8')) if n['sample']==sample]
+ native=[n for n in json.loads((audit_input_path(folder/'native-report.json')).read_text(encoding='utf-8')) if n['sample']==sample]
  fs=data['execution_trace']['steps'];assert len(native)==len(fs);mapping={}
  for n,f in zip(native,fs):
   d=f['debug'];assert n['event']==f['event_type'];assert f['condition_result']==(None if n['condition']==-1 else bool(n['condition']))
@@ -32,7 +33,7 @@ def compare_insert(data,sample,folder):
  return len(native),len(fs)
 
 def compare_extract(data,case,folder):
- native=json.loads((folder/'reused-dequeue-native-events.json').read_text(encoding='utf-8'))
+ native=json.loads((audit_input_path(folder/'reused-dequeue-native-events.json')).read_text(encoding='utf-8'))
  events=[x for x in native if x['case']==case and (x['phase']=='after' or x['phase']=='before' and x['line'].startswith('return '))]
  fs=data['execution_trace']['steps'];cursor=0;norm=lambda s:re.sub(r'\s+',' ',s.strip())
  for event in events:
@@ -66,10 +67,11 @@ def test_priority_C_current_API(residual58_client,tmp_path,case):
  response=residual58_client.post('/sequential/priority_queue/operate',json={'operation':op,'payload':payload});assert response.status_code==(400 if name=='empty-extract' else 200)
  (tmp_path/'priority-api-proof.json').write_text(json.dumps(compare(response.get_json(),case),indent=2),encoding='utf-8')
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('case',CASES,ids=lambda x:x[0])
 def test_priority_C_API_animation(controls40_page,tmp_path,case):
  page,context,base=controls40_page
- source=(R/'tests/_audit_hash_query_medium_browser.py').read_text(encoding='utf-8-sig');inject=source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__priority')
+ source=(audit_input_path(R/'tests/_audit_hash_query_medium_browser.py')).read_text(encoding='utf-8-sig');inject=source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__priority')
  page.add_init_script(inject);errors=[];posts=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:posts.append(r.url) if r.method=='POST' and '/operate' in r.url else None)
  page.goto(base+'/sequential/priority_queue');name,op,seeds,payload,sample=case
  for v,p in seeds:assert context.request.post(base+'/sequential/priority_queue/operate',data={'operation':'encolar','payload':{'value':v,'priority':p}}).status==200

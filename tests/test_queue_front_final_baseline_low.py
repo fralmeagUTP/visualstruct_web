@@ -5,7 +5,8 @@ import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-queue-front-final-baseline-low'
 M=E.parent/'visible-queue-front-final-instructions-medium'
 METHODS=['frente','final'];CASES=['empty','single','fifo','duplicate','minus1','minus1-front','minus1-rear','bounds','bounds-reverse'];ALL=CASES+['front-only','rear-only']
-def read(file):return json.loads(((M if file in ['browser/report.json','caller-report.json','resources.json'] else E)/file).read_text(encoding='utf-8'))
+from scripts.published_test_inputs import audit_input_path
+def read(file):return json.loads((audit_input_path((M if file in ['browser/report.json','caller-report.json','resources.json'] else E)/file)).read_text(encoding='utf-8'))
 def row(method,name):return next(x for x in read('report.json') if x['method']==method and x['case']==name)
 def rawrow(method,name):return next(x for x in read('raw-private-report.json') if x['method']==method and x['case']==name)
 def adapter(method,name):
@@ -113,9 +114,9 @@ def test_existing_browser_rejection_readonly_reload_no_new_selector_or_records(m
  d=next(x for x in read('browser/report.json') if x['case']==name);assert d['not_registered'] and d['no_new_selectors'] and d['history_readonly'] and d['visual_state_readonly'] and d['both_views_unchanged'] and d['five_sections'] and d['extra_UI_POSTs']==0 and not d['JS_errors'];assert len(d['rejected_by_method'][method])==2 and all(x['HTTP']==400 for x in d['rejected_by_method'][method]);assert d['standalone_query_records']==0 and d['standalone_calls_by_method'][method]==0
 @pytest.mark.parametrize('name',['fifo','bounds','minus1-front'])
 def test_shared_actual_DOM_setup_only_C17_caller_ownership_NULL_Doxygen_once(name):
- d=read('caller-report.json');c=next(x for x in d['cases'] if x['case']==name);assert hashlib.sha256((M/'actual-callers'/name/'main.c').read_bytes()).hexdigest()==c['SHA'];assert c['runs']['C17']['exit']==c['runs']['ownership']['exit']==0 and c['alloc']==c['free'] and c['live']==0;assert len(c['controlled_NULL'])==c['alloc'] and all(x['exit']==1 for x in c['controlled_NULL']);assert d['Doxygen_warnings']==0 and d['documented_mains']==3 and d['Doxygen_inputs']==5 and d['empty_caller_absent'] and d['main_HTTP']==404;assert all(n==0 for n in c['standalone_query_calls'].values())
+ d=read('caller-report.json');c=next(x for x in d['cases'] if x['case']==name);assert hashlib.sha256((audit_input_path(M/'actual-callers'/name/'main.c')).read_bytes()).hexdigest()==c['SHA'];assert c['runs']['C17']['exit']==c['runs']['ownership']['exit']==0 and c['alloc']==c['free'] and c['live']==0;assert len(c['controlled_NULL'])==c['alloc'] and all(x['exit']==1 for x in c['controlled_NULL']);assert d['Doxygen_warnings']==0 and d['documented_mains']==3 and d['Doxygen_inputs']==5 and d['empty_caller_absent'] and d['main_HTTP']==404;assert all(n==0 for n in c['standalone_query_calls'].values())
 def test_shared_native_defined_by_value_fixtures_and_resources_have_separate_method_scopes():
- native=[json.loads(x) for x in (E/'native/events.jsonl').read_text().splitlines()];assert len(native)==132
+ native=[json.loads(x) for x in (audit_input_path(E/'native/events.jsonl')).read_text().splitlines()];assert len(native)==132
  for method in METHODS:
   rows=[x for x in native if x['method']==method];assert len(rows)==66 and sum(x['phase']=='condition' for x in rows)==22
   for fixture in range(11):
@@ -129,7 +130,7 @@ def test_private_partial_roots_typed_copy_alias_guard_return_scope_readonly(meth
  d=rawrow(method,name);n=d['native'][0];heap=[{'id':'N1','address':'N1','type':'struct NodoCola','alive':True,'allocated':True,'freed':False,'initialized_mask':3,'fields':{'nro':19,'sgte':None}}]
  fields={'delante':None if n['front_id']==-1 else 'N1','atras':None if n['rear_id']==-1 else 'N1'}
  state={'items':[{'value':19}] if fields['delante'] else [],'size':int(bool(fields['delante'])),'empty':not bool(fields['delante'])}
- source=(E/'native/tad_cola.c').read_text(encoding='utf-8-sig')
+ source=(audit_input_path(E/'native/tad_cola.c')).read_text(encoding='utf-8-sig')
  for repeat in range(2):
   tr=build_queue_query_trace(operation_name=method,payload={},source_code=source,code_title='C',before_state=state,after_state=state,success=True,message='Private roots',borrowed_memory={'nodes':heap,'fields':fields})
   assert len(tr['steps'])==3

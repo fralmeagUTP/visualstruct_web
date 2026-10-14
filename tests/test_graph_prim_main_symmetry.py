@@ -1,8 +1,10 @@
 """Actual private browser download: symmetric caller, zero/selfloop and native C17."""
+import pytest
 import threading,subprocess,shutil
 from werkzeug.serving import make_server
 from playwright.sync_api import sync_playwright
 
+@pytest.mark.e2e
 def test_non_directed_main_update_remove_zero_and_self_loop(app,client,tmp_path):
  server=make_server('127.0.0.1',0,app);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();base=f'http://127.0.0.1:{server.server_port}'
  history=[('create_graph',{'directed':False}),('insert_vertex',{'vertex':1}),('insert_vertex',{'vertex':2}),('insert_edge',{'origin':1,'target':2,'weight':4}),('insert_edge',{'origin':2,'target':1,'weight':0}),('remove_edge',{'origin':1,'target':2}),('insert_edge',{'origin':1,'target':1,'weight':0}),('run_prim',{'start':1})]

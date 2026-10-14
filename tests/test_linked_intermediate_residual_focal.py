@@ -16,11 +16,12 @@ def function_tokens(source,name):
   j+=1
  return ts[start:j]
 
+from scripts.published_test_inputs import audit_input_path
 def compare(data,case):
  name,op,seeds,payload,number=case;inserting=op!='eliminar_elemento';folder=B/('visible-linked-three-insertions-review/after-fix' if inserting else 'visible-linked-delete-one-review/after-fix')
- report=json.loads((folder/('review.json' if inserting else 'native-review.json')).read_text(encoding='utf-8'));old=json.loads((folder/'backend-traces.json').read_text(encoding='utf-8'))[number]
+ report=json.loads((audit_input_path(folder/('review.json' if inserting else 'native-review.json'))).read_text(encoding='utf-8'));old=json.loads((audit_input_path(folder/'backend-traces.json')).read_text(encoding='utf-8'))[number]
  fn='lista_'+op if not op.startswith('lista_') else op
- assert function_tokens(old['source_code'].encode(),fn)==function_tokens((R/'docs/tads_C/tad_lista.c').read_bytes(),fn)==function_tokens(data['execution_trace']['source_code'].encode(),fn)
+ assert function_tokens(old['source_code'].encode(),fn)==function_tokens((audit_input_path(R/'docs/tads_C/tad_lista.c')).read_bytes(),fn)==function_tokens(data['execution_trace']['source_code'].encode(),fn)
  native=[row['native'] for row in report['rows'] if row['case']==number];fs=data['execution_trace']['steps'];cursor=0;norm=lambda s:re.sub(r'\s+',' ',s.strip())
  for n in native:
   indices=[i for i in range(cursor,len(fs)) if norm(fs[i]['line_text'])==norm(n['line'])];assert indices,n['line'];i=indices[0];cursor=i+1;f=fs[i];v=f['pedagogy'].get('memory_state') or f['state_after']
@@ -52,9 +53,10 @@ def test_linked_C_current_API(residual58_client,tmp_path,case):
  response=residual58_client.post('/sequential/linked_list/operate',json={'operation':op,'payload':payload});assert response.status_code==200
  (tmp_path/'linked-api-proof.json').write_text(json.dumps(compare(response.get_json(),case),indent=2),encoding='utf-8')
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('case',CASES,ids=lambda x:x[0])
 def test_linked_C_API_animation(controls40_page,tmp_path,case):
- page,context,base=controls40_page;source=(R/'tests/_audit_hash_query_medium_browser.py').read_text(encoding='utf-8-sig');page.add_init_script(source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__linked'))
+ page,context,base=controls40_page;source=(audit_input_path(R/'tests/_audit_hash_query_medium_browser.py')).read_text(encoding='utf-8-sig');page.add_init_script(source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__linked'))
  errors=[];posts=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:posts.append(r.url) if r.method=='POST' and '/operate' in r.url else None)
  page.goto(base+'/sequential/linked_list');name,op,seeds,payload,num=case
  for v in seeds:assert context.request.post(base+'/sequential/linked_list/operate',data={'operation':'insertar_final','payload':{'value':v}}).status==200

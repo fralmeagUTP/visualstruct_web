@@ -1,9 +1,11 @@
 """Single sparse Counting window creator/gesture witness, not algorithm campaign."""
+import pytest
 import json
 from pathlib import Path
 from test_residual58_focal_cases import residual58_app
 from test_controls40_real_flows import controls40_page
 
+@pytest.mark.e2e
 def test_sparse_window_index_and_follow_preserve_cached_cursor(controls40_page,tmp_path):
  page,context,base=controls40_page
  assert context.request.post(base+'/api/ordenamiento/create-array',data={'values':[700,0]}).status==200
@@ -24,6 +26,7 @@ def test_sparse_window_index_and_follow_preserve_cached_cursor(controls40_page,t
  (tmp_path/'counting-window-proof.json').write_text(json.dumps({'input':[700,0],'creator':'sorting.js STRING_MARKUP data-count-window-index/follow','chosen_initialized_frame':chosen,'manual_start':10,'manual_window_cells_present':True,'follow_active_restores_auto_window':True,'cursor_unchanged':True,'extra_runs':0,'limit':'One required sparsewindow UIflow;notnominalsortingconformance,notmaxrangeorbenchmark.'},indent=2),encoding='utf-8')
 
 
+@pytest.mark.e2e
 def test_hash_native_disclosure_creator_keyboard_without_operation(controls40_page,tmp_path):
  page,context,base=controls40_page;page.goto(base+'/hash/hash_table',wait_until='networkidle');posts=[];page.on('request',lambda r:posts.append(r.url) if r.method=='POST' else None)
  summaries=page.locator('details > summary');records=[]

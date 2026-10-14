@@ -6,7 +6,8 @@ import pytest
 from _tree_intermediate_consumer_oracle import assert_tree_intermediate_consumer
 FIXTURE=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-tree-intermediate-consumers-low/positive-fixtures.json"
 NAMES={"abb":"test_abb_successor_copy_precedes_successor_unlink","lr":"test_avl_lr_exposes_first_rotation_with_recomputed_metadata","rl":"test_avl_rl_exposes_first_rotation_with_recomputed_metadata"}
-def fixture(case):return deepcopy(json.loads(FIXTURE.read_text(encoding="utf-8"))[NAMES[case]])
+from scripts.published_test_inputs import audit_input_path
+def fixture(case):return deepcopy(json.loads(audit_input_path(FIXTURE).read_text(encoding="utf-8"))[NAMES[case]])
 @pytest.mark.parametrize("case",["abb","lr","rl"])
 @pytest.mark.parametrize("mutation",[None,"duplicate_heap","duplicate_cards","invented_retired","wrong_initial","wrong_parameter","wrong_source","early_call_write"])
 def test_common_consumer_controls(case,mutation):

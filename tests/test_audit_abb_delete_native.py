@@ -7,9 +7,10 @@ from app.services.c_code_service import CCodeService
 from app.domain.hierarchical.abb_delete_instruction import build_abb_delete_trace
 W=Path(os.environ.get('AUDIT_DELETE_BASELINE_ROOT',str(Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-abb-delete-baseline-low')))
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.fixture(scope='session')
 def delete_baselines():
- return [json.loads((W/folder/'review.json').read_text(encoding='utf-8')) for folder in ['abb-delete-native-low','abb-delete-root-one-native-low']]
+ return [json.loads((audit_input_path(W/folder/'review.json')).read_text(encoding='utf-8')) for folder in ['abb-delete-native-low','abb-delete-root-one-native-low']]
 
 def delete_case(review,case):
  meta=review['cases'][case];client=create_app().test_client()
@@ -43,7 +44,7 @@ def matches(trace,events):
 @pytest.mark.parametrize('family,case',[(0,i) for i in range(11)]+[(1,i) for i in range(2)])
 def test_delete_native_instructions_heap_frames_and_caller(delete_baselines,family,case):
  review=delete_baselines[family];meta=review['cases'][case];trace=delete_case(review,case);events=events_for(review,case);mapping=id_mapping(events);pairing=matches(trace,events)
- raw=(W/('abb-delete-native-low' if family==0 else 'abb-delete-root-one-native-low')/'tad_abb.c').read_text(encoding='utf-8-sig').splitlines()
+ raw=(audit_input_path(W/('abb-delete-native-low' if family==0 else 'abb-delete-root-one-native-low')/'tad_abb.c')).read_text(encoding='utf-8-sig').splitlines()
  for e,s in pairing:
   phase=e['phase'];state=s['state_snapshot'] if phase in ['condition','call','return'] else s['pedagogy']['memory_state'];ped=s['pedagogy'];live={n['id'] for n in e['nodes']}
   def ref(i):
@@ -95,7 +96,7 @@ def test_delete_baseline_downloads_still_match_current_http(delete_baselines):
  client=create_app().test_client()
  for kind,suffix in [('source','c'),('header','h')]:
   response=client.get('/help/source/abb/'+kind);assert response.status_code==200
-  assert response.data==(W/'abb-delete-native-low'/('tad_abb.'+suffix)).read_bytes()
+  assert response.data==(audit_input_path(W/'abb-delete-native-low'/('tad_abb.'+suffix))).read_bytes()
 
 def test_delete_future_successor_stays_alive_until_its_free(delete_baselines):
  trace=delete_case(delete_baselines[0],8);steps=trace['steps'];call=next(s for s in steps if s['line_text'].strip()=='nodo->derecho = abb_eliminar(nodo->derecho, temp->valor);' and s['pedagogy']['instruction_event']['phase']=='call');child=steps[call['step_index']+1]

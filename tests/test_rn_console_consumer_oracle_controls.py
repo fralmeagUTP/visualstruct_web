@@ -4,7 +4,8 @@ import json
 import pytest
 from _rn_console_consumer_oracle import assert_empty_rn_console,TEXT
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-rn-console-consumer-low"
-FIXTURE=json.loads((P/"rn-console-before-traces.json").read_text(encoding="utf-8"))[-1]
+from scripts.published_test_inputs import audit_input_path
+FIXTURE=json.loads((audit_input_path(P/"rn-console-before-traces.json")).read_text(encoding="utf-8"))[-1]
 def test_original_console_capture():assert_empty_rn_console(FIXTURE)
 @pytest.mark.parametrize("fault",["dropLF","dropTAB","duplicate","late","early","drop","source","sourceindex","phase","coordinatedstdout","coordinatedheap","parameter","color","mask","return","final"])
 def test_corrupted_console_capture_rejected(fault):

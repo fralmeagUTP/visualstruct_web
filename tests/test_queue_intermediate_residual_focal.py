@@ -10,12 +10,13 @@ def C_tokens(data):
  pattern=r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|/\*.*?\*/|//[^\n]*|[A-Za-z_]\w*|[0-9]+|->|\+\+|--|==|!=|<=|>=|&&|\|\||<<|>>|\+=|-=|\*=|/=|[^\s]'
  return [m.group(0) for m in re.finditer(pattern,text,re.S) if not m.group(0).startswith(('/*','//'))]
 
+from scripts.published_test_inputs import audit_input_path
 def source_proof(folder):
  for ext in ['c','h']:
-  current=(R/'docs/tads_C'/('tad_cola.'+ext)).read_bytes();old=(folder/'native'/('tad_cola.'+ext)).read_bytes();assert C_tokens(current)==C_tokens(old),'Executable tokens or literal differs; native reuse forbidden'
+  current=(audit_input_path(R/'docs/tads_C'/('tad_cola.'+ext))).read_bytes();old=(audit_input_path(folder/'native'/('tad_cola.'+ext))).read_bytes();assert C_tokens(current)==C_tokens(old),'Executable tokens or literal differs; native reuse forbidden'
 
 def compare_enqueue(trace,folder,sample):
- native=[x for x in json.loads((folder/'native-report.json').read_text(encoding='utf-8')) if x['sample']==sample];assert len(native)==len(trace['steps']);mapping={}
+ native=[x for x in json.loads((audit_input_path(folder/'native-report.json')).read_text(encoding='utf-8')) if x['sample']==sample];assert len(native)==len(trace['steps']);mapping={}
  for n,f in zip(native,trace['steps']):
   d=f['debug'];assert n['event']==f['event_type'];assert (None if n['condition']==-1 else bool(n['condition']))==f['condition_result'];assert len(n['live'])==len(d['heap'])
   for obj,h in zip(n['live'],d['heap']):
@@ -28,7 +29,7 @@ def compare_enqueue(trace,folder,sample):
  return native
 
 def compare_dequeue(trace,folder,sample):
- native=[json.loads(x) for x in (folder/'native/events.jsonl').read_text(encoding='utf-8').splitlines()];native=[x for x in native if x['sample']==sample];assert len(native)==len(trace['steps']);symbols={h['id']:'N'+str(i+1) for i,h in enumerate(native[0]['heap'])};symbol=lambda value:None if value==-1 else symbols[value]
+ native=[json.loads(x) for x in (audit_input_path(folder/'native/events.jsonl')).read_text(encoding='utf-8').splitlines()];native=[x for x in native if x['sample']==sample];assert len(native)==len(trace['steps']);symbols={h['id']:'N'+str(i+1) for i,h in enumerate(native[0]['heap'])};symbol=lambda value:None if value==-1 else symbols[value]
  for n,f in zip(native,trace['steps']):
   d=f['debug'];aux=d['aux'];num=d['num'];actual={'token':d['token'],'condition':f['condition_result'],'root_NULL':not d['root']['alive'],'front':d['root']['front'],'rear':d['root']['rear'],'aux_initialized':aux is not None,'aux_id':aux['value'] if aux else None,'aux_alive':bool(aux and aux['valid']),'num_initialized':num['initialized'],'num':num['value'] if num['initialized'] else None,'result_initialized':d['result'] is not None,'result':d['result'],'values':[x['value'] for x in f['state_after']['items']],'heap':[{'id':x['id'],'value':x['fields']['nro'],'next':x['fields']['sgte']} for x in d['heap']],'console':f['console']}
   expected={'token':n['event'],'condition':None if n['condition']==-1 else bool(n['condition']),'root_NULL':bool(n['root_NULL']),'front':symbol(n['front']),'rear':symbol(n['rear']),'aux_initialized':bool(n['aux_initialized']),'aux_id':symbol(n['aux_id']) if n['aux_initialized'] else None,'aux_alive':bool(n['aux_alive']),'num_initialized':bool(n['num_initialized']),'num':n['num'] if n['num_initialized'] else None,'result_initialized':bool(n['result_initialized']),'result':n['result'] if n['result_initialized'] else None,'values':n['values'],'heap':[{'id':symbol(h['id']),'value':h['value'],'next':symbol(h['next'])} for h in n['heap']],'console':n['console'].splitlines()};assert actual==expected,(n['event'],actual,expected)
@@ -39,7 +40,7 @@ def compare_case(data,case):
  if operation=='encolar':native=compare_enqueue(trace,folder,sample)
  elif operation=='desencolar':native=compare_dequeue(trace,folder,sample)
  else:
-  spec=importlib.util.spec_from_file_location('retained_cleanup_oracle',R/'tests/_audit_queue_limpiar_compare_medium.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);module.compare(trace,sample);native=[x for x in json.loads((folder/'native-report.json').read_text(encoding='utf-8')) if x['sample']==sample]
+  spec=importlib.util.spec_from_file_location('retained_cleanup_oracle',audit_input_path(R/'tests/_audit_queue_limpiar_compare_medium.py'));module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);module.compare(trace,sample);native=[x for x in json.loads((audit_input_path(folder/'native-report.json')).read_text(encoding='utf-8')) if x['sample']==sample]
  return {'case':name,'events':len(native),'native_rerun':False,'native_source':folder.relative_to(R).as_posix(),'C_executable_tokens_equal':True,'documentation_changes_not_execution_changes':True,'console_frames':sum(bool(x.get('console')) for x in native)}
 
 @pytest.mark.parametrize('case',CASES,ids=lambda x:x[0])
@@ -51,10 +52,11 @@ def test_queue_real_C_events_match_current_API(residual58_client,tmp_path,case):
 
 from test_controls40_real_flows import controls40_page
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('case',CASES,ids=lambda x:x[0])
 def test_queue_C_API_animation_frames(controls40_page,tmp_path,case):
  page,context,base=controls40_page
- source=(R/'tests/_audit_hash_query_medium_browser.py').read_text(encoding='utf-8-sig')
+ source=(audit_input_path(R/'tests/_audit_hash_query_medium_browser.py')).read_text(encoding='utf-8-sig')
  inject=source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__queue')
  page.add_init_script(inject);errors=[];posts=[]
  page.on('pageerror',lambda e:errors.append(str(e)))

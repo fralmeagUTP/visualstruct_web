@@ -44,10 +44,11 @@ def compare_native(native,frames):
         assert nb==fb,n['token']
         assert not f['console']
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',CASES)
 def test_hash_live_statement_frames_match_independent_native(case):
     app=create_app();app.config.update(TESTING=True);client=app.test_client()
-    saved=json.loads((BASE/(case+'.json')).read_text(encoding='utf-8'))
+    saved=json.loads((audit_input_path(BASE/(case+'.json'))).read_text(encoding='utf-8'))
     for item in saved['responses']:
         data=client.post('/hash/hash_table/operate',json={'operation':item['operation'],'payload':item['payload']}).get_json()
         assert data['success']
@@ -68,7 +69,7 @@ def test_hash_invalid_input_is_public_rejection_not_c_execution():
 
 @pytest.mark.parametrize('case,updates',[(20,False),(21,True)])
 def test_hash_malloc_null_and_existing_update_match_native(case,updates):
-    rows=[json.loads(line) for line in (BASE/'native.jsonl').read_text(encoding='utf-8').splitlines()]
+    rows=[json.loads(line) for line in (audit_input_path(BASE/'native.jsonl')).read_text(encoding='utf-8').splitlines()]
     app=create_app();app.config.update(TESTING=True);client=app.test_client()
     client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':3}})
     if updates:client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':1,'value':10}})

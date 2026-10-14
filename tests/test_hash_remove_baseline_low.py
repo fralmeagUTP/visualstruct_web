@@ -7,10 +7,11 @@ PAIRS={'empty':[],'head':[(1,10),(4,40),(7,70),(10,100)],'middle':[(1,10),(4,40)
 def setup(client,name):
  client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':3}})
  for key,value in PAIRS[name]:client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':key,'value':value}})
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(PAIRS))
 def test_remove_retained_native_results_and_bucket_order(client,case):
  setup(client,case)
- for row in [r for r in json.loads((BASE/'report.json').read_text(encoding='utf-8')) if r['case']==case]:
+ for row in [r for r in json.loads((audit_input_path(BASE/'report.json')).read_text(encoding='utf-8')) if r['case']==case]:
   response=client.post('/hash/hash_table/operate',json={'operation':'remove','payload':{'key':row['key']}});data=response.get_json();last=row['native'][-1]
   assert response.status_code==200 and data['success']
   assert data['result']==bool(last['status'])

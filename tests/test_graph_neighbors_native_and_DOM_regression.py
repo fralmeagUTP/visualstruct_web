@@ -4,12 +4,13 @@ import json,os,subprocess,sys
 import pytest
 ROOT=Path(__file__).resolve().parents[1]
 CHANGE=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence'
+from scripts.published_test_inputs import audit_input_path
 def execute(script,out,vars):
     env=os.environ.copy();env.update(vars)
     run=subprocess.run([sys.executable,'-B',str(script)],cwd=ROOT,env=env,capture_output=True,text=True,timeout=120)
     (out/'execution.log').write_text(run.stdout+run.stderr,encoding='utf-8')
     assert run.returncode==0,run.stdout+run.stderr
-    return json.loads((out/'report.json').read_text(encoding='utf-8'))
+    return json.loads((audit_input_path(out/'report.json')).read_text(encoding='utf-8'))
 def test_independent_native_neighbors_events_locals_fields_and_ownership(tmp_path):
     report=execute(CHANGE/'visible-canonical-focal-repair-medium/neighbor_native_instructions.py',tmp_path,{'NEIGHBOR_NATIVE_OUT':str(tmp_path)})
     assert report['compile_exit']==report['native_exit']==0

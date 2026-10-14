@@ -8,7 +8,8 @@ from app.services.trace.compatibility import LegacyTraceAdapter
 from app.services.trace.models import TraceStep
 
 BASE = Path(__file__).parents[1] / 'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-QA18-graph-boundary-optimization-low/before/app/domain/graph/snapshot_pool.py'
-spec = importlib.util.spec_from_file_location('graph_validation_before', BASE)
+from scripts.published_test_inputs import audit_input_path
+spec = importlib.util.spec_from_file_location('graph_validation_before', audit_input_path(BASE))
 before = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(before)
 

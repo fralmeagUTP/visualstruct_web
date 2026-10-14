@@ -12,6 +12,6 @@ def test_js_deferred_real_exports(tmp_path):
  assert all(case['status']=='OPERABLE_DOWNLOAD' and case['content_valid'] for case in report['results'])
  assert report['sibling_guard']['existing_toggle_operable']
  assert report['sibling_guard']['guard_allows_new_factory'] is False
- # Preserve the actual full report in the canonical evidence scope for bindings.
- target=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/js-deferred-verified-results.json'
+ # Each new run belongs to its own output, never to an immutable historical record.
+ target=tmp_path/'js-deferred-verified-results.json'
  target.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

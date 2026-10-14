@@ -16,6 +16,7 @@ def controls40_page(residual58_app):
   context.close();browser.close()
  server.shutdown();thread.join(timeout=5)
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('module,path,button,mirror',[
  ('graph','/graph/graph/construccion','#graph-sim-step','#graph-step-toggle'),
  ('hash','/hash/hash_table','#hash-sim-step','#hash-step-toggle'),
@@ -32,6 +33,7 @@ def test_controls40_public_mode_changes_internal_state(controls40_page,module:st
  assert not page.locator(mirror).is_checked()
  assert page.locator(button).get_attribute('aria-pressed')=='false'
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('module,path,checkbox',[
  ('graph','/graph/graph/expansion-minima','#graph-hide-comments'),
  ('hash','/hash/hash_table','#hash-hide-comments'),
@@ -45,6 +47,7 @@ def test_controls40_comments_hide_and_restore_real_source(controls40_page,module
  page.check(checkbox);assert page.locator(checkbox).is_checked();assert page.evaluate(visible)<before
  page.uncheck(checkbox);assert page.evaluate(visible)==before
 
+@pytest.mark.e2e
 def test_controls40_graph_reset_changes_private_graph(controls40_page)->None:
  page,context,base=controls40_page
  for operation,payload in [('create_graph',{'directed':True}),('insert_vertex',{'vertex':7})]:
@@ -54,6 +57,7 @@ def test_controls40_graph_reset_changes_private_graph(controls40_page)->None:
  assert response.value.status==200;assert response.value.json()['visual_state']['nodes']==[]
  query=context.request.post(base+'/graph/graph/operate',data={'operation':'list_vertices','payload':{}});assert query.json()['result']==[]
 
+@pytest.mark.e2e
 def test_controls40_stack_main_download_contains_real_C_history(controls40_page,tmp_path:Path)->None:
  page,context,base=controls40_page
  response=context.request.post(base+'/sequential/stack/operate',data={'operation':'apilar','payload':{'value':7}});assert response.status==200
@@ -69,6 +73,7 @@ def open_optional_panel(page,label:str)->None:
  summary=page.locator('.seq-understand details > summary').filter(has_text=label)
  if not summary.evaluate('(e)=>e.parentElement.open'):summary.click()
 
+@pytest.mark.e2e
 def test_controls40_optional_comparison_changes_results(controls40_page)->None:
  page,context,base=controls40_page;page.goto(base+'/sequential/queue',wait_until='networkidle');open_optional_panel(page,'Comparar conceptos')
  posts=[];page.on('request',lambda req:posts.append(req.url) if req.method=='POST' else None)
@@ -83,6 +88,7 @@ def test_controls40_optional_comparison_changes_results(controls40_page)->None:
  assert page.locator('#seq-compare-grid .seq-compare-sequence').all_text_contents()==['sale 10 por llegada','sale 20 por prioridad']
  assert not posts
 
+@pytest.mark.e2e
 def test_controls40_prediction_practice_and_progress_reset(controls40_page)->None:
  page,context,base=controls40_page;page.goto(base+'/sequential/stack',wait_until='networkidle');open_optional_panel(page,'Predecir')
  page.check('#seq-predictions-enabled');page.check('#seq-practice-mode')

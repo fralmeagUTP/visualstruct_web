@@ -59,6 +59,7 @@ def test_native_reviewed_priority_instruction_state_and_conditions(client,priori
   condition=next(s for s in steps if s['line_text'].strip()=='if (cola->delante == NULL) {')
   assert condition['pedagogy']['condition']['result']==(len(priorities)==1)
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',['front','interior','rear','equal-front','equal-interior','several-updates','single'])
 @pytest.mark.parametrize('mutation',[None,'wrong_ID','still_live','usable_alias'])
 def test_priority_release_rejects_corrupted_historical_identity(case,mutation):
@@ -66,7 +67,7 @@ def test_priority_release_rejects_corrupted_historical_identity(case,mutation):
  import json
  from copy import deepcopy
  report=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-queue-desencolar-instructions-medium/API-report.json'
- row=next(r for r in json.loads(report.read_text(encoding='utf-8')) if r['case']==case)
+ row=next(r for r in json.loads(audit_input_path(report).read_text(encoding='utf-8')) if r['case']==case)
  step=deepcopy(next(s for s in row['data']['execution_trace']['steps'] if s['line_text'].strip()=='free(objetivo);'))
  priorities=row['priorities'];selected=min(range(len(priorities)),key=lambda i:priorities[i]);identity=f'N{selected+1}';m=step['pedagogy']['dequeue_memory']
  if mutation=='wrong_ID':m['retired'][0]['id']='wrong_ID'

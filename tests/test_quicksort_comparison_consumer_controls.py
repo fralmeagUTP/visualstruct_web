@@ -5,7 +5,8 @@ import json
 import pytest
 from _quicksort_comparison_consumer_oracle import assert_quicksort_comparison_consumer
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-quicksort-comparison-consumers-low/positive-fixtures.json"
-def result():return deepcopy(next(iter(json.loads(P.read_text(encoding="utf-8")).values())))
+from scripts.published_test_inputs import audit_input_path
+def result():return deepcopy(next(iter(json.loads(audit_input_path(P).read_text(encoding="utf-8")).values())))
 def test_frozen_original_comparisons():assert_quicksort_comparison_consumer(result())
 @pytest.mark.parametrize("defect",("true_flipped","false_flipped","missing_false","wrong_operand","wrong_index","wrong_pivot","future_increment","array_mutation","wrong_counter","wrong_function","wrong_frame","wrong_alias","wrong_pointer","future_temporary","stale_temporary","wrong_stack","extra_recursion","wrong_final"))
 def test_rejects_causal_quicksort_defect(defect):

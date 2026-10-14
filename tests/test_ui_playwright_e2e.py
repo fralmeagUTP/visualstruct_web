@@ -847,15 +847,15 @@ def test_playwright_graph_mst_practice_comparison_keyboard_and_responsive() -> N
 
 
 def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
-    """The compact hierarchical workspace preserves code and visualization views."""
+    """Restored education keeps one guided/comparison control and responsive code views."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
     with _live_server_url() as base_url:
         with playwright_mod.sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(viewport={"width": 1280, "height": 900})
             page.goto(f"{base_url}/hierarchical/avl", wait_until="networkidle")
-            assert page.locator("#hier-guided-example").count() == 0
-            assert page.locator("#hier-compare-kind").count() == 0
+            assert page.locator("#hier-guided-example").count() == 1
+            assert page.locator("#hier-compare-kind").count() == 1
             page.fill("#h-field-value", "30")
             page.click("#hier-step-mode")
             page.click("#hier-sim-step")
@@ -874,7 +874,7 @@ def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
 
 
 def test_playwright_hierarchical_comparison_practice_keyboard_and_accessibility() -> None:
-    """Hierarchy uses the compact execution flow and keyboard step navigation."""
+    """Restored comparison/practice coexist with keyboard navigation of cached steps."""
     import re
 
     playwright_mod = pytest.importorskip("playwright.sync_api")
@@ -883,8 +883,8 @@ def test_playwright_hierarchical_comparison_practice_keyboard_and_accessibility(
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(viewport={"width": 1280, "height": 900}, reduced_motion="reduce")
             page.goto(f"{base_url}/hierarchical/avl", wait_until="networkidle")
-            assert page.locator("#hier-compare-kind").count() == 0
-            assert page.locator("#hier-practice-mode").count() == 0
+            assert page.locator("#hier-compare-kind").count() == 1
+            assert page.locator("#hier-practice-mode").count() == 1
             page.fill("#h-field-value", "25")
             page.click("#hier-step-mode")
             checkpoint("manual_prepare_start", module="hier")

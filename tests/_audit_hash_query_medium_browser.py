@@ -6,6 +6,7 @@ ROOT=Path.cwd();E=ROOT/'openspec/changes/audit-local-quality-and-unified-control
 BASE=ROOT/'openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-hash-get-contains-baseline-low'
 INJECT="""localStorage.setItem('didactic-mode','full');let runtime;Object.defineProperty(window,'InterpreterRuntime',{configurable:true,get:()=>runtime,set:v=>{runtime={...v,createTracePlayer:opts=>{const originalRender=opts.renderState;const originalCursor=opts.onCursorChange;const player=v.createTracePlayer({...opts,renderState:(state,step)=>{window.__hashRendered=JSON.parse(JSON.stringify(state));originalRender(state,step);},onCursorChange:event=>{window.__hashCursor=event.cursor;window.__hashTrace=event.trace;originalCursor(event);}});window.__hashPlayer=player;return player;}};}});"""
 SNAP="""() => ({state:window.__hashRendered,cursor:window.__hashPlayer.getCursor(),active:Array.from(document.querySelectorAll('#op-pseudocode .sim-active')).map(x=>Array.from(document.querySelectorAll('#op-pseudocode .code-line')).indexOf(x)),visual:document.querySelector('#hash-visual-state').textContent,pointers:document.querySelector('#hash-pointers-view').textContent,memory:document.querySelector('#hash-memory-view').textContent,cost:document.querySelector('#hash-cost-view').textContent,console:document.querySelector('#hash-printf-console').textContent})"""
+from scripts.published_test_inputs import audit_input_path
 with sync_playwright() as pw:
  browser=pw.chromium.launch(headless=True);reports=[]
  for name,capacity,pairs in [('chain',3,[(1,10),(4,40),(7,70)]),('negative',3,[(-1,-10),(-4,-40),(-6,-60)]),('extremes',3,[(-2147483648,2147483647),(2147483647,-2147483648)])]:
@@ -13,7 +14,7 @@ with sync_playwright() as pw:
   page.request.post('http://127.0.0.1:5051/hash/hash_table/operate',data={'operation':'create_table','payload':{'capacity':capacity}})
   for key,value in pairs:page.request.post('http://127.0.0.1:5051/hash/hash_table/operate',data={'operation':'insert','payload':{'key':key,'value':value}})
   page.reload();page.wait_for_selector('#hash-operation-select')
-  fixtures=[r for r in json.loads((BASE/'report.json').read_text(encoding='utf-8')) if r['case']==name]
+  fixtures=[r for r in json.loads((audit_input_path(BASE/'report.json')).read_text(encoding='utf-8')) if r['case']==name]
   saved={'responses':[{'operation':r['operation'],'payload':{'key':r['key']},'expected':r['result'],'absent':r['operation']=='get' and not r['native_result']} for r in fixtures]}
   saved['responses'].append(dict(saved['responses'][0]));restorations=0;forward_checks=0
   for item in saved['responses']:

@@ -38,13 +38,14 @@ def test_range_rejection_invalid_create_and_retry_preserve_history():
     prepare(c,[0,1000]);good=c.post('/api/ordenamiento/run',json={'algorithm_id':'counting_sort','mode':'fast'}).get_json();assert good['success'] and sum(x['operation']=='run' for x in good['history'])==1
 
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',['n5_k5','n2_k6','n8_k17','n80_k1','n80_k80','near_min','near_max','n2_k1001'])
 def test_independent_outside_four_full_native_events_are_permanent_oracle(case):
     from pathlib import Path
     import json
     from app.domain.sorting.counting_sparse_tape import expand_small
     root=Path(__file__).resolve().parents[1];base=root/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-counting-native-fault-low/outside-four-full'
-    for ext in ['c','h']:assert_historical_protected_hash(root,'docs/tads_C/tad_ordenamiento.'+ext,hashlib.sha256((base/('tad_ordenamiento.'+ext)).read_bytes()).hexdigest())
-    d=json.loads((base/(case+'.json')).read_text(encoding='utf-8'));tape=counting_sparse_instructions.run_counting_sparse_trace(d['case']['input'])['steps'];assert len(tape)==len(d['native'])
+    for ext in ['c','h']:assert_historical_protected_hash(root,'docs/tads_C/tad_ordenamiento.'+ext,hashlib.sha256((audit_input_path(base/('tad_ordenamiento.'+ext))).read_bytes()).hexdigest())
+    d=json.loads((audit_input_path(base/(case+'.json'))).read_text(encoding='utf-8'));tape=counting_sparse_instructions.run_counting_sparse_trace(d['case']['input'])['steps'];assert len(tape)==len(d['native'])
     for index,native in enumerate(d['native']):
         event=tape[index]['instruction_event'];event['conteo']=expand_small(event['conteo']);assert event=={k:v for k,v in native.items() if k!='case'}

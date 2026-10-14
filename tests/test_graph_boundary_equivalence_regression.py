@@ -10,8 +10,9 @@ from app.routes.graph_routes import _json_safe
 ROOT=Path(__file__).parents[1]
 BEFORE=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-QA18-graph-boundary-optimization-low/before'
 
+from scripts.published_test_inputs import audit_input_path
 def load(file):
-    spec=importlib.util.spec_from_file_location('app.domain.graph._baseline_'+file,BEFORE/'app/domain/graph'/f'{file}.py')
+    spec=importlib.util.spec_from_file_location('app.domain.graph._baseline_'+file,audit_input_path(BEFORE/'app/domain/graph'/f'{file}.py'))
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
 
 BASE={construction:load('construction_instruction'),vertex:load('vertex_instruction'),bfs:load('bfs_instruction')}

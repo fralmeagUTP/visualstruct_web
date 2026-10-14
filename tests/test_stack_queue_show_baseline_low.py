@@ -6,7 +6,8 @@ import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-stack-queue-show-baseline-low'
 M=E.parent/'visible-stack-queue-show-instructions-medium'
 CASES=['empty','single','multiple','duplicate','minus1','minus1-front','minus1-rear','bounds','bounds-reverse'];PAIRS=[(sid,name) for sid in ['stack','queue'] for name in CASES]+[('queue','front-only'),('queue','rear-only')];NORMAL=[(sid,name) for sid in ['stack','queue'] for name in CASES]
-def read(name):return json.loads(((M if name in ['report.json','browser-report.json','caller-input-reuse.json','resources.json'] else E)/name).read_text(encoding='utf-8'))
+from scripts.published_test_inputs import audit_input_path
+def read(name):return json.loads((audit_input_path((M if name in ['report.json','browser-report.json','caller-input-reuse.json','resources.json'] else E)/name)).read_text(encoding='utf-8'))
 def row(sid,name):return next(d for d in read('report.json') if d['structure']==sid and d['case']==name)
 def live(sid,name):
  from app.domain.sequential import tad_pila as S,tad_cola as Q
@@ -63,20 +64,20 @@ def test_shared_actual_callers_reused_only_eleven_byte_exact_inputs_no_mostrar_c
  d=read('caller-input-reuse.json');assert d['count']==len(d['inputs'])==11
  for x in d['inputs']:
   a=E.parents[4]/x['current'];b=E.parents[4]/x['baseline']
-  assert hashlib.sha256(b.read_bytes()).hexdigest()==x['SHA256']
+  assert hashlib.sha256(audit_input_path(b).read_bytes()).hexdigest()==x['SHA256']
   if x['current'].replace(chr(92),'/').startswith('docs/tads_C/'):
    assert_historical_protected_hash(E.parents[4],x['current'],x['SHA256'])
-  else:assert a.read_bytes()==b.read_bytes() and hashlib.sha256(a.read_bytes()).hexdigest()==x['SHA256']
-  if a.name=='main.c':assert b'_mostrar(' not in a.read_bytes()
+  else:assert audit_input_path(a).read_bytes()==audit_input_path(b).read_bytes() and hashlib.sha256(audit_input_path(a).read_bytes()).hexdigest()==x['SHA256']
+  if a.name=='main.c':assert b'_mostrar(' not in audit_input_path(a).read_bytes()
 def test_shared_native_observers_separate_safe_readonly_void_functions():
  for sid,calls,events,conditions in [('stack',18,192,68),('queue',22,240,58)]:
-  d=read(sid+'-native-summary.json');assert (d['calls'],d['events'],d['conditions'])==(calls,events,conditions);ns=[json.loads(s) for s in (E/('native-'+sid)/'events.jsonl').read_text().splitlines()];assert len(ns)==events
+  d=read(sid+'-native-summary.json');assert (d['calls'],d['events'],d['conditions'])==(calls,events,conditions);ns=[json.loads(s) for s in (audit_input_path(E/('native-'+sid)/'events.jsonl')).read_text().splitlines()];assert len(ns)==events
   for x in ns:
    first=next(n for n in ns if n['sample']==x['sample']);assert (x['front_id'],x['rear_id'],x['nodes'])==(first['front_id'],first['rear_id'],first['nodes'])
 def test_shared_Doxygen_target_symbols_from_exact_reused_source_sets():
  root=E.parent
  for sid,folder,symbol in [('stack','visible-stack-cima-baseline-low','pila_mostrar'),('queue','visible-queue-front-final-baseline-low','cola_mostrar')]:
-  dox=root/folder/'caller-doxygen';assert not (dox/'warnings.log').read_text(encoding='utf-8').strip();assert any(('<name>'+symbol+'</name>') in p.read_text(encoding='utf-8') for p in dox.rglob('*.xml'))
+  dox=root/folder/'caller-doxygen';assert not (audit_input_path(dox/'warnings.log')).read_text(encoding='utf-8').strip();assert any(('<name>'+symbol+'</name>') in audit_input_path(p).read_text(encoding='utf-8') for p in audit_input_path(dox).rglob('*.xml'))
 def test_shared_finite_resources_separate_method_private_and_rejected_scopes():
  d=read('resources.json');assert len(d['samples'])==36
  for method in ['pila_mostrar','cola_mostrar']:

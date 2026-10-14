@@ -5,12 +5,13 @@ from tests.test_hash_stats_baseline_low import fixture
 from app.domain.hash.stats_instruction import cfloat
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-stats-instructions-medium'
 
+from scripts.published_test_inputs import audit_input_path
 def test_native_C_sequences_conditions_structs_and_rounding_preserved():
- rows=json.loads((E/'native-observer-report.json').read_text(encoding='utf-8'));assert len(rows)==27
+ rows=json.loads((audit_input_path(E/'native-observer-report.json')).read_text(encoding='utf-8'));assert len(rows)==27
  assert all(x['final_bytes_match'] and not x['allocations'] and not x['frees'] for x in rows)
  assert sum(x['matched_C_events'] for x in rows)==1658 and sum(x['matched_C_conditions'] for x in rows)==542
  assert sum(x['matched_C_struct_snapshots'] for x in rows)==1424
- probes=json.loads((E/'native-rounding-probes.json').read_text(encoding='utf-8'));assert len(probes)==4
+ probes=json.loads((audit_input_path(E/'native-rounding-probes.json')).read_text(encoding='utf-8'));assert len(probes)==4
  for p in probes:assert p['result']==cfloat(cfloat(p['n'])/cfloat(p['d']))
  assert any(p['cast_n']!=p['n'] for p in probes)
 

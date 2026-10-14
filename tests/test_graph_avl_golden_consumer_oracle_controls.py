@@ -4,8 +4,9 @@ import json
 import pytest
 from _graph_avl_golden_consumer_oracle import assert_golden_projection, project_golden
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-graph-avl-golden-consumers-low"
-HISTORICAL_FIXTURES=json.loads((P/"original-two-golden-projections.json").read_text(encoding="utf-8"))
-SAVED_BODIES=json.loads((P/"graph-avl-golden-final-traces.json").read_text(encoding="utf-8"))
+from scripts.published_test_inputs import audit_input_path
+HISTORICAL_FIXTURES=json.loads((audit_input_path(P/"original-two-golden-projections.json")).read_text(encoding="utf-8"))
+SAVED_BODIES=json.loads((audit_input_path(P/"graph-avl-golden-final-traces.json")).read_text(encoding="utf-8"))
 FIXTURES={"graph":HISTORICAL_FIXTURES["graph"],"tree":project_golden(SAVED_BODIES["tests/test_execution_trace_golden.py::test_tree_trace_golden"][-1],"tree")}
 @pytest.mark.parametrize("case",list(FIXTURES))
 def test_original_golden_projection(case):assert_golden_projection(FIXTURES[case])

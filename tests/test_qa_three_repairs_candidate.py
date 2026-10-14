@@ -2,12 +2,26 @@ import os,json,subprocess,shutil
 from pathlib import Path
 import pytest
 from app import create_app
-OUT=Path(os.environ['CANDIDATE_OUT']);ROOT=Path(__file__).resolve().parents[1]
+from app.config import Config
+ROOT=Path(__file__).resolve().parents[1]
 @pytest.fixture
-def client():
- app=create_app();app.config.update(TESTING=True); assert str(OUT) in str(app.config['SESSION_CACHE_DIR']);return app.test_client()
+def candidate_output(tmp_path):
+ out=Path(os.environ['CANDIDATE_OUT']) if os.environ.get('CANDIDATE_OUT') else tmp_path
+ out.mkdir(parents=True,exist_ok=True)
+ header=out/'tad_lista.h';source=(ROOT/'docs/tads_C/tad_lista.h').read_bytes()
+ if header.exists():assert header.read_bytes()==source
+ else:header.write_bytes(source)
+ return out
+@pytest.fixture
+def client(candidate_output):
+ OUT=candidate_output
+ class PrivateConfig(Config):
+  TESTING=True
+  SESSION_CACHE_DIR=str(OUT/'sessions')
+ app=create_app(PrivateConfig);app.config.update(TESTING=True); assert str(OUT) in str(app.config['SESSION_CACHE_DIR']);return app.test_client()
 @pytest.mark.parametrize('seed',[[],[9],[4,5,6]])
-def test_ultimo_native_and_causal(client,seed):
+def test_ultimo_native_and_causal(client,seed,candidate_output):
+ OUT=candidate_output
  for value in seed:assert client.post('/sequential/linked_list/operate',json={'operation':'insertar_final','payload':{'value':value}}).get_json()['success']
  r=client.post('/sequential/linked_list/operate',json={'operation':'ultimo','payload':{}});d=r.get_json();t=d['execution_trace']
  assert r.status_code==(200 if seed else 400)

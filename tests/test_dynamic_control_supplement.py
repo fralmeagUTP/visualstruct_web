@@ -12,6 +12,7 @@ GROUPS={
  'sorting':[('/sorting/visualizador','SORTING_VIEW_MODEL',None,None,'sorting-function-list')],
 }
 OBSERVER="""(()=>{window.__dynamicCreated=[];window.__dynamicScrolled=[];const scrollTop=Object.getOwnPropertyDescriptor(Element.prototype,'scrollTop');if(scrollTop?.set)Object.defineProperty(Element.prototype,'scrollTop',{...scrollTop,set:function(value){window.__dynamicScrolled.push({tag:this.tagName,kind:'scrollTop',value});return scrollTop.set.call(this,value);}});const create=document.createElement.bind(document);document.createElement=function(tag,...args){const node=create(tag,...args);if(['button','input','select','textarea','a','summary','details'].includes(String(tag).toLowerCase()))window.__dynamicCreated.push({node,tag,stack:new Error().stack});return node;};const scroll=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(...args){window.__dynamicScrolled.push({tag:this.tagName,line:this.dataset.line,codeLine:this.dataset.codeLine});return scroll.apply(this,args);};})();"""
+@pytest.mark.e2e
 @pytest.mark.parametrize('group',list(GROUPS))
 def test_dynamic_fields_code_links_and_workspace_creator_flows(controls40_page,tmp_path,group):
  page,context,base=controls40_page;page.add_init_script(OBSERVER);posts=[];errors=[];page.on('request',lambda r:posts.append(r.url) if r.method=='POST' else None);page.on('pageerror',lambda e:errors.append(str(e)));flows=[]

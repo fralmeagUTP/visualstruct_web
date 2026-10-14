@@ -4,8 +4,9 @@ from pathlib import Path
 import pytest
 from _hash_two_consumer_oracle import assert_hash_empty_insert,assert_fixed_capacity_source
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-two-consumers-low"
+from scripts.published_test_inputs import audit_input_path
 def fixture():
-    return json.loads((P/"hash-consumers-before-traces.json").read_text(encoding="utf-8"))[-1]
+    return json.loads((audit_input_path(P/"hash-consumers-before-traces.json")).read_text(encoding="utf-8"))[-1]
 def test_original_capture_matches_c_oracle():
     assert_hash_empty_insert(fixture())
 @pytest.mark.parametrize("fault",["drop","order","source","mask","key","value","next","capacity","count","allocation","free","link","snapshot"])
@@ -24,9 +25,9 @@ def test_corrupt_original_capture_rejected(fault):
     else:s[16]["state_after"]["metadata"]["size"]=1
     with pytest.raises(AssertionError):assert_hash_empty_insert(r)
 def test_comments_are_not_executable_resize():
-    source=(P/"before-3.bin").read_text(encoding="utf-8")
+    source=(audit_input_path(P/"before-3.bin")).read_text(encoding="utf-8")
     assert_fixed_capacity_source(source+"\n/* realloc( and rehash( are forbidden here. */")
 @pytest.mark.parametrize("statement",["realloc(tabla, 9);","rehash(tabla);","tabla->capacidad = 9;"])
 def test_executable_resize_rejected(statement):
-    source=(P/"before-3.bin").read_text(encoding="utf-8").replace("tabla->cantidad++;",statement+" tabla->cantidad++;")
+    source=(audit_input_path(P/"before-3.bin")).read_text(encoding="utf-8").replace("tabla->cantidad++;",statement+" tabla->cantidad++;")
     with pytest.raises(AssertionError):assert_fixed_capacity_source(source)

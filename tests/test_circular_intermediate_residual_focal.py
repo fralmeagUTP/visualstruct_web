@@ -8,10 +8,11 @@ from test_queue_intermediate_residual_focal import C_tokens
 R=Path(__file__).resolve().parents[1];B=R/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence'
 CASES=[('insert-empty','insertar_inicio',[],11,0),('insert-unit','insertar_inicio',[7],11,1),('insert-tail','insertar_final',[7,8,9],11,6),('delete-empty','eliminar_primero',[],7,0),('delete-unit','eliminar_primero',[7],7,1),('delete-head','eliminar_primero',[7,8,9],7,3),('delete-interior','eliminar_primero',[7,8,9],8,4),('delete-tail','eliminar_primero',[7,8,9],9,5)]
 
+from scripts.published_test_inputs import audit_input_path
 def compare(data,case):
  name,op,seeds,value,number=case;insert=op.startswith('insertar');folder=B/('visible-circular-two-insertions-review/after-fix' if insert else 'visible-circular-delete-first-review/after-fix/native_delete_first0/native-delete-first')
- assert C_tokens((folder/'downloaded.c').read_bytes())==C_tokens((R/'docs/tads_C/tad_lista_circular.c').read_bytes())
- rows=json.loads((folder/(f'comparison-{number}.json' if insert else f'case-{number}.json')).read_text(encoding='utf-8'));fs=data['execution_trace']['steps'];cursor=0;ptr=lambda n:'sin inicializar' if n==-2 else 'NULL' if n==0 else 'N'+str(n)
+ assert C_tokens((audit_input_path(folder/'downloaded.c')).read_bytes())==C_tokens((audit_input_path(R/'docs/tads_C/tad_lista_circular.c')).read_bytes())
+ rows=json.loads((audit_input_path(folder/(f'comparison-{number}.json' if insert else f'case-{number}.json'))).read_text(encoding='utf-8'));fs=data['execution_trace']['steps'];cursor=0;ptr=lambda n:'sin inicializar' if n==-2 else 'NULL' if n==0 else 'N'+str(n)
  for row in rows:
   e=row['native'];indices=[i for i in range(cursor,len(fs)) if fs[i]['line_text'].strip()==e['line']];assert indices,e['line'];i=indices[0];cursor=i+1;f=fs[i];state=f['state_snapshot'] if e['line'].startswith(('if ','return ')) else f['state_after'];ids=[ptr(n) for n in e['reachable']]
   assert state['cabeza']==ptr(e['head']) and state['cola']==ptr(e['tail']) and state['cantidad']==e['cantidad'] and state['node_ids']==ids
@@ -35,9 +36,10 @@ def test_circular_C_current_API(residual58_client,tmp_path,case):
  response=residual58_client.post('/sequential/circular_list/operate',json={'operation':op,'payload':{'value':value}});assert response.status_code==200
  (tmp_path/'circular-api-proof.json').write_text(json.dumps(compare(response.get_json(),case),indent=2),encoding='utf-8')
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('case',CASES,ids=lambda x:x[0])
 def test_circular_C_API_animation(controls40_page,tmp_path,case):
- page,context,base=controls40_page;source=(R/'tests/_audit_hash_query_medium_browser.py').read_text(encoding='utf-8-sig');page.add_init_script(source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__circ'))
+ page,context,base=controls40_page;source=(audit_input_path(R/'tests/_audit_hash_query_medium_browser.py')).read_text(encoding='utf-8-sig');page.add_init_script(source.split('INJECT="""')[1].split('"""')[0].replace('__hash','__circ'))
  errors=[];posts=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:posts.append(r.url) if r.method=='POST' and '/operate' in r.url else None)
  page.goto(base+'/sequential/circular_list');name,op,seeds,value,num=case;payload={'value':value}
  for v in seeds:assert context.request.post(base+'/sequential/circular_list/operate',data={'operation':'insertar_final','payload':{'value':v}}).status==200

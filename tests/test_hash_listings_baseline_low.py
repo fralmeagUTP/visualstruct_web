@@ -7,16 +7,17 @@ CASES={'empty':(3,[]),'mixed':(3,[(1,10),(4,40),(7,40),(0,0),(-1,-10)]),'extreme
 def setup(client,case):
  cap,pairs=CASES[case];client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':cap}})
  for k,v in pairs:client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':k,'value':v}})
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(CASES))
 def test_listing_C_order_projection_results_and_history(client,case):
  setup(client,case)
- for r in [r for r in json.loads((BASE/'report.json').read_text(encoding='utf-8')) if r['case']==case]:
+ for r in [r for r in json.loads((audit_input_path(BASE/'report.json')).read_text(encoding='utf-8')) if r['case']==case]:
   d=client.post('/hash/hash_table/operate',json={'operation':r['operation'],'payload':{}}).get_json()
   assert d['result']==r['expected_projection'] and d['success']
   assert len(d['history'])==1+len(CASES[case][1])
 
 def test_actual_C_buffer_prefix_null_termination_and_outside_guard():
- rows=json.loads((BASE/'buffer-report.json').read_text(encoding='utf-8'))
+ rows=json.loads((audit_input_path(BASE/'buffer-report.json')).read_text(encoding='utf-8'))
  for case in range(4):
   full=next(r for r in rows if r['case']==case and r['capacity']==4096);text=bytes.fromhex(full['hex']).split(b'\0',1)[0]
   for r in [r for r in rows if r['case']==case]:

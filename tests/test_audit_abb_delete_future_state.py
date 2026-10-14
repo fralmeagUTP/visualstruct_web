@@ -4,8 +4,9 @@ from pathlib import Path
 r=Path(r'D:\MisProyectos\Web_VisualEstruct');sys.path.insert(0,str(r))
 from app import create_app
 
+from scripts.published_test_inputs import audit_input_path
 def test_recursive_child_entry_preserves_native_pre_call_successor():
- review=json.loads((Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-abb-delete-baseline-low/abb-delete-native-low/review.json').read_text(encoding='utf-8'))
+ review=json.loads((audit_input_path(Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-abb-delete-baseline-low/abb-delete-native-low/review.json')).read_text(encoding='utf-8'))
  meta=review['cases'][8]
  client=create_app().test_client()
  for value in meta['seed']:assert client.post('/hierarchical/abb/operate',json={'operation':'insertar','payload':{'value':value}}).json['success']

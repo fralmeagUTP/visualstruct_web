@@ -4,8 +4,9 @@ from copy import deepcopy
 import json,pytest
 from _bfs_dfs_auxiliary_consumer_oracle import assert_saved_traversal
 ROOT=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-graph-bellman-traversal-consumers-low"
+from scripts.published_test_inputs import audit_input_path
 @pytest.fixture(scope="module",params=["run_bfs","run_dfs"])
-def saved(request):return json.loads((ROOT/("graphbt-compact-before-traversal-"+request.param+"-service-1.json")).read_text(encoding="utf-8"))
+def saved(request):return json.loads((audit_input_path(ROOT/("graphbt-compact-before-traversal-"+request.param+"-service-1.json"))).read_text(encoding="utf-8"))
 def test_original_capture_positive(saved):assert_saved_traversal(saved)
 @pytest.mark.parametrize("mutation",["auxiliary_kind","auxiliary_items","tree","discovery","output","physical_store","free","allocation","result","source"])
 def test_causal_mutations_rejected(saved,mutation):
@@ -25,7 +26,7 @@ def test_causal_mutations_rejected(saved,mutation):
     with pytest.raises(AssertionError):assert_saved_traversal(p)
 @pytest.mark.parametrize("mutation",["recursive_parameter","recursive_return","dead_head_storage"])
 def test_dfs_causal_stack_mutations_rejected(mutation):
-    p=json.loads((ROOT/"graphbt-compact-before-traversal-run_dfs-service-1.json").read_text(encoding="utf-8"))
+    p=json.loads((audit_input_path(ROOT/"graphbt-compact-before-traversal-run_dfs-service-1.json")).read_text(encoding="utf-8"))
     if mutation=="recursive_parameter":
         r=next(r for r in p["rows"] if r["event"]["phase"]=="enter" and r["event"]["function"]=="grafo_dfs_recursivo");r["after"]["recursive_frames"][-1]["parameters"]["actual"]=999
     elif mutation=="recursive_return":

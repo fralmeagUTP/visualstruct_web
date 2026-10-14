@@ -20,10 +20,11 @@ def prepare(c,values):
 def run(c):return c.post('/api/ordenamiento/run',json={'algorithm_id':'counting_sort','mode':'step_by_step'})
 def forbid(*args,**kwargs):raise AssertionError('readonly replay must not execute any sorting method')
 
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',['range_two','range_eighty','null_two','null_negative_duplicates'])
 def test_error_native_complete_events_retirement_and_unchanged_accepted_state(case):
-    d=json.loads((E/'native-errors'/(case+'.json')).read_text(encoding='utf-8'))
-    for ext in ['c','h']:assert_historical_protected_hash(ROOT,'docs/tads_C/tad_ordenamiento.'+ext,hashlib.sha256((E/'native-errors'/('tad_ordenamiento.'+ext)).read_bytes()).hexdigest())
+    d=json.loads((audit_input_path(E/'native-errors'/(case+'.json'))).read_text(encoding='utf-8'))
+    for ext in ['c','h']:assert_historical_protected_hash(ROOT,'docs/tads_C/tad_ordenamiento.'+ext,hashlib.sha256((audit_input_path(E/'native-errors'/('tad_ordenamiento.'+ext))).read_bytes()).hexdigest())
     app=create_app();app.testing=True
     if d['case']['simulated_calloc']:app.config['COUNTING_QA_ALLOCATOR']=null_allocator
     c=app.test_client();before=prepare(c,d['case']['input']);r=run(c);assert r.status_code==400

@@ -5,9 +5,10 @@ from copy import deepcopy
 import pytest
 from _priority_front_candidate_oracle import assert_priority_front_candidate
 FIXTURE = Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-front-candidate-delta-low/positive-fixture.json"
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize("mutation", [None,"early","late","wrong_alias","duplicate_heap","duplicate_pointer","wrong_initial","uninitialized_parameter","invalid_parameter","wrong_parameter","early_output"])
 def test_candidate_controls(mutation):
-    body = deepcopy(json.loads(FIXTURE.read_text(encoding="utf-8")))
+    body = deepcopy(json.loads(audit_input_path(FIXTURE).read_text(encoding="utf-8")))
     steps = body["execution_trace"]["steps"]
     m = steps[8]["pedagogy"]["front_memory"]
     if mutation == "early": steps[8]["state_after"]["out_index"] = 2

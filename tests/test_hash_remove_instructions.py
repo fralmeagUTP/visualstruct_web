@@ -4,11 +4,12 @@ import json
 import pytest
 BASE=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-remove-instructions-medium'
 PAIRS={'empty':[],'head':[(1,10),(4,40),(7,70),(10,100)],'middle':[(1,10),(4,40),(7,70),(10,100)],'tail':[(1,10),(4,40),(7,70),(10,100)],'negative':[(-1,-10),(-4,-40),(-6,-60)],'extremes':[(-2147483648,2147483647),(2147483647,-2147483648)]}
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(PAIRS))
 def test_remove_each_native_event_heap_scope_and_count(client,case):
  client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':3}})
  for k,v in PAIRS[case]:client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':k,'value':v}})
- for fixture in [r for r in json.loads((BASE/'report.json').read_text(encoding='utf-8')) if r['case']==case]:
+ for fixture in [r for r in json.loads((audit_input_path(BASE/'report.json')).read_text(encoding='utf-8')) if r['case']==case]:
   data=client.post('/hash/hash_table/operate',json={'operation':'remove','payload':{'key':fixture['key']}}).get_json();frames=data['execution_trace']['steps'];native=fixture['native']
   assert [f['event_type'] for f in frames]==[n['token'] for n in native]
   for i,(frame,n) in enumerate(zip(frames,native)):

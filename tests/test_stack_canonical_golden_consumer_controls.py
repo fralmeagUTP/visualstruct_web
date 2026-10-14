@@ -5,10 +5,11 @@ from pathlib import Path
 import pytest
 from _stack_push_memory_oracle import assert_empty_stack_push_memory
 FIXTURE=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-stack-canonical-golden-consumers-low/positive-fixtures.json"
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize("value",[7,42])
 @pytest.mark.parametrize("mutation",[None,"seven_frames","swapped_malloc_phases","duplicate_heap","missing_reservation","wrong_initial","uninitialized_parameter","invalid_parameter","wrong_parameter","wrong_scope","early_value","early_link","early_root","wrong_value"])
 def test_consumer_contract_controls(value,mutation):
-    body=deepcopy(json.loads(FIXTURE.read_text(encoding="utf-8"))[str(value)])
+    body=deepcopy(json.loads(audit_input_path(FIXTURE).read_text(encoding="utf-8"))[str(value)])
     steps=body["execution_trace"]["steps"]
     if mutation=="seven_frames":body["execution_trace"]["steps"]=[steps[i] for i in [0,1,4,5,6,7,8]]
     elif mutation=="swapped_malloc_phases":steps[2]["event_type"],steps[3]["event_type"]=steps[3]["event_type"],steps[2]["event_type"]

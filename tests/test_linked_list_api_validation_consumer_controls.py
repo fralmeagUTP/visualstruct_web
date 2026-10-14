@@ -3,8 +3,9 @@ from copy import deepcopy
 import json,pytest
 from _linked_list_api_validation_consumer_oracle import assert_linked_list_mode_validation
 ROOT=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-linked-list-canonical-consumer-low"
+from scripts.published_test_inputs import audit_input_path
 @pytest.fixture(scope="module")
-def saved():return json.loads((ROOT/"linkedcanonical-before-call-20-insertar_elemento-wire.json").read_text(encoding="utf-8"))
+def saved():return json.loads((audit_input_path(ROOT/"linkedcanonical-before-call-20-insertar_elemento-wire.json")).read_text(encoding="utf-8"))
 def check(wire):assert_linked_list_mode_validation(wire["body"],wire["status"],{"position":"1","relative":"1","value":"1"})
 def test_original_API_refusal_positive(saved):check(saved)
 @pytest.mark.parametrize("fault",["status","success","started","accepted","stage","steps","payload","history","state","message","source","hidden","operation"])
@@ -26,7 +27,7 @@ def test_API_refusal_corruptions_rejected(saved,fault):
     else:t["operation_name"]="insertar_posicion"
     with pytest.raises(AssertionError):check(w)
 def test_original_positional_C_case_is_not_API_refusal():
-    wire=json.loads((ROOT/"linkedcanonical-before-call-18-insertar_posicion-wire.json").read_text(encoding="utf-8"))
+    wire=json.loads((audit_input_path(ROOT/"linkedcanonical-before-call-18-insertar_posicion-wire.json")).read_text(encoding="utf-8"))
     body=wire["body"];trace=body["execution_trace"];assert wire["status"]==200 and body["success"] is True and trace["steps"]
     assert trace["final_state"]==body["visual_state"]
     for step in trace["steps"]:
@@ -35,7 +36,7 @@ def test_original_positional_C_case_is_not_API_refusal():
 
 from _linked_list_api_validation_consumer_oracle import assert_linked_list_empty_validation,assert_hidden_delete_empty_branch
 EMPTY_CALLS=[(26,"eliminar_inicio"),(28,"eliminar_final"),(30,"eliminar_posicion"),(32,"primero"),(34,"ultimo")]
-def empty_wire(call,op):return json.loads((ROOT/("linkedcanonical-final-4-call-"+str(call)+"-"+op+"-wire.json")).read_text(encoding="utf-8"))
+def empty_wire(call,op):return json.loads((audit_input_path(ROOT/("linkedcanonical-final-4-call-"+str(call)+"-"+op+"-wire.json"))).read_text(encoding="utf-8"))
 def check_empty(w):
     t=w["body"]["execution_trace"];assert_linked_list_empty_validation(w["body"],w["status"],t["payload"],t["operation_name"])
 @pytest.mark.parametrize("call,op",EMPTY_CALLS)
@@ -51,7 +52,7 @@ def test_empty_API_coordinated_corruptions_rejected(call,op,fault):
         for state in (b["visual_state"],t["final_state"]):state["size"]=1;state["items"]=[{"value":1}];state["empty"]=False
         b["history"]=[{"operation":op,"payload":t["payload"]}]
     with pytest.raises(AssertionError):check_empty(w)
-def alias_body():return json.loads((ROOT/"linkedcanonical-final-4-call-22-eliminar_primero-wire.json").read_text(encoding="utf-8"))["body"]
+def alias_body():return json.loads((audit_input_path(ROOT/"linkedcanonical-final-4-call-22-eliminar_primero-wire.json")).read_text(encoding="utf-8"))["body"]
 def test_original_hidden_alias_empty_branch_positive():assert_hidden_delete_empty_branch(alias_body())
 def test_hidden_alias_planner_reuses_C_empty_return():
     from app.services.execution_trace_service import ExecutionTraceService

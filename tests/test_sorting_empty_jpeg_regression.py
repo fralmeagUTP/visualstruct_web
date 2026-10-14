@@ -1,15 +1,18 @@
-"""Focal actual export regression; explicit live preview required, private cookies."""
+"""Actual export regression with a private fixture server and isolated cookies."""
 import hashlib,json,os
 from pathlib import Path
 import pytest
 from PIL import Image,ImageChops
 from playwright.sync_api import sync_playwright
+from test_controls40_real_flows import controls40_page
 
-@pytest.mark.skipif(not os.environ.get("JPEG_FOCAL_URL"),reason="requires explicit owned preview URL")
-def test_empty_and_nonempty_sorting_export(tmp_path):
+from scripts.published_test_inputs import audit_input_path
+@pytest.mark.e2e
+def test_empty_and_nonempty_sorting_export(tmp_path,controls40_page):
+    _,_,private_url=controls40_page
     root=Path(__file__).resolve().parents[1]
     out=Path(os.environ.get("JPEG_FOCAL_OUT",str(tmp_path)));out.mkdir(parents=True,exist_ok=True)
-    before=(root/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-jpeg-hidden-list-traces-low/interpreter_runtime.before.js").read_text(encoding="utf-8")
+    before=(audit_input_path(root/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-jpeg-hidden-list-traces-low/interpreter_runtime.before.js")).read_text(encoding="utf-8")
     rows=[]
     with sync_playwright() as pw:
         browser=pw.chromium.launch()
@@ -20,7 +23,7 @@ def test_empty_and_nonempty_sorting_export(tmp_path):
             page.on("request",lambda r:posts.append(r.url) if r.method=="POST" else None)
             if label.endswith("before"):
                 page.route("**/static/js/interpreter_runtime.js*",lambda r:r.fulfill(status=200,content_type="application/javascript",body=before))
-            page.goto(os.environ["JPEG_FOCAL_URL"]+"/sorting/visualizador",wait_until="networkidle")
+            page.goto(private_url+"/sorting/visualizador",wait_until="networkidle")
             page.locator("#didactic-mode-switch").check()
             if label.startswith("nonempty"):
                 page.locator("#sorting-manual-values").fill("7, 2, 9")
@@ -42,4 +45,4 @@ def test_empty_and_nonempty_sorting_export(tmp_path):
         browser.close()
     with Image.open(out/"nonempty-before.jpg") as a,Image.open(out/"nonempty-current.jpg") as b:
         assert a.size==b.size and ImageChops.difference(a.convert("RGB"),b.convert("RGB")).getbbox() is None
-    (out/"JPEG-regression-report.json").write_text(json.dumps({"rows":rows,"nonempty_pixels_identical":True,"current_runtime_sha256":hashlib.sha256((root/"static/js/interpreter_runtime.js").read_bytes()).hexdigest()},indent=2),encoding="utf-8")
+    (out/"JPEG-regression-report.json").write_text(json.dumps({"rows":rows,"nonempty_pixels_identical":True,"current_runtime_sha256":hashlib.sha256((audit_input_path(root/"static/js/interpreter_runtime.js")).read_bytes()).hexdigest()},indent=2),encoding="utf-8")

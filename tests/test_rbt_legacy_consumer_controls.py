@@ -7,7 +7,8 @@ from _rbt_legacy_consumer_oracle import assert_rbt_consumer
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-rbt-legacy-consumers-low/positive-fixtures.json"
 CASES=("rotation","delete_int","delete_text")
 
-def body(case):return deepcopy(json.loads(P.read_text(encoding="utf-8"))[case])
+from scripts.published_test_inputs import audit_input_path
+def body(case):return deepcopy(json.loads(audit_input_path(P).read_text(encoding="utf-8"))[case])
 
 def step(b,text,phase):
     return next(s for s in b["execution_trace"]["steps"] if s["line_text"].strip()==text and s["pedagogy"]["instruction_event"]["phase"]==phase)

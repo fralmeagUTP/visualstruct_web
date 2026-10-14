@@ -49,16 +49,22 @@ def test_e2e_job_installs_chromium_and_runs_only_browser_tests() -> None:
         rows.append(row)
     graph_case = "test_playwright_graph_execute_completes_algorithms_across_phases"
     chromium_target = "tests/test_ui_playwright_e2e.py"
-    assert rows == [
-        {"group": "graph-algorithms", "suite": "chromium", "target": chromium_target,
-         "cases": f"--case {graph_case}", "addopts": "", "minutes": 40},
-        {"group": "chromium-general", "suite": "chromium", "target": chromium_target,
-         "cases": "", "addopts": f"--deselect={chromium_target}::{graph_case}", "minutes": 20},
-        {"group": "firefox-general", "suite": "firefox", "target": "tests/test_playwright_firefox_smoke.py",
-         "cases": "", "addopts": "", "minutes": 20},
-    ]
-    # One graph case plus its complementary complete file; Firefox remains a full file.
-    # Current 29 Chromium + 5 Firefox cases are retained; future cases remain included.
+    graph = [row for row in rows if row["group"] == "graph-algorithms"]
+    firefox = [row for row in rows if row["group"] == "firefox-general"]
+    chromium = [row for row in rows if row["group"].startswith("chromium-general-")]
+    assert graph == [{"group":"graph-algorithms","suite":"chromium","target":chromium_target,
+                      "cases":f"--case {graph_case}","addopts":"","minutes":40}]
+    assert firefox == [{"group":"firefox-general","suite":"firefox","target":"tests/test_playwright_firefox_smoke.py",
+                        "cases":"","addopts":"","minutes":20}]
+    assert len(rows) == 6 and len(chromium) == 4
+    for index, row in enumerate(chromium):
+        assert row["group"] == f"chromium-general-{index}"
+        assert row["suite"] == "chromium" and row["target"] == "tests"
+        assert row["cases"] == f"--shard-index {index} --shard-count 4"
+        assert row["addopts"] == f"-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect={chromium_target}::{graph_case}"
+        assert row["minutes"] == 40
+    # The only ignored file and deselected case have complete dedicated jobs above.
+    # Every remaining E2E case is included through the tests directory and one shard.
     assert re.findall(r"(?m)^  ([\w-]+):\s*$", workflow.split("\njobs:\n", 1)[1]) == ["e2e"]
     for trigger in ("push", "pull_request"):
         assert re.search(rf"(?m)^  {trigger}:\n    branches:\n      - main\n", workflow)

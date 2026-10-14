@@ -4,7 +4,8 @@ import json
 import pytest
 from _graph_delete_kruskal_consumer_oracle import assert_graphdk_projection
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-graph-delete-kruskal-consumers-low"
-FIXTURES=json.loads((P/"original-two-graphdk-projections.json").read_text(encoding="utf-8"))
+from scripts.published_test_inputs import audit_input_path
+FIXTURES=json.loads((audit_input_path(P/"original-two-graphdk-projections.json")).read_text(encoding="utf-8"))
 @pytest.mark.parametrize("operation",list(FIXTURES))
 def test_original_projection(operation):assert_graphdk_projection(FIXTURES[operation])
 def test_interned_immutable_arrays_are_distinct_physical_reservations():

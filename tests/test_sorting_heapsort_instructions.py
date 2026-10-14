@@ -8,12 +8,13 @@ ROOT=Path(__file__).resolve().parents[1];E=ROOT/'openspec/changes/archive/2026-1
 @pytest.fixture(scope='module')
 def full(tmp_path_factory):
     out=tmp_path_factory.mktemp('heap-full');audit(out);return out
+from scripts.published_test_inputs import audit_input_path
 @pytest.mark.parametrize('case',list(CASES))
 def test_native_scopes_before_condition_source_and_active_heap(case,full):
-    d=json.loads((full/(case+'.json')).read_text(encoding='utf-8'));heap_n=len(CASES[case]);suffix=set();previous={}
+    d=json.loads((audit_input_path(full/(case+'.json'))).read_text(encoding='utf-8'));heap_n=len(CASES[case]);suffix=set();previous={}
     source=d['response']['execution_trace']['source_code'].splitlines()
     from _audit_sorting_c_source import function_body
-    canonical=(ROOT/'docs/tads_C/tad_ordenamiento.c').read_text(encoding='utf-8')
+    canonical=(audit_input_path(ROOT/'docs/tads_C/tad_ordenamiento.c')).read_text(encoding='utf-8')
     for function in ('ordenar_heapsort','heapify','intercambiar','arreglo_valido'):assert function_body(canonical,function) in d['response']['execution_trace']['source_code']
     for idx,(s,c) in enumerate(zip(d['response']['execution_trace']['steps'],d['native'])):
         event=c['event'];token=event['token'];p=s['pedagogy'];ctx=s['state_after']['heap_context']
@@ -51,7 +52,7 @@ def test_native_scopes_before_condition_source_and_active_heap(case,full):
 def test_mechanical_negative_controls_and_observer_unchanged(full):
     counts=dict(short=0,partial=0,deep=0,nonheap=0,tie=0)
     for case in CASES:
-        d=json.loads((full/(case+'.json')).read_text(encoding='utf-8'));native=d['native']
+        d=json.loads((audit_input_path(full/(case+'.json'))).read_text(encoding='utf-8'));native=d['native']
         for idx,c in enumerate(native):
             e=c['event'];token=e['token'];s=d['response']['execution_trace']['steps'][idx]
             if token in ('left_bound','right_bound') and not c['condition']:
@@ -65,20 +66,20 @@ def test_mechanical_negative_controls_and_observer_unchanged(full):
                 f=e['frames'][-1];child=f['izquierdo' if token=='left_compare' else 'derecho']
                 if c['array'][child]==c['array'][f['mayor']]:counts['tie']+=1;assert c['condition'] is False
     assert all(counts.values())
-    for name in ('observed.c','native.jsonl'):assert (full/name).read_bytes()==(LOW/'native-final-second'/name).read_bytes()
+    for name in ('observed.c','native.jsonl'):assert (audit_input_path(full/name)).read_bytes()==(audit_input_path(LOW/'native-final-second'/name)).read_bytes()
     for name in ('tad_ordenamiento.c','tad_ordenamiento.h'):
-        assert (full/name).read_bytes()==(ROOT/'docs/tads_C'/name).read_bytes()
-        assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,hashlib.sha256((LOW/'native-final-second'/name).read_bytes()).hexdigest())
+        assert (audit_input_path(full/name)).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/name)).read_bytes()
+        assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,hashlib.sha256((audit_input_path(LOW/'native-final-second'/name)).read_bytes()).hexdigest())
 @pytest.mark.parametrize('case',list(CASES))
 def test_actual_full_browser_restoration_and_downloaded_callers(case):
-    r=json.loads((E/'browser-final-verified/report.json').read_text(encoding='utf-8'));row=next(x for x in r['rows'] if x['case']==case)
+    r=json.loads((audit_input_path(E/'browser-final-verified/report.json')).read_text(encoding='utf-8'));row=next(x for x in r['rows'] if x['case']==case)
     assert row['forward_reverse_restorations']==2*row['instructions'] and row['replay_extra_POSTs']==0 and row['page_errors']==[]
     assert row['JSON_exact_cursor_state_main_preserved'] and row['five_stages'] and row['reload_main_preserved'] and row['recursive_scopes_active_heap_suffix_match_C']
     caller=row['caller'];assert caller['strict_C17'] and caller['doxygen_warnings']==0 and caller['allocations']==caller['frees']==caller['live']==0 and caller['successful_native_runs']==1
     assert r['empty_UI_rejected'] and r['empty_caller']['successful_native_runs']==0
 
 def test_original_regressions_and_seven_modules_hashes_preserved():
-    original=json.loads((E/'original-regressions.json').read_text(encoding='utf-8-sig'));assert hashlib.sha256((ROOT/original['path']).read_bytes()).hexdigest()==original['sha256']
-    protected=json.loads((E.parent/'visible-sorting-mergesort-instructions/implementation-hashes.json').read_text(encoding='utf-8'))['files']
+    original=json.loads((audit_input_path(E/'original-regressions.json')).read_text(encoding='utf-8-sig'));assert hashlib.sha256((audit_input_path(ROOT/original['path'])).read_bytes()).hexdigest()==original['sha256']
+    protected=json.loads((audit_input_path(E.parent/'visible-sorting-mergesort-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
     for method in ('intercambio','seleccion','insercion','burbuja','shell','quicksort','mergesort'):
-        rel=f'app/domain/sorting/{method}_instructions.py';assert hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()==protected[rel]
+        rel=f'app/domain/sorting/{method}_instructions.py';assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==protected[rel]

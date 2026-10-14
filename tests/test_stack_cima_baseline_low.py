@@ -5,7 +5,8 @@ import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-stack-cima-baseline-low'
 M=E.parent/'visible-stack-cima-instructions-medium'
 CASES=['empty','single','top','duplicate','minus1','minimum','maximum','bounds']
-def report():return json.loads((E/'report.json').read_text(encoding='utf-8'))
+from scripts.published_test_inputs import audit_input_path
+def report():return json.loads((audit_input_path(E/'report.json')).read_text(encoding='utf-8'))
 def row(name):return next(x for x in report() if x['case']==name)
 def private(name):
     from app.services.structure_service import StructureService
@@ -105,22 +106,22 @@ def test_rejected_unregistered_query_has_no_fabricated_executed_C_call(name):
         assert not any(step['pedagogy'].get('concept') in ('call','return') for step in data['execution_trace']['steps']),'Rejected operation did not execute pila_cima; a validation-only frame must not claim C call/return'
 @pytest.mark.parametrize('name',['empty','top','bounds','minus1'])
 def test_existing_UI_rejects_query_without_new_feature_or_history_or_state_mutation(name):
-    rows=json.loads((M/'browser/report.json').read_text(encoding='utf-8'));d=next(x for x in rows if x['case']==name)
+    rows=json.loads((audit_input_path(M/'browser/report.json')).read_text(encoding='utf-8'));d=next(x for x in rows if x['case']==name)
     assert d['public_cima_not_registered'] and d['no_cima_selector'] and d['history_unchanged'] and d['both_views_exactly_unchanged'] and d['five_sections'] and d['extra_UI_POSTs']==0 and not d['JS_errors'] and d['standalone_queries_in_history']==0
     assert all(x['HTTP']==400 and x['data']['execution_trace']['steps']==[] and x['data']['execution_trace']['execution_started'] is False for x in d['rejected'])
     assert d['DOM_main_present']==(name!='empty')
 @pytest.mark.parametrize('name',['empty','top','bounds','minus1'])
 def test_real_DOM_HTTP_C17_caller_integrated_setup_queries_ownership_and_Doxygen(name):
     import hashlib
-    d=json.loads((M/'caller-report.json').read_text(encoding='utf-8'));c=next(x for x in d['cases'] if x['case']==name)
-    assert hashlib.sha256((M/'actual-callers'/name/'main.c').read_bytes()).hexdigest()==c['SHA'];assert c['runs']['C17']['exit']==c['runs']['ownership']['exit']==0
+    d=json.loads((audit_input_path(M/'caller-report.json')).read_text(encoding='utf-8'));c=next(x for x in d['cases'] if x['case']==name)
+    assert hashlib.sha256((audit_input_path(M/'actual-callers'/name/'main.c')).read_bytes()).hexdigest()==c['SHA'];assert c['runs']['C17']['exit']==c['runs']['ownership']['exit']==0
     assert c['alloc']==c['free'] and c['live']==0;assert all(x['exit']==1 for x in c['faults']);assert len(c['faults'])==c['alloc']
     assert d['Doxygen_warnings']==0 and d['documented_mains']==4
-    body=(M/'actual-callers'/name/'main.c').read_text(encoding='utf-8');assert body.count('pila_cima(')==c['alloc'],'Integrated push echoes only, no standalone query history'
+    body=(audit_input_path(M/'actual-callers'/name/'main.c')).read_text(encoding='utf-8');assert body.count('pila_cima(')==c['alloc'],'Integrated push echoes only, no standalone query history'
 def test_native_defined_readonly_repeat_samples_and_resources_are_finite_scoped():
-    native=[json.loads(x) for x in (E/'native/events.jsonl').read_text().splitlines()];assert len(native)==48
+    native=[json.loads(x) for x in (audit_input_path(E/'native/events.jsonl')).read_text().splitlines()];assert len(native)==48
     for sample in range(16):
         rows=[x for x in native if x['sample']==sample];assert [x['phase'] for x in rows]==['entry','conditional','return'];assert rows[0]['items']==rows[1]['items']==rows[2]['items'];assert rows[1]['condition']==rows[0]['root_NULL'];assert rows[-1]['result_written']==1
-    r=json.loads((M/'resources.json').read_text());assert len(r['samples'])==24 and all(x['max_python_peak_bytes']>0 and x['max_JSON_bytes']>0 for x in r['by_scope'].values())
-    compare=json.loads((M/'private-native-comparison.json').read_text(encoding='utf-8'));assert compare['events_aligned']==48 and compare['conditions_aligned']==16 and compare['divergences']==0 and compare['C_H_current_exact'] and compare['native_execution_rerun'] is False
-    reuse=json.loads((M/'caller-input-reuse.json').read_text());assert reuse['input_count']==6 and reuse['all_exact_bytes_equal'] and not reuse['C17_ownership_NULL_Doxygen_rerun']
+    r=json.loads((audit_input_path(M/'resources.json')).read_text());assert len(r['samples'])==24 and all(x['max_python_peak_bytes']>0 and x['max_JSON_bytes']>0 for x in r['by_scope'].values())
+    compare=json.loads((audit_input_path(M/'private-native-comparison.json')).read_text(encoding='utf-8'));assert compare['events_aligned']==48 and compare['conditions_aligned']==16 and compare['divergences']==0 and compare['C_H_current_exact'] and compare['native_execution_rerun'] is False
+    reuse=json.loads((audit_input_path(M/'caller-input-reuse.json')).read_text());assert reuse['input_count']==6 and reuse['all_exact_bytes_equal'] and not reuse['C17_ownership_NULL_Doxygen_rerun']

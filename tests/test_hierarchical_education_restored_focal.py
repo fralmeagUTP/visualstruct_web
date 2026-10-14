@@ -13,6 +13,7 @@ def open_panel(page,label):
  assert summary.locator('..').get_attribute('open') is not None
  assert page.evaluate('document.activeElement.tagName')=='SUMMARY'
 
+@pytest.mark.e2e
 @pytest.mark.parametrize('family',FAMILIES)
 def test_restored_education_real_functions_and_manual_navigation(controls40_page,tmp_path,family):
  page,context,base=controls40_page

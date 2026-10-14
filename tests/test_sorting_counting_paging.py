@@ -25,11 +25,12 @@ def paged():
 
 def no_run(*_args,**_kwargs): raise AssertionError('navigation dispatched sorting')
 
+from scripts.published_test_inputs import audit_input_path
 def test_cap_HTTP_first_middle_last_match_real_C_scalar_samples(paged,monkeypatch):
     app,c,d=paged;t=d['execution_trace'];assert t['schema']=='counting-paged-trace/v1' and t['step_count']==3000051
     assert len(json.dumps(d))<2*1024*1024 and len(t['initial_page']['steps'])<=16
     monkeypatch.setattr(SortingInterpreter,'run',no_run)
-    for line in (E/'native-cap-scalar/stdout.jsonl').read_text().splitlines():
+    for line in (audit_input_path(E/'native-cap-scalar/stdout.jsonl')).read_text().splitlines():
         native=json.loads(line);page=c.get(t['page_url'],query_string={'start':native['index'],'limit':1}).get_json();assert page['trace_id']==t['trace_id']
         f=page['steps'][0];event=f['debug']['instruction_event'];assert f['step_index']==native['index'] and f['state_after']['metrics']['steps']==native['index']+1
         for key,value in native.items():
@@ -94,7 +95,7 @@ def test_eighty_large_range_paged_final_metrics_and_budget():
 
 @pytest.mark.parametrize('case',['single','ordered','reverse','duplicates','negative','extremes'])
 def test_dense_transport_preserves_frozen_C_event_and_before_contract(case):
-    old=json.loads((E.parent/'visible-sorting-counting-baseline-low/native-final'/(case+'.json')).read_text(encoding='utf-8'))
+    old=json.loads((audit_input_path(E.parent/'visible-sorting-counting-baseline-low/native-final'/(case+'.json'))).read_text(encoding='utf-8'))
     c=create_app().test_client();d=run(c,old['input']);t=d['execution_trace'];assert t.get('schema')!='counting-paged-trace/v1' and len(t['steps'])==len(old['native'])
     for i,(f,native) in enumerate(zip(t['steps'],old['native'])):
         assert f['debug']['instruction_event']=={k:v for k,v in native.items() if k!='case'}

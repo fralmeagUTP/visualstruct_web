@@ -4,7 +4,8 @@ import json
 import pytest
 from _dijkstra_legacy_consumer_oracle import assert_dijkstra_projection
 P=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-dijkstra-legacy-consumers-low/positive-projections.json"
-def data(case):return json.loads(P.read_text(encoding="utf-8"))[case]
+from scripts.published_test_inputs import audit_input_path
+def data(case):return json.loads(audit_input_path(P).read_text(encoding="utf-8"))[case]
 def row(p,line):return next(r for r in p["rows"] if r["line"]==line)
 def variable(memory,name):
     return next(v for f in memory["frames"] if f["function"]=="grafo_dijkstra" for scope in f["scopes"] for k,v in scope["variables"].items() if k==name)

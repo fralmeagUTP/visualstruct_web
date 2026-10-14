@@ -4,9 +4,10 @@ import json
 import pytest
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-priority-queue-limpiar-baseline-low'
 M=E.parent/'visible-priority-queue-limpiar-instructions-medium'
-if (M/'report.json').exists():E=M
+from scripts.published_test_inputs import audit_input_path
+if (audit_input_path(M/'report.json')).exists():E=M
 
-def rows():return json.loads((E/'report.json').read_text(encoding='utf-8'))
+def rows():return json.loads((audit_input_path(E/'report.json')).read_text(encoding='utf-8'))
 def multi():return next(r for r in rows() if r['case']=='multi' and r['repeat']==1)
 def frame(line):return next(f for f in multi()['data']['execution_trace']['steps'] if f['line_text'].strip()==line)
 def pointer(f,name):return next(p for p in f['pedagogy']['pointers'] if p['name']==name)
@@ -18,10 +19,10 @@ def test_root_values_quantity_and_live_cardinality_match_current_C(case):
  for r in rows():
   if r['case']==case:assert all(x['root_values_match'] and x['quantity_match'] and x['C_live_count']==x['trace_heap_count'] for x in r['instruction_comparison'])
 def test_native_NULL_guard_next_and_aux_shadow_avoid_uninitialized_and_retired_reads():
- ns=json.loads((E/'native-report.json').read_text(encoding='utf-8'));assert len(ns)==153 and sum(n['condition']!=-1 for n in ns)==41 and len({n['sample'] for n in ns})==9
+ ns=json.loads((audit_input_path(E/'native-report.json')).read_text(encoding='utf-8'));assert len(ns)==153 and sum(n['condition']!=-1 for n in ns)==41 and len({n['sample'] for n in ns})==9
  null=[n for n in ns if n['root_argument_NULL']];assert [n['event'] for n in null]==['entry','aux_declared','next_declared','root_guard','return']
  frees=[n for n in ns if n['event']=='node_free'];assert len(frees)==8 and all(not n['aux_valid'] and not n['aux_initialized'] and n['next_valid'] for n in frees)
- assert 'OWNERSHIP 8 8 0' in (E/'native/stderr.log').read_text(encoding='utf-8')
+ assert 'OWNERSHIP 8 8 0' in (audit_input_path(E/'native/stderr.log')).read_text(encoding='utf-8')
 def test_aux_declaration_is_uninitialized_function_local():
  p=pointer(frame('CPNodo *aux;'),'aux');assert p['target'] is None and p.get('initialized') is False and p.get('valid') is False and p.get('scope')=='cp_vaciar'
 def test_next_declaration_exists_uninitialized_with_CPNodo_type_and_scope():
