@@ -1,0 +1,3 @@
+# Resolver71eslabones
+
+Parent01a0fe61-3104-743a-b032-bcc289ad80cd delimita71IDs sincadena completaclassification95. Identificar eslabónexacto,resolvervínculosdemostrables ypreparar casosconinput/expected cuandoactualfuente sea insuficiente,sin afirmar ausenciaabsoluta. No reducirrequisitos ni aceptarporreferencia;nocontainers/campañas/publicación/despliegue. Tests checkerfocales120s2GiB. Preservar167bindings/208pendientes yfuentesanteriores. Ordenamiento histórico sóloleer/referenciar,no reejecutarfixture/campaña. Source/execution/acceptance porseparado.

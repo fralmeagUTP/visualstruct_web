@@ -44,3 +44,9 @@ AutorizaciónSentinel_d60312733bd081918cbed1ad70d6815f efectuada: remanenteaudit
 
 ## Publicación de este archivo
 Este repositorio distribuye conclusiones/specs/documentos; los inputs deejecución ylas asignaciones locales activas permanecen enD. index.json publicado es una fotografía sin tareas activas; registrar instrucción/asignación ybindings revisados antes denuevo trabajo. Referencias marcadas locales no son archivos ausentes que deban fingirse con fixtures.
+
+## Estado reconciliado y archivo final — 2026-10-14
+
+Los cuatro expedientes restantes fueron reconciliados y archivados por autorización explícita posterior del usuario. `archive-four-final-20261014.json` conserva ubicaciones y bindings históricos; el índice no contiene asignaciones activas. C1 está admitido12/12 **en alcance finito documentado**:375entradas originales,369activas/vinculadas,8retirosNOT_PASS y2añadidas. Las menciones anteriores1/12/11pendientes/2propuestas abiertas son fotografías supersedidas, no próximas tareas.
+
+Specs vigentes consolidadas:didactic-conformance-qa,application-quality-validation,didactic-conformance-remediation,sequential-structures,visual-playback-ui yapplication-quality-audit. Se mantienen cincoetapas/manual/educaciónaprobada;noLSan/universalidad/all15temporal/privatequeriespublicadas. SinGit/VPSactualizados. Antes de un nuevo trabajo registrar instrucción/change/operación/task/assignment yguarda vigente; no usar comandos/asignaciones cerradas. El flujo exige sincronización por instrucciones yCLI explícito, no agentes autónomos/hooks que la hagan automáticamente.

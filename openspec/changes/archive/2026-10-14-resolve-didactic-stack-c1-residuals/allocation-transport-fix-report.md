@@ -1,0 +1,12 @@
+# SEQ-ALLOC-HTTP-001: corrección finita
+
+Nueva asignación coordination-sequential-allocation-transport-fix-low-20261014, operación residuals.sequential-allocation-transport-fix. Usuario autoriza reparar10regresiones6familias ynominalfocal. No se reimplementaC ni se toca pedagogía eneste bloque.
+
+Producto: app/services/structure_service.py captura sólo MemoryError ocurrido enCALL delconstructorTAD reconocido; mensaje fijo público, success=false,error.code=allocation_failed,estado/historial preservados. app/domain/sequential/allocation_failure_instruction.py identifica elconstructor porcode/CALLoffset(ningún tracebackprivado se serializa);reusa3modelosNULL aceptados yrepresenta ramasNULL de3listas con objetos previos, scopes/variables/retornosC void/false/NULL yprintf exacto sólo eneventoalcanzado. Ninguna escritura de campo/publicación/reservaexitosa/free inventada. Tracemotor valida continuidad/línea/final. static/js/sequential.js permiteerrortrace enmanual/rápido, conserva error y no construyehintsnominales; mensaje técnico fuera deprintf.
+
+Resultados finales:10/10regresionesAPI400JSON conerror/traza,0mutaciónsesión. Diezverificacionessemánticas de respuestas/objetos/printf/privacidad PASS; seisnominales nuevos despuésiguales arespuestaJSONcompleta antes (fuentes C/frame/historia/estado/resultados),1controlnegativoMemoryErrorenmetadatos no se atribuye aconstructor. SieteUIrepresentativas(6familias+sublista hijo delegado) ambasvistas/avance-retroceso/highlight/consola/sinobjetosnuevos/sinPOSTextra/sinJSerrors. APIbloques<3s/53MB,UI máximo26.547s/281MB;120s2GiB respetados,0timeouts. Fuenteevidence/allocation-transport-final.json ylogs/proofs allí. Rojasoriginales yprimerintentoCRLFabortado se conservan;no xfail/debilitamiento. Cnuevo0: reutilizados7faultC17 yfaultsStackQueuePriority aceptados.
+
+Límite:MemoryError recuperable enconstructorobjetivo trasreplay/validación normal, no agotamiento real delproceso;fallos devalidación/replay/metadatos no se fabrican comomallocNULL. C26bytes y3904sesiones originales intactos. NoDocker/commit/push/despliegue. Criteriofinito satisfecho:equivalencia deerrordereserva/noobjetos/consola entreC/backend/traza/UI para10entradas(REM01/REM02/REM07 yQA03);no admisión globalC1/11obligaciones ni pruebasuniversales.
+
+## Cierre técnico de corrección finita
+SEQ-ALLOC-HTTP-001 corregido técnicamente dentrodelcriterio10regresiones. Educación/restoreretiro yaautorizadosse ejecutarán sólo después deafter conasignación nueva; no se desactivaesa autorización.

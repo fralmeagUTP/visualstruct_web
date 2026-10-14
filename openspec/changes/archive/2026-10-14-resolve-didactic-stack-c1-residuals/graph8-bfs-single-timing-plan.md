@@ -1,0 +1,3 @@
+# BFS8una ejecución HTTPplain autorizada
+
+Fuente directa padre20261014 autoriza ejecutaruna vez propuesta evidence/c1-final-documentary-adenda/graph8-single-scenario-proposal.json.16setupPOSTprivadosfuera timer;unaBFSmedidaantesPOST→readbodyentero+jsondecode,trazacompleta.120s2GiBJobObjectnoretry,0coverage/tracemalloc/profiler/optimización/Cnative/Docker/Bellman900. Instanciacanónica privada,sessiondirTEMPaislado,preview5051/3904sesionespreservados. AlcancefinitoBFS8exclusivamente,evidenciaentrada/fuentes/respuesta/duración/resources pararevisión,noautoadmitirgatesglobales.

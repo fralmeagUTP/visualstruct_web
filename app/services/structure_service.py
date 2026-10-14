@@ -247,6 +247,19 @@ class StructureService:
 
         try:
             result = adapter.execute(operation_name, payload)
+        except MemoryError as error:
+            from app.domain.sequential.allocation_failure_instruction import (
+                ERROR, MESSAGE, build_allocation_failure_trace, is_node_allocation_failure,
+            )
+            if not is_node_allocation_failure(error, structure_id, operation_name):
+                raise
+            trace = build_allocation_failure_trace(
+                structure_id=structure_id, operation_name=operation_name, payload=payload,
+                didactic_data=didactic_data, before_state=before_state,
+            )
+            return {"success": False, "message": MESSAGE, "error": deepcopy(ERROR),
+                    "visual_state": before_state, "history": valid_history,
+                    "execution_trace": trace}
         except (TADError, ValueError, TypeError) as error:
             message = StructureService._didactic_error(error)
             after_state = adapter.to_visual_state()

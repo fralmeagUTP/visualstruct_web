@@ -1,7 +1,7 @@
 # application-quality-audit Specification
 
 ## Purpose
-TBD - created by archiving change audit-local-quality-and-unified-controls. Update Purpose after archive.
+Define contratos auditados de código C/H, historial/callers reales, memoria, visualización, validación y trazabilidad de calidad dentro de los dominios finitos aprobados. Conserva sucesores aceptados y evidencia histórica; C1 12/12 no es garantía universal. Sorting conserva tiempos informativos; Graph mide HTTP completo y admite sólo fixtures temporales observados, incluido BFS8.
 ## Requirements
 ### Requirement: Depuración por dependencia y contrato vigente
 La auditoría SHALL identificar raíces de uso en interfaz visible, API vigente, servicios, C/H descargables y sus dependencias antes de eliminar código. Un método oculto SHALL NOT considerarse sin uso únicamente por estar oculto. El código demostrado sin uso ni obligación vigente SHALL retirarse; una ruptura de API contractual ambigua SHALL consultarse antes de aplicarla.
@@ -217,11 +217,12 @@ The audit SHALL distinguish native void empty/absent no-ops from application rej
 - **THEN** its actual helper source and typed scopes are available, the original z reserve ends at free, a different successor retains its identity, dead aliases are never sampled as live C pointers, and both views/replay match the recorded event boundaries without another mutation request
 
 ### Requirement: Limited Rojo-negro validator remains a global closure finding
-The audit SHALL retain C-RBT-VALIDAR-LIMIT-01 as an explicit open quality limitation and decision while current Validar checks root-black, order and red-red only; achieving method playback coverage SHALL NOT silently certify black height, parent integrity or cycles.
+The audit MUST preserve C-RBT-VALIDAR-LIMIT-01 as historical evidence. The explicitly accepted V3 successor checks black height, parent integrity and cycles within its supported finite contract; the prior root/order/red-red limitation MUST NOT remain an unresolved product decision after that acceptance. Scope limits for arbitrary/dangling pointers, other ABI and universal cases MUST remain explicit. Validator acceptance MUST NOT substitute insertion recolor or deletion causal witnesses.
 
 #### Scenario: All visible methods have recorded playback evidence
-- **WHEN** Rojo-negro eventually reaches7/7 recorded visible methods
-- **THEN** validator scope and the outstanding product decision remain visible in the findings and final limits until resolved explicitly, separate from the stronger audit oracle
+- **WHEN** Rojo-negro recorded methods and V3 have accepted successor evidence
+- **THEN** the historical limitation remains traceable as resolved within that scope
+- **AND** insertion browser final uses visible-red-black-insert-final-low/README.md while validator evidence stays separate
 
 ### Requirement: BFS instruction and history conformance preserves actual ownership
 The audit SHALL compare BFS and its actual graph/FIFO helpers against independent downloaded-C observations, distinguish discovered marks from processed output, preserve negative IDs including -1 and disclose allocation/performance/observer limits. Successful calls SHALL persist in generated history without query redispatch during topology rebuild; failures SHALL remain excluded.
@@ -254,7 +255,7 @@ Sorting methods SHALL have no fixed fifteen-second SLA. Their execution and inst
 
 Algorithm execution, instructional preparation/validation/JSON and browser rendering/manual replay SHALL be distinguished. Native compiled C timing SHALL NOT be presented as timing of the application's Python instructional interpreter. Historical full-request budget outcomes SHALL remain preserved with their sources; they SHALL NOT be rewritten into new PASS results. MemoryError, timeout or missing response SHALL remain operational failures requiring explicit review.
 
-Graph SHALL retain the prior agreement of at most15seconds for algorithm execution only, within its admitted educational domain and current15vertex cap; the Sorting withdrawal SHALL NOT silently remove that agreement. FullHTTP, instrumentation or human playback timings SHALL NOT certify pure Graph execution. Other technical limits, trace codecs/paging, coverage83/85 and300replay p95<200ms SHALL remain unchanged.
+Graph SHALL retain the maximum15seconds agreement measured as a plain full HTTP request, from before POST until complete response consumption and JSON decoding including the faithful trace, history reconstruction, validation, packing and serialization. Fixture preparation, browser rendering and manual replay are outside this interval; coverage/tracemalloc/profilers SHALL NOT supply plain gate results. The current vertex cap15 remains; a PASS is scoped to its explicit measured fixture, never a guarantee for every15vertex input or all algorithms. BFS8undirectedchain/start1 has one accepted1.4915286s request; historical pure/expanded-render/instrumented timings SHALL NOT be relabeled as that measurement. Other technical limits, trace codecs/paging, coverage83/85 and300replay p95<200ms SHALL remain unchanged.
 
 #### Scenario: Explain an80-element Sorting observation
 - GIVEN current native C results and existing full web-request measurements for a registered80-element scenario
@@ -270,12 +271,26 @@ Graph SHALL retain the prior agreement of at most15seconds for algorithm executi
 - AND algorithm correctness SHALL be assessed independently from that failed preparation
 
 #### Scenario: Graph has only full-request or instrumented evidence
-- GIVEN a recorded Graph request or profile without isolated algorithm-execution timing
-- WHEN assessing the retained algorithm-only15second agreement
-- THEN neither pure-algorithm PASS nor FAIL SHALL be inferred from the incomparable request duration
-- AND the exact missing input/source/timing SHALL be reported before any new native campaign
+- **GIVEN** one declared Graph fixture with plain HTTP duration measured from before POST until the complete response and faithful trace are consumed and JSON-decoded
+- **WHEN** its measured duration is at most15seconds
+- **THEN** that fixture alone has a finite timing PASS, with source/input/environment/resources preserved
+- **AND** instrumented, incomplete, pure-kernel or browser-expanded timings do not substitute that measurement or certify other inputs/algorithms
 
 #### Scenario: Preserve educational behavior and navigation
 - WHEN evaluating any timing layer
 - THEN conditions, scopes, aliases, before/after values, printf, ownership, validations and admitted-domain safeguards SHALL NOT be dropped or changed to improve reported speed
 - AND human Next/Previous waiting SHALL NOT be counted as algorithm execution time
+
+### Requirement: Asignación explícita a casos ejecutables
+El verificador estricto de inventario MUST rechazar opciones sin asignación explícita a una función de prueba existente dentro de tests/, con entrada, resultado esperado y capa. Los controles anónimos MUST figurar como pendientes y los controles MUST asignarse a E2E. Los IDs generados MUST NOT certificar ejecución ni cobertura.
+
+#### Scenario: operación nueva sin prueba
+- **GIVEN** un inventario con una operación sin asignación
+- **WHEN** se aplica el gate estricto
+- **THEN** el gate falla aunque esa operación tenga un case_id generado
+
+#### Scenario: control sin E2E
+- **GIVEN** un control HTML sin identificador
+- **WHEN** se recolecta el inventario estricto
+- **THEN** el control se incluye y el gate falla hasta asignar una prueba E2E con datos y esperado
+

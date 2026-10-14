@@ -8,17 +8,59 @@ function initSequentialResponsiveWorkspace() {
   const workspace = document.querySelector(".sequential-primary-workspace");
   const tabs = Array.from(document.querySelectorAll("[data-seq-tab]"));
   if (!workspace || !tabs.length) return;
-  const storageKey = document.querySelector(".is-stack-pilot") ? "sequential-stack-workspace-tab-v2" : "sequential-active-tab";
+  const stackPilot = Boolean(document.querySelector(".is-stack-pilot"));
+  const storageKey = stackPilot ? "sequential-stack-workspace-tab-v2" : "sequential-active-tab";
+  if (stackPilot) {
+    tabs[0].closest("nav").setAttribute("role", "tablist");
+    tabs.forEach((tab) => {
+      tab.id = `seq-tab-${tab.dataset.seqTab}`;
+      tab.setAttribute("role", "tab");
+      const panel = byId(tab.getAttribute("aria-controls"));
+      if (panel) {
+        panel.setAttribute("role", "tabpanel");
+        panel.setAttribute("aria-labelledby", tab.id);
+      }
+    });
+  }
   let saved = "visual";
   try { saved = window.sessionStorage.getItem(storageKey) || "visual"; } catch (_error) { saved = "visual"; }
   const activate = (name) => {
     const selected = name === "code" ? "code" : "visual";
     workspace.dataset.activeTab = selected;
-    tabs.forEach((tab) => { const active = tab.dataset.seqTab === selected; tab.classList.toggle("is-active", active); tab.setAttribute("aria-selected", String(active)); });
+    tabs.forEach((tab) => {
+      const active = tab.dataset.seqTab === selected;
+      tab.classList.toggle("is-active", active);
+      tab.setAttribute("aria-selected", String(active));
+      if (stackPilot) tab.tabIndex = active ? 0 : -1;
+    });
     try { window.sessionStorage.setItem(storageKey, selected); } catch (_error) { /* optional */ }
   };
   tabs.forEach((tab) => tab.addEventListener("click", () => activate(tab.dataset.seqTab)));
+  if (stackPilot) tabs.forEach((tab, index) => tab.addEventListener("keydown", (event) => {
+    let next;
+    if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+    else if (event.key === "ArrowLeft") next = (index + tabs.length - 1) % tabs.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    activate(tabs[next].dataset.seqTab);
+    tabs[next].focus();
+  }));
   activate(saved);
+  if (stackPilot) {
+    const shell = document.querySelector(".is-stack-pilot");
+    const prepare = shell.querySelector(".seq-prepare");
+    const updateLayout = () => {
+      shell.style.setProperty("--seq-prepare-height", `${prepare.getBoundingClientRect().height}px`);
+      const top = workspace.getBoundingClientRect().top + window.scrollY;
+      shell.style.setProperty("--seq-workspace-height", `${Math.max(200, window.innerHeight - top - 12)}px`);
+    };
+    byId("op-pseudocode").tabIndex = 0;
+    window.addEventListener("resize", updateLayout);
+    if (typeof ResizeObserver !== "undefined") new ResizeObserver(updateLayout).observe(prepare);
+    window.requestAnimationFrame(updateLayout);
+  }
 }
 
 function enhanceSequentialCodeNavigation(activeLine = null) {
@@ -42,7 +84,17 @@ function enhanceSequentialCodeNavigation(activeLine = null) {
   code.classList.toggle("hide-code-comments", Boolean(hide?.checked));
   const active = [...functions].reverse().find((item) => Number.isInteger(activeLine) && item.line <= activeLine) || functions[0];
   list.innerHTML = functions.length ? functions.map((item) => `<li><button type="button" class="seq-function-link${active?.line === item.line ? " is-active" : ""}" data-line="${item.line}">${escapeHtml(item.name)}</button></li>`).join("") : '<li class="muted">Sin funciones detectadas</li>';
-  list.querySelectorAll(".seq-function-link").forEach((button) => button.addEventListener("click", () => code.querySelector(`.code-line[data-line="${button.dataset.line}"]`)?.scrollIntoView({ block: "center" })));
+  const scrollToLine = (lineIndex) => {
+    const target = code.querySelector(`.code-line[data-line="${lineIndex}"]`);
+    if (!target) return;
+    if (document.querySelector(".is-stack-pilot")) {
+      code.scrollTop += target.getBoundingClientRect().top - code.getBoundingClientRect().top - 6;
+    } else target.scrollIntoView({ block: "center" });
+  };
+  list.querySelectorAll(".seq-function-link").forEach((button) => button.addEventListener("click", () => scrollToLine(button.dataset.line)));
+  if (document.querySelector(".is-stack-pilot") && activeLine === null && active) {
+    window.requestAnimationFrame(() => scrollToLine(active.line));
+  }
 }
 
 function renderOperationInputs(operation, container) {
@@ -195,12 +247,12 @@ function renderSequentialPedagogyFrame(frame, level) {
   }
   const table = (headers, rows) => `<table class="seq-data-table"><thead><tr>${headers.map((item) => `<th>${escapeHtml(item)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
   if (variableView) {
-    const scoped = Boolean(frame.memory_state?.sublist_delete_model || frame.cleanup_memory || frame.push_memory || frame.enqueue_memory || frame.dequeue_memory);
+    const scoped = Boolean(frame.allocation_failure_memory || frame.memory_state?.sublist_delete_model || frame.cleanup_memory || frame.push_memory || frame.enqueue_memory || frame.dequeue_memory);
     const rows = (frame.variables || []).map((item) => `<tr data-seq-variable="${escapeHtml(item.name)}" data-seq-variable-scope="${escapeHtml(item.scope || "")}" data-seq-variable-type="${escapeHtml(item.type)}"><td><code>${escapeHtml(item.type)}</code></td><td>${escapeHtml(item.name)}</td>${scoped ? `<td>${escapeHtml(item.scope)} · ${escapeHtml(item.scope_state)}</td>` : ""}<td>${escapeHtml(item.meaning)}</td><td>${escapeHtml(sequentialValue(item.previous))}</td><td data-seq-variable-value>${escapeHtml(item.initialized === false ? "indeterminado; no leer" : sequentialValue(item.value))}${item.changed ? " Δ" : ""}</td></tr>`);
     variableView.innerHTML = rows.length ? table(scoped ? ["Tipo", "Nombre", "Ámbito", "Significado", "Anterior", "Actual"] : ["Tipo", "Nombre", "Significado", "Anterior", "Actual"], rows) : "Sin variables.";
   }
   if (pointerView) {
-    const scoped = Boolean(frame.memory_state?.sublist_delete_model || frame.cleanup_memory || frame.push_memory || frame.enqueue_memory || frame.dequeue_memory);
+    const scoped = Boolean(frame.allocation_failure_memory || frame.memory_state?.sublist_delete_model || frame.cleanup_memory || frame.push_memory || frame.enqueue_memory || frame.dequeue_memory);
     const rows = (frame.pointers || []).map((item) => `<tr><td><code>${escapeHtml(item.name)}</code></td>${scoped ? `<td>${escapeHtml(item.type)}</td><td>${escapeHtml(item.scope)} · ${escapeHtml(item.scope_state)}</td>` : ""}<td>${escapeHtml(sequentialValue(item.previous_target))}</td><td>${escapeHtml(item.valid === false ? (item.dangling ? "nodo liberado; no usar" : "indeterminado; no leer") : sequentialValue(item.target))}</td><td>${item.changed ? "reasignado" : escapeHtml(item.alias || "estable")}</td></tr>`);
     pointerView.innerHTML = rows.length ? table(scoped ? ["Puntero", "Tipo", "Ámbito", "Destino anterior", "Destino nuevo", "Relación"] : ["Puntero", "Destino anterior", "Destino nuevo", "Relación"], rows) : "Sin punteros activos en esta línea.";
   }
@@ -3321,7 +3373,7 @@ function initStructurePage(model) {
         const expanding = section.classList.contains("seq-pilot-collapsed");
         setExpanded(expanding);
         if (expanding) {
-          section.scrollIntoView({ behavior: "smooth", block: "start" });
+          section.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
         }
       });
       heading.appendChild(button);
@@ -3548,18 +3600,21 @@ function initStructurePage(model) {
       const circularGuardTrace = model.id === "circular_list" && current.name === "eliminar_inicio"
         && data.execution_trace?.steps?.[0]?.state_snapshot?.circular_delete_model;
       const dequeueGuardTrace = (model.id === "queue" || model.id === "priority_queue") && current.name === "desencolar" && data.execution_trace?.steps?.[0]?.pedagogy?.dequeue_memory;
-      if (!data.success && !circularGuardTrace && !dequeueGuardTrace) {
+      const allocationFailureTrace = data.error?.code === "allocation_failed"
+        && data.execution_trace?.allocation_failure === true
+        && data.execution_trace?.execution_started === true;
+      if (!data.success && !circularGuardTrace && !dequeueGuardTrace && !allocationFailureTrace) {
         if (simStatus) simStatus.textContent = "La operación no se ejecutó; el TAD y la traza anterior permanecen sin cambios.";
         return data;
       }
 
       const finalOnly = Boolean(options && options.finalOnly);
-      const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
+      const hasExecutionTrace = Boolean((!finalOnly || allocationFailureTrace) && data.execution_trace && tracePlayer);
       if (hasExecutionTrace) {
         lockStepUntilInput = false;
         visualTraceState.operationName = current.name;
         visualTraceState.payload = { ...payload };
-        visualTraceState.frames = buildSequentialVisualFrames(
+        visualTraceState.frames = allocationFailureTrace ? [] : buildSequentialVisualFrames(
           model.id,
           model.visual_state,
           current.name,
@@ -3609,14 +3664,19 @@ function initStructurePage(model) {
         // Executing a real operation must leave the canonical final state visible.
         // The trace is loaded for later playback; its initial snapshot is rendered
         // only when the learner explicitly prepares, replays, or navigates it.
-        renderCurrentVisual(data.visual_state, {
+        renderCurrentVisual(data.visual_state, allocationFailureTrace ? null : {
           operation: current.name,
           payload,
           result: data.result,
           result_priority: data.result_priority,
         });
+        if (allocationFailureTrace && finalOnly) {
+          tracePlayer?.seek(data.execution_trace.steps.length - 1);
+        }
         if (simStatus && finalOnly) {
-          simStatus.textContent = "Modo rápido: se aplicó el resultado final de la operación.";
+          simStatus.textContent = allocationFailureTrace
+            ? "Reserva rechazada: el estado anterior se conserva."
+            : "Modo rápido: se aplicó el resultado final de la operación.";
         }
       }
       return data;

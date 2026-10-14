@@ -1,0 +1,3 @@
+# Alcance y bloques
+
+Primero reconciliación documental por requisito C1 y medición focal Pila con sesión privada; cada bloque máximo120s/2GiB. Conservar historia, trazas y algoritmos. Probar tres viewports 1366x768, 768x1024, 390x844; teclado, foco, pestañas y acción accesible, sin asumir simultaneidad de estado/código en móvil. Propuesta de producto: conservar dos paneles escritorio actuales y pestañas móvil/tableta, con controles compactos sticky sin superposición. Cambiar layout de tres áreas solo tras decisión explícita. Oráculo2.1/2.3 y matriz2.5 requieren inventario real de eventos/casos y entorno Linux existente; no reutilizar suites antiguas como prueba nueva.

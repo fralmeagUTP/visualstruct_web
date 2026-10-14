@@ -2778,3 +2778,40 @@ body:has(.is-stack-pilot) main { padding-top: 0.4rem; }
 
 /* Keep every traversal node inside its educational visualization panel. */
 .abb-traversal-canvas .viz-tree-svg { width: 100%; max-width: 100%; min-width: 0; height: auto; }
+
+/* Residual stack pilot: preserve five stages and bound the primary workspace. */
+body:has(.is-stack-pilot) .site-header { padding: .35rem 0; }
+body:has(.is-stack-pilot) .site-header-content { gap: .65rem; }
+body:has(.is-stack-pilot) .site-header-logo { height: 36px; width: auto; }
+body:has(.is-stack-pilot) .site-header-text h1 { margin: 0; font-size: 1.15rem; line-height: 1.25; }
+body:has(.is-stack-pilot) .site-header-text p { margin: .15rem 0 0; font-size: .8rem; }
+body:has(.is-stack-pilot) .site-nav { padding: .25rem 0; }
+body:has(.is-stack-pilot) .nav-row { gap: .35rem; }
+.is-stack-pilot { gap: .5rem; }
+.is-stack-pilot .sequential-learning-header h2 { margin: .1rem 0; font-size: 1.35rem; }
+.is-stack-pilot .sequential-learning-header p { margin: .15rem 0; }
+.is-stack-pilot .seq-pilot-primary-step-toggle { margin-bottom: .3rem; padding: .3rem .45rem; }
+@media (min-width: 1101px) {
+  .is-stack-pilot > .sequential-primary-workspace { height: var(--seq-workspace-height, 320px); min-height: 200px; }
+  .is-stack-pilot .seq-visual, .is-stack-pilot .seq-code { display: flex; flex-direction: column; overflow: hidden; padding: .6rem; }
+  .is-stack-pilot #visual-state { flex: 1 1 0; min-height: 0; max-height: none; overflow: auto; }
+  .is-stack-pilot .seq-code-layout, .is-stack-pilot .seq-code-content { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; }
+  .is-stack-pilot .seq-function-index { flex: 0 0 auto; max-height: 3rem; overflow: auto; }
+  .is-stack-pilot #op-pseudocode { flex: 1 1 0; min-height: 0; max-height: none; margin-bottom: 0; overflow: auto; }
+}
+@media (max-width: 800px) {
+  .is-stack-pilot > .seq-prepare { position: sticky; top: 0; z-index: 6; padding: .5rem; max-height: calc(100svh - 5rem); overflow: auto; }
+  .is-stack-pilot .seq-prepare h3 { margin: 0 0 .3rem; font-size: 1rem; }
+  .is-stack-pilot .seq-prepare-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+  .is-stack-pilot .seq-execute { margin-top: .4rem; padding: .4rem; }
+  .is-stack-pilot .seq-execute h3 { margin: 0 0 .35rem; font-size: 1rem; }
+  .is-stack-pilot .seq-execute .actions { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .is-stack-pilot .seq-execute .actions > .btn { min-height: 44px; }
+  .is-stack-pilot > .sequential-mobile-tabs { top: var(--seq-prepare-height, 0px); z-index: 5; }
+  .is-stack-pilot .seq-code { resize: none; }
+  .is-stack-pilot #op-pseudocode { min-height: 12rem; max-height: 55svh; overflow: auto; }
+}
+
+/* Both states of the pilot mode control meet normal-text contrast. */
+.is-stack-pilot #seq-step-mode { color: #174f86; background: #eef6ff; border: 1px solid #8aa7c2; }
+.is-stack-pilot #seq-step-mode[aria-expanded="true"] { color: #fff; background: #174f86; }

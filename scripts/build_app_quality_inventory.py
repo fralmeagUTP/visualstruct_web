@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import argparse
 import json
 import re
@@ -147,7 +148,7 @@ def _sorting_algorithm_items() -> list[dict[str, Any]]:
     ]
 
 
-def _control_items() -> list[dict[str, Any]]:
+def _control_items(*, include_unidentified: bool = False) -> list[dict[str, Any]]:
     """Collect every interactive HTML element with a stable identifier or action."""
     items: list[dict[str, Any]] = []
     for template in sorted((ROOT / "templates").rglob("*.html")):
@@ -156,8 +157,11 @@ def _control_items() -> list[dict[str, Any]]:
             tag, raw_attributes = match.groups()
             attributes = {name.lower(): value.strip() for name, _, value in ATTRIBUTE.findall(raw_attributes)}
             identifier = attributes.get("data-testid") or attributes.get("data-action") or attributes.get("id") or attributes.get("name")
+            synthetic_identifier = not identifier
             if not identifier:
-                continue
+                if not include_unidentified:
+                    continue
+                identifier = f"anonymous-{index}"
             items.append(
                 _item(
                     category="control",
@@ -165,13 +169,13 @@ def _control_items() -> list[dict[str, Any]]:
                     module=relative.split("/", 2)[1] if "/" in relative else "shared",
                     source=relative,
                     oracle="El control es operable, conserva el foco y produce el cambio de interfaz o API esperado.",
-                    metadata={"tag": tag.lower(), "identifier": identifier, "attributes": attributes},
+                    metadata={"tag": tag.lower(), "identifier": identifier, "attributes": attributes, **({"synthetic_identifier": True} if synthetic_identifier else {})},
                 )
             )
     return items
 
 
-def collect_inventory() -> dict[str, Any]:
+def collect_inventory(*, include_unidentified_controls: bool = False) -> dict[str, Any]:
     """Return the complete inventory derived from the running application contracts."""
     entries: list[dict[str, Any]] = []
     entries.extend(_route_items())
@@ -185,7 +189,7 @@ def collect_inventory() -> dict[str, Any]:
         entries.extend(_service_items(module, service))
     entries.extend(_graph_phase_items())
     entries.extend(_sorting_algorithm_items())
-    entries.extend(_control_items())
+    entries.extend(_control_items(include_unidentified=include_unidentified_controls))
     entries.sort(key=lambda entry: entry["id"])
     counts: dict[str, int] = {}
     for entry in entries:
@@ -219,6 +223,57 @@ def validate_inventory(inventory: dict[str, Any]) -> list[str]:
     return errors
 
 
+def validate_executable_bindings(
+    inventory: dict[str, Any], bindings: dict[str, Any], *, project_root: Path = ROOT,
+) -> list[str]:
+    """Check explicit case assignments; this is not a test execution certificate."""
+    errors: list[str] = []
+    if not isinstance(bindings, dict):
+        return ["Formato de asignaciones ejecutables inválido."]
+    assignments = bindings.get("items")
+    if bindings.get("schema") != "app-executable-bindings/v1" or not isinstance(assignments, dict):
+        return ["Formato de asignaciones ejecutables inválido."]
+    root = project_root.resolve()
+    for item in inventory.get("items", []):
+        identifier = item.get("id")
+        case = assignments.get(identifier)
+        if not isinstance(case, dict):
+            errors.append(f"Sin prueba ejecutable asignada: {identifier}")
+            continue
+        if not isinstance(case.get("input"), (dict, list)) or "expected" not in case:
+            errors.append(f"Caso sin entrada y esperado explícitos: {identifier}")
+        layer = case.get("layer")
+        if layer not in {"unit", "api", "native", "e2e"} or (item.get("category") == "control" and layer != "e2e"):
+            errors.append(f"Capa de prueba inválida: {identifier}")
+        reference = case.get("test_node")
+        if not isinstance(reference, str) or "::" not in reference:
+            errors.append(f"Referencia de prueba inválida: {identifier}")
+            continue
+        file_name, *names = reference.split("::")
+        path = (root / file_name).resolve()
+        try:
+            path.relative_to(root / "tests")
+        except ValueError:
+            errors.append(f"Prueba fuera de tests/: {identifier}")
+            continue
+        if path.suffix != ".py" or not names[-1].startswith("test_"):
+            errors.append(f"Referencia de prueba inválida: {identifier}")
+            continue
+        try:
+            nodes = ast.parse(path.read_text(encoding="utf-8-sig")).body
+            node = None
+            for name in names:
+                node = next((candidate for candidate in nodes if isinstance(candidate, (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and candidate.name == name), None)
+                if node is None:
+                    break
+                nodes = node.body
+            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                errors.append(f"Función de prueba inexistente: {identifier}")
+        except (OSError, SyntaxError, UnicodeError):
+            errors.append(f"Fuente de prueba ausente o inválida: {identifier}")
+    return errors
+
+
 def write_inventory(path: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
     """Generate, validate and write the canonical JSON artifact."""
     inventory = collect_inventory()
@@ -234,14 +289,29 @@ def _parse_arguments(arguments: Iterable[str] | None = None) -> argparse.Namespa
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--check", action="store_true", help="Falla si el manifiesto versionado no coincide con el inventario actual.")
+    parser.add_argument("--bindings", type=Path, help="Gate estricto: asignaciones explícitas a pruebas con datos/esperado; no acredita ejecución.")
+    parser.add_argument("--disposition-overlay", type=Path, help="Disposiciones revisadas sobre IDs originales; requiere --bindings, no acredita ejecución.")
     return parser.parse_args(arguments)
 
 
 def main(arguments: Iterable[str] | None = None) -> int:
     """Run the generator or freshness verifier."""
     args = _parse_arguments(arguments)
-    inventory = collect_inventory()
+    inventory = collect_inventory(include_unidentified_controls=args.bindings is not None)
     errors = validate_inventory(inventory)
+    if args.disposition_overlay is not None and args.bindings is None:
+        raise SystemExit("El overlay requiere --bindings.")
+    if args.bindings is not None:
+        bindings = json.loads(args.bindings.read_text(encoding="utf-8"))
+        if args.disposition_overlay is not None:
+            from scripts.app_quality_disposition_overlay import apply_disposition_overlay
+            overlay = json.loads(args.disposition_overlay.read_text(encoding="utf-8-sig"))
+            inventory, bindings, disposition_summary, overlay_errors = apply_disposition_overlay(inventory, bindings, overlay, project_root=ROOT)
+            errors.extend(overlay_errors)
+            errors.extend(validate_inventory(inventory))
+            inventory["disposition_summary"] = disposition_summary
+            print(json.dumps(disposition_summary, ensure_ascii=False))
+        errors.extend(validate_executable_bindings(inventory, bindings))
     if errors:
         raise SystemExit("\n".join(errors))
     serialized = json.dumps(inventory, ensure_ascii=False, indent=2) + "\n"

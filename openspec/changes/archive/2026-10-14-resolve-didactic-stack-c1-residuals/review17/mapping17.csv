@@ -1,0 +1,18 @@
+﻿control,replacement,evidence,formal_disposition
+hier-prepare,Activar modo manual sobretraza existente presentaestadoinicial;ejecutarnuevoesacciónseparada,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+hier-restart-execution,Home oactivar modomanual reinicia vista sinmutación,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+hier-sim-end,End odesactivar modomanual muestrafinal,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+hier-sim-home,Home,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+hier-sim-pause,Space invoca pausa;vista estable;no seprobóinterrumpir autoplay jerárquico porque ya nohay activadorpúblico,LIMITED_PASS_PAUSED_VIEW_NOT_AUTOPLAY_EQUIVALENCE,PENDING; verified capability replacement does not retire old widget requirement.
+hier-sim-repeat,Volverainicio ynavegarmanual conserva caché;autoplayantiguo notienereemplazopúblico demostrado,DECISION_REQUIRED_AUTOPLAY_VS_CURRENT_MANUAL_CONTRACT,PENDING; verified capability replacement does not retire old widget requirement.
+hier-progress,Anterior/siguiente/Home/End;seekarbitrariopor range noexponecontrolactual,DECISION_REQUIRED_ARBITRARY_SEEK_PRESENTATION,PENDING; verified capability replacement does not retire old widget requirement.
+seq-sim-end,AltEnd,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+seq-sim-pause,AltP trasreplay estabiliza cursor,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+seq-sim-prepare,Modo manual devuelveiniciotr azacache;AltHome también;distinguirde Ejecutar,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+seq-sim-repeat,"AltR replay decaché, sinPOST",PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+seq-sim-start,AltHome,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+seq-progress-slider,Anterior/siguiente/AltHome/AltEnd;rangearbitrario noactual,DECISION_REQUIRED_ARBITRARY_SEEK_PRESENTATION,PENDING; verified capability replacement does not retire old widget requirement.
+hier-speed-slider,Modomanualcontrola avance;no UI actualpara ajustartiempo automático,DECISION_REQUIRED_SPEED_CAPABILITY,PENDING; verified capability replacement does not retire old widget requirement.
+seq-restart-execution,"AltHome devuelveiniciocaché, no nuevaejecución",PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+seq-sim-play,AltR autoplaydecaché;botón retiradono se restaura,PASS_CACHED_FLOW,PENDING; verified capability replacement does not retire old widget requirement.
+seq-speed-slider,RefJS retenida inicializaspeedylistener;widgetdesconectado no públic o. Modomanual noes controlvelocidad,DECISION_REQUIRED_SPEED_CAPABILITY,PENDING; verified capability replacement does not retire old widget requirement.

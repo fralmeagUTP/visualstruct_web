@@ -1,0 +1,3 @@
+# Suplemento dinámico yerrorrápido autorizado
+
+Instrucción padre20261014: paquete20/crudosfijos duranteQA. Suplementoseparado: inventarioreproduciblecreadores/flujos/exclusiones yfastUIallocationerror/replay/state/noobjetos. Reusarevidencia,casosimprescindibles120s2GiB/noDocker/Graph15/campañas/publicación. Corregirsólodefectosdemostrados conregresión.

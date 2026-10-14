@@ -1,0 +1,7 @@
+# Instrumentación y sanitizadores: siguiente bloque concreto
+
+Instrumentos existentes: tests/conformance/c_harnesses (13), harness_common.h, scripts/check_c_conformance.py, scripts/run_c_execution_coverage.py, scripts/check_c_sanitizers_linux.sh. Stack actual registra allocation/free después de llamadas y snapshots después de operaciones; gcov registra cobertura, no secuencia semántica intermedia. Esto confirma2.1/2.3 sin certificar ni invalidar resultados finitos históricos.
+
+Primero acordar protocolo de observador por instrucción: source/hash/function/line, orden, identidad lógica, before/after y éxito/fallo de malloc/calloc/realloc/free; cero direcciones crudas. Usar copia instrumentada verificable o envoltura del allocator por unidad C, sin alterar lógica original. Casos nominal/vacío/error y limpieza deben mostrar cada reserva y liberación y el retorno concreto. Validar una familia piloto antes de extender a13. No admitir matriz global por un piloto.
+
+Entorno actual: WSL solo docker-desktop; docker version falla por pipe dockerDesktopLinuxEngine ausente. No se inició Docker ni se instaló Linux. Cuando entorno disponible: plan nuevo por familia con contenedor --memory=2g y supervisor externo120s; C17 -Wall -Wextra -Wpedantic -Werror, ASan y UBSan por separado. Usar manifest/hashes y casos explícitos limitados (grafos máximo8, producto15). El runner existente usa detect_leaks=0 y no limita externamente ejecución: conservar esa reserva, no afirmar LSan verificado. No repetir Bellman900 ni ensayos únicos consumidos.

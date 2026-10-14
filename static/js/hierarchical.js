@@ -2328,13 +2328,51 @@ function initHierSimplifiedWorkspace() {
   const understandStage = understandTitle?.closest("section");
   const resultsStage = reflectTitle?.closest("section");
 
-  hById("hier-predict-title")?.closest("section")?.remove();
-  hById("hier-compare-title")?.closest("section")?.remove();
-  ["hier-learning-level", "hier-guided-example"].forEach((id) => {
-    hById(id)?.closest("label")?.remove();
-  });
-  hById("hier-load-example")?.remove();
-  hById("hier-example-lesson")?.remove();
+  // Preserve educational capabilities inside the current five stages.
+  function moveLearningPanel(titleId, label) {
+    const title = hById(titleId);
+    const section = title?.closest("section");
+    if (!section || !understandStage) return;
+    section.classList.remove("hier-stage");
+    const heading = document.createElement("h4");
+    heading.id = titleId;
+    heading.textContent = label;
+    title.replaceWith(heading);
+    const disclosure = document.createElement("details");
+    disclosure.className = "hier-learning-disclosure";
+    const summary = document.createElement("summary");
+    summary.textContent = label;
+    disclosure.append(summary, section);
+    understandStage.append(disclosure);
+  }
+  moveLearningPanel("hier-predict-title", "Predecir");
+  moveLearningPanel("hier-compare-title", "Comparar");
+  const levelLabel = hById("hier-learning-level")?.closest("label");
+  const codeToolbar = codeTitle?.closest("section")?.querySelector(".hier-code-toolbar");
+  if (levelLabel && codeToolbar) codeToolbar.append(levelLabel);
+
+  // The old position slider is an internal value only; navigation is manual.
+  const comparePosition = hById("hier-compare-progress");
+  if (comparePosition) {
+    const label = comparePosition.closest("label");
+    comparePosition.type = "hidden";
+    comparePosition.setAttribute("aria-hidden", "true");
+    comparePosition.setAttribute("tabindex", "-1");
+    const controls = document.createElement("div");
+    controls.className = "actions";
+    controls.setAttribute("role", "group");
+    controls.setAttribute("aria-label", "Navegación manual de la comparación");
+    for (const [id, text] of [["hier-compare-prev", "Paso anterior"], ["hier-compare-next", "Siguiente paso"]]) {
+      const button = document.createElement("button");
+      button.id = id; button.type = "button"; button.className = "btn secondary";
+      button.textContent = text; button.disabled = true; controls.append(button);
+    }
+    const position = document.createElement("span");
+    position.id = "hier-compare-position-label";
+    position.setAttribute("aria-live", "polite");
+    position.textContent = "Sin comparación preparada"; controls.append(position, comparePosition);
+    label.replaceWith(controls);
+  }
 
   if (prepareTitle) prepareTitle.innerHTML = "<span>1</span> Preparar y controlar ejecución";
   if (visualTitle) visualTitle.innerHTML = "<span>2</span> Visualizar y ejecutar";
@@ -3219,12 +3257,29 @@ function initHierPage(model) {
   resetProgress?.addEventListener("click",()=>{conceptualProgress={attempts:0,correct:0};hintLevel=0;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent="Progreso conceptual reiniciado.";});
   function compareStateSummary(side,step){const state=step?.state||side?.final_state||{};const traversal=state.traversals?.inorden||[];const array=state.array||[];return `<article class="hier-compare-card"><h4>${hEscape(side?.structure||"estructura")}</h4><p><strong>Paso:</strong> ${hEscape(step?.step??"final")} · insertado ${hEscape(step?.inserted??"—")}</p><p><strong>Altura:</strong> ${hEscape(step?.height??side?.height??"—")} · <strong>tamaño:</strong> ${hEscape(state.size??side?.size??"—")}</p><p><strong>Representación:</strong> <code>${hEscape((array.length?array:traversal).join(" → ")||"vacía")}</code></p><p><strong>Invariante:</strong> ${step?.validation??side?.validation?"✓ válido":"✗ inválido"}</p></article>`;}
   function renderHierComparison(){if(!hierarchicalComparison||!compareGrid)return;if(hierarchicalComparison.kind==="traversals"){compareGrid.innerHTML=hierarchicalComparison.traversals.map((item)=>`<article class="hier-compare-card"><h4>${hEscape(item.name)}</h4><p>${hEscape(item.stack_rule)}</p><code>${hEscape(item.values.join(" → "))}</code></article>`).join("");}else{const cursor=Math.max(0,Number(compareProgress?.value||0));const leftStep=hierarchicalComparison.left.timeline[cursor]||hierarchicalComparison.left.timeline.at(-1);const rightStep=hierarchicalComparison.right.timeline[cursor]||hierarchicalComparison.right.timeline.at(-1);compareGrid.innerHTML=compareStateSummary(hierarchicalComparison.left,leftStep)+compareStateSummary(hierarchicalComparison.right,rightStep);}if(compareConclusion)compareConclusion.textContent=`${hierarchicalComparison.conclusion} Entrada, forma y estados de ambos lados se mantuvieron aislados.`;}
-  compareRun?.addEventListener("click",async()=>{const values=String(compareValues?.value||"").split(/[,\s]+/).filter(Boolean).map(Number);try{const response=await fetch(compareSection?.dataset.compareUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:compareKind?.value,values})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"No se pudo comparar.");hierarchicalComparison=data;if(compareInput)compareInput.textContent=`Entrada inmutable: [${data.input.join(", ")}]`;if(compareProgress){const count=data.left?.timeline?.length||1;compareProgress.max=String(Math.max(0,count-1));compareProgress.value="0";compareProgress.disabled=data.kind==="traversals";}renderHierComparison();if(announcer)announcer.textContent="Comparación jerárquica preparada.";}catch(error){if(compareConclusion)compareConclusion.textContent=error.message;}});
-  compareProgress?.addEventListener("input",renderHierComparison);
-  compareKind?.addEventListener("change",()=>{hierarchicalComparison=null;if(compareProgress)compareProgress.disabled=true;});
+  compareRun?.addEventListener("click",async()=>{const values=String(compareValues?.value||"").split(/[,\s]+/).filter(Boolean).map(Number);try{const response=await fetch(compareSection?.dataset.compareUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:compareKind?.value,values})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"No se pudo comparar.");hierarchicalComparison=data;if(compareInput)compareInput.textContent=`Entrada inmutable: [${data.input.join(", ")}]`;if(compareProgress){const count=data.left?.timeline?.length||1;compareProgress.max=String(Math.max(0,count-1));compareProgress.value="0";compareProgress.disabled=data.kind==="traversals";}renderHierComparison();syncComparisonNavigation();if(announcer)announcer.textContent="Comparación jerárquica preparada.";}catch(error){if(compareConclusion)compareConclusion.textContent=error.message;}});
+  function syncComparisonNavigation() {
+    const previous = hById("hier-compare-prev"), next = hById("hier-compare-next");
+    const available = Boolean(hierarchicalComparison && hierarchicalComparison.kind !== "traversals");
+    const cursor = Number(compareProgress?.value || 0), last = Number(compareProgress?.max || 0);
+    if (previous) previous.disabled = !available || cursor <= 0;
+    if (next) next.disabled = !available || cursor >= last;
+    const label = hById("hier-compare-position-label");
+    if (label) label.textContent = available ? `Paso ${cursor + 1} de ${last + 1}` : "Sin pasos sincronizados";
+  }
+  hById("hier-compare-prev")?.addEventListener("click", () => {
+    compareProgress.value = String(Math.max(0, Number(compareProgress.value) - 1));
+    renderHierComparison(); syncComparisonNavigation();
+  });
+  hById("hier-compare-next")?.addEventListener("click", () => {
+    compareProgress.value = String(Math.min(Number(compareProgress.max), Number(compareProgress.value) + 1));
+    renderHierComparison(); syncComparisonNavigation();
+  });
+  compareProgress?.addEventListener("input", () => { renderHierComparison(); syncComparisonNavigation(); });
+  compareKind?.addEventListener("change",()=>{hierarchicalComparison=null;if(compareProgress)compareProgress.disabled=true;syncComparisonNavigation();});
   exportImage?.addEventListener("click",async()=>{try{const exported=await window.InterpreterRuntime.exportVisualStateAsJpg({target:hById("hier-visual-region"),quality:.9,scale:1});const link=document.createElement("a");link.href=exported.dataUrl;link.download=exported.suggestedName;link.click();}catch(error){showHierMessage(error.message||"No se pudo exportar la captura.",false);}});
   exportSummary?.addEventListener("click",()=>{const current=operations.find((op)=>op.name===operationSelect.value);const summary={schema:"hierarchical-learning-summary/v1",structure:model.id,operation:operationSelect.value,payload:current?collectPayload(current):{},level:learningLevel?.value,cursor:tracePlayer?.getCursor()??-1,total_steps:tracePlayer?.getTotalSteps()??0,frame:currentPedagogyFrame,state:pageState.visualState,practice:conceptualProgress,comparison:hierarchicalComparison};const url=URL.createObjectURL(new Blob([JSON.stringify(summary,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download=`${model.id}-resumen.json`;link.click();URL.revokeObjectURL(url);});
-  document.addEventListener("keydown",async(event)=>{if(event.target instanceof Element && event.target.closest("#hier-variables-view"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key==="ArrowLeft"){event.preventDefault();tracePlayer?.prev();}else if(event.key==="ArrowRight"){event.preventDefault();await tracePlayer?.step();}else if(event.key==="Home"){event.preventDefault();tracePlayer?.seek(-1);}else if(event.key==="End"){event.preventDefault();tracePlayer?.seek(tracePlayer.getTotalSteps()-1);}else if(event.key===" "){event.preventDefault();tracePlayer?.pause();}});
+  document.addEventListener("keydown",async(event)=>{if(event.key===" " && event.target instanceof Element && event.target.closest("button, summary, a, [role=button]"))return;if(event.target instanceof Element && event.target.closest("#hier-variables-view"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key==="ArrowLeft"){event.preventDefault();tracePlayer?.prev();}else if(event.key==="ArrowRight"){event.preventDefault();await tracePlayer?.step();}else if(event.key==="Home"){event.preventDefault();tracePlayer?.seek(-1);}else if(event.key==="End"){event.preventDefault();tracePlayer?.seek(tracePlayer.getTotalSteps()-1);}else if(event.key===" "){event.preventDefault();tracePlayer?.pause();}});
   if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches&&speedSlider){speedSlider.value="-2";setPlaybackSpeed(speedSlider.value);}
 
   stepToggle?.addEventListener("change", () => {

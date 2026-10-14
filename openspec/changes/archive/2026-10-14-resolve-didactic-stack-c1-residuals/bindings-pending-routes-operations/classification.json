@@ -1,0 +1,552 @@
+[
+  {
+    "id": "operation:graph/graph/clear_graph",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:graph/graph/edge_weight",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:graph/graph/exists_edge",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:graph/graph/exists_vertex",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:graph/graph/list_edges",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:graph/graph/list_vertices",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:graph/graph/neighbors",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:graph/graph/run_prim",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hash/hash_table/items",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hash/hash_table/keys",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hash/hash_table/values",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/altura",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/buscar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/contar_hojas",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/eliminar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/inorden",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/limpiar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/maximo",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/minimo",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/postorden",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/preorden",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/abb/validar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/avl/altura",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/avl/buscar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/avl/eliminar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/avl/inorden",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/avl/limpiar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/avl/maximo",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/avl/minimo",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/avl/validar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/a_lista",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/extraer_raiz",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/insertar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/limpiar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/raiz",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/red_black/altura",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/red_black/buscar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/red_black/eliminar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/red_black/inorden",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/red_black/insertar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/red_black/limpiar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:hierarchical/red_black/validar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/circular_list/eliminar_inicio",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/buscar_elemento",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_elemento",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_final",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_inicio",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_repetidos",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_elemento",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_posicion",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/limpiar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/mostrar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/primero",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/linked_list/ultimo",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/priority_queue/limpiar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sequential/queue/limpiar",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sorting/sorting_array/create_array",
+    "classification": "EFFECTIVELY_LINKED_REQUIRES_EXECUTION",
+    "literal_candidates": 2,
+    "concrete_candidates": 2,
+    "candidate_test_nodes": [
+      "tests/test_sorting_module_detailed_qa.py::test_api_rejects_out_of_range_value_and_preserves_previous_array",
+      "tests/test_sorting_routes.py::test_sorting_create_random_select_run_flow"
+    ]
+  },
+  {
+    "id": "operation:sorting/sorting_array/generate_random_array",
+    "classification": "EFFECTIVELY_LINKED_REQUIRES_EXECUTION",
+    "literal_candidates": 2,
+    "concrete_candidates": 1,
+    "candidate_test_nodes": [
+      "tests/test_sorting_main_low.py::test_saved_random_values_do_not_regenerate_or_sort_on_get",
+      "tests/test_sorting_module_detailed_qa.py::test_complete_api_option_flow_random_step_state_and_reset"
+    ]
+  },
+  {
+    "id": "operation:sorting/sorting_array/reset",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "operation:sorting/sorting_array/run",
+    "classification": "EFFECTIVELY_LINKED_REQUIRES_EXECUTION",
+    "literal_candidates": 7,
+    "concrete_candidates": 3,
+    "candidate_test_nodes": [
+      "tests/test_sorting_module_detailed_qa.py::test_run_algorithm_override_uses_matching_c_source",
+      "tests/test_sorting_routes.py::test_sorting_create_random_select_run_flow",
+      "tests/test_sorting_source_contract.py::test_absent_provider_never_uses_execution_fallback_and_keeps_accepted_history",
+      "tests/test_sorting_source_contract.py::test_missing_canonical_provider_is_http400_without_success_history",
+      "tests/test_sorting_source_preprocessor_contract.py::test_disabled_provider_c_preserves_accepted_history_and_never_constructs",
+      "tests/test_sorting_trace.py::test_sorting_trace_contains_visual_snapshots"
+    ]
+  },
+  {
+    "id": "operation:sorting/sorting_array/select_algorithm",
+    "classification": "GENERIC_CASE_REQUIRES_REVIEW",
+    "literal_candidates": 3,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": [
+      "tests/test_sorting_module_detailed_qa.py::test_complete_api_option_flow_random_step_state_and_reset",
+      "tests/test_sorting_routes.py::test_sorting_create_random_select_run_flow",
+      "tests/test_sorting_routes.py::test_sorting_invalid_algorithm_is_blocked"
+    ]
+  },
+  {
+    "id": "operation:sorting/sorting_array/step",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:GET /api/ordenamiento/state",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:GET /api/ordenamiento/traces/<trace_id>/export",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:GET /api/ordenamiento/traces/<trace_id>/page",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:GET /graph/<structure_id>/<phase>",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:GET /help/graph",
+    "classification": "EFFECTIVELY_LINKED_REQUIRES_EXECUTION",
+    "literal_candidates": 1,
+    "concrete_candidates": 1,
+    "candidate_test_nodes": [
+      "tests/test_app_routes.py::test_help_module_pages_reference_user_manual"
+    ]
+  },
+  {
+    "id": "route:GET /help/hash",
+    "classification": "EFFECTIVELY_LINKED_REQUIRES_EXECUTION",
+    "literal_candidates": 1,
+    "concrete_candidates": 1,
+    "candidate_test_nodes": [
+      "tests/test_app_routes.py::test_help_module_pages_reference_user_manual"
+    ]
+  },
+  {
+    "id": "route:GET /help/sequential",
+    "classification": "EFFECTIVELY_LINKED_REQUIRES_EXECUTION",
+    "literal_candidates": 1,
+    "concrete_candidates": 1,
+    "candidate_test_nodes": [
+      "tests/test_app_routes.py::test_help_module_pages_reference_user_manual"
+    ]
+  },
+  {
+    "id": "route:GET /help/sorting",
+    "classification": "EFFECTIVELY_LINKED_REQUIRES_EXECUTION",
+    "literal_candidates": 2,
+    "concrete_candidates": 1,
+    "candidate_test_nodes": [
+      "tests/test_app_routes.py::test_help_module_pages_reference_user_manual"
+    ]
+  },
+  {
+    "id": "route:GET /sorting/sorting_array",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:POST /api/ordenamiento/reset",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:POST /api/ordenamiento/step",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:POST /graph/compare",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  },
+  {
+    "id": "route:POST /hierarchical/<structure_id>/reset",
+    "classification": "NO_CONCRETE_TEST_RECOVERED",
+    "literal_candidates": 0,
+    "concrete_candidates": 0,
+    "candidate_test_nodes": []
+  }
+]

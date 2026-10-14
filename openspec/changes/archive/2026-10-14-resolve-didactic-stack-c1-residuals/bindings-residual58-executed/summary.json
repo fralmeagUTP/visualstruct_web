@@ -1,0 +1,14 @@
+{
+  "assigned_cases": 58,
+  "implemented": 58,
+  "distinct_cases_passed": 58,
+  "blocked": 0,
+  "new_acceptances": 0,
+  "prior_test_errors_corrected": 2,
+  "before_links": 180,
+  "after_links": 238,
+  "before_pending": 195,
+  "after_pending": 137,
+  "gate_errors": 0,
+  "note": "No summing corrected retries or overlapping old sources as extra cases."
+}

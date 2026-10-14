@@ -54,6 +54,8 @@ class LinkedListAdapter(BaseAdapter):
             changed = self._structure.insertar_elemento(posicion_ui, valor, desplazamiento)
             if not changed:
                 return {"message": "Error...Posicion no encontrada..!"}
+            if posicion_ui == 1:
+                return {"message": f"Se inserto '{valor}' al inicio de la lista (posicion 1)."}
             lugar = "antes" if desplazamiento < 0 else "despues"
             return {"message": f"Se inserto '{valor}' {lugar} de la posicion {posicion_ui}."}
         if op == "insertar_inicio":

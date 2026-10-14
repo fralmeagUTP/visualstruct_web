@@ -1,0 +1,8 @@
+{
+  "proposal_count": 58,
+  "assigned_count": 71,
+  "errors": [],
+  "source_hashes_verified": true,
+  "execution": false,
+  "semantic_oracle_status": "Reviewed draft expectations, not executed proof or exhaustive missing-test assertion."
+}

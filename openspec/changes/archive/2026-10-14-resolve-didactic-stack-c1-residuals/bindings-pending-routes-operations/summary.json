@@ -1,0 +1,22 @@
+{
+  "before_links": 136,
+  "before_pending": 239,
+  "reviewed_route_operations": 75,
+  "new_links": 7,
+  "after_links": 143,
+  "after_pending": 232,
+  "source_linked_requires_execution": 7,
+  "generic_case_requires_review": 1,
+  "no_concrete_test_recovered": 67,
+  "application_tests_executed": 0,
+  "gate_errors": 0,
+  "sorting_dispatch": {
+    "create_array": "/api/ordenamiento/create-array",
+    "generate_random_array": "/api/ordenamiento/random-array",
+    "select_algorithm": "/api/ordenamiento/algorithm",
+    "run": "/api/ordenamiento/run",
+    "step": "/api/ordenamiento/step"
+  },
+  "sorting_route_source_sha256": "2cc6f075ec8f03d2edc5f09707474d6c55768a6277b1a98555676c9f93327be2",
+  "limit": "No-concrete-test-recovered is limited to conservative literal extraction; helpers and parameterized tests are not certified absent."
+}

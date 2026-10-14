@@ -1,0 +1,9 @@
+# Pausa jerárquica: dependencia retirada, no PASS
+
+Instrucción vigente explícita del coordinador01a0fe61-3104-743a-b032-bcc289ad80cd20261014: cotejar autorización de repetición automática retirada y navegación exclusivamente manual; si no existe reproducción activa documentar pausa como dependencia, noPASS ni obligación de reintroducir reproducción.
+
+Fuente real usuarioSi yIDs conservados en decision-education-and-retirement-20261014.md. El diseño jerárquico actual tiene Ejecutar, Paso anterior/Siguiente y cambio de modo; retira play/pause/home/end/repeat auxiliares en initHierSimplifiedWorkspace. hier-sim-play se reutiliza como Ejecutar operación; el handler obtiene nueva operación y prepara su traza, no invoca playFromStart. Home/End/ArrowLeft/ArrowRight navegan manualmente; Space sólo llama pause; no hay activador público jerárquico de reproducción temporizada. Comparación nueva usa dos botones de snapshots, no autoplay. Practicar/predecir no depende de reproducción activa.
+
+No se identificó una función independiente vigente de hier-sim-pause: interrumpir reproducción automática dependía de la capacidad retirada. Clasificar RETIRED_DEPENDENCY con depends_on hier-sim-repeat y conservar ID/caso limitado original; no convertir vista estable en PASS de interrupción, no retirar navegación manual ni alterar runtime. Esto no retira seq-sim-pause ni seq-sim-play: Alt+R/Alt+P secuenciales todavía tienen reproducción única sobre caché e interrupción, probadas y conservadas; repetición automática no se confunde con ese flujo independiente.
+
+Contabilidad posterior:375 originales−7retirosdirectos−1dependencia+2manualesnuevos=369activos.345bindingshistóricos+12educativos+10sustituciones+2nuevos=369asignaciones;0sinbinding en este manifiesto finito. No certifica exhaustividad dinámica ni aceptación global C1. Historia anterior370/369/1 permanece intacta como fotografía previa.

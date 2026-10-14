@@ -1,0 +1,499 @@
+[
+  {
+    "id": "algorithm:graph/camino-minimo/run_bellman_ford",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/camino-minimo/run_bellman_ford",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/camino-minimo/run_dijkstra",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/camino-minimo/run_dijkstra",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bellman_ford",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/construccion/run_bellman_ford",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bfs",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/construccion/run_bfs",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dfs",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/construccion/run_dfs",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dijkstra",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/construccion/run_dijkstra",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/construccion/run_kruskal",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/construccion/run_kruskal",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/construccion/run_prim",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/construccion/run_prim",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_kruskal",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/expansion-minima/run_kruskal",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_prim",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/expansion-minima/run_prim",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_bfs",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/recorridos/run_bfs",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_dfs",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "proposed_case_ref": "proposed-tests.json#algorithm:graph/recorridos/run_dfs",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "control:templates/_navbar.html:input:didactic-mode-switch:8",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/_navbar.html:select:export-jpg-scale:10",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "OWNED_URL_AND_CURRENT_ONLY_EXPORT_GEOMETRY_ORACLE",
+    "proposed_case_ref": "proposed-tests.json#control:templates/_navbar.html:select:export-jpg-scale:10",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "control:templates/hash/structure.html:button:hash-reset-button:8",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-prev:19",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "operation:graph/graph/clear_graph",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:graph/graph/clear_graph",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:graph/graph/edge_weight",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:graph/graph/edge_weight",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:graph/graph/exists_edge",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:graph/graph/exists_edge",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:graph/graph/exists_vertex",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:graph/graph/exists_vertex",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:graph/graph/list_edges",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:graph/graph/list_edges",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:graph/graph/list_vertices",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:graph/graph/list_vertices",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:graph/graph/neighbors",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:graph/graph/neighbors",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hash/hash_table/items",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "operation:hash/hash_table/keys",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "operation:hash/hash_table/values",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "operation:hierarchical/abb/altura",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/altura",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/abb/buscar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/buscar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/abb/contar_hojas",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/contar_hojas",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/abb/eliminar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/eliminar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/abb/limpiar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/limpiar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/abb/maximo",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/maximo",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/abb/minimo",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/minimo",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/abb/postorden",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/postorden",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/abb/preorden",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/abb/preorden",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/avl/altura",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/avl/altura",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/avl/buscar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/avl/buscar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/avl/eliminar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/avl/eliminar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/avl/limpiar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/avl/limpiar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/avl/maximo",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/avl/maximo",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/avl/minimo",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/avl/minimo",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/a_lista",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/binary_heap/a_lista",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/limpiar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/binary_heap/limpiar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/raiz",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/binary_heap/raiz",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/red_black/altura",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/red_black/altura",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/red_black/buscar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/red_black/buscar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/red_black/eliminar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/red_black/eliminar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:hierarchical/red_black/limpiar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:hierarchical/red_black/limpiar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/circular_list/eliminar_inicio",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/circular_list/eliminar_inicio",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/buscar_elemento",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/buscar_elemento",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_elemento",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/eliminar_elemento",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_final",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/eliminar_final",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_inicio",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/eliminar_inicio",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_repetidos",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/eliminar_repetidos",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_elemento",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/insertar_elemento",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_posicion",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/insertar_posicion",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/limpiar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/limpiar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/mostrar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/mostrar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/primero",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/primero",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/linked_list/ultimo",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/linked_list/ultimo",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/priority_queue/limpiar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/priority_queue/limpiar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sequential/queue/limpiar",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "proposed_case_ref": "proposed-tests.json#operation:sequential/queue/limpiar",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sorting/sorting_array/reset",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "operation:sorting/sorting_array/select_algorithm",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "SELECT_RESPONSE_STATE_EXPECTED_NOT_ONLY_SUCCESS_FLAG",
+    "proposed_case_ref": "proposed-tests.json#operation:sorting/sorting_array/select_algorithm",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  },
+  {
+    "id": "operation:sorting/sorting_array/step",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "route:GET /api/ordenamiento/state",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "route:GET /api/ordenamiento/traces/<trace_id>/export",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "route:GET /api/ordenamiento/traces/<trace_id>/page",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "route:POST /api/ordenamiento/reset",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "route:POST /api/ordenamiento/step",
+    "missing_link_resolved": "JSON expected projection/helper wait predicate/response-derived URL plus fixture context",
+    "status": "SOURCE_CHAIN_LINKED_ONLY",
+    "execution": "NOT_RUN",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "route:POST /graph/compare",
+    "status": "UNLINKED_CASE_DRAFTED",
+    "missing_link": "CONCRETE_LEFT_RIGHT_RESULTS_AND_INDEPENDENCE_NOT_ONLY_ISOLATED_FLAG",
+    "proposed_case_ref": "proposed-tests.json#route:POST /graph/compare",
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT"
+  }
+]

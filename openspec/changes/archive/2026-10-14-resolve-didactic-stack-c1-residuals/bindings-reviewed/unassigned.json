@@ -1,0 +1,1242 @@
+[
+  {
+    "id": "algorithm:graph/camino-minimo/run_bellman_ford",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/camino-minimo/run_dijkstra",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bellman_ford",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bfs",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dfs",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dijkstra",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_kruskal",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_prim",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_kruskal",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_prim",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_bfs",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_dfs",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:sorting/binsort",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:sorting/burbuja",
+    "category": "algorithm",
+    "reason": "Only failure/preflight case found; cannot bind as executed algorithm case."
+  },
+  {
+    "id": "algorithm:sorting/counting_sort",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:sorting/heapsort",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:sorting/insercion",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:sorting/intercambio",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:sorting/mergesort",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:sorting/radixsort",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "algorithm:sorting/shell",
+    "category": "algorithm",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:button:export-visual-jpg-btn:11",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:input:didactic-mode-switch:8",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:select:export-jpg-quality:9",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:select:export-jpg-scale:10",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:button:graph-create-button:4",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:button:graph-export-image:17",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:button:graph-export-summary:18",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:button:graph-reset-button:13",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:button:graph-sim-next:12",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:button:graph-sim-prev:11",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:button:graph-sim-step:10",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:input:graph-hide-comments:16",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:input:graph-step-toggle:9",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:select:graph-mode-select:3",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:a:hash-download-main:16",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:button:hash-export-image:14",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:button:hash-reset-button:8",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:button:hash-sim-next:7",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:button:hash-sim-step:5",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:input:hash-hide-comments:13",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:input:hash-show-addresses:12",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:input:hash-step-toggle:4",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:select:hash-bucket-filter:11",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-check-prediction:7",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-compare-run:30",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-export-image:32",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-export-summary:33",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-hint:8",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-load-example:5",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-prepare:15",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-reset-progress:11",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-restart-execution:23",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-end:21",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-home:18",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-pause:17",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-prev:19",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-repeat:22",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-skip-prediction:9",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:reset-button:24",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-compare-progress:31",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-compare-values:29",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-hide-comments:14",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-practice-mode:10",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-progress:27",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-speed-slider:26",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-step-toggle:25",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-compare-kind:28",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-guided-example:4",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-learning-level:3",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-prediction:6",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:a:stack-main-download:32",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:reset-button:18",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-compare-run:28",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-export-image:30",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-export-summary:31",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-prediction-hint:24",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-prediction-skip:25",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-reset-learning:26",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-restart-execution:17",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-end:15",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-pause:11",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-play:10",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-prepare:9",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-repeat:16",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-start:12",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:stack-view-current:5",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:stack-view-linked:6",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-compare-progress:29",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-hide-comments:7",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-practice-mode:23",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-predictions-enabled:22",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-progress-slider:21",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-speed-slider:20",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-step-toggle:19",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:select:seq-compare-kind:27",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:button:sorting-counting-go:15",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:button:sorting-counting-pause:17",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:button:sorting-counting-replay:16",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:button:sorting-export-image:22",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:button:sorting-random-array:7",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:button:sorting-reset:18",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:button:sorting-sim-step:11",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:input:sorting-counting-jump:14",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:input:sorting-hide-comments:21",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:input:sorting-random-max:6",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:input:sorting-random-min:5",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:input:sorting-random-size:4",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:input:sorting-step-toggle:10",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:graph/graph/clear_graph",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:graph/graph/edge_weight",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:graph/graph/exists_edge",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:graph/graph/exists_vertex",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:graph/graph/list_edges",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:graph/graph/list_vertices",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:graph/graph/neighbors",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:graph/graph/run_prim",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hash/hash_table/items",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hash/hash_table/keys",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hash/hash_table/values",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/altura",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/buscar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/contar_hojas",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/eliminar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/inorden",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/limpiar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/maximo",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/minimo",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/postorden",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/preorden",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/abb/validar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/avl/altura",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/avl/buscar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/avl/eliminar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/avl/inorden",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/avl/limpiar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/avl/maximo",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/avl/minimo",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/avl/validar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/a_lista",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/extraer_raiz",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/insertar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/limpiar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/raiz",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/red_black/altura",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/red_black/buscar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/red_black/eliminar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/red_black/inorden",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/red_black/insertar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/red_black/limpiar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:hierarchical/red_black/validar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/circular_list/eliminar_inicio",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/buscar_elemento",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_elemento",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_final",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_inicio",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_repetidos",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_elemento",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_posicion",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/limpiar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/mostrar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/primero",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/linked_list/ultimo",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/priority_queue/limpiar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sequential/queue/limpiar",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sorting/sorting_array/create_array",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sorting/sorting_array/generate_random_array",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sorting/sorting_array/reset",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sorting/sorting_array/run",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sorting/sorting_array/select_algorithm",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "operation:sorting/sorting_array/step",
+    "category": "operation",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "phase:graph/camino-minimo",
+    "category": "phase",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "phase:graph/construccion",
+    "category": "phase",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "phase:graph/expansion-minima",
+    "category": "phase",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "phase:graph/recorridos",
+    "category": "phase",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /api/ordenamiento/state",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /api/ordenamiento/traces/<trace_id>/export",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /api/ordenamiento/traces/<trace_id>/page",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /graph/<structure_id>/<phase>",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /help/graph",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /help/hash",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /help/sequential",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /help/sorting",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:GET /sorting/sorting_array",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:POST /api/ordenamiento/reset",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:POST /api/ordenamiento/step",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:POST /graph/compare",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "route:POST /hierarchical/<structure_id>/reset",
+    "category": "route",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:a:anonymous-3:3",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:a:anonymous-4:4",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:a:anonymous-5:5",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:a:anonymous-6:6",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/_navbar.html:a:anonymous-7:7",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/index.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/index.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/index.html:a:anonymous-3:3",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/index.html:a:anonymous-4:4",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/index.html:a:anonymous-5:5",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/index.html:a:anonymous-6:6",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/index.html:a:anonymous-7:7",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/index.html:a:anonymous-8:8",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:a:anonymous-6:6",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/graph/structure.html:a:anonymous-19:19",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/index.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/index.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hash/structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/_source_download.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/_source_download.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/_source_download.html:a:anonymous-3:3",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/graph.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/graph.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/graph_structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/hash.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/hash.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/hash_structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/hierarchical.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/hierarchical.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/hierarchical_structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/manual.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/manual.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/manual.html:a:anonymous-3:3",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/manual.html:a:anonymous-4:4",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/manual.html:a:anonymous-5:5",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/sequential.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/sequential.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/sorting.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/sorting.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/sorting_structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/help/structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/index.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/index.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/index.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/index.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/index.html:a:anonymous-3:3",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/index.html:a:anonymous-4:4",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/index.html:a:anonymous-5:5",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/index.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/index.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:anonymous-3:3",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/index.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/index.html:a:anonymous-2:2",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  },
+  {
+    "id": "control:templates/sorting/structure.html:a:anonymous-1:1",
+    "category": "control",
+    "reason": "No conservative literal case match; requires review, helpers/parameters or new case."
+  }
+]

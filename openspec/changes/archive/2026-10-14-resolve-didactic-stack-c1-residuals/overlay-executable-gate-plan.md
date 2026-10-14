@@ -1,0 +1,3 @@
+# Overlay ejecutable autorizado
+
+Nueva instrucción directa delcoordinador20261014. Overlay separado sobre375originales;validarIDs/decisiones/dependencias/fixtures ycontabilidad sinmodificarcrudos. Pausajerárquica: cotejardiseñomanual yautorización,dependenciaretirada si nofunciónindependiente;noPASS/noreintroducirautoplay. Pruebasfocales120s2GiB,sincampaña/container/publicación. QAindependientehilo01a0ff54-79d7-7520-8e9f-224ef5ed700f mantiene fuentescrudasestables.

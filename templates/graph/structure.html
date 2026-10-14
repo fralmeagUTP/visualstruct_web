@@ -88,11 +88,11 @@
   <details class="graph-stage graph-collapsible">
     <summary><span>5</span> Resultados de ejecución <small>Consola C, historial, TAD y exportación</small></summary>
     <div class="graph-panel-content">
-      <div class="actions"><button class="btn secondary" id="graph-export-image" type="button">Exportar captura JPG</button><button class="btn secondary" id="graph-export-summary" type="button">Exportar resumen</button></div>
+      <div class="actions"><button class="btn secondary" id="graph-export-image" type="button">Exportar captura JPG</button><button class="btn secondary" id="graph-export-summary" type="button">Exportar resumen</button><a class="link" href="{{ url_for('help.download_tad_source', structure_id='graph', file_kind='main') }}">Descargar main.c</a></div>
       <p id="graph-accessible-announcer" class="sr-only" aria-live="polite"></p>
       <div class="graph-results-grid">
         <section class="console-panel didactic-technical"><h4>Consola C (printf)</h4><pre id="graph-printf-console" class="console-screen" aria-live="polite"></pre></section>
-        <section class="didactic-technical"><h4>Historial técnico</h4><a class="link" href="{{ url_for('help.download_tad_source', structure_id='graph', file_kind='main') }}">Descargar main.c</a><ol id="action-history" class="didactic-history"></ol></section>
+        <section class="didactic-technical"><h4>Historial técnico</h4><ol id="action-history" class="didactic-history"></ol></section>
         <section class="didactic-technical"><h4>Estructura del TAD</h4><pre id="tad-record" class="didactic-code didactic-code-compact">{{ model.didactic.record if model.didactic else "Estructura no documentada." }}</pre></section>
       </div>
     </div>

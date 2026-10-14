@@ -1,0 +1,572 @@
+[
+  {
+    "id": "algorithm:graph/camino-minimo/run_bellman_ford",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/camino-minimo/run_dijkstra",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bellman_ford",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bfs",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dfs",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dijkstra",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_kruskal",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_prim",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_kruskal",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_prim",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_bfs",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_dfs",
+    "status": "SHARED_CONTEXT_RETAINED_NEEDS_PHASE_ORACLE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "algorithm:sorting/binsort",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "algorithm:sorting/burbuja",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "algorithm:sorting/counting_sort",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "algorithm:sorting/heapsort",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "algorithm:sorting/insercion",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "algorithm:sorting/intercambio",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "algorithm:sorting/mergesort",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "algorithm:sorting/radixsort",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "algorithm:sorting/shell",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "control:templates/_navbar.html:input:didactic-mode-switch:8",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "control:templates/_navbar.html:select:export-jpg-scale:10",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "control:templates/hash/structure.html:button:hash-reset-button:8",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-prev:19",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:graph/graph/clear_graph",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:graph/graph/edge_weight",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:graph/graph/exists_edge",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:graph/graph/exists_vertex",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:graph/graph/list_edges",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:graph/graph/list_vertices",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:graph/graph/neighbors",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:graph/graph/run_prim",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hash/hash_table/items",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hash/hash_table/keys",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hash/hash_table/values",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/altura",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/buscar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/contar_hojas",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/eliminar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/inorden",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hierarchical/abb/limpiar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/maximo",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/minimo",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/postorden",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/preorden",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/abb/validar",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hierarchical/avl/altura",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/avl/buscar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/avl/eliminar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/avl/inorden",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hierarchical/avl/limpiar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/avl/maximo",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/avl/minimo",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/avl/validar",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/a_lista",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/extraer_raiz",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/insertar",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/limpiar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/raiz",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/red_black/altura",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/red_black/buscar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/red_black/eliminar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/red_black/inorden",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hierarchical/red_black/insertar",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:hierarchical/red_black/limpiar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:hierarchical/red_black/validar",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "operation:sequential/circular_list/eliminar_inicio",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/buscar_elemento",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_elemento",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_final",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_inicio",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_repetidos",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_elemento",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_posicion",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/limpiar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/mostrar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/primero",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/linked_list/ultimo",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/priority_queue/limpiar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sequential/queue/limpiar",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sorting/sorting_array/reset",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sorting/sorting_array/select_algorithm",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "operation:sorting/sorting_array/step",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "phase:graph/camino-minimo",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "phase:graph/construccion",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "phase:graph/expansion-minima",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "phase:graph/recorridos",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "route:GET /api/ordenamiento/state",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "route:GET /api/ordenamiento/traces/<trace_id>/export",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "route:GET /api/ordenamiento/traces/<trace_id>/page",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "route:GET /graph/<structure_id>/<phase>",
+    "status": "SOURCE_CASE_LINKED_EXECUTION_ACCEPTANCE_SEPARATE",
+    "binding_ref": "app-executable-bindings.json",
+    "next_action": "Associate accepted existing evidence or authorize focal execution if needed; no automatic admission."
+  },
+  {
+    "id": "route:POST /api/ordenamiento/reset",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "route:POST /api/ordenamiento/step",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  },
+  {
+    "id": "route:POST /graph/compare",
+    "status": "CANDIDATE_NOT_YET_A_COMPLETE_CASE",
+    "binding_ref": null,
+    "next_action": "Resolve helpers/parameters and concrete correlated expectation; literal reference remains insufficient."
+  }
+]

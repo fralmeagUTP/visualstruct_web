@@ -1,0 +1,223 @@
+{
+  "schema": "c1-current-evidence-disposition/v1",
+  "reviewed": 11,
+  "new_admissions": 0,
+  "original_decisions_unchanged": true,
+  "items": [
+    {
+      "id": "C1-QA-01",
+      "requirement": "Inventario exhaustivo y verificable",
+      "disposition": "Gate focal implementado; asignaciones/inventario completos pendientes",
+      "reason": "Gate --bindings exige test_node existente, input/expected y capa; incluye controles HTML anónimos.10tests nuevos y2compatibilidad pasan. Faltan asignaciones reales de opciones actuales e inventario de controles JS dinámicos; no es certificado de ejecución ni admisión.",
+      "current_reference": "scripts/build_app_quality_inventory.py",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "original_text_sha256": "33142235c52632c4bd559a3d2369db0c3f4cd1e9c4079845a11ee5c1f268e8ac"
+    },
+    {
+      "id": "C1-QA-02",
+      "requirement": "Cobertura funcional de todos los módulos",
+      "disposition": "Evidencia finita reutilizable; admisión pendiente",
+      "reason": "Cierre finito posterior sustituye familias antiguamente pendientes. No acredita todas las opciones/variantes del requisito amplio ni habilita campaña global.",
+      "current_reference": "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/criteria18-acceptance-and19-RN-V3-documentary-addendum-low.md",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "original_text_sha256": "15446a9805163dad0a3d674a70b66c613e61cc6b333e74789a5e007859c82da4"
+    },
+    {
+      "id": "C1-QA-03",
+      "requirement": "Fidelidad C, estado y traza",
+      "disposition": "Parcial; residual instrumentado",
+      "reason": "Aceptaciones por instrucción posteriores existen; matriz original de eventos intermedios/memoria está incompleta. No extrapolar casos a cada operación.",
+      "current_reference": "openspec/changes/audit-didactic-c-trace-fidelity/tasks.md",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "original_text_sha256": "1fa54831f7d17bad503d347de57314ffca8e8aa0d9e06b7e6e3d1c5df67f11e5"
+    },
+    {
+      "id": "C1-QA-04",
+      "requirement": "Calidad no funcional y reporte",
+      "disposition": "Parcial; calidad no funcional pendiente",
+      "reason": "La infraestructura ausente se distingue de producto. Accesibilidad focal Pila ahora tiene nueva evidencia; no equivale a todo seguridad/rendimiento/compatibilidad.",
+      "current_reference": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/stack-layout-after.json",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-establish-comprehensive-app-quality-validation/specs/application-quality-validation/spec.md",
+      "original_text_sha256": "5f11a957e0cf110bbe4d9bfc15e2037eeefb508d3bb630f5b14453852a0aa354"
+    },
+    {
+      "id": "C1-REM-01",
+      "requirement": "Un único contrato ejecutable por operación",
+      "disposition": "Decisiones antiguas resueltas; equivalencia completa pendiente",
+      "reason": "Hash entero/fijo, pesos enteros y MAX15 son contratos vigentes. Falta admisión del requisito completo por todas las capas/eventos.",
+      "current_reference": "openspec/specs/hash-table/spec.md",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_text_sha256": "09c7fd4a58a60664b9fc6fbaa82be298b5d845459a90fbf8c857d1049bb3960e"
+    },
+    {
+      "id": "C1-REM-02",
+      "requirement": "Aritmética y memoria definidas en los límites",
+      "disposition": "Parcial; matriz Linux pendiente",
+      "reason": "Los casos finitos sanitizados históricos no prueban cada evento/caso de la matriz instrumentada actual. Docker Linux no disponible en esta sesión. No repetir Bellman900 ni límites consumidos. Nuevo piloto Pila C17 observa21eventos y fallo malloc; no ASan/UBSan ni matriz13.",
+      "current_reference": "scripts/check_c_sanitizers_linux.sh",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_text_sha256": "950604517e987e11f68245d0476397f462ee33b7f495a2a10da7f9fd00bfff3b"
+    },
+    {
+      "id": "C1-REM-03",
+      "requirement": "Contrato coherente para grafos",
+      "disposition": "Contrato aprobado; admisión pendiente",
+      "reason": "Dirección/pesos/duplicados y bosque tienen evidencia finita posterior. Conservar MAX15 y pruebas8; vincular escenarios originales con sus pruebas antes de admitir íntegro.",
+      "current_reference": "openspec/specs/graph-structures/spec.md",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_text_sha256": "c8db6729954c8210caf2fe53e86a6a05901a180231e22fe6c6928364e7de51ae"
+    },
+    {
+      "id": "C1-REM-04",
+      "requirement": "Contrato coherente para hash y secuenciales",
+      "disposition": "H1 ya aprobado; admisión combinada pendiente",
+      "reason": "Razón antigua decisión H1 pendiente está superada. Hash entero/capacidad fija y secuenciales aceptados requieren trazabilidad conjunta, no nueva decisión sobre texto/rehash.",
+      "current_reference": "openspec/changes/archive/2026-10-02-reconcile-hash-integer-fixed-capacity/decision.md",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_text_sha256": "45248ad01210c088339f650f42954a3156665c2b1e99c9405025a838eb0c9b79"
+    },
+    {
+      "id": "C1-REM-05",
+      "requirement": "Estado visual causado por eventos C",
+      "disposition": "Parcial; causalidad exhaustiva pendiente",
+      "reason": "Aceptaciones finitas de familias no sustituyen oráculo intermedio completo. No reimplementar motores cerrados.",
+      "current_reference": "openspec/changes/audit-didactic-c-trace-fidelity/design.md",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_text_sha256": "d9bac9fff48be373567225a241fec2a1f6ed498e38d392039a44f6584f8e1741"
+    },
+    {
+      "id": "C1-REM-07",
+      "requirement": "Consola derivada de ejecución",
+      "disposition": "Parcial; consola por evento pendiente",
+      "reason": "Transporte de consola y pruebas concretas existen. Debe mapear cada printf alcanzado a su evento real; wrapper/estado final no prueba exclusividad universal. Piloto Pila captura printf real y compara stdout con control; las otras12familias no se certifican.",
+      "current_reference": "app/services/execution_trace_service.py",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_text_sha256": "c20f7b75aa0f84ff9f662f4b3353b7f5f666354873284391095cfd14c10e0882"
+    },
+    {
+      "id": "C1-REM-08",
+      "requirement": "Cierre verificable de los hallazgos QA",
+      "disposition": "Reconciliación formal pendiente",
+      "reason": "29closed y29fixed_pending_gate son historia conservada. Requisito pide oráculo nativo, regresión específica e integración por hallazgo; no renombrar estados ni borrar rechazos.",
+      "current_reference": "docs/qa/remediation-regression-matrix-v1.json",
+      "admitted": false,
+      "original_source": "openspec/changes/archive/2026-08-23-remediate-didactic-c-trace-fidelity/specs/didactic-conformance-remediation/spec.md",
+      "original_text_sha256": "790dfaa30854dcdd5b427172e22f8529563769e2bba8ab41b2186d2c0efabff8"
+    }
+  ],
+  "current_acceptance": {
+    "source": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+    "scope": "FINITE_DOCUMENTED_SCOPE_ONLY",
+    "items": [
+      {
+        "id": "C1-QA-01",
+        "requirement": "Inventario exhaustivo y verificable",
+        "original_text_sha256": "33142235c52632c4bd559a3d2369db0c3f4cd1e9c4079845a11ee5c1f268e8ac",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-QA-02",
+        "requirement": "Cobertura funcional de todos los módulos",
+        "original_text_sha256": "15446a9805163dad0a3d674a70b66c613e61cc6b333e74789a5e007859c82da4",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-QA-03",
+        "requirement": "Fidelidad C, estado y traza",
+        "original_text_sha256": "1fa54831f7d17bad503d347de57314ffca8e8aa0d9e06b7e6e3d1c5df67f11e5",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-QA-04",
+        "requirement": "Calidad no funcional y reporte",
+        "original_text_sha256": "5f11a957e0cf110bbe4d9bfc15e2037eeefb508d3bb630f5b14453852a0aa354",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-REM-01",
+        "requirement": "Un único contrato ejecutable por operación",
+        "original_text_sha256": "09c7fd4a58a60664b9fc6fbaa82be298b5d845459a90fbf8c857d1049bb3960e",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-REM-02",
+        "requirement": "Aritmética y memoria definidas en los límites",
+        "original_text_sha256": "950604517e987e11f68245d0476397f462ee33b7f495a2a10da7f9fd00bfff3b",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-REM-03",
+        "requirement": "Contrato coherente para grafos",
+        "original_text_sha256": "c8db6729954c8210caf2fe53e86a6a05901a180231e22fe6c6928364e7de51ae",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-REM-04",
+        "requirement": "Contrato coherente para hash y secuenciales",
+        "original_text_sha256": "45248ad01210c088339f650f42954a3156665c2b1e99c9405025a838eb0c9b79",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-REM-05",
+        "requirement": "Estado visual causado por eventos C",
+        "original_text_sha256": "d9bac9fff48be373567225a241fec2a1f6ed498e38d392039a44f6584f8e1741",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-REM-06",
+        "requirement": "Traza continua y fuente verificable",
+        "original_text_sha256": "739397ff91a9ffdab8be8f5e6f7b6eee0f7e5858aca08e7b5c24bd3ad58221ab",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": true,
+        "original_historical_decision": "ADMITTED_VERIFIED_CONTRACT"
+      },
+      {
+        "id": "C1-REM-07",
+        "requirement": "Consola derivada de ejecución",
+        "original_text_sha256": "c20f7b75aa0f84ff9f662f4b3353b7f5f666354873284391095cfd14c10e0882",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      },
+      {
+        "id": "C1-REM-08",
+        "requirement": "Cierre verificable de los hallazgos QA",
+        "original_text_sha256": "790dfaa30854dcdd5b427172e22f8529563769e2bba8ab41b2186d2c0efabff8",
+        "current_status": "ADMITTED_FINITE_DOCUMENTED_SCOPE",
+        "prior_admission_retained": false,
+        "original_historical_decision": "PENDING_NOT_CONSOLIDATED"
+      }
+    ],
+    "admitted_derived_from_items": 12,
+    "pending_within_admitted_scope": 0,
+    "historical_top_level_and_items_preserved": true
+  }
+}

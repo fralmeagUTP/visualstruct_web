@@ -1,0 +1,17 @@
+{
+  "assigned_ids": 71,
+  "new_source_links": 13,
+  "new_by_category": {
+    "operation": 5,
+    "route": 5,
+    "control": 3
+  },
+  "before_links": 167,
+  "after_links": 180,
+  "before_pending": 208,
+  "after_pending": 195,
+  "assigned_remaining": 58,
+  "application_tests_executed": 0,
+  "new_acceptances": 0,
+  "gate_errors": 0
+}

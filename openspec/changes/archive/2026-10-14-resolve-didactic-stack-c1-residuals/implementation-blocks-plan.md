@@ -1,0 +1,3 @@
+# Instrucción vigente y bloques autorizados
+
+Coordinación nueva confirma: compactación mínima Pila dentro del alcance aprobado, no pedir aprobación genérica. Preservar cinco etapas y paneles; controles sticky sin superposición. Instrumentar eventos intermedios sobre copia verificable de C, sin reimplementar algoritmos. Piloto Pila y fuentes de memoria primero; no inferir13TAD ni nuevos cierres C1. Bloques120s/2GiB. No iniciar nuevos contenedores/instalar ni repetir intentos únicos consumidos. Linux actualmente sin daemon; inspeccionar herramientas existentes. Sin commit/push/despliegue/sesiones de usuario.

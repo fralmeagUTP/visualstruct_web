@@ -1356,6 +1356,11 @@ class ExecutionTraceService:
             from app.domain.sequential.queue_enqueue_instruction import build_queue_enqueue_trace
             return build_queue_enqueue_trace(payload=payload, source_code=source_code, code_title=code_title,
                 before_state=before_state, after_state=after_state, success=success, message=message)
+        if structure_id == "stack" and operation_name == "desapilar" and success:
+            from app.domain.sequential.stack_pop_instruction import build_stack_pop_trace
+            return build_stack_pop_trace(payload=payload, source_code=source_code,
+                code_title=code_title, before_state=before_state, after_state=after_state,
+                success=bool(success), message=str(message))
         if structure_id == "stack" and operation_name == "cima":
             from app.domain.sequential.stack_top_instruction import build_stack_top_trace
             return build_stack_top_trace(payload=payload, source_code=source_code, code_title=code_title,
@@ -1600,7 +1605,7 @@ class ExecutionTraceService:
                 line_text,
                 preserve_trailing_newlines=(
                     structure_id == "linked_list"
-                    and operation_name in {"buscar_elemento", "eliminar_repetidos"}
+                    and operation_name in {"buscar_elemento", "eliminar_repetidos", "eliminar_elemento"}
                 ),
             )
             if (

@@ -1,0 +1,10 @@
+{
+  "inventory_items": 375,
+  "literal_http_cases": 214,
+  "literal_ui_cases": 21,
+  "source_links_validated": 127,
+  "unassigned": 248,
+  "test_bodies_executed": 0,
+  "gate_errors_for_assigned_subset": 0,
+  "skipped_sources": []
+}

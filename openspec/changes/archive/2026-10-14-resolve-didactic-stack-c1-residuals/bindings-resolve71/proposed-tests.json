@@ -1,0 +1,3382 @@
+[
+  {
+    "id": "algorithm:graph/camino-minimo/run_bellman_ford",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/camino-minimo",
+        "expected_status": 200,
+        "expected_content": "camino-minimo"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_bellman_ford",
+        "payload": {
+          "start": 1,
+          "end": 3
+        }
+      }
+    },
+    "expected": {
+      "result.path": [
+        1,
+        2,
+        3
+      ],
+      "result.distance_to_destination": 3
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/camino-minimo/run_dijkstra",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/camino-minimo",
+        "expected_status": 200,
+        "expected_content": "camino-minimo"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_dijkstra",
+        "payload": {
+          "start": 1,
+          "end": 3
+        }
+      }
+    },
+    "expected": {
+      "result.path": [
+        1,
+        2,
+        3
+      ],
+      "result.distance_to_destination": 3
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bellman_ford",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/construccion",
+        "expected_status": 200,
+        "expected_content": "construccion"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_bellman_ford",
+        "payload": {
+          "start": 1,
+          "end": 3
+        }
+      }
+    },
+    "expected": {
+      "result.path": [
+        1,
+        2,
+        3
+      ],
+      "result.distance_to_destination": 3
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bfs",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/construccion",
+        "expected_status": 200,
+        "expected_content": "construccion"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_bfs",
+        "payload": {
+          "start": 1
+        }
+      }
+    },
+    "expected": {
+      "result": [
+        1,
+        2,
+        3
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dfs",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/construccion",
+        "expected_status": 200,
+        "expected_content": "construccion"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_dfs",
+        "payload": {
+          "start": 1
+        }
+      }
+    },
+    "expected": {
+      "result": [
+        1,
+        2,
+        3
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dijkstra",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/construccion",
+        "expected_status": 200,
+        "expected_content": "construccion"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_dijkstra",
+        "payload": {
+          "start": 1,
+          "end": 3
+        }
+      }
+    },
+    "expected": {
+      "result.path": [
+        1,
+        2,
+        3
+      ],
+      "result.distance_to_destination": 3
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_kruskal",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/construccion",
+        "expected_status": 200,
+        "expected_content": "construccion"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_kruskal",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result.total_weight": 3,
+      "normalized_result.mst_edges": [
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          2,
+          3,
+          2
+        ]
+      ],
+      "result.connected": true,
+      "result.components_count": 1
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8.",
+      "Normalize each mst_edges entry to[min(u,v),max(u,v),weight], sort lexicographically, then compare[[1,2,1],[2,3,2]]; do not prescribe native edge orientation or discovery order."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_prim",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/construccion",
+        "expected_status": 200,
+        "expected_content": "construccion"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_prim",
+        "payload": {
+          "start": 1
+        }
+      }
+    },
+    "expected": {
+      "result.total_weight": 3,
+      "normalized_result.mst_edges": [
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          2,
+          3,
+          2
+        ]
+      ],
+      "result.connected": true,
+      "result.components_count": 1
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8.",
+      "Normalize each mst_edges entry to[min(u,v),max(u,v),weight], sort lexicographically, then compare[[1,2,1],[2,3,2]]; do not prescribe native edge orientation or discovery order."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_kruskal",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/expansion-minima",
+        "expected_status": 200,
+        "expected_content": "expansion-minima"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_kruskal",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result.total_weight": 3,
+      "normalized_result.mst_edges": [
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          2,
+          3,
+          2
+        ]
+      ],
+      "result.connected": true,
+      "result.components_count": 1
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8.",
+      "Normalize each mst_edges entry to[min(u,v),max(u,v),weight], sort lexicographically, then compare[[1,2,1],[2,3,2]]; do not prescribe native edge orientation or discovery order."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_prim",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/expansion-minima",
+        "expected_status": 200,
+        "expected_content": "expansion-minima"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_prim",
+        "payload": {
+          "start": 1
+        }
+      }
+    },
+    "expected": {
+      "result.total_weight": 3,
+      "normalized_result.mst_edges": [
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          2,
+          3,
+          2
+        ]
+      ],
+      "result.connected": true,
+      "result.components_count": 1
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8.",
+      "Normalize each mst_edges entry to[min(u,v),max(u,v),weight], sort lexicographically, then compare[[1,2,1],[2,3,2]]; do not prescribe native edge orientation or discovery order."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_bfs",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/recorridos",
+        "expected_status": 200,
+        "expected_content": "recorridos"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_bfs",
+        "payload": {
+          "start": 1
+        }
+      }
+    },
+    "expected": {
+      "result": [
+        1,
+        2,
+        3
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_dfs",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "PHASE_SCOPED_REQUEST_AND_CONCRETE_RESULT_IN_SAME_CASE",
+    "setup": [
+      {
+        "method": "GET",
+        "path": "/graph/graph/recorridos",
+        "expected_status": 200,
+        "expected_content": "recorridos"
+      },
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": false
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 3
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 1
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 2,
+          "target": 3,
+          "weight": 2
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "run_dfs",
+        "payload": {
+          "start": 1
+        }
+      }
+    },
+    "expected": {
+      "result": [
+        1,
+        2,
+        3
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "tests/test_comprehensive_graph_qa.py",
+        "sha256": "b6073868ef837cb0647626ecca48a5d7a10b8c6e8e5a5cd44da7618100dc7e81"
+      },
+      {
+        "path": "tests/test_ui_playwright_e2e.py",
+        "sha256": "9fda8438a47875dd53411552b2243fddd9a5a523e19eb05477cd8639387930cb"
+      }
+    ],
+    "notes": [
+      "Existing backend result tests lack explicit phase context; existing browser phase examples do not assert completed algorithm result. API-level contextual case proposed, not UI/native fidelity.",
+      "Chain graph avoids traversal-order and MST ties;3vertices below test bound8."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "control:templates/_navbar.html:select:export-jpg-scale:10",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "OWNED_URL_AND_CURRENT_ONLY_EXPORT_GEOMETRY_ORACLE",
+    "setup": [],
+    "request_or_gesture": {
+      "page": "/sorting/visualizador",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "gesture": {
+        "action": "select_option",
+        "selector": "#export-jpg-scale",
+        "value": "2"
+      },
+      "setup_input": [
+        7,
+        2,
+        9
+      ],
+      "followup_gesture": {
+        "action": "click",
+        "selector": "#export-visual-jpg-btn"
+      },
+      "reference_export": {
+        "select_scale": "1",
+        "download_decode": [
+          "W1",
+          "H1"
+        ]
+      },
+      "owned_server": "New private-session Flask fixture; no existing externalURL, hostpermissions or user5051."
+    },
+    "expected": {
+      "selected_value": "2",
+      "download_mime": "image/jpeg",
+      "nonuniform_RGB": true,
+      "export_POST_count": 0,
+      "dimension_oracle": {
+        "decode_scale1_export": [
+          "W1",
+          "H1"
+        ],
+        "decode_scale2_export": [
+          "2*W1",
+          "2*H1"
+        ],
+        "precondition": "Same target, unchanged source dimensions; export scale1 once then scale2; current resolveExportDimensions rounds source dimensions before scaling.",
+        "no_historical_geometry_transplant": true
+      }
+    },
+    "expected_status": null,
+    "sources": [
+      {
+        "path": "tests/test_sorting_empty_jpeg_regression.py",
+        "sha256": "aa373278ee8e690a95f4832e5b13b54369e0e610c0bcc7914637ef39e132c570"
+      },
+      {
+        "path": "static/js/interpreter_runtime.js",
+        "sha256": "80f9b5ff6950076406e1574b5bf653e5c8a3c0eb2b72369ff6ee6ee2ecbb7c29"
+      }
+    ],
+    "notes": [
+      "Existing conditional test requires JPEG_FOCAL_URL and historical runtime fixture; no current owned URL/context supplied in this block. Do not bind or transplant historical dimensions as a fresh oracle."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:graph/graph/clear_graph",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": true
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "clear_graph",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "followup.list_vertices.result": [],
+      "followup.list_edges.result": [],
+      "directed_preserved": true
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/domain/graph/tad_wrappers.py",
+        "sha256": "1b444767c2cda2c80e1e7d84d20c1cb74e939022de1e45cd96e2e254b7bf7215"
+      }
+    ],
+    "notes": [
+      "Registered CASES and route query tests contain generic trace/status checks; no sufficient concrete result recovered in reviewed chain. This is not a claim that no other test exists."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:graph/graph/edge_weight",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": true
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "edge_weight",
+        "payload": {
+          "origin": 1,
+          "target": 2
+        }
+      }
+    },
+    "expected": {
+      "result": 7
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/domain/graph/tad_wrappers.py",
+        "sha256": "1b444767c2cda2c80e1e7d84d20c1cb74e939022de1e45cd96e2e254b7bf7215"
+      }
+    ],
+    "notes": [
+      "Registered CASES and route query tests contain generic trace/status checks; no sufficient concrete result recovered in reviewed chain. This is not a claim that no other test exists."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:graph/graph/exists_edge",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": true
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "exists_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2
+        }
+      }
+    },
+    "expected": {
+      "result": true
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/domain/graph/tad_wrappers.py",
+        "sha256": "1b444767c2cda2c80e1e7d84d20c1cb74e939022de1e45cd96e2e254b7bf7215"
+      }
+    ],
+    "notes": [
+      "Registered CASES and route query tests contain generic trace/status checks; no sufficient concrete result recovered in reviewed chain. This is not a claim that no other test exists."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:graph/graph/exists_vertex",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": true
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "exists_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      }
+    },
+    "expected": {
+      "result": true
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/domain/graph/tad_wrappers.py",
+        "sha256": "1b444767c2cda2c80e1e7d84d20c1cb74e939022de1e45cd96e2e254b7bf7215"
+      }
+    ],
+    "notes": [
+      "Registered CASES and route query tests contain generic trace/status checks; no sufficient concrete result recovered in reviewed chain. This is not a claim that no other test exists."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:graph/graph/list_edges",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": true
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "list_edges",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result_numeric_equality": [
+        [
+          1,
+          2,
+          7
+        ]
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/domain/graph/tad_wrappers.py",
+        "sha256": "1b444767c2cda2c80e1e7d84d20c1cb74e939022de1e45cd96e2e254b7bf7215"
+      }
+    ],
+    "notes": [
+      "Numeric equality preserves current adapter serialization; do not silently change number types.",
+      "Registered CASES and route query tests contain generic trace/status checks; no sufficient concrete result recovered in reviewed chain. This is not a claim that no other test exists."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:graph/graph/list_vertices",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": true
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "list_vertices",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": [
+        1,
+        2
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/domain/graph/tad_wrappers.py",
+        "sha256": "1b444767c2cda2c80e1e7d84d20c1cb74e939022de1e45cd96e2e254b7bf7215"
+      }
+    ],
+    "notes": [
+      "Registered CASES and route query tests contain generic trace/status checks; no sufficient concrete result recovered in reviewed chain. This is not a claim that no other test exists."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:graph/graph/neighbors",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "create_graph",
+        "payload": {
+          "directed": true
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 1
+        }
+      },
+      {
+        "operation": "insert_vertex",
+        "payload": {
+          "vertex": 2
+        }
+      },
+      {
+        "operation": "insert_edge",
+        "payload": {
+          "origin": 1,
+          "target": 2,
+          "weight": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/graph/operate",
+      "json": {
+        "operation": "neighbors",
+        "payload": {
+          "vertex": 1
+        }
+      }
+    },
+    "expected": {
+      "result": [
+        2
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/graph_adapter.py",
+        "sha256": "b3bc9fca7753c6a737f7790a95fdc54d3f8025c2b0932ad037812fdd53fd76b5"
+      },
+      {
+        "path": "app/domain/graph/tad_wrappers.py",
+        "sha256": "1b444767c2cda2c80e1e7d84d20c1cb74e939022de1e45cd96e2e254b7bf7215"
+      }
+    ],
+    "notes": [
+      "Registered CASES and route query tests contain generic trace/status checks; no sufficient concrete result recovered in reviewed chain. This is not a claim that no other test exists."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/altura",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "altura",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 1
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/buscar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "buscar",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "result": true
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/contar_hojas",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "contar_hojas",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 1
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/eliminar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "eliminar",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "followup.inorden.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/limpiar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "limpiar",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "followup.inorden.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/maximo",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "maximo",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/minimo",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "minimo",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/postorden",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "postorden",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": [
+        7
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/abb/preorden",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/abb/operate",
+      "json": {
+        "operation": "preorden",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": [
+        7
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/abb_adapter.py",
+        "sha256": "74af9a3b9576b9231cd93e03c47e47e4747eeadc90720018c23e939e6207c719"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/avl/altura",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/avl/operate",
+      "json": {
+        "operation": "altura",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 1
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/avl_adapter.py",
+        "sha256": "a23ef436a15994d85da22807423a98b1f4e4f699a67e12641993983083f34f6e"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/avl/buscar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/avl/operate",
+      "json": {
+        "operation": "buscar",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "result": true
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/avl_adapter.py",
+        "sha256": "a23ef436a15994d85da22807423a98b1f4e4f699a67e12641993983083f34f6e"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/avl/eliminar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/avl/operate",
+      "json": {
+        "operation": "eliminar",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "followup.inorden.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/avl_adapter.py",
+        "sha256": "a23ef436a15994d85da22807423a98b1f4e4f699a67e12641993983083f34f6e"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/avl/limpiar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/avl/operate",
+      "json": {
+        "operation": "limpiar",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "followup.inorden.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/avl_adapter.py",
+        "sha256": "a23ef436a15994d85da22807423a98b1f4e4f699a67e12641993983083f34f6e"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/avl/maximo",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/avl/operate",
+      "json": {
+        "operation": "maximo",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/avl_adapter.py",
+        "sha256": "a23ef436a15994d85da22807423a98b1f4e4f699a67e12641993983083f34f6e"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/avl/minimo",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/avl/operate",
+      "json": {
+        "operation": "minimo",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/avl_adapter.py",
+        "sha256": "a23ef436a15994d85da22807423a98b1f4e4f699a67e12641993983083f34f6e"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/a_lista",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/binary_heap/operate",
+      "json": {
+        "operation": "a_lista",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": [
+        7
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/binary_heap_adapter.py",
+        "sha256": "72146997131e5ec1e5c4f05ad0a5eec0709ef94306b188aa69b4eb5c9c72154c"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/limpiar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/binary_heap/operate",
+      "json": {
+        "operation": "limpiar",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "followup.a_lista.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/binary_heap_adapter.py",
+        "sha256": "72146997131e5ec1e5c4f05ad0a5eec0709ef94306b188aa69b4eb5c9c72154c"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/raiz",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/binary_heap/operate",
+      "json": {
+        "operation": "raiz",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/binary_heap_adapter.py",
+        "sha256": "72146997131e5ec1e5c4f05ad0a5eec0709ef94306b188aa69b4eb5c9c72154c"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/red_black/altura",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/red_black/operate",
+      "json": {
+        "operation": "altura",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 1
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/red_black_adapter.py",
+        "sha256": "c3d95855a535760f1642390b72535c7ceada5da711762651ecc74aa0db7067cf"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/red_black/buscar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/red_black/operate",
+      "json": {
+        "operation": "buscar",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "result": true
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/red_black_adapter.py",
+        "sha256": "c3d95855a535760f1642390b72535c7ceada5da711762651ecc74aa0db7067cf"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/red_black/eliminar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/red_black/operate",
+      "json": {
+        "operation": "eliminar",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "followup.inorden.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/red_black_adapter.py",
+        "sha256": "c3d95855a535760f1642390b72535c7ceada5da711762651ecc74aa0db7067cf"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:hierarchical/red_black/limpiar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/hierarchical/red_black/operate",
+      "json": {
+        "operation": "limpiar",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "followup.inorden.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/red_black_adapter.py",
+        "sha256": "c3d95855a535760f1642390b72535c7ceada5da711762651ecc74aa0db7067cf"
+      },
+      {
+        "path": "app/domain/hierarchical/tad_wrappers.py",
+        "sha256": "f954b626df5d714475ad8f64f99ef831e31e15ccb432f14c87bb63fd10fa7732"
+      }
+    ],
+    "notes": [
+      "Current generic CASES trace consistency does not supply this literal expected; causal oracle-supported cases require further helper mapping before creating redundant tests.",
+      "Single-node setup avoids balancing/duplicate-order ambiguities."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/circular_list/eliminar_inicio",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/circular_list/operate",
+      "json": {
+        "operation": "eliminar_inicio",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7,
+      "visual_state.size": 0
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/circular_list_adapter.py",
+        "sha256": "2b0125bd4bec5f1eb23eef9e1a0cd8777c444175f1247b17b7344f49dae13207"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/buscar_elemento",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "buscar_elemento",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "result": [
+        1
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_elemento",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "eliminar_elemento",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "followup.mostrar.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_final",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "eliminar_final",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7,
+      "visual_state.size": 0
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_inicio",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "eliminar_inicio",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7,
+      "visual_state.size": 0
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_repetidos",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      },
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "eliminar_repetidos",
+        "payload": {
+          "value": 7
+        }
+      }
+    },
+    "expected": {
+      "result": 2,
+      "followup.mostrar.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_elemento",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 1
+        }
+      },
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 3
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "insertar_elemento",
+        "payload": {
+          "value": 2,
+          "position": 1,
+          "relative": 0
+        }
+      }
+    },
+    "expected": {
+      "followup.mostrar.result": [
+        1,
+        2,
+        3
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_posicion",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 1
+        }
+      },
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 3
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "insertar_posicion",
+        "payload": {
+          "value": 2,
+          "position": 2
+        }
+      }
+    },
+    "expected": {
+      "followup.mostrar.result": [
+        1,
+        2,
+        3
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/limpiar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "limpiar",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "followup.mostrar.result": []
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/mostrar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "mostrar",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": [
+        7
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/primero",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "primero",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/linked_list/ultimo",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "insertar_final",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/linked_list/operate",
+      "json": {
+        "operation": "ultimo",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "result": 7
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/linked_list_adapter.py",
+        "sha256": "f856196453c477256951a9c7de9f991d4dc378daa72a48206968ebda7117dc74"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/priority_queue/limpiar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "encolar",
+        "payload": {
+          "value": 7,
+          "priority": 1
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/priority_queue/operate",
+      "json": {
+        "operation": "limpiar",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "visual_state.size": 0
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/priority_queue_adapter.py",
+        "sha256": "cd329bd945fccb6d0ab5113ed3c841d50a6db05553372cb511b3355bfdba66b2"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sequential/queue/limpiar",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_OPERATION_EXPECTED_CORRELATED_WITH_RESOLVED_SETUP",
+    "setup": [
+      {
+        "operation": "encolar",
+        "payload": {
+          "value": 7
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/sequential/queue/operate",
+      "json": {
+        "operation": "limpiar",
+        "payload": {}
+      }
+    },
+    "expected": {
+      "visual_state.size": 0
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/queue_adapter.py",
+        "sha256": "c6d660fd592b867564d0ee73ee708c3dc7ce1b147decb1f767bfd69f54e3b156"
+      },
+      {
+        "path": "app/domain/sequential/tad_wrappers.py",
+        "sha256": "de32d996f0623acb5a36390ebe7ac2ecf0622154aba9c89b3f8b6d04423c0682"
+      }
+    ],
+    "notes": [
+      "Map source CASES/setup and a literal operation result first; generic success/trace presence alone is not a completed binding.",
+      "Buscar_elemento uses base1 positions; relative0 inserts after anchor."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "operation:sorting/sorting_array/select_algorithm",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "SELECT_RESPONSE_STATE_EXPECTED_NOT_ONLY_SUCCESS_FLAG",
+    "setup": [
+      {
+        "method": "POST",
+        "path": "/api/ordenamiento/create-array",
+        "json": {
+          "values": [
+            3,
+            1
+          ]
+        }
+      }
+    ],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/api/ordenamiento/algorithm",
+      "json": {
+        "algorithm_id": "burbuja"
+      }
+    },
+    "expected": {
+      "visual_state.algorithm": "burbuja",
+      "visual_state.items": [
+        3,
+        1
+      ]
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/adapters/sorting_adapter.py",
+        "sha256": "52c7deac652f5931a78a8ebcca5c84faf0e9823dbb24f83a160d34be330a3579"
+      },
+      {
+        "path": "app/routes/sorting_routes.py",
+        "sha256": "2cc6f075ec8f03d2edc5f09707474d6c55768a6277b1a98555676c9f93327be2"
+      }
+    ],
+    "notes": [],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  },
+  {
+    "id": "route:POST /graph/compare",
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EXECUTED",
+    "missing_link": "CONCRETE_LEFT_RIGHT_RESULTS_AND_INDEPENDENCE_NOT_ONLY_ISOLATED_FLAG",
+    "setup": [],
+    "request_or_gesture": {
+      "method": "POST",
+      "path": "/graph/compare",
+      "json": {
+        "kind": "prim-kruskal",
+        "graph": {
+          "directed": false,
+          "nodes": [
+            {
+              "id": 1
+            },
+            {
+              "id": 2
+            },
+            {
+              "id": 3
+            }
+          ],
+          "edges": [
+            {
+              "source": 1,
+              "target": 2,
+              "weight": 1
+            },
+            {
+              "source": 2,
+              "target": 3,
+              "weight": 2
+            }
+          ]
+        },
+        "start": 1
+      }
+    },
+    "expected": {
+      "left.summary.total_weight": 3,
+      "right.summary.total_weight": 3,
+      "input_equals_supplied_snapshot": true,
+      "session_state_and_history_before_equals_after": true
+    },
+    "expected_status": 200,
+    "sources": [
+      {
+        "path": "app/routes/graph_routes.py",
+        "sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe"
+      },
+      {
+        "path": "app/services/graph_structure_service.py",
+        "sha256": "ff84a7ffbf661d9dfd4083a098c715c9343cda74c189f05a183d8d0f7d458fa6"
+      },
+      {
+        "path": "tests/test_graph_pedagogy_phases_7_9.py",
+        "sha256": "35f131cd752da8e95169370f3e9041ce1372d109ef2ccc0dc0b701b03a4faff2"
+      }
+    ],
+    "notes": [
+      "Existing test asserts200 and isolated=True but not comparative result or actual before/after independence. Snapshot fixture is3vertices/no ties; do not infer independence from the flag alone."
+    ],
+    "readiness": "CONCRETE_INPUT_EXPECTED_DRAFT",
+    "pre_creation": "Review referenced helpers and accepted prior evidence for an existing sufficient case before authoring; no absolute absence asserted.",
+    "execution_constraints": "Private sessions, focal <=120s/2GiB, graph<=8vertices, no containers or campaigns; proposal only."
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "assigned_pending": 122,
+  "prior_scope_dispositions": 25,
+  "prior_presentation": 13,
+  "pedagogical_scope_conflicts": 12,
+  "assigned97": 97,
+  "new_links": 92,
+  "new_current_E2E_cases_passed": 73,
+  "new_API_cases_passed": 2,
+  "reused_unchanged_E2E_cases": 2,
+  "mouse_gap_open": 1,
+  "other97_without_current_widget": 5,
+  "before_links": 253,
+  "after_links": 345,
+  "before_pending": 122,
+  "after_pending": 30,
+  "new_acceptances": 0,
+  "requirements_removed": 0,
+  "gate_errors": 0
+}

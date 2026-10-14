@@ -1,0 +1,3 @@
+# Autorización exacta Docker local
+
+Usuario Sentinel_89be64b9145081918a91c0ab0fde0c81: lo autorizo tras solicitud de iniciar Docker Desktop local e inventariar imágenes/toolchains. Solo iniciar servicio normal local con ventana oculta y consultas de lectura al endpoint local. No pull/download, run/create/start de contenedores, instalaciones, interrupción de servicios ajenos, publicación ni despliegue. Identificar imágenes porID/tag/OS/arquitectura; la existencia del compilador dentro de la imagen quedará candidata hasta ejecución autorizada. Espera acotada al arranque sin bloquear comunicaciones más60s; registrar fallo real si no responde. Proponer matriz mínima posterior120s/2GiB por bloque, no ejecutar todavía.
