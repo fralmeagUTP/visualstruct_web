@@ -53,25 +53,68 @@ def _arcs_call(function: str, args: str, index: str, label: str) -> list[str]:
             f'if (estado_{index} == GRAFO_OK) {{', '    long long total = 0;',
             f'    for (ListaArco it = lista_{index}; it != NULL; it = it->sig) {{',
             '        printf(" %d->%d(%d)", it->origen, it->destino, it->costo);',
-            '        total += (long long)it->costo;', '    }',
+            '        total = total + (long long)it->costo;', '    }',
             f'    if (lista_{index} == NULL) printf(" (sin arcos; resultado valido)");',
             '    printf(" | costo=%lld", total);', '}', 'printf("\\n");',
             f'grafo_liberar_arcos(&lista_{index});']
+
+
+def caller_output_program(operation: str, *, inverse: bool = False) -> tuple[str, tuple[str, ...]]:
+    """The exact output statements of main, interpreted before caller cleanup.
+
+    Parameters are cells/returned pointers from the actual canonical call. No
+    algorithm result or formatted stdout is manufactured by the host.
+    """
+    if operation in _ALGORITHMS or operation == 'neighbors':
+        function, label = _ALGORITHMS.get(operation, ('grafo_sucesores', 'Vecinos'))
+        vertices = operation in {'run_bfs', 'run_dfs', 'neighbors'}
+        block = (_vertices_call if vertices else _arcs_call)(function, '', 'result', label)[2:-1]
+        typ = 'ListaVertice' if vertices else 'ListaArco'
+        params = f'GrafoEstado estado_result, {typ} lista_result'
+        values = ('status', 'returned')
+    elif operation in {'insert_vertex', 'insert_edge'}:
+        label = 'insert_edge inverso' if inverse else operation
+        block = [f'printf("{label}: estado=%d\\n", (int)estado_result);']
+        params, values = 'GrafoEstado estado_result', ('status',)
+    elif operation in {'exists_vertex', 'exists_edge'}:
+        block = [f'printf("{operation}: %d\\n", returned);']
+        params, values = 'int returned', ('returned',)
+    elif operation == 'edge_weight':
+        block = ['if (returned) printf("Peso: %d\\n", output);',
+                 'else printf("Peso: no encontrado; salida no escrita\\n");']
+        params, values = 'int returned, int output', ('returned', 'output')
+    elif operation in {'list_vertices', 'list_edges'}:
+        vertices = operation == 'list_vertices'
+        typ = 'ListaVertice' if vertices else 'ListaArco'
+        item = 'printf(" %d", it->dato);' if vertices else 'printf(" %d->%d(%d)", it->origen, it->destino, it->costo);'
+        block = [f'printf("{"Vertices" if vertices else "Arcos"}:");',
+                 f'for ({typ} it = returned; it != NULL; it = it->sig) {item}', 'printf("\\n");']
+        params, values = f'{typ} returned', ('returned',)
+    else:
+        return '', ()
+    return f'void caller_output({params}) {{\n' + '\n'.join(block) + '\n}', values
 
 
 def _insert_call(operation: str, payload: dict[str, Any], index: str, directed: bool) -> list[str]:
     if operation == 'insert_vertex':
         return [f'GrafoEstado estado_{index};',
                 f'g = grafo_insertar_vertice(g, {_integer(payload,"vertex")}, &estado_{index});',
-                f'printf("insert_vertex: estado=%d\\n", (int)estado_{index});']
+                *_output_lines(operation, index)]
     a, b, cost = _integer(payload,'origin'), _integer(payload,'target'), _weight(payload)
     block = [f'GrafoEstado estado_{index};', f'g = grafo_insertar_arco(g, {a}, {b}, {cost}, &estado_{index});',
-             f'printf("insert_edge: estado=%d\\n", (int)estado_{index});']
+             *_output_lines(operation, index)]
     if not directed and a != b:
         block += [f'if (estado_{index} == GRAFO_OK) {{',
                   f'    g = grafo_insertar_arco(g, {b}, {a}, {cost}, &estado_{index});',
-                  f'    printf("insert_edge inverso: estado=%d\\n", (int)estado_{index});', '}']
+                  *['    '+line for line in _output_lines(operation, index, inverse=True)], '}']
     return block
+
+
+def _output_lines(operation: str, index: str, *, inverse: bool = False) -> list[str]:
+    source, _ = caller_output_program(operation, inverse=inverse)
+    return [line.replace('estado_result', 'estado_'+index)
+            .replace('returned', 'retorno_'+index).replace('output', 'costo_'+index)
+            for line in source.splitlines()[1:-1]]
 
 
 def build_graph_main(history: list[dict[str, Any]]) -> str:
@@ -121,17 +164,16 @@ def build_graph_main(history: list[dict[str, Any]]) -> str:
             block = _vertices_call('grafo_sucesores','g, '+_integer(payload,'vertex'),index,'Vecinos')
         elif op == 'edge_weight':
             block = [f'int costo_{index} = 0;',
-                     f'int existe_{index} = grafo_costo_arco(g, {_integer(payload,"origin")}, {_integer(payload,"target")}, &costo_{index});',
-                     f'if (existe_{index}) printf("Peso: %d\\n", costo_{index});',
-                     'else printf("Peso: no encontrado; salida no escrita\\n");']
+                     f'int retorno_{index} = grafo_costo_arco(g, {_integer(payload,"origin")}, {_integer(payload,"target")}, &costo_{index});',
+                     *_output_lines(op, index)]
         elif op in {'exists_vertex','exists_edge'}:
             args = _integer(payload,'vertex') if op == 'exists_vertex' else _integer(payload,'origin')+', '+_integer(payload,'target')
             fn = 'grafo_existe_vertice' if op == 'exists_vertex' else 'grafo_existe_arco'
-            block = [f'printf("{op}: %d\\n", {fn}(g, {args}));']
+            block = [f'int retorno_{index} = {fn}(g, {args});', *_output_lines(op, index)]
         elif op == 'list_vertices':
-            block = ['printf("Vertices:");', 'for (ListaVertice it = grafo_vertices(g); it != NULL; it = it->sig) printf(" %d", it->dato);', 'printf("\\n");']
+            block = [f'ListaVertice retorno_{index} = grafo_vertices(g);', *_output_lines(op, index)]
         elif op == 'list_edges':
-            block = ['printf("Arcos:");', 'for (ListaArco it = grafo_arcos(g); it != NULL; it = it->sig) printf(" %d->%d(%d)", it->origen, it->destino, it->costo);', 'printf("\\n");']
+            block = [f'ListaArco retorno_{index} = grafo_arcos(g);', *_output_lines(op, index)]
         else:
             raise ValueError('Operación sin caller C del libro: '+op)
         lines += ['', f'    /* Llamada {number}: {op}. */'] + ['    '+line for line in block]

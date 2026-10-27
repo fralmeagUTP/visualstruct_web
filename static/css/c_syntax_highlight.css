@@ -1,0 +1,12 @@
+/* The same palette applies to operations, TAD, main, help and inline code.
+   No layout, whitespace, line wrapper or navigation rules are changed here. */
+[data-c-syntax] .code-comment { color: #6b7280; }
+[data-c-syntax] .code-keyword { color: #0b57d0; }
+[data-c-syntax] .code-type { color: #7c3aed; }
+[data-c-syntax] .code-function { color: #0f766e; }
+[data-c-syntax] .code-number { color: #b45309; }
+[data-c-syntax] .code-string { color: #166534; }
+[data-c-syntax] .code-directive { color: #7c2d12; }
+[data-c-syntax] .code-operator { color: #374151; }
+[data-c-syntax] .code-punct { color: #1f2937; }
+[data-c-syntax] .code-identifier { color: #1e3a5f; }

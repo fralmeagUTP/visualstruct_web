@@ -1,0 +1,17 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const context=vm.createContext({window:{},document:{readyState:'loading',addEventListener(){}}});
+vm.runInContext(fs.readFileSync('static/js/c_syntax_highlight.js','utf8'),context);
+const {tokenize}=context.window.CSyntax;
+const source='#include <stdio.h>\r\ntypedef struct Nodo { long long value; } Nodo;\r\nint main(void) {\n\tprintf("<img onerror=alert(1)> \\\" /* literal */"); // <script>\n return 1e-3 + 0xFFUL;\n}\n';
+const result=tokenize(source);
+assert.equal(result.tokens.map(t=>t.text).join(''),source);
+for(const kind of ['directive','keyword','type','function','string','comment','number','operator','punct','identifier'])assert(result.tokens.some(t=>t.kind===kind),kind);
+assert(result.tokens.some(t=>t.kind==='number'&&t.text==='1e-3'));
+assert(result.tokens.some(t=>t.kind==='number'&&t.text==='0xFFUL'));
+assert(result.tokens.some(t=>t.kind==='string'&&t.text.includes('/* literal */')));
+const first=tokenize('/* open');assert(first.state.inBlockComment);
+const second=tokenize('#include <not-a-directive>\nclose */ int x;',first.state);
+assert(!second.state.inBlockComment);assert.equal(second.tokens[0].kind,'comment');
+assert(second.tokens.some(t=>t.kind==='type'&&t.text==='int'));
+for(const text of ['', '\t\r\n', '<img src=x onerror=alert(1)>', 'int same=1;', 'int same=1;'])assert.equal(tokenize(text).tokens.map(t=>t.text).join(''),text);
+console.log('PASS C tokens, block state, literals, numbers, hostile markup and exact whitespace/CRLF');

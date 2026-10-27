@@ -1,0 +1,45 @@
+{
+  "strict_c17": true,
+  "source_hashes_unchanged": {
+    "tad_grafo.c": "13c1bd9ae77ee91fb32aa72ba09f8c33e4d063dd29d3cea4358d23486c3fcc0a",
+    "tad_grafo.h": "b7bc7f3a97e49e0f61e2d34d111bfe3b69abdad7440210309da3dc6c8c81c80a"
+  },
+  "rows": [
+    {
+      "case": "route",
+      "success": true,
+      "c_status": 0,
+      "operation_stdout": "Dijkstra: estado=0 1->2(2) 2->3(3) | costo=5\n",
+      "prefix_stdout": "insert_vertex: estado=0\ninsert_vertex: estado=0\ninsert_vertex: estado=0\ninsert_edge: estado=0\ninsert_edge: estado=0\n",
+      "native_stdout_equals_console": true,
+      "caller_stdout_events": 5
+    },
+    {
+      "case": "unreachable",
+      "success": false,
+      "c_status": 2,
+      "operation_stdout": "Dijkstra: estado=2\n",
+      "prefix_stdout": "insert_vertex: estado=0\ninsert_vertex: estado=0\ninsert_vertex: estado=0\ninsert_edge: estado=0\n",
+      "native_stdout_equals_console": true,
+      "caller_stdout_events": 2
+    },
+    {
+      "case": "same_vertex",
+      "success": true,
+      "c_status": 0,
+      "operation_stdout": "Dijkstra: estado=0 (sin arcos; resultado valido) | costo=0\n",
+      "prefix_stdout": "insert_vertex: estado=0\ninsert_vertex: estado=0\ninsert_vertex: estado=0\n",
+      "native_stdout_equals_console": true,
+      "caller_stdout_events": 4
+    },
+    {
+      "case": "negative_weight",
+      "success": false,
+      "c_status": 3,
+      "operation_stdout": "Dijkstra: estado=3\n",
+      "prefix_stdout": "insert_vertex: estado=0\ninsert_vertex: estado=0\ninsert_vertex: estado=0\ninsert_edge: estado=0\n",
+      "native_stdout_equals_console": true,
+      "caller_stdout_events": 2
+    }
+  ]
+}

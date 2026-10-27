@@ -1,0 +1,1 @@
+- [ ] publish-review: publicar y verificar commit/PR/CIaplicable; coordinar despliegueVPS con SHAvalidado.

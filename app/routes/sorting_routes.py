@@ -222,6 +222,9 @@ def api_state() -> tuple[Any, int]:
                 "history": model["history"],
                 "main_c": model["main_c"],
                 "algorithms": model["algorithms"],
+                "console_output": model["console_output"],
+                **({"execution_trace": model["execution_trace"],
+                    "execution_mode": model["execution_mode"]} if "execution_trace" in model else {}),
             }
         ),
         200,

@@ -56,6 +56,7 @@ def structure_page(structure_id: str) -> str:
         abort(404)
 
     model["main_c"] = hash_journal_service.get_main(session_key, history)
+    model['console_output'] = hash_journal_service.get_stdout(session_key, history)
     checkpoint = _read_record(session_key)["checkpoint"]
     digest = hashlib.sha256(json.dumps(history, sort_keys=True).encode()).hexdigest()
     if not model["visual_state"].get("suspended") and checkpoint and checkpoint.get("schema") == "hash-trace/v1" and checkpoint.get("history_digest") == digest:
@@ -124,5 +125,6 @@ def reset_structure(structure_id: str) -> Any:
             "visual_state": model["visual_state"],
             "history": [],
             "main_c": model["main_c"],
+            "console_output": "",
         }
     )

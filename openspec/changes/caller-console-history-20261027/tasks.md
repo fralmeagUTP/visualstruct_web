@@ -1,0 +1,1 @@
+- [x] caller-console: Implementar y verificar contrato caller/stdout e historial de consola en alcance finito.

@@ -1,0 +1,1 @@
+Autorización vigente27oct: publicar versión integrada sintaxis/stdout en GitHub y desplegar sóloVisualStructVPS por conexión soportada. Rama/PR nueva sobrelayoutaprobado, sinforcepush/merge/main/otrasPR. Verificarcommitexactoychecksaplicables. Backup/rollbackremoto ysesiones/config/redes/Factor6preservados.

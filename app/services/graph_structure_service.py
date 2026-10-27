@@ -116,8 +116,10 @@ class GraphStructureService:
         if GraphStructureService.history_issue(history):
             raise ValueError(GraphStructureService.history_issue(history))
         adapter = GraphStructureService._new_adapter(structure_id)
+        adapter._console_history_stdout = ''
         for step in history:
             adapter.execute(step["operation"], deepcopy(step["payload"]))
+            adapter._console_history_stdout += adapter._last_book_execution.get('stdout', '')
         return adapter, deepcopy(history)
 
     @staticmethod
@@ -160,6 +162,7 @@ class GraphStructureService:
                 "operations": adapter.get_supported_operations(), "visual_state": visual,
                 "didactic": GraphStructureService._didactic_content(structure_id),
                 "history": deepcopy(history), "main_c": "" if issue else GraphStructureService._main(history),
+                "console_stdout": getattr(adapter, '_console_history_stdout', ''),
                 "main_unavailable_reason": issue or GraphStructureService.main_issue(history), "suspended": bool(issue),
                 "source_contract": GraphStructureService.SOURCE_CONTRACT,
                 "guided_examples": deepcopy(GRAPH_GUIDED_EXAMPLES),
@@ -226,6 +229,7 @@ class GraphStructureService:
                                  result=result.get("result"))
         return {**result, "success": success, "message": message, "visual_state": after,
                 "console_stdout": adapter._last_book_execution.get("stdout", ""),
+                 "console_prefix": adapter._console_history_stdout,
                 "execution_started": bool(adapter._last_book_execution.get("calls")),
                 "history": valid_history, "main_c": GraphStructureService._main(valid_history),
                 "main_unavailable_reason": GraphStructureService.main_issue(valid_history),

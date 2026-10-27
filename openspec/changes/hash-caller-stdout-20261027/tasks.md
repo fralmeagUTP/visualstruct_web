@@ -1,0 +1,1 @@
+- [x] hash-caller-stdout: Diagnosticar, implementar y verificar caller Hash con stdout C17 y trazas finitas.

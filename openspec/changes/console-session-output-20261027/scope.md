@@ -1,0 +1,1 @@
+Instrucción vigente delegada 2026-10-27: Francisco informa que sólo aparece el último printf y solicita histórico visible con scroll. Copia aislada Windows vs-cf autorizada por coordinación; cuatro familias no grafo. Sin publicar/commit/push/deploy, sin C/H/TAD, backend ni graph.js/styles.css.

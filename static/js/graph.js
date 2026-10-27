@@ -1274,6 +1274,9 @@ async function executeGraphOperation(controls, operationName, payload, execution
     body: JSON.stringify({ operation: operationName, payload, execution_mode: executionMode }),
   });
   const data = await response.json();
+  if (typeof data.console_prefix === 'string' && typeof data.console_stdout === 'string' && window.GRAPH_VIEW_MODEL) {
+    window.GRAPH_VIEW_MODEL.console_stdout = data.console_prefix + data.console_stdout;
+  }
   if(Array.isArray(data.history) && window.GRAPH_VIEW_MODEL)window.GRAPH_VIEW_MODEL.history=data.history;
   if (typeof data.main_c === "string" && window.GRAPH_VIEW_MODEL) {
     window.GRAPH_VIEW_MODEL.main_c = data.main_c;
@@ -1329,6 +1332,8 @@ function initGraphPage(model) {
     pendingExecution: false,
     traceSelectionKey: "",
     consoleTrace: null,
+    consolePrefix: typeof model.console_stdout === 'string' ? model.console_stdout : '',
+    consoleRawStdout: null,
     consoleFallbackMessage: "",
     traceCursor: -1,
     traceTotalSteps: 0,
@@ -1406,22 +1411,31 @@ function initGraphPage(model) {
   }
 
   function refreshGraphPrintfConsole(cursor) {
-    if(!pageState.consoleTrace && typeof pageState.consoleRawStdout=== "string" && printfConsole){printfConsole.dataset.consoleCopy=pageState.consoleRawStdout;printfConsole.textContent=pageState.consoleRawStdout || "(sin salida printf en esta ruta)";printfConsole.style.whiteSpace="pre-wrap";return;}
+    const publish = (current) => {
+      if (!printfConsole) return;
+      const stdout = pageState.consolePrefix + current;
+      if (window.ConsoleHistory?.publish) {
+        window.ConsoleHistory.publish(printfConsole, stdout);
+        return;
+      }
+      const follow = printfConsole.scrollHeight - printfConsole.clientHeight - printfConsole.scrollTop <= 4;
+      const top = printfConsole.scrollTop, left = printfConsole.scrollLeft;
+      printfConsole.dataset.consoleCopy = stdout;
+      printfConsole.textContent = stdout || '(sin salida printf en esta ruta)';
+      if (follow) printfConsole.scrollTop = printfConsole.scrollHeight;
+      else printfConsole.scrollTop = top;
+      printfConsole.scrollLeft = left;
+    };
+    if(!pageState.consoleTrace){publish(pageState.consoleRawStdout || '');return;}
     const steps = pageState.consoleTrace?.steps;
     const step = Array.isArray(steps) && steps.length ? steps[Math.max(0, Math.min(cursor, steps.length - 1))] : null;
-    const memory = cursor < 0 ? step?.state_snapshot : step?.pedagogy?.memory_state;
+    const memory = cursor < 0 ? step?.pedagogy?.initial_frame?.memory_state : step?.pedagogy?.memory_state;
     if (typeof memory?.console_stdout === "string" && printfConsole) {
-      printfConsole.dataset.consoleCopy = memory.console_stdout;
-      printfConsole.textContent = memory.console_stdout || "(sin salida printf en esta ruta)";
-      printfConsole.style.whiteSpace = "pre-wrap";
+      publish(memory.console_stdout);
       return;
     }
     const lines = collectGraphPrintfLines(pageState.consoleTrace, cursor);
-    renderGraphPrintfConsole(
-      printfConsole,
-      lines,
-      pageState.consoleFallbackMessage || "(sin salida printf en esta ruta)",
-    );
+    publish(lines.join(''));
   }
 
   function parseJsonArray(rawValue) {
@@ -1648,6 +1662,9 @@ function initGraphPage(model) {
   }
 
   function invalidateTrace(message) {
+    // Leaving a playback keeps the session's completed caller output. Seeking
+    // within that playback never commits or appends its stdout a second time.
+    pageState.consolePrefix = typeof model.console_stdout === 'string' ? model.console_stdout : pageState.consolePrefix;
     currentPedagogyFrame = null;
     const liveMemory = gById("graph-live-memory");
     if (liveMemory) liveMemory.textContent = "Prepara una traza para observar las reservas y los campos.";
@@ -1866,6 +1883,7 @@ function initGraphPage(model) {
       if(Array.isArray(data.history))model.history=data.history;
       pageState.traceUnavailableReason=data.trace_unavailable_reason || "";
       pageState.consoleRawStdout=typeof data.console_stdout==="string"?data.console_stdout:null;
+      pageState.consolePrefix=typeof data.console_prefix==='string'?data.console_prefix:pageState.consolePrefix;
       if(!data.execution_trace){
         tracePlayer?.clear(pageState.traceUnavailableReason || "Sin traza disponible para esta ejecución.");
         pageState.consoleTrace=null;pageState.traceCursor=-1;pageState.traceTotalSteps=0;
