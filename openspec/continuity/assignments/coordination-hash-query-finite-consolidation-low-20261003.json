@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-query-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T00:54:49.946248+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.get-contains-finite-consolidation-low",
+  "task": "LOW finite consolidation Hash get/contains followed by next mapped baseline",
+  "instruction": "Instrucci\u00f3n nueva delegaci\u00f3n01a0fe61-3104-743a-b032-bcc289ad80cd: consolidar106IDscheckpoint, conjuntos \u00fanicos/solapamientos98anteriores, C/API/UI/ausentes/scopes/salida y recursos finitos. Cerrar s\u00f3lo casos probados con l\u00edmites sesi\u00f3nlarga/arbitraria, sin exhaustividad/contratos/thresholds. Si suficiente registrar get/contains cerrados, conteoHash y listaexactarestante; iniciar siguiente baselineLOW remove del mapa. No repetir cerrados niSorting; mantener C/H/guardas/preview, no publicaci\u00f3n.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-query-finite-consolidation-plan-low.md"
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-trace-contract-repair-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T00:30:01.198212+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.priority-queue-trace-contract-repair-independent-qa",
+  "task": "priority-queue-trace-contract-repair-independent-qa",
+  "role": "quality",
+  "instruction": "Parent01a0fe61 requests independent QA before publishing bounded cp_encolar trace-contract integration candidate. Review exact original/candidate SHA, one runtime diff and new9regression tests, before8FAIL1PASS/after9PASS, original7unchangedPASS, complete memory/event equality7overlappingfixtures, one browserfixture twooperations. Preserve C/algorithm/other250runtimehashes; no product/test edits, publication, deployment, native rerun, optimization or large local suite. Assess final logical projection versus retained full memory, continuity, ownership, aliases/scopes/NULL and source mapping. Hierarchical holds and Graph key contracts remain unimplemented choices;85/E2E unresolved. Own QA evidence only; reviewer distinct from technical author.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-trace-contract-repair-independent-qa-low.md",
+  "candidate_builder_sha256": "cdc7fa7dd731415bc6f294158af858ef35ecdc59f125e94aacdd70096aec3b5d",
+  "independent_reviewer_required": true
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-desencolar-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T20:50:35.042276+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.desencolar-finite-consolidation-low",
+  "task": "Consolidate finite priority dequeue evidence and close only verified operation",
+  "instruction": "Consolida LOW Priority Desencolar56IDs51original+5private,198nativeobs74conditions currenthash/finitescope,4reloadNext sin redispatch,4realC17mains12alloc/free0live12NULLcontrolledDox0. Verifica payload/memory finite values y no mutation/C_H226protected unchanged+4authorized changes,manifest76. Si sólido cierra sólo operación, actualiza mapa exacto Pila/Colas/Prioridad antes cierre familias. Recupera evidencia previa, no reabrir cerrados ni inferir por casecounts. No sanitizerclaim/Graphcontract/SDDblockedwrites/publicación. Propón siguiente unblockedLOWstage.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-desencolar-finite-consolidation-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-desencolar-instructions-medium-20261003.json"
+}

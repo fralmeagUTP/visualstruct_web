@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary-comments-families-low-20261004",
+  "issued_at_utc": "2026-10-04T07:10:08.960041+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "documentation.symbols",
+  "task": "Update documentation comments only by family using 67 SDD read reviews, prove executable token/preprocessor equivalence, compile and Doxygen, preserve history and grant only supported documentary signoffs",
+  "instruction": "Usuario aprueba comentarios C/H exclusivamente: entradas, retornos, manejo de memoria y límites. No código ejecutable, firmas ni comportamiento. Coordinación pide familias, equivalencia token/preprocesado con literales conservados, compilación/Doxygen, hashes antes/después; pruebas funcionales preservadas por equivalencia, signoffs sólo con contrato/evidencia suficiente; único escritor, preview intacto.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/documentary-comments-families-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary-binding-recovery-low-20261004.json"
+}

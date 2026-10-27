@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-counting-error-instructions-medium-20261002",
+  "issued_at_utc": "2026-10-02T19:27:07.495169+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.counting-expanded-fidelity",
+  "task": "Counting typed error traces and retirement with isolated labeled native-fault QA",
+  "instruction": "MEDIUM acotado: implementar Counting errores por instrucción según sorting-counting-error-instruction-gap-low.md: guardas,retornoERROR,retiro scopes; fallo C simulado rotulado, sin OOM real ni cambiar entrada/estado/historial/main. Injection aislada QA. Preservar46IDs,8oráculos5504eventos ydigests máximos,C/H y8cierres. D guardas/evidencias,preview5051actualizado,no publicación/merge/despliegue/red. Cierre sólo probado; regresarLOW.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-error-instructions-authorized-medium.md"
+}

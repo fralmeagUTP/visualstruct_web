@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-desencolar-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T19:43:28.385486+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.desencolar-finite-consolidation-low",
+  "task": "Consolidate finite queue dequeue evidence in LOW and propose next unblocked baseline",
+  "instruction": "# Cola Desencolar: revisión finita LOW autorizada\n\nCoordinación vigente01a0fe61-3104-743a-b032-bcc289ad80cd autoriza consolidar46pass/42original+4session,87reusedC19conditions/sourcehashestracefidelity/legacyoriginalpreserved. Verificar dosvistas142/1264reloadSiguientenoredispatch, currentbytescaller7balancedreuse, sinnewCexecutionclaim. Finite1334849Python/104280JSON límites explícitos. Si válido,cerrar únicamente operación queue.desencolar.instructions yactualizarremainingmapPrioridadDesencolar/etc; proponer siguiente baselineLOW recuperandoevidenciapreviaantespruebas. C/H/cierresRNHashSortingPilaColaPriority protegidos;Graphsemantics/SDDblockedwrites/publication prohibidos.\n\nRevisión de evidencia ydocumentos propios; no repetir implementaciónMEDIUM ni suites cerradas. Chequear manifiestos78MEDIUM/121baseline/230products/6QA,46IDs sin solapamientos,87orderedprojections/19conditions, UI/source/legacy/caller/resources. Reutilizar únicamente pruebas actuales vinculadas por hashes contemporáneos. before/after requeridos. Próximo baseline sólo propuesto, sin ejecución ni asignación nueva automática.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-desencolar-finite-review-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-queue-desencolar-instructions-medium-20261003.json"
+}

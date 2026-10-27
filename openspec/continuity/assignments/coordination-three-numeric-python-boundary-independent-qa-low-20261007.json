@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-three-numeric-python-boundary-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T01:31:30.118737+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.three-numeric-python-boundary-independent-qa",
+  "task": "three-numeric-python-boundary-independent-qa",
+  "instruction": "Parent01a0fe61 requires independent review before publishing focal BF/Prim/Kruskal typed logical Python/JSON wire integration. Review two runtime diffs/new9regressions, saved complete before/after wire/events, preserved249runtimehashes including accepted PriorityQueue/Dijkstra, rejection and negative-cycle contracts, actual test results and120s limits,117/85classification and exactd1b6c07E2E status. Distinct reviewer, own QA evidence only; no runtime/tests/push/VPS/optimization/large/native runs by default.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/three-numeric-python-boundary-independent-qa-low.md"
+}

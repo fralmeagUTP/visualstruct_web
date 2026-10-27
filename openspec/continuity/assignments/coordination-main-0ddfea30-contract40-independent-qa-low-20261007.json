@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-main-0ddfea30-contract40-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T02:06:53.957594+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-main-0ddfea30-contract-classification",
+  "operation": "qa.main-0ddfea30-contract40-classification",
+  "task": "main-0ddfea30-contract40-classification",
+  "instruction": "Parent01a0fe61 authorizes distinct independent read-only QA of exactly40evidence-based contract/first-assertion conflicts for main0ddfea30. Dedicatedreviewchange separates pointer from currenttechnical63/E2Ediagnosis and preserves allpreviousindexentries. Review full exactCIsections/source/tests/contracts and limitations, no test/product/Sortingcontract changes or publication/VPS/large/native/browser runs bydefault. Sortinguserdecisionpending;13source-policy and63unknown outside40review verdict. OwnQAevidenceonly, reviewerdistincttechnicalauthor.",
+  "scope_ref": "openspec/changes/review-main-0ddfea30-contract-classification/review-scope.md",
+  "reviewer_selection": "Parent selects existing independentQA reader; not technicalauthor",
+  "model_policy": "Sol LOW; bounded MEDIUM request only if necessary"
+}

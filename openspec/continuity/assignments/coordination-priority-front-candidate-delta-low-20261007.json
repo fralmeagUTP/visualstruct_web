@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-front-candidate-delta-low-20261007",
+  "issued_at_utc": "2026-10-07T20:56:27.921360+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.frente.instructions",
+  "task": "priority-front-candidate-delta",
+  "instruction": "Only original test_priority_queue_trace_conformance.py::test_front_scans_without_mutating_and_marks_progressing_candidate and candidate projection in cp_frente. Real defect authorizes minimal projection repair, no algorithm, heap, journal, exposure, accepted lots, optimizations/global/E2E/publication.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-front-candidate-delta-low.md"
+}

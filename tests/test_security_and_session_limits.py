@@ -27,12 +27,18 @@ def test_assets_route_blocks_path_traversal(client) -> None:
     assert response.status_code in {400, 404}
 
 
-def test_help_unknown_structure_falls_back_safely(client) -> None:
-    """Unknown help structure should not crash and must render fallback text."""
+def test_help_unknown_structure_falls_back_safely(client, monkeypatch) -> None:
+    """Unknown help returns 404; registered help without C retains its placeholder."""
+    from app.services.c_code_service import CCodeService
+
     response = client.get("/help/sequential/no_existe")
-    assert response.status_code == 200
-    assert "Estructura no encontrada".encode("utf-8") in response.data
-    assert "No hay estructura C documentada".encode("utf-8") in response.data
+    assert response.status_code == 404
+
+    monkeypatch.setattr(CCodeService, "get_structure_data", staticmethod(lambda _structure: None))
+    registered = client.get("/help/sequential/stack")
+    assert registered.status_code == 200
+    assert "No hay estructura C documentada".encode("utf-8") in registered.data
+    assert "Estructura no encontrada".encode("utf-8") not in registered.data
 
 
 def test_session_history_is_trimmed_to_configured_max(client, app) -> None:
@@ -80,17 +86,17 @@ def test_session_histories_are_isolated_by_module_namespace(client) -> None:
 
 @pytest.mark.performance
 def test_graph_bfs_performance_smoke(client) -> None:
-    """Smoke performance check: BFS on a moderate graph should finish quickly."""
+    """Smoke performance check: BFS on the approved educational 30-vertex graph should finish quickly."""
     client.post(
         "/graph/graph/operate",
         json={"operation": "create_graph", "payload": {"directed": "false"}},
     )
-    for value in range(1, 101):
+    for value in range(1, 31):
         client.post(
             "/graph/graph/operate",
             json={"operation": "insert_vertex", "payload": {"vertex": str(value)}},
         )
-    for value in range(1, 100):
+    for value in range(1, 30):
         client.post(
             "/graph/graph/operate",
             json={

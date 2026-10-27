@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-encolar-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T17:02:27.990719+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.encolar.instructions",
+  "task": "Implement bounded enqueue instruction, typed memory and prepared reload per ready MEDIUM plan",
+  "instruction": "Coordinator explicitly authorizes MEDIUM queue.encolar.instructions per ready plan; preserve 33 IDs and frozen baseline19pass14fail. Only enqueue engine/session/renderer/routes/trace/tests/docs. All C/H protected; RN exception ended. No other closed scopes, SDD blocked logs/handoffs, Graph semantics, publish/deploy/commit/push/merge. Capture final hashes and after checkpoint before LOW.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-encolar-instructions-plan-medium-ready.md",
+  "supersedes": "openspec/continuity/assignments/coordination-queue-encolar-medium-readiness-low-20261003.json"
+}

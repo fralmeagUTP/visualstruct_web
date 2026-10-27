@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra-legacy-consumers-low-20261008",
+  "issued_at_utc": "2026-10-08T01:17:51.308316+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dijkstra-legacy-consumers",
+  "task": "dijkstra-legacy-consumers",
+  "instruction": "Only two original HTTP Dijkstra consumers: default graph3 chain costs2,3; directed weighted4 fixture edges1->2=2,1->3=9,2->3=1,2->1=5. Reproduce obsolete debug stages/priority_queue/relaxation projections, contrast canonical C minimum array scan and separate causal stores. Strict focal frozen-source/memory/typed-parameter controls. Preserve accepted27/pending22 and original fixtures/body except demonstrated defect. No numeric decision/engine change, native/broad/otherop campaigns, deniedQA records/retry, formalQA substitution, publication/optimization/expansion.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dijkstra-legacy-consumers-low.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-radix-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T21:34:33.074564+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.radix-baseline-low",
+  "task": "LOW Radix native/API/UI/caller baseline after justified Bin closure",
+  "instruction": "Tras cerrar y avisar Binsort, preparar e iniciar baseline LOW Radix dentro de auditoría aprobada, conservando C/H y diez cierres; no push/merge/despliegue.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-baseline-plan-low.md",
+  "authorization_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-binsort-consolidated-review-authorized-low.md"
+}

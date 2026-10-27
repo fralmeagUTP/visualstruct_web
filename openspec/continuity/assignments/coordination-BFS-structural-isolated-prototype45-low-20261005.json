@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-BFS-structural-isolated-prototype45-low-20261005",
+  "issued_at_utc": "2026-10-05T17:39:13.091897+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.graph-bfs-structural-isolated-prototype",
+  "task": "BFS-structural-isolated-prototype45",
+  "instruction": "Coordinator/userauthorization explicit transcriptSentinel_beb5623983cc8191903c3416192475642026-10-05T17:31:44UTC. Documentarypacketcompletedfirst. Start isolatedBFSstructuralstate-storageprototype now;45min fromissued_at, noautomaticextension. Keepcanonicalapp/C/H/tests/currentcoverage1000inputs1715package unchanged, no5051/Git/deploy. Retain all events,before/afterstates,memory,narration,validation,completeHTTPresponse,ordering,replay. Nointegration before independent equivalence+improvementreview. Delivercandidate/evidence/diagnosis ifnotimproved or timeout.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-bfs-structural-isolated-prototype45-plan-low.md",
+  "authorization_source": "openspec/changes/audit-local-quality-and-unified-controls/graph-bfs-structural-isolated-prototype45-authorized-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary-successors17-applicability25-low-20261005.json"
+}

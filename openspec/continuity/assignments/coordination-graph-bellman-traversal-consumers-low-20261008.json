@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bellman-traversal-consumers-low-20261008",
+  "issued_at_utc": "2026-10-08T02:19:22.538151+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.graph-bellman-traversal-consumers",
+  "task": "graph-bellman-traversal-consumers",
+  "instruction": "Exact two instructed original Graph IDs: interpreter Bellman passes/cycle (original random7 seed484589473 start1 end4 and directed cycle3); phases4_6 BFS/DFS original undirected weighted4 start1. Existing numeric/negative-cycle decision approved. Diagnose obsolete source/aux contracts, preserve fixtures and every other function/lot; C-derived consumer-only fixes and bounded pure controls. No C/engine changes, visual runs, other fixtures, native reruns, QA registration/substitution, publication, optimization, expansion or global campaigns. Hard2GiB Job/120s test supervisor; compact streamed evidence only. Latency ID deferred, no universal15s rule.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-bellman-traversal-consumers-low.md"
+}

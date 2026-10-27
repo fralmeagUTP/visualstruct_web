@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-bellman-fastpath-textcache20-one900-low-20261006",
+  "issued_at_utc": "2026-10-06T14:58:58.704766+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.bellman-private-fastpath-textcache20-one900-observed",
+  "task": "bellman-private-fastpath-textcache20-one900",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd explicitly authorizes ONE BF20directedchain20vertices19unitarcs start1/end20 on exact QAaccepted fastpath+textcache2635sources. Experimental request900s inclgeneration/validation/pack/fullspool/readback/HTTPconsumption; prep180/wall1085; actualworker2GiB; body1GiB/private disk reserve512MiB plus owned gzip evidence/log budgets. Before0 mechanical priorjob/Popen,self2GiB beforeimports, realworkerCPU/memory sampling. Reuse exact sameC/fixture existingnative20finaloracle; no newnative/profile/optimization/othercase/retry/adoption/public30/Git/preview changes. Retain wholeboundedresponse+finalownership/session ifcomplete, otherwise honestpartialphases/resources/owncleanup. Cleanuppromise limited to testednormal/stagefailures; arbitraryOOM notproven. Return promptly after verifying result; no BF20to30inventedcomparison.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/bellman-fastpath-textcache20-one900-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-bellman-validation-textcache15-low-20261006.json"
+}

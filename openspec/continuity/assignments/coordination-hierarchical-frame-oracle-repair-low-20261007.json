@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hierarchical-frame-oracle-repair-low-20261007",
+  "issued_at_utc": "2026-10-07T18:02:03.950608+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.hierarchical-frame-oracle-repair",
+  "task": "hierarchical-frame-oracle-repair",
+  "instruction": "Parent explicitly authorizes minimal independent test-only repair for eleven diagnosed hierarchical cases, causal checks for each frame, independently computed final invariants and negative controls against invented memory/events and invalid final states. No blanket None acceptance or certification of transient global invariants. RN stale explanation correction only if current approved evidence supports it. Preserve nine prepared Sorting/Radix files, all native C/algorithms and prior evidence; no commit/push/retry/alternate route, broad audit, optimization or long cases. Small focal tests under existing2GiB/120s supervisor and independent QA handoff identity.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hierarchical-frame-oracle-repair-low.md"
+}

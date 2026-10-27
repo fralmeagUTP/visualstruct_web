@@ -1,0 +1,95 @@
+from _rbt_legacy_consumer_oracle import assert_rbt_consumer
+from collections import Counter
+
+import pytest
+
+from app.adapters.red_black_adapter import RedBlackAdapter
+from app.adapters.sorting_adapter import SortingAdapter
+from app.services.c_code_service import CCodeService
+from app.domain.sorting.tad_ordenamiento import ORDENAMIENTO_RANGO_MAX, SortingExecutionError, SortingInterpreter
+from app.services.hierarchical_structure_service import HierarchicalStructureService
+
+
+@pytest.mark.parametrize("algorithm", ["counting_sort", "binsort"])
+def test_counting_family_rejects_excessive_range_before_auxiliary_allocation(algorithm):
+    values = [-(2**31), 2**31 - 1]
+    allocation_attempts = []
+
+    def reject_allocation(length):
+        allocation_attempts.append(length)
+        raise AssertionError("Excessive range reached auxiliary allocation")
+
+    interpreter = SortingInterpreter(values, algorithm, counting_allocator=reject_allocation)
+    with pytest.raises(
+        SortingExecutionError,
+        match=r"^El rango de conteo \(4294967296\) supera el maximo permitido \(1000000\)\.$",
+    ) as caught:
+        interpreter.run()
+    assert allocation_attempts == []
+    assert values == [-(2**31), 2**31 - 1]
+    assert interpreter.values == values
+    assert caught.value.error_info["code"] == "range-limit"
+
+
+@pytest.mark.parametrize("algorithm", ["counting_sort", "binsort"])
+def test_counting_family_accepts_documented_boundary_and_preserves_multiset(algorithm):
+    values = [ORDENAMIENTO_RANGO_MAX - 1, 0, 7, 7]
+    result = SortingInterpreter(values, algorithm).run()["final_state"]["items"]
+    assert result == sorted(values)
+    assert Counter(result) == Counter(values)
+
+
+@pytest.mark.parametrize("algorithm", ["counting_sort", "binsort"])
+def test_counting_rejection_is_identical_in_fast_and_step_modes(algorithm):
+    values = [-(2**31), 2**31 - 1]
+    expected_message = f"El rango de conteo (4294967296) supera el maximo permitido ({ORDENAMIENTO_RANGO_MAX})."
+    messages = []
+    allocation_attempts = []
+    def forbidden_allocation(size):
+        allocation_attempts.append(size)
+        raise AssertionError("Rejected range attempted auxiliary allocation")
+    for mode in ("fast", "step_by_step"):
+        adapter = SortingAdapter()
+        adapter.execute("create_array", {"values": values})
+        adapter.execute("select_algorithm", {"algorithm_id": algorithm})
+        adapter._counting_allocator = forbidden_allocation
+        with pytest.raises(SortingExecutionError) as captured:
+            adapter.execute("run", {"mode": mode, "source_code": CCodeService.get_structure_data("sorting_array")["operations"][algorithm]})
+        assert str(captured.value) == expected_message
+        assert captured.value.error_info["code"] == "range-limit"
+        assert adapter.to_visual_state()["items"] == values
+        messages.append(str(captured.value))
+    assert messages == [expected_message, expected_message]
+    assert allocation_attempts == []
+
+
+@pytest.mark.parametrize(
+    "sequence,deletions",
+    [
+        ([7, 3, 18, 10, 22, 8, 11, 26], [3, 10, 22]),
+        ([11, 2, 14, 1, 7, 15, 5, 8, 4], [14, 1, 2, 7]),
+        ([20, 10, 30, 5, 15, 25, 35, 1, 6], [1, 5, 10, 20]),
+    ],
+)
+def test_rbt_leaf_one_child_two_children_and_fixup_preserve_invariants(sequence, deletions):
+    adapter = RedBlackAdapter()
+    remaining = set(sequence)
+    for value in sequence:
+        adapter.execute("insertar", {"value": value})
+    for value in deletions:
+        adapter.execute("eliminar", {"value": value})
+        remaining.discard(value)
+        state = adapter.to_visual_state()
+        assert state["validation"] is True
+        assert state["traversals"]["inorden"] == sorted(remaining)
+        if state["root"] is not None:
+            assert state["root"]["color"] == "BLACK"
+
+
+def test_rbt_delete_trace_tracks_logical_nodes_and_real_leaf_branch():
+    history = []
+    for value in (7, 3, 18, 10, 22, 8, 11, 26):
+        result = HierarchicalStructureService.execute_operation("red_black", "insertar", {"value": value}, history)
+        history = result["history"]
+    result = HierarchicalStructureService.execute_operation("red_black", "eliminar", {"value": 3}, history)
+    assert_rbt_consumer(result, "delete_int")

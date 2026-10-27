@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-e2e-diagnostic-channel-delivery-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T04:11:23.372643+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-codec-e2e-diagnostics",
+  "operation": "qa.e2e-diagnostic-channel-delivery",
+  "task": "e2e-diagnostic-channel-delivery-independent-qa",
+  "instruction": "Focal independent review exact4files for confirmed Ecb E2E diagnostic delivery blockers: parent resolves metadata directory and forwards same absolute path to pytest child; visible metadata-only folder/patterns and explicit hidden exclusion. Relative-cwd real generator control before1FAIL3PASS/after4PASS; actual action glob0.5.0 control hiddenexcluded0, inclusion existencecontrol3, visibleexcluded exactly2metadatafiles, rawlog/XML/hiddensecret excluded. No actual remoteupload/browser/longCI/newalgorithms. Metadata allowlist/failedtimeout/exit1,20min/realactions and11otherpublishedfiles preserved; historicalbrowserhang still unknown. OldPQ/Graphrepair2/codec/safetyacceptances not reopened. Parent selects reviewer; no newpublication before QA.",
+  "scope_ref": "openspec/changes/review-graph-codec-e2e-diagnostics/channel-delivery-review-scope.md"
+}

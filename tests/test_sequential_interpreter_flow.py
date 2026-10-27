@@ -116,7 +116,7 @@ def test_queue_interpreter_flow_history_and_visual_state(client) -> None:
 
 def test_priority_queue_interpreter_flow_history_and_visual_state(client) -> None:
     """Priority queue should keep priority ordering and stable ties under route replay."""
-    mutating_steps = 0
+    registered_steps = 0
 
     for op, payload in [
         ("encolar", {"value": "50", "priority": "5"}),
@@ -126,13 +126,17 @@ def test_priority_queue_interpreter_flow_history_and_visual_state(client) -> Non
     ]:
         response, data = _operate(client, "priority_queue", op, payload)
         assert response.status_code == 200
-        mutating_steps += 1
-        assert len(data["history"]) == mutating_steps
+        registered_steps += 1
+        assert len(data["history"]) == registered_steps
 
     response, front = _operate(client, "priority_queue", "frente", {})
     assert response.status_code == 200
     assert front["result"] == 10
-    assert len(front["history"]) == mutating_steps
+    registered_steps += 1  # Successful consultation is chronological, not a mutation.
+    assert front["history"][-1] == {"operation": "frente", "payload": {}}
+    assert front["visual_state"]["items"] == data["visual_state"]["items"]
+    assert front["visual_state"]["size"] == data["visual_state"]["size"]
+    assert len(front["history"]) == registered_steps
 
     for op, payload, expected in [
         ("desencolar", {}, 10),
@@ -146,8 +150,8 @@ def test_priority_queue_interpreter_flow_history_and_visual_state(client) -> Non
     ]:
         response, data = _operate(client, "priority_queue", op, payload)
         assert response.status_code == 200
-        mutating_steps += 1
-        assert len(data["history"]) == mutating_steps
+        registered_steps += 1
+        assert len(data["history"]) == registered_steps
         if expected is not None:
             assert data["result"] == expected
 
@@ -157,7 +161,7 @@ def test_priority_queue_interpreter_flow_history_and_visual_state(client) -> Non
 
 def test_circular_list_interpreter_flow_history_and_visual_state(client) -> None:
     """Circular list should keep deterministic state and history in long flows."""
-    mutating_steps = 0
+    registered_steps = 0
 
     for op, payload in [
         ("insertar_final", {"value": "10"}),
@@ -169,13 +173,17 @@ def test_circular_list_interpreter_flow_history_and_visual_state(client) -> None
     ]:
         response, data = _operate(client, "circular_list", op, payload)
         assert response.status_code == 200
-        mutating_steps += 1
-        assert len(data["history"]) == mutating_steps
+        registered_steps += 1
+        assert len(data["history"]) == registered_steps
 
     response, search = _operate(client, "circular_list", "buscar_posiciones", {"value": "10"})
     assert response.status_code == 200
     assert search["result"] == [4]
-    assert len(search["history"]) == mutating_steps
+    registered_steps += 1  # Successful consultation is chronological, not a mutation.
+    assert search["history"][-1] == {"operation": "buscar_posiciones", "payload": {'value': '10'}}
+    assert search["visual_state"]["items"] == data["visual_state"]["items"]
+    assert search["visual_state"]["size"] == data["visual_state"]["size"]
+    assert len(search["history"]) == registered_steps
 
     for op, payload in [
         ("invertir", {}),
@@ -186,8 +194,8 @@ def test_circular_list_interpreter_flow_history_and_visual_state(client) -> None
     ]:
         response, data = _operate(client, "circular_list", op, payload)
         assert response.status_code == 200
-        mutating_steps += 1
-        assert len(data["history"]) == mutating_steps
+        registered_steps += 1
+        assert len(data["history"]) == registered_steps
 
     assert data["visual_state"]["empty"] is True
     assert data["visual_state"]["size"] == 0
@@ -195,7 +203,7 @@ def test_circular_list_interpreter_flow_history_and_visual_state(client) -> None
 
 def test_sublist_interpreter_flow_history_and_visual_state(client) -> None:
     """Sublist should keep deterministic parent/child state and replayable history."""
-    mutating_steps = 0
+    registered_steps = 0
 
     for op, payload in [
         ("insertar_padre", {"parent": "1"}),
@@ -208,13 +216,17 @@ def test_sublist_interpreter_flow_history_and_visual_state(client) -> None:
     ]:
         response, data = _operate(client, "sublist", op, payload)
         assert response.status_code == 200
-        mutating_steps += 1
-        assert len(data["history"]) == mutating_steps
+        registered_steps += 1
+        assert len(data["history"]) == registered_steps
 
     response, children = _operate(client, "sublist", "hijos_de", {"parent": "2"})
     assert response.status_code == 200
     assert children["result"] == [30, 31]
-    assert len(children["history"]) == mutating_steps
+    registered_steps += 1  # Successful consultation is chronological, not a mutation.
+    assert children["history"][-1] == {"operation": "hijos_de", "payload": {'parent': '2'}}
+    assert children["visual_state"]["items"] == data["visual_state"]["items"]
+    assert children["visual_state"]["size"] == data["visual_state"]["size"]
+    assert len(children["history"]) == registered_steps
 
     for op, payload in [
         ("eliminar_padre", {"parent": "1"}),
@@ -223,8 +235,8 @@ def test_sublist_interpreter_flow_history_and_visual_state(client) -> None:
     ]:
         response, data = _operate(client, "sublist", op, payload)
         assert response.status_code == 200
-        mutating_steps += 1
-        assert len(data["history"]) == mutating_steps
+        registered_steps += 1
+        assert len(data["history"]) == registered_steps
 
     assert data["visual_state"]["empty"] is True
     assert data["visual_state"]["size"] == 0

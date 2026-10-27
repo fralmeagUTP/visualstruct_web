@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dfs-owned-branch-capture30-low-20261006",
+  "issued_at_utc": "2026-10-06T04:48:28.564670+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dfs-owned-branch-capture-candidate",
+  "task": "dfs-owned-branch-capture-candidate",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes30min private write-aware DFS ownedbranch capture after two failed60s variants. Inventory actualwrites then publishonlychangedbranches; preserveallhistory/prepost/outsideemit/alias/free/return/error Cmodelstates. Comparecomplete smallcases/copiedvisits against failedowned variant, no large trial/marginalbenchmark/adoption/C/publicformat/canonical/Git/preview/resource changes. Deliver exactcandidate/equivalence/counters/limits and full independentQA binding owner01a0ff54-79d7-7520-8e9f-224ef5ed700f, or concrete unpreservablecontract.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dfs-owned-branch-capture30-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dfs-owned-dfs30-focal15-low-20261006.json"
+}

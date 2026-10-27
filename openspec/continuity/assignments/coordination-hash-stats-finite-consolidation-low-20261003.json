@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-stats-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T03:21:25.239112+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.stats-finite-consolidation-low",
+  "task": "LOW finite stats consolidation then clear/destroy baseline",
+  "instruction": "Consolidar LOWstats145IDs únicos/27casosC/1658eventos/542condiciones/1424snapshots/UI634/626. Revisar scopes/tipos/recursos finitos y separación floatC/API intacta. Si válido cerrar sólo stats Hash9/11 con límites, confirmar preview e iniciar baseline conjunto LOWclear/destroy según mapa. PreservarH1/C_H/11Sorting, sinADDED/nuevoscontratos/publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-stats-instructions-checkpoint-medium.md"
+}

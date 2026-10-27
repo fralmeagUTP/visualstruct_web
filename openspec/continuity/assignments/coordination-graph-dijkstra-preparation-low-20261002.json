@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-dijkstra-preparation-low-20261002",
+  "issued_at_utc": "2026-10-02T08:45:13.795185+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.dijkstra",
+  "task": "LOW graph.dijkstra: register and prepare next finite native/caller/instruction scope; no semantic execution before checkpoint",
+  "instruction": "After verified DFS closure, register next graph.dijkstra assignment and prepare scope only. Do not begin semantic execution before delivering this checkpoint. Preserve closed BFS/DFS and D:5051; no publication.",
+  "provenance": "Explicit coordination follow-up on 2026-10-02 following DFS LOW mark-context correction.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-baseline-preparation.md"
+}

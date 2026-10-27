@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-push-consumer-initial-parameters-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T20:25:49.589223+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-stack-push-legacy-memory-consumers",
+  "operation": "qa.stack-push-legacy-memory-consumers",
+  "task": "stack-push-legacy-memory-consumers-independent-qa",
+  "instruction": "Independent delta only: reproduce previous invented initial input and invalid/uninitialized parameter counterexamples; preserve legitimate entry, two consumers and memory contract. Same pending QA operation; no product/C/publication/long campaigns.",
+  "scope_ref": "openspec/changes/review-stack-push-legacy-memory-consumers/initial-parameters-delta-handoff.md"
+}

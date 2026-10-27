@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-bellman-owned-field-fastpath25-low-20261006",
+  "issued_at_utc": "2026-10-06T13:57:07.373437+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.bellman-private-owned-field-fastpath",
+  "task": "bellman-private-owned-field-fastpath",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes PRIVATE directstate_after field accessor plus ONE demonstrated immutable ownership reuse mechanism in normalization/publication. Quantifieddominant50.2%+23.3%priorprofile,22%fieldread notwholefix. Sameexisting small3node756fixture complete baseline/candidate exactwire/allsteps and alias/types/errors, comparable280callbackprofile, boundedmemory. No newarchitecture/no skipvalidators/type distinctions/C/steps, noBF20/BF30/adoption/Git/preview. Max1500s phase. Exactbefore0 mechanicalbeforejob/execution,self2GiB beforeimports. Candidate andcontrols+residual thenpendingQA.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/bellman-owned-field-fastpath25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-bellman-small-profile10-low-20261006.json"
+}

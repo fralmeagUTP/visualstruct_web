@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-limpiar-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T04:49:55.204663+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack.limpiar-instructions-medium",
+  "task": "MEDIUM causal limpiar lifetime, replay reload and real caller",
+  "instruction": "Continúa MEDIUMstack.limpiar delimitado:8fallos/8divergencias*p ytraza perdidaenreload;preserva16IDsbaseliney9Ccalls76events.Corrige fidelidadpointer/scopes/lifetime/frontendhistory/replayreloadnoredispatch;verifica mainproductorealno sustitutoQA,ownershipDoxygenC17.RespetaC/H515protected yHash11Sorting11,popcerradonosereabreinnecesariamente.Definecasosfinite/NULLguards/multinode ynolecturafreed.Reportacheckpoint yquéfaltacertificar antesLOW.No cambioscontractuales/publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-limpiar-instructions-plan-medium.md"
+}

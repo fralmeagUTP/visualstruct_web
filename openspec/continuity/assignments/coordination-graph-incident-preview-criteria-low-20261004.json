@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-incident-preview-criteria-low-20261004",
+  "issued_at_utc": "2026-10-04T12:28:25.213882+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.incident-preview-and-criteria",
+  "task": "LOW coordinated activation of incident caller on5051 with preserved sessions, real selfloop UI/main equivalence; evaluate eight open criteria against requirements and exact applicable missing evidence; no closed family reruns",
+  "instruction": "Consolida LOW callerincidentarcs: activa coordinadamente runtimeactual5051 y aviso conservandosesiones; verifica mainDOM/HTTPcasolazo0/0antescleanupfinal yframescallerdespuésretornoC en previewreal. Reutiliza7native2UI2gates sinreruninnecesario;C/HAPIintactos. Luego vuelve a8criterios: actualizamatrizsinrepetirevidencia y decidequécriteriospuedencerrarsecompletamenteahora,cuáles tienenpruebasaplicablesfaltantes. Devuelve listafocal y siguienteacciónmínima. No quedar únicamenteen14/22porfaltaevaluacióncriterios; tampoco marcarporconteos. Si nohayfallo adicional, prioriza reconciliacióncanónica/QAfinal/entrega dentroalcance.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-incident-preview-and-criteria-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-main-incident-caller-medium-20261004.json"
+}

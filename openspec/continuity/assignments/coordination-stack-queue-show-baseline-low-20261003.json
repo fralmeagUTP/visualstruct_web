@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-queue-show-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T23:28:11.155663+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack-queue.mostrar-baseline-low",
+  "task": "Establish independent stack and queue Mostrar LOW baselines preserving closed methods and absent public exposure",
+  "instruction": "Aceptado handbackLOWFrenteFinal coresprivados cerrados9->7. ContinuarLOWbaselineindependienteMostrarPila/Cola IDsseparados recuperar evidencia histórica válida preservar cierres. No APIUI/C_Hexpansion;preview/solefunctionalwriterpreserved. Usuario priorizaauditoría,noAISEF. PropietarioRNdocumentalautorizado, noeditar sus archivos. Confirmaciónusuario adicional: conservarpesosenterosrepresentablesfielesC yreglasCactualesDijkstra; no volverpreguntar. Reconciliarspecpesos/documentarempatesINTMAXoverflowdespuésMostrar concheckpoint. BellmanFordrepresentación/cycleerrorrequierecoordinación antescambiosC_H. No publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/audit-pila-colas-pending-map-after-queue-front-final-finite-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-queue-front-final-finite-consolidation-low-20261003.json"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-source-A-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T14:09:56.277870+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sorting-source-A-approved",
+  "operation": "qa.sorting-source-A-approved",
+  "task": "sorting-source-A-independent-qa",
+  "instruction": "Independent focal QA userapprovedSortingA: explicitfullsupportedCrequired; rejectmissing/blank/incompletebody beforeinterpreter/events/mutation/fakesuccessfulhistory, nofallback; legitimateconsumersfullC withallasserts preserved,14identifiedfirstsourcecases andsmallnegativecontrols. Verify sourcepreflightdoesnotoptimize/runalgorithms ordefaultsource; contractdelta andproviderfailureHTTP400. No E2Ejobchange/SLA/broadsuite/publication/VPS. Initialbinding precedesimplementation; finalmanifestwillfreeze afterownQA. Noauthorverdict.",
+  "scope_ref": "openspec/changes/review-sorting-source-A-approved/review-scope.md"
+}

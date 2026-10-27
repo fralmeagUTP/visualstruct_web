@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-bellman-validation-textcache15-low-20261006",
+  "issued_at_utc": "2026-10-06T14:31:12.120989+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.bellman-private-validation-textcache",
+  "task": "bellman-private-validation-textcache",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd afterQA2575accepts ownedfield for CURRENTprivateflow authorizes ONLY residual textIDsharing cache during globalvalidation; boundedbudget, sameUTF8surrogatepass/typedvalues/errors/allchecks, cleanupfinally/all failures/GCdisabled lifetime. SAME3node756fixture completeexactwire/aliases, validationtiming plus realcache+owner+semantic+temps samples. No generationcache/redesign/adoption/BF20BF30/publiclimits/C/steps/Git/previewchanges. Phase<=900s. Mechanicalbefore0 priorjob/Popen/self2GiB beforeimports. Report whethermeasuredresidual generation supportsreasonableBF20completion without running it; noforecast claim.1016904B=payloadonly NOTdeepunion/peak. PackageQA.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/bellman-validation-textcache15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-bellman-owned-field-fastpath25-low-20261006.json"
+}

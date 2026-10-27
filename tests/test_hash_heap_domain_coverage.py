@@ -41,12 +41,15 @@ from app.domain.hierarchical.tad_monticulo_binario import (
 
 def test_hash_uninitialized_collision_update_search_and_delete_chain() -> None:
     table = TablaHash()
-    assert th_indice(table, 5) == 0
+    assert th_indice(table, 5) == -1
     assert th_buscar(table, 5, []) is False
     assert th_eliminar(table, 5) is False
     assert th_vacia(table) is True
 
-    # Lazy initialization uses capacity 17; keys form one collision chain.
+    assert th_insertar(table, 1, 10) is False
+
+    # El contrato C exige inicializacion explicita; estas claves colisionan.
+    th_inicializar(table, 17)
     assert th_insertar(table, 1, 10) is True
     th_insertar(table, 18, 20)
     th_insertar(table, 35, 30)
@@ -113,6 +116,7 @@ def test_hash_statistics_formatting_vaciar_and_destroy() -> None:
 def test_min_heap_growth_outputs_copy_and_formatting_boundaries() -> None:
     heap = MonticuloBinario()
     monticulo_inicializar(heap, MONTICULO_MIN, 0)
+    assert monticulo_capacidad(heap) == 10  # Actual C default reservation.
     assert monticulo_raiz(heap, []) is False
     assert monticulo_extraer_raiz(heap, []) is False
     assert monticulo_eliminar_valor(heap, 99) is False
@@ -126,7 +130,8 @@ def test_min_heap_growth_outputs_copy_and_formatting_boundaries() -> None:
     root: list[int] = []
     assert monticulo_raiz(heap, root) is True
     assert root == [1]
-    assert monticulo_raiz(heap, None) is True
+    # Actual downloaded C rejects NULL output even when the heap is nonempty.
+    assert monticulo_raiz(heap, None) is False
     existing = [999]
     assert monticulo_extraer_raiz(heap, existing) is True
     assert existing == [1]

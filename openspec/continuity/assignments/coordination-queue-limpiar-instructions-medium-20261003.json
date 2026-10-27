@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-limpiar-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T05:48:10.120642+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.limpiar-instructions-medium",
+  "task": "Bounded MEDIUM queue.limpiar causal lifetime/reload and actual caller errors/documentation",
+  "instruction": "Continúa MEDIUMCola.limpiarsegúnplan:9rojosunión16IDs(preservar7originales),fidelidadmemoria/types/returns,4reloadtraceloss,mainrealNULLfallossuccessmisleading yDoxygen0/4documentation. PreservarC/Hcontrato;arreglarmensajeserrorescallerantesdeéxito,replaynoredispatch/resources/ownership. Verifica9Ccalls92events máscasospertinentes,16IDsnoocultarfails/sumsoverlap,distinguishsimulatedNULL/noOOMreal. CierresPila/Hash/Sortingintactos. CheckpointantesLOW,noADDED/nopublish.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-limpiar-instructions-plan-medium.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dfs-owned-dfs30-focal15-low-20261006",
+  "issued_at_utc": "2026-10-06T04:41:20.533413+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dfs-owned-dfs30-focal",
+  "task": "dfs-owned-dfs30-focal",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd: QA accepts ownedDFS successor327hashes/9JSON1131steps. Firstcorrect ONLY rejectionharness catchselfAssertionError with smallcontrast and negativecontrol. Then ONE private DFS30acceptedSHA, realworker2GiBmembership beforeimports/60stimeout, validatorsactive, optionalexistinglightphase markers/no profiler. No retry/adoption/product/C/publicformat/Git/preview/resourcesincrease. Savecomplete responseor timeout, coherent evidence+successorindependentQA binding.15min currentusercontinua hasta terminar todo scope.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dfs-owned-dfs30-focal15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dfs-owned-snapshot-publication30-low-20261006.json"
+}

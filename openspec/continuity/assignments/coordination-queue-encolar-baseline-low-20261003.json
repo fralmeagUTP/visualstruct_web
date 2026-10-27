@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-encolar-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T14:30:31.534903+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.encolar-baseline-low",
+  "task": "Audit finite queue enqueue instruction guards allocation init front rear aliases caller reload and record baseline regressions without product changes",
+  "instruction": "Continúa Cola.encolar baselineLOWsegúnmapa sinreabrircerrados. Antes confirma SHAhistóricofaltaapilar/claimlimita y evidenciaalternativa30tests final; huecoreal pruebaafectadaacotada o calificacierre,no inferirigualdadsólopormtimes. Paraencolarrecuperaevidencia,guardasallocinit aliases/front/rear/callerDOMHTTP/reload/lifetimes,regresionesreales yplanMEDIUMsifalla. PreservaH1C/HHashSorting/limpiar/apilar scopes.NoRN/Grafosdecisions/nopublish.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-encolar-baseline-plan-low.md"
+}

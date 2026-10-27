@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-dijkstra-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T08:51:42.986311+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.dijkstra",
+  "task": "LOW graph.dijkstra: execute prepared C/backend/caller/documentation baseline; scope bounded MEDIUM instruction review if justified",
+  "instruction": "Coordination explicitly continues Dijkstra baseline after delivered preparation checkpoint: weights, distances, unreachable destinations, ties and integer limits; compare actual downloaded C/backend/caller/docs. Negative weights are rejection cases. No closed BFS/DFS rerun without demonstrated shared regression. D:5051/OpenSpec; no push/merge/deploy.",
+  "provenance": "New explicit coordination continuation supersedes preparation-only timing gate, preserving its immutable requested preparation assignment.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-baseline-preparation.md"
+}

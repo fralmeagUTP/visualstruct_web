@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-main-0ddfea30-terminal-diagnosis-low-20261007",
+  "issued_at_utc": "2026-10-07T01:45:40.022559+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.main-0ddfea30-terminal-diagnosis",
+  "task": "main-0ddfea30-terminal-diagnosis",
+  "instruction": "Parent01a0fe61 requests read-only verification/diagnosis of unit37558261724 andE2E37558261647 exactmain0ddfea30c69d0e6e02cd8f0bd9d96288e54f354c untilterminal, retainlogs and evidence-based shared root causes. Sorting source decision pendinguser NOcontract/runtime/test changes. No long local suite or ambiguous expectation changes. VPS access andvalidationpending NOdeploy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/main-0ddfea30-terminal-diagnosis-low.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting11-native-vs-visual15-low-20261006",
+  "issued_at_utc": "2026-10-06T02:14:30.711684+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting11-native-vs-visual-diagnostic",
+  "task": "sorting11-native-vs-visual-diagnostic",
+  "instruction": "# Current native C versus existing visual requests for all11Sorting\n\nExplicit user asks verify other algorithms/allSorting. Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes maximum15min: one predetermined batch of OTHER10currentC kernels on80..1, check outputs/status/metrics, separate compilation/startup/IO/timerresolution. Reuse BurbujaC previous result and historicalHTTP10/currentBurbuja40777; no11HTTPrepeats/newGraphcampaign/product/redesign/adoption/gatechange. Own evidence/continuity only. Mark historical engineSHA and errors/censored timings, do not imply all algorithms exceed15 or sameGraphcause.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting11-native-vs-visual15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-burbuja80-native-vs-visual15-low-20261006.json"
+}

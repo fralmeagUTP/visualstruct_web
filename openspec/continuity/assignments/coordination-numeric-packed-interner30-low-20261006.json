@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-numeric-packed-interner30-low-20261006",
+  "issued_at_utc": "2026-10-06T11:13:52.253792+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.numeric-private-packed-interner",
+  "task": "numeric-private-packed-interner",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes PRIVATE minimum actual typed compact interner/index on20EXISTING saved packets, no generation/spool integration. Max30min. Exactvalue/type comparisons/collisions/sharedIDrefs/limits/errors/wholewire. Measureactualsingleunion arenas+tapes+indexes includinggrowth capacities notestimatedindexes. PreservepriorbudgetALLhypotheses;1.47GiB NOTBF30proof. FocalQApackage+finite integrationviabilitydecision. No largecases/adoption/C/API/algorithm/Git/preview/resourceincrease. Future bounded serialization NOTauthorized visible streaming/HTTPsemantics; mustpreserveresponse/errors/session andreviewBEFOREuse.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/numeric-packed-interner30-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-numeric-internal-budget20-low-20261006.json"
+}

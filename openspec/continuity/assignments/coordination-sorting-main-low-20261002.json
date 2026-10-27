@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-main-low-20261002",
+  "issued_at_utc": "2026-10-02T11:42:55.896578+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.main-reproducible",
+  "task": "LOW integrate reproducible sorting main and real eleven-method C17/download/history checks; consolidate Intercambio evidence and prepare next method only",
+  "instruction": "Implement minimal main integration per new instruction for all eleven callers; selected data/history/output/ownership/Doxygen; keep5051, no algorithms or instruction expansion, no push/merge/deploy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-main-authorized-low.md",
+  "provenance": "Explicit new user coordination instruction supersedes prototype-only main scope, preserving closed Intercambio."
+}

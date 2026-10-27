@@ -99,11 +99,15 @@ def test_tad_pila_push_pop_multiple_values(values: list[int]) -> None:
 def test_tad_pila_mostrar_prints(capsys: pytest.CaptureFixture[str]) -> None:
     ref = [None]
     pila_mostrar(ref[0])
-    assert "(vacia)" in capsys.readouterr().out
+    assert capsys.readouterr().out == "Pila vacia.\n"
+    assert ref[0] is None
     pila_apilar(ref, 10)
     pila_apilar(ref, 20)
+    top, tail = ref[0], ref[0].sgte
     pila_mostrar(ref[0])
-    assert "20 -> 10" in capsys.readouterr().out
+    assert capsys.readouterr().out == "\t20\n\t10\n"
+    assert ref[0] is top and top.sgte is tail
+    assert (top.nro, tail.nro, tail.sgte) == (20, 10, None)
 
 
 @pytest.mark.parametrize("values", [[5], [5, 6, 7], [1, 1, 2, 3]])
@@ -122,11 +126,16 @@ def test_tad_cola_enqueue_dequeue_multiple_values(values: list[int]) -> None:
 def test_tad_cola_mostrar_prints(capsys: pytest.CaptureFixture[str]) -> None:
     queue = Cola()
     cola_mostrar(queue)
-    assert "(vacia)" in capsys.readouterr().out
+    assert capsys.readouterr().out == "Cola: \n"
+    assert queue.delante is None and queue.atras is None
     cola_encolar(queue, 1)
     cola_encolar(queue, 2)
+    front, rear = queue.delante, queue.atras
     cola_mostrar(queue)
-    assert "1 <- 2" in capsys.readouterr().out
+    assert capsys.readouterr().out == "Cola: 1 2 \n"
+    assert queue.delante is front and queue.atras is rear
+    assert front.sgte is rear
+    assert (front.nro, rear.nro, rear.sgte) == (1, 2, None)
 
 
 def test_tad_lista_insertar_elemento_provider_variants() -> None:
@@ -174,7 +183,7 @@ def test_tad_lista_mostrar_eliminar_variants(capsys: pytest.CaptureFixture[str])
     assert "no encontrado" in capsys.readouterr().out.lower()
 
 
-@pytest.mark.parametrize("values,target,expected", [([1, 2, 1], 1, [0, 2]), ([9], 7, []), ([4, 4, 4], 4, [0, 1, 2])])
+@pytest.mark.parametrize("values,target,expected", [([1, 2, 1], 1, [1, 3]), ([9], 7, []), ([4, 4, 4], 4, [1, 2, 3])])
 def test_tad_lista_circular_buscar_posiciones(values: list[int], target: int, expected: list[int]) -> None:
     lista = ListaCircular()
     lcir_inicializar(lista)
@@ -183,6 +192,7 @@ def test_tad_lista_circular_buscar_posiciones(values: list[int], target: int, ex
     out: list[int] = []
     used = lcir_buscar_posiciones(lista, target, out, 32)
     assert out[:used] == expected
+    assert used == len(expected)
 
 
 def test_tad_lista_circular_mutation_and_formatting() -> None:
@@ -236,11 +246,11 @@ def test_tad_cola_prioridad_copy_and_format() -> None:
     priorities = [0, 0]
     used = cp_copiar_items(queue, values, priorities, 2)
     assert used == 2
-    assert values == [22, 11]
-    assert priorities == [1, 2]
+    assert values == [11, 22]
+    assert priorities == [2, 1]
     text: list[str] = []
     cp_formatear(queue, text, 120)
-    assert "[0]=22" in text[0]
+    assert text[0] == "frente -> 11(p=2) | 22(p=1)"
     cp_vaciar(queue)
     assert cp_contar(queue) == 0
 
@@ -267,7 +277,7 @@ def test_tad_sublista_parent_child_branches() -> None:
     assert out == [20]
     text: list[str] = []
     sublista_formatear(lista_ref[0], text, 120)
-    assert "1:" in text[0]
+    assert "P(1):" in text[0]
     sublista_destruir(lista_ref)
     assert lista_ref[0] is None
 

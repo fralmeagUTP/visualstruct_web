@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-three-approved-focal-blocks-once-low-20261013",
+  "issued_at_utc": "2026-10-13T09:44:51.125350+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.github-vps-qualified-delivery",
+  "task": "github-vps-qualified-delivery",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-three-approved-focal-blocks-once-low-20261013/scope.md",
+  "instruction": "User Sentinel_9962941728d48191a9f6f0c99bac4035 Si...Losautorizo: verifycurrentbase/QApatchhashes, applyONLYreviewed3testfiles locally,nopublish; immediatelyrevalidateJPEGstaticpreflight/deps/shortfreshdirs/previewassetidentity; ifhash/envdeviationSTOPbeforeattempt. Then sequentialONEeach2correctedunitIDs,oneAVLID,oneoriginalJPEGID with3exports.120s2GiBprocess+Job each,360saggregate,no retry/increase/globalcampaign/VPS/document. PreserveXML/log/checkpoint/images andconsumptionexact.",
+  "user_message": "Sentinel_9962941728d48191a9f6f0c99bac4035",
+  "verbatim_user_authorization": "Si... Los autorizo"
+}

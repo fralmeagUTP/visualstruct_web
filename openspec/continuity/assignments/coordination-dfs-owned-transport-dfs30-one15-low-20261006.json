@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dfs-owned-transport-dfs30-one15-low-20261006",
+  "issued_at_utc": "2026-10-06T05:41:43.734887+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dfs-owned-transport-dfs30-one-observed",
+  "task": "dfs-owned-transport-dfs30-one-observed",
+  "instruction": "Coordinator authorizesONE private DFS30 exact accepted builder/helper, full request/normal validators, effective2GiB before imports, timeout60, no retry/adoption/canonical/C/Git/preview change. Maximum15min. Existing light phase markers permitted; observational notbenchmark. Save complete responseSHA/steps/bytes or failure. Usercontinua hasta terminar todo 2026-10-06T04:05:39Z covers focaltest.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dfs-owned-transport-dfs30-one15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dfs-transport-validation-jpg20-low-20261006.json"
+}

@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import re
+from html import unescape
+
 
 def test_graph_module_page_loads(client) -> None:
     """Graph module index should be reachable."""
@@ -15,7 +18,7 @@ def test_graph_structure_page_loads(client) -> None:
     response = client.get("/graph/graph")
     assert response.status_code == 200
     assert b"Estado visual" in response.data
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Relacionar con código".encode("utf-8") in response.data
     assert "grafo_insertar_vertice".encode("utf-8") in response.data
 
 
@@ -217,7 +220,13 @@ def test_graph_help_pages_available(client) -> None:
     assert module_help.status_code == 200
     assert b"Ayuda del modulo de grafos" in module_help.data
     assert structure_help.status_code == 200
-    assert b"Operaciones soportadas" in structure_help.data
+    page = structure_help.get_data(as_text=True)
+    method_cards = re.findall(r'<h4>([^<]+)</h4>\s*<p>(.*?)</p>\s*<pre class="didactic-code">(.*?)</pre>', page, re.S)
+    assert method_cards
+    for symbol in ('grafo_insertar_vertice', 'grafo_insertar_arco', 'grafo_prim', 'grafo_kruskal'):
+        matches = [(heading, explanation, unescape(code)) for heading, explanation, code in method_cards if re.search(r'\b' + symbol + r'\s*\(', unescape(code))]
+        assert matches, symbol
+        assert any(re.sub(r'<[^>]+>', '', explanation).strip() for heading, explanation, code in matches), symbol
 
 
 def test_graph_route_rejects_non_integer_vertex(client) -> None:

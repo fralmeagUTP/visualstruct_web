@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-dijkstra-history-caller-low-20261002",
+  "issued_at_utc": "2026-10-02T09:19:27.571018+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.dijkstra",
+  "task": "LOW Dijkstra successful history and downloaded caller repair, numeric/decimal decision preparation only",
+  "instruction": "Repair lost successful Dijkstra history, strictC17 generated programs and returned-path ownership with repetition/failure/reload/no-replay tests. Preserve numeric semantics. Prepare concrete tie/INT_MAX/overflow/decimal C/backend alternatives and UB distinctions; no decimal contract implementation. PreserveD:5051,guards,closedBFS/DFS; no push/merge/deploy.",
+  "provenance": "Explicit new coordination LOW continuation after Dijkstra baseline checkpoint.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-dijkstra-instruction-review-plan.md"
+}

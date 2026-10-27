@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-heap20-four-instruction-modules25-low-20261005",
+  "issued_at_utc": "2026-10-05T14:19:43.380467+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "heap20-four-instruction-modules25",
+  "instruction": "Grupo focalHeap inserci\u00f3n/query/clear/extract m\u00e1ximo25min. EvidenciaC/H/observer congruente, mantenercontratos/asserts/denominator/test5or\u00e1culosQA;473missing en4instructionmodules distinto rootHeap85PASS. Entregar ejecuci\u00f3n/cobertura/planagrupadorestante. NoBFSestructural.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/heap20-four-instruction-modules25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-avl-delete-focal-current-cache25-low-20261005.json"
+}

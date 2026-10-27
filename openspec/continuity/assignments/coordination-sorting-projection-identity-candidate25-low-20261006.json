@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-projection-identity-candidate25-low-20261006",
+  "issued_at_utc": "2026-10-06T00:24:07.529455+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting-projection-identity-isolated-candidate",
+  "task": "sorting-projection-identity-isolated-candidate",
+  "instruction": "# Candidato aislado de identidad de proyección Sorting\n\nCoordinador01a0fe61-3104-743a-b032-bcc289ad80cd autoriza preparar correcciónmínima aislada: eliminar copia/proyecciónredundante sólo proyector/convertidororiginales/JSONnativo, fallbackintacto/todasvalidaciones,25minincluidoinforme. Equivalencia/error/callback/alias/ciclos/retornoindependiente antesde una única peticiónplainrepresentativaBurbuja80/timeout60s/2GiB. Preservarcanónico/coberturaaceptada,contrato/codec/respuesta/límites. No16/noadopciónantesQA/nodebilitarasserts. Diagnóstico previo19.823validación/proyección8.889s instrumentados; no pronósticoPASS15.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-projection-identity-candidate25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-burbuja80-phases15-low-20261006.json"
+}

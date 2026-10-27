@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-reviewed-seq-e2e-delivery-low-20261007",
+  "issued_at_utc": "2026-10-07T04:31:33.440678+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-reviewed-seq-e2e-delivery",
+  "task": "publish-reviewed-seq-e2e-delivery",
+  "instruction": "Parent01a0fe61 explicitly authorizes joint normal publication exact8acceptedfiles (sequential finalprojection4 +channel delivery4), exact remote base/diff/hash/SHA proof, no force/unrelated writes/evidence/secrets. Follow exactcommit CI toterminal/concreteblock; verify real E2E metadata artifact availability and identify active test/stage using safe records,20min unchanged. No broaderclosure/Sorting/C/algorithm/newlocalbrowser. Own tracking only and preserve canonicalindex.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-reviewed-seq-e2e-delivery-low.md"
+}

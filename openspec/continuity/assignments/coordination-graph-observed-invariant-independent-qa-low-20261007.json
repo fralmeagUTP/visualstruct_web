@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-observed-invariant-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T02:39:28.738894+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-observed-invariant-test-repair",
+  "operation": "qa.graph-observed-invariant-test-repair",
+  "task": "graph-observed-invariant-independent-qa",
+  "instruction": "Parent01a0fe61 latestexplicituserrequest authorizes resolvingknownCI andpublishingacceptedchanges non-destructively. DistinctindependentQAofexact3testfiles: fullHTTPGraphdecode+allstate/source/continuitychecks, honestpartialinvariantNonewithactualCmemorystructural/lifetimechecks, independentfinalgraphshapeoracle with16controls, fiveoriginalsmallHTTPcases21PASS12.03s. No product/C/Sortingpolicychanges. Universalholds predicate replacedonlybyconditionalprovedpartialobservation+fullfinalgraphoracle; explicitFalse stillfails. Verify no broad19/116/globalPASSclaim; other14Graphmatrixcasesunexecutedlocally. Decoder files frozenin separateGraphlifetimeQA unchanged. Parentselectsreviewer; noauthorQAapproval. No newlarge/native/browser/optimizations/publication byQA.",
+  "scope_ref": "openspec/changes/review-graph-observed-invariant-test-repair/review-scope.md"
+}

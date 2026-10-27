@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-boundary-radix-fidelity-low-20261007",
+  "issued_at_utc": "2026-10-07T16:53:25.325462+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.radix-expanded-fidelity",
+  "task": "sorting-boundary-radix-fidelity",
+  "instruction": "Parent explicitly authorizes repair of newly proved inactive Radix block exit and initial source-boundary oracle, preserving native C and actual steps. No publication beforeQA, optimizations/E2Esplit/broadcampaign.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-boundary-radix-fidelity-low.md"
+}

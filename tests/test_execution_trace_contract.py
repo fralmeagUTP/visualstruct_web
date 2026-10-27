@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from _dijkstra_legacy_consumer_oracle import assert_dijkstra_legacy_consumer
+from app.domain.graph.snapshot_pool import expand_graph_trace
+from _graph_trace_contract import decode_graph_http_trace
+
 import json
 
 from app.services.execution_trace_service import ExecutionTraceService
@@ -92,7 +96,7 @@ def test_graph_operation_includes_execution_trace(client) -> None:
 def test_hash_operation_includes_execution_trace(client) -> None:
     response = client.post(
         "/hash/hash_table/operate",
-        json={"operation": "insert", "payload": {"key": "A", "value": "1"}},
+        json={"operation": "insert", "payload": {"key": "1", "value": "1"}},
     )
     assert response.status_code == 200
     data = response.get_json()
@@ -158,12 +162,18 @@ def test_graph_algorithm_trace_includes_semantic_debug_steps(client) -> None:
     )
     assert response.status_code == 200
     data = response.get_json()
+    data["execution_trace"] = expand_graph_trace(data["execution_trace"])
     assert data["success"] is True
 
     steps = data["execution_trace"]["steps"]
     debug_steps = [step for step in steps if isinstance(step.get("debug"), dict)]
     assert debug_steps
-    assert any(step["debug"].get("stage") in {"visit", "complete"} for step in debug_steps)
+    assert data["result"] == [1, 2, 3]
+    assert all(step["pedagogy"]["instruction_event"]["function"] for step in debug_steps)
+    assert any(step["debug"].get("graph_progress", {}).get("nodes") == ["1", "2", "3"] for step in debug_steps)
+    assert any(step["debug"].get("graph_progress", {}).get("tree_edges") == [["1", "2"], ["2", "3"]] for step in debug_steps)
+    assert data["execution_trace"]["final_state"] == data["visual_state"]
+    assert data["execution_trace"]["steps"][-1]["state_after"] == data["visual_state"]
     assert any(
         isinstance(step["debug"].get("graph_progress"), dict)
         and step["debug"]["graph_progress"].get("mode") == "traversal"
@@ -307,7 +317,6 @@ def test_dijkstra_trace_includes_fine_grained_debug_stages(client) -> None:
         )
         assert response.status_code == 200
         assert response.get_json()["success"] is True
-
     for payload in (
         {"origin": "1", "target": "2", "weight": "2"},
         {"origin": "2", "target": "3", "weight": "3"},
@@ -318,22 +327,15 @@ def test_dijkstra_trace_includes_fine_grained_debug_stages(client) -> None:
         )
         assert response.status_code == 200
         assert response.get_json()["success"] is True
-
     response = client.post(
         "/graph/graph/operate",
         json={"operation": "run_dijkstra", "payload": {"start": "1", "end": "3"}},
     )
     assert response.status_code == 200
     data = response.get_json()
+    data["execution_trace"] = decode_graph_http_trace(data["execution_trace"])
     assert data["success"] is True
-    stages = [
-        step.get("debug", {}).get("stage")
-        for step in data["execution_trace"]["steps"]
-        if isinstance(step.get("debug"), dict)
-    ]
-    assert "extract_min" in stages
-    assert "relax_edge" in stages
-    assert "update_distance" in stages
+    assert_dijkstra_legacy_consumer(data, "chain")
     assert "grafo_dijkstra" in data["execution_trace"]["source_code"]
     normalized_lines = [str(step.get("line_text", "")).strip().lower() for step in data["execution_trace"]["steps"]]
     outer_for_count = normalized_lines.count("for (i = 0; i < n; i++) {")
@@ -370,16 +372,16 @@ def test_bellman_ford_negative_cycle_trace_includes_detection_stage(client) -> N
         assert response.status_code == 200
         assert response.get_json()["success"] is True
 
+    previous_history = response.get_json()["history"]
     response = client.post(
         "/graph/graph/operate",
         json={"operation": "run_bellman_ford", "payload": {"start": "1", "end": "3"}},
     )
-    assert response.status_code == 200
+    assert response.status_code == 400
     data = response.get_json()
-    assert data["success"] is True
-    stages = [
-        step.get("debug", {}).get("stage")
-        for step in data["execution_trace"]["steps"]
-        if isinstance(step.get("debug"), dict)
-    ]
-    assert "detect_negative_cycle" in stages
+    assert data["success"] is False
+    assert data["history"] == previous_history
+    from _graph_trace_contract import decode_graph_http_trace
+    from _bellman_http_consumer_oracle import assert_bellman_http
+    data["execution_trace"] = decode_graph_http_trace(data["execution_trace"])
+    assert_bellman_http(data, "cycle3", response.status_code)

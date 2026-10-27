@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-adopted-sorting-thirteen-coverage30-low-20261005",
+  "issued_at_utc": "2026-10-05T08:07:25.031925+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "measure-first-thirteen-Sorting-IDs-on-adopted-version-full-denominator",
+  "instruction": "Explicitcoordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizesFIRSTfiniteSorting13existingIDs fromfirst-finite-coverage-plan.json,max30min, adoptedjoint-fused-fixtures-20261005. Newcoveragefull186files24128statements withdependencySHAs; NOMERGEhistoric99322.40. PreserveexactFAILexpectations; no adjustmentduringmeasurement. NobenchmarkBFS/native/browser/extrasuites; preserveproduct/sessions. Returnglobal/enginescoverage,line/requirementgaps andnextminimumproposalONLY.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/adopted-sorting-thirteen-coverage30-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-joint-ten-staging-conditional-adoption-low-20261005.json"
+}

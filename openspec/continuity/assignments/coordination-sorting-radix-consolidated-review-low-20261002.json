@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-radix-consolidated-review-low-20261002",
+  "issued_at_utc": "2026-10-02T23:03:00.375258+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.radix-expanded-fidelity",
+  "task": "LOW Radix approved test correction, affected verification, conditional scoped closure and next pending map",
+  "instruction": "Aplicar corrección fundada del mismo ID Radix conservando copia/SHA original: sustituir <5000 por igualdad completa con C, resultado y limpieza, sin relajar transporte/memoria. Verificar48IDs y consolidaciónLOW; cerrarRadix sólo si pasan y evidencia sostiene UI, con límites int32/size_t64/errores simulados/rendimiento hasta9.1s49.3MBsinSLA. Preservar C/H y diezcierres,preview5051; mapa concreto siguientependiente autorizado antes de otrobloque; sinpush/merge/deploy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-consolidated-review-authorized-low.md"
+}

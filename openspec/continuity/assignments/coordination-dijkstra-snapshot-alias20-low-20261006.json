@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra-snapshot-alias20-low-20261006",
+  "issued_at_utc": "2026-10-06T01:19:04.220547+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dijkstra-snapshot-alias-isolated",
+  "task": "dijkstra-snapshot-alias-isolated",
+  "instruction": "# Dijkstra snapshot mutability and alias diagnosis\n\nCoordinator 01a0fe61-3104-743a-b032-bcc289ad80cd authorizes maximum20minutes from first action: inspect SnapshotPool.intern and Dijkstra ownership/mutation/alias/cycle/free paths, reuse rejected BFS prototype evidence. Small isolated unit checks only, no largeHTTP or further benchmark. No canonical product adoption/modification. Isolated correction only if exact equivalence and dominant-cost applicability proven; otherwise report concrete proposal before broadening. Do not generalize to other Graph algorithms. Own operational registration/evidence only; no Git/preview.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dijkstra-snapshot-alias20-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dijkstra30-phases15-low-20261006.json"
+}

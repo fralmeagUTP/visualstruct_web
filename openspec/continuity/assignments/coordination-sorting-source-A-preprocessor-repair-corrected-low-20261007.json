@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-source-A-preprocessor-repair-corrected-low-20261007",
+  "issued_at_utc": "2026-10-07T15:06:24.756976+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting-source-A-approved",
+  "task": "sorting-source-A-approved",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-source-A-preprocessor-repair-decision.md",
+  "instruction": "Parent explicitly authorizes concrete #if0 QA-rejection repair of the SAME closed operation. Correct initial registration error by restoring original closed binding; must pass before with exact reopen reason/decision. Prior erroneous assignment retained; no bypass, new operation, algorithm change, publication or original-failure repair."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-archive-verified-review-closures-low-20261013",
+  "issued_at_utc": "2026-10-13T19:40:19.347719+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "archive-verified-review-closures-20261013",
+  "operation": "documentation.archive-verified-reviews",
+  "task": "archive-verified-reviews",
+  "instruction": "Archivar localmente los OpenSpec con cierre acreditado, preservar reservas y referencias. No pruebas de producto ni publicación.",
+  "scope_ref": "openspec/changes/archive-verified-review-closures-20261013/scope.md"
+}

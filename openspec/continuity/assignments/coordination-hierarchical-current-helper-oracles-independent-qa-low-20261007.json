@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hierarchical-current-helper-oracles-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T05:05:25.006922+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-hierarchical-current-helper-oracles",
+  "operation": "qa.hierarchical-current-helper-oracles",
+  "task": "hierarchical-current-helper-oracles-independent-qa",
+  "instruction": "Parent01a0fe61 requires independent QA of exact one test file, only three ABB/RN current helper oracle functions. Verify current5parameterABBbounds, RNinorder izq/der/nro, RNvalidator wrapper enter once/delegatecall-resume-return and recursiveblackheight subtrees/result; old3FAIL tosame3PASS, retained1FAIL attempt, effective2GiB and120s. No product/Sorting/E2E tests or acceptance changes, publication, longbattery. Author does not supply reviewer verdict. Review exact frozen26input hashes.",
+  "scope_ref": "openspec/changes/review-hierarchical-current-helper-oracles/review-scope.md"
+}

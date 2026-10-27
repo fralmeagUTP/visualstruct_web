@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sequential-final-logical-projection-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T04:26:09.306872+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sequential-final-logical-projection",
+  "operation": "qa.sequential-final-logical-projection",
+  "task": "sequential-final-logical-projection-independent-qa",
+  "instruction": "Independent focal review exact4files: PQdequeue/PQfront/queueDequeue public return projection from actual Cstate, drop physical-only root/local/output keys, PQout_index from remaining minimum/empty-1; keep full old Csnapshot in memory_state and all explicit Cmemory/event/source/scopes/output/freehistory. Three exactEcbCIbugs, existing asserts unedited; before17FAIL, after17PASS includes14new controls with3futuretargetpoison negatives. Direct old/new172frames across11overlappingfixtures not extraunique tests: every Caxis/intermediate state unchanged. No after_state copy into return; existing topfinalexpectedmetadata contract retained. No Csource/algorithms/Sorting/optimization/browser/longsuite/publication. DeliveryQA inputs59unchanged andaccepted; parent chooses reviewer; group publication onlyafter acceptance.",
+  "scope_ref": "openspec/changes/review-sequential-final-logical-projection/review-scope.md"
+}

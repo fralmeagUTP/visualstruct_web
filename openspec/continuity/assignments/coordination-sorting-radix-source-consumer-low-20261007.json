@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-radix-source-consumer-low-20261007",
+  "issued_at_utc": "2026-10-07T15:39:01.456104+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting-radix-source-consumer",
+  "task": "sorting-radix-source-consumer",
+  "instruction": "New exact38600ba CI reveals one legitimate Radix adapter consumer still supplies empty C. User-approved SortingA requires legitimate consumers actual complete C; current parent authorizes only unambiguous causal fixes with small tests and QA before next push. Adapt this one consumer only, preserve every assert, no product/C/algorithm/native harness or broad campaign. Separate from four later oracles.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-radix-source-consumer-low.md"
+}

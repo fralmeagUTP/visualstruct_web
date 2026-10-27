@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-author-evidence-four-bindings-low-20261008",
+  "issued_at_utc": "2026-10-08T04:12:15.262889+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.author-evidence-four-bindings",
+  "task": "author-evidence-four-bindings",
+  "instruction": "Complete only author consolidated evidence with four omitted historical manifests: circular insert/delete, linked-list console, accepted stack. Preserve historical hashes, explicitly document shared later deltas and exact snapshot proof. Readback validate66IDs and all lot links. No tests/product/publication/formal closure, denied QA records/reviewer continuity index/denied SDD document writes or retries.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-phase8-limits-consumer-low/four-bindings-completion-scope.md"
+}

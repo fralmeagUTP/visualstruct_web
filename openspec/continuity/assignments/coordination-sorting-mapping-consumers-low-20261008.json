@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-mapping-consumers-low-20261008",
+  "issued_at_utc": "2026-10-08T00:52:53.460082+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting-mapping-consumers",
+  "task": "sorting-mapping-consumers",
+  "instruction": "Only three original source-mapping consumers: phase7 mergesort/binsort parameters and SORT002; existing mixed6 fixture [5,-1,4,2,2,0]. Reproduce and contrast C/source pre-call boundary contract before minimal consumer repair. Reuse accepted source oracle unchanged, strict pure controls on frozen original traces, preserve accepted27/pending13 incl shared functions. No engine expansion, deniedQA records/retry, formalQA substitution, publication/global/E2E/optimization.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-mapping-consumers-low.md"
+}

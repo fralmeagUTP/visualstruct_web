@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-reviewed-stdout-lifetime-support-low-20261007",
+  "issued_at_utc": "2026-10-07T02:50:24.581493+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-reviewed-stdout-lifetime-support",
+  "task": "publish-reviewed-stdout-lifetime-support",
+  "instruction": "Parent01a0fe61 explicitly authorizespublishingonlytwoacceptedQA lots (2+6 exactfiles) andpertinentpermanentsupport; thisfiniteoperation publishesexact8acceptedfiles, no unreviewedGraphmatrix/oracle, no mass evidence/secrets, no C/runtime/Sortingchanges, no VPS/force/reset/rebase. PreservecanonicalDbranch/index/history andcleanisolatedmain ancestry; compareSHA/diff beforecommit andremoteSHA after normalpush. Stagehistoricalclosurebanner acceptedbydistinctQA appliedcanonicalD beforecopyrelease; no24/59/globalclosure.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-reviewed-stdout-lifetime-support-low.md"
+}

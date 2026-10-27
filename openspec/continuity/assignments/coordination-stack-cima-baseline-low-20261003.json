@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-cima-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T21:59:07.677772+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack.cima-baseline-low",
+  "task": "Establish finite stack Cima LOW baseline preserving absent public API and closed mutations",
+  "instruction": "Ejecuta LOW Pila Cima baseline propuesto, recuperar previa evidence/hashcompatibility, gaps readonly guard outputs num/types/scopes/aliases/callerreal/querypersist GETnoreexecute/UIactual sinfeatureexposure/reload/resourcesfinite. Permanentregressions noxfail andplanMEDIUMifnecessary beforefixes. C/Hpriorclosures untouched;10pending currentmap. NoGraphdecisions/SDDblockedwrites/publicacion.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-cima-baseline-plan-low-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-front-finite-consolidation-low-20261003.json"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rn-console-consumer-low-20261008",
+  "issued_at_utc": "2026-10-08T01:59:55.137047+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.rn-console-consumer",
+  "task": "rn-console-consumer",
+  "instruction": "Only original phase7 test_console_is_transported_as_events_and_not_reconstructed_by_frontend: RN empty insert10 and static sequential/hierarchical/graph/hash JS console transport assertions. Preserve original fixture and every other function. C-source causal stdout timing/bytes, minimal consumer-only repair, pure mutation controls. Preserve accepted27/pending30. No RN/JS product edits, closed native/UI rerun, other cases, QA registration/substitution, publication, optimization, expansion or broad campaigns.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/rn-console-consumer-low.md"
+}

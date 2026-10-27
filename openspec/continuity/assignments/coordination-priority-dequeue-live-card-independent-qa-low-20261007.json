@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-dequeue-live-card-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T20:52:36.201229+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-priority-dequeue-legacy-memory-consumer",
+  "operation": "qa.priority-dequeue-legacy-memory-consumer",
+  "task": "priority-dequeue-legacy-memory-independent-qa",
+  "instruction": "Independent re-review only live-card uniqueness delta for three coordinated duplicates at unlink/value/priority stores; inspect all equivalent conversions and preserve legitimate path and previous13 cases. No product/C/publication/global/long campaigns.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-dequeue-live-card-uniqueness-delta-handoff.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-queue-show-instructions-medium-20261004",
+  "issued_at_utc": "2026-10-03T23:54:56.985512+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack-queue.mostrar-instructions-medium",
+  "task": "Correct independent Mostrar Python console private typed traces and validation-only rejection without C H API UI changes",
+  "instruction": "Continúa correcciónMEDIUMacotadaMostrarPilaCola conformeplanpreparado:160originalIDsconservados,50pass110failbaseline sinreescribir. CorregirconsolatrazaPythonfielC/probarhandbackLOW,noAPIUIniC_Hcambios. Mientrastrabaja entregarpropuestaGrafosprecisaCfunctions/entradasactualexpected/compatibilidadmínimoscambios. PesosintDijkstraalreadyapproved;BFrepresentation/HTTP400cycles/Primselectionchangesneedseparatedecision,noimplementyet. Seguirsin esperar esasdecisiones. Solefunctionalwriter/previewpreserved,noAISEF/RNowneredits/publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-queue-show-instructions-plan-medium-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-approved-integer-dijkstra-contract-low-20261003.json"
+}

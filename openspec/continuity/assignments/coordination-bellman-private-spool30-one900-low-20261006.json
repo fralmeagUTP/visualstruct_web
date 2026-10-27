@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-bellman-private-spool30-one900-low-20261006",
+  "issued_at_utc": "2026-10-06T13:04:50.979296+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.bellman-private-spool-bellman30-one900-observed",
+  "task": "bellman-private-spool-bellman30-one900",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd afterQA2422 acceptedfocal authorizes ONE BF30 private sameC/steps directed1..30/29unit/start1/end30. Explicitly supersedes QA conservative180s/512MiB recommendation: private trial maximum900s request including generation/validation/fullspool/readback/HTTPconsumption, body1073741824B, same hardRAM2147483648B. Verifyreal localdisk reserves BEFORElaunch; no publiclimitschange/externalresources. Supervisorownedroots/fds/evidencepartial cleanup success/failure/cancel/timeout noforeignrecursiveerase. Onegzip body evidence copy ifcomplete, boundedsource/protocol/oracleownership/sessionverification. No retry/adoption/otherlarge/optimization/Git/preview. Gate exactbefore0 mechanically BEFOREjob/Popen and self2GiBbeforeimports. Ifinsufficientlocalspace donotlaunch reportblock. Separate oldnativeC timing fromvisualPython request; sourceNativeoracle reuse notfresh perinstructionCproof. QApackage after.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/bellman-private-spool30-one900-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-numeric-private-spool30-low-20261006.json"
+}

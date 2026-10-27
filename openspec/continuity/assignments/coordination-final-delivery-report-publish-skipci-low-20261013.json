@@ -1,0 +1,14 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-final-delivery-report-publish-skipci-low-20261013",
+  "issued_at_utc": "2026-10-13T18:29:21.343710+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.github-vps-qualified-delivery",
+  "task": "github-vps-qualified-delivery",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-final-delivery-report-publish-skipci-low-20261013/scope.md",
+  "instruction": "User Sentinel_228f5fb9fad08191913529dbe2547db3 si...loautorizo: publishONLYauthorizedfinalreport openspec/changes/reconcile-remaining-historical-contracts/entrega-parcial-visualstruct-20261006.md hash4ac884...ddcbc onmain withskipciONLYthiscommit. Checkactualcontent/evidence/reserves/no secrets; preserveallotherlocalchanges. Index/assignments localcontinuityrepairNOT authorizedpublication. No tests/dispatch/product/test/workflow/VPS changes. Verifyremotesinglefile/manifest/workflowsobserved; c395f5f auditedSHA/newSHA documentonly/noownCI. Documentbytes unchanged; historicalguardmemo remainsdatedauthoringrecord.",
+  "user_message": "Sentinel_228f5fb9fad08191913529dbe2547db3",
+  "verbatim_user_authorization": "si... lo autorizo",
+  "authorized_document_sha256": "4ac884a874a6e542e062da5c0dc1618c435c59ddd14654a7e6276f21ad6ddcbc"
+}

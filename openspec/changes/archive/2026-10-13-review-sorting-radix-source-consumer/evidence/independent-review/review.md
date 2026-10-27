@@ -1,0 +1,13 @@
+# Revisión independiente: consumidor Radix con fuente C explícita
+
+Dictamen: ACEPTACIÓN focal. Fecha 2026-10-07; proyecto canónico D:\MisProyectos\Web_VisualEstruct. Change review-sorting-radix-source-consumer, operación qa.sorting-radix-source-consumer, assignment coordination-sorting-radix-source-consumer-independent-qa-low-20261007, task sorting-radix-source-consumer-independent-qa.
+
+La diferencia exacta añade el import CCodeService y sustituye source_code vacío por el mapeo actual operations[radixsort] en una llamada existente dentro del test de ambos modos. Cumple Sorting A aprobado: el consumidor legítimo suministra C completo; el producto no rellena entradas ausentes ni omite validación. No hay fallback, fuente sintética ni bypass del contrato.
+
+Se conserva el input de seis valores [INT_MAX, INT_MIN, 0, -1, INT_MIN, 7], fast y step_by_step, y la igualdad de ambas salidas con sorted(values). Los tres asserts AST de todo el archivo son idénticos. Las demás funciones y los casos paramétricos se conservan sin cambios; el harness nativo existente no fue ejecutado ni editado. Producto, algoritmo, intérprete y C/H inicialmente congelados permanecen idénticos; los 37 inputs finales coinciden con SHA-256.
+
+XML guardados: exactamente un ID, 1 FAIL por fuente explícita ausente antes y 1 PASS después. No son dos casos por contener dos modos y no se suman a otros lotes. No se repitió la prueba ni se ejecutaron algoritmos, campañas largas, navegador o C nativo durante esta revisión.
+
+Sorting A aprobado, su reparación de preprocesamiento, controles/delta y la decisión de división E2E rechazada conservan los hashes aceptados. El ID nuevo observado en CI38600ba justifica este consumidor, pero el PASS focal local no acredita reducción global o resultado de una publicación futura. El contexto72 FAIL/1300 PASS y10resueltos1nuevo frente42da se mantiene separado de este dictamen y no fue revalidado mediante red.
+
+Evidencia: hashes (evidencia local: `openspec/changes/archive/2026-10-13-review-sorting-radix-source-consumer/evidence/independent-review/hash-check.json`), AST y XML (evidencia local: `openspec/changes/archive/2026-10-13-review-sorting-radix-source-consumer/evidence/independent-review/structural-and-xml-check.json`), Sorting A/E2E (evidencia local: `openspec/changes/archive/2026-10-13-review-sorting-radix-source-consumer/evidence/independent-review/sorting-A-and-e2e-preservation.json`). Guardas propias before/after; sólo se escribió evidencia independiente, sin publicación ni cambios a originales. No se requieren cambios para este consumidor focal; restantes fallos y publicación pertenecen a coordinación.

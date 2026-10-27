@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rn-full-validator-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T16:15:44.111694+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "red-black.validate-full-consolidation-low",
+  "task": "Consolidate finite RN V3 acceptance and independent review bundle; examine installed sanitizer alternatives",
+  "instruction": "# RN V3 consolidación LOW autorizada\n\nDelegación actual coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: revisar13filas aceptación,52regresiones/17fixtures,API/Cnative/UIreload/mainDoxygen/ownership7/7 ymapas8ramasrealdelete. Sin reimplementación ni repetir suitescerradas: validarhashes/evidenciaytipos,objetosvivos/cycles/shared,edgeints/stableops. Separar defecto funcionalfinito deinfraestructurasanitizer:leerlinkerrors ybuscarcompiladoresinstaladosalternativaspermitidas sininstalar. Entregarpaquete/hashpara revisiónindependiente. NoarchivehastaQAadecuada,noEncolarMEDIUM,noGraph/nootrosC/H/nopublish. C/H exception remains only implemented RNvalidator; no productedit in this LOW. Finitefunctionalclosure if evidenced, global/C1/sanitizer pending separate.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/red-black-full-validation-consolidation-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-rn-full-validator-implementation-medium-20261003.json"
+}

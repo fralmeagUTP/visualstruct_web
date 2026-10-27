@@ -1,0 +1,6053 @@
+{
+  "input": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "native": [
+    {
+      "case": 1,
+      "token": "initial",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "sort_entry",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "declare",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "valid_call",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "valid_entry",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "valid_ptr",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "valid_n",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "sort_guard",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "minmax_call",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "minmax_entry",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "helper_i_declare",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "valid_entry",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "valid_ptr",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "valid_n",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "minmax_guard",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "min_init",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "max_init",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 1,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "scan_init",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 1,
+      "i": null,
+      "helper_i": 1,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "scan_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 1,
+      "i": null,
+      "helper_i": 1,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 0,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "min_compare",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 1,
+      "i": null,
+      "helper_i": 1,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 1,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "max_compare",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 1,
+      "i": null,
+      "helper_i": 1,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 2,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "max_assign",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 2,
+      "i": null,
+      "helper_i": 1,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 2,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "scan_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 2,
+      "i": null,
+      "helper_i": 2,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 2,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "scan_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 2,
+      "i": null,
+      "helper_i": 2,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 2,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "min_compare",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 2,
+      "i": null,
+      "helper_i": 2,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 3,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "max_compare",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 2,
+      "i": null,
+      "helper_i": 2,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 4,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "max_assign",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 3,
+      "i": null,
+      "helper_i": 2,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 4,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "scan_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 3,
+      "i": null,
+      "helper_i": 3,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 4,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "scan_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 3,
+      "i": null,
+      "helper_i": 3,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 4,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "min_compare",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 3,
+      "i": null,
+      "helper_i": 3,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 5,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "max_compare",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 3,
+      "i": null,
+      "helper_i": 3,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "max_assign",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": 3,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "scan_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": 4,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "scan_test",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": 4,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "minmax_return",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "minmax_status",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "range_compute",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "range_limit",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "size_guard",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "range_guard",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 0,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_init",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "allocation_guard",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": null,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_init",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 0,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_fill",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 1,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 1,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 1,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_fill",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 2,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 2,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 2,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_fill",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 3,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 3,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 3,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_fill",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 4,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 4,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 4,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "fill_test",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 4,
+      "helper_i": null,
+      "rango": 4,
+      "indice": null,
+      "conteo": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 4,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "output_init",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 4,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 0,
+      "conteo": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 4,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_init",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 0,
+      "conteo": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 4,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 0,
+      "conteo": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 4,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "bucket_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 0,
+      "conteo": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 4,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "array_write",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 1,
+      "conteo": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 5,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_write",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 1,
+      "conteo": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 6,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "bucket_test",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 0,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 1,
+      "conteo": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 6,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 1,
+      "conteo": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 6,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 1,
+      "conteo": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 6,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "bucket_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 1,
+      "conteo": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 6,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "array_write",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 2,
+      "conteo": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 7,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_write",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 2,
+      "conteo": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 8,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "bucket_test",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 1,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 2,
+      "conteo": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 8,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 2,
+      "conteo": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 8,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 2,
+      "conteo": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 8,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "bucket_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 2,
+      "conteo": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 8,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "array_write",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 3,
+      "conteo": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 9,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_write",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 3,
+      "conteo": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 10,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "bucket_test",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 2,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 3,
+      "conteo": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 10,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 3,
+      "conteo": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 10,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 3,
+      "conteo": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 10,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "bucket_test",
+      "condition": true,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 3,
+      "conteo": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 10,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "array_write",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 4,
+      "conteo": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "comparisons": 6,
+      "moves": 11,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_write",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 4,
+      "conteo": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 12,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "bucket_test",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 3,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 4,
+      "conteo": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 12,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_increment",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 4,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 4,
+      "conteo": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 12,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "rebuild_test",
+      "condition": false,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 4,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 4,
+      "conteo": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "comparisons": 6,
+      "moves": 12,
+      "allocations": 1,
+      "frees": 0
+    },
+    {
+      "case": 1,
+      "token": "count_free",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": 1,
+      "maximo": 4,
+      "i": 4,
+      "helper_i": null,
+      "rango": 4,
+      "indice": 4,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 12,
+      "allocations": 1,
+      "frees": 1
+    },
+    {
+      "case": 1,
+      "token": "sort_return",
+      "condition": null,
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "minimo": null,
+      "maximo": null,
+      "i": null,
+      "helper_i": null,
+      "rango": null,
+      "indice": null,
+      "conteo": null,
+      "comparisons": 6,
+      "moves": 12,
+      "allocations": 1,
+      "frees": 1
+    }
+  ],
+  "response": {
+    "execution_trace": {
+      "code_title": "Codigo C",
+      "final_state": {
+        "active_range": null,
+        "algorithm": "counting_sort",
+        "auxiliary_array": null,
+        "comparing_indices": [],
+        "highlighted_indices": [],
+        "items": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "kind": "sorting_array",
+        "last_operation": {
+          "message": "Ordenamiento finalizado.",
+          "name": "counting_sort",
+          "status": "success"
+        },
+        "metrics": {
+          "comparisons": 6,
+          "moves": 12,
+          "steps": 12,
+          "swaps": 0
+        },
+        "pivot_index": null,
+        "sorted_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "structure": "sorting_array",
+        "swapping_indices": [],
+        "temporaries": {},
+        "title": "Arreglo de ordenamiento",
+        "trace_action": "Arreglo ordenado.",
+        "trace_token": "return"
+      },
+      "learning_profile": {
+        "mastery": [
+          "calcula una urna",
+          "explica el coste dependiente del rango"
+        ],
+        "objective": "Ordenar reconstruyendo el arreglo desde frecuencias de valores.",
+        "prior": [
+          "frecuencias",
+          "rango mínimo-máximo",
+          "memoria dinámica"
+        ]
+      },
+      "message": "Ordenamiento ejecutado correctamente.",
+      "mutates": true,
+      "operation_name": "counting_sort",
+      "payload": {},
+      "pedagogy_schema": {
+        "$id": "visualestruct://sorting/pedagogical-frame/v1",
+        "levels": [
+          "basic",
+          "intermediate",
+          "advanced"
+        ],
+        "required": [
+          "schema_version",
+          "concept",
+          "phase",
+          "condition",
+          "variables",
+          "call_stack",
+          "loop",
+          "pointers",
+          "invariant",
+          "narration",
+          "source"
+        ],
+        "version": 1
+      },
+      "pedagogy_schema_version": 1,
+      "source_code": "/**\n * @brief Verifica si un arreglo puede procesarse.\n *\n * @param arreglo Arreglo de enteros.\n * @param n Número de elementos del arreglo.\n * @return 1 si el arreglo es válido; 0 en caso contrario.\n */\nstatic int arreglo_valido(const int arreglo[], size_t n) {\n\treturn arreglo != NULL && n > 0;\n}\n\n/**\n * @brief Obtiene el menor y mayor valor de un arreglo (función auxiliar).\n *\n * @param arreglo Arreglo de enteros.\n * @param n Número de elementos.\n * @param minimo Dirección donde se almacena el mínimo.\n * @param maximo Dirección donde se almacena el máximo.\n * @return ORDENAMIENTO_OK si se calcularon los valores; ORDENAMIENTO_ERROR en caso contrario.\n */\nstatic int obtener_minimo_maximo(const int arreglo[], size_t n, int *minimo, int *maximo) {\n\tsize_t i;\n\tif (!arreglo_valido(arreglo, n) || minimo == NULL || maximo == NULL) return ORDENAMIENTO_ERROR;\n\t*minimo = arreglo[0]; *maximo = arreglo[0];\n\tfor (i = 1; i < n; ++i) {\n\t\tif (arreglo[i] < *minimo) *minimo = arreglo[i];\n\t\tif (arreglo[i] > *maximo) *maximo = arreglo[i];\n\t}\n\treturn ORDENAMIENTO_OK;\n}\n\n/**\n * @brief Ordena un arreglo usando Counting Sort.\n *\n * @param arreglo Arreglo de enteros a ordenar.\n * @param n Número de elementos del arreglo.\n * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR ante arreglo NULL, n == 0, rango mayor que ORDENAMIENTO_RANGO_MAX, tamaño no representable o fallo de memoria.\n * @note Tiempo O(n+k), memoria O(k), k=max-min+1 <= ORDENAMIENTO_RANGO_MAX; reconstruye enteros por frecuencia, sin preservar identidad de registros iguales.\n * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.\n */\nint ordenar_counting_sort(int arreglo[], size_t n) {\n\tint minimo, maximo; size_t rango, i, indice; int *conteo;\n\tif (!arreglo_valido(arreglo, n)) return ORDENAMIENTO_ERROR;\n\tif (!obtener_minimo_maximo(arreglo, n, &minimo, &maximo)) return ORDENAMIENTO_ERROR;\n\trango = (size_t)((long long)maximo - (long long)minimo + 1LL);\n\tif (rango > ORDENAMIENTO_RANGO_MAX || rango > SIZE_MAX / sizeof(int)) return ORDENAMIENTO_ERROR;\n\tconteo = (int *)calloc(rango, sizeof(int));\n\tif (conteo == NULL) return ORDENAMIENTO_ERROR;\n\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];\n\tindice = 0;\n\tfor (i = 0; i < rango; ++i)\n\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }\n\tfree(conteo);\n\treturn ORDENAMIENTO_OK;\n}",
+      "steps": [
+        {
+          "debug": {
+            "note": "Inicio de ejecucion.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 40,
+          "line_text": "int ordenar_counting_sort(int arreglo[], size_t n) {",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "call",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": null,
+            "narration": {
+              "advanced": "La ejecución entra en una función y conserva el punto al que deberá regresar. Inicio de ejecucion. Línea C: int ordenar_counting_sort(int arreglo[], size_t n) {.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Inicio de ejecucion.",
+              "intermediate": "La ejecución entra en una función y conserva el punto al que deberá regresar. Inicio de ejecucion."
+            },
+            "phase": {
+              "goal": "Inicio de ejecucion.",
+              "id": "entry",
+              "label": "Entry"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 40,
+              "line_text": "int ordenar_counting_sort(int arreglo[], size_t n) {",
+              "line_token": "entry"
+            },
+            "variables": []
+          },
+          "phase": "start",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicio de ejecucion.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 1,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicio de ejecucion.",
+            "trace_token": "entry"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicio de ejecucion.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 1,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicio de ejecucion.",
+            "trace_token": "entry"
+          },
+          "step_index": 0
+        },
+        {
+          "debug": {
+            "note": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 8,
+          "line_text": "\treturn arreglo != NULL && n > 0;",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "condition",
+            "condition": {
+              "consequence": "Continuar por la rama falsa; arreglo aceptado.",
+              "expression": "!arreglo_valido(arreglo, n)",
+              "result": false
+            },
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": null,
+            "narration": {
+              "advanced": "La expresión de C decide cuál será la siguiente rama ejecutada. arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero. Línea C: return arreglo != NULL && n > 0;.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+              "intermediate": "La expresión de C decide cuál será la siguiente rama ejecutada. arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero."
+            },
+            "phase": {
+              "goal": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+              "id": "validate_array",
+              "label": "Validate Array"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 8,
+              "line_text": "\treturn arreglo != NULL && n > 0;",
+              "line_token": "validate_array"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 2,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+            "trace_token": "validate_array"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicio de ejecucion.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 1,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicio de ejecucion.",
+            "trace_token": "entry"
+          },
+          "step_index": 1
+        },
+        {
+          "debug": {
+            "note": "Inicializar arreglo de conteo con rango [1, 4].",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 46,
+          "line_text": "\tconteo = (int *)calloc(rango, sizeof(int));",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": null,
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Inicializar arreglo de conteo con rango [1, 4]. Línea C: conteo = (int *)calloc(rango, sizeof(int));.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Inicializar arreglo de conteo con rango [1, 4].",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Inicializar arreglo de conteo con rango [1, 4]."
+            },
+            "phase": {
+              "goal": "Inicializar arreglo de conteo con rango [1, 4].",
+              "id": "count_init",
+              "label": "Count Init"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 46,
+              "line_text": "\tconteo = (int *)calloc(rango, sizeof(int));",
+              "line_token": "count_init"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicializar arreglo de conteo con rango [1, 4].",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 0,
+              "steps": 3,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicializar arreglo de conteo con rango [1, 4].",
+            "trace_token": "count_init"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 2,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+            "trace_token": "validate_array"
+          },
+          "step_index": 2
+        },
+        {
+          "debug": {
+            "note": "Incrementar conteo para valor 1.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 48,
+          "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 4,
+              "kind": "for"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 1. Línea C: for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Incrementar conteo para valor 1.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 1."
+            },
+            "phase": {
+              "goal": "Incrementar conteo para valor 1.",
+              "id": "count_fill",
+              "label": "Count Fill"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 48,
+              "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+              "line_token": "count_fill"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 1.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 1,
+              "steps": 4,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 1.",
+            "trace_token": "count_fill"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicializar arreglo de conteo con rango [1, 4].",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 0,
+              "steps": 3,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicializar arreglo de conteo con rango [1, 4].",
+            "trace_token": "count_init"
+          },
+          "step_index": 3
+        },
+        {
+          "debug": {
+            "note": "Incrementar conteo para valor 2.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 48,
+          "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 5,
+              "kind": "for"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 2. Línea C: for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Incrementar conteo para valor 2.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 2."
+            },
+            "phase": {
+              "goal": "Incrementar conteo para valor 2.",
+              "id": "count_fill",
+              "label": "Count Fill"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 48,
+              "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+              "line_token": "count_fill"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 2.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 2,
+              "steps": 5,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 2.",
+            "trace_token": "count_fill"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 1.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 1,
+              "steps": 4,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 1.",
+            "trace_token": "count_fill"
+          },
+          "step_index": 4
+        },
+        {
+          "debug": {
+            "note": "Incrementar conteo para valor 3.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 48,
+          "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 6,
+              "kind": "for"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 3. Línea C: for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Incrementar conteo para valor 3.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 3."
+            },
+            "phase": {
+              "goal": "Incrementar conteo para valor 3.",
+              "id": "count_fill",
+              "label": "Count Fill"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 48,
+              "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+              "line_token": "count_fill"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 3.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 3,
+              "steps": 6,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 3.",
+            "trace_token": "count_fill"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 2.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 2,
+              "steps": 5,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 2.",
+            "trace_token": "count_fill"
+          },
+          "step_index": 5
+        },
+        {
+          "debug": {
+            "note": "Incrementar conteo para valor 4.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 48,
+          "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 7,
+              "kind": "for"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 4. Línea C: for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Incrementar conteo para valor 4.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 4."
+            },
+            "phase": {
+              "goal": "Incrementar conteo para valor 4.",
+              "id": "count_fill",
+              "label": "Count Fill"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 48,
+              "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+              "line_token": "count_fill"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 4.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 4,
+              "steps": 7,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 4.",
+            "trace_token": "count_fill"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 3.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 3,
+              "steps": 6,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 3.",
+            "trace_token": "count_fill"
+          },
+          "step_index": 6
+        },
+        {
+          "debug": {
+            "note": "Reconstruir arreglo desde conteos.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 51,
+          "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 8,
+              "kind": "while"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos. Línea C: while (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Reconstruir arreglo desde conteos.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos."
+            },
+            "phase": {
+              "goal": "Reconstruir arreglo desde conteos.",
+              "id": "count_write",
+              "label": "Count Write"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 51,
+              "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+              "line_token": "count_write"
+            },
+            "variables": [
+              {
+                "changed": false,
+                "meaning": "Inicio del rango activo.",
+                "name": "limite_inferior",
+                "type": "size_t",
+                "value": 0
+              },
+              {
+                "changed": false,
+                "meaning": "Fin del rango activo.",
+                "name": "limite_superior",
+                "type": "size_t",
+                "value": 3
+              }
+            ]
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 6,
+              "steps": 8,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 4.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 4,
+              "steps": 7,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 4.",
+            "trace_token": "count_fill"
+          },
+          "step_index": 7
+        },
+        {
+          "debug": {
+            "note": "Reconstruir arreglo desde conteos.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 51,
+          "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 9,
+              "kind": "while"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos. Línea C: while (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Reconstruir arreglo desde conteos.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos."
+            },
+            "phase": {
+              "goal": "Reconstruir arreglo desde conteos.",
+              "id": "count_write",
+              "label": "Count Write"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 51,
+              "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+              "line_token": "count_write"
+            },
+            "variables": [
+              {
+                "changed": false,
+                "meaning": "Inicio del rango activo.",
+                "name": "limite_inferior",
+                "type": "size_t",
+                "value": 0
+              },
+              {
+                "changed": false,
+                "meaning": "Fin del rango activo.",
+                "name": "limite_superior",
+                "type": "size_t",
+                "value": 3
+              }
+            ]
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 8,
+              "steps": 9,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "state_snapshot": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 6,
+              "steps": 8,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "step_index": 8
+        },
+        {
+          "debug": {
+            "note": "Reconstruir arreglo desde conteos.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 51,
+          "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 10,
+              "kind": "while"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos. Línea C: while (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Reconstruir arreglo desde conteos.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos."
+            },
+            "phase": {
+              "goal": "Reconstruir arreglo desde conteos.",
+              "id": "count_write",
+              "label": "Count Write"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 51,
+              "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+              "line_token": "count_write"
+            },
+            "variables": [
+              {
+                "changed": false,
+                "meaning": "Inicio del rango activo.",
+                "name": "limite_inferior",
+                "type": "size_t",
+                "value": 0
+              },
+              {
+                "changed": false,
+                "meaning": "Fin del rango activo.",
+                "name": "limite_superior",
+                "type": "size_t",
+                "value": 3
+              }
+            ]
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 10,
+              "steps": 10,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "state_snapshot": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 8,
+              "steps": 9,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "step_index": 9
+        },
+        {
+          "debug": {
+            "note": "Reconstruir arreglo desde conteos.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 51,
+          "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 11,
+              "kind": "while"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos. Línea C: while (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Reconstruir arreglo desde conteos.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos."
+            },
+            "phase": {
+              "goal": "Reconstruir arreglo desde conteos.",
+              "id": "count_write",
+              "label": "Count Write"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 51,
+              "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+              "line_token": "count_write"
+            },
+            "variables": [
+              {
+                "changed": false,
+                "meaning": "Inicio del rango activo.",
+                "name": "limite_inferior",
+                "type": "size_t",
+                "value": 0
+              },
+              {
+                "changed": false,
+                "meaning": "Fin del rango activo.",
+                "name": "limite_superior",
+                "type": "size_t",
+                "value": 3
+              }
+            ]
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 12,
+              "steps": 11,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "state_snapshot": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 10,
+              "steps": 10,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "step_index": 10
+        },
+        {
+          "debug": {
+            "note": "Arreglo ordenado.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 53,
+          "line_text": "\treturn ORDENAMIENTO_OK;",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "return",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": null,
+            "narration": {
+              "advanced": "La función termina y devuelve el control a quien la llamó. Arreglo ordenado. Línea C: return ORDENAMIENTO_OK;.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Arreglo ordenado.",
+              "intermediate": "La función termina y devuelve el control a quien la llamó. Arreglo ordenado."
+            },
+            "phase": {
+              "goal": "Arreglo ordenado.",
+              "id": "return",
+              "label": "Return"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 53,
+              "line_text": "\treturn ORDENAMIENTO_OK;",
+              "line_token": "return"
+            },
+            "variables": []
+          },
+          "phase": "end",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Ordenamiento finalizado.",
+              "name": "counting_sort",
+              "status": "success"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 12,
+              "steps": 12,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Arreglo ordenado.",
+            "trace_token": "return"
+          },
+          "state_snapshot": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 12,
+              "steps": 11,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "step_index": 11
+        }
+      ],
+      "structure_id": "sorting",
+      "success": true,
+      "theory_profile": {
+        "average": "O(n+k)",
+        "best": "O(n+k)",
+        "in_place": false,
+        "memory": "O(k)",
+        "stable": false,
+        "worst": "O(n+k)"
+      }
+    },
+    "history": [
+      {
+        "operation": "create_array",
+        "payload": {
+          "values": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      },
+      {
+        "array_effect": {
+          "input": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "output": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "schema": 1
+        },
+        "operation": "run",
+        "payload": {
+          "algorithm_id": "counting_sort",
+          "mode": "step_by_step"
+        }
+      }
+    ],
+    "main_c": "/** @file main.c\n * @brief Reproduce el historial aceptado de Ordenamientos.\n * @details Compilar: gcc -std=c17 -Wall -Wextra -pedantic main.c tad_ordenamiento.c -o ordenamiento\n * Datos aleatorios materializados; no usa rand ni resultados precalculados.\n * Arreglo automatico de 80 enteros. El TAD libera sus auxiliares internos.\n */\n#include <stdio.h>\n#include <stddef.h>\n#include <limits.h>\n#include \"tad_ordenamiento.h\"\n#if INT_MAX != 2147483647 || INT_MIN != (-2147483647 - 1)\n#error \"Este ejemplo reproduce el contrato int32 de la aplicacion.\"\n#endif\n/** @brief Ejecuta en orden creaciones y ordenamientos aceptados.\n * @return 0 si termina; 1 si un metodo int reporta un fallo nativo, incluida memoria.\n */\nint main(void) {\n    int arreglo[80] = {0};\n    size_t n = 0;\n    /* Nueva creacion: reemplaza los datos corrientes. */\n    n = 4;\n    arreglo[0] = 1;\n    arreglo[1] = 2;\n    arreglo[2] = 3;\n    arreglo[3] = 4;\n    imprimir_arreglo(arreglo, n);\n    printf(\"Run 1: ordenar_counting_sort\\n\");\n    int estado_1 = ordenar_counting_sort(arreglo, n);\n    printf(\"Estado: %d\\n\", estado_1);\n    if (estado_1 != ORDENAMIENTO_OK) {\n        fprintf(stderr, \"El TAD reporto un fallo; no se imprime un resultado exitoso.\\n\");\n        return 1;\n    }\n    imprimir_arreglo(arreglo, n);\n    return 0;\n}\n",
+    "message": "Ordenamiento ejecutado con counting_sort.",
+    "result": {
+      "algorithm": "counting_sort",
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "metrics": {
+        "comparisons": 6,
+        "moves": 12,
+        "steps": 12,
+        "swaps": 0
+      },
+      "mode": "step_by_step"
+    },
+    "success": true,
+    "visual_state": {
+      "active_range": null,
+      "algorithm": "counting_sort",
+      "auxiliary_array": null,
+      "comparing_indices": [],
+      "highlighted_indices": [],
+      "items": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "kind": "sorting_array",
+      "last_operation": {
+        "message": "Ordenamiento finalizado.",
+        "name": "counting_sort",
+        "status": "success"
+      },
+      "metrics": {
+        "comparisons": 6,
+        "moves": 12,
+        "steps": 12,
+        "swaps": 0
+      },
+      "pivot_index": null,
+      "sorted_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "structure": "sorting_array",
+      "swapping_indices": [],
+      "temporaries": {},
+      "title": "Arreglo de ordenamiento",
+      "trace_action": "Arreglo ordenado.",
+      "trace_token": "return"
+    }
+  },
+  "fast_response": {
+    "execution_trace": {
+      "code_title": "Codigo C",
+      "final_state": {
+        "active_range": null,
+        "algorithm": "counting_sort",
+        "auxiliary_array": null,
+        "comparing_indices": [],
+        "highlighted_indices": [],
+        "items": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "kind": "sorting_array",
+        "last_operation": {
+          "message": "Ordenamiento finalizado.",
+          "name": "counting_sort",
+          "status": "success"
+        },
+        "metrics": {
+          "comparisons": 6,
+          "moves": 12,
+          "steps": 12,
+          "swaps": 0
+        },
+        "pivot_index": null,
+        "sorted_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "structure": "sorting_array",
+        "swapping_indices": [],
+        "temporaries": {},
+        "title": "Arreglo de ordenamiento",
+        "trace_action": "Arreglo ordenado.",
+        "trace_token": "return"
+      },
+      "learning_profile": {
+        "mastery": [
+          "calcula una urna",
+          "explica el coste dependiente del rango"
+        ],
+        "objective": "Ordenar reconstruyendo el arreglo desde frecuencias de valores.",
+        "prior": [
+          "frecuencias",
+          "rango mínimo-máximo",
+          "memoria dinámica"
+        ]
+      },
+      "message": "Ordenamiento ejecutado correctamente.",
+      "mutates": true,
+      "operation_name": "counting_sort",
+      "payload": {},
+      "pedagogy_schema": {
+        "$id": "visualestruct://sorting/pedagogical-frame/v1",
+        "levels": [
+          "basic",
+          "intermediate",
+          "advanced"
+        ],
+        "required": [
+          "schema_version",
+          "concept",
+          "phase",
+          "condition",
+          "variables",
+          "call_stack",
+          "loop",
+          "pointers",
+          "invariant",
+          "narration",
+          "source"
+        ],
+        "version": 1
+      },
+      "pedagogy_schema_version": 1,
+      "source_code": "/**\n * @brief Verifica si un arreglo puede procesarse.\n *\n * @param arreglo Arreglo de enteros.\n * @param n Número de elementos del arreglo.\n * @return 1 si el arreglo es válido; 0 en caso contrario.\n */\nstatic int arreglo_valido(const int arreglo[], size_t n) {\n\treturn arreglo != NULL && n > 0;\n}\n\n/**\n * @brief Obtiene el menor y mayor valor de un arreglo (función auxiliar).\n *\n * @param arreglo Arreglo de enteros.\n * @param n Número de elementos.\n * @param minimo Dirección donde se almacena el mínimo.\n * @param maximo Dirección donde se almacena el máximo.\n * @return ORDENAMIENTO_OK si se calcularon los valores; ORDENAMIENTO_ERROR en caso contrario.\n */\nstatic int obtener_minimo_maximo(const int arreglo[], size_t n, int *minimo, int *maximo) {\n\tsize_t i;\n\tif (!arreglo_valido(arreglo, n) || minimo == NULL || maximo == NULL) return ORDENAMIENTO_ERROR;\n\t*minimo = arreglo[0]; *maximo = arreglo[0];\n\tfor (i = 1; i < n; ++i) {\n\t\tif (arreglo[i] < *minimo) *minimo = arreglo[i];\n\t\tif (arreglo[i] > *maximo) *maximo = arreglo[i];\n\t}\n\treturn ORDENAMIENTO_OK;\n}\n\n/**\n * @brief Ordena un arreglo usando Counting Sort.\n *\n * @param arreglo Arreglo de enteros a ordenar.\n * @param n Número de elementos del arreglo.\n * @return ORDENAMIENTO_OK si se ordenó correctamente; ORDENAMIENTO_ERROR ante arreglo NULL, n == 0, rango mayor que ORDENAMIENTO_RANGO_MAX, tamaño no representable o fallo de memoria.\n * @note Tiempo O(n+k), memoria O(k), k=max-min+1 <= ORDENAMIENTO_RANGO_MAX; reconstruye enteros por frecuencia, sin preservar identidad de registros iguales.\n * @note Arreglo NULL o n==0 no se procesa; funciones int retornan ERROR y funciones void no comunican estado.\n */\nint ordenar_counting_sort(int arreglo[], size_t n) {\n\tint minimo, maximo; size_t rango, i, indice; int *conteo;\n\tif (!arreglo_valido(arreglo, n)) return ORDENAMIENTO_ERROR;\n\tif (!obtener_minimo_maximo(arreglo, n, &minimo, &maximo)) return ORDENAMIENTO_ERROR;\n\trango = (size_t)((long long)maximo - (long long)minimo + 1LL);\n\tif (rango > ORDENAMIENTO_RANGO_MAX || rango > SIZE_MAX / sizeof(int)) return ORDENAMIENTO_ERROR;\n\tconteo = (int *)calloc(rango, sizeof(int));\n\tif (conteo == NULL) return ORDENAMIENTO_ERROR;\n\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];\n\tindice = 0;\n\tfor (i = 0; i < rango; ++i)\n\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }\n\tfree(conteo);\n\treturn ORDENAMIENTO_OK;\n}",
+      "steps": [
+        {
+          "debug": {
+            "note": "Inicio de ejecucion.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 40,
+          "line_text": "int ordenar_counting_sort(int arreglo[], size_t n) {",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "call",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": null,
+            "narration": {
+              "advanced": "La ejecución entra en una función y conserva el punto al que deberá regresar. Inicio de ejecucion. Línea C: int ordenar_counting_sort(int arreglo[], size_t n) {.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Inicio de ejecucion.",
+              "intermediate": "La ejecución entra en una función y conserva el punto al que deberá regresar. Inicio de ejecucion."
+            },
+            "phase": {
+              "goal": "Inicio de ejecucion.",
+              "id": "entry",
+              "label": "Entry"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 40,
+              "line_text": "int ordenar_counting_sort(int arreglo[], size_t n) {",
+              "line_token": "entry"
+            },
+            "variables": []
+          },
+          "phase": "start",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicio de ejecucion.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 1,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicio de ejecucion.",
+            "trace_token": "entry"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicio de ejecucion.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 1,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicio de ejecucion.",
+            "trace_token": "entry"
+          },
+          "step_index": 0
+        },
+        {
+          "debug": {
+            "note": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 8,
+          "line_text": "\treturn arreglo != NULL && n > 0;",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "condition",
+            "condition": {
+              "consequence": "Continuar por la rama falsa; arreglo aceptado.",
+              "expression": "!arreglo_valido(arreglo, n)",
+              "result": false
+            },
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": null,
+            "narration": {
+              "advanced": "La expresión de C decide cuál será la siguiente rama ejecutada. arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero. Línea C: return arreglo != NULL && n > 0;.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+              "intermediate": "La expresión de C decide cuál será la siguiente rama ejecutada. arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero."
+            },
+            "phase": {
+              "goal": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+              "id": "validate_array",
+              "label": "Validate Array"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 8,
+              "line_text": "\treturn arreglo != NULL && n > 0;",
+              "line_token": "validate_array"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 2,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+            "trace_token": "validate_array"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicio de ejecucion.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 1,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicio de ejecucion.",
+            "trace_token": "entry"
+          },
+          "step_index": 1
+        },
+        {
+          "debug": {
+            "note": "Inicializar arreglo de conteo con rango [1, 4].",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 46,
+          "line_text": "\tconteo = (int *)calloc(rango, sizeof(int));",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": null,
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Inicializar arreglo de conteo con rango [1, 4]. Línea C: conteo = (int *)calloc(rango, sizeof(int));.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Inicializar arreglo de conteo con rango [1, 4].",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Inicializar arreglo de conteo con rango [1, 4]."
+            },
+            "phase": {
+              "goal": "Inicializar arreglo de conteo con rango [1, 4].",
+              "id": "count_init",
+              "label": "Count Init"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 46,
+              "line_text": "\tconteo = (int *)calloc(rango, sizeof(int));",
+              "line_token": "count_init"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicializar arreglo de conteo con rango [1, 4].",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 0,
+              "steps": 3,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicializar arreglo de conteo con rango [1, 4].",
+            "trace_token": "count_init"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 0,
+              "moves": 0,
+              "steps": 2,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+            "trace_token": "validate_array"
+          },
+          "step_index": 2
+        },
+        {
+          "debug": {
+            "note": "Incrementar conteo para valor 1.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 48,
+          "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 4,
+              "kind": "for"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 1. Línea C: for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Incrementar conteo para valor 1.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 1."
+            },
+            "phase": {
+              "goal": "Incrementar conteo para valor 1.",
+              "id": "count_fill",
+              "label": "Count Fill"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 48,
+              "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+              "line_token": "count_fill"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 1.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 1,
+              "steps": 4,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 1.",
+            "trace_token": "count_fill"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Inicializar arreglo de conteo con rango [1, 4].",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 0,
+              "steps": 3,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Inicializar arreglo de conteo con rango [1, 4].",
+            "trace_token": "count_init"
+          },
+          "step_index": 3
+        },
+        {
+          "debug": {
+            "note": "Incrementar conteo para valor 2.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 48,
+          "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 5,
+              "kind": "for"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 2. Línea C: for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Incrementar conteo para valor 2.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 2."
+            },
+            "phase": {
+              "goal": "Incrementar conteo para valor 2.",
+              "id": "count_fill",
+              "label": "Count Fill"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 48,
+              "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+              "line_token": "count_fill"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 2.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 2,
+              "steps": 5,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 2.",
+            "trace_token": "count_fill"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 1.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 1,
+              "steps": 4,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 1.",
+            "trace_token": "count_fill"
+          },
+          "step_index": 4
+        },
+        {
+          "debug": {
+            "note": "Incrementar conteo para valor 3.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 48,
+          "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 6,
+              "kind": "for"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 3. Línea C: for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Incrementar conteo para valor 3.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 3."
+            },
+            "phase": {
+              "goal": "Incrementar conteo para valor 3.",
+              "id": "count_fill",
+              "label": "Count Fill"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 48,
+              "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+              "line_token": "count_fill"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 3.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 3,
+              "steps": 6,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 3.",
+            "trace_token": "count_fill"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 2.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 2,
+              "steps": 5,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 2.",
+            "trace_token": "count_fill"
+          },
+          "step_index": 5
+        },
+        {
+          "debug": {
+            "note": "Incrementar conteo para valor 4.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 48,
+          "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 7,
+              "kind": "for"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 4. Línea C: for (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Incrementar conteo para valor 4.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Incrementar conteo para valor 4."
+            },
+            "phase": {
+              "goal": "Incrementar conteo para valor 4.",
+              "id": "count_fill",
+              "label": "Count Fill"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 48,
+              "line_text": "\tfor (i = 0; i < n; ++i) ++conteo[arreglo[i] - minimo];",
+              "line_token": "count_fill"
+            },
+            "variables": []
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 4.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 4,
+              "steps": 7,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 4.",
+            "trace_token": "count_fill"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 3.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 3,
+              "steps": 6,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 3.",
+            "trace_token": "count_fill"
+          },
+          "step_index": 6
+        },
+        {
+          "debug": {
+            "note": "Reconstruir arreglo desde conteos.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 51,
+          "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 8,
+              "kind": "while"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos. Línea C: while (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Reconstruir arreglo desde conteos.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos."
+            },
+            "phase": {
+              "goal": "Reconstruir arreglo desde conteos.",
+              "id": "count_write",
+              "label": "Count Write"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 51,
+              "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+              "line_token": "count_write"
+            },
+            "variables": [
+              {
+                "changed": false,
+                "meaning": "Inicio del rango activo.",
+                "name": "limite_inferior",
+                "type": "size_t",
+                "value": 0
+              },
+              {
+                "changed": false,
+                "meaning": "Fin del rango activo.",
+                "name": "limite_superior",
+                "type": "size_t",
+                "value": 3
+              }
+            ]
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 6,
+              "steps": 8,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "state_snapshot": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Incrementar conteo para valor 4.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 4,
+              "steps": 7,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Incrementar conteo para valor 4.",
+            "trace_token": "count_fill"
+          },
+          "step_index": 7
+        },
+        {
+          "debug": {
+            "note": "Reconstruir arreglo desde conteos.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 51,
+          "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 9,
+              "kind": "while"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos. Línea C: while (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Reconstruir arreglo desde conteos.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos."
+            },
+            "phase": {
+              "goal": "Reconstruir arreglo desde conteos.",
+              "id": "count_write",
+              "label": "Count Write"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 51,
+              "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+              "line_token": "count_write"
+            },
+            "variables": [
+              {
+                "changed": false,
+                "meaning": "Inicio del rango activo.",
+                "name": "limite_inferior",
+                "type": "size_t",
+                "value": 0
+              },
+              {
+                "changed": false,
+                "meaning": "Fin del rango activo.",
+                "name": "limite_superior",
+                "type": "size_t",
+                "value": 3
+              }
+            ]
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 8,
+              "steps": 9,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "state_snapshot": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 6,
+              "steps": 8,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "step_index": 8
+        },
+        {
+          "debug": {
+            "note": "Reconstruir arreglo desde conteos.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 51,
+          "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 10,
+              "kind": "while"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos. Línea C: while (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Reconstruir arreglo desde conteos.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos."
+            },
+            "phase": {
+              "goal": "Reconstruir arreglo desde conteos.",
+              "id": "count_write",
+              "label": "Count Write"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 51,
+              "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+              "line_token": "count_write"
+            },
+            "variables": [
+              {
+                "changed": false,
+                "meaning": "Inicio del rango activo.",
+                "name": "limite_inferior",
+                "type": "size_t",
+                "value": 0
+              },
+              {
+                "changed": false,
+                "meaning": "Fin del rango activo.",
+                "name": "limite_superior",
+                "type": "size_t",
+                "value": 3
+              }
+            ]
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 10,
+              "steps": 10,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "state_snapshot": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 8,
+              "steps": 9,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "step_index": 9
+        },
+        {
+          "debug": {
+            "note": "Reconstruir arreglo desde conteos.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 51,
+          "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "assignment",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": {
+              "bounds": [
+                0,
+                3
+              ],
+              "exit": false,
+              "iteration": 11,
+              "kind": "while"
+            },
+            "narration": {
+              "advanced": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos. Línea C: while (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Reconstruir arreglo desde conteos.",
+              "intermediate": "Una asignación cambia el estado; los demás valores permanecen iguales. Reconstruir arreglo desde conteos."
+            },
+            "phase": {
+              "goal": "Reconstruir arreglo desde conteos.",
+              "id": "count_write",
+              "label": "Count Write"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 51,
+              "line_text": "\t\twhile (conteo[i] > 0) { arreglo[indice++] = (int)i + minimo; --conteo[i]; }",
+              "line_token": "count_write"
+            },
+            "variables": [
+              {
+                "changed": false,
+                "meaning": "Inicio del rango activo.",
+                "name": "limite_inferior",
+                "type": "size_t",
+                "value": 0
+              },
+              {
+                "changed": false,
+                "meaning": "Fin del rango activo.",
+                "name": "limite_superior",
+                "type": "size_t",
+                "value": 3
+              }
+            ]
+          },
+          "phase": "progress",
+          "state_after": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 12,
+              "steps": 11,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "state_snapshot": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 10,
+              "steps": 10,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "step_index": 10
+        },
+        {
+          "debug": {
+            "note": "Arreglo ordenado.",
+            "stage": "sorting"
+          },
+          "delay_ms": 160,
+          "event_type": "line",
+          "line_index": 53,
+          "line_text": "\treturn ORDENAMIENTO_OK;",
+          "pedagogy": {
+            "call_stack": [
+              {
+                "continuation": "retornar al llamador",
+                "function": "ordenar_counting_sort",
+                "parameters": {
+                  "n": 4
+                }
+              }
+            ],
+            "concept": "return",
+            "condition": null,
+            "invariant": {
+              "holds": true,
+              "indices": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion."
+            },
+            "loop": null,
+            "narration": {
+              "advanced": "La función termina y devuelve el control a quien la llamó. Arreglo ordenado. Línea C: return ORDENAMIENTO_OK;.",
+              "basic": "Ordenar reconstruyendo el arreglo desde frecuencias de valores. Ahora: Arreglo ordenado.",
+              "intermediate": "La función termina y devuelve el control a quien la llamó. Arreglo ordenado."
+            },
+            "phase": {
+              "goal": "Arreglo ordenado.",
+              "id": "return",
+              "label": "Return"
+            },
+            "pointers": [],
+            "schema_version": 1,
+            "source": {
+              "line_index": 53,
+              "line_text": "\treturn ORDENAMIENTO_OK;",
+              "line_token": "return"
+            },
+            "variables": []
+          },
+          "phase": "end",
+          "state_after": {
+            "active_range": null,
+            "algorithm": "counting_sort",
+            "auxiliary_array": null,
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Ordenamiento finalizado.",
+              "name": "counting_sort",
+              "status": "success"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 12,
+              "steps": 12,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Arreglo ordenado.",
+            "trace_token": "return"
+          },
+          "state_snapshot": {
+            "active_range": [
+              0,
+              3
+            ],
+            "algorithm": "counting_sort",
+            "auxiliary_array": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "comparing_indices": [],
+            "highlighted_indices": [],
+            "items": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "kind": "sorting_array",
+            "last_operation": {
+              "message": "Reconstruir arreglo desde conteos.",
+              "name": "counting_sort",
+              "status": "running"
+            },
+            "metrics": {
+              "comparisons": 6,
+              "moves": 12,
+              "steps": 11,
+              "swaps": 0
+            },
+            "pivot_index": null,
+            "sorted_indices": [],
+            "structure": "sorting_array",
+            "swapping_indices": [],
+            "temporaries": {},
+            "title": "Arreglo de ordenamiento",
+            "trace_action": "Reconstruir arreglo desde conteos.",
+            "trace_token": "count_write"
+          },
+          "step_index": 11
+        }
+      ],
+      "structure_id": "sorting",
+      "success": true,
+      "theory_profile": {
+        "average": "O(n+k)",
+        "best": "O(n+k)",
+        "in_place": false,
+        "memory": "O(k)",
+        "stable": false,
+        "worst": "O(n+k)"
+      }
+    },
+    "history": [
+      {
+        "operation": "create_array",
+        "payload": {
+          "values": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      },
+      {
+        "array_effect": {
+          "input": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "output": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "schema": 1
+        },
+        "operation": "run",
+        "payload": {
+          "algorithm_id": "counting_sort",
+          "mode": "fast"
+        }
+      }
+    ],
+    "main_c": "/** @file main.c\n * @brief Reproduce el historial aceptado de Ordenamientos.\n * @details Compilar: gcc -std=c17 -Wall -Wextra -pedantic main.c tad_ordenamiento.c -o ordenamiento\n * Datos aleatorios materializados; no usa rand ni resultados precalculados.\n * Arreglo automatico de 80 enteros. El TAD libera sus auxiliares internos.\n */\n#include <stdio.h>\n#include <stddef.h>\n#include <limits.h>\n#include \"tad_ordenamiento.h\"\n#if INT_MAX != 2147483647 || INT_MIN != (-2147483647 - 1)\n#error \"Este ejemplo reproduce el contrato int32 de la aplicacion.\"\n#endif\n/** @brief Ejecuta en orden creaciones y ordenamientos aceptados.\n * @return 0 si termina; 1 si un metodo int reporta un fallo nativo, incluida memoria.\n */\nint main(void) {\n    int arreglo[80] = {0};\n    size_t n = 0;\n    /* Nueva creacion: reemplaza los datos corrientes. */\n    n = 4;\n    arreglo[0] = 1;\n    arreglo[1] = 2;\n    arreglo[2] = 3;\n    arreglo[3] = 4;\n    imprimir_arreglo(arreglo, n);\n    printf(\"Run 1: ordenar_counting_sort\\n\");\n    int estado_1 = ordenar_counting_sort(arreglo, n);\n    printf(\"Estado: %d\\n\", estado_1);\n    if (estado_1 != ORDENAMIENTO_OK) {\n        fprintf(stderr, \"El TAD reporto un fallo; no se imprime un resultado exitoso.\\n\");\n        return 1;\n    }\n    imprimir_arreglo(arreglo, n);\n    return 0;\n}\n",
+    "message": "Ordenamiento ejecutado con counting_sort.",
+    "result": {
+      "algorithm": "counting_sort",
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "metrics": {
+        "comparisons": 6,
+        "moves": 12,
+        "steps": 12,
+        "swaps": 0
+      },
+      "mode": "fast"
+    },
+    "success": true,
+    "visual_state": {
+      "active_range": null,
+      "algorithm": "counting_sort",
+      "auxiliary_array": null,
+      "comparing_indices": [],
+      "highlighted_indices": [],
+      "items": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "kind": "sorting_array",
+      "last_operation": {
+        "message": "Ordenamiento finalizado.",
+        "name": "counting_sort",
+        "status": "success"
+      },
+      "metrics": {
+        "comparisons": 6,
+        "moves": 12,
+        "steps": 12,
+        "swaps": 0
+      },
+      "pivot_index": null,
+      "sorted_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "structure": "sorting_array",
+      "swapping_indices": [],
+      "temporaries": {},
+      "title": "Arreglo de ordenamiento",
+      "trace_action": "Arreglo ordenado.",
+      "trace_token": "return"
+    }
+  },
+  "projection": [
+    {
+      "runtime_index": 0,
+      "native_index": 1,
+      "token": "entry",
+      "array_match": true,
+      "auxiliary_native": null,
+      "auxiliary_runtime": null,
+      "metrics_native": {
+        "comparisons": 0,
+        "moves": 0,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 0,
+        "moves": 0,
+        "steps": 1,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 1,
+      "native_index": 7,
+      "token": "validate_array",
+      "array_match": true,
+      "auxiliary_native": null,
+      "auxiliary_runtime": null,
+      "metrics_native": {
+        "comparisons": 0,
+        "moves": 0,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 0,
+        "moves": 0,
+        "steps": 2,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 2,
+      "native_index": 40,
+      "token": "count_init",
+      "array_match": true,
+      "auxiliary_native": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "auxiliary_runtime": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 0,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 0,
+        "steps": 3,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 3,
+      "native_index": 44,
+      "token": "count_fill",
+      "array_match": true,
+      "auxiliary_native": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "auxiliary_runtime": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 1,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 1,
+        "steps": 4,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 4,
+      "native_index": 47,
+      "token": "count_fill",
+      "array_match": true,
+      "auxiliary_native": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "auxiliary_runtime": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 2,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 2,
+        "steps": 5,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 5,
+      "native_index": 50,
+      "token": "count_fill",
+      "array_match": true,
+      "auxiliary_native": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "auxiliary_runtime": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 3,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 3,
+        "steps": 6,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 6,
+      "native_index": 53,
+      "token": "count_fill",
+      "array_match": true,
+      "auxiliary_native": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "auxiliary_runtime": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 4,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 4,
+        "steps": 7,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 7,
+      "native_index": 61,
+      "token": "count_write",
+      "array_match": true,
+      "auxiliary_native": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "auxiliary_runtime": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 6,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 6,
+        "steps": 8,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 8,
+      "native_index": 67,
+      "token": "count_write",
+      "array_match": true,
+      "auxiliary_native": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "auxiliary_runtime": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 8,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 8,
+        "steps": 9,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 9,
+      "native_index": 73,
+      "token": "count_write",
+      "array_match": true,
+      "auxiliary_native": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "auxiliary_runtime": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 10,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 10,
+        "steps": 10,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 10,
+      "native_index": 79,
+      "token": "count_write",
+      "array_match": true,
+      "auxiliary_native": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "auxiliary_runtime": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 12,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 12,
+        "steps": 11,
+        "swaps": 0
+      }
+    },
+    {
+      "runtime_index": 11,
+      "native_index": 84,
+      "token": "return",
+      "array_match": true,
+      "auxiliary_native": null,
+      "auxiliary_runtime": null,
+      "metrics_native": {
+        "comparisons": 6,
+        "moves": 12,
+        "swaps": 0
+      },
+      "metrics_runtime": {
+        "comparisons": 6,
+        "moves": 12,
+        "steps": 12,
+        "swaps": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-dequeue-memory-consumer-low-20261007",
+  "issued_at_utc": "2026-10-07T20:42:39.443584+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.priority-dequeue-memory-consumer",
+  "task": "priority-dequeue-memory-consumer",
+  "instruction": "Only pending test_priority_queue_trace_conformance.py::test_dequeue_scans_every_node_stably_and_frees_only_after_unlink. Reproduce missing legacy temporaries, verify native stable scan, detached object identity and lifetime through free using canonical memory. Minimal consumer repair if engine faithful; coordinate exact reopening if product defect. Preserve accepted lots. No other operations, native campaigns, global/E2E, optimizations, publication or denied retries.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-dequeue-memory-consumer-low.md"
+}

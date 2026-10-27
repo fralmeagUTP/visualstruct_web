@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-max15-focal8-low-20261006",
+  "issued_at_utc": "2026-10-06T16:24:30.406882+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.capacity15-focal8",
+  "task": "graph-max15-focal8",
+  "instruction": "Latest explicit user authorizes Graph product maximum15 NODES replacing30, algorithm functional/visual tests ONLY8 nodes; boundary15 admission/16 rejection via validation without full15trace. Preserve legacy larger sessions without deletion/migration. No optimization/redesign/longtrial/BF20 regeneration. Focal BF/Prim/Kruskal8 correctness/fidelity/UI then documentation/integration, no inference15 guarantee from8. Earlier15 evaluation-only/proposed15 complete tests superseded.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-max15-focal8-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-bellman20-saved-ui-delivery-stop-low-20261006.json"
+}

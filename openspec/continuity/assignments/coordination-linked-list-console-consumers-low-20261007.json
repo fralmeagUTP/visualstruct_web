@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-linked-list-console-consumers-low-20261007",
+  "issued_at_utc": "2026-10-07T20:28:36.109124+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.linked-list-console-consumers",
+  "task": "linked-list-console-consumers",
+  "instruction": "Parent authorizes next small unresolved group from1f25d9c66FAIL excluding accepted Apilar/Sorting/tree lots: test_search_reports_each_c_printf_position_and_skips_not_found_branch and test_delete_repeated_unlinks_and_frees_each_matching_node in test_linked_list_trace_semantics.py. Reproduce these consumers, contrast native C guards/printf/return and fix demonstrated obsolete expectations without hiding console/lifetime defects. Only minimal test-consumer changes if product matches contract, strict rawbytes/emission chronology and negative controls, focal2GiB/120s tests and independentQA. No reopened closed list engines/nativeC/algorithms, optimization, harness expansion, global/E2E campaigns, commit/push/deploy or denied retries.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/linked-list-console-consumers-low.md"
+}

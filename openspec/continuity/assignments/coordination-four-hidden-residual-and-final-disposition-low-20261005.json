@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-four-hidden-residual-and-final-disposition-low-20261005",
+  "issued_at_utc": "2026-10-05T00:18:27.454840+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "Consolidate accepted14IDs/18routes, diagnose four hidden methods, classifyQA18 obligations andpreparefinalreview/delivery",
+  "instruction": "# Consolidación focal y residual LOW\n\nInstrucción vigente coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: consolidar QA14/18rutas aceptada; precisar cuatro métodos ocultos eliminar_inicio/eliminar_final/mostrar/primero, evidencia/disposición. Distinguir requisito sinprueba, limitaciónadmitida y evidenciavigentereutilizable deQA18. Solo comprobacionesmínimas existentes/nuevas acotadas ydocumentación propia; no campañaglobal, no aprobar2604pendientes por omisión. Diagnosticar ycoordinar antes de nuevo cambiofuncional. Mantener producto/preview estable, no C/H/UI/semánticani Git/deploy. Preparar última revisión18/entrega19 con límites;05UTC no baja requisitos. QAindependientefocal actual aceptada,task/globalno cerrados.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/four-hidden-residual-and-final-disposition-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-three-reviewed-repairs-canonical-adoption-low-20261004.json"
+}

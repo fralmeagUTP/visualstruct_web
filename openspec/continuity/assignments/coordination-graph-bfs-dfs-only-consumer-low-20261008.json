@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bfs-dfs-only-consumer-low-20261008",
+  "issued_at_utc": "2026-10-08T02:57:52.125959+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.graph-bellman-traversal-consumers",
+  "task": "graph-bellman-traversal-consumers",
+  "instruction": "Continue only original phases4_6 BFS/DFS auxiliary/tree ID using stored captures and partial. Original undirected weighted4/start1 unchanged. C-derived minimal consumer and strict pure controls; final only this ID under hard2GiB/120s. Do not repeat Bellman, joint baseline, closed/native/visual/global cases. Preserve27accepted34pendingQA. No C/engine edits, denied QA records/retry, autoacceptance, publication or optimization.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-bfs-dfs-only-consumer-low.md"
+}

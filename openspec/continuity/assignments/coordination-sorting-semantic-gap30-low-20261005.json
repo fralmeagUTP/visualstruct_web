@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-semantic-gap30-low-20261005",
+  "issued_at_utc": "2026-10-05T12:58:55.440544+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "sorting-semantic-groups-compatible-coverage-gate",
+  "instruction": "Coordinator authorizes max30minsemanticSortingcoverage for93linegap onstable999, nofunctionalproduct/denominator changes, noBFSoptimizations/benchmarks/candidateadoption. Add groupedmissingtests with realcontracts/oracles legalinputs. Onlyfocalselection, compatiblecoverage/gates/perID/SHA, documentunreachable/decisionbranches. No generalcampaign.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-semantic-gap30-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-BFS-write-invalidation-isolated30-low-20261005.json"
+}

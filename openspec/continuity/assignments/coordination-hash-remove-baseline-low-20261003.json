@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-remove-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T00:58:15.021278+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.remove-baseline-low",
+  "task": "LOW baseline Hash remove native/API/UI/caller with permanent regressions",
+  "instruction": "Delegaci\u00f3n01a0fe61-3104-743a-b032-bcc289ad80cd autoriza siguiente baselineLOW despu\u00e9s de cierre finito get/contains. Mapa vigente hash-next-pending-map-after-query-closure-low.md selecciona remove/th_eliminar. C real/API/UI/caller: vac\u00edo/ausente/cabeza/medio/cola/negativos/int32extremos/repetici\u00f3n, anterior/enlaces/free/cantidad-- y guardas. Baseline sin cambio sem\u00e1ntico/producto; regresiones permanentes rojas sinxfail y checkpoint antesMEDIUM. Preservar106IDs/C_H/H1/createinsert/getcontains/11Sorting/preview. No m\u00e9todoscerrados rerun ni contratos/thresholds/publicaci\u00f3n.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-remove-baseline-plan-low.md"
+}

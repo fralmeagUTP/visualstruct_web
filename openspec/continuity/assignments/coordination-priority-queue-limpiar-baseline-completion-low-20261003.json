@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-limpiar-baseline-completion-low-20261003",
+  "issued_at_utc": "2026-10-03T06:48:16.708936+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.limpiar-baseline-completion-low",
+  "task": "Complete finite LOW priority cleanup baseline browser/reload/actual main/resources without product fixes",
+  "instruction": "Completa LOW baseline Prioridad.limpiar browser/reload/main real/resources instrumentados, conservando 9C153events41conditions32observaciones16IDs9pass7fail. Recupera previa evidencia/pasos que faltan; no product corrections todavía. Distingue C/H Doxygen correcto vs main real docs/ownership/faults. Delimita MEDIUM después baseline completo, sin reabrir Pila/Cola.limpiar Hash Sorting. C/H contratos protegidos, no publish.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-limpiar-baseline-completion-plan-low.md"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-stats-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T02:58:39.654638+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.stats-instructions-medium",
+  "task": "MEDIUM stats faithful C instructions and chronology, preserve API numeric semantics",
+  "instruction": "Continuar MEDIUM stats delimitado: corregir3regresiones cuerpos/scopes/caller; preservar8IDsbaseline/27Cbuffers y134previos/8Hashcierres/11Sorting. Distinguir floatC y cocienteAPI sin semántica nueva: opciónA del plan confirmada por esta instrucción. Verificar tipos/redondeo/instrucciones/helpers/memoria/scopes/UI replay/caller ownership/Doxygen/recursos; checkpoint antes de LOW, sin ADDED/publicación ni clear/destroy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-stats-instructions-plan-medium.md"
+}

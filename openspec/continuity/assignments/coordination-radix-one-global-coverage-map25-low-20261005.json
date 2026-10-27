@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-radix-one-global-coverage-map25-low-20261005",
+  "issued_at_utc": "2026-10-05T08:35:35.139185+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "one-Radix-fault-and-finite-global-coverage-strategy",
+  "instruction": "Single block max25min: execute existing Radix allocation-failure[1] only, then diagnose global full-denominator coverage gap by module, existing finite selection and observed/estimated cost. Classify reachable product, contract-obliged legacy and demonstrated out-of-scope without unapproved exclusions. Preserve994and expectations, staged fixture pending grouped review with11PASSandnewcase. No general campaign or repeats. Finite gate83/85strategy even if unreachable without work.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/radix-one-global-coverage-map25-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-sorting-three-requirements-coverage20-low-20261005.json"
+}

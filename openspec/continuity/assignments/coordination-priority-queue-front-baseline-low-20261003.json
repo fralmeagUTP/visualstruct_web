@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-front-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T20:58:41.663294+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.frente-baseline-low",
+  "task": "Establish finite hidden priority front readonly baseline preserving product contracts",
+  "instruction": "Continúa LOW Prioridad Frente baseline: recuperar178historicos/currenthashcompatibility, operaciónregistradaoculta/UIexistente sin exponerfeature/cambiocontrato. Gapsguardasreadonlynumprio/scopesaliases/calleractual/reload/resourcesfinite, regresiones sinxfail, nomutationqueries. Delimitar MEDIUM antesfixes, contar pendientes porcriterio claro. CierresC_H/Graph/SDD/no publicar preservados.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-front-baseline-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-desencolar-finite-consolidation-low-20261003.json"
+}

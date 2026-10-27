@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-numeric-internal-budget20-low-20261006",
+  "issued_at_utc": "2026-10-06T10:49:57.849000+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.numeric-private-internal-budget",
+  "task": "numeric-private-internal-budget",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd afterQA1864 equivalence accepted/current event-expanded DAG rejected memory optimization. Preserveallfiles/evidence noadoption. Focal investigation max20min frombestpriorprivate variant, determine minimum internal compact event/value-sharedDAG design with explicit BF30 per-event budgets for generation/validation/finalJSON. Existingevidence+indispensablesmall offline measurements only; no broad implementation/BF30/newlarge/no resource increase/API/C/algorithmchange/Git/preview. Demand logicalaccess/allvalidators/errors/externalbyteorder unchanged; readonly bounded materialization only if lifetime/invariants preserved. Provideconcrete decision+uncertain estimate+minimum nextchange oractual user decision limit. QA noauthorization language doesnot revoke currentfinishauthorization.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/numeric-internal-budget20-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-numeric-event-canonical-dag30-low-20261006.json"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-five-staged-expectations-api-coverage20-low-20261005",
+  "issued_at_utc": "2026-10-05T06:54:01.689969+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "stage-five-current-C-expectations-and-four-API-incremental-coverage20min",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes20min staging-only on993: repair5expectations only againstdemonstratedcurrentCcontract; separateDFSwrapper/precondition; Prim symmetric/rawactualCoraclebeforeacceptance; Quicksort3comparisons1selfswap3moves; Radixcausal/scopes. PreservehistoricalFAILandjustifieddiff/allmandatoryscenarios. Execute4minimalAPIcontractsandcompatibleincrementalcoverage/full993denominator. No product993/fusedadoption/globalcampaign; stopifsemanticunresolved.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/five-staged-expectations-api-coverage20-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-five-coverage-failure-diagnosis15-low-20261005.json"
+}

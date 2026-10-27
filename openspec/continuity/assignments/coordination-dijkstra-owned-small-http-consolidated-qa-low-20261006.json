@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra-owned-small-http-consolidated-qa-low-20261006",
+  "issued_at_utc": "2026-10-06T07:01:11.282609+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.dijkstra-owned-small-http-consolidated-independent-quality",
+  "task": "dijkstra-owned-small-http-consolidated-independent-quality",
+  "instruction": "Coordinator requested ONE consolidated offline QA package for prior AB and new reversed BA, no intermediate per-measurement review. Owner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLY offline. No appimports/tests/browser/HTTP/native/benchmark/30/adoption/product/Git/preview. Read AGENTS/OpenSpec/project/continuity/currentassignment/exactbinding; guardsbeforeafter. WriteONLY own independent-review evidence and tracker. Verify allfour complete1995667byteJSON exactSHA/668steps; newhistoryprefix/worker2GiB/sources unchanged, accepted privatebuilder/helper. Preserve wrapperPID discrepancies and legacy console null; actualselfproof authoritative. AB gain3.50percent reverses BA candidate1.50percent slower; diagnostic ambiguous, notgeneralbenefit/phase/RAM/30proof. No additional smallrepeats. Review explicitnextdecisionONEprivate30trial samehistoricalchain/limits/proofs, proposalonlyrequiresnextassignment; no30executed/adoption. Historical627inputs preserved.20of22 unchanged/pureCseparate/no15HTTPSortingSLA.",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/dijkstra-owned-small-http-consolidated-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dijkstra-owned-small-http-pair-qa-low-20261006.json"
+}

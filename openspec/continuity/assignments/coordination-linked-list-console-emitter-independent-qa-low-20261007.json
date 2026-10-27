@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-linked-list-console-emitter-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T20:38:40.632701+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-linked-list-console-emitter",
+  "operation": "qa.linked-list-console-emitter",
+  "task": "linked-list-console-emitter-independent-qa",
+  "instruction": "Independent narrow review of linked_list buscar_elemento/eliminar_repetidos LF-preserving console emitter and two historical consumers; native exact bytes, scope/printf chronology, immutable positive fixtures, negatives, unchanged nonconsole response fields. No product writes, publication/deploy/retries/global or E2E campaigns.",
+  "scope_ref": "openspec/changes/review-linked-list-console-emitter/review-scope.md"
+}

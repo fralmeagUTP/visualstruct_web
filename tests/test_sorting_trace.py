@@ -5,6 +5,7 @@ from __future__ import annotations
 import pytest
 
 from app.adapters.sorting_adapter import SortingAdapter
+from app.services.c_code_service import CCodeService
 from app.services.trace import TraceEngine, TraceStrategyRegistry
 
 
@@ -22,11 +23,20 @@ def test_sorting_trace_contains_visual_snapshots(client) -> None:
     assert "state_after" in first
     assert "line_index" in first
     assert "metrics" in first["state_after"]
+    assert "trace_token" in first["state_after"]
+    assert "trace_action" in first["state_after"]
     trace = data["execution_trace"]
     assert trace["steps"][-1]["state_after"] == trace["final_state"]
     assert TraceStrategyRegistry.resolve(trace["structure_id"]).family == "sorting"
     semantic_steps = TraceEngine.validate_legacy_trace(trace)
     assert semantic_steps[-1].after_state == data["visual_state"]
+
+
+@pytest.fixture(scope="module")
+def sorting_c_operations():
+    data = CCodeService.get_structure_data("sorting_array")
+    assert data is not None
+    return data["operations"]
 
 
 @pytest.mark.parametrize(
@@ -45,11 +55,11 @@ def test_sorting_trace_contains_visual_snapshots(client) -> None:
         "radixsort",
     ],
 )
-def test_all_sorting_algorithms_satisfy_common_trace_contract(algorithm_id: str) -> None:
+def test_all_sorting_algorithms_satisfy_common_trace_contract(algorithm_id: str, sorting_c_operations) -> None:
     adapter = SortingAdapter()
     adapter.execute("create_array", {"values": "5,1,4,2,3"})
     adapter.execute("select_algorithm", {"algorithm_id": algorithm_id})
-    result = adapter.execute("run", {"mode": "step_by_step", "source_code": ""})
+    result = adapter.execute("run", {"mode": "step_by_step", "source_code": sorting_c_operations[algorithm_id]})
     trace = result["execution_trace"]
     semantic_steps = TraceEngine.validate_legacy_trace(trace)
     assert semantic_steps

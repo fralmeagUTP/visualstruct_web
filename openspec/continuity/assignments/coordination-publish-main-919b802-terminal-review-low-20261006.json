@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-main-919b802-terminal-review-low-20261006",
+  "issued_at_utc": "2026-10-06T23:52:14.049856+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-main-919b802-terminal-review",
+  "task": "publish-main-919b802-terminal-review",
+  "instruction": "Parent01a0fe61 requests following exact SHA919b8025ee3d82b0b368158c4db9961610ff4e61 CI until terminal; list remaining failures and sources of six possible final divergences; distinguish fixtures/environment/proven obsolete contract/real defect for independent review before runtime changes. No more functional edits or assertion adaptations by default, no new publication variants without decision. Preserve251canonicalhashes; noVPS.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-main-919b802-terminal-review-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-publish-main-packaging-compatibility-low-20261006.json"
+}

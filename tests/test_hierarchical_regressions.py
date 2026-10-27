@@ -118,5 +118,6 @@ def test_hierarchical_history_replay_matches_visual_state_main_coherence() -> No
     assert rebuilt_model["visual_state"] == final_response["visual_state"]
     assert rebuilt_model["visual_state"]["traversals"]["inorden"] == [50, 60, 70]
     assert rebuilt_model["visual_state"]["validation"] is True
-    assert len(history) == 5
+    assert len(history) == 6
+    assert [entry["operation"] for entry in history] == ["insertar"] * 4 + ["eliminar", "validar"]
 

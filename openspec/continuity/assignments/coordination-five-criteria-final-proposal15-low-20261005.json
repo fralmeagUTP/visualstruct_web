@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-five-criteria-final-proposal15-low-20261005",
+  "issued_at_utc": "2026-10-05T19:27:05.124812+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.qa-retained-criteria-documentary-correction",
+  "task": "five-criteria-final-proposal15",
+  "instruction": "Coordinator01a0fe61: m\u00e1ximo15min documental, contrastar requisitos exactos11/12/16/18/19 con toda evidencia aceptada; propuesta final satisfecho con l\u00edmites o bloqueo concreto operaci\u00f3n/escenario/entrada/evidencia faltante. Entrega parcial breve verificable s\u00f3lo problemas vigentes. Sin nuevos tests/bindingsQA/paquetes voluminosos ni BFSvariante; no cierreglobal.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/five-criteria-final-proposal15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary306-corrections25-low-20261005.json"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-openspec-archive-skipci-low-20261013",
+  "issued_at_utc": "2026-10-13T21:57:29.836715+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "archive-verified-review-closures-20261013",
+  "operation": "documentation.publish-openspec-archive-skipci",
+  "task": "publicar-archivo-openspec",
+  "instruction": "PublicaciónGitHub documental autorizada porSentinel_2db4197a939081919509a1a940da8552; sóloarchivoOpenSpec/referencias/specs/informe, [skip ci], sinproducto/artefactosmasivos/secretos/VPS/campañas.",
+  "scope_ref": "openspec/changes/archive-verified-review-closures-20261013/publish-openspec-archive-plan.md"
+}

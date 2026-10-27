@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-e2e-safe-diagnostics-repair-low-20261007",
+  "issued_at_utc": "2026-10-07T03:27:43.349133+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.e2e-safe-diagnostics-repair",
+  "task": "e2e-safe-diagnostics-repair",
+  "instruction": "Parent01a0fe61 authorizes diagnostic-only correction of arbitrary longrepr/stdout/JSONL/tee/JUnit disclosure path: minimal allowlisted records retain test/stage/failed/exit1, synthetic token/password negatives, bounded proof and new focal QA. Preserve accepted PQ/Graphrepair2/codec. No raw unsafe logs publication, C/runtime/Sorting/optimization or browser battery. Verified backup/atomic index replacement/readback.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/e2e-safe-diagnostics-repair-low.md"
+}

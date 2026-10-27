@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-three-numeric-sorting-source-review-low-20261007",
+  "issued_at_utc": "2026-10-07T01:39:39.271497+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-three-numeric-sorting-source-review",
+  "task": "publish-three-numeric-sorting-source-review",
+  "instruction": "Parent01a0fe61 authorizes correction of own current_CI_error Graph aggregate ledger, normal main publication of independently accepted BF/Prim/Kruskal integration and permanent tests only, exact remote SHA/CI; inspect approved Sorting source contract and fix controlled empty-C rejection only if unequivocal, separately independent QA before its publication. If ambiguous report concrete choices. No optimization/large local suites/VPS.85and cancelledE2E remain open.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-three-numeric-sorting-source-review-low.md"
+}

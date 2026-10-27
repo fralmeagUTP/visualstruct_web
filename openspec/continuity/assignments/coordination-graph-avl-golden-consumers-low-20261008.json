@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-avl-golden-consumers-low-20261008",
+  "issued_at_utc": "2026-10-08T01:51:32.981464+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.graph-avl-golden-consumers",
+  "task": "graph-avl-golden-consumers",
+  "instruction": "Only two original golden consumers: Graph undirected create,vertices1,2,insert1->2weight3; AVL inserts30,20,10 and last insertion LL rotation. Preserve fixtures and other golden cases/functions. C-derived minimal golden consumer repair and focal mutation controls; preserve accepted27/pending28. No engine/C changes, closed native/UI rerun, broad suites, QA registration/substitution, publication, optimization or expansion.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-avl-golden-consumers-low.md"
+}

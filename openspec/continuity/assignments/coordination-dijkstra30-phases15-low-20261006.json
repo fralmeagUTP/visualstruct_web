@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dijkstra30-phases15-low-20261006",
+  "issued_at_utc": "2026-10-06T01:10:33.069645+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dijkstra30-isolated-phase-diagnostic",
+  "task": "dijkstra30-isolated-phase-diagnostic",
+  "instruction": "# Único diagnóstico aislado Dijkstra30/29\n\nCoordinador01a0fe61-3104-743a-b032-bcc289ad80cd autorizauna sola peticiónDijkstra30V/29arcosdirigidos1→30,pesos1,start1/end30,2GiBworkerreal/maxrequest60s,máximo15minpreparacióninforme. InstrumentarfasesEXCLUSIVAS/counters/stackprevioaltimeout,nobenchmarkgate/opt/otrasmediciones. Fuentescanónicas/traza/contratoíntegros. Medircausadominanteacotada,NOextrapolarotrosalgosnimutabilidadaliassafe. Sinpreview/Git/productchanges.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dijkstra30-phases15-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-dfs-errors-readonly15-low-20261006.json"
+}

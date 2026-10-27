@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-jpeg-hidden-list-traces-low-20261004",
+  "issued_at_utc": "2026-10-04T18:24:14.826845+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "Repair empty Sorting JPEG and complete three hidden List HTTP instruction traces with C and DOM evidence",
+  "instruction": "# JPEG y trazas HTTP ocultas Lista\n\nInstruccion vigente coordinacion01a0fe61-3104-743a-b032-bcc289ad80cd: aplicar reparacion minima del JPEG vacio Sorting en interpreter_runtime.js y regresion focal vacia/no vacia. Completar tres trazas HTTP ocultas Lista insertar_elemento/insertar_posicion/eliminar_posicion con evidencia C/DOM aplicable, sin repetir suites intactas. Preservar sesiones,C/H,contratos. Actualizar matriz/enlaces11/12/16 sin cierres. Preparar consolidacionLOW y QAindependiente estable. Detener solo cambios fuera de autorizacion.\n\nOperacion audit.canonical-correspondence abierta. Casos caller12 previamente aceptados permanecen cerrados; las trazas HTTP no certificadas se examinan como alcance nuevo, no repeticion. JPEG candidato previo probado fuera de producto ahora expresamente autorizado. Solo escritor tecnico activo; ninguna delegacion ni despliegue. Fuentes: graph10-consolidation-preview-checkpoint-low.md, canonical-focal-finite-acceptance-decision-low.md y registros focales enlazados.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/jpeg-hidden-list-traces-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph10-consolidation-preview-low-20261004.json"
+}

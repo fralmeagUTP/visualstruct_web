@@ -1,0 +1,36 @@
+# Dictamen independiente: sucesores y criterios11/12/16/18
+
+**ACEPTAR la reconciliación documental finita; RETENER el cierre global de los cuatro criterios.** No se rechazó una cadena por mero cambio SHA ni se aceptó un escenario por ID/SHA solamente. No hay campañas nuevas o modificación de producto. Canonical: D:/MisProyectos/Web_VisualEstruct.
+
+Assignment `coordination-documentary-successors-criteria-independent-qa-low-20261005`; operación `audit.documentary-successors-criteria-quality`. Evidencia propia: documentary-offline-checks.json (evidencia local: `openspec/changes/archive/2026-10-13-review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review/documentary-offline-checks.json`). SHA ZIP de4bd38f3bac9aeca126fd07f28e9218704fee15a6a414d7a09ce6906ccf587b.
+
+## Qué se acepta y qué puede cerrarse
+
+| Criterio | Resultado finito aceptado | Cierre global y obligación restante |
+|---|---|---|
+|11| Cinco raíces hidden y sus aceptaciones causales previas preservadas; 18 archivos con 23 aristas autorizadas/independientemente revisadas alcanzan fuentes actuales.|Retener. El vínculo de operación/callee no certifica cada wrapper, entrada, resultado y escenario de memoria. Las 517 filas siguen distinguiendo prueba finita y raíz/inventario; no se produjo resolución exhaustiva de obligaciones de cada partición. No reabrir las cinco reparaciones aceptadas por mera deriva SHA.|
+|12|18 consumidores de rutas con dictamen previo; sus candidatos históricos negativos se conservan y las tres comparaciones focales tienen aceptación sucesora.40 NA preservados exclusivamente en contexto observado.|Retener. Un control ausente/condicional en el contexto observado no deja de ser aplicable al cambiar estado. La prueba del kernel no demuestra selector, entrada, resultado ni replay de todo consumidor. Las aceptaciones finitas pueden consolidarse; no sustituirlas por afirmación universal.|
+|16|Registro56 reconciliado:24 históricos preservados íntegramente dentro de wrappers,5 adopción,4 terminales,1runner y22 aristas nuevas; las23 aristas de producto incluyen runner ya registrado, sin duplicarlo.|Retener. El registro declara no ser exhaustivo de tests/fixtures. Falta el whole-original histórico de vertex; QA4 recupera otra revisión y no lo reconstruye. Hay lagunas concretas de registro descritas abajo.|
+|18|2604 casos preservados como partición exacta de931 grupos;158 archivos AST comprobados.196 escenarios tienen fuente actual ejecutada+call PASS en los raws ya aceptados;3 adicionales son staged PASS con adopción exacta y14 conservan aceptación anterior acotada.|Retener.2391 casos=602 con deriva directa reconciliada+1789 sin outcome exacto en fuentes buscadas aún requieren decisiones específicas de aplicabilidad/equivalencia. No son2391 tests obligatorios ni pruebas confirmadas ausentes.|
+
+Se puede cerrar la tarea documental de verificar identidades, continuidad y trazabilidad finita de este paquete. No se puede usar su cierre para marcar11/12/16/18 globalmente. Las23 filas históricas reconciliadas conservan sus aceptaciones en su alcance, y las40NA conservan el contexto; no requieren rerun por reflejar estados anteriores con sucesores legítimos.
+
+## Fundamento semántico de reutilización
+
+Se contrastaron assertions/decoradores/argumentos actuales de los2604 casos: cero discrepancias; se verificaron diez archivos runtime y diez eventos para los196 overlaps, con parametrización exacta y fuente ejecutada actual.302 referencias externas coinciden; antes QA4 y los endpoints actuales de18 cadenas fueron leídos, no sólo sus contadores. El paquete hace explícito que consumidores declarados son análisis estático, no eventos runtime, y que fixtures/transitividad no quedan certificados por imports directos.
+
+Las sustituciones no se aprobaron por igual nombre: RN duplicado ahora acredita rechazo previo a C sin malloc/fixup, según dictamen cinco-oráculos; no inventa un retorno C. MST conserva predicado Find/Union y rechazo narrado para raíces iguales según reparación causal independiente. Ayuda valida tarjetas explicativas del método en lugar de encabezado legacy. Historial de consultas conserva cronología y readonly frente al oracle antiguo que sólo contaba mutaciones. Los tres Quick/Radix staged usan assertions actuales, call original y adopción exacta; no son reruns post-copy y no dependen del runner Sorting reparado.
+
+Las602 derivas directas sólo dejan de ser un bloqueo por identidad de fuente. Por ejemplo, Bellman-Ford mantiene assertions de vueltas de relajación y rama de ciclo negativo; cadena sucesora de GraphStructureService no prueba automáticamente esos contadores. Los tres escenarios browser Kruskal mantienen dos llamadas reales, replay sin POST adicional, compilación estricta y propiedad de memoria; una prueba de algoritmo o API no sustituye esos consumidores. Se requieren decisiones de equivalencia referidas a esas assertions/particiones antes de aprobar tales obligaciones. Esto identifica trabajo documental pendiente, no una ausencia funcional demostrada.
+
+## Cambios necesarios antes del cierre global
+
+1. Completar registro16 de las correcciones de tests ya aceptadas. `tests/test_hierarchical_interpreter_simulation_unit.py` (cinco-oráculos) y `tests/test_graph_pedagogy_phases_7_9.py` (MST-v2) no figuran entre56 registros. Existen diffs, before/after y dictámenes en `visible-global29-five-oracles-repair-low`/`review-global29-five-oracles-independent-quality` y `visible-kruskal-causal-narration-repair-low`/`kruskal-causal-narration-MST-v2-independent-qa-low`; incorporarlos con requisito, autorización y regresión exactos, sin nueva ejecución. Esta lista es ejemplo confirmado, no inventario exhaustivo de omisiones.
+2. Sustituir las listas generales de requisitos de capability por resoluciones específicas de obligación/consumidor/partición para los grupos pendientes de18: reutilización exacta o equivalencia justificada, NA con decisión aplicable, o ausencia concreta demostrada. Cada resolución debe citar el resultado real y su fixture; un listado de todos los requisitos de la capability no decide la obligación del escenario.
+3. Mantener la limitación del original vertex o conseguir fuente auténtica anterior; no convertir el snapshot QA4 en el original faltante. Mantener NA por contexto y wrapper/callee separados. No pedir decisiones RN/Grafos nuevas donde ya existe decisión aplicable.
+
+No se exige ninguna corrección para conservar el paquete como reconciliación finita honesta. Lo anterior es condición para pretender cierre global; la autora no lo declaró. `only-demonstrated-absences` describe lo demostrado en las fuentes buscadas, no prueba exhaustiva de que BFS sea el único problema posible de toda aplicación. ASan/UBSan sigue siendo limitación de entorno registrada, no fallo de producto demostrado.
+
+## Límites y preservación
+
+Guardas before/after propias exit0.1011 inputs vinculados, ZIP30entradas/29 archivos del manifest,302 referencias externas verificados. Sin alterar producto, pruebas, C/H, contratos, paquete, auditoría compartida, continuidad/bindings, preview5051, Git o evidencia previa. Cero nueva ejecución técnica. Seguimiento sólo propio. La fotografía histórica de project.md no demuestra QA actual.

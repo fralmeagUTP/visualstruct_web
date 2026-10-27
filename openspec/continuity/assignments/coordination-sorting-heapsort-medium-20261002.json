@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-heapsort-medium-20261002",
+  "issued_at_utc": "2026-10-02T16:32:05.206625+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.heapsort-instructions",
+  "task": "Bounded MEDIUM Heap sort recursion, C controls and active heap tree; resolve twelve original regressions; C/UI/callers gates; seven closures preserved",
+  "instruction": "Implementa MEDIUM Heap sort segun plan, noTADHeap. Recursion/controls/activeheap faithfulC,12regresiones sin debilitar,CUIrestauraciones sinredispatch/callersC17Doxygen. Dguardas/evidencia ypreview5051loopbackactual. ConservaC/H7cierres;sinpublicacionmerge/despliegue/red; terminarpara volverLOW.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-heapsort-authorized-medium.md"
+}

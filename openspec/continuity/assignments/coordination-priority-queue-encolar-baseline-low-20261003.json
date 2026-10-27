@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-encolar-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T17:39:00.679884+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.encolar-baseline-low",
+  "task": "Collect finite priority enqueue baseline against current C without implementing corrections",
+  "instruction": "ContinúaLOWPrioridad-Encolarbaselineobjetivoactual. Recuperapreviaevidenciapara delimitarfidelidadguardasallocinit/priorityorderstableties/aliasescontador/pointers/scopes/DOMHTTPcaller/reloadsin duplicar operacionesclosed. ComparaCexistingsemantics,regresionespermanentessinxFail yrecursosfinito;planMEDIUMsifallas antesimplementación. PreservaC/H/HashSortingRN/apilarencolarlimpiarclosures,SDDblockedwritesno tocar,Graph/Dijkstrapending,no publish.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-encolar-baseline-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-queue-encolar-finite-consolidation-low-20261003.json"
+}

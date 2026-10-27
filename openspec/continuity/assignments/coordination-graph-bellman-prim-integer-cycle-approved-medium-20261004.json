@@ -1,0 +1,16 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bellman-prim-integer-cycle-approved-medium-20261004",
+  "issued_at_utc": "2026-10-04T01:19:00.953568+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.bellman-prim-integer-cycle-approved-medium",
+  "task": "Implement approved bounded Bellman-Ford and Prim integer C corrections and negative-cycle API status preserving signatures",
+  "instruction": "El usuario acaba de aprobar explícitamente las correcciones acotadas de Grafos. Al llegar al checkpoint seguro de los cinco auxiliares, continúa con Bellman-Ford y Prim en tad_grafo.c y respuesta de API de ciclos conforme a propuesta verificada. Mantén pesos enteros, structs y firmas públicas; distancias internas seguras y alcanzabilidad separada en Bellman-Ford, detección del ciclo extremo; selección Prim con negativos e INT_MAX sin colisión con candidato ausente; HTTP400/success=false con diagnóstico y sin registrar como éxito los ciclos detectados. Excepción específica a protección C, no autorización general C/H. Conserva evidencia previa y pruebas exactas antes/después, sincroniza Python/trazas/docs/callers necesarios; único escritor. No interrumpas prueba activa ni dupliques bloques.",
+  "transcript_evidence": {
+    "question": "¿Autorizas corregir esas dos funciones en C y la respuesta de la API, manteniendo los pesos enteros y las firmas públicas actuales?",
+    "user": "Sí, autorizo"
+  },
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-bellman-prim-integer-cycle-approved-plan-medium.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-five-helpers-instructions-medium-20261004.json"
+}

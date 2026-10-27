@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-dfs-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T07:10:36.080675+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.dfs",
+  "task": "LOW: register next DFS operation and prepare its read-only baseline worklist after verified BFS closure",
+  "instruction": "After BFS closure prepare DFS as next algorithm with a new assignment. Do not reopen trees/lists or change Hash/RNValidar without response. No push/merge/deployment. Registration and preparation do not constitute DFS semantic verification.",
+  "provenance": "Explicit coordination instruction following graph.bfs LOW closure; preserves immutable earlier assignments.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-dfs-baseline-preparation.md"
+}

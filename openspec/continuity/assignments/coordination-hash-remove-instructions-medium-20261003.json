@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-remove-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T01:15:27.162988+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.remove-instructions-medium",
+  "task": "MEDIUM bounded Hash remove instruction fidelity/heap/scopes/UI/caller",
+  "instruction": "Delegaci\u00f3n01a0fe61-3104-743a-b032-bcc289ad80cd: MEDIUMHashremove delimitado3fallosmutaci\u00f3nanticipada/scopes/normalizaci\u00f3n; preservar23CAPIresultados/nueveIDs6pass3fail y106IDsprevios/H1/C_H/4Hashfinite/11Sorting. Verificar estadoinstrucci\u00f3n/memoria/punterosfree/scopes yausente/headmiddlelast/colisiones/UIreplay/callerownership. Documentarsimulaci\u00f3n/l\u00edmites,checkpointantesLOW. NoRN/Grafos/publish. CoordinarC1conSDDowner sinduplicaci\u00f3n documental. Plan t\u00e9cnico hash-remove-instructions-plan-medium.md aprobado por esta instrucci\u00f3n.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-remove-instructions-authorization-medium.md"
+}

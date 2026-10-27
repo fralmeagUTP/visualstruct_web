@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rn-full-validator-implementation-medium-20261003",
+  "issued_at_utc": "2026-10-03T15:27:57.801262+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "red-black.validate-full-implementation-medium",
+  "task": "Implement approved RN V3 full validator, native trace and finite acceptance; preserve mutation algorithms",
+  "instruction": "Ejecuta MEDIUM RN fullvalidator según plan aprobado y documentQA aceptada. Excepción acotada C/Hrbt_validar/declaración/backendtrace/main/docs/tests. Preserve insert/delete/rotation algorithms. NoGraph/nootherC/H/no publish. Checkpoint antes LOW.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/red-black-full-validation-plan-medium-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-rn-full-validator-baseline-low-20261003.json"
+}

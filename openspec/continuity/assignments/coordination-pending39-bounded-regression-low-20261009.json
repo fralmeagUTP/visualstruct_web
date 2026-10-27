@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-pending39-bounded-regression-low-20261009",
+  "issued_at_utc": "2026-10-09T19:56:46.768887+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.pending39-bounded-regression",
+  "task": "pending39-bounded-regression",
+  "instruction": "Current user resumes VisualStruct after Factor6: author regression of original39correctedpendingQA only, bounded independently measured batches; first8shortIDs. No accepted27repeats, reinterpretation collectionPASS, autoQA, closed implementation reopens, AISEF/harness expansion, optimization, deniedQA/SDD/push retries. Preserve algorithms/GraphMAX15, algorithm fixtures<=8vertices. Hard2GiB/120s perworker before imports; evidence and guards. Existing independent owner remains separate. No globalcoverage claim from subset.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-pending39-regression-low-20261009/scope.md"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-desencolar-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T20:24:09.347825+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.desencolar-instructions-medium",
+  "task": "Implement scoped priority dequeue instructional fixes preserving native oracle and protected contracts",
+  "instruction": "Implementa MEDIUM Prioridad Desencolar del plan: 51IDs29pass22fail, cinco divergencias privadas Python/C, cuatro mains reales C17 argumentos insuficientes y cuatro reload sin traza. Guardas/output/identity/lifetimes/free/contador/UIhistoryreplayreload sin redispatch/caller args ownership NULL Doxygen. Conservar baseline y C/H protegidos. Checkpoint antes LOW. Sin publicar/Graph/SDDblockedwrites. Autorización nueva del coordinador en mensaje de esta sesión.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-desencolar-instructions-plan-medium-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-desencolar-baseline-low-20261003.json"
+}

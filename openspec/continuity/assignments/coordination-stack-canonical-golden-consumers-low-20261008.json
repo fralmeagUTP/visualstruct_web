@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-canonical-golden-consumers-low-20261008",
+  "issued_at_utc": "2026-10-08T00:27:04.442995+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.stack-canonical-golden-consumers",
+  "task": "stack-canonical-golden-consumers",
+  "instruction": "Only test_execution_trace_golden.py::test_sequential_trace_golden and test_sequential_pedagogy_contract.py::test_real_sequential_trace_exposes_complete_canonical_frames, empty Apilar7/42. Reproduce old7frame fixture and nodos= evidence string against native10boundary memory; reuse accepted helper unchanged. Consumer-only corrections if source faithful; exact unrelated functions/golden cases and all accepted/pending lots preserved. No27accepted cases rerun, new algorithms, QAdenied records/retry, publication/global/E2E/optimization/expansion.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-canonical-golden-consumers-low.md"
+}

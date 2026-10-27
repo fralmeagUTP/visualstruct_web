@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hierarchical-frame-oracle-freed-card-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T18:44:55.862917+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-hierarchical-frame-oracle-fidelity",
+  "operation": "qa.hierarchical-frame-oracle-fidelity",
+  "task": "hierarchical-frame-oracle-fidelity-independent-qa",
+  "instruction": "Independent re-review only freed-card delta: previous two fabricated freed=True cards, causal history/content/status/uniqueness and legitimate history positives. Same pending QA operation; preserve previous verdict and bindings. No publication, long cases or other component reopening.",
+  "scope_ref": "openspec/changes/review-hierarchical-frame-oracle-fidelity/freed-card-delta-handoff.md"
+}

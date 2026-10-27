@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-front-final-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T22:36:48.952383+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.frente-final-baseline-low",
+  "task": "Establish independent queue Front and Final finite LOW baselines without API UI exposure",
+  "instruction": "EjecutaLOWColaFrente/Finalbaselinegrupopreparado IDs/metodosindependientes. Recuperahistoricos/sourcehashcompatibilidad/read-only/currentAPIregistration/rejectionsemantics/privateCtraceguardsbyvalueoutputalias/scopes/callerreal/queryGETnoreexec yrecursosfinito. NoexponerAPIUIoperacionesnuevas, sinpasosCficticiossiAPIrechaza (registrarhallazgosantesMEDIUM,no productfixLOW). RegressionIDspermethodsinxfail/planMEDIUMantescorreccion.9methodsremain mapbeforeclosure. C/HpriorclosuresSDDblockedwritesGraphpermissionspreserve,nopublish.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-front-final-baseline-plan-low-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-stack-cima-finite-consolidation-low-20261003.json"
+}

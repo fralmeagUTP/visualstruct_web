@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-listings-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T02:47:07.346450+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.keys-values-items-finite-consolidation-low",
+  "task": "LOW finite consolidation listings, then next pending stats baseline",
+  "instruction": "Consolidar LOW 134 IDs únicos, 2953 eventos C/39 buffers, UI3270/3252, callers ownership/Doxygen; verificar scopes/tipos/buffers/proyecciones/resources sin sumar solapamientos ni certificar arbitrario. Si sólido cerrar tres métodos finitos Hash8/11, confirmar preview e iniciar baseline LOW stats según mapa. H1/C_H/11Sorting protegidos, sin ADDED ni publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-listings-instructions-checkpoint-medium.md"
+}

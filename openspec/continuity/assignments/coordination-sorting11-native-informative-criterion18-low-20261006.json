@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting11-native-informative-criterion18-low-20261006",
+  "issued_at_utc": "2026-10-06T02:17:46.412224+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting11-native-vs-visual-diagnostic",
+  "task": "sorting11-native-vs-visual-diagnostic",
+  "instruction": "# Latest user criterion supersedes fixed15seconds for Sorting\n\nSame bounded current lot; original15minute clock NOT restarted. Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd: user explicitly removes fixed15s SLA for sorting methods; native/visual/browser timings informative byN/equipment/method/complexity; preserve educational algorithms/correctness/trace/ownership/memory/usability.80Sorting is current testcase, NOT approved universal input maximum. Earlier confirmation moved15toalgorithm-only; latest removal is Sorting-only, Graph retains that previous algorithm-only15agreement and existing30vertex cap until clarification. No new HTTP/profile/Graphcampaign/product/redesign/adoption. Current10Cbatch already done; preserve BurbujaC/HTTP historic evidence. Update active OpenSpec delta and criterion18 successor acta with exact quotes, preserve superseded decision. Prepare documental QA checklist and missing nativeGraph timing scope without executing it. Errors/timeouts remain unresolved operational failures, no automatedPASS/globalclosure.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting11-native-informative-criterion18-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-sorting11-native-vs-visual15-low-20261006.json"
+}

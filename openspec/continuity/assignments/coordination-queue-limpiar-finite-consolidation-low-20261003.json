@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-limpiar-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T06:27:55.280637+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.limpiar-finite-consolidation-low",
+  "task": "LOW finite queue limpiar review, closure if valid and next pending baseline recovery",
+  "instruction": "ConsolidaLOWCola.limpiar21IDs16originales,9C92events25conditionsUI1761604reloadexact,4realC17Doxmains8simulatedNULLcleanreturn1nofalsesuccess. Verifica currenthashes/finitecoverage/scopes/resources yguardas;sisólidocierraonlyoperationconlímitesfinite/noOOMreal. Recupera mapaPila/Colas/prioridad quéfaltaconcreto y comienza siguientebaselineLOWno bloqueado,evidenciaanteriorevitarreruns. C/HcierresHashSorting/Pilalimpiaintactos,no RNGraphdecisions/newcontract/publish.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-limpiar-finite-review-plan-low.md"
+}

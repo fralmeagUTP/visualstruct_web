@@ -1,0 +1,141 @@
+{
+  "rows": {
+    "prim_raw": [
+      [
+        1,
+        2,
+        5
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        3,
+        4,
+        4
+      ]
+    ],
+    "prim_raw_isolated": [
+      [
+        1,
+        2,
+        5
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        3,
+        4,
+        4
+      ]
+    ],
+    "prim_raw_missing": [],
+    "prim_symmetric": [
+      [
+        3,
+        2,
+        2
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        3,
+        4,
+        4
+      ]
+    ],
+    "kruskal_symmetric": [
+      [
+        4,
+        3,
+        4
+      ],
+      [
+        3,
+        2,
+        2
+      ],
+      [
+        3,
+        1,
+        1
+      ]
+    ],
+    "prim_symmetric_isolated": [
+      [
+        3,
+        2,
+        2
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        3,
+        4,
+        4
+      ]
+    ],
+    "dfs_wrapper_missing": [],
+    "dfs_helper_raw_missing": [
+      [
+        99,
+        0
+      ]
+    ],
+    "dfs_helper_valid": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        3,
+        0
+      ]
+    ],
+    "kruskal_raw": [
+      [
+        3,
+        4,
+        4
+      ],
+      [
+        2,
+        3,
+        2
+      ],
+      [
+        1,
+        3,
+        1
+      ]
+    ]
+  },
+  "prim_borrowed_ref": "openspec\\changes\\audit-local-quality-and-unified-controls\\evidence\\visible-five-staged-expectations-api-coverage20-low\\native-current\\report.json",
+  "kruskal_new_ref": "openspec\\changes\\audit-local-quality-and-unified-controls\\evidence\\visible-kruskal-raw-current-C-stage10-low\\native-current\\kruskal-raw-report.json",
+  "same_current_C_H_sha256": {
+    "tad_grafo.c": "5e2f3946043ac5faf1c1e9e992866b7563d13cfbfa83336289786bf7d301689b",
+    "tad_grafo.h": "d3e0c856d2249d74e290166ae8e4620df08ccf3e98eb032a3f2a974bbcc8696a",
+    "tad_cola.c": "adaa60def6ccf0e6294f8ae5da4c1f4e3e1c7c7f492e8224535e7683ad968e48",
+    "tad_cola.h": "6f52e5fdbb32357f0cc3b80b2bfea85630c41e32871d743e761ba3054360f8da"
+  },
+  "runtime_note": "Finite preserved currentC raw output fixture; provenance refs resolve from canonicalproject evidence, not needed for asserts."
+}

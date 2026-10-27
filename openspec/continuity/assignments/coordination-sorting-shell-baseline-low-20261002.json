@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-shell-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T13:49:01.823280+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.shell-baseline-low",
+  "task": "LOW controlled owned5051 refresh plus next existing Shell finite native baseline,UI/callers and bounded semantic plan",
+  "instruction": "Refresh owned canonical-D preview5051 on127.0.0.1; no firewall/networkchanges. Prepare next existing sorting method per inventory, fineassignment baselineLOW;preserve four finite closures,delimitMEDIUMbeforesemanticimplementation;no push merge deploy.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-shell-authorized-low.md"
+}

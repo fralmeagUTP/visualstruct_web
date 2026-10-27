@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-five-helpers-finite-consolidation-low-20261004",
+  "issued_at_utc": "2026-10-04T01:22:10.766258+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority-queue.five-helpers-finite-consolidation-low",
+  "task": "Consolidate five independent finite private Priority helper cores, derive subgroup map and prepare approved Graph next plan",
+  "instruction": "Consolida LOW los cinco auxiliares por separado verificando evidencia:326 pruebas (aclara unión IDs únicos vs suites repetidas),baseline148IDs86/62preservado,2147eventos575condiciones sin divergencias,manifest461/461,guardasC/H/APIUI. No repetir suite completa sin causa. Si aceptados, marca sus cierres finitos y mapa5→0 en ese subgrupo, sin inferir cierre total TAD/app ni exposiciónAPIUI. Devuelve handback breve y plan siguiente MEDIUM acotado Grafos aprobado, listo para continuar; no mutar Grafos durante consolidación LOW. Revisa los pendientes de auditoría global que siguen para próxima secuencia evitando reabrir cierres.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-five-helpers-finite-consolidation-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-bellman-prim-integer-cycle-approved-medium-20261004.json"
+}

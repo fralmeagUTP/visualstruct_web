@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-format-current-c-oracle-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T05:07:58.212452+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-priority-format-current-c-oracle",
+  "operation": "qa.priority-format-current-c-oracle",
+  "task": "priority-format-current-c-oracle-independent-qa",
+  "instruction": "Independent QA exact one test file/one function test_tad_cola_prioridad_copy_and_format, correcting superseded indexed substring to exact native cp_formatear text; preserve copy/order/priorities/cleanup assertions. Inspect C literal prefix/value-priority/separator and Python current formatter, guarded sameID baseline/final. No product/ABB-RN/Sorting/E2E/timeout/publication/longbattery. This initial identity precedes author change; final immutable manifest will bind finalsource and ownQA evidence before reviewer executes.",
+  "scope_ref": "openspec/changes/review-priority-format-current-c-oracle/review-scope.md"
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-seven-staged-contract-repairs-independent-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T11:52:42.476075+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.seven-staged-contract-repairs-quality",
+  "task": "seven-staged-contract-repairs-independent-review",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW independent",
+  "instruction": "Prepare frozen seven-repairs QA group per coordinator; independent review only, own before/after, no tests/coverage/adoption. Preserve prior QA.",
+  "scope_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/seven-staged-contract-repairs-review-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-avl-causal-stages-sorting17-independent-qa-low-20261005.json"
+}

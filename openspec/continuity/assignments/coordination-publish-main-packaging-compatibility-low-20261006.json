@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-main-packaging-compatibility-low-20261006",
+  "issued_at_utc": "2026-10-06T23:23:31.067658+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-main-packaging-compatibility",
+  "task": "publish-main-packaging-compatibility",
+  "instruction": "Parent01a0fe61 authorizes correction of publication omission32 permanent fixture/testsupport files after no-secret/mass/prototype checks; classify125 remaining unit failures+9E2E against canonical/currentrequirements with evidence, no delete/weaken tests. Verify GCC conditioncoverage support/minimal compatibility without unauthorized installs. Within GitHubupdate publish only demonstrated packaging/compatibility correction main noforce with focalchecks and exactSHA CI; material functional/algorithm bug report before change. No optimization/long local tests/VPSdeploy/deniedSDD.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-main-packaging-compatibility-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-publish-main-CI-followup-low-20261006.json"
+}

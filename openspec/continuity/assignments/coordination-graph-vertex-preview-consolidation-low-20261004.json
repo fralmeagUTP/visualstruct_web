@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-vertex-preview-consolidation-low-20261004",
+  "issued_at_utc": "2026-10-04T10:36:16.813853+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.vertex-insert-remove-trace",
+  "task": "LOW consolidation: activate only local preview5051; verify original vertex regressions in actual UI/reload; apply known-defect notice and four-row evidence; diagnose C/main incident arcs versus API and concrete global residuals without runtime reimplementation",
+  "instruction": "Consolida LOW corrección vértices:2baselineIDsbytesintactos,15C17,6browser4gates. Refresca coordinadamente sólopreviewlocal5051 para cargar runtimeactual y verifica el caso regresión porUI/recarga antesdeafirmarvisible; no despliegueexterno. Actualiza aviso preparado/matriz4filas y manifiestos sin repetirfamilias. Detalla ahora diferencia preexistente C/main vs API al retirar arcos incidentes: entrada mínima, resultadoC/API,contrato aprobado,impacto y correcciónmínima/necesidadautorización. No ocultarla comofueraalcancesin explicarcómoafecta criteriosglobales. Mantén prioridadochocriterios; entrega residuales concretos y siguienteprueba aplicable.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-vertex-preview-consolidation-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-vertex-insert-remove-trace-medium-20261004.json"
+}

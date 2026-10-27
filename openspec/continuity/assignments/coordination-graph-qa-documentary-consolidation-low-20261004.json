@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-qa-documentary-consolidation-low-20261004",
+  "issued_at_utc": "2026-10-04T06:23:50.355065+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.bellman-prim-integer-cycle-approved-medium",
+  "task": "Consolidate accepted finite Graph QA, correct metric and snapshot documentation, and prepare stable documentary audit without algorithm or C/H edits",
+  "instruction": "QA independiente aceptó técnicamente los3bloques en alcancefinito. Dictamen evidence/independent-review-graph-three-approved-adjustments/review.md:46pruebaspass,6fixturesnativoscríticos,30148mutacionesrechazadasChromium,800hashescoincidentes,before/verify/after0. Producto y evidenciaautorintactos. Consolida LOW con correcciones documentales exigidas: donde autor midióperf_counter sustituyeCPU por tiempo transcurrido; incorpora nueva evidenciainmutabilidad y precisión snapshotscompartidoscongelados, conservando fallo técnicoanterior histórico. No reescribir evidencias originales ni atribuir mediciónCPUQA aautor. QA Prim3verticesJSON−89.54%,Pythonpeak−77.99%,tiempo/CPUmedidosaumentan;no200verticesni global. Luego declara exactamente qué criterios de algoritmos quedan aceptados y residuales (ledger38hashes,documentación,otras9casillas). Prepara siguiente bloque documental autorizado sobrefuentesestables sin ampliaciónalgoritmos, reutilizando67readreviewsSDD. Si comentarios C/H requieren excepciónno vigente, identifícala; no ampliar. Entrega conteotasksactual sólo tras verificarcriterios, no porcantidadmétodos.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-qa-documentary-consolidation-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-three-approved-adjustments-medium-20261004.json"
+}

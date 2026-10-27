@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-four-instruction-traces-medium-20261004",
+  "issued_at_utc": "2026-10-04T02:04:52.308324+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.bellman-prim-integer-cycle-approved-medium",
+  "task": "Implement and independently verify instruction traces for Bellman-Ford, Prim, Dijkstra and Kruskal without expanding protected C",
+  "instruction": "Recibido hito funcional de Grafos, sin cierre todavía. Continúa MEDIUM acotado con fidelidad de trazas por instrucción para Bellman-Ford, Prim, Dijkstra y Kruskal, especialmente ciclo negativo. Contrasta contra C actual autorizado, registra eventos/condiciones/variables/retornos, sin inventar ejecución C cuando la API rechaza antes. Conserva diagnóstico del ciclo y ausencia de historial exitoso; verifica recarga/replay sin reejecución y mains coincidentes con el DOM. Mantén evidencia funcional recién obtenida y sólo reejecuta lo afectado; firmas y alcance C protegidos salvo las dos funciones ya autorizadas. Devuelve checkpoint por algoritmo, pendientes y límites precisos para consolidación LOW y QA independiente.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-four-instruction-traces-plan-medium.md",
+  "supersedes": "openspec/continuity/assignments/coordination-graph-bellman-prim-integer-cycle-resumed-medium-20261004.json"
+}

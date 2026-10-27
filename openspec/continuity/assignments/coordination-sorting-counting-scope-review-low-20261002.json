@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-counting-scope-review-low-20261002",
+  "issued_at_utc": "2026-10-02T17:38:58.890752+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.counting-scope-review-low",
+  "task": "LOW review Counting fixture-sized dispatcher cap, eight implementation limits, partial status and safe broader-fidelity correction plan",
+  "instruction": "# Revisión LOW de alcance Counting autorizada\n\nInstrucción nueva coordinador01a0f0a7-80d9-722c-85ae-b3a1660740fc: antes de Binsort revisar límite nuevo n<=4/k<=4. Objetivo aprobado fidelidad para entradas admitidas,no solo fixtures. Explicar motivo,límites de otras ocho implementaciones,riesgos/solución escalado/lazy/límiteUIexistente. Registrar Counting parcial;plan acotado entradasválidas fuera4 con seguridadmemoria. Entregar diagnóstico/plan antesimplementarcomplejo. No contratos/restricciones silenciosas,repetir cierres/pruebasmasivas/pushmerge/despliegue.\n\nAlcance: inspección estática de despacho/formatos y límites, evidencia histórica preservada; pocos probes de Counting fuera4 si útiles. Sin ejecución de ocho métodos cerrados ni implementación de recorder nuevo.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-counting-scope-review-authorized-low.md"
+}

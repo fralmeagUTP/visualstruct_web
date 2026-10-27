@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-phase8-size-provenance-low-20261008",
+  "issued_at_utc": "2026-10-08T03:56:32.608139+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.phase8-size-provenance",
+  "task": "phase8-size-provenance",
+  "instruction": "Read-only provenance of original1MB assertion, current session/transport real limits and existing RN storage/retrieval evidence. No test/application execution, threshold/contract/product changes, optimization, acceptance or publication. Preserve27accepted38pendingQA1pending.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/phase8-size-provenance-low.md"
+}

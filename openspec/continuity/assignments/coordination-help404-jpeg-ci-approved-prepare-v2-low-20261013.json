@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-help404-jpeg-ci-approved-prepare-v2-low-20261013",
+  "issued_at_utc": "2026-10-13T05:07:31.529745+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.github-vps-qualified-delivery",
+  "task": "github-vps-qualified-delivery",
+  "instruction": "Prepare minimal help404 contract/tests diff for independentQA BEFORE publication or campaigns. Approved404unknown/200registered; oneJPEG120s2GiB; oneeach3workflows155runner-min,no retries. Additionalpublication not yetcovered. No deliverydoc/VPS/AISEF/harness/educationalalgorithm changes. Counting readonly recovery permitted.",
+  "user_message": "Sentinel_afeeb03104888191892b087a87f6f92d",
+  "verbatim_user_authorization": "Si",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-help404-approved-prepare-low-20261013/scope.md"
+}

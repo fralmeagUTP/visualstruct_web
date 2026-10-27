@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-bfs-instruction-20261002",
+  "issued_at_utc": "2026-10-02T06:07:58.801336+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.bfs",
+  "task": "MEDIUM acotado: fidelidad BFS por instrucción, cola, marcas, ámbitos, recorrido, historial/caller y replay",
+  "instruction": "Asignación explícita vigente: graph.bfs exclusivamente. Implementar MEDIUM acotado contra baseline 10 casos/11 ejecuciones/720 observaciones; preservar -1, contratos reales, avance/retroceso sin POST y descargas C17. No cerrar otros algoritmos; terminar turno al concluir semántica para LOW inmediato. Sin push/merge/despliegue.",
+  "provenance": "Registro de la instrucción explícita de coordinación recibida; conserva asignaciones previas, no infiere aprobación de otros contratos.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md"
+}

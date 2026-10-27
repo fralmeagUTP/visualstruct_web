@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-queue-encolar-finite-consolidation-low-20261003",
+  "issued_at_utc": "2026-10-03T17:27:03.356673+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "queue.encolar-finite-consolidation-low",
+  "task": "Consolidate finite enqueue evidence and close only recorded cases; propose next LOW baseline",
+  "instruction": "ConsolidaLOWEncolar36pass33baselineIDs preserved,140reusedCevents35cond40obsrecheckhashvalid,bothviews4reload/Siguientenoredispatch/realcallerDOMHTTPownership/error docs. Finite2.17MB157.7KBboundsdeclare no universal. If evidencevalidcloseonlyencolar y map remainingPriorityencolar/etc;propónsiguientebaselineLOWnocierresreopened. PreservaC/HColaRNHashSortingpreviousclosures,noSDDblockedwrites,Graph/Dijkstrapending,nopublish. RecorduniqueIDsnotreuseddoublecounts.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/queue-encolar-finite-review-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-queue-encolar-instructions-medium-20261003.json"
+}

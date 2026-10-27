@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-circular-insert-consumer-low-20261008",
+  "issued_at_utc": "2026-10-08T00:10:19.926184+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.circular-insert-consumer",
+  "task": "circular-insert-consumer",
+  "instruction": "Only tests/test_circular_list_trace_conformance.py::test_insertions_show_real_allocator_and_publish_only_at_pointer_assignment. Author-owned binding, focal reproduction; verify allocator occurrence, initialization, publication, unique identities, initial state and parameters. Correct only demonstrated cause; consumer repair only if source faithful. Preserve all accepted lots and QA-pending Frente, no shared Lista edits, QA Front denied records, publication/global/E2E or expansions. Stop exactly on denied action, no retry/alternate route.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/circular-insert-consumer-low.md"
+}

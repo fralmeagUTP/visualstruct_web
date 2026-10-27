@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-canonical-correspondence-and-roots-low-20261004",
+  "issued_at_utc": "2026-10-04T12:50:49.367263+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "LOW coordinate C1/session-state ownership, complete criterion11/12 source-case-event-view applicability and criterion16 authorized diff-requirement-regression bindings; select only truly missing applicable tests and partial checkpoint per criterion; materialize read-only SDD root dispositions for criterion22, retaining all ambiguous/live APIs and groups",
+  "instruction": "Aceptado17cerrado15/22,previewactual0/0y3839sesionespreservadas. Continúa reconciliación canónica C1/session-state mediante expediente preparado y bindingsvigentes, coordinando propiedad sin eludirguardas. Completa correspondencias11/12 y16 diffrequisitoregresión y selecciona únicamente pruebasfaltantes;no repetirproductocerrado ni declararQAfinalantesfuentesestables. Si session-state corresponde alotropropietario, entrega asignaciónconcreta/archivos/criterios y yo lo coordino para evitarbloqueo. SDDrevisará sólolectura disposicionesraícesPythonJS/templatesAPIspara22; no interferiráediciones. Meta ircerrandocriterios íntegros, entrega checkpointparcial en cada criterio.\nLatest supplemental coordinator delegation permits criterion22 dispositions per evidence/visible-canonical-correspondence-low/SDD-roots-review-received.json; no semantic expansion.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/canonical-correspondence-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-canonical-correspondence-low-20261004.json"
+}

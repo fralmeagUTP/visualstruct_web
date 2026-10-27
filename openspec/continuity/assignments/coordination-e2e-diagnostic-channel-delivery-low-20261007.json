@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-e2e-diagnostic-channel-delivery-low-20261007",
+  "issued_at_utc": "2026-10-07T04:06:48.227638+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.e2e-diagnostic-directory-anchor",
+  "task": "e2e-diagnostic-directory-anchor",
+  "instruction": "Parent01a0fe61 latest04:07 steering adds direct GitHub evidence: artifacts0/no matching files/include-hidden-files false. Distinguish generation, relative parent/child path, and hidden folder filter. Confirm concrete effects with tiny producer/reader control and actual actions glob dependency; use visible metadata-only folder and same absolute channel, not broad hidden inclusion. Four-file unpublished candidate only, no longCI/browser/Sorting/C/algorithm changes; new focal QA before publication.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/e2e-diagnostic-directory-anchor-low.md"
+}

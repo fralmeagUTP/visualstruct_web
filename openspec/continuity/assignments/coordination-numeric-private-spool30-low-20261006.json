@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-numeric-private-spool30-low-20261006",
+  "issued_at_utc": "2026-10-06T12:14:02.254636+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.numeric-private-completed-spool",
+  "task": "numeric-private-completed-spool",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd afterQA2230 accepts finitepackedgeneration authorizes PRIVATE boundedserialization fromarenas/tapes completevalidatedwholebody inprivate spool BEFOREheaders/bytes. ExistingC/allsteps/HTTPbody/statusheaders/errors/session exact; no fulltargettable/eventlist/JSONstr/bodybytes. Ownfile permissions/cleanup success,error,cancel,interruptedconsumer; explicitdisk/row/bufferlimits safe failures. SAME20small equivalence+negative+realjointmemory. 2GiBbeforeimports mechanicalexactbefore0 beforejob/execution. Max30min checkpointifincomplete. NoBF30/adoption/visiblecontractchange/product/Git/preview.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/numeric-private-spool30-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-numeric-packed-generation30-low-20261006.json"
+}

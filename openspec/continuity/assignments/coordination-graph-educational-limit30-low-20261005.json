@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-educational-limit30-low-20261005",
+  "issued_at_utc": "2026-10-05T02:46:16.113034+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "Explicituserlimit30/APIUIgeneration/31transactionalreject/legacysessions/performance30/QApackage",
+  "instruction": "Explicit new user decision via transcript coordinator01a0fe61-3104-743a-b032-bcc289ad80cd: maximum30vertices educational VisualStruct. Supersedes100performance scope; preserve100historical failure, no gate laundering. Implement30API/UI/generation guard,31reject without state/history mutation/no silent truncation/C-H-signature changes. Preserve existing>30sessions and expose compatible explicit management; do not delete. Recommended legacy mode: retain/read all existingdata and allow remove/clear to reduce; prevent newgrowth, generator replacement above30, algorithm execution whileabove30. Need coordinate material legacy ambiguity, continue independent current-limit implementation. Preserve83/85 and every C trace. Reconcile specs/matrices/performance30/boundary31. Deadline05UTC. Existing optimizer comparison6shapes+10recordedBFS shapes and5numeric cases current-before/current-after; genericengine30tests and2DOM contexts. No global closure claimed. New final QA binding/package required after frozen candidate.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-educational-limit30-decision-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-QA18-graph-boundary-optimization-low-20261005.json"
+}

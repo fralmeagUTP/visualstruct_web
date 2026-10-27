@@ -1,0 +1,1131 @@
+{
+  "capture": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-observed-invariant-repair1-low/run_bfs-observation.json",
+  "original_ordinal": 3,
+  "trace": {
+    "source_code": "/**\n * @brief Recorre desde inicio con FIFO y publica una lista nueva en orden BFS.\n * @param[in,out] g Grafo por valor con nodos prestados validos; comparte sus marcas.\n * @param inicio Identificador entero inicial, incluidos negativos y -1.\n * @return Lista nueva de vertices procesados; NULL si inicio no existe o no obtiene nodos.\n * @note Desmarca primero, incluso si inicio falta; luego marca al intentar encolar.\n * @note El caller libera todos los nodos del resultado; sus marcas propias son 0.\n * @note Cola y listas de sucesores son temporales y se liberan durante la ruta normal.\n * @note Fallos de reserva pueden omitir vertices o dar resultado parcial/NULL. Si\n *       cola_encolar falla, BFS puede marcar un vertice que no sera procesado.\n * @note La guarda de cola no vacia permite extraer -1 como dato valido, no como error.\n * @note Ignora costos: minimiza cantidad de arcos, no peso. Este TAD barre listas de\n *       vertices/arcos repetidamente: cota O(V*(V+E)), no O(V+E) de una implementacion\n *       con adyacencia directa y consulta de marcas constante.\n */\nListaVertice grafo_bfs(Grafo g, int inicio) {\n    g = grafo_desmarcar(g);\n    struct Cola cola = {NULL, NULL};\n    ListaVertice recorrido = NULL;\n    ListaVertice ultimo = NULL;\n\n    // Verifica si el v\u00e9rtice de inicio existe\n    ListaVertice v = g.v;\n    int existe = 0;\n    while (v != NULL) {\n        if (v->dato == inicio) {\n            existe = 1;\n            break;\n        }\n        v = v->sig;\n    }\n\n    if (!existe) return NULL;\n\n    cola_encolar(&cola, inicio);\n    g = grafo_marcar_vertice(g, inicio);\n\n    while (cola.delante != NULL) {\n        int actual = cola_desencolar(&cola);\n        // La cola no vac\u00eda garantiza extracci\u00f3n; -1 es un identificador v\u00e1lido.\n\n        // Agregar al recorrido\n        ListaVertice tmp = (ListaVertice) malloc(sizeof(struct NodoV));\n        if (tmp == NULL) continue;\n\n        tmp->dato = actual;\n        tmp->marcado = 0;\n        tmp->sig = NULL;\n        if (recorrido == NULL) recorrido = tmp;\n        else ultimo->sig = tmp;\n        ultimo = tmp;\n\n        // Explorar grafo_sucesores\n        ListaVertice suces = grafo_sucesores(g, actual);\n        while (suces != NULL) {\n            if (!grafo_marcado_vertice(g, suces->dato)) {\n                cola_encolar(&cola, suces->dato);\n                g = grafo_marcar_vertice(g, suces->dato);\n            }\n            ListaVertice temp = suces;\n            suces = suces->sig;\n            free(temp);\n        }\n    }\n\n    return recorrido;\n}\n\n/**\n * @brief Pone a cero las marcas de todos los nodos de vertices compartidos.\n * @param[in,out] g Copia por valor del grafo; listas validas o NULL.\n * @return La misma pareja de cabezas; no reserva ni libera nodos.\n * @note Copiar Grafo no copia sus nodos: las escrituras se observan en los aliases.\n */\nGrafo grafo_desmarcar(Grafo g) {\n    ListaVertice k = g.v;\n    while (k != NULL) {\n              k->marcado = 0;\n        k = k->sig;\n        }\n     return g;\n }\n\n/**\n * @brief Escribe 1 en la marca del primer vertice cuyo dato es x.\n * @param[in,out] g Grafo por valor con nodos prestados validos.\n * @param x Identificador entero, incluidos negativos y -1.\n * @return La misma pareja de cabezas; si x no existe no cambia nodos.\n * @note No reserva ni libera memoria; el grafo vacio es valido.\n */\nGrafo grafo_marcar_vertice(Grafo g, int x) {\n    ListaVertice k = g.v;\n    while (k != NULL) {\n        if (k->dato == x) {\n            k->marcado = 1;\n            break;\n        }\n        k = k->sig;\n        }\n     return g;\n }\n\n/**\n * @brief Consulta la marca almacenada del primer vertice coincidente.\n * @param g Grafo prestado por valor; listas validas o NULL.\n * @param x Identificador entero buscado.\n * @return Valor int de marcado, o 0 si x no existe; no normaliza otro valor a 1.\n * @note No modifica nodos ni transfiere propiedad.\n */\nint grafo_marcado_vertice(Grafo g, int x) {\n    ListaVertice k = g.v;\n    while (k != NULL) {\n        if (k->dato == x) {\n            return k->marcado;\n        }\n        k = k->sig;\n        }\n     return 0;\n }\n\n/**\n * @brief Reserva una lista independiente de destinos de arcos cuyo origen es x.\n * @param g Grafo prestado por valor; lista de arcos valida o NULL.\n * @param x Identificador entero de origen; no exige que exista un vertice x.\n * @return Lista nueva, o NULL sin coincidencias/reservas; el caller libera cada nodo.\n * @note Ante fallo malloc omite ese destino y sigue; puede retornar lista parcial.\n * @note Prepend invierte el orden de recorrido de la lista de arcos; marcado es 0.\n * @note No modifica marcas ni enlaces del grafo original y no imprime salida.\n */\nListaVertice grafo_sucesores(Grafo g, int x) {\n    ListaArco k = g.a;\n    ListaVertice ver = NULL, nuevo;\n\n    while (k != NULL) {\n        if (k->origen == x) {\n            nuevo = (ListaVertice)malloc(sizeof(struct NodoV));\n            if (nuevo != NULL) {\n                nuevo->sig = ver;\n                nuevo->dato = k->destino;\n                nuevo->marcado = 0;\n                ver = nuevo;\n            }\n        }\n        k = k->sig;\n      }\n   return ver;\n}\n\nvoid cola_encolar(struct Cola *q, int valor) {\n    if (q == NULL) {\n        printf(\"Error: cola no inicializada.\\n\");\n        return;\n    }\n\n    struct NodoCola *aux = (struct NodoCola *) malloc(sizeof(struct NodoCola));\n    if (aux == NULL) {\n        printf(\"Error: no se pudo asignar memoria.\\n\");\n        return;\n    }\n\n    aux->nro = valor;\n    aux->sgte = NULL;\n\n    if (q->delante == NULL) {\n        q->delante = aux;  // Primer elemento encolado\n    } else {\n        q->atras->sgte = aux;\n    }\n    q->atras = aux;  // Siempre apunta al \u00faltimo\n}\n\n/**\n * @brief Copia el dato del frente, retira su enlace y libera exactamente ese nodo.\n * @param[in,out] q Direccion prestada de una FIFO consistente, o NULL.\n * @return Dato extraido; -1 tambien es un dato valido. Ante q NULL/cola vacia,\n *         imprime diagnostico y devuelve -1 sin cambiar enlaces.\n * @note Compruebe la cola no vacia antes de extraer; el valor -1 no distingue error.\n * @note Los aliases al nodo liberado dejan de ser utilizables; q sigue valido.\n */\nint cola_desencolar(struct Cola *q) {\n    if (q == NULL || q->delante == NULL) {\n        printf(\"Cola vac\u00eda. No se puede desencolar.\\n\");\n        return -1;  // Valor de error\n    }\n\n    struct NodoCola *aux = q->delante;\n    int num = aux->nro;\n    q->delante = aux->sgte;\n\n    if (q->delante == NULL) {\n        q->atras = NULL;  // Cola vac\u00eda despu\u00e9s de desencolar\n    }\n\n    free(aux);\n    return num;\n}",
+    "bfs_instruction_model": true,
+    "steps": [
+      {
+        "console": [],
+        "debug": {
+          "bfs_memory": {
+            "heap_nodes": [
+              {
+                "id": "V1",
+                "kind": "vertex",
+                "value": 1,
+                "mark": 0,
+                "next": "NULL"
+              },
+              {
+                "id": "V2",
+                "kind": "vertex",
+                "value": 2,
+                "mark": 0,
+                "next": "V1"
+              },
+              {
+                "id": "V3",
+                "kind": "vertex",
+                "value": 3,
+                "mark": 0,
+                "next": "V2"
+              },
+              {
+                "id": "E1",
+                "kind": "arc",
+                "origin": 1,
+                "target": 2,
+                "next": "NULL"
+              },
+              {
+                "id": "E2",
+                "kind": "arc",
+                "origin": 2,
+                "target": 1,
+                "next": "E1"
+              },
+              {
+                "id": "E3",
+                "kind": "arc",
+                "origin": 2,
+                "target": 3,
+                "next": "E2"
+              },
+              {
+                "id": "E4",
+                "kind": "arc",
+                "origin": 3,
+                "target": 2,
+                "next": "E3"
+              },
+              {
+                "id": "E5",
+                "kind": "arc",
+                "origin": 1,
+                "target": 3,
+                "next": "E4"
+              },
+              {
+                "id": "E6",
+                "kind": "arc",
+                "origin": 3,
+                "target": 1,
+                "next": "E5"
+              }
+            ],
+            "freed_nodes": [],
+            "frames": [
+              {
+                "id": "F1",
+                "function": "grafo_bfs",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  },
+                  "inicio": 1
+                },
+                "locals": {}
+              },
+              {
+                "id": "F2",
+                "function": "grafo_desmarcar",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  }
+                },
+                "locals": {
+                  "k": "V3"
+                }
+              }
+            ],
+            "graph": {
+              "v": "V3",
+              "a": "E6"
+            },
+            "graph_marks": [
+              {
+                "vertex": 3,
+                "mark": 0,
+                "id": "V3"
+              },
+              {
+                "vertex": 2,
+                "mark": 0,
+                "id": "V2"
+              },
+              {
+                "vertex": 1,
+                "mark": 0,
+                "id": "V1"
+              }
+            ],
+            "queue": {
+              "delante": "NULL",
+              "atras": "NULL"
+            },
+            "queue_nodes": [],
+            "result_nodes": [],
+            "successor_nodes": [],
+            "returned": "NULL",
+            "published": "NULL",
+            "discovery": [],
+            "parents": {},
+            "active": null,
+            "allocations": 0,
+            "frees": 0,
+            "console_stdout": ""
+          },
+          "stage": "statement",
+          "note": "Instrucci\u00f3n completada; no hay salida printf en esta ruta normal.",
+          "graph_progress": {
+            "mode": "traversal",
+            "nodes": [],
+            "edges": [],
+            "tree_edges": [],
+            "queue": [],
+            "visited": [],
+            "selected": null,
+            "previous": {},
+            "discovery": []
+          }
+        },
+        "line_index": 75,
+        "line_text": "    ListaVertice k = g.v;",
+        "pedagogy": {
+          "schema_version": 1,
+          "algorithm": "run_bfs",
+          "concept": "assignment",
+          "case": "statement",
+          "phase": {
+            "id": "run_bfs-statement",
+            "label": "Statement",
+            "goal": "ListaVertice k = g.v;"
+          },
+          "source": {
+            "line_index": 75,
+            "line_text": "    ListaVertice k = g.v;"
+          },
+          "condition": null,
+          "variables": [
+            {
+              "name": "g",
+              "scope": "grafo_bfs#F1",
+              "frame_id": "F1",
+              "type": "Grafo",
+              "previous": {
+                "v": "V3",
+                "a": "E6"
+              },
+              "value": {
+                "v": "V3",
+                "a": "E6"
+              },
+              "changed": false,
+              "meaning": "Local o par\u00e1metro de esta invocaci\u00f3n; una identidad retirada es un registro, no un puntero utilizable."
+            },
+            {
+              "name": "inicio",
+              "scope": "grafo_bfs#F1",
+              "frame_id": "F1",
+              "type": "int",
+              "previous": 1,
+              "value": 1,
+              "changed": false,
+              "meaning": "Local o par\u00e1metro de esta invocaci\u00f3n; una identidad retirada es un registro, no un puntero utilizable."
+            },
+            {
+              "name": "g",
+              "scope": "grafo_desmarcar#F2",
+              "frame_id": "F2",
+              "type": "Grafo",
+              "previous": {
+                "v": "V3",
+                "a": "E6"
+              },
+              "value": {
+                "v": "V3",
+                "a": "E6"
+              },
+              "changed": false,
+              "meaning": "Local o par\u00e1metro de esta invocaci\u00f3n; una identidad retirada es un registro, no un puntero utilizable."
+            },
+            {
+              "name": "k",
+              "scope": "grafo_desmarcar#F2",
+              "frame_id": "F2",
+              "type": "ListaVertice",
+              "previous": "fuera de \u00e1mbito",
+              "value": "V3",
+              "changed": true,
+              "meaning": "Local o par\u00e1metro de esta invocaci\u00f3n; una identidad retirada es un registro, no un puntero utilizable."
+            }
+          ],
+          "call_stack": [
+            {
+              "function": "grafo_bfs",
+              "frame_id": "F1",
+              "depth": 0,
+              "parameters": {
+                "g": {
+                  "v": "V3",
+                  "a": "E6"
+                },
+                "inicio": 1
+              },
+              "locals": {},
+              "scope_status": "suspendido",
+              "return_value": null
+            },
+            {
+              "function": "grafo_desmarcar",
+              "frame_id": "F2",
+              "depth": 1,
+              "parameters": {
+                "g": {
+                  "v": "V3",
+                  "a": "E6"
+                }
+              },
+              "locals": {
+                "k": "V3"
+              },
+              "scope_status": "activo",
+              "return_value": null
+            }
+          ],
+          "auxiliary": {
+            "kind": "queue",
+            "items": [],
+            "selected": null,
+            "candidates": [],
+            "iteration": null,
+            "operation": "inspect"
+          },
+          "vertices": [
+            {
+              "id": "1",
+              "status": "undiscovered",
+              "distance": null,
+              "predecessor": null,
+              "marked": 0
+            },
+            {
+              "id": "2",
+              "status": "undiscovered",
+              "distance": null,
+              "predecessor": null,
+              "marked": 0
+            },
+            {
+              "id": "3",
+              "status": "undiscovered",
+              "distance": null,
+              "predecessor": null,
+              "marked": 0
+            }
+          ],
+          "active_edge": null,
+          "table": {
+            "distances": {},
+            "previous": {},
+            "visited": [],
+            "rows": [
+              {
+                "id": "1",
+                "status": "undiscovered",
+                "distance": null,
+                "predecessor": null,
+                "marked": 0
+              },
+              {
+                "id": "2",
+                "status": "undiscovered",
+                "distance": null,
+                "predecessor": null,
+                "marked": 0
+              },
+              {
+                "id": "3",
+                "status": "undiscovered",
+                "distance": null,
+                "predecessor": null,
+                "marked": 0
+              }
+            ]
+          },
+          "relaxation": null,
+          "representation": {
+            "directed": false,
+            "adjacency": {
+              "1": [
+                {
+                  "vertex": "2",
+                  "weight": 1.0
+                },
+                {
+                  "vertex": "3",
+                  "weight": 5.0
+                }
+              ],
+              "2": [
+                {
+                  "vertex": "1",
+                  "weight": 1.0
+                },
+                {
+                  "vertex": "3",
+                  "weight": 2.0
+                }
+              ],
+              "3": [
+                {
+                  "vertex": "2",
+                  "weight": 2.0
+                },
+                {
+                  "vertex": "1",
+                  "weight": 5.0
+                }
+              ]
+            },
+            "degrees": [
+              {
+                "vertex": "1",
+                "degree": 2,
+                "out_degree": 2,
+                "in_degree": 2
+              },
+              {
+                "vertex": "2",
+                "degree": 2,
+                "out_degree": 2,
+                "in_degree": 2
+              },
+              {
+                "vertex": "3",
+                "degree": 2,
+                "out_degree": 2,
+                "in_degree": 2
+              }
+            ]
+          },
+          "traversal": {
+            "tree_edges": [],
+            "discovery_order": [],
+            "active": null,
+            "component": 0,
+            "output_order": []
+          },
+          "memory": {
+            "objects_before": [
+              {
+                "id": "V1",
+                "kind": "vertex",
+                "value": 1,
+                "mark": 0,
+                "next": "NULL"
+              },
+              {
+                "id": "V2",
+                "kind": "vertex",
+                "value": 2,
+                "mark": 0,
+                "next": "V1"
+              },
+              {
+                "id": "V3",
+                "kind": "vertex",
+                "value": 3,
+                "mark": 0,
+                "next": "V2"
+              },
+              {
+                "id": "E1",
+                "kind": "arc",
+                "origin": 1,
+                "target": 2,
+                "next": "NULL"
+              },
+              {
+                "id": "E2",
+                "kind": "arc",
+                "origin": 2,
+                "target": 1,
+                "next": "E1"
+              },
+              {
+                "id": "E3",
+                "kind": "arc",
+                "origin": 2,
+                "target": 3,
+                "next": "E2"
+              },
+              {
+                "id": "E4",
+                "kind": "arc",
+                "origin": 3,
+                "target": 2,
+                "next": "E3"
+              },
+              {
+                "id": "E5",
+                "kind": "arc",
+                "origin": 1,
+                "target": 3,
+                "next": "E4"
+              },
+              {
+                "id": "E6",
+                "kind": "arc",
+                "origin": 3,
+                "target": 1,
+                "next": "E5"
+              }
+            ],
+            "objects_after": [
+              {
+                "id": "V1",
+                "kind": "vertex",
+                "value": 1,
+                "mark": 0,
+                "next": "NULL"
+              },
+              {
+                "id": "V2",
+                "kind": "vertex",
+                "value": 2,
+                "mark": 0,
+                "next": "V1"
+              },
+              {
+                "id": "V3",
+                "kind": "vertex",
+                "value": 3,
+                "mark": 0,
+                "next": "V2"
+              },
+              {
+                "id": "E1",
+                "kind": "arc",
+                "origin": 1,
+                "target": 2,
+                "next": "NULL"
+              },
+              {
+                "id": "E2",
+                "kind": "arc",
+                "origin": 2,
+                "target": 1,
+                "next": "E1"
+              },
+              {
+                "id": "E3",
+                "kind": "arc",
+                "origin": 2,
+                "target": 3,
+                "next": "E2"
+              },
+              {
+                "id": "E4",
+                "kind": "arc",
+                "origin": 3,
+                "target": 2,
+                "next": "E3"
+              },
+              {
+                "id": "E5",
+                "kind": "arc",
+                "origin": 1,
+                "target": 3,
+                "next": "E4"
+              },
+              {
+                "id": "E6",
+                "kind": "arc",
+                "origin": 3,
+                "target": 1,
+                "next": "E5"
+              }
+            ],
+            "allocated": [],
+            "freed": [],
+            "null_checked": false,
+            "dangling_references": [],
+            "retired_objects": [],
+            "symbolic_identities": true,
+            "records_are_not_pointer_values": true
+          },
+          "state_before": {
+            "structure": "graph",
+            "directed": false,
+            "weighted": true,
+            "nodes": [
+              {
+                "id": "1",
+                "label": "1",
+                "value": "1",
+                "marked": 0
+              },
+              {
+                "id": "2",
+                "label": "2",
+                "value": "2",
+                "marked": 0
+              },
+              {
+                "id": "3",
+                "label": "3",
+                "value": "3",
+                "marked": 0
+              }
+            ],
+            "edges": [
+              {
+                "source": "1",
+                "target": "2",
+                "weight": 1.0
+              },
+              {
+                "source": "2",
+                "target": "3",
+                "weight": 2.0
+              },
+              {
+                "source": "1",
+                "target": "3",
+                "weight": 5.0
+              }
+            ],
+            "metadata": {
+              "vertices_count": 3,
+              "edges_count": 3,
+              "is_empty": false
+            },
+            "last_operation": null,
+            "last_result": null
+          },
+          "state_after": {
+            "structure": "graph",
+            "directed": false,
+            "weighted": true,
+            "nodes": [
+              {
+                "id": "1",
+                "label": "1",
+                "value": "1",
+                "marked": 0
+              },
+              {
+                "id": "2",
+                "label": "2",
+                "value": "2",
+                "marked": 0
+              },
+              {
+                "id": "3",
+                "label": "3",
+                "value": "3",
+                "marked": 0
+              }
+            ],
+            "edges": [
+              {
+                "source": "1",
+                "target": "2",
+                "weight": 1.0
+              },
+              {
+                "source": "2",
+                "target": "3",
+                "weight": 2.0
+              },
+              {
+                "source": "1",
+                "target": "3",
+                "weight": 5.0
+              }
+            ],
+            "metadata": {
+              "vertices_count": 3,
+              "edges_count": 3,
+              "is_empty": false
+            },
+            "last_operation": null,
+            "last_result": null
+          },
+          "invariant": {
+            "name": "cola FIFO y descubierto \u00fanico",
+            "holds": null,
+            "symbol": "?",
+            "evidence": "Estado parcial real: marcado al encolar; resultado al publicar el enlace. No se anticipa el recorrido final."
+          },
+          "narration": {
+            "basic": "Completa solo esta escritura o declaraci\u00f3n C. Los campos sin inicializar no se leen y no se fabrica una mutaci\u00f3n visual.",
+            "intermediate": "Completa solo esta escritura o declaraci\u00f3n C. Los campos sin inicializar no se leen y no se fabrica una mutaci\u00f3n visual.",
+            "advanced": "Completa solo esta escritura o declaraci\u00f3n C. Los campos sin inicializar no se leen y no se fabrica una mutaci\u00f3n visual."
+          },
+          "instruction_state_before": {
+            "heap_nodes": [
+              {
+                "id": "V1",
+                "kind": "vertex",
+                "value": 1,
+                "mark": 0,
+                "next": "NULL"
+              },
+              {
+                "id": "V2",
+                "kind": "vertex",
+                "value": 2,
+                "mark": 0,
+                "next": "V1"
+              },
+              {
+                "id": "V3",
+                "kind": "vertex",
+                "value": 3,
+                "mark": 0,
+                "next": "V2"
+              },
+              {
+                "id": "E1",
+                "kind": "arc",
+                "origin": 1,
+                "target": 2,
+                "next": "NULL"
+              },
+              {
+                "id": "E2",
+                "kind": "arc",
+                "origin": 2,
+                "target": 1,
+                "next": "E1"
+              },
+              {
+                "id": "E3",
+                "kind": "arc",
+                "origin": 2,
+                "target": 3,
+                "next": "E2"
+              },
+              {
+                "id": "E4",
+                "kind": "arc",
+                "origin": 3,
+                "target": 2,
+                "next": "E3"
+              },
+              {
+                "id": "E5",
+                "kind": "arc",
+                "origin": 1,
+                "target": 3,
+                "next": "E4"
+              },
+              {
+                "id": "E6",
+                "kind": "arc",
+                "origin": 3,
+                "target": 1,
+                "next": "E5"
+              }
+            ],
+            "freed_nodes": [],
+            "frames": [
+              {
+                "id": "F1",
+                "function": "grafo_bfs",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  },
+                  "inicio": 1
+                },
+                "locals": {}
+              },
+              {
+                "id": "F2",
+                "function": "grafo_desmarcar",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  }
+                },
+                "locals": {}
+              }
+            ],
+            "graph": {
+              "v": "V3",
+              "a": "E6"
+            },
+            "graph_marks": [
+              {
+                "vertex": 3,
+                "mark": 0,
+                "id": "V3"
+              },
+              {
+                "vertex": 2,
+                "mark": 0,
+                "id": "V2"
+              },
+              {
+                "vertex": 1,
+                "mark": 0,
+                "id": "V1"
+              }
+            ],
+            "queue": {
+              "delante": "NULL",
+              "atras": "NULL"
+            },
+            "queue_nodes": [],
+            "result_nodes": [],
+            "successor_nodes": [],
+            "returned": "NULL",
+            "published": "NULL",
+            "discovery": [],
+            "parents": {},
+            "active": null,
+            "allocations": 0,
+            "frees": 0,
+            "console_stdout": ""
+          },
+          "instruction_state_after": {
+            "heap_nodes": [
+              {
+                "id": "V1",
+                "kind": "vertex",
+                "value": 1,
+                "mark": 0,
+                "next": "NULL"
+              },
+              {
+                "id": "V2",
+                "kind": "vertex",
+                "value": 2,
+                "mark": 0,
+                "next": "V1"
+              },
+              {
+                "id": "V3",
+                "kind": "vertex",
+                "value": 3,
+                "mark": 0,
+                "next": "V2"
+              },
+              {
+                "id": "E1",
+                "kind": "arc",
+                "origin": 1,
+                "target": 2,
+                "next": "NULL"
+              },
+              {
+                "id": "E2",
+                "kind": "arc",
+                "origin": 2,
+                "target": 1,
+                "next": "E1"
+              },
+              {
+                "id": "E3",
+                "kind": "arc",
+                "origin": 2,
+                "target": 3,
+                "next": "E2"
+              },
+              {
+                "id": "E4",
+                "kind": "arc",
+                "origin": 3,
+                "target": 2,
+                "next": "E3"
+              },
+              {
+                "id": "E5",
+                "kind": "arc",
+                "origin": 1,
+                "target": 3,
+                "next": "E4"
+              },
+              {
+                "id": "E6",
+                "kind": "arc",
+                "origin": 3,
+                "target": 1,
+                "next": "E5"
+              }
+            ],
+            "freed_nodes": [],
+            "frames": [
+              {
+                "id": "F1",
+                "function": "grafo_bfs",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  },
+                  "inicio": 1
+                },
+                "locals": {}
+              },
+              {
+                "id": "F2",
+                "function": "grafo_desmarcar",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  }
+                },
+                "locals": {
+                  "k": "V3"
+                }
+              }
+            ],
+            "graph": {
+              "v": "V3",
+              "a": "E6"
+            },
+            "graph_marks": [
+              {
+                "vertex": 3,
+                "mark": 0,
+                "id": "V3"
+              },
+              {
+                "vertex": 2,
+                "mark": 0,
+                "id": "V2"
+              },
+              {
+                "vertex": 1,
+                "mark": 0,
+                "id": "V1"
+              }
+            ],
+            "queue": {
+              "delante": "NULL",
+              "atras": "NULL"
+            },
+            "queue_nodes": [],
+            "result_nodes": [],
+            "successor_nodes": [],
+            "returned": "NULL",
+            "published": "NULL",
+            "discovery": [],
+            "parents": {},
+            "active": null,
+            "allocations": 0,
+            "frees": 0,
+            "console_stdout": ""
+          },
+          "memory_state": {
+            "heap_nodes": [
+              {
+                "id": "V1",
+                "kind": "vertex",
+                "value": 1,
+                "mark": 0,
+                "next": "NULL"
+              },
+              {
+                "id": "V2",
+                "kind": "vertex",
+                "value": 2,
+                "mark": 0,
+                "next": "V1"
+              },
+              {
+                "id": "V3",
+                "kind": "vertex",
+                "value": 3,
+                "mark": 0,
+                "next": "V2"
+              },
+              {
+                "id": "E1",
+                "kind": "arc",
+                "origin": 1,
+                "target": 2,
+                "next": "NULL"
+              },
+              {
+                "id": "E2",
+                "kind": "arc",
+                "origin": 2,
+                "target": 1,
+                "next": "E1"
+              },
+              {
+                "id": "E3",
+                "kind": "arc",
+                "origin": 2,
+                "target": 3,
+                "next": "E2"
+              },
+              {
+                "id": "E4",
+                "kind": "arc",
+                "origin": 3,
+                "target": 2,
+                "next": "E3"
+              },
+              {
+                "id": "E5",
+                "kind": "arc",
+                "origin": 1,
+                "target": 3,
+                "next": "E4"
+              },
+              {
+                "id": "E6",
+                "kind": "arc",
+                "origin": 3,
+                "target": 1,
+                "next": "E5"
+              }
+            ],
+            "freed_nodes": [],
+            "frames": [
+              {
+                "id": "F1",
+                "function": "grafo_bfs",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  },
+                  "inicio": 1
+                },
+                "locals": {}
+              },
+              {
+                "id": "F2",
+                "function": "grafo_desmarcar",
+                "parameters": {
+                  "g": {
+                    "v": "V3",
+                    "a": "E6"
+                  }
+                },
+                "locals": {
+                  "k": "V3"
+                }
+              }
+            ],
+            "graph": {
+              "v": "V3",
+              "a": "E6"
+            },
+            "graph_marks": [
+              {
+                "vertex": 3,
+                "mark": 0,
+                "id": "V3"
+              },
+              {
+                "vertex": 2,
+                "mark": 0,
+                "id": "V2"
+              },
+              {
+                "vertex": 1,
+                "mark": 0,
+                "id": "V1"
+              }
+            ],
+            "queue": {
+              "delante": "NULL",
+              "atras": "NULL"
+            },
+            "queue_nodes": [],
+            "result_nodes": [],
+            "successor_nodes": [],
+            "returned": "NULL",
+            "published": "NULL",
+            "discovery": [],
+            "parents": {},
+            "active": null,
+            "allocations": 0,
+            "frees": 0,
+            "console_stdout": ""
+          },
+          "highlight_semantics": "just-executed",
+          "instruction_event": {
+            "function": "grafo_desmarcar",
+            "phase": "statement",
+            "condition": null,
+            "statement": "    ListaVertice k = g.v;"
+          }
+        },
+        "state_after": {
+          "structure": "graph",
+          "directed": false,
+          "weighted": true,
+          "nodes": [
+            {
+              "id": "1",
+              "label": "1",
+              "value": "1",
+              "marked": 0
+            },
+            {
+              "id": "2",
+              "label": "2",
+              "value": "2",
+              "marked": 0
+            },
+            {
+              "id": "3",
+              "label": "3",
+              "value": "3",
+              "marked": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "1",
+              "target": "2",
+              "weight": 1.0
+            },
+            {
+              "source": "2",
+              "target": "3",
+              "weight": 2.0
+            },
+            {
+              "source": "1",
+              "target": "3",
+              "weight": 5.0
+            }
+          ],
+          "metadata": {
+            "vertices_count": 3,
+            "edges_count": 3,
+            "is_empty": false
+          },
+          "last_operation": null,
+          "last_result": null
+        },
+        "state_snapshot": {
+          "structure": "graph",
+          "directed": false,
+          "weighted": true,
+          "nodes": [
+            {
+              "id": "1",
+              "label": "1",
+              "value": "1",
+              "marked": 0
+            },
+            {
+              "id": "2",
+              "label": "2",
+              "value": "2",
+              "marked": 0
+            },
+            {
+              "id": "3",
+              "label": "3",
+              "value": "3",
+              "marked": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "1",
+              "target": "2",
+              "weight": 1.0
+            },
+            {
+              "source": "2",
+              "target": "3",
+              "weight": 2.0
+            },
+            {
+              "source": "1",
+              "target": "3",
+              "weight": 5.0
+            }
+          ],
+          "metadata": {
+            "vertices_count": 3,
+            "edges_count": 3,
+            "is_empty": false
+          },
+          "last_operation": null,
+          "last_result": null
+        }
+      }
+    ]
+  }
+}

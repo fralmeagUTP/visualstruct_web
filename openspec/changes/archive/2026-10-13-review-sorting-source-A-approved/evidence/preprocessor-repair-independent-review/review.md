@@ -1,0 +1,23 @@
+# Revisión independiente de reparación Sorting A: preprocesamiento
+
+Fecha 2026-10-07; proyecto canónico `D:\MisProyectos\Web_VisualEstruct`. Change `review-sorting-source-A-approved`; operación `qa.sorting-source-A-preprocessor-repair`; assignment `coordination-sorting-source-A-preprocessor-repair-independent-qa-low-20261007`; task `sorting-source-A-preprocessor-repair-independent-qa`.
+
+## Dictamen: ACEPTACIÓN focal
+
+La reparación resuelve el contraejemplo del rechazo anterior. El contrato declara explícitamente que las directivas de preprocesamiento están fuera del subconjunto didáctico soportado. El validador las rechaza antes de consultar el proveedor canónico y antes de construir el intérprete. No intenta evaluar condicionales ni expandir macros; no sustituye entradas ausentes, modifica algoritmos ni declara inválido todo programa C general.
+
+La detección normaliza finales de línea, traduce trigraphs, elimina continuaciones y después comentarios, antes de detectar `#` o `%:` al principio lógico de línea. Ese orden permite detectar las variantes y conservar texto de directivas que sólo aparece en comentarios. La reproducción independiente mediante AST aislado del lector original y del validador comprueba 33 combinaciones: once fuentes nativas, once variantes con comentarios/indentación y once fuentes íntegramente desactivadas por `#if 0`. No hay discrepancias. Catorce controles adicionales de fases/formas alternativas tampoco muestran discrepancias; un proveedor centinela confirma rechazo antes de su consulta. Véase reproducción independiente (evidencia local: `openspec/changes/archive/2026-10-13-review-sorting-source-A-approved/evidence/preprocessor-repair-independent-review/independent-admission-check.json`). Estos controles de admisión no ejecutan algoritmos, intérpretes ni C nativo y no se suman al denominador del autor.
+
+## Resultados y preservación
+
+Los 133 inputs congelados coinciden con SHA-256; ningún input de los 84 anteriores fue eliminado. Sólo dos hashes anteriores cambian: `sorting_source_contract.py` y el delta del change Sorting. Adapter, servicio, intérprete, algoritmos, C/H, CCodeService, seis consumidores y sus asserts, y los 23 controles anteriores permanecen idénticos. La comparación AST del validador identifica únicamente una función auxiliar nueva y la guarda añadida a `validate_sorting_source`; el resto del cuerpo comparador permanece. El delta añade el escenario de preprocesamiento conservando íntegramente su texto anterior.
+
+Los XML guardados confirman 44 casos focales: antes 11 PASS / 33 FAIL; después 44 PASS. Los 23 controles anteriores dan 23 PASS; la unión final contiene 67 casos únicos PASS. Los 33 negativos incluyen 22 combinaciones algoritmo/modo, ocho formas de directivas y tres operaciones HTTP run/step/compare. Los 34 positivos/regresiones corresponden a once controles nativos y 23 anteriores. Las pruebas negativas usan un constructor centinela prohibido; verifican copia del estado del adapter y, en HTTP con operación previa aceptada, historial/estado conservados y ausencia de pasos, incluyendo lectura posterior con constructor prohibido. Para compare la conservación se comprueba en la lectura posterior. Véase hashes y resultados deduplicados (evidencia local: `openspec/changes/archive/2026-10-13-review-sorting-source-A-approved/evidence/preprocessor-repair-independent-review/preservation-and-results.json`).
+
+Los workers registrados tienen límite efectivo de 2 GiB antes de imports y supervisor de 120 s; el baseline focal termina con exit 1 en 3.55 s. No se repitieron esas suites. La etiqueta genérica test_only_no_C_runtime_changes no describe el alcance total: sí cambia el validador Python de admisión, como se registra explícitamente; no cambia ejecución nativa C ni algoritmos.
+
+Los cuatro fallos originales siguen abiertos: binsort/acento de mensaje, heapsort/invariante, burbuja/etiqueta de bucle y quicksort/localizador legacy. La evidencia anterior 38 únicos, 34 PASS / 4 FAIL queda preservada y separada. Esta aceptación no representa cumplimiento global de Sorting, C1, RN/Grafos ni E2E. El rechazo anterior se conserva en `../independent-review/review.md`.
+
+## Límites y siguiente acción
+
+Revisión focal documental y comprobación stdlib aislada; sin campañas técnicas largas, navegador, C nativo, red, instalaciones ni publicación. Únicamente se escribió esta evidencia independiente. No se tocó producto, matrices, contratos, índices, preview ni checkpoint del auditor. No se requiere otro cambio para cerrar este defecto concreto; las decisiones sobre publicación y los cuatro fallos pendientes pertenecen a coordinación y quedan fuera de esta aceptación.

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-mergesort-medium-20261002",
+  "issued_at_utc": "2026-10-02T15:26:40.367441+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "sorting.mergesort-instructions",
+  "task": "Implement bounded MEDIUM Merge sort instruction trace and resolve eleven original regressions; native/UI/callers verification; preserve six closures",
+  "instruction": "Implementa bloque MEDIUM según plan Merge: estados C recursión/auxiliar/memoria, once regresiones sin debilitarlas, observaciones C/replayUI/callersC17Doxygenownership. Dguardas/evidencia ypreview5051loopback actualizado. Preservar C/H/seiscierres. Sin publicación merge despliegue red; terminar para volverLOW.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-mergesort-authorized-medium.md"
+}

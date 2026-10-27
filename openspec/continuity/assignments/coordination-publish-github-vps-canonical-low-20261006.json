@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publish-github-vps-canonical-low-20261006",
+  "issued_at_utc": "2026-10-06T18:45:20.913663+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publish-github-vps-canonical",
+  "task": "publish-github-vps-canonical",
+  "instruction": "Explicit new user request conveyed by parent01a0fe61: update GitHub and existing VPS container only canonical audited VisualStruct; supersedes no push/deploy for this project. Identify actual remote/branch/VPS/container/config first and review exact diff excluding private prototypes/mass evidence/secrets; existing flow with rollback/session-data protection. Stop dependent actions for ambiguous destinations/new permissions/high sensitivity credentials. No other services/security changes/optimizations/long tests or denied SDD alternative. Verify remote commit and deployed health/version before success.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publish-github-vps-canonical-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-final-criterion19-QA-acceptance-record-low-20261006.json"
+}

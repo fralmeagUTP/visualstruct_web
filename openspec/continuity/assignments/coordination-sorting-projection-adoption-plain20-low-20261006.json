@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-sorting-projection-adoption-plain20-low-20261006",
+  "issued_at_utc": "2026-10-06T00:54:56.326717+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.sorting-projection-exact-adoption-and-plain",
+  "task": "sorting-projection-exact-adoption-and-plain",
+  "instruction": "# Adopción exacta engine40777 y única petición plain actual\n\nCoordinador01a0fe61-3104-743a-b032-bcc289ad80cd: QAaceptóR1/coverageforecast/candidato40777aptoparaadopción. Aplicar SÓLOengine40777...,backup/diff,verificarSHA/bindingeffective/reporterSTANDARDcanonical yregresión2parespequeños+3copyhooks/defaultAPIindependiente. Sipasa,una única peticiónplaincanónicaBurbuja80..1,2GiB/max60s/HTTPcompleto/respuestaSHA/41646pasos. Máximo20minprimeracto,sinotroscambios/16/opt.18abierto/finalactualtiemponoprevio. Dictamen review-sorting-projection-diff-coverage-quality/evidence/independent-review/review.md.\n",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/sorting-projection-adoption-plain20-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-sorting-projection-diff-coverage20-low-20261006.json"
+}

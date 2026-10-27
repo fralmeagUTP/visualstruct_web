@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-dfs-instruction-medium-20261002",
+  "issued_at_utc": "2026-10-02T07:31:00.662874+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "graph.dfs",
+  "task": "MEDIUM bounded graph.dfs instruction-level recursive frame/alias/helper/memory/representation/replay review only",
+  "instruction": "Continue bounded MEDIUM graph.dfs per instruction review plan: recursion, shared head, aliases, helpers, allocations/frees and both representations/replay against actual C. Preserve LOW marks/history corrections and closed BFS; only justified shared regressions. before/after/evidence D: preview5051; end semantic block for immediate LOW. No other algorithms or Hash/RN decisions, push/merge/deployment.",
+  "provenance": "Explicit coordination instruction following graph.bfs LOW closure; preserves immutable earlier assignments.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/graph-dfs-instruction-review-plan.md"
+}

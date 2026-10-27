@@ -123,9 +123,9 @@ def test_linked_list_eliminar_repetidos_multiple_datasets(
 @pytest.mark.parametrize(
     ("values", "target", "expected_positions"),
     [
-        ([10, 20, 10, 30], 10, [0, 2]),
+        ([10, 20, 10, 30], 10, [1, 3]),
         ([1, 2, 3], 4, []),
-        ([5, 5, 5, 5], 5, [0, 1, 2, 3]),
+        ([5, 5, 5, 5], 5, [1, 2, 3, 4]),
     ],
 )
 def test_circular_list_search_positions_multiple_datasets(

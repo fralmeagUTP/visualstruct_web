@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-three-numeric-python-boundary-repair-low-20261007",
+  "issued_at_utc": "2026-10-07T01:25:42.926090+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.three-numeric-python-boundary-repair",
+  "task": "three-numeric-python-boundary-repair",
+  "instruction": "Parent01a0fe61 authorizes focal existing typed logical Python/normalized JSON boundary repair for Bellman-Ford,Prim,Kruskal, preserving C kernels/full traces/state/ownership/public API; small before/after, independent QA before publishing. Also terminalE2E37555969025 and evidence classification117FAIL/1100PASS including85and aggregateGraph. No optimization/large cases/assertion weakening, no new semantic choice without reporting, no push/VPS in this candidate block.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/three-numeric-python-boundary-repair-low.md"
+}

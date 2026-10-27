@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-apilar-documentary-recovery-low-20261003",
+  "issued_at_utc": "2026-10-03T14:07:21.588828+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack.apilar-instructions-medium",
+  "task": "Recover missing stack push MEDIUM documentary checkpoint in LOW after desktop reconnection",
+  "instruction": "Desktop-FM conectado. Usuario ya se estableció de nuevo la conexión continua con las tareas. Recuperar MISMA auditoría en D:; verificar instrucciones, hashes, procesos y preview sin duplicar ni repetir30tests salvo cambios. Persistir checkpoint MEDIUM faltante tras verificación y guardaafter; luego LOWconsolidaciónfinite. C/H/cierres protegidos; no semánticas RN/Grafos/Dijkstra ni publicación.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-apilar-documentary-recovery-plan-low.md"
+}

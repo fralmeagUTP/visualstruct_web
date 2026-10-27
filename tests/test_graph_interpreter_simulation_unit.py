@@ -54,13 +54,15 @@ def test_graph_trace_bfs_keeps_statement_order_before_condition_checks() -> None
     assert bfs["success"] is True
 
     lines = _trace_lines(bfs)
-    idx_decl_actual = lines.index(_norm("int actual = cola_desencolar(&cola);"))
-    idx_if_actual = lines.index(_norm("if (actual == -1) {"))
-    idx_decl_tmp = lines.index(_norm("ListaVertice tmp = (ListaVertice) malloc(sizeof(struct NodoV));"))
+    steps = bfs["execution_trace"]["steps"]
+    actual = next(i for i,step in enumerate(steps) if step["pedagogy"]["instruction_event"]["function"]=="grafo_bfs" and step["pedagogy"]["instruction_event"]["phase"]=="statement" and _norm(step["line_text"])==_norm("int actual = cola_desencolar(&cola);"))
+    idx_decl_tmp = next(i for i,step in enumerate(steps) if step["pedagogy"]["instruction_event"]["phase"]=="allocate" and "ListaVertice tmp =" in step["line_text"])
     idx_if_tmp = lines.index(_norm("if (tmp == NULL) continue;"))
-
-    assert idx_decl_actual < idx_if_actual, "Se evalua 'actual' antes de asignarlo en la traza."
-    assert idx_decl_tmp < idx_if_tmp, "Se evalua 'tmp' antes de reservar memoria en la traza."
+    idx_queue_guard = lines.index(_norm("while (cola.delante != NULL) {"))
+    assert idx_queue_guard < actual < idx_decl_tmp < idx_if_tmp
+    assert _norm("if (actual == -1) {") not in lines
+    assert steps[actual]["pedagogy"]["memory_state"]["frames"][-1]["locals"]["actual"] == 1
+    assert steps[idx_if_tmp]["pedagogy"]["condition"]["result"] is False
 
 
 def test_graph_trace_bfs_repeats_loop_blocks_for_multiple_visits() -> None:
@@ -81,7 +83,7 @@ def test_graph_trace_bfs_repeats_loop_blocks_for_multiple_visits() -> None:
 
 
 def test_graph_trace_bfs_stops_after_return_when_start_vertex_does_not_exist() -> None:
-    """If BFS hits `if (!existe) return NULL;` trace must stop the subroutine there."""
+    """An app guard rejects absent starts before calling the independently tested C BFS."""
     history: list[dict] = []
     history = _run_graph_op(history, "create_graph", {"directed": "false"})["history"]
 
@@ -89,11 +91,13 @@ def test_graph_trace_bfs_stops_after_return_when_start_vertex_does_not_exist() -
     assert bfs["success"] is False
 
     lines = _trace_lines(bfs)
-    return_idx = lines.index(_norm("if (!existe) return NULL;"))
-    tail = lines[return_idx + 1 :]
-
-    assert _norm("cola_encolar(&cola, inicio);") not in tail
-    assert _norm("while (cola.delante != NULL) {") not in tail
+    assert bfs["execution_trace"]["bfs_application_rejection"] is True
+    assert len(lines) == 1 and "no se invoco grafo_bfs" in lines[0]
+    assert bfs["history"] == history
+    assert bfs["execution_trace"]["steps"][0]["pedagogy"]["call_stack"] == []
+    assert bfs["execution_trace"]["steps"][0]["console"] == []
+    assert not any(_norm("cola_encolar(&cola, inicio);")==line for line in lines)
+    assert _norm("while (cola.delante != NULL) {") not in lines
 
 
 def test_graph_trace_dijkstra_unreachable_stops_before_path_reconstruction() -> None:
@@ -239,6 +243,7 @@ def test_graph_trace_dijkstra_respects_main_loops_and_returns() -> None:
 
 def test_graph_trace_bellman_ford_respects_relax_passes_and_cycle_detection_branch() -> None:
     """Bellman-Ford trace must reflect pass loops and negative-cycle return branch."""
+    from _bellman_reachability_consumer_oracle import assert_bellman_consumer
     history: list[dict] = []
     history = _run_graph_op(history, "create_graph", {"directed": "false"})["history"]
     history = _run_graph_op(history, "generate_random_graph", {"vertices_count": "7", "seed": "484589473"})["history"]
@@ -248,8 +253,9 @@ def test_graph_trace_bellman_ford_respects_relax_passes_and_cycle_detection_bran
     lines = _trace_lines(bf)
     assert lines.count(_norm("for (i = 0; i < n - 1; i++) {")) >= 2
     assert lines.count(_norm("while (a != NULL) {")) >= 2
-    assert lines.count(_norm("if (u != -1 && v != -1 && dist[u] != INT_MAX) {")) >= 2
+    assert lines.count(_norm("if (u != -1 && v != -1 && alcanzable[u]) {")) >= 2
     assert _norm("return camino;") in lines
+    assert_bellman_consumer(bf)
 
     # Caso dirigido con ciclo negativo para validar rama de retorno temprano.
     history = []
@@ -264,7 +270,9 @@ def test_graph_trace_bellman_ford_respects_relax_passes_and_cycle_detection_bran
         history = _run_graph_op(history, "insert_edge", payload)["history"]
 
     bf_neg = _run_graph_op(history, "run_bellman_ford", {"start": "1", "end": "3"})
-    assert bf_neg["success"] is True
+    assert bf_neg["success"] is False
+    assert bf_neg["history"] == history
     neg_lines = _trace_lines(bf_neg)
     assert _norm("printf(\"Se detecto un ciclo negativo.\\n\");") in neg_lines
     assert _norm("return NULL;") in neg_lines
+    assert_bellman_consumer(bf_neg)

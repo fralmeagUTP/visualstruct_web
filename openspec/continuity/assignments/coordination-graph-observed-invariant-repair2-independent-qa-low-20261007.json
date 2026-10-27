@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-graph-observed-invariant-repair2-independent-qa-low-20261007",
+  "issued_at_utc": "2026-10-07T03:15:24.668609+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-observed-invariant-test-repair",
+  "operation": "qa.graph-observed-invariant-repair2",
+  "task": "graph-observed-invariant-repair2-independent-qa",
+  "instruction": "Focal independent review of repair1 explicit-false BFS/DFS C phase bypass. Only pure oracle flag predicate changes: True boolean accepted; missing key accepted only legacy BFS/DFS; explicit False/None/0/1/string rejected. 14 new rule controls use real BFS frame3; DFS is schema-rule projection of that BFS fixture, not actual DFS HTTP verification. Before10FAIL27PASS, after37PASS and all1498 prior real captured frames replayed, guarded2GiB120s. Prior rejected variants preserved. Five source files frozen; no C/runtime/Sorting/optimization/publication/global19case closure. Parent selects independent reviewer.",
+  "scope_ref": "openspec/changes/review-graph-observed-invariant-test-repair/repair2-review-scope.md"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-priority-queue-limpiar-baseline-low-20261003",
+  "issued_at_utc": "2026-10-03T06:35:11.602942+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "priority_queue.limpiar-baseline-low",
+  "task": "Begin finite LOW priority_queue limpiar baseline without replaying previous dequeue/front cases",
+  "instruction": "Derivación fina de nueva instrucción LOW coordinación: comenzar siguiente baselineLOW no bloqueado del mapa con evidencia anterior para evitar reruns. Prioridad limpiar/cp_vaciar exclusivamente: empty/single/multiFIFO con valores/prioridades duplicados y negativos,repetición/reinserción,guardNULLnative. Observaraux/next/front/rear/cantidad/branches/lifetimes/retorno sinleeruninitialized o retiredptr;C/Hcontrato ycierresPila/Cola/Hash/Sorting intactos,no RNGraphdecision/newcontract/publish. Sólo baseline/rojos/checkpoint, no MEDIUMproducto.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/priority-queue-limpiar-baseline-plan-low.md"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-linked-head-insert-consumer-low-20261008",
+  "issued_at_utc": "2026-10-08T00:15:29.509901+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.linked-head-insert-consumer",
+  "task": "linked-head-insert-consumer",
+  "instruction": "Only tests/test_linked_list_trace_semantics.py::test_insert_at_head_publishes_q_only_at_lista_assignment. Preserve accepted console functions byte-exact in shared file and all other sections, positive/negative reservation-initialization-publication/unique IDs/parameters contract. Product stays unchanged for obsolete consumer expectations. All accepted lots, pendingFront/Circular and QA records preserved; no denied retries, publication/global/E2E/optimization/expansion.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/linked-head-insert-consumer-low.md"
+}

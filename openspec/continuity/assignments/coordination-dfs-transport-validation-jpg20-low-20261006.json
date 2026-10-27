@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dfs-transport-validation-jpg20-low-20261006",
+  "issued_at_utc": "2026-10-06T05:30:24.502140+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.dfs-transport-validation-jpg-correction",
+  "task": "dfs-transport-validation-jpg-correction",
+  "instruction": "Coordinator authorizes20min isolated correction of unreachable primitive validation and negative control; diagnose JPG using SAME saved response/DOM without regeneratingDFS, captureSVG and comparebaseline. Canonical intact; preserve failures; exactdeltaQA; noDFS30.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/dfs-transport-validation-jpg20-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dfs-owned-pool-transport25-low-20261006.json"
+}

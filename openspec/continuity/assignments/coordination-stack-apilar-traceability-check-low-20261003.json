@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-apilar-traceability-check-low-20261003",
+  "issued_at_utc": "2026-10-03T14:23:44.498148+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack.apilar.instructions",
+  "task": "Resolve final product SHA traceability gap by scoped live comparison and one UI fixture or qualify finite closure",
+  "instruction": "AntesCola.encolarbaselineLOW confirmarSHAhistóricoapilarfaltante,claimlimitadoyalternativapararepresentatividad30tests; no inferirigualdadsólopormtimes. Si huecorealpruebaafectadaacotada(no suiteentera) ocalificacierre. Guardasreaperturaexacta,producto/C/H/cierresintactos; nopublish/RNGraphdecisions.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-apilar-traceability-reopen-decision-low.md"
+}

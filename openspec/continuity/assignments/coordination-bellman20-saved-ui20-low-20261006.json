@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-bellman20-saved-ui20-low-20261006",
+  "issued_at_utc": "2026-10-06T16:17:24.717851+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.bellman20-saved-ui",
+  "task": "bellman20-saved-ui20",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes <=1200s phase: reuse exact accepted BF20 saved body for focal canonical UI load/parse/expansion/browsermemory, NextPrev/toggle/seek controls/export/module exit and intact seal; zeroPOST/no regeneration/no full autoplay/no adoption/redesign/public30/Git/preview changes. Distinguish actual controls vs audit/runtime hooks and hierarchy menu vs ABB. Additive clarification copied historical900 budget; effective3600 remains separately evidenced. Prepare QApackage.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/bellman20-saved-ui20-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-bellman-fastpath-textcache20-one3600-low-20261006.json"
+}

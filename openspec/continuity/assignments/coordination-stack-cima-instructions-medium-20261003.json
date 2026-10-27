@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-stack-cima-instructions-medium-20261003",
+  "issued_at_utc": "2026-10-03T22:15:02.498456+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "stack.cima-instructions-medium",
+  "task": "Implement scoped stack Cima raw transcription private typed trace and validation-only unsupported rejection",
+  "instruction": "ImplementaMEDIUMPilaCima plan scoped73IDs25pass48fail,transcripcion/trazaprivada/validacionsinexponerAPI/UI inexistente. Rechazo400noCexecution nofabricarpasosC;conservar noPOSTGETexec/nopersistqueriesinexistentes. Fidelity privateC readonlyguard scalarint scopes aliases16queries48events16conditions. Callerexistingroutesownership7/7/0NULL7Doxintact. Baselineoriginal redIDs conservar376protectedC/Hycierres except scopedraw/wrapper/service/newengine. Finite resources rejected/private separate. NoGraph/SDDblocked/publicacion. CheckpointantesLOW.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/stack-cima-instructions-plan-medium-proposed.md",
+  "supersedes": "openspec/continuity/assignments/coordination-stack-cima-baseline-low-20261003.json"
+}

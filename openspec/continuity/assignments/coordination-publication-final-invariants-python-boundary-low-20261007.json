@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-publication-final-invariants-python-boundary-low-20261007",
+  "issued_at_utc": "2026-10-07T00:41:14.102882+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.publication-final-invariants-python-boundary",
+  "task": "publication-final-invariants-python-boundary",
+  "instruction": "Parent01a0fe61 requests bounded existing-contract final hierarchical certification and Dijkstra Python/JSON boundary repair per independent cp_encolar QA; small before/after regressions, no C algorithm/test weakening, preserve accepted cp_encolar. No further publication until independent QA, no optimization/large cases. Report useful85pending classification and bounded E2E plan without long suite. Stop only genuinely new unresolved semantic decisions.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/publication-final-invariants-python-boundary-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-priority-queue-trace-contract-repair-independent-qa-low-20261007.json"
+}

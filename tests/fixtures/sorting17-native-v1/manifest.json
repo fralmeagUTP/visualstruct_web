@@ -1,0 +1,110 @@
+{
+  "version": "sorting17-native-v1",
+  "native_frozen_reference": {
+    "quicksort": {
+      "file": "quicksort-reverse.json",
+      "SHA": "3c6539791dfa047d6ece7f526da0baaedf42abcca5f77b6431215839e8867561",
+      "case": "reverse",
+      "native_events": 97,
+      "native_final_array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "input_candidates": {
+        "input": [
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      "top_keys": [
+        "input",
+        "native",
+        "response",
+        "fast_response",
+        "projection"
+      ],
+      "native_initial_array": [
+        4,
+        3,
+        2,
+        1
+      ],
+      "initial_to_final_sorted_invariant": true,
+      "historical_source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-quicksort-instructions/native-first/reverse.json"
+    },
+    "mergesort": {
+      "file": "mergesort-reverse.json",
+      "SHA": "c34e68b3048ef5a3b07b7b538473cceed14329a7a70bb34736f6de008af0257f",
+      "case": "reverse",
+      "native_events": 145,
+      "native_final_array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "input_candidates": {
+        "input": [
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      "top_keys": [
+        "input",
+        "native",
+        "response",
+        "fast_response",
+        "projection"
+      ],
+      "native_initial_array": [
+        4,
+        3,
+        2,
+        1
+      ],
+      "initial_to_final_sorted_invariant": true,
+      "historical_source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-mergesort-instructions/native-final/reverse.json"
+    },
+    "heapsort": {
+      "file": "heapsort-reverse.json",
+      "SHA": "04d276df7ac0e25a054ef506abe95995a6e4214150456b5f5b214488cde126c3",
+      "case": "reverse",
+      "native_events": 135,
+      "native_final_array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "input_candidates": {
+        "input": [
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      "top_keys": [
+        "input",
+        "native",
+        "response",
+        "fast_response",
+        "projection"
+      ],
+      "native_initial_array": [
+        4,
+        3,
+        2,
+        1
+      ],
+      "initial_to_final_sorted_invariant": true,
+      "historical_source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting-heapsort-instructions/native/reverse.json"
+    }
+  }
+}

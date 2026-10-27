@@ -1,0 +1,15 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-BFS-private-exclusive-phases-diagnostic-qa-low-20261005",
+  "issued_at_utc": "2026-10-05T13:10:55.847339+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-graph-bfs-phases-private-diagnostic-quality",
+  "operation": "audit.bfs-private-exclusive-phases-diagnostic",
+  "task": "BFS-private-30-29-one-request-exclusive-phases-diagnostic",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW diagnostic executor",
+  "instruction": "Coordinator explicitly authorizes one15min private BFS30/29 exclusive-phase diagnostic perQA13:01protocol. Actualrequest onlyexecutor, notauthor. Preserveapp186/baseline999SHA/candidateSHA, calibratealone/no2ndBFS, no coverage/profiler/loginnerloops/sourcechanges/structuralimplementation. Ownbeforeafter.",
+  "scope_ref": "openspec/changes/review-graph-bfs-phases-private-diagnostic-quality/diagnostic-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-kruskal-causal-narration-independent-qa-low-20261005.json"
+}

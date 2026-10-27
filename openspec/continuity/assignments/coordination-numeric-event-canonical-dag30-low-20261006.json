@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-numeric-event-canonical-dag30-low-20261006",
+  "issued_at_utc": "2026-10-06T10:17:59.476249+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.numeric-private-event-canonical-dag",
+  "task": "numeric-private-event-canonical-dag",
+  "instruction": "Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd: afterQA1582accepted focal only implement PRIVATE minimum event-time canonical encoded DAG and safely release historical logical realizations, preserve every event/state/all validators/typed refs/exact protocol/Ceducational/2GiB. Measure generation union including active cache/headers/events/scratch/output and real JSON buffers;20known or sufficientsmallcases alias/immutable/errors/session/negativecontrols including latepacking failure. Correct previous actual negativeexit2 additively without modifying1582 boundinputs. Max30min; ifnotfit persist cleartechnicalcheckpoint. No BF30/newlarge/adoption/Git/preview/globalclosure.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/numeric-event-canonical-dag30-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-numeric-owned-canonical-history30-low-20261006.json"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-documentary306-corrections25-low-20261005",
+  "issued_at_utc": "2026-10-05T19:02:22.884337+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.qa-retained-criteria-documentary-correction",
+  "task": "documentary306-corrections25",
+  "instruction": "Coordinator01a0fe61 autoriza25min LOW: corregir sistem\u00e1ticamente306 errores documentales QA delta (293punteros m\u00e9todo/caso,8inicializar,4callersPila,1Doxygen) y copias criterio18, validar enlaces m\u00e9todo/escenario/obligaci\u00f3n, empaquetar delta y binding QA sucesor preservando anteriores. Correspondencias Bellmanvigente/Kruskalpipeline desde evidencia existente si suficiente, sin cierreglobal ni convertir1704 en defectos/ejecuciones. Sin pruebas nuevas ni BFS.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/documentary306-corrections25-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-documentary-delta20-QA-binding-low-20261005.json"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-preview5051-safe-maintenance-low-20261013",
+  "issued_at_utc": "2026-10-13T21:22:20.232982+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "archive-verified-review-closures-20261013",
+  "operation": "documentation.audit-live-remnant-retirement",
+  "task": "retirar-remanente-audit",
+  "instruction": "Mantenimiento local aprobado por Sentinel_d60312733bd081918cbed1ad70d6815f: detener sólopreview5051 verificado, preservar/moverremanente/logs, reiniciar/verificar usando comando/config normales. Sinmemoria/entornodump/secretos/VPS/publicación/campañas.",
+  "scope_ref": "openspec/changes/archive-verified-review-closures-20261013/preview5051-maintenance-plan.md"
+}

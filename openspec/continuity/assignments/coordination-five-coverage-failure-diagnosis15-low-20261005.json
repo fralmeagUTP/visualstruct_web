@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-five-coverage-failure-diagnosis15-low-20261005",
+  "issued_at_utc": "2026-10-05T06:38:03.643567+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "audit.canonical-correspondence",
+  "task": "classify-five-failures-current-C-contract-minimum-selection15min",
+  "instruction": "Explicitcoordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes max15min diagnosis/read-only product993: classify5retainedfailures DFSrecursive/Prim/Quicksortcomparisons/twoRadixliterals againstcurrentcontract/C oracle withtestfile/concreteevidence. Distinguish obsoleteassertion vsproductdefect; noexpectationedit/passlaundering/unaffectedsuite rerun. Keep14.20coverage asboundedselection withfulldenominator, notglobalregression/qualitypercent. Identifyminimum existingcase selection forunmeasuredareas, no4542campaign. Returnpointaction per failureandnextbudget. Fusedunadopted untilbaselinecomparison finishes. Docs/evidence ownonly, no app/tests/C-H/UI/fixtures/history/5051/Git/deploy/nativeUB/install changes. Prefer currentboundrealC oracle reuse; no automatic newnativeexecution orcoveragecollection.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/five-coverage-failure-diagnosis15-plan-low.md",
+  "supersedes": "openspec/continuity/assignments/coordination-staged-fixtures-initial-coverage20-low-20261005.json"
+}

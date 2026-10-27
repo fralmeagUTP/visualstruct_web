@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-hash-create-insert-baseline-low-20261002",
+  "issued_at_utc": "2026-10-02T23:17:51.380301+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "hash.create-insert-baseline-low",
+  "task": "LOW Hash H1 creation/insertion collision fixed-capacity native/API/UI/caller baseline, checkpoint before MEDIUM",
+  "instruction": "BaselineLOW HashH1 aprobado, enteros/capacidadfija: create_table/insert/update/colisiones/carga>1sinresize, C real/trazas/UI/métricas/callerdescargable/ownership; fallosrojos sinxfail y delimitarMEDIUMantesimplementar. Preservar C/H/11cierresSorting/arnés/global; no contratosRN/Grafos, no push/merge/deploy, preview sólo cambiosaprobados.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/hash-create-insert-baseline-plan-low.md"
+}

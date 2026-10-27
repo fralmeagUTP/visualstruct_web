@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-dfs-owned-transport-dfs30-one-qa-low-20261006",
+  "issued_at_utc": "2026-10-06T05:46:28.939274+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.dfs-owned-transport-dfs30-one-independent-quality",
+  "task": "dfs-owned-transport-dfs30-one-independent-quality",
+  "instruction": "IndependentQAowner01a0ff54-79d7-7520-8e9f-224ef5ed700f SolLOW READONLY offline. No imports/tests/browser/HTTP/DFS30/adoption/product/Git/preview. Read root/OpenSpecAGENTS/project/continuityREADME/currentassignment/exactbinding; before/afterguards; write only own evidence/dfs-owned-transport-dfs30-one-independent-review and tracker. VerifyONE exactacceptedbuilder/helperprivate request, actualworker24336 selfspecificJob2GiBbeforeimports, normalvalidators/codec; preservewrapperPID16104 discrepancy insteadofattributingactualworkeridentity. Complete responseHTTP200/54.046245observed/40348289bytes/SHA/12147steps/result1..30; independentlyexpand savedrefs/data offline. Lightobservernotbenchmark49samples/max1286807552notfinalpeak/system/margin guarantee, stalepool/heap fields andsamplingnotCPU. Review saved complete response and posttimer full-expansion/finiteJSON/return/frees/callerownership/history. Harness exit1 wrong entire-session assertion afterresponse saved, derivedcanonicaloneDFS+signedmarkeffect/prefix preserved; no cleanexitclaim/no retry. Preserve two existing betweeneventreturned/publishedmetadata gaps, notuniversalstate-equality. Historicalcasesauthorization fields superseded separately. No globalGraph/20of22closure/automaticadoption/benchmark or browserJPG certification. No new algorithm execution.",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/dfs-owned-transport-dfs30-one-scope.md",
+  "supersedes": "openspec/continuity/assignments/coordination-dfs-transport-validation-jpg-delta-qa-low-20261006.json"
+}
