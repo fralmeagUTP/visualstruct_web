@@ -158,6 +158,20 @@ class HashStructureService:
         payload: dict[str, Any],
         history: list[dict[str, Any]],
     ) -> dict[str, Any]:
+        """Execute the TAD statement model followed by its shared real caller."""
+        from app.services.hash_caller_stdout import attach_caller_stdout
+        result = HashStructureService._execute_operation(structure_id, operation_name, payload, history)
+        trace = result.get('execution_trace')
+        result['console_stdout'] = attach_caller_stdout(trace, operation_name, payload, result['visual_state']) if trace else ''
+        return result
+
+    @staticmethod
+    def _execute_operation(
+        structure_id: str,
+        operation_name: str,
+        payload: dict[str, Any],
+        history: list[dict[str, Any]],
+    ) -> dict[str, Any]:
         """Execute one operation over rebuilt hash-table state."""
         HashStructureService.get_structure(structure_id)
         capacity = oversized_history_capacity(history)

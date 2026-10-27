@@ -41,10 +41,12 @@ class Node:
 
 class Program:
     """Parse precisely the bounded expression/statement vocabulary of these functions."""
-    def __init__(self, source: str):
-        verify_source(source)
+    def __init__(self, source: str, *, caller_output: bool = False):
+        if not caller_output:
+            verify_source(source)
         self.source = source
-        functions = function_names(source)
+        self.caller_output = caller_output
+        functions = {'caller_output'} if caller_output else function_names(source)
         # Includes are not executed. Keep byte positions/newlines for source mapping.
         source = re.sub(r'^#[^\n]*',lambda m:' '*len(m.group()),source,flags=re.M)
         pattern = r'/\*.*?\*/|//[^\n]*|"(?:\\.|[^"\\])*"|\d+|[A-Za-z_]\w*|->|\+\+|--|<=|>=|==|!=|&&|\|\||[{}()[\],;:?.+*/%<>=!&-]'
@@ -331,6 +333,10 @@ class GraphMachine:
         fn = name if phase=='function_exit' else self.frames[-1]['function'] if self.frames else self.root_function
         event = dict(function=fn, pos=tok.pos, line_index=tok.line, phase=phase,
                      name=name, value=self.encoded(value), C_executed=True, source_role='canonical')
+        if self.program.caller_output:
+            event.update(C_executed=False, caller_C_executed=True, source_role='caller',
+                         caller_line_index=tok.line, caller_line_text=self.program.source.splitlines()[tok.line],
+                         line_index=-1)
         if self.record_events:self.events.append(event)
         if self.event_observer:self.event_observer(event)
         if self.callback:
@@ -568,7 +574,10 @@ class GraphMachine:
                 self.emit(node,'free',function,pointer,change)
                 return None
             if function=='printf':
-                text=args[0] % tuple(args[1:]) if len(args)>1 else args[0]
+                # The accepted C ABI has signed long long; Python's formatter
+                # uses %d for the same integer conversion.
+                fmt = args[0].replace('%lld', '%d')
+                text=fmt % tuple(args[1:]) if len(args)>1 else fmt
                 self.emit(node,'stdout',function,text,lambda:setattr(self,'stdout',self.stdout+text))
                 return len(text)
             if function not in self.program.functions:

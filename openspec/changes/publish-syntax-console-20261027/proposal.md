@@ -1,0 +1,1 @@
+Publicar fixes locales verificados en ramaaislada yPRborrador sobrelayoutbfe7. AñadirCIacotadoparalaspruebasnuevas sinrelajarworkflowsanteriores. No incluirdatos/sesiones/cache ni rutaspersonalesdetrabajo. ProporcionarSHAexactoalespecialistaVPSenpuntoseguro.

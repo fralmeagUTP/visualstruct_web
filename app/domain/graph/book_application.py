@@ -4,7 +4,8 @@ Each operation owns one interpreter session. Storage is an insertion-order
 serialization of its real heads; returned lists retain the C traversal order.
 """
 from copy import deepcopy
-from .book_c_subset import BookSession
+from .book_c_subset import BookSession, Program, UNINIT
+from app.services.graph_main_service import caller_output_program
 from .graph_commands import materialize_random_commands
 from .tad_grafo import NodoV, NodoA
 
@@ -95,12 +96,23 @@ def execute_book_operation(adapter, operation, payload):
                           event_limit=getattr(adapter, '_book_event_limit', None))
     calls = []
     primary = None
-    def invoke(function, values=()):
+    def invoke(function, values=(), output_operation=None, inverse=False):
         nonlocal primary
         raw = session.call(function, values)
         compact = {key:deepcopy(value) for key,value in raw.items()
                    if key not in {'memory','events','transitions','source_code'}}
         calls.append(compact)
+        source, cells = caller_output_program(output_operation or operation, inverse=inverse)
+        if source:
+            machine = session.machine
+            canonical = machine.program
+            try:
+                machine.program = Program(source, caller_output=True)
+                # A failed costo query leaves its out-cell untouched. The
+                # generated main initializes it to zero before the call.
+                machine.invoke('caller_output', [0 if raw[key] == UNINIT else raw[key] for key in cells])
+            finally:
+                machine.program = canonical
         if raw['ownership'] == 'owned':
             session.free_result(raw['returned'], raw['return_type'])
             compact['caller_cleanup'] = 'grafo_liberar_vertices' if raw['return_type'] == 'ListaVertice' else 'grafo_liberar_arcos'
@@ -108,9 +120,9 @@ def execute_book_operation(adapter, operation, payload):
         primary = compact
         return compact
     def insertion(op, values):
-        first = invoke(FUNCTIONS[op][0], values)
+        first = invoke(FUNCTIONS[op][0], values, output_operation=op)
         if op == 'insert_edge' and not directed and values[0] != values[1] and first['status'] == 0:
-            invoke('grafo_insertar_arco', (values[1], values[0], values[2]))
+            invoke('grafo_insertar_arco', (values[1], values[0], values[2]), output_operation=op, inverse=True)
         return first
     if operation in {'create_graph', 'clear_graph', 'generate_random_graph'}:
         invoke('grafo_destruir')

@@ -1,0 +1,53 @@
+name: Caller and code reader regressions
+on:
+  pull_request:
+    paths:
+      - 'requirements*.txt'
+      - 'pytest.ini'
+      - 'tests/conftest.py'
+      - 'qa_syntax/**'
+      - 'docs/tads_C/**'
+      - '.gitattributes'
+      - 'app/**'
+      - 'static/**'
+      - 'templates/**'
+      - 'tests/test_*console*.py'
+      - 'tests/test_c_syntax_highlight_e2e.py'
+      - 'tests/test_hash_caller_stdout.py'
+      - 'tests/test_sorting_caller_stdout.py'
+      - '.github/workflows/caller-console-regressions.yml'
+  push:
+    branches: ['fix/syntax-console-history-20261027']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  focused-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: gcc --version
+      - run: python -m pip install -r requirements-test.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Check shared C tokenizer
+        run: node qa_syntax/test_tokens.js
+      - name: Compare native C17 stdout and real browser history/code readers
+        run: >-
+          python -m pytest -q --tb=short
+          tests/test_c_syntax_highlight_e2e.py
+          tests/test_caller_console_history.py
+          tests/test_graph_console_history_dom.py
+          tests/test_console_families_dom.py
+          tests/test_hash_caller_stdout.py
+          tests/test_sorting_caller_stdout.py
+          tests/test_hash_sorting_console_dom.py

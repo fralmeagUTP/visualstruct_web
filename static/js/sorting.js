@@ -241,6 +241,8 @@ function renderSortingConsole(consoleEl, lines) {
   if (!consoleEl) {
     return;
   }
+  if (typeof consoleEl.__callerOutput === "string" && window.ConsoleHistory) { window.ConsoleHistory.publish(consoleEl, consoleEl.__callerOutput); return; }
+  if (window.ConsoleHistory) { window.ConsoleHistory.render(consoleEl, null, -1, ""); return; }
   consoleEl.dataset.consoleCopy = lines.join("\n");
   if (!lines.length) {
     consoleEl.innerHTML = '<div class="console-line muted">(sin salida printf en esta ruta)</div>';
@@ -403,6 +405,8 @@ function initSortingPage(model) {
   const codePanel = sById("sorting-code");
   const historyBox = sById("sorting-action-history");
   const consoleBox = sById("sorting-printf-console");
+  window.ConsoleHistory?.bind(consoleBox, model.id || "sorting_array", model.history);
+  consoleBox.__callerOutput = typeof model.console_output === "string" ? model.console_output : undefined;
   const status = sById("sorting-sim-status");
   const counter = sById("sorting-sim-counter");
   const stepToggle = sById("sorting-step-toggle");
@@ -666,12 +670,12 @@ function initSortingPage(model) {
         ? step.debug.console_events
         : [];
       for (const event of events) {
-        if (event && String(event).trim()) {
-          sPushUniqueConsoleLine(lines, `[printf] ${String(event).trim()}`);
+        if (event != null) {
+          lines.push(String(event));
         }
       }
     }
-    return lines.slice(-8);
+    return lines;
   }
 
   const tracePlayer = window.InterpreterRuntime
@@ -683,7 +687,11 @@ function initSortingPage(model) {
       retainDoneLines: true,
       onCursorChange: ({ cursor, step }) => {
         consoleLines = buildConsoleFromTrace(cursor);
-        renderSortingConsole(consoleBox, consoleLines);
+        const stepStdout = trace?.steps?.[cursor]?.console_stdout;
+        const stdout = cursor < 0 ? "" : typeof stepStdout === "string" ? stepStdout : consoleLines.join("");
+        if (typeof trace?.console_prefix === "string" && window.ConsoleHistory) window.ConsoleHistory.publish(consoleBox, trace.console_prefix + stdout);
+        else if (window.ConsoleHistory) window.ConsoleHistory.render(consoleBox, trace, cursor, stdout);
+        else renderSortingConsole(consoleBox, consoleLines);
         const currentStep = step || (trace && Array.isArray(trace.steps) ? trace.steps[cursor] : null);
         if (currentStep?.state_after) {
           currentAttemptState = cursor < 0 ? currentStep.state_snapshot : currentStep.state_after;
@@ -782,7 +790,8 @@ function initSortingPage(model) {
       model.execution_trace = null;
       model.visual_state = data.visual_state;
       renderSortingVisualState(model.visual_state, visualContainer);
-      history = sHistoryFromSaved(data.history);
+      history = sHistoryFromSaved(data.history); window.ConsoleHistory?.setHistory(consoleBox, data.history);
+      if (typeof data.console_output === "string") consoleBox.__callerOutput = data.console_output;
       model.main_c = data.main_c;
     renderSortingHistory(history, historyBox, model.main_c);
       tracePlayer?.clear("Arreglo creado. Pulsa Ejecutar operación o Paso a paso.");
@@ -805,7 +814,8 @@ function initSortingPage(model) {
       model.execution_trace = null;
       model.visual_state = data.visual_state;
       renderSortingVisualState(model.visual_state, visualContainer);
-      history = sHistoryFromSaved(data.history);
+      history = sHistoryFromSaved(data.history); window.ConsoleHistory?.setHistory(consoleBox, data.history);
+      if (typeof data.console_output === "string") consoleBox.__callerOutput = data.console_output;
       model.main_c = data.main_c;
     renderSortingHistory(history, historyBox, model.main_c);
       tracePlayer?.clear("Arreglo generado. Pulsa Ejecutar operación o Paso a paso.");
@@ -834,7 +844,8 @@ function initSortingPage(model) {
     model.visual_state = data.visual_state;
     model.execution_trace = null;
     renderSortingVisualState(model.visual_state, visualContainer);
-    if (data.success) { history = sHistoryFromSaved(data.history); model.main_c = data.main_c;
+    if (data.success) { history = sHistoryFromSaved(data.history); window.ConsoleHistory?.setHistory(consoleBox, data.history);
+      if (typeof data.console_output === "string") consoleBox.__callerOutput = data.console_output; model.main_c = data.main_c;
       renderSortingHistory(history, historyBox, model.main_c); }
     trace = null;
     updateCodeByAlgorithm();
@@ -862,7 +873,8 @@ function initSortingPage(model) {
         }
         return;
       }
-      history = sHistoryFromSaved(data.history);
+      history = sHistoryFromSaved(data.history); window.ConsoleHistory?.setHistory(consoleBox, data.history);
+      if (typeof data.console_output === "string") consoleBox.__callerOutput = data.console_output;
       model.main_c = data.main_c;
     renderSortingHistory(history, historyBox, model.main_c);
       model.visual_state = data.visual_state;
@@ -904,6 +916,8 @@ function initSortingPage(model) {
       const data = await postJson(resetUrl, {});
       setMessage(data.message, Boolean(data.success));
       if (!data.success) return;
+      window.ConsoleHistory?.reset(consoleBox);
+      if (typeof consoleBox.__callerOutput === "string") consoleBox.__callerOutput = typeof data.console_output === "string" ? data.console_output : "";
       trace = null;
       model.execution_trace = null;
       model.visual_state = data.visual_state;

@@ -102,6 +102,8 @@ def progress(memory,operation):
 
 def _text(event,memory):
     phase=event['phase'];name=event.get('name','');value=event.get('value');external=memory.get('external',{});status=external.get('estado',{}).get('value')
+    if event.get('caller_C_executed'):
+        return ('El printf del caller agrega exactamente el texto registrado a stdout. ' if phase == 'stdout' else 'El caller ejecuta su instrucción C. ') + event.get('caller_line_text', '')
     if not event.get('C_executed'):
         if phase=='caller_prepare':return 'El caller prepara los argumentos y las salidas. No se ejecuta una sentencia del TAD en este paso.'
         if phase=='caller_receipt':

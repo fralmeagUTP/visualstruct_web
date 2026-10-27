@@ -3040,6 +3040,7 @@ function initStructurePage(model) {
   const speedSlider = byId("seq-speed-slider");
   const speedValue = byId("seq-speed-value");
   const printfConsole = byId("seq-printf-console");
+  window.ConsoleHistory?.bind(printfConsole, model.id || "sorting_array", model.history);
   const restartExecutionButton = byId("seq-restart-execution");
   const hideComments = byId("seq-hide-comments");
   const pedagogySummary = byId("seq-pedagogy-summary");
@@ -3176,7 +3177,8 @@ function initStructurePage(model) {
     const lines = collectPrintfConsoleLines(consoleState.trace, cursor);
     const fallback = consoleState.fallbackMessage || "(sin salida printf en esta ruta)";
     const stdout = consoleState.trace ? collectPrintfStdout(consoleState.trace, cursor) : consoleState.rawStdout;
-    renderPrintfConsole(printfConsole, lines, fallback, stdout);
+    if (window.ConsoleHistory) window.ConsoleHistory.render(printfConsole, consoleState.trace, cursor, stdout ?? lines.join("\n"));
+    else renderPrintfConsole(printfConsole, lines, fallback, stdout);
   }
   const tracePlayer = window.InterpreterRuntime
     ? window.InterpreterRuntime.createTracePlayer({
@@ -3678,6 +3680,7 @@ function initStructurePage(model) {
         return data;
       }
 
+      window.ConsoleHistory?.setHistory(printfConsole, data.history);
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean((!finalOnly || allocationFailureTrace) && data.execution_trace && tracePlayer);
       const deferResult = hasExecutionTrace && Boolean(data.execution_trace.steps?.length);
@@ -3697,6 +3700,7 @@ function initStructurePage(model) {
         visualTraceState.totalSteps = Array.isArray(data.execution_trace.steps)
           ? data.execution_trace.steps.length
           : 0;
+
         consoleState.trace = data.execution_trace;
         consoleState.rawStdout = null;
         consoleState.fallbackMessage = "";
@@ -3720,6 +3724,9 @@ function initStructurePage(model) {
         tracePlayer?.clear(finalOnly
           ? "Modo rápido: se aplicó el resultado final de la operación."
           : "No hay una traza disponible para esta operación.");
+        // Preserve the real operation identity in fast mode as well.
+        consoleState.trace = data.execution_trace || null;
+        refreshPrintfConsole((data.execution_trace?.steps?.length || 0) - 1);
       }
 
       const payloadText = summarizePayload(payload);
@@ -3846,6 +3853,7 @@ function initStructurePage(model) {
     }
     const response = await fetch(form.dataset.resetUrl, { method: "POST" });
     const data = await response.json();
+    if (data.success) window.ConsoleHistory?.reset(printfConsole);
     showMessage(data.message, Boolean(data.success));
     updateDidacticPanel(model, selected ? selected.name : "");
     actionHistory.length = 0;

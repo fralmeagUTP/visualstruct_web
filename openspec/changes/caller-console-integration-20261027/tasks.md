@@ -1,0 +1,1 @@
+- [x] caller-ui: integrar contratos stdout backend en UI y verificar pruebas acotadas.

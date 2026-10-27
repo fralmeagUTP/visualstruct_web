@@ -498,6 +498,7 @@ function initHashPage(model) {
   const stepToggle = hashById("hash-step-toggle");
   const simStatus = hashById("hash-sim-status");
   const printfConsole = hashById("hash-printf-console");
+  window.ConsoleHistory?.bind(printfConsole, model.id || "sorting_array", model.history);
   const learningLevel=hashById("hash-learning-level"),guidedExample=hashById("hash-guided-example"),loadExample=hashById("hash-load-example"),exampleLesson=hashById("hash-example-lesson"),resetExecution=hashById("hash-reset-execution"),hideComments=hashById("hash-hide-comments"),bucketFilter=hashById("hash-bucket-filter"),showAddresses=hashById("hash-show-addresses");
   const predictionKind=hashById("hash-prediction-kind"),predictionAnswer=hashById("hash-prediction-answer"),predictionPrompt=hashById("hash-prediction-prompt"),predictionFeedback=hashById("hash-prediction-feedback"),predictionCheck=hashById("hash-check-prediction"),predictionHint=hashById("hash-prediction-hint"),predictionSkip=hashById("hash-skip-prediction"),practiceMode=hashById("hash-practice-mode"),resetProgress=hashById("hash-reset-progress");
   const compareControls=hashById("hash-compare-controls"),compareEntries=hashById("hash-compare-entries"),compareSuccessKey=hashById("hash-compare-success-key"),compareAbsentKey=hashById("hash-compare-absent-key"),compareRun=hashById("hash-compare-run"),compareProgress=hashById("hash-compare-progress"),compareInput=hashById("hash-compare-input"),compareGrid=hashById("hash-compare-grid"),compareConclusion=hashById("hash-compare-conclusion"),exportImage=hashById("hash-export-image"),exportSummary=hashById("hash-export-summary"),announcer=hashById("hash-accessible-announcer");
@@ -521,6 +522,7 @@ function initHashPage(model) {
   function updatePredictionPrompt(){if(!predictionKind||!predictionPrompt)return;const current=operations.find((item)=>item.name===operationSelect.value)||selected;const payload=current?collectPayload(current):{};const labels={bucket:"¿Qué bucket final tendrá la clave?",collision:"¿Habrá colisión? (sí/no)",comparisons:"¿Cuántas comparaciones de clave se ejecutarán?",link:"¿Se modificará un enlace? (sí/no)",size:"¿Cuál será la cantidad final?",malloc:"¿Se reservará un nodo con malloc? (sí/no)",free:"¿Se liberará un nodo con free? (sí/no)"};predictionPrompt.textContent=labels[predictionKind.value]||"Formula una predicción.";if(predictionFeedback)predictionFeedback.textContent=`Progreso de sesión: ${conceptualProgress.correct}/${conceptualProgress.attempts} aciertos.`;return {current,payload};}
   try{const saved=JSON.parse(sessionStorage.getItem(presentationKey)||"{}");if(learningLevel&&saved.level)learningLevel.value=saved.level;}catch(_error){}
   const consoleState = {
+    output: typeof model.console_output === "string" ? model.console_output : undefined,
     trace: null,
     fallbackMessage: "",
   };
@@ -529,18 +531,25 @@ function initHashPage(model) {
       return [];
     }
     const limit = Math.min(cursor, trace.steps.length - 1);
+    if (trace.console_mode === "snapshot") return Array.isArray(trace.steps[limit]?.console) ? trace.steps[limit].console.slice() : [];
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
       const emitted = Array.isArray(step.console) ? step.console : [];
-      emitted.forEach((line) => hashPushUniqueConsoleLine(out, line));
+      out.push(...emitted);
     }
     return out;
   }
   function refreshHashPrintfConsole(cursor) {
     const lines = collectHashPrintfLines(consoleState.trace, cursor);
-    renderHashPrintfConsole(printfConsole, lines, consoleState.fallbackMessage || "(sin salida printf en esta ruta)");
+    const step = consoleState.trace?.steps?.[cursor];
+    const stdout = cursor < 0 ? "" : typeof step?.console_stdout === "string" ? step.console_stdout : lines.join("\n");
+    if (typeof consoleState.trace?.console_prefix === "string" && window.ConsoleHistory) window.ConsoleHistory.publish(printfConsole, consoleState.trace.console_prefix + stdout);
+    else if (!consoleState.trace && typeof consoleState.output === "string" && window.ConsoleHistory) window.ConsoleHistory.publish(printfConsole, consoleState.output);
+    else if (window.ConsoleHistory) window.ConsoleHistory.render(printfConsole, consoleState.trace, cursor, stdout);
+    else renderHashPrintfConsole(printfConsole, lines, consoleState.fallbackMessage || "(sin salida printf en esta ruta)");
   }
+  if (typeof consoleState.output === "string") window.ConsoleHistory?.publish(printfConsole, consoleState.output);
   const tracePlayer = window.InterpreterRuntime
     ? window.InterpreterRuntime.createTracePlayer({
       codeElement: hashById("op-pseudocode"),
@@ -701,6 +710,8 @@ function initHashPage(model) {
 
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean(data.execution_trace && tracePlayer);
+      window.ConsoleHistory?.setHistory(printfConsole, data.history);
+      if (typeof data.console_output === "string") consoleState.output = data.console_output;
       if (hasExecutionTrace) {
         consoleState.trace = data.execution_trace;
         consoleState.fallbackMessage = "";
@@ -860,6 +871,8 @@ function initHashPage(model) {
     try {
       const response=await fetch(form.dataset.resetUrl,{method:"POST"});const data=await response.json();
       showHashMessage(data.message,Boolean(data.success));if(!response.ok||!data.success)return;
+      window.ConsoleHistory?.reset(printfConsole);
+      if (typeof consoleState.output === "string") consoleState.output = typeof data.console_output === "string" ? data.console_output : "";
       updateHashDidacticPanel(model,selected?selected.name:"");
       model.history=data.history||[];model.main_c=data.main_c||"";
       actionHistory.length=0;renderHashHistory(actionHistory,historyBox,model.didactic,model.main_c);

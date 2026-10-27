@@ -1,0 +1,6 @@
+insert_vertex: estado=0
+insert_vertex: estado=0
+insert_vertex: estado=0
+insert_edge: estado=0
+insert_edge: estado=0
+Dijkstra: estado=0 1->2(2) 2->3(3) | costo=5

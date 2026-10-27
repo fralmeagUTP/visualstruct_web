@@ -1,0 +1,5 @@
+insert_vertex: estado=0
+insert_vertex: estado=0
+insert_vertex: estado=0
+insert_edge: estado=0
+Dijkstra: estado=2

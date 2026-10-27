@@ -1,0 +1,1 @@
+Solicitud vigente del padre27oct: corregir stdout Hash/Ordenamiento cuando main imprime; integrar sobre bfe7 con fixes locales conservados. Sólo copia local, sin commit/push/despliegue. UI no inventa salida ni modifica C/H.

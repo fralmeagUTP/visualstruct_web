@@ -13,6 +13,7 @@ from app.services.c_code_service import CCodeService
 from app.services.sorting_source_contract import SortingSourceError
 from app.services.pseudocode_service import PseudocodeService
 from app.services.sorting_main_program import build_sorting_main
+from app.services.sorting_caller_console import execute_sorting_caller, attach_sorting_caller_console
 
 
 class SortingStructureService:
@@ -151,6 +152,7 @@ class SortingStructureService:
             "didactic": SortingStructureService._didactic_content(structure_id),
             "history": valid_history,
             "main_c": build_sorting_main(valid_history),
+            "console_output": execute_sorting_caller(valid_history)["stdout"],
         }
 
     @staticmethod
@@ -164,6 +166,7 @@ class SortingStructureService:
         radix_allocator=None,
     ) -> dict[str, Any]:
         adapter, valid_history = SortingStructureService._rebuild_adapter(structure_id, history)
+        caller_before_history = deepcopy(valid_history)
         adapter._counting_allocator = counting_allocator
         adapter._radix_allocator = radix_allocator
         accepted_before_state = adapter.to_visual_state()
@@ -217,6 +220,7 @@ class SortingStructureService:
             }
             if getattr(error, "execution_trace", None):
                 response["execution_trace"] = error.execution_trace
+            attach_sorting_caller_console(response, before_history=caller_before_history, operation=operation_name)
             return response
 
         if operation_meta.get("mutates", False) and operation_name in {"create_array", "generate_random_array", "select_algorithm"}:
@@ -251,6 +255,7 @@ class SortingStructureService:
             response["cursor"] = result["cursor"]
             response["total_steps"] = result.get("total_steps")
             response["step"] = result.get("step")
+        attach_sorting_caller_console(response, before_history=caller_before_history, operation=operation_name)
         return response
 
     @staticmethod

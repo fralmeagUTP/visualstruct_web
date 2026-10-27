@@ -1,0 +1,4 @@
+insert_vertex: estado=0
+insert_vertex: estado=0
+insert_vertex: estado=0
+Dijkstra: estado=0 (sin arcos; resultado valido) | costo=0

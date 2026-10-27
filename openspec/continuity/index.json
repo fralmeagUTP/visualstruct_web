@@ -1,6 +1,6 @@
 {
   "schema": "visualstruct-continuity-index/v1",
-  "canonical_project": "/workspace/scratch/644977913e22/visualstruct_scroll_codigo_20261027/app",
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
   "changes": {
     "cloud-local-smoke-20261027": {
       "sources": [
@@ -133,6 +133,83 @@
           "source": "openspec/changes/cloud-code-horizontal-scroll-20261027/scope.md",
           "scope": "Scroll local de código; fuentes intactas",
           "task_prefix": "code-horizontal-scroll:"
+        }
+      }
+    },
+    "consistent-syntax-highlighting-20261027": {
+      "sources": [
+        "openspec/changes/consistent-syntax-highlighting-20261027/proposal.md",
+        "openspec/changes/consistent-syntax-highlighting-20261027/design.md",
+        "openspec/changes/consistent-syntax-highlighting-20261027/specs/code-readers/spec.md"
+      ],
+      "tasks": "openspec/changes/consistent-syntax-highlighting-20261027/tasks.md",
+      "operations": {
+        "syntax-ui": {
+          "source": "openspec/changes/consistent-syntax-highlighting-20261027/proposal.md",
+          "scope": "Resaltado de código UI, copia aislada autorizada, sin publicación ni despliegue",
+          "task_prefix": "syntax-ui: implementar"
+        }
+      }
+    },
+    "hash-caller-stdout-20261027": {
+      "sources": [
+        "openspec/changes/hash-caller-stdout-20261027/scope.md",
+        "openspec/changes/hash-caller-stdout-20261027/proposal.md",
+        "openspec/changes/hash-caller-stdout-20261027/design.md",
+        "openspec/changes/hash-caller-stdout-20261027/specs/hash-caller-stdout/spec.md",
+        "openspec/changes/hash-caller-stdout-20261027/evidence.md"
+      ],
+      "tasks": "openspec/changes/hash-caller-stdout-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/hash-caller-stdout-20261027.json",
+      "operations": {
+        "hash-caller-stdout": {
+          "source": "openspec/changes/hash-caller-stdout-20261027/scope.md",
+          "scope": "Caller Hash stdout real, copia aislada, sin publicación",
+          "task_prefix": "hash-caller-stdout:"
+        }
+      }
+    },
+    "sorting-caller-stdout-20261027": {
+      "sources": [
+        "openspec/changes/sorting-caller-stdout-20261027/scope.md",
+        "openspec/changes/sorting-caller-stdout-20261027/proposal.md",
+        "openspec/changes/sorting-caller-stdout-20261027/design.md",
+        "openspec/changes/sorting-caller-stdout-20261027/specs/sorting-caller-console/spec.md"
+      ],
+      "tasks": "openspec/changes/sorting-caller-stdout-20261027/tasks.md",
+      "operations": {
+        "sorting-caller-stdout": {
+          "source": "openspec/changes/sorting-caller-stdout-20261027/scope.md",
+          "scope": "Caller Ordenamiento stdout real, copia aislada, sin publicación",
+          "task_prefix": "sorting-caller-stdout:"
+        }
+      }
+    },
+    "caller-console-integration-20261027": {
+      "sources": [
+        "openspec/changes/caller-console-integration-20261027/scope.md",
+        "openspec/changes/caller-console-integration-20261027/proposal.md"
+      ],
+      "tasks": "openspec/changes/caller-console-integration-20261027/tasks.md",
+      "operations": {
+        "caller-ui": {
+          "source": "openspec/changes/caller-console-integration-20261027/scope.md",
+          "scope": "Integración UI stdout Hash y Ordenamiento",
+          "task_prefix": "caller-ui:"
+        }
+      }
+    },
+    "publish-syntax-console-20261027": {
+      "sources": [
+        "openspec/changes/publish-syntax-console-20261027/scope.md",
+        "openspec/changes/publish-syntax-console-20261027/proposal.md"
+      ],
+      "tasks": "openspec/changes/publish-syntax-console-20261027/tasks.md",
+      "operations": {
+        "publish-review": {
+          "source": "openspec/changes/publish-syntax-console-20261027/scope.md",
+          "scope": "Publicación aislada de sintaxis y stdout, coordinaciónVPS",
+          "task_prefix": "publish-review:"
         }
       }
     }

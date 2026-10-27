@@ -1,6 +1,7 @@
 """Generate a C17 caller from confirmed mutations and observed queries."""
 from __future__ import annotations
 from typing import Any
+from app.services.hash_caller_program import output_lines
 
 
 def build_hash_main(history: list[dict[str, Any]]) -> str:
@@ -20,45 +21,36 @@ def build_hash_main(history: list[dict[str, Any]]) -> str:
             cap = int(p['capacity'])
             lines += ['    th_destruir(&tabla);', f'    th_inicializar(&tabla, {cap});',
                 '    if (!tabla.buckets) { status = 1; goto cleanup; }',
-                '    printf("create:%d\\n", tabla.capacidad);']
+                *['    '+line for line in output_lines(op)]]
         elif op == 'insert':
             key, value = (('INT_MIN' if int(p[name]) == -2147483648 else str(int(p[name]))) for name in ('key', 'value'))
             lines += [f'    {{ bool ok = th_insertar(&tabla, {key}, {value});',
-                f'      printf("insert:%d:%d:%d\\n", {key}, {value}, (int)ok);',
+                *['      '+line for line in output_lines(op, {'key':key, 'value':value})],
                 '      if (!ok) { status = 1; goto cleanup; } }']
         elif op == 'get':
             key = 'INT_MIN' if int(p['key']) == -2147483648 else str(int(p['key']))
             lines += [f'    {{ int output = 123456789; bool found = th_buscar(&tabla, {key}, &output);',
-                f'      printf("get:%d:%d", {key}, (int)found);',
-                '      if (found) printf(":%d", output);', '      printf("\\n"); }']
+                *['      '+line for line in output_lines(op, {'key':key})], '    }']
         elif op == 'contains':
             key = 'INT_MIN' if int(p['key']) == -2147483648 else str(int(p['key']))
-            lines += [f'    printf("contains:%d:%d\\n", {key}, (int)th_contiene(&tabla, {key}));']
+            lines += [f'    {{ bool found = th_contiene(&tabla, {key});',
+                      *['      '+line for line in output_lines(op, {'key':key})], '    }']
         elif op == 'stats':
             lines += ['    { THEstadisticas stats = th_estadisticas(&tabla);',
                 '      char texto[512];',
                 '      th_formatear_estadisticas(&tabla, texto, sizeof(texto));',
-                '      printf("stats-C:%d:%d:%d:%d:%.9g\\n", stats.capacidad, stats.cantidad,',
-                '             stats.buckets_ocupados, stats.colisiones, (double)stats.factor_carga);',
-                '      printf("stats-format:\\n%s", texto);',
-                '      printf("stats-API-projection:%d:%d:%.17g\\n", tabla.capacidad, tabla.cantidad,',
-                '             tabla.capacidad > 0 ? (double)tabla.cantidad / (double)tabla.capacidad : 0.0); }']
+                *['      '+line for line in output_lines(op)], '    }']
         elif op in {'keys', 'values', 'items'}:
             # Existing formatter text and independent public-field API projection.
             lines += ['    { char buffer[2048];',
                 '      th_formatear(&tabla, buffer, sizeof(buffer));',
-                f'      printf("format:{op}:\\n%s", buffer);',
-                f'      printf("{op}:");',
-                '      for (int i = 0; tabla.buckets && i < tabla.capacidad; i++) {',
-                '        for (const THNodo *node = tabla.buckets[i]; node; node = node->siguiente) {']
-            projection = 'node->clave' if op == 'keys' else 'node->valor'
-            lines += ['          printf("%d:%d;", node->clave, node->valor);' if op == 'items'
-                else f'          printf("%d;", {projection});']
-            lines += ['        }', '      }', '      printf("\\n"); }']
+                *['      '+line for line in output_lines(op)], '    }']
         elif op == 'remove':
-            lines += [f'    printf("remove:%d\\n", (int)th_eliminar(&tabla, {int(p["key"])}));']
+            key = 'INT_MIN' if int(p['key']) == -2147483648 else str(int(p['key']))
+            lines += [f'    {{ bool removed = th_eliminar(&tabla, {key});',
+                      *['      '+line for line in output_lines(op)], '    }']
         elif op in {'clear', 'destroy_table'}:
             lines += ['    th_vaciar(&tabla);' if op == 'clear' else '    th_destruir(&tabla);']
-    lines += ['    printf("state:%d:%d\\n", tabla.capacidad, tabla.cantidad);',
+    lines += [*['    '+line for line in output_lines('epilogue')],
         'cleanup:', '    th_destruir(&tabla);', '    return status;', '}']
     return '\n'.join(lines) + '\n'

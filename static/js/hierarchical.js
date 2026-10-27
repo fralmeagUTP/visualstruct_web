@@ -2627,6 +2627,7 @@ function initHierPage(model) {
   const speedSlider = hById("hier-speed-slider");
   const speedValue = hById("hier-speed-value");
   const printfConsole = hById("hier-printf-console");
+  window.ConsoleHistory?.bind(printfConsole, model.id || "sorting_array", model.history);
   const learningLevel = hById("hier-learning-level");
   const guidedExample = hById("hier-guided-example");
   const loadExampleButton = hById("hier-load-example");
@@ -2786,20 +2787,14 @@ function initHierPage(model) {
   }
 
   function refreshHierPrintfConsole(cursor) {
-    if ((consoleState.trace?.steps?.[0]?.pedagogy?.memory_state?.abb_traversal_model || consoleState.trace?.steps?.[0]?.pedagogy?.memory_state?.abb_read_model || consoleState.trace?.steps?.[0]?.pedagogy?.memory_state?.heap_query_model) && printfConsole) {
-      const state = cursor < 0 ? consoleState.trace.steps[0].state_snapshot : consoleState.trace.steps[Math.min(cursor,consoleState.trace.steps.length-1)].pedagogy.memory_state;
-      printfConsole.dataset.consoleCopy = state.console_stdout || "";
-      printfConsole.textContent = state.console_stdout;
-      printfConsole.style.whiteSpace = "pre-wrap";
-      return;
-    }
-    if (pageState.modelId === "red_black" && consoleState.trace?.application_precondition_rejected && printfConsole) { printfConsole.dataset.consoleCopy = ""; printfConsole.textContent = ""; return; }
-    const lines = collectHierPrintfLines(consoleState.trace, cursor);
-    renderHierPrintfConsole(
-      printfConsole,
-      lines,
-      consoleState.fallbackMessage || "(sin salida printf en esta ruta)",
-    );
+    const steps = consoleState.trace?.steps || [];
+    const step = steps[Math.min(cursor, steps.length - 1)];
+    const memory = cursor < 0 ? steps[0]?.state_snapshot : step?.pedagogy?.memory_state;
+    const stdout = cursor < 0 ? "" : typeof step?.console_stdout === "string" ? step.console_stdout
+      : typeof memory?.console_stdout === "string" ? memory.console_stdout
+      : collectHierPrintfLines(consoleState.trace, cursor).join("\n");
+    if (window.ConsoleHistory) window.ConsoleHistory.render(printfConsole, consoleState.trace, cursor, stdout);
+    else renderHierPrintfConsole(printfConsole, collectHierPrintfLines(consoleState.trace, cursor), "(sin salida printf en esta ruta)");
   }
 
   operations.forEach((operation) => {
@@ -3212,6 +3207,7 @@ function initHierPage(model) {
       const deferQueryResult = hasExecutionTrace && ((pageState.modelId === "red_black" && ["buscar", "inorden", "altura", "validar", "limpiar", "insertar", "eliminar"].includes(current.name)) || (pageState.modelId === "abb" && current.name === "validar") || (pageState.modelId === "avl" && ["altura", "buscar", "inorden", "minimo", "maximo", "limpiar", "validar", "insertar", "eliminar"].includes(current.name)) || (pageState.modelId === "binary_heap" && ["raiz", "a_lista", "limpiar", "insertar", "extraer_raiz"].includes(current.name)));
       consoleState.resultMessage = deferQueryResult ? { text: data.message, operation: current.name, success: Boolean(data.success) } : null;
       showHierMessage(deferQueryResult ? (current.name === "validar" ? "Validacion preparada: resultado pendiente hasta completar la traza." : current.name === "limpiar" ? "Limpieza preparada: resultado pendiente hasta completar la traza." : current.name === "insertar" ? "Insercion preparada: resultado pendiente hasta completar la traza." : current.name === "eliminar" ? "Eliminacion preparada: resultado pendiente hasta completar la traza." : current.name === "extraer_raiz" ? "Extraccion preparada: resultado pendiente hasta completar la traza." : "Consulta preparada: resultado pendiente hasta completar la traza.") : data.message, deferQueryResult ? true : Boolean(data.success));
+      window.ConsoleHistory?.setHistory(printfConsole, data.history);
       if (hasExecutionTrace) {
         consoleState.trace = data.execution_trace;
         consoleState.fallbackMessage = "";
@@ -3381,7 +3377,7 @@ function initHierPage(model) {
     stopHeapAnimation();
     const response = await fetch(form.dataset.resetUrl, { method: "POST" });
     const data = await response.json();
-    if (data.success) clearRNValidatorCache();
+    if (data.success) { clearRNValidatorCache(); window.ConsoleHistory?.reset(printfConsole); }
     showHierMessage(data.message, Boolean(data.success));
     updateHierDidacticPanel(model, selected ? selected.name : "");
     actionHistory.length = 0;
