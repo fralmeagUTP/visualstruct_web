@@ -109,6 +109,8 @@ def test_sorting_help_pages_available(client) -> None:
     assert structure_help.status_code == 200
     assert b"ordenar_burbuja" in structure_help.data
     help_html = structure_help.get_data(as_text=True)
-    assert "Fichas por algoritmo" in help_html
-    assert "Glosario contextual" in help_html
+    assert "Elige un algoritmo para profundizar" in help_html
+    assert help_html.count('<details class="sorting-help-card">') == 11
+    for heading in ("Qué hace", "Qué observar", "Error que evitar", "Costo y memoria"):
+        assert help_html.count("<h4>" + heading + "</h4>") == 11
     assert "Pivote" in help_html and "Estabilidad" in help_html and "In-place" in help_html

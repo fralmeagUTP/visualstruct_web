@@ -1,0 +1,23 @@
+{
+  "schema": "sorting-test-portability-migration/v1",
+  "source": {
+    "commit_sha": "dde0d95691482e7c6db1922d0983ef287479dacf",
+    "blob_sha1": "c04cb4a4bee583366943718f1eb973e325ada232",
+    "path": "tests/test_sorting_quicksort_baseline_low.py",
+    "snapshot": "test_sorting_quicksort_baseline_low.published.py.snapshot",
+    "sha256": "510c97cd621de75e877d0a594a1245ef79c4bc7f176d5d19118983fe95f5c079"
+  },
+  "historical_record": "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-quicksort-instructions/before/tests/test_sorting_quicksort_baseline_low.py",
+  "original_declared_sha256": "3c719f717ad85e03fd1f307834fa6bf84333a1f80e3724fbe20269c82917a1d7",
+  "original_preimage_available": true,
+  "allowed_successor_changes": [
+    "CRLF/LF transport",
+    "Import of scripts.published_test_inputs.audit_input_path",
+    "Wrapping existing Path reads in audit_input_path without changing arguments",
+    "Normalize exact CRLF/LF transport in read_bytes comparisons; preserve every other byte",
+    "Exact known OpenSpec archive relocation from openspec/changes/audit-local-quality-and-unified-controls/evidence/ to openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/"
+  ],
+  "authorization": "Current VisualStruct integration task explicitly authorizes meaningful migration of historical tests, preserving cases and assertions.",
+  "reason": "Authentic archived before source is independently SHA-bound and compared semantically; distinct published Git source is also SHA256/Git-blob bound. Only declared fixture portability, exact archive relocation and CRLF transport adapters are allowed.",
+  "original_snapshot": "test_sorting_quicksort_baseline_low.archived.py.snapshot"
+}

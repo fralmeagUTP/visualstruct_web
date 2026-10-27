@@ -38,7 +38,7 @@ def test_real_download_Doxygen_and_seven_closed_modules_untouched(observed):
  h=json.loads((audit_input_path(B/'evidence/visible-sorting-mergesort-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
  for name in ['intercambio','seleccion','insercion','burbuja','shell','quicksort','mergesort']:
   rel=f'app/domain/sorting/{name}_instructions.py';assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==h[rel]
- for ext in ['c','h']:assert (out/('tad_ordenamiento.'+ext)).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
+ for ext in ['c','h']:assert (out/('tad_ordenamiento.'+ext)).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')
 def test_repeated_heapsort_history_GET_no_sort_again(monkeypatch):
  from app.adapters.sorting_adapter import SortingAdapter
  c=create_app().test_client();c.post('/api/ordenamiento/create-array',json={'values':[4,3,2,1]});a=c.post('/api/ordenamiento/run',json={'algorithm_id':'heapsort','mode':'fast'}).get_json();b=c.post('/api/ordenamiento/run',json={'algorithm_id':'heapsort','mode':'fast'}).get_json();assert a['success'] and b['success'] and sum(e['operation']=='run' for e in b['history'])==2

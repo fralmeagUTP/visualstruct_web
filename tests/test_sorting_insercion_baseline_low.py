@@ -36,7 +36,7 @@ def test_native_shortcircuit_and_empty_api_rejection(observed):
 def test_c_h_downloads_doxygen_unchanged(observed):
  out,report=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
  for extension in ['c','h']:
-  assert (audit_input_path(out/('tad_ordenamiento.'+extension))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+extension))).read_bytes()
+  assert (audit_input_path(out/('tad_ordenamiento.'+extension))).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+extension))).read_bytes().replace(b'\r\n',b'\n')
 
 
 def test_repeated_insertion_history_and_get_preserve_original_caller(monkeypatch):
