@@ -1,25 +1,49 @@
-"""Actual Bellman-Ford UI history, downloaded program output and allocation ownership."""
-from pathlib import Path
-import json,subprocess,sys
+"""Actual Bellman-Ford UI callers, statuses and compiled allocation ownership."""
+import json
 import pytest
+from _canonical_graph_browser_contract import private_server,seed,install_player_capture,operate_ui,reload_main_twice,compile_downloaded_main
+from _book_frame_oracle import assert_book_body
 pytestmark=pytest.mark.e2e
-@pytest.fixture(scope='module')
-def actual_browser_callers(tmp_path_factory):
- out=tmp_path_factory.mktemp('bellman_ford-browser');helper=Path(__file__).with_name('_audit_graph_bellman_ford_caller_baseline.py');root=Path(__file__).resolve().parents[1]
- run=subprocess.run([sys.executable,'-u',str(helper),str(out)],cwd=root,capture_output=True,text=True,encoding='utf-8',timeout=120);(out/'runner.log').write_text(run.stdout+run.stderr,encoding='utf-8');assert run.returncode==0,run.stdout+run.stderr
- report=json.loads((out/'report.json').read_text(encoding='utf-8'));return {x['case']:x for x in report['rows']},out
-@pytest.mark.parametrize('case',['same_vertex','negative_alternative','reachable_negative_cycle'])
-def test_actual_bellman_ford_history_download_and_ownership(case,actual_browser_callers):
- rows,out=actual_browser_callers;r=rows[case]
- assert r['actual_calls']==r['before_reload_calls']==r['after_reload_calls']==2
- assert r['failed_query_omitted'] and r['extra_reload_POSTs']==r['replay_extra_POSTs']==0 and r['page_errors']==[]
- assert r['original_strict_c17_pass'] and r['original_returncode']==0
- assert not r['caller_output_is_precomputed']
- assert r['ownership']['allocations']==r['ownership']['frees'] and r['ownership']['live']==0
- lines=[l for l in r['original_stdout'].splitlines() if l.startswith('Bellman-Ford:')]
- expected={'same_vertex':'Bellman-Ford: NULL (sin arcos, sin ruta, ciclo negativo o error de entrada/memoria)','negative_alternative':'Bellman-Ford: 1 -> 3 -> 2 | costo=-4','reachable_negative_cycle':'Bellman-Ford: NULL (sin arcos, sin ruta, ciclo negativo o error de entrada/memoria)'}[case]
- assert lines==[expected]*2
- # UI/backend tie choice is still held; compare generated main to real native
- # output, not to a precomputed or invented backend path.
+CASES={
+ 'same_vertex':{'vertices':[-1],'arcs':[],'start':-1,'end':-1,'status':0},
+ 'negative_alternative':{'vertices':[1,2,3],'arcs':[(1,2,4),(1,3,1),(3,2,-5)],'start':1,'end':2,'status':0},
+ 'reachable_negative_cycle':{'vertices':[1,2,3,4],'arcs':[(1,2,1),(2,3,-3),(3,2,1),(3,4,1)],'start':1,'end':4,'status':4},
+}
+
+@pytest.mark.parametrize('case',list(CASES))
+def test_actual_bellman_ford_history_download_and_ownership(tmp_path,case):
+ from playwright.sync_api import sync_playwright
  from test_graph_bfs_documentation import run_doxygen
- run_doxygen(out/case,[out/case/'main.c'])
+ record=CASES[case];payload={'start':record['start'],'end':record['end']}
+ with private_server(tmp_path) as base,sync_playwright() as pw:
+  browser=pw.chromium.launch();context=browser.new_context();page=context.new_page();posts=[];errors=[]
+  page.on('pageerror',lambda error:errors.append(str(error)))
+  page.on('request',lambda request:posts.append(request.url) if request.method=='POST' else None)
+  seed(context,base,record['vertices'],record['arcs'])
+  install_player_capture(page);page.goto(base+'/graph/graph/camino-minimo',wait_until='networkidle')
+  results=[]
+  for _ in range(2):
+   body,status=operate_ui(page,'run_bellman_ford',payload)
+   assert body['c_status']==record['status'] and status==(200 if record['status']==0 else 400)
+   assert body['success'] is (record['status']==0)
+   assert_book_body(body);results.append(body['result']);before=len(posts)
+   page.evaluate('async()=>{const p=window.auditGraphPlayer;p.reset();await p.step();p.prev();p.seek(p.getTotalSteps()-1);}')
+   assert len(posts)==before
+  assert results[0]==results[1]
+  failed,failed_status=operate_ui(page,'run_bellman_ford',{'start':999,'end':record['end']})
+  assert failed_status==400 and failed['c_status']==2 and not failed['success']
+  assert failed['history'][:-1]==body['history'] and failed['history'][-1]['source_contract']=='graph-book/v1'
+  program=reload_main_twice(page,context,base,posts)
+  assert program.count('= grafo_bellman_ford(')==3
+  assert program.count('grafo_liberar_arcos(&lista_')==3
+  native=compile_downloaded_main(context,base,program,tmp_path/'download')
+  lines=[line for line in native['stdout'].splitlines() if line.startswith('Bellman-Ford:')]
+  if record['status']==4:expected='Bellman-Ford: estado=4'
+  elif results[0]['path_arcs']:
+   expected='Bellman-Ford: estado=0'+''.join(f' {a}->{b}({w})' for a,b,w in results[0]['path_arcs'])+' | costo='+str(results[0]['distance_to_destination'])
+  else:expected='Bellman-Ford: estado=0 (sin arcos; resultado valido) | costo=0'
+  assert lines==[expected,expected,'Bellman-Ford: estado=2']
+  assert 'Bellman-Ford desde' not in program and not errors
+  run_doxygen(tmp_path/'download',[tmp_path/'download/main.c'])
+  (tmp_path/'browser-report.json').write_text(json.dumps({'case':case,'actual_calls':3,'repeated_C_calls':2,'failed_C_call_retained':True,'source_contract':'graph-book/v1','replay_reload_POSTs':0,'native':native,'page_errors':errors},ensure_ascii=False,indent=2),encoding='utf-8')
+  context.close();browser.close()
