@@ -1,0 +1,3 @@
+# Current native C versus existing visual requests for all11Sorting
+
+Explicit user asks verify other algorithms/allSorting. Coordinator01a0fe61-3104-743a-b032-bcc289ad80cd authorizes maximum15min: one predetermined batch of OTHER10currentC kernels on80..1, check outputs/status/metrics, separate compilation/startup/IO/timerresolution. Reuse BurbujaC previous result and historicalHTTP10/currentBurbuja40777; no11HTTPrepeats/newGraphcampaign/product/redesign/adoption/gatechange. Own evidence/continuity only. Mark historical engineSHA and errors/censored timings, do not imply all algorithms exceed15 or sameGraphcause.

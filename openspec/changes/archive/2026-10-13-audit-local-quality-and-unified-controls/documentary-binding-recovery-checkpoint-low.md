@@ -1,0 +1,14 @@
+# Recuperación documental de vínculos — 2026-10-04
+
+Asignación coordination-documentary-binding-recovery-low-20261004 / documentation.symbols. Cierre de recuperación de procedencia, no cierre funcional nuevo ni signoff automático.
+
+- RN19: recuperado handoff vigente de extend-red-black-full-validation, tareas con aclaración final 23:28 y QA independiente RN. Todos los inputs SHA del review-evidence.json coinciden con fuentes actuales, incluidos C/H. La advertencia antigua de permiso final SDD es histórica y no vuelve a bloquear este vínculo. Cierre finito V3 conservado; endorsement individual adicional no inferido.
+- Graph18: recuperadas 18 fuentes históricas exactas por SHA y revisados comentarios actuales. 15 cuerpos tienen tokens idénticos; Bellman-Ford/Prim/Dijkstra fueron legítimamente sustituidos y se vinculan a decisiones/QA actuales, no al endorsement antiguo. La equivalencia conserva literales. Revisión de procedencia cerrada; aceptación documental exhaustiva sigue separada.
+- Desapilar: hash del input nativo coincide exactamente con la descarga HTTP histórica registrada. Informe acredita normal (incluye -1), free y printf vacío. Bytes históricos no recuperados en Git ni en copias canónicas encontradas; no se demuestra equivalencia completa al archivo actual. Cerrado vínculo entre informes históricos; residual de fuente íntegra vigente explícito.
+- Heap: existe rama remove en binary_heap_harness.c: por tanto no es cierto que falte todo harness nativo para eliminar_valor. CHECKS binary_heap sólo inserta/root/extract; no ejecuta remove. En corpus acotado documentado no se localizó reporte durable de construir ni ejecución remove. Ausente en CHECKS estándar; no localizada universalmente. Fixtures Python no equivalen a C (cantidad99/buffer5 viola precondición). No se implementa ni ejecuta función nueva.
+
+## Residuales por criterio
+
+11: binding completo de fuente histórica Desapilar y reportes nativos específicos Heap; cobertura restante por casos. 12: correspondencia instrucción/vistas de casos restantes. 13: revisión por símbolo/precondiciones/header, nuevo inventario real y signoffs sustentados; RN19 ya no es hueco de handoff. 14: manual/límites de módulos pendientes. 16: agregación de regresiones y validación pertinente tras comentarios autorizados. 17: sólo decisiones nuevas vigentes/C1 y reconciliación global. 18: gate final aún pendiente, sin repetir sanitizers imposibles. 19: entrega agregada/no archivo. 22: clasificar raíces/hidden/utility antes de inferir falta de UI o función muerta.
+
+La coordinación acaba de transmitir aprobación explícita del usuario para comentarios C/H exclusivamente. Próximo bloque bajo nueva asignación: comentarios por familia, evidencia de tokens y preprocesado, compilación/Doxygen; sin cambios ejecutables. Las fuentes de este bloque permanecieron congeladas; 13/22 y signoffs históricos preservados.

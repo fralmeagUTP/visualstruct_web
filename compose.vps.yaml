@@ -1,0 +1,24 @@
+# VPS override: route the application through the Hostinger Traefik service.
+# Use together with compose.yaml; it removes the direct HTTP port publication.
+services:
+  visualstruct:
+    ports: !reset []
+    environment:
+      SESSION_COOKIE_SECURE: "true"
+      ALLOW_INSECURE_COOKIES_IN_PRODUCTION: "false"
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=red
+      - traefik.http.routers.visualstruct.entrypoints=websecure
+      - traefik.http.routers.visualstruct.rule=Host(`visualstruct.famedina.io`)
+      - traefik.http.routers.visualstruct.tls=true
+      - traefik.http.routers.visualstruct.tls.certresolver=letsencrypt
+      - traefik.http.services.visualstruct.loadbalancer.server.port=5050
+    networks:
+      - default
+      - traefik
+
+networks:
+  traefik:
+    external: true
+    name: red

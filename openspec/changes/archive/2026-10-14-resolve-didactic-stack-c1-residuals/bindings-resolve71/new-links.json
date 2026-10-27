@@ -1,0 +1,15 @@
+[
+  "operation:hash/hash_table/keys",
+  "operation:hash/hash_table/values",
+  "operation:hash/hash_table/items",
+  "route:GET /api/ordenamiento/state",
+  "route:GET /api/ordenamiento/traces/<trace_id>/page",
+  "route:GET /api/ordenamiento/traces/<trace_id>/export",
+  "route:POST /api/ordenamiento/step",
+  "operation:sorting/sorting_array/step",
+  "route:POST /api/ordenamiento/reset",
+  "operation:sorting/sorting_array/reset",
+  "control:templates/_navbar.html:input:didactic-mode-switch:8",
+  "control:templates/hash/structure.html:button:hash-reset-button:8",
+  "control:templates/hierarchical/structure.html:button:hier-sim-prev:19"
+]

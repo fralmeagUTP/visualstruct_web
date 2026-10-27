@@ -1,0 +1,3 @@
+# Diagnóstico único por fases Burbuja80
+
+Coordinador01a0fe61-3104-743a-b032-bcc289ad80cd autoriza una repetición máxima necesaria instrumentada aislada,2GiB,mismo input80..1/fuentes canónicas/contrato/traza/respuesta. Máximo15min desde primer acto. Aprovechar petición plain25.14226150000468s ya conservada. Separar generación,validación,construcción/serialización y tamaños/copias sin doble conteo. Diagnóstico no benchmark aceptación; no optimización/pasos omitidos/codec/contrato/límites alterados ni preview/Git/deploy. Costeprincipal medido, hipótesis etiquetadas, propuesta correcciónmínima con pruebas necesarias;18 abierto.

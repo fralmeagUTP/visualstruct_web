@@ -1,0 +1,11 @@
+<section class="help-execution-guide" aria-labelledby="execution-guide-title">
+  <h3 id="execution-guide-title">De la idea al resultado</h3>
+  <ol><li>Prepara una operación y predice qué cambiará.</li><li>Activa <strong>Paso a paso</strong> antes de ejecutar si quieres ver la traza; sin ese modo obtienes el resultado final.</li><li>Relaciona el dibujo con la línea C resaltada: acaba de ejecutarse. Una condición puede no cambiar ningún nodo.</li><li>Lee las pistas de <strong>Comprender</strong> y las pestañas de <strong>Resultados</strong>.</li></ol>
+  <p><strong>Paso anterior / Siguiente paso</strong> revisan la misma llamada. Pausar no deshace; cerrar Paso a paso muestra su final sin ejecutarla otra vez. Restablecer TAD (o Reiniciar, según el módulo) borra estructura e historial, no sólo el cursor.</p>
+  <p>Usa <strong>−, +, 100%, Encajar vista y Centrar inicio</strong> para acomodar el gráfico. El zoom y el desplazamiento se conservan durante los pasos; la memoria auxiliar es opcional.</p>
+  {% if structure_id in ['stack', 'queue', 'linked_list', 'circular_list', 'abb', 'avl', 'red_black', 'binary_heap'] %}
+  <details><summary>Agregar varios valores en esta estructura</summary>{% include "help/_multiple_input_guide.html" %}</details>
+  {% endif %}
+  <details><summary>Palabras básicas para leer el dibujo</summary><dl><dt>TAD</dt><dd>Tipo abstracto de dato: los datos y las operaciones permitidas sobre ellos.</dd><dt>Nodo</dt><dd>Elemento que guarda un valor y enlaces a otros elementos.</dd><dt>Puntero o enlace</dt><dd>Referencia que permite llegar a otro nodo. NULL indica que no apunta a un nodo.</dd><dt>Raíz, padre e hijo</dt><dd>La raíz inicia el árbol; un padre se conecta con sus hijos.</dd><dt>Tope, frente y atrás</dt><dd>Tope (TOP) en Pila; frente (FRONT) y atrás (BACK) en Cola son referencias a sus extremos.</dd></dl></details>
+  <p><a href="{{ url_for('help.user_manual') }}#empieza">Primera práctica de 5 minutos</a> · <a href="{{ url_for('help.user_manual') }}#resultados">Copiar, ampliar y exportar</a> · <a href="{{ url_for('help.user_manual') }}#problemas">Resolver dudas y errores</a> · <a href="{{ url_for('help.user_manual') }}#referencia">Atajos y referencia</a></p>
+</section>

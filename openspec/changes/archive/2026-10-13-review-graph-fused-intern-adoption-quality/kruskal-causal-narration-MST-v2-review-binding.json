@@ -1,0 +1,40 @@
+{
+  "activation": "REGISTERED_REVIEWER_OWN_FRESH_BEFORE_REQUIRED",
+  "UTC": "2026-10-05T12:14:24.151645+00:00",
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.kruskal-causal-narration-quality",
+  "task": "kruskal-causal-narration-MST-v2-independent-review",
+  "assignment_id": "coordination-kruskal-causal-narration-independent-qa-low-20261005",
+  "assignment_source": "openspec/continuity/assignments/coordination-kruskal-causal-narration-independent-qa-low-20261005.json",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW independent",
+  "scope_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/kruskal-causal-narration-MST-v2-review-scope.md",
+  "tasks_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/tasks.md",
+  "tracker_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/kruskal-causal-narration-MST-v2-review-tasks.md",
+  "evidence_binding": "openspec/changes/review-graph-fused-intern-adoption-quality/kruskal-causal-narration-MST-v2-evidence-binding.json",
+  "allowed_paths": [
+    "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/kruskal-causal-narration-MST-v2-independent-qa-low",
+    "openspec/changes/review-graph-fused-intern-adoption-quality/kruskal-causal-narration-MST-v2-review-tasks.md"
+  ],
+  "protected": [
+    "app",
+    "tests",
+    "docs",
+    "static",
+    "templates",
+    "scripts",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "prior QA evidence/tasks",
+    "openspec/changes/review-graph-fused-intern-adoption-quality/tasks.md"
+  ],
+  "review_only": true,
+  "product_integration_authorized": false,
+  "tests_native_browser_coverage_benchmark_authorized": false,
+  "package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-kruskal-causal-narration-repair-low/MST-causal-narration-QA-v2.zip",
+  "package_sha256": "5fa5574b9480e1c3ca41cfa6050e044aef31af33d8d4e7cc503a380562ed0089",
+  "artifact_version": "MST-causal-narration-v2",
+  "product_version": "kruskal-causal-rejection-narration-20261005",
+  "recommendation_only": true
+}

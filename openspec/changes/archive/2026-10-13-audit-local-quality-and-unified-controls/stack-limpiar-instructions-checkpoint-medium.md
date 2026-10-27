@@ -1,0 +1,15 @@
+# Pila limpiar: checkpoint MEDIUM, revisión LOW pendiente
+
+Asignación vigente `coordination-stack-limpiar-instructions-medium-20261003`; operación `stack.limpiar-instructions-medium`. Proyecto canónico D:. Corrige exclusivamente limpiar/pila_destruir y su caller, integración y replay. No cierre de toda Pila ni cambio de contratos. La instrucción vigente autoriza verificar un main real y sustituye la restricción propuesta del plan anterior.
+
+Los ocho fallos baseline quedan resueltos: root ptrPila* alias al slot caller, aux indeterminado tras declaración, unlink antes de free, nodo desconectado todavía vivo, identidad estable de duplicados, memoria retirada con máscara semántica cero y campos históricos separados, retorno void que retira scope y restauración tras recarga. No se lee ni compara un puntero retirado. Root caller sigue vivo y NULL al terminar. Guarda p==NULL sólo en fixture nativa; pila vacía usa p válido.
+
+20 IDs únicos pasan (16 originales conservados + 4 disjuntos), 2,55 s. Nueve llamadas C conservadas, 76 eventos y 25 condiciones coinciden con snapshots nuevos; ocho llamadas API son 72 eventos y NULL nativo añade cuatro. Reutilización del observer C original con C/H idénticos, sin sumar otro baseline. UI: ocho operaciones, 144 frames y 128 retrocesos sobre las dos vistas; IDs, raíz, máscaras, memoria, código, scopes y cinco secciones. Cuatro recargas mantienen traza exacta; cero JS errors y POST adicionales.
+
+Cuatro main.c reales descargados de sesión, distintos del caller QA previo, pasan C17 estricto con fuente original intacta; salida calculada, ocho alloc/ocho free/cero vivos. Ocho fallos malloc NULL simulados producen retorno 1 y limpieza balanceada. Doxygen de C/H y cuatro mains: cero advertencias. El primer intento de QA nombró archivos por fixture aunque @file era main.c; se conserva warnings-first-pass.log y se corrigió sólo el nombre del input, reutilizando compilación/ejecución ya válidas.
+
+515 fuentes protegidas comparadas: 509 idénticas, seis cambios autorizados de integración/UI; tres módulos nuevos específicos. C/H, motores Hash/Sorting y pop conservados. Los dos tests UI originales leen el nuevo artefacto si existe, mantienen ID y aserciones, y no sobrescriben el rojo histórico. Manifest y logs en evidence/visible-stack-limpiar-instructions-medium.
+
+Recursos instrumentados de las mismas ocho llamadas, incluyendo Flask/sesión: pico Python 1.752.811 bytes, JSON máximo 142.187 bytes, máximo observado 0,053 s. No RSS/SLA ni sesiones largas. Export C sólo valores signed32 representables, sin limitar silenciosamente API. Registro de última traza ligado al historial; mutation/reset invalida, rechazo conserva. GET restaura sin build_trace ni POST; reconstrucción histórica existente no se elimina. Máscaras semánticas no son layout/padding ABI. Sin UB/OOM real/sanitizers/capacidades arbitrarias.
+
+Siguiente paso: revisión LOW de fuentes, hashes, evidencia e IDs antes de decidir cierre de estos casos finitos. No se reejecutan Hash, Sorting ni pop sin causa nueva. Global derivado sigue 13/22; docs 121/208; C1 y decisiones RN/Grafos sin cambio. No publicación/commit/push/merge/despliegue.

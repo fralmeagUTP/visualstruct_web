@@ -55,19 +55,20 @@ def lcir_insertar_final(lista: ListaCircular, valor: int) -> bool:
 def lcir_buscar_posiciones(
     lista: ListaCircular, valor: int, destino: list[int] | None, capacidad: int
 ) -> int:
-    if lista.cabeza is None or capacidad <= 0:
+    if lista.cabeza is None:
         return 0
-    copiados = 0
+    encontrados = 0
     actual = lista.cabeza
-    for pos in range(lista.cantidad):
-        if actual.valor == valor and destino is not None and copiados < capacidad:
-            if copiados < len(destino):
-                destino[copiados] = pos
-            else:
-                destino.append(pos)
-            copiados += 1
+    for pos in range(1, lista.cantidad + 1):
+        if actual.valor == valor:
+            if destino is not None and encontrados < capacidad:
+                if encontrados < len(destino):
+                    destino[encontrados] = pos
+                else:
+                    destino.append(pos)
+            encontrados += 1
         actual = actual.sgte
-    return copiados
+    return encontrados
 
 
 def lcir_eliminar_primero(lista: ListaCircular, valor: int) -> bool:
@@ -91,6 +92,25 @@ def lcir_eliminar_primero(lista: ListaCircular, valor: int) -> bool:
         previo = actual
         actual = actual.sgte
     return False
+
+
+def lcir_eliminar_inicio(lista: ListaCircular) -> bool:
+    """Desconecta y elimina la cabeza manteniendo el enlace cola→cabeza."""
+    if lista.cabeza is None:
+        return False
+    actual = lista.cabeza
+    if lista.cabeza is lista.cola:
+        lista.cabeza = None
+        lista.cola = None
+        lista.cantidad = 0
+        actual.sgte = None
+        return True
+    lista.cabeza = actual.sgte
+    lista.cola.sgte = lista.cabeza
+    if lista.cantidad > 0:
+        lista.cantidad -= 1
+    actual.sgte = None
+    return True
 
 
 def lcir_invertir(lista: ListaCircular) -> None:
@@ -136,7 +156,7 @@ def lcir_formatear(lista: ListaCircular, destino: list[str] | None, capacidad: i
     if lista.cabeza is not None:
         actual = lista.cabeza
         for pos in range(lista.cantidad):
-            valores.append(f"[{pos}]={actual.valor}")
+            valores.append(f"[{pos + 1}]={actual.valor}")
             actual = actual.sgte
     texto = "HEAD -> " + (" -> ".join(valores) if valores else "(vacia)")
     if valores:
@@ -150,5 +170,16 @@ def lcir_formatear(lista: ListaCircular, destino: list[str] | None, capacidad: i
 
 
 def lcir_destruir(lista: ListaCircular) -> None:
-    lcir_inicializar(lista)
+    while lista.cabeza is not None:
+        actual = lista.cabeza
+        if lista.cabeza is lista.cola:
+            lista.cabeza = None
+            lista.cola = None
+            lista.cantidad = 0
+        else:
+            lista.cabeza = actual.sgte
+            lista.cola.sgte = lista.cabeza
+            if lista.cantidad > 0:
+                lista.cantidad -= 1
+        actual.sgte = None
 

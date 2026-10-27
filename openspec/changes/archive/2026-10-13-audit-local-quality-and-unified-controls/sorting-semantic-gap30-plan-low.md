@@ -1,0 +1,5 @@
+# Sorting semantic gap30
+
+Coordinator authorizes max30minsemanticSortingcoverage for93linegap onstable999, nofunctionalproduct/denominator changes, noBFSoptimizations/benchmarks/candidateadoption. Add groupedmissingtests with realcontracts/oracles legalinputs. Onlyfocalselection, compatiblecoverage/gates/perID/SHA, documentunreachable/decisionbranches. No generalcampaign.
+
+Authorizedpermanenttestmodule only tests/test_sorting_retained_semantic_branches.py. Seven normative retainedroots xfourvalidpartitions; digithelper validuint32magnitudes/exponents; countingrange reject preservesinput; twoexisting validationguards. Compare sorted/permutation andpublicenginefinalstate, metrics/indices/snapshotownership; no assertion of wholeCfidelity fromsortedresult. Enginebody contract migration c-code-interpreter/spec.md:Compatibilidad durante migracion. Stable193raweligible onlyafterall999SHAandapp186/24154/4 verified. Additionaltest additive1000inputs, not productchange. No dispatchfiction/memoryfaultoutsidecontract/BFSrun.

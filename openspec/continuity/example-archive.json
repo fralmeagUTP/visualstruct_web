@@ -1,0 +1,9 @@
+{
+  "schema": "continuity-archive-map/v1",
+  "retired_prefix": "openspec/changes/adopt-local-role-documentation-example/",
+  "archive_prefix": "openspec/changes/archive/2026-10-02-adopt-local-role-documentation-example/",
+  "input_overrides": {
+    "openspec/continuity/ROLE-WORKFLOW.md": "openspec/changes/archive/2026-10-02-adopt-local-role-documentation-example/evidence/closure-final/accepted-role-protocol.md"
+  },
+  "meaning": "Resolve genuine dated acceptance to preserved bytes; stable example is a historical snapshot, not an active assignment"
+}

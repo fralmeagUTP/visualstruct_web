@@ -1,0 +1,12 @@
+{
+  "schema": "continuity-archive-map/v1",
+  "mappings": {
+    "openspec/changes/audit-didactic-c-trace-fidelity": "openspec/changes/archive/2026-10-14-audit-didactic-c-trace-fidelity",
+    "openspec/changes/redesign-stack-learning-workspace": "openspec/changes/archive/2026-10-14-redesign-stack-learning-workspace",
+    "openspec/changes/resolve-didactic-stack-c1-residuals": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals",
+    "openspec/changes/archive-verified-review-closures-20261013": "openspec/changes/archive/2026-10-14-archive-verified-review-closures-20261013"
+  },
+  "retired_index_entry_history": "openspec/changes/archive/2026-10-14-archive-verified-review-closures-20261013/evidence/four-final-reconciliation-20261014/final-retired-administrative-runtime-binding.json",
+  "retired_residual_entry_history": "openspec/changes/archive/2026-10-14-archive-verified-review-closures-20261013/evidence/four-final-reconciliation-20261014/retired-residual-runtime-binding.json",
+  "meaning": "Fourfulfilledchangesmoved;noactiveassignment. Datedpaths/digestsresolve tosamearchivedbytes;newtaskrequiresnewregistration."
+}

@@ -1,0 +1,9 @@
+# Alcance nuevo: reconciliar yarchivar cuatro expedientes
+
+Fuente directa20261014 coordinación01a0fe61-3104-743a-b032-bcc289ad80cd, transcripción literal usuario: «Miras si ... dicen esos open spec ... ya se hicieron en la auditoría grande ... si hace falta ... tarea o especificación para cerrarla ... hazla ... instrucciones más nuevas ... cosas viejas ... ya no debemos tener en cuenta». Autoriza explícitamente reconciliación yarchivo de cumplidos; sustituye sólo restricciónlectura previa. No ampliarCI/producto/AISEF/arnés ni campañas,Git/VPS.
+
+Nuevo trabajo,no repetir37archivos ni mediciones cerradas. Cuatro targets actuales: audit-didactic-c-trace-fidelity,redesign-stack-learning-workspace,resolve-didactic-stack-c1-residuals,archive-verified-review-closures-20261013(este expediente administrativo). Registraroriginales/SHA, mapearrequisito→evidencia posterior→cumplido/sustituido/retiroautorizado/NAscope. Actualizar propuestas/deltas/tasks acontratos vigentes;C1 12/12finito aprobado. Consolidar requisitosvigentes en specs yarchivarconCLIvalidado, conservarhistoria/rawhashes ymapa deubicaciones. Paths deQA vivas requieren sóloadaptación deubicación, sin nueva ejecución; fuenteoriginal conservada ycomparaciónAST normalizadaparasustentarsucesor.
+
+Before obligatoriodesdeDconasignaciónactual. After conalcancecerrado se captura antesdearchivar el últimochange administrativo(segúnROLE-WORKFLOW);luegoarchivo yretirarbindingsactivosmovidos,preservandoindex/assignmenthistóricos enmapaarchivo runtime. No recuperarunclosedworkdesdefotos. Guardas validanidentidad noaceptación funcional. Si algún técnicofaltante realdemostrado, deteneresepuntoyreporteantesde nuevosrecursos.
+
+También informe de agentes:contratos5roles≠5agentesautónomos;guardasCLIoptativas requiereninvocaciónmanual,nointerceptantodas herramientas/noautoactualizanspecs. Verificardictámenes/logs/testsarchivados yaejecutados,sinrerun.

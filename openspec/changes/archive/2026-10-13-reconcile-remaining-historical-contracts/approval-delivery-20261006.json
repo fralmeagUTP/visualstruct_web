@@ -1,0 +1,9 @@
+{
+  "approved": true,
+  "owner": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "allowed_paths": [
+    "openspec/changes/reconcile-remaining-historical-contracts"
+  ],
+  "provenance": "openspec/changes/reconcile-remaining-historical-contracts/instruction-delivery-20261006.md",
+  "meaning": "Apoyo de entrega documental propia, sin actuación técnica/cierre"
+}

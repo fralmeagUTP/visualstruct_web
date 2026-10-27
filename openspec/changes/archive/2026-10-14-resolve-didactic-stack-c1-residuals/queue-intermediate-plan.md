@@ -1,0 +1,3 @@
+# Cola intermedia:4casos nuevosintegrados
+
+Parentautoriza familiaCola distintaPila,oráculosC reales/API/animación,alloc/enlaces/free/printf. Reusarinstrumentos/logsnativos,ningúnC rerun/campañaconsumida,Docker,AISEF/roles oCedit.4casosrepresentativos:encolar9 vacío;desencolar[-1];desencolarvacío conprintf;limpiar[7,-2,7]. Comparación eventoseintermediateRootHeap/API actual conCconservado;browser leerproyecciónrealdecursor(framebefore/after),nuevaUIprobeprivada ylímites120s2GiB porbloque. No13familias/nuevaaceptaciónC1. Corregirsólodefectos reproducibles dentrocontrato si aparecen;sinoptimizar. Decisionespedagogía ysliders pendientes intactas.

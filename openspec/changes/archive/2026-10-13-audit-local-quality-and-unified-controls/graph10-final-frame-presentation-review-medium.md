@@ -1,0 +1,3 @@
+# Revision final de presentacion Graph10
+
+Misma autorizacion MEDIUM y operacion audit.canonical-correspondence abierta. Verificacion finita previa no cierra todos los campos del frame. Evidencia nueva: constructor call_stack usa status active para todos los frames y graph.js metadata usa primer caller para construction_operation. Alcance: estado suspendido/activo/retorno de los frames nuevos, funcion activa de metadata y phase/source inicial; sin ejecutar otra vez native24 ni suites Graph6/callers cerradas. Regresion focal nueva y DOM de insert_edge solamente. Fuentes/evidencia previas conservadas.

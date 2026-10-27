@@ -1,0 +1,9 @@
+# Pila/Cola/Prioridad: subgrupo finito sin helpers pendientes
+
+Cinco cierres independientescp_inicializar/cp_vacia/cp_contar/cp_copiar_items/cp_formatear agregados sólo por decisiones LOWdeestechange. Derivación de listas de20exportsCdistintos:20con cobertura finita/comunicada y0sin cierre independiente (antes15/5). Pila5,Cola6,Prioridad9, sin duplicados; headersSHA actuales iguales. Statichelperscp_crear_nodo/cp_append_text no suman exports; esteúltimo dependencia deformatear coneventos observados, no sexta operación pública. pending-method-inventory.json propia contiene lista derivada ylímites heredados. Mapa5→0 sóloeste subgrupo; NO cierre total deTAD/app/auditoría ni porcentaje de tiempo.
+
+PublichelpersC NOse vuelven controles/APIqueries. APIUIaccepted/selector/player/standalonemain/history quedanexcluidos; las funcionesconst observan cola,nodos,pero copiar/formatear escriben bufferscaller e inicializar escribe struct. Priorclosures Apilar/Desapilar conservan calificación histórica; hiddenFrentePrioridad yquerycores Cima/ColaFrenteFinal/Mostrar conservan sus límites por decisión. No repetidos.
+
+326uniónIDs únicos entre dos corridas326, baseline14886/62preservado ysubconjuntoactual; no652IDs/no296fixtures por doblar técnicas. Native148fixtures2147events575conditions0div reused,manifest461/product380/baseline53verified,LOWproducto0/rerun0. Per-method13/25/25/111/147IDs+5sharedonce; método/read-only/outputs/void/int/bool/scopesguardas de evidencia.
+
+Próximo acordado: GrafosMEDIUMyaaprobado (Bellman-Ford/Prim/APIciclos), con nuevaasignación fresca tras esteLOW; noCedit aquí. Plan ypendientesglobalesactuales enaudit-next-sequence-after-priority-helpers-low.md. No iniciar trabajo desde mapas históricos; no reabrir Sorting11/Hash11/RNfullvalidator/BFSDFS ni repetir suites completas.

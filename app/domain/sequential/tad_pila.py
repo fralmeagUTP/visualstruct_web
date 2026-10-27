@@ -26,14 +26,19 @@ def pila_desapilar(p: list[ptrPila]) -> int:
     return valor
 
 
+def pila_cima(p: ptrPila) -> int:
+    """Return the borrowed top value, or the C sentinel -1 for NULL."""
+    return -1 if p is None else p.nro
+
+
 def pila_mostrar(p: ptrPila) -> None:
     actual = p
-    valores: list[str] = []
+    if actual is None:
+        print("Pila vacia.")
+        return
     while actual is not None:
-        valores.append(str(actual.nro))
+        print(f"\t{actual.nro}")
         actual = actual.sgte
-    print(" -> ".join(valores) if valores else "(vacia)")
-
 
 def pila_destruir(p: list[ptrPila]) -> None:
     p[0] = None

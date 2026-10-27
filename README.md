@@ -1,11 +1,23 @@
+> **Copia de convergencia al libro — 27 de octubre de 2026.** Esta variante local
+> adopta `tad_grafo.c/h` canónicos y conserva el checkpoint anterior por separado.
+> Estado y pruebas actuales: [QA de convergencia](qa_convergence/README.md) y
+> [cambio OpenSpec](openspec/changes/cloud-graph-book-convergence-20261027/tasks.md).
+> Los recuentos históricos y las pruebas antiguas de grafos que aparecen debajo
+> no certifican esta variante. La UI tiene aceptación finita; antes de aplicar el
+> paquete comprueba su verification.json y hashes. No hay ejecutor IA autónomo activo.
+
 # Visualizador Web de Estructuras de Datos
 
 Aplicacion web didactica en Flask para practicar TAD con visualizacion interactiva y modo interprete de codigo C basado en los TAD nuevos de `docs/tads_C`.
 
+> **Verificación de esta copia (2026-10-27): recorrido finito de las cinco familias verificado.** Las cifras históricas de 530 pruebas y 89% de cobertura que aparecen abajo **no se reprodujeron en este paquete**: esa suite no venía en el ZIP recibido. La nueva validación es finita y distingue pruebas backend/C, navegador y funciones no expuestas. Consulte [notas de entrega y límites](openspec/changes/cloud-pedagogical-repair-20261027/delivery-notes.md) y [criterios/tareas vigentes](openspec/changes/cloud-pedagogical-repair-20261027/tasks.md).
+>
+> **Límites pendientes:** la igualdad completa entre el capítulo de grafos del libro y el API web no está resuelta; el parche mínimo de reserva no es una migración de contratos. El coordinador OpenSpec se entrega por separado y la ejecución autónoma con IA real no está activada/verificada. No se afirma cobertura universal de todas las entradas o plataformas; el original no se modifica.
+
 Version actual: **v0.2.5**  
 Ultima actualizacion documental: **2026-08-18**.
 
-## Estado actual del proyecto
+## Estado documentado históricamente (2026-08-18)
 
 - Suite completa con Chromium: `530 passed`.
 - Cobertura global medida: `89%` sobre `app/`; gate minimo: `83%`.

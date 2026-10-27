@@ -43,17 +43,22 @@ def sublista_buscar_padre(lista: Nodo | None, valor_padre: int) -> Nodo | None:
     return None
 
 
-def sublista_eliminar_padre_primero(lista: list[Nodo | None], valor_padre: int) -> bool:
+def sublista_eliminar_padre_primero(
+    lista: list[Nodo | None], valor_padre: int, eventos: list[dict] | None = None
+) -> bool:
     if lista[0] is None:
         return False
     if lista[0].nro == valor_padre:
-        lista[0] = lista[0].sgte
+        actual = lista[0]
+        lista[0] = actual.sgte
+        _destruir_nodo_padre(actual, eventos)
         return True
     previo = lista[0]
     actual = previo.sgte
     while actual is not None:
         if actual.nro == valor_padre:
             previo.sgte = actual.sgte
+            _destruir_nodo_padre(actual, eventos)
             return True
         previo = actual
         actual = actual.sgte
@@ -92,17 +97,26 @@ def sublista_buscar_hijo(lista_hijos: Sublista | None, valor_hijo: int) -> Subli
     return None
 
 
-def sublista_eliminar_hijo_primero(padre: Nodo | None, valor_hijo: int) -> bool:
+def sublista_eliminar_hijo_primero(
+    padre: Nodo | None, valor_hijo: int, eventos: list[dict] | None = None
+) -> bool:
     if padre is None or padre.sub is None:
         return False
     if padre.sub.nro == valor_hijo:
-        padre.sub = padre.sub.sgte
+        actual = padre.sub
+        padre.sub = actual.sgte
+        if eventos is not None:
+            eventos.append({"stage": "free_child", "parent_id": id(padre), "node_id": id(actual), "value": actual.nro})
+        actual.sgte = None
         return True
     previo = padre.sub
     actual = previo.sgte
     while actual is not None:
         if actual.nro == valor_hijo:
             previo.sgte = actual.sgte
+            if eventos is not None:
+                eventos.append({"stage": "free_child", "parent_id": id(padre), "node_id": id(actual), "value": actual.nro})
+            actual.sgte = None
             return True
         previo = actual
         actual = actual.sgte
@@ -146,9 +160,9 @@ def sublista_formatear(lista: Nodo | None, destino: list[str] | None, capacidad:
         while hijo is not None:
             hijos.append(str(hijo.nro))
             hijo = hijo.sgte
-        partes.append(f"{actual.nro}: [{', '.join(hijos)}]")
+        partes.append(f"P({actual.nro}): " + (" -> ".join(f"[{hijo}]" for hijo in hijos) if hijos else "(sin hijos)"))
         actual = actual.sgte
-    texto = " | ".join(partes) if partes else "(vacia)"
+    texto = "\n".join(partes) if partes else "Lista padre vacia"
     texto = texto[: max(0, capacidad - 1)]
     if destino:
         destino[0] = texto
@@ -156,6 +170,37 @@ def sublista_formatear(lista: Nodo | None, destino: list[str] | None, capacidad:
         destino.append(texto)
 
 
-def sublista_destruir(lista: list[Nodo | None]) -> None:
-    lista[0] = None
+def _destruir_nodo_padre(actual: Nodo, eventos: list[dict] | None) -> None:
+    hijo = actual.sub
+    while hijo is not None:
+        hijo_siguiente = hijo.sgte
+        actual.sub = hijo_siguiente
+        if eventos is not None:
+            eventos.append({"stage": "free_child", "parent_id": id(actual), "node_id": id(hijo), "value": hijo.nro})
+        hijo.sgte = None
+        hijo = hijo_siguiente
+    if eventos is not None:
+        eventos.append({"stage": "free_parent", "node_id": id(actual), "value": actual.nro})
+    actual.sub = None
+    actual.sgte = None
 
+
+def sublista_destruir(lista: list[Nodo | None], eventos: list[dict] | None = None) -> None:
+    """Libera lógicamente hijos antes que su padre, igual que el C mostrado."""
+    actual = lista[0]
+    while actual is not None:
+        siguiente = actual.sgte
+        hijo = actual.sub
+        while hijo is not None:
+            hijo_siguiente = hijo.sgte
+            actual.sub = hijo_siguiente
+            if eventos is not None:
+                eventos.append({"stage": "free_child", "parent_id": id(actual), "node_id": id(hijo), "value": hijo.nro})
+            hijo.sgte = None
+            hijo = hijo_siguiente
+        actual.sub = None
+        if eventos is not None:
+            eventos.append({"stage": "free_parent", "node_id": id(actual), "value": actual.nro})
+        lista[0] = siguiente
+        actual.sgte = None
+        actual = siguiente

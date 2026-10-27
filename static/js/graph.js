@@ -1,4 +1,205 @@
+// Canonical-book presentation: return value, status and ownership are distinct.
+function gGraphPhaseLabel(frame) {
+  if(!frame?.book_instruction_model)return window.ContextualHelp?.phaseLabel(frame) || frame?.phase?.label || '—';
+  return ({initial:'Estado inicial',caller_prepare:'Preparar argumentos',caller_receipt:'Recibir retorno',caller_prepare_release:'Preparar liberación',application_result:'Publicar resultado',api_publication:'Publicar resultado de la aplicación',api_rejection:'Rechazar solicitud antes de ejecutar C',enter:'Entrar en la función',parameter:'Recibir parámetro',scope_enter:'Entrar en el bloque',scope_exit:'Salir del bloque',declare:'Declarar variable',write:'Escribir un valor',condition:'Comprobar condición',operand:'Evaluar operando',allocate:'Reservar memoria',free:'Liberar memoria',call:'Llamar función',return:'Retornar',function_exit:'Volver al llamador',stdout:'Escribir en la consola',break:'Salir del bucle',continue:'Continuar el bucle'})[frame.instruction_event?.phase || frame.concept] || 'Instrucción C';
+}
+function gGraphTeachingFrame(frame) {
+  if(!frame?.book_instruction_model)return frame;
+  const projected={...frame,phase:{...frame.phase,label:gGraphPhaseLabel(frame)},variables:(frame.variables||[]).map(v=>({...v,value:v.value?.value_status==='indeterminate_after_free'?gTeachingValue(v.value):v.value,previous:v.previous?.value_status==='indeterminate_after_free'?gTeachingValue(v.previous):v.previous}))};
+  const event=frame.instruction_event || {},value=event.value;
+  if(value && typeof value==='object' && ['write','return'].includes(event.phase)){
+    const text=event.phase==='write'?`Escribe ${event.name || 'el agregado'}: ${gTeachingValue(value)}.`:`Retorna el agregado: ${gTeachingValue(value)}. Las cabezas del caller se publican al recibir el retorno.`;
+    projected.narration={...frame.narration,basic:text,intermediate:text};
+  }
+  return projected;
+}
+function gBookNoTraceMarkup(data) {
+  return `<ul><li><strong>Resultado normal sin traza:</strong> la llamada C ya terminó; no hay instrucciones guardadas para avanzar o retroceder.</li><li><strong>Resultado registrado:</strong> ${gEscape(data.message || 'Consulta el resultado C y el estado final.')}</li><li><strong>Para estudiar los pasos:</strong> usa un grafo menor o una operación dentro del presupuesto de traza. El resultado actual no se convierte en pasos inventados.</li></ul>`;
+}
+function gBookStatusMarkup(record) {
+  if (!record || record.source_contract !== 'graph-book/v1') return '';
+  const states=['Correcto','No se pudo reservar memoria','No existe el elemento o la ruta','Peso negativo no permitido','Ciclo negativo alcanzable','Grafo desconectado','Argumento o simetría no válidos','Resultado fuera de rango'];
+  const status=record.c_status;
+  const text=Number.isInteger(status) ? `${record.c_status_name} (${status}): ${states[status] || 'estado registrado'}` : 'Esta función no entrega GrafoEstado.';
+  const returned=record.c_return;
+  const value=typeof returned==='object' ? gTeachingValue(returned) : String(returned ?? 'void');
+  const ownership=record.ownership==='borrowed'?' Lista prestada del grafo: no se libera como resultado propio.':record.ownership==='owned'?(returned==='NULL'?' No hay nodos devueltos que liberar.':' Lista propia: el caller conserva el contenido y libera los nodos después de recibirlos.'):'';
+  return `<p class="graph-book-status"><strong>Contrato C:</strong> ${gEscape(text)} <strong>Retorno C registrado:</strong> ${gEscape(value)}.${returned==='NULL' && status===0?' NULL con GRAFO_OK es un resultado vacío válido, no un error.':''}${ownership}</p>`;
+}
+function gBookFunctionLine(source, symbol) {
+  if (!/^[A-Za-z_]\w*$/.test(symbol || '')) return -1;
+  const pattern=new RegExp('^\\s*(?:static\\s+)?(?:void|int|long\\s+long|size_t|Grafo|ListaVertice|ListaArco)\\s*\\**\\s*'+symbol+'\\s*\\(');
+  return String(source).replaceAll('\r\n','\n').split('\n').findIndex(line=>pattern.test(line));
+}
+function gFocusBookFunction(model, operationName) {
+  const code=gById('op-pseudocode'), symbol=model.didactic?.operation_functions?.[operationName];
+  if(!code || !symbol)return;
+  const index=gBookFunctionLine(code.dataset.rawCode || code.textContent,symbol);
+  enhanceGraphCodeNavigation(index);
+  if(index>=0)window.CCodeNavigation?.revealLine(code,code.querySelector(`.code-line[data-line="${index}"]`));
+}
+function gDownloadGraphJson(value, filename) {
+  const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'}),link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);link.download=filename;link.click();URL.revokeObjectURL(link.href);
+}
+function gUpdateBookMainAvailability(model) {
+  const link=gById('graph-download-main');if(!link)return;
+  if(!link.dataset.downloadHref)link.dataset.downloadHref=link.getAttribute?.('href') || '';
+  if(model.main_unavailable_reason){link.removeAttribute('href');link.setAttribute('aria-disabled','true');link.textContent='main.c no disponible: '+model.main_unavailable_reason;}
+  else {if(link.dataset.downloadHref)link.setAttribute('href',link.dataset.downloadHref);link.removeAttribute('aria-disabled');link.textContent='Descargar main.c';}
+}
+function initSuspendedBookGraph(model) {
+  const reason=model.main_unavailable_reason || model.visual_state?.suspension_reason || 'Historial de otro contrato C: estado suspendido, no vacío.';
+  const controls=gById('graph-controls');
+  document.querySelectorAll('.graph-workspace button, .graph-workspace input, .graph-workspace select').forEach(el=>{el.disabled=true;});
+  renderGraphState(model.visual_state,gById('graph-visual-state'));
+  const memory=gById('graph-live-memory');if(memory)memory.textContent='El estado anterior no se reconstruye con otro código C. Exporta el historial antes de restablecer.';
+  const history=gById('action-history');if(history)history.innerHTML=`<li>${gEscape(reason)}</li>`;
+  const main=gById('graph-download-main');if(main){main.removeAttribute('href');main.setAttribute('aria-disabled','true');main.textContent='main.c no disponible para este historial';}
+  showGraphMessage(reason,false);
+  const exportButton=gById('graph-export-summary');
+  if(exportButton){exportButton.disabled=false;exportButton.textContent='Exportar historial original';exportButton.addEventListener('click',async()=>{
+    exportButton.disabled=true;
+    try{const response=await fetch(controls.dataset.historyUrl);if(!response.ok)throw new Error('No se pudo exportar el historial.');gDownloadGraphJson(await response.json(),'graph-history-original.json');}
+    catch(error){showGraphMessage(error.message,false);}finally{exportButton.disabled=false;}
+  });}
+  const reset=gById('graph-reset-button');
+  if(reset){reset.disabled=false;reset.addEventListener('click',async()=>{
+    if(!window.confirm('¿Borrar el historial de esta sesión y empezar un grafo nuevo con el C del libro? Exporta primero si necesitas conservarlo.'))return;
+    reset.disabled=true;
+    try{const response=await fetch(controls.dataset.resetUrl,{method:'POST'}),data=await response.json();if(!response.ok || !data.success)throw new Error(data.message || 'No se pudo restablecer.');window.location.reload();}
+    catch(error){showGraphMessage(error.message,false);reset.disabled=false;}
+  });}
+  updateGraphDidacticPanel(model,'create_graph');
+}
+
+// Numeric Graph only: exact versioned subtree references, reconstructed once.
+// Shared frozen objects make replay read-only and avoid duplicated snapshots.
+function gExpandGraphInstructionTrace(trace) {
+  if (!trace || !trace.graph_snapshot_codec) return trace;
+  if (trace.graph_snapshot_codec !== "graph-snapshot-pool/v1") throw new Error("Codec Graph no compatible");
+  const objects = [];
+  function decode(value) {
+    if (value && typeof value === "object") {
+      const keys = Object.keys(value), id = value.$graph_ref;
+      if (Array.isArray(value) || keys.length !== 1 || keys[0] !== "$graph_ref" || !Number.isInteger(id) || id < 0 || id >= objects.length) throw new Error("Referencia Graph inválida");
+      return objects[id];
+    }
+    return value;
+  }
+  for (const record of trace.graph_snapshot_pool) {
+    if (!Array.isArray(record) || record.length !== 2 || ![0, 1].includes(record[0]) || !Array.isArray(record[1])) throw new Error("Registro Graph inválido");
+    let value;
+    if (record[0] === 0) {
+      const keys = record[1].map(item => item[0]);
+      if (keys.some(k => typeof k !== "string") || new Set(keys).size !== keys.length) throw new Error("Claves Graph inválidas");
+      value = Object.fromEntries(record[1].map(([key, child]) => [key, decode(child)]));
+    } else value = record[1].map(decode);
+    objects.push(Object.freeze(value));
+  }
+  const {graph_snapshot_codec, graph_snapshot_pool, graph_snapshot_stats, ...expanded} = trace;
+  expanded.steps = trace.steps.map(step => Object.freeze(Object.fromEntries(Object.entries(step).map(([key, value]) => [key, value && typeof value === "object" && !Array.isArray(value) && Object.prototype.hasOwnProperty.call(value, "$graph_ref") ? decode(value) : value]))));
+  if (trace.numeric_C_memory) expanded.numeric_C_memory = decode(trace.numeric_C_memory);
+  return expanded;
+}
+
 "use strict";
+
+// Presentation only: identities and C field names remain exact; raw frames stay available.
+function gTeachingValue(value) {
+  if (value && typeof value === "object" && value.value_status === "indeterminate_after_free" && value.usable === false) return `valor indeterminado tras liberar; no utilizar (identidad histórica ${value.historical_identity})`;
+  if (value === undefined) return "no registrado";
+  if (value === null) return "sin valor";
+  if (Array.isArray(value)) return value.length ? value.map(gTeachingValue).join(", ") : "vacío";
+  if (typeof value === "object") return Object.entries(value).map(([key,item]) => `${key}: ${gTeachingValue(item)}`).join(" · ");
+  return String(value);
+}
+function gGraphNodeFields(node) {
+  if (node.fields !== undefined) return node.fields;
+  if (node.items !== undefined) return node.items;
+  const fields={value:node.kind==='queue'?'nro':'dato',next:node.kind==='queue'?'sgte':'sig',mark:'marcado',origin:'origen',target:'destino',weight:'costo'};
+  return Object.fromEntries(Object.entries(node).filter(([key])=>!['id','kind','borrowed'].includes(key)).map(([key,value])=>[fields[key]||key,value]));
+}
+function gGraphNodeKind(kind) {
+  return ({vertex:'vértice (NodoV)',arc:'arco (NodoA)',queue:'cola (NodoCola)',result:'resultado (NodoV)',successor:'sucesor (NodoV)'})[kind] || kind || 'reserva';
+}
+function gGraphMemoryMarkup(frame) {
+  const st=frame.memory_display || frame.memory_state, nodes=st?.heap_nodes || frame.memory?.objects_after || [];
+  const changed=new Set([...(frame.memory?.allocated||[]),...(frame.variables||[]).filter(v=>v.changed).map(v=>v.value)].map(v=>String(v?.id ?? v)));
+  const source=[frame.source?.line_text,frame.condition?.source,frame.instruction_event?.statement].filter(Boolean).map(String).join("\n");
+  const identifiers=new Set(source.match(/[A-Za-z_]\w*/g)||[]);
+  const allVariables=frame.variables||[];
+  const stack=frame.call_stack||[];
+  const scopeRank=v=>{const index=stack.findIndex(f=>v.frame_id ? f.frame_id===v.frame_id : f.function===v.scope);return index;};
+  const latest=new Map();
+  for(const variable of allVariables)if(!latest.has(variable.name)||scopeRank(variable)>=scopeRank(latest.get(variable.name)))latest.set(variable.name,variable);
+  const variables=[...latest.values()];
+  const repeated=new Set(allVariables.filter((v,i)=>allVariables.findIndex(other=>other.name===v.name)!==i).map(v=>v.name));
+  const referenced=variables.filter(v=>identifiers.has(v.name));
+  const activeIds=new Set(referenced.flatMap(v=>typeof v.value==='object' && v.value ? Object.values(v.value) : [v.value]).map(String));
+  const fieldValues=new Map(),activeFieldIds=new Set();
+  for(const variable of referenced){
+    if(!/^[A-Za-z_]\w*$/.test(variable.name)||!variable.value||typeof variable.value!=='object'||Array.isArray(variable.value))continue;
+    const pattern=new RegExp('\\b'+variable.name+'\\s*(?:\\.|->)\\s*([A-Za-z_]\\w*)','g');
+    const fields=[...new Set([...source.matchAll(pattern)].map(match=>match[1]))].filter(field=>Object.prototype.hasOwnProperty.call(variable.value,field));
+    if(fields.length){fieldValues.set(variable,Object.fromEntries(fields.map(field=>[field,variable.value[field]])));fields.forEach(field=>{if(typeof variable.value[field]==='string')activeFieldIds.add(variable.value[field]);});}
+  }
+  const rank=n=>activeFieldIds.has(String(n.id))?3:activeIds.has(String(n.id))?2:changed.has(String(n.id))?1:0;
+  const ordered=[...nodes].sort((a,b)=>rank(b)-rank(a));
+  const vars=[...variables].filter(v=>identifiers.has(v.name)||v.changed||typeof v.value!=='object').sort((a,b)=>Number(identifiers.has(b.name))-Number(identifiers.has(a.name))||Number(Boolean(b.changed))-Number(Boolean(a.changed))).slice(0,6);
+  return `<p class="graph-memory-context">${st?.graph ? `Cabezas C: ${gEscape(gTeachingValue(st.graph))}` : "Identidades simbólicas, no direcciones reales."}</p><div class="graph-live-variables">${vars.map(v=>`<span><code>${gEscape(v.name)}</code>${repeated.has(v.name)?` <small>(${gEscape(v.scope||v.frame_id||"ámbito actual")})</small>`:""} = ${gEscape(gTeachingValue(fieldValues.get(v) || v.value))}</span>`).join(" · ")}</div><div class="graph-live-cards">${ordered.map(n=>`<div class="graph-memory-card" data-graph-live-node="${gEscape(n.id)}"><strong>${gEscape(n.id)}</strong> <small>${gEscape(gGraphNodeKind(n.kind))}${n.borrowed ? " · prestado" : ""}</small><div>${gEscape(gTeachingValue(gGraphNodeFields(n)) )}</div></div>`).join("") || "Sin reservas registradas en este paso."}</div>`;
+}
+function initGraphClassroom() {
+  const workspace=document.querySelector('.graph-primary-workspace'), row=document.querySelector('.graph-control-row');
+  if(!workspace || !row)return;
+  const toolbar=document.createElement('section');toolbar.className='graph-classroom-controls';toolbar.setAttribute('aria-label','Controlar ejecución');
+  toolbar.appendChild(row);
+  ['graph-step-metadata','graph-sim-status'].forEach(id=>{const el=gById(id);if(el)toolbar.appendChild(el);});
+  workspace.before(toolbar);
+}
+
+function renderGraphPedagogy(frame,level){
+  if(!frame)return;
+  const summary=gById("graph-pedagogy-summary"),representation=gById("graph-representation-view"),aux=gById("graph-auxiliary-view"),traversal=gById("graph-traversal-view"),table=gById("graph-table-view"),relaxation=gById("graph-relaxation-view"),condition=gById("graph-condition-view"),invariant=gById("graph-invariant-view");
+  if(summary)summary.innerHTML=`<strong>${gEscape(gGraphPhaseLabel(frame))}</strong>: ${gEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;
+  window.ContextualHelp?.frame("graph", gGraphTeachingFrame(frame), level);
+  if(representation){const adjacency=frame.representation?.adjacency||{},degrees=frame.representation?.degrees||[];representation.innerHTML=`<p><strong>${frame.representation?.directed?"Arcos dirigidos (→)":"Aristas no dirigidas (—)"}</strong></p><ul>${Object.entries(adjacency).map(([vertex,items])=>`<li><code>${gEscape(vertex)}</code>: ${items.length?items.map((item)=>`${gEscape(item.vertex)}(${gEscape(item.weight)})`).join(", "):"∅"}</li>`).join("")}</ul><p>${degrees.map((item)=>frame.representation?.directed?`${gEscape(item.vertex)}: entrada ${item.in_degree}, salida ${item.out_degree}`:`${gEscape(item.vertex)}: grado ${item.degree}`).join(" · ")}</p><p>Reservados: ${frame.memory?.allocated?.length||0}; liberados: ${frame.memory?.freed?.length||0}; ${frame.book_instruction_model ? `referencias a reservas retiradas: ${frame.memory?.retired_references?.length||0}. No se certifica la ausencia de otros punteros inválidos` : `punteros colgantes: ${frame.memory?.dangling_references?.length||0}`}</p>`;}
+  if(aux)aux.innerHTML=`<strong>${gEscape(frame.auxiliary?.kind||"—")}</strong><br>Contenido: <code>${gEscape(JSON.stringify(frame.auxiliary?.items||[]))}</code><br>Seleccionado: ${gEscape(frame.auxiliary?.selected??"—")} · Iteración: ${gEscape(frame.auxiliary?.iteration??"—")}`;
+  if(traversal)traversal.innerHTML=`${frame.book_instruction_model?"Arcos de la lista C actual":"Árbol/bosque"}: <code>${gEscape(JSON.stringify(frame.traversal?.tree_edges||[]))}</code><br>Orden descubierto: <code>${gEscape(JSON.stringify(frame.traversal?.discovery_order||[]))}</code><br>Activo: ${gEscape(frame.traversal?.active??"—")}`;
+  if(table)table.innerHTML=`<table><thead><tr><th>Vértice</th><th>Estado</th><th>Distancia</th><th>Predecesor</th><th>Iteración</th></tr></thead><tbody>${(frame.vertices||[]).map((item)=>`<tr><td>${gEscape(item.id)}</td><td>${gEscape(item.status)}</td><td>${gEscape(item.distance??(frame.book_instruction_model?"no alcanzado / no calculado":"∞"))}</td><td>${gEscape(item.predecessor??"—")}</td><td>${gEscape(frame.auxiliary?.iteration??"—")}</td></tr>`).join("")}</tbody></table>`;
+  if(relaxation)relaxation.innerHTML=frame.relaxation?`<code>${gEscape(frame.relaxation.expression)}</code><br>${gEscape(frame.relaxation.old_distance??"∞")} &gt; ${gEscape(frame.relaxation.candidate??"∞")} ⇒ <strong>${frame.relaxation.success?"relajación exitosa":"sin cambio"}</strong><br>Nuevo valor: ${gEscape(frame.relaxation.new_distance??"∞")}; predecesor: ${gEscape(frame.relaxation.predecessor??"—")}`:"No se evalúa una relajación en este paso.";
+  if(condition)condition.innerHTML=frame.condition?`<code>${gEscape(frame.condition.substituted)}</code> ⇒ <strong>${gEscape(frame.condition.result)}</strong><br>${gEscape(frame.condition.consequence)}`:`Arista activa: ${gEscape(frame.active_edge?`${frame.active_edge.from} → ${frame.active_edge.to} (peso ${frame.active_edge.weight})`:"—")}`;
+  if(frame.memory_state && frame.vertex_operation){
+    const st=frame.memory_display || frame.memory_state;
+    if(representation)representation.innerHTML+=`<div data-graph-instruction-memory><h4>Memoria C por instrucción</h4><p data-graph-heads>${frame.instruction_event?.origin === "caller" ? "Cabezas del caller C (retira incidentes tras el retorno):" : "Cabezas C (arcos conservados por esta función):"} ${gEscape(JSON.stringify(st.graph))}</p>${(st.heap_nodes||[]).map(n=>`<div data-graph-memory-node="${gEscape(n.id)}" data-graph-memory-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(n.kind)} · ${n.borrowed?"prestado":"propio"}: <code>${gEscape(JSON.stringify(n.fields||n.items))}</code></div>`).join("")}<p data-graph-retired>Retiradas (sólo registro histórico): ${gEscape(JSON.stringify(st.retired_objects||[]))}</p></div>`;
+    if(aux)aux.innerHTML+=`<div data-graph-variables>${(frame.variables||[]).map(v=>`<div data-graph-variable="${gEscape(v.name)}" data-graph-scope="${gEscape(v.scope)}">${gEscape(v.type)} ${gEscape(v.name)} (${gEscape(v.scope)}): ${gEscape(JSON.stringify(v.previous))} → ${gEscape(JSON.stringify(v.value))}</div>`).join("")}</div><div data-graph-frames>${(frame.call_stack||[]).map(f=>`<div data-graph-frame="${gEscape(f.frame_id)}">${gEscape(f.function)}: ${gEscape(f.scope_status)}</div>`).join("")}</div>`;
+    if(traversal)traversal.innerHTML+=`<p data-graph-return>${frame.instruction_event?.origin === "caller" ? "Retorno C registrado (identidades retiradas no utilizables):" : "Retorno al caller:"} ${gEscape(JSON.stringify(st.returned))}</p>`;
+  }else if(frame.memory_state && (frame.numeric_algorithm || frame.query_operation || frame.construction_operation)){
+    const st=frame.memory_display || frame.memory_state;
+    if(representation)representation.innerHTML+=`<div data-graph-instruction-memory><h4>Memoria C por instrucción</h4><p data-graph-heads>${frame.construction_operation ? "Cabezas del caller propietario:" : "Grafo prestado:"} ${gEscape(JSON.stringify(st.graph))}</p>${(st.heap_nodes||[]).map(n=>`<div data-graph-memory-node="${gEscape(n.id)}" data-graph-memory-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(n.kind)} · ${n.borrowed?"prestado":"propio"}: <code>${gEscape(JSON.stringify(n.fields||n.items))}</code></div>`).join("")}<p data-graph-retired>Retiradas (sólo registro histórico): ${gEscape(JSON.stringify(st.retired_objects||[]))}</p></div>`;
+    if(aux)aux.innerHTML+=`<div data-graph-variables>${(frame.variables||[]).map(v=>`<div data-graph-variable="${gEscape(v.name)}" data-graph-scope="${gEscape(v.scope)}">${gEscape(v.type)} ${gEscape(v.name)} (${gEscape(v.scope)}): ${gEscape(JSON.stringify(v.previous))} → ${gEscape(JSON.stringify(v.value))}</div>`).join("")}</div><div data-graph-frames>${(frame.call_stack||[]).map(f=>`<div data-graph-frame="${gEscape(f.frame_id)}">${gEscape(f.function)}: ${gEscape(f.scope_status)}</div>`).join("")}</div>`;
+    if(traversal)traversal.innerHTML+=`<p data-graph-return>Retorno al caller: ${gEscape(frame.query_operation ? JSON.stringify(st.returned) : frame.construction_operation ? JSON.stringify(st.returned) : st.returned)}</p>`;
+  }else if(frame.memory_state){
+    const st=frame.memory_display || frame.memory_state;
+    if(representation)representation.innerHTML+=`<div data-bfs-memory><h4>Reservas y enlaces C (identidades simbólicas)</h4>${st.heap_nodes.map(n=>`<div data-bfs-node="${gEscape(n.id)}" data-bfs-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(JSON.stringify(n))}</div>`).join("")}<p>Retiradas: ${gEscape(JSON.stringify(st.freed_nodes))}</p></div>`;
+    if(aux)aux.innerHTML+=`<p data-bfs-queue>${gEscape(JSON.stringify(st.queue))}</p><div data-bfs-variables>${frame.variables.map(v=>`<div data-bfs-variable="${gEscape(v.name)}" data-bfs-scope="${gEscape(v.scope)}">${gEscape(v.type)} ${gEscape(v.name)} (${gEscape(v.scope)}): ${gEscape(JSON.stringify(v.previous))} → ${gEscape(JSON.stringify(v.value))}</div>`).join("")}</div><div data-bfs-frames>${frame.call_stack.map(f=>`<div data-bfs-frame="${gEscape(f.frame_id)}">${gEscape(f.function)}: ${gEscape(f.scope_status)}</div>`).join("")}</div>`;
+    if(st.head_storage && representation)representation.innerHTML+=`<p data-dfs-head-storage>${gEscape(JSON.stringify(st.head_storage))}</p>`;
+    if(traversal)traversal.innerHTML+=`<p data-bfs-output>Recorrido publicado: ${gEscape(JSON.stringify(st.result_nodes.map(n=>n.value)))}</p><p>Retorno al caller: ${gEscape(st.published)}</p>`;
+  }
+  if(invariant)invariant.innerHTML=`<strong>${gEscape(frame.invariant?.symbol||"")} ${gEscape(frame.invariant?.name||"")}</strong><br>${gEscape(frame.invariant?.evidence||"")}`;
+  const live=gById('graph-live-memory');if(live)live.innerHTML=gGraphMemoryMarkup(frame);
+  // Preserve the complete original diagnostics, but do not make raw JSON the lesson.
+  for(const [panel,title,content] of [
+    [representation,'Representación y memoria técnica',gGraphMemoryMarkup(frame)],
+    [aux,'Auxiliares y ámbitos técnicos',`<p>${gEscape(({adjacency:'Lista de adyacencia',queue:frame.book_instruction_model?'Cola de índices (Trabajo.prev)':'Cola',stack:'Pila',recursive_stack:'Pila recursiva',linear_scan:'Búsqueda lineal',edge_passes:'Pasadas por arcos',union_find:'Conjuntos disjuntos',priority_queue:'Cola de prioridad',none:'Sin auxiliar'}[frame.auxiliary?.kind] || 'Auxiliar actual'))}: ${gEscape(gTeachingValue(frame.auxiliary?.items||[]))}</p>`]
+  ])if(panel)panel.innerHTML=content+`<details><summary>${title}</summary>${panel.innerHTML}</details>`;
+  if(table)table.innerHTML=table.innerHTML.replace(/>undiscovered</g,'>No descubierto<').replace(/>frontier</g,'>Frontera<').replace(/>active</g,'>Activo<').replace(/>closed</g,'>Cerrado<');
+
+}
+
+function enhanceGraphCodeNavigation(activeLine=null){const code=gById("op-pseudocode"),list=gById("graph-function-list"),hide=gById("graph-hide-comments");if(!code||!list)return;const raw=String(code.dataset.rawCode||code.textContent||"");const rows=raw.replaceAll("\r\n","\n").split("\n"),functions=[];rows.forEach((row,index)=>{const match=row.match(/^\s*(?:static\s+)?(?:void|bool|int|double|size_t|Grafo|Lista\w*)\s*\**\s*([A-Za-z_]\w*)\s*\(/);if(match&&!['if','for','while','switch'].includes(match[1]))functions.push({name:match[1],line:index});});window.CCodeNavigation?.markComments(code, rows);const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0];list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${gEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>';list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>window.CCodeNavigation?.revealLine(code,code.querySelector(`.code-line[data-line="${button.dataset.line}"]`))));code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));}
+
+function initGraphResponsiveWorkspace(){const workspace=document.querySelector(".graph-primary-workspace"),tabs=[...document.querySelectorAll("[data-graph-tab]")];if(!workspace||!tabs.length)return;let saved="visual";try{saved=sessionStorage.getItem("graph-active-tab")||"visual";}catch(_error){/* optional */}const activate=(name)=>{const value=name==="code"?"code":"visual";workspace.dataset.activeTab=value;tabs.forEach((tab)=>{const active=tab.dataset.graphTab===value;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));});try{sessionStorage.setItem("graph-active-tab",value);}catch(_error){/* optional */}};tabs.forEach((tab)=>tab.addEventListener("click",()=>activate(tab.dataset.graphTab)));activate(saved);}
 
 function gById(id) {
   return document.getElementById(id);
@@ -81,7 +282,7 @@ function gPushUniqueHistoryEntry(history, entry) {
     return false;
   }
   const last = history.length ? history[history.length - 1] : null;
-  if (gBuildHistoryEntrySignature(last) === gBuildHistoryEntrySignature(entry)) {
+  if (!["run_bfs", "run_dfs", "run_dijkstra", "run_bellman_ford", "run_prim", "run_kruskal"].includes(entry.operation) && gBuildHistoryEntrySignature(last) === gBuildHistoryEntrySignature(entry)) {
     return false;
   }
   history.push(entry);
@@ -93,6 +294,7 @@ function renderGraphPrintfConsole(consoleEl, lines, fallbackText) {
     return;
   }
   const safeLines = Array.isArray(lines) ? lines : [];
+  consoleEl.dataset.consoleCopy = safeLines.join("\n");
   const html = safeLines.length
     ? safeLines.map((line) => `<div class="console-line">${gEscape(line)}</div>`).join("")
     : `<div class="console-line muted">${gEscape(fallbackText || "(sin salida printf en esta ruta)")}</div>`;
@@ -236,18 +438,18 @@ function highlightGraphCLine(line, state) {
 
 function buildGraphHighlightedCodeHtml(raw, codeTitle) {
   const lines = String(raw || "").replaceAll("\r\n", "\n").split("\n");
-  if (String(codeTitle || "").toLowerCase().includes("codigo c")) {
+  if (/c[oó]digo c/i.test(String(codeTitle || ""))) {
     let state = { inBlockComment: false };
     return lines
       .map((line, index) => {
         const highlighted = highlightGraphCLine(line, state);
         state = highlighted.state;
-        return `<span class="code-line" data-line="${index}">${highlighted.html || "&nbsp;"}</span>`;
+        return `<span class="code-line" data-line="${index}">${highlighted.html || ""}</span>`;
       })
       .join("");
   }
   return lines
-    .map((line, index) => `<span class="code-line" data-line="${index}">${gEscape(line) || "&nbsp;"}</span>`)
+    .map((line, index) => `<span class="code-line" data-line="${index}">${gEscape(line) || ""}</span>`)
     .join("");
 }
 
@@ -285,7 +487,9 @@ function buildGraphInputs(operation, container, prefix) {
       input = document.createElement("input");
       input.type = field.type === "number" ? "number" : "text";
       if (field.type === "number") {
-        input.step = "any";
+        input.step = field.step === undefined ? "any" : String(field.step);
+        if (field.min !== undefined) input.min = String(field.min);
+        if (field.max !== undefined) input.max = String(field.max);
       }
     }
 
@@ -348,9 +552,7 @@ function getDefaultHighlights(state) {
       const key = String(value);
       highlights.traversalNodes.add(key);
       highlights.traversalOrder.set(key, index + 1);
-      if (index > 0) {
-        addBidirectionalEdge(highlights.traversalEdges, String(rawResult[index - 1]), key);
-      }
+
     });
   }
 
@@ -543,6 +745,30 @@ function getSimulationHighlights(simulation) {
   return highlights;
 }
 
+function gPlaceGraphWeightLabels(positions, edges, nodeRadius=26) {
+  const nodes=[...positions.values()],placed=[];
+  const overlaps=(a,b)=>a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
+  const center=nodes.reduce((sum,n)=>sum+n.x,0)/(nodes.length||1);
+  edges.forEach((edge,index)=>{
+    const from=positions.get(String(edge.source)),to=positions.get(String(edge.target));if(!from||!to)return;
+    const loop=String(edge.source)===String(edge.target),side=from.x>=center?1:-1;
+    const midpoint={x:loop?from.x+side*72:(from.x+to.x)/2,y:(from.y+to.y)/2};
+    const width=Math.max(18,String(edge.weight).length*8+8),height=18,y=midpoint.y-((index%2)*8+8);
+    const box=x=>({left:x-width/2,right:x+width/2,top:y-14,bottom:y+4});
+    const collides=b=>nodes.some(n=>overlaps(b,{left:n.x-nodeRadius-3,right:n.x+nodeRadius+3,top:n.y-nodeRadius-3,bottom:n.y+nodeRadius+3})) || placed.some(p=>overlaps(b,p.box));
+    let x=loop?from.x+side*110:midpoint.x,b=box(x),column=0;
+    const direction=midpoint.x===center?(index%2?-1:1):Math.sign(midpoint.x-center);
+    while(collides(b)){
+      const side=column%2===0?direction:-direction;
+      const distance=width/2+nodeRadius+15+Math.floor(column/2)*(width+12);
+      x=midpoint.x+side*distance;b=box(x);column++;
+      // Each next column moves outward; a finite set of boxes always has room.
+    }
+    placed.push({edge,x,y,box:b,midpoint,shifted:x!==midpoint.x});
+  });
+  return placed;
+}
+
 function renderGraphSvg(state, simulation, traceDebug) {
   const nodes = Array.isArray(state.nodes) ? state.nodes : [];
   const edges = Array.isArray(state.edges) ? state.edges : [];
@@ -557,16 +783,24 @@ function renderGraphSvg(state, simulation, traceDebug) {
   const height = Math.max(360, n * 84);
   const cx = width / 2;
   const cy = height / 2;
-  const radius = Math.max(90, Math.min(width, height) * 0.33);
+  // Compact circular placement: enough separation up to the educational 15-vertex limit.
+  const radius = n === 3 ? 50 : n === 4 ? 54 : Math.max(90, n * 10);
+  const padding = Math.max(38, ...nodes.map(node=>String(node.label).length*4+8));
 
   const positions = new Map();
   nodes.forEach((node, index) => {
-    const angle = (2 * Math.PI * index) / n - Math.PI / 2;
+    const angle = (2 * Math.PI * index) / n - (n === 2 ? 0 : Math.PI / 2);
     const x = cx + radius * Math.cos(angle);
     const y = cy + radius * Math.sin(angle);
     positions.set(String(node.id), { x, y, label: node.label });
   });
 
+  const weightLabels=gPlaceGraphWeightLabels(positions,edges,nodeRadius);
+  const minX=Math.min(...[...positions.values()].map(p=>p.x))-padding;
+  const maxX=Math.max(...[...positions.values()].map(p=>p.x))+padding;
+  const loops=edges.filter(e=>String(e.source)===String(e.target)).map(e=>positions.get(String(e.source))).filter(Boolean);
+  const left=Math.min(minX,...weightLabels.map(p=>p.box.left-4),...loops.map(p=>p.x+(p.x>=cx?0:-98)));
+  const right=Math.max(maxX,...weightLabels.map(p=>p.box.right+4),...loops.map(p=>p.x+(p.x>=cx?98:0)));
   const opName = state.last_operation && state.last_operation.name ? state.last_operation.name : "";
   const useSimulation = simulation && simulation.sourceOperation === opName;
   const highlights = traceDebug
@@ -576,7 +810,7 @@ function renderGraphSvg(state, simulation, traceDebug) {
       : getDefaultHighlights(state);
 
   let svg = "";
-  svg += `<svg class=\"viz-graph-svg\" width=\"${width}\" height=\"${height}\" viewBox=\"0 0 ${width} ${height}\" xmlns=\"http://www.w3.org/2000/svg\">`;
+  svg += `<svg class=\"viz-graph-svg\" width=\"${width}\" height=\"${height}\" viewBox=\"${left} ${Math.min(...[...positions.values()].map(p=>p.y))-padding} ${right-left} ${Math.max(...[...positions.values()].map(p=>p.y))-Math.min(...[...positions.values()].map(p=>p.y))+2*padding}\" xmlns=\"http://www.w3.org/2000/svg\">`;
   svg += "<defs>";
   svg += "<marker id=\"arrow-head\" markerWidth=\"10\" markerHeight=\"10\" refX=\"8\" refY=\"3\" orient=\"auto\" markerUnits=\"strokeWidth\">";
   svg += "<path d=\"M0,0 L0,6 L9,3 z\" class=\"viz-graph-arrowhead\" />";
@@ -610,12 +844,17 @@ function renderGraphSvg(state, simulation, traceDebug) {
       : isTraversalEdge
         ? "viz-graph-edge traversal"
         : "viz-graph-edge";
+    if(String(edge.source)===String(edge.target)){
+      const side=source.x>=cx?1:-1;
+      svg+=`<path data-graph-self-loop="${gEscape(edge.source)}" d="M ${source.x+side*nodeRadius*.8} ${source.y-nodeRadius*.6} C ${source.x+side*90} ${source.y-25}, ${source.x+side*90} ${source.y+25}, ${source.x+side*nodeRadius*.8} ${source.y+nodeRadius*.6}" fill="none" class="${edgeClass}" ${markerAttr} />`;
+    }else{
     svg += `<line x1=\"${startX}\" y1=\"${startY}\" x2=\"${endX}\" y2=\"${endY}\" class=\"${edgeClass}\" ${markerAttr} />`;
+    }
 
-    const labelX = (startX + endX) / 2;
-    const labelY = (startY + endY) / 2 - ((index % 2) * 8 + 8);
-    svg += `<text x=\"${labelX}\" y=\"${labelY}\" text-anchor=\"middle\" class=\"viz-graph-weight\">${gEscape(edge.weight)}</text>`;
+
   });
+
+  for(const label of weightLabels)if(label.shifted)svg+=`<line x1="${label.midpoint.x}" y1="${label.midpoint.y}" x2="${label.x}" y2="${label.y-5}" stroke="#937057" stroke-width="1" stroke-dasharray="3 3" aria-hidden="true" />`;
 
   nodes.forEach((node) => {
     const pos = positions.get(String(node.id));
@@ -636,24 +875,29 @@ function renderGraphSvg(state, simulation, traceDebug) {
     }
   });
 
+  for(const label of weightLabels){
+    const title=`Costo del arco ${label.edge.source} → ${label.edge.target}: ${label.edge.weight}`;
+    svg+=`<g data-weight-source="${gEscape(label.edge.source)}" data-weight-target="${gEscape(label.edge.target)}"><title>${gEscape(title)}</title><rect x="${label.box.left}" y="${label.box.top}" width="${label.box.right-label.box.left}" height="18" rx="3" fill="white" fill-opacity=".94" /><text x="${label.x}" y="${label.y}" text-anchor="middle" class="viz-graph-weight">${gEscape(label.edge.weight)}</text></g>`;
+  }
+
   svg += "</svg>";
   return svg;
 }
 
 function formatShortestPathResult(state, result, label) {
   const path = Array.isArray(result.path) ? result.path.map((item) => String(item)) : [];
-  const edges = Array.isArray(state.edges) ? state.edges : [];
+  const edges = Array.isArray(result.path_arcs) ? result.path_arcs.map(([source,target,weight])=>({source:String(source),target:String(target),weight})) : (state.c_arcs || state.edges || []);
 
   if (!path.length || result.reachable === false) {
     return `<p><strong>${label}:</strong> No existe ruta entre inicio y destino.</p>`;
   }
 
-  let html = `<p><strong>${label}:</strong></p>`;
+  let html = `<p><strong>${label}:</strong> ${gEscape(path.join(" → "))}</p>`;
   html += "<div class=\"viz-path-steps\">";
   for (let index = 0; index < path.length - 1; index += 1) {
     const from = path[index];
     const to = path[index + 1];
-    const weight = findEdgeWeight(edges, from, to, Boolean(state.directed));
+    const weight = findEdgeWeight(edges, from, to, true);
     html += `<p>${gEscape(from)} - ${gEscape(to)} (peso ${gEscape(weight)})</p>`;
   }
   html += "</div>";
@@ -665,9 +909,20 @@ function formatShortestPathResult(state, result, label) {
 }
 
 function formatGraphResult(state) {
+  const record=state.last_result;
+  if(record?.source_contract==='graph-book/v1'){
+    const status=gBookStatusMarkup(record);
+    if(record.c_status !== null && record.c_status !== undefined && record.c_status !== 0)return status+`<p>${gEscape(record.message || 'La función no produjo un resultado válido.')}</p>`;
+    if(state.last_operation?.name==='edge_weight')return status+(record.c_return===1?`<p><strong>Costo escrito:</strong> ${gEscape(record.output)}</p>`:'<p>No existe el arco: retorno 0, salida no escrita. No se interpreta como costo cero.</p>');
+    return status+formatGraphResultBody(state);
+  }
+  return formatGraphResultBody(state);
+}
+function formatGraphResultBody(state) {
   const operationName = state.last_operation && state.last_operation.name ? state.last_operation.name : "";
   const result = state.last_result ? state.last_result.result : null;
 
+  if(operationName === "list_edges" && Array.isArray(result))return `<p><strong>Arcos prestados, en orden C:</strong></p><ul>${result.map(a=>`<li>${gEscape(a[0])} → ${gEscape(a[1])} (costo ${gEscape(a[2])})</li>`).join("") || "<li>Lista vacía</li>"}</ul>`;
   if (operationName === "run_dijkstra" && result && typeof result === "object") {
     return formatShortestPathResult(state, result, "Ruta mínima (Dijkstra)");
   }
@@ -712,33 +967,66 @@ function formatGraphResult(state) {
     );
   }
 
-  return `<p><strong>Resultado:</strong> ${gEscape(JSON.stringify(result))}</p>`;
+  if(result === null || result === undefined)return '<p>Sin lista o valor adicional de resultado.</p>';
+  return `<p><strong>Resultado:</strong> ${gEscape(gTeachingValue(result))}</p>`;
 }
 
-function renderGraphState(state, container, simulation, traceDebug) {
+function gGraphPresentedResult(state, context = {}) {
+  if(context.idle)return '<p>Sin ejecución actual. Prepara una operación.</p>';
+  const recorded=state?.last_operation?.name;
+  if(context.pending || (context.operation && recorded !== context.operation)) return '<p><strong>Resultado actual:</strong> pendiente de completar la operación.</p>';
+  return state?.last_result?.result !== undefined ? formatGraphResult(state) : '';
+}
+function gMaintainGraphImageViewport(container, previous={left:0,top:0}) {
+  if(window.ClassroomView) return; // Shared manual zoom owns image geometry in v1.
+  const stage=container.querySelector('.viz-stage'),svg=stage?.querySelector('svg'),note=container.querySelector('.graph-image-pan-note');
+  if(!stage || !svg)return;
+  const box=svg.viewBox?.baseVal,rect=svg.getBoundingClientRect();
+  if(!box || !box.width || !box.height)return;
+  const scale=Math.min(rect.width/box.width,rect.height/box.height);
+  const pan=scale<.9;
+  stage.classList.toggle('graph-local-pan',pan);
+  if(note)note.hidden=!pan;
+  if(pan){
+    // Never shrink glyphs to fit a dense graph. Only this image area scrolls.
+    svg.style.width=`${Math.max(stage.clientWidth,box.width)}px`;
+    svg.style.height=`${Math.max(stage.clientHeight,box.height)}px`;
+    svg.style.minWidth=`${box.width}px`;svg.style.minHeight=`${box.height}px`;
+    svg.style.maxHeight='none';svg.style.maxWidth='none';
+    stage.setAttribute('tabindex','0');
+    stage.setAttribute('aria-label','Imagen ampliada. Desplaza esta área para ver todos los nodos y pesos; el código permanece fijo.');
+    stage.scrollLeft=previous.left;stage.scrollTop=previous.top;
+  }
+}
+
+function renderGraphState(state, container, simulation, traceDebug, presentation = {}) {
   if (!state || !container) {
     return;
   }
 
+  if(state.suspended){container.innerHTML=`<div role="status"><h4>Historial suspendido — no es un grafo vacío</h4><p>${gEscape(state.suspension_reason || "Este historial pertenece a otra versión del C.")}</p><p>Exporta el historial original o confirma Restablecer grafo para empezar con el libro.</p></div>`;return;}
+  const oldStage=container.querySelector(".viz-stage");
+  const imageViewport={left:oldStage?.scrollLeft||0,top:oldStage?.scrollTop||0};
   const metadata = state.metadata || {};
   const graphType = state.directed ? "Dirigido" : "No dirigido";
   const weighted = state.weighted ? "Si" : "No";
 
   let html = "";
   html += "<div class=\"viz-canvas\">";
-  html += `<div class=\"viz-meta\"><strong>Grafo</strong> | Tipo: ${graphType} | Ponderado: ${weighted} | Vértices: ${metadata.vertices_count ?? 0} | Aristas: ${metadata.edges_count ?? 0}</div>`;
-  html += `<div class=\"viz-stage\"><div class="viz-stage-center">${renderGraphSvg(state, simulation, traceDebug)}</div></div>`;
+  html += `<div class=\"viz-meta\"><strong>Grafo</strong> | Tipo: ${graphType} | Ponderado: ${weighted} | Vértices: ${metadata.vertices_count ?? 0} | Aristas: ${metadata.edges_count ?? 0}<span class="graph-image-pan-note" hidden> · Imagen ampliada: desplázala dentro del panel.</span></div>`;
+  html += `<div class=\"viz-stage\"><div class="viz-stage-center">${renderGraphSvg(state.asymmetric_pairs?.length ? {...state,directed:true,edges:state.c_arcs||state.edges} : state, simulation, traceDebug)}</div></div>`;
 
-  if (state.last_result && state.last_result.result !== undefined) {
-    html += `<div class=\"viz-traversals\">${formatGraphResult(state)}</div>`;
-  }
+
+
+  if(state.asymmetric_pairs?.length)html += '<p class="graph-policy">La política solicita un grafo no dirigido, pero existen arcos sin inversa del mismo peso. Se muestran los arcos reales; no se inventa simetría.</p>';
+  html += `<div class="viz-traversals graph-current-result">${gGraphPresentedResult(state, presentation)}</div>`;
   if (traceDebug && traceDebug.note) {
-    html += `<p class="viz-sim-note">${gEscape(String(traceDebug.note))}</p>`;
+    html += `<details class="viz-sim-note"><summary>Explicación de este paso</summary><p>${gEscape(String(traceDebug.note))}</p></details>`;
   }
 
   html += "</div>";
   container.innerHTML = html;
-  centerGraphViewport(container);
+  gMaintainGraphImageViewport(container,imageViewport);
 }
 
 function centerGraphViewport(container) {
@@ -767,6 +1055,7 @@ function showGraphMessage(message, success) {
 }
 
 function updateGraphDidacticPanel(model, operationName) {
+  window.ContextualHelp?.operation("graph", model, operationName);
   const recordBox = gById("tad-record");
   const pseudoTitle = gById("op-pseudocode-title");
   const pseudoBox = gById("op-pseudocode");
@@ -785,6 +1074,7 @@ function updateGraphDidacticPanel(model, operationName) {
   renderGraphDidacticCode(recordBox, didactic.record || "Estructura no documentada.", codeTitle);
   pseudoTitle.textContent = selectedLabel ? `${codeTitle}: ${selectedLabel}` : codeTitle;
   renderGraphDidacticCode(pseudoBox, opMap[selectedOp] || fallback, codeTitle);
+  gFocusBookFunction(model, selectedOp);
 }
 
 function summarizeGraphPayload(payload) {
@@ -813,7 +1103,7 @@ function getGraphSubroutineName(model, operationName, fallback) {
   const didactic = model && model.didactic ? model.didactic : {};
   const opMap = didactic.operations || {};
   const pseudoCode = opMap[operationName] || "";
-  return extractGraphSubroutineName(pseudoCode, fallback || operationName || "Operación");
+  return didactic.operation_functions?.[operationName] || extractGraphSubroutineName(pseudoCode, fallback || operationName || "Operación");
 }
 
 function createGraphHistoryEntry(subroutine, payloadText, resultText, operationName, payloadRaw) {
@@ -826,105 +1116,20 @@ function createGraphHistoryEntry(subroutine, payloadText, resultText, operationN
   };
 }
 
-function graphMainCallForEntry(entry, index) {
-  const payload = entry && entry.payloadRaw && typeof entry.payloadRaw === "object" ? entry.payloadRaw : {};
-  const directed = String(payload.directed || "").toLowerCase() === "true";
-  const vertex = Object.prototype.hasOwnProperty.call(payload, "vertex") ? String(payload.vertex).trim() : "";
-  const origin = Object.prototype.hasOwnProperty.call(payload, "origin") ? String(payload.origin).trim() : "";
-  const target = Object.prototype.hasOwnProperty.call(payload, "target") ? String(payload.target).trim() : "";
-  const weight = Object.prototype.hasOwnProperty.call(payload, "weight") ? String(payload.weight).trim() : "";
-  const start = Object.prototype.hasOwnProperty.call(payload, "start") ? String(payload.start).trim() : "";
-  const end = Object.prototype.hasOwnProperty.call(payload, "end") ? String(payload.end).trim() : "";
-
-  if (entry.operation === "create_graph") {
-    return `/* TAD nuevo: reinicio del grafo (dirigido=${directed ? "true" : "false"} didáctico). */ g = grafo_crear();`;
-  }
-  if (entry.operation === "insert_vertex") {
-    return `g = grafo_insertar_vertice(g, ${vertex || "0"});`;
-  }
-  if (entry.operation === "remove_vertex") {
-    return `g = grafo_eliminar_vertice(g, ${vertex || "0"});`;
-  }
-  if (entry.operation === "insert_edge") {
-    return `g = grafo_insertar_arco(g, ${origin || "0"}, ${target || "0"}, ${weight || "1"});`;
-  }
-  if (entry.operation === "remove_edge") {
-    return `g = grafo_eliminar_arco(g, ${origin || "0"}, ${target || "0"});`;
-  }
-  if (entry.operation === "exists_vertex") {
-    return `int existe_${index} = grafo_existe_vertice(g, ${vertex || "0"});`;
-  }
-  if (entry.operation === "exists_edge") {
-    return `int existe_${index} = grafo_existe_arco(g, ${origin || "0"}, ${target || "0"});`;
-  }
-  if (entry.operation === "neighbors") {
-    return `ListaVertice vecinos_${index} = grafo_sucesores(g, ${vertex || "0"});`;
-  }
-  if (entry.operation === "edge_weight") {
-    return `int peso_${index} = grafo_costo_arco(g, ${origin || "0"}, ${target || "0"});`;
-  }
-  if (entry.operation === "list_vertices") {
-    return `ListaVertice vertices_${index} = grafo_vertices(g);`;
-  }
-  if (entry.operation === "list_edges") {
-    return `ListaArco arcos_${index} = grafo_arcos(g);`;
-  }
-  if (entry.operation === "run_bfs") {
-    return `ListaVertice rec_${index} = grafo_bfs(g, ${start || "0"});`;
-  }
-  if (entry.operation === "run_dfs") {
-    return `ListaVertice rec_${index} = grafo_dfs(g, ${start || "0"});`;
-  }
-  if (entry.operation === "run_dijkstra") {
-    return `ListaArco camino_${index} = grafo_dijkstra(g, ${start || "0"}, ${end || "0"});`;
-  }
-  if (entry.operation === "run_bellman_ford") {
-    return `ListaArco camino_${index} = grafo_bellman_ford(g, ${start || "0"}, ${end || "0"});`;
-  }
-  if (entry.operation === "run_prim") {
-    return `ListaArco mst_${index} = grafo_prim(g, ${start || "0"});`;
-  }
-  if (entry.operation === "run_kruskal") {
-    return `ListaArco mst_${index} = grafo_kruskal(g);`;
-  }
-  if (entry.operation === "clear_graph") {
-    return "g = grafo_crear();";
-  }
-  return `${entry.subroutine || "Operación"}();`;
-}
-
-function buildGraphMainCode(history) {
-  const lines = [];
-  lines.push("int main(void) {");
-  lines.push("    Grafo g = grafo_crear();");
-  lines.push("");
-  lines.push("    // Historial de ejecucion del usuario");
-  history.forEach((entry, index) => {
-    if (!entry || typeof entry === "string") {
-      return;
-    }
-    lines.push(`    ${graphMainCallForEntry(entry, index + 1)}`);
-    if (entry.result) {
-      lines.push(`    printf("${gToCStringLiteral(String(entry.result))}\\n");`);
-      lines.push(`    // ${String(entry.result)}`);
-    }
-  });
-  lines.push("    return 0;");
-  lines.push("}");
-  return lines.join("\n");
-}
-
-function renderGraphHistory(history, container, didactic) {
+function renderGraphHistory(history, container, didactic, mainCode) {
   if (!container) {
     return;
   }
-  if (!history.length) {
+  container.dataset.rawCode = "";
+  if(window.GRAPH_VIEW_MODEL?.main_unavailable_reason){container.textContent=window.GRAPH_VIEW_MODEL.main_unavailable_reason;return;}
+  if (!history.length && typeof mainCode !== "string") {
     container.innerHTML = "<li class=\"didactic-history-item empty\">Sin acciones ejecutadas.</li>";
     return;
   }
   const codeTitle = didactic && didactic.code_title ? String(didactic.code_title) : "";
-  if (codeTitle.toLowerCase().includes("codigo c")) {
-    const code = buildGraphMainCode(history);
+  if (/c[oó]digo c/i.test(codeTitle)) {
+    const code = String(mainCode || "");
+    container.dataset.rawCode = code;
     const codeHtml = buildGraphHighlightedCodeHtml(code, codeTitle);
     container.innerHTML = (
       "<li class=\"didactic-history-item history-main-wrap\">" +
@@ -1035,16 +1240,48 @@ function describeSimulationStep(simulation) {
   return `Paso ${simulation.index + 1}/${simulation.steps.length}: ${step.text}`;
 }
 
-async function executeGraphOperation(controls, operationName, payload) {
+function graphCapacityError(controls, operationName, payload) {
+  const limit = Number(controls.dataset.vertexLimit || 15);
+  const nodes = window.GRAPH_VIEW_MODEL?.visual_state?.nodes || [];
+  const ids = new Set(nodes.map(node => String(Number(node.id))));
+  const message = `El limite educativo es de ${limit} vertices. No se modifico el grafo ni el historial.`;
+  if (nodes.length > limit && (["insert_vertex", "insert_edge"].includes(operationName) || operationName.startsWith("run_"))) return message + " La sesion anterior conserva todos sus datos; elimina vertices o limpia el grafo para volver al limite.";
+  if (operationName === "generate_random_graph" && Number(payload.vertices_count) > limit) return message;
+  const fields = operationName === "insert_vertex" ? ["vertex"] : operationName === "insert_edge" ? ["origin", "target"] : [];
+  if (fields.length) {
+    const values = fields.map(field => Number(payload[field]));
+    if (values.every(Number.isInteger)) {
+      const added = [...new Set(values.map(String))].filter(id => !ids.has(id)).length;
+      if (nodes.length + added > limit) return message;
+    }
+  }
+  return "";
+}
+
+async function executeGraphOperation(controls, operationName, payload, executionMode = "step") {
+  const capacityError = graphCapacityError(controls, operationName, payload);
+  if (capacityError) {
+    const error = new Error(capacityError);error.graphCapacityRejected = true;throw error;
+  }
   const response = await fetch(controls.dataset.operateUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ operation: operationName, payload }),
+    body: JSON.stringify({ operation: operationName, payload, execution_mode: executionMode }),
   });
-  return response.json();
+  const data = await response.json();
+  if(Array.isArray(data.history) && window.GRAPH_VIEW_MODEL)window.GRAPH_VIEW_MODEL.history=data.history;
+  if (typeof data.main_c === "string" && window.GRAPH_VIEW_MODEL) {
+    window.GRAPH_VIEW_MODEL.main_c = data.main_c;
+    window.GRAPH_VIEW_MODEL.main_unavailable_reason=data.main_unavailable_reason || null;
+    gUpdateBookMainAvailability(window.GRAPH_VIEW_MODEL);
+    renderGraphHistory(data.history || [], gById("action-history"), window.GRAPH_VIEW_MODEL.didactic, data.main_c);
+  }
+  return data;
 }
 
 function initGraphPage(model) {
+  gUpdateBookMainAvailability(model);
+  if(model.suspended || model.visual_state?.suspended){initSuspendedBookGraph(model);return;}
   const controls = gById("graph-controls");
   const modeSelect = gById("graph-mode-select");
   const createButton = gById("graph-create-button");
@@ -1057,6 +1294,8 @@ function initGraphPage(model) {
   const simPlay = gById("graph-sim-play");
   const simPrev = gById("graph-sim-prev");
   const simStep = gById("graph-sim-step");
+  const simNext = gById("graph-sim-next");
+  const stepNavigation = gById("graph-step-navigation");
   const simStatus = gById("graph-sim-status");
   const stepToggle = gById("graph-step-toggle");
   const speedSlider = gById("graph-speed-slider");
@@ -1066,6 +1305,12 @@ function initGraphPage(model) {
   const printfConsole = gById("graph-printf-console");
   const didacticNote = gById("graph-didactic-note");
   const presetButtons = Array.from(document.querySelectorAll(".graph-preset-btn"));
+  const learningLevel=gById("graph-learning-level"),guidedExample=gById("graph-guided-example"),loadExample=gById("graph-load-example"),exampleLesson=gById("graph-example-lesson"),restartExecution=gById("graph-restart-execution"),resetGraph=gById("graph-reset-button"),hideComments=gById("graph-hide-comments");
+  const prepareButton=gById("graph-prepare"),pauseButton=gById("graph-sim-pause"),homeButton=gById("graph-sim-home"),endButton=gById("graph-sim-end"),repeatButton=gById("graph-sim-repeat"),progressSlider=gById("graph-progress"),stepMetadata=gById("graph-step-metadata");
+  const predictionSelect=gById("graph-prediction"),checkPrediction=gById("graph-check-prediction"),hintButton=gById("graph-prediction-hint"),skipPrediction=gById("graph-skip-prediction"),predictionFeedback=gById("graph-prediction-feedback"),practiceMode=gById("graph-practice-mode"),practiceCover=gById("graph-practice-cover"),progressSummary=gById("graph-progress-summary"),resetProgress=gById("graph-reset-progress");
+  const compareKind=gById("graph-compare-kind"),compareStart=gById("graph-compare-start"),compareEnd=gById("graph-compare-end"),compareRun=gById("graph-compare-run"),compareProgress=gById("graph-compare-progress"),compareInput=gById("graph-compare-input"),compareGrid=gById("graph-compare-grid"),compareConclusion=gById("graph-compare-conclusion");
+  const exportImage=gById("graph-export-image"),exportSummary=gById("graph-export-summary"),announcer=gById("graph-accessible-announcer");
+  const activePhase = String(controls?.dataset.activePhase || "construccion").trim() || "construccion";
 
   if (!controls || !visualState || !operationSelect || !algorithmSelect) {
     return;
@@ -1088,6 +1333,12 @@ function initGraphPage(model) {
 
   let playbackSpeed = 1;
   let playbackSpeedSetting = 0;
+  let currentPedagogyFrame=null;
+  let comparisonResult=null;let hintLevel=0;
+  const conceptualProgress={attempts:0,correct:0};
+  const presentationKey=`graph-presentation:${activePhase}`;
+  function readGraphPresentation(){try{return JSON.parse(sessionStorage.getItem(presentationKey)||"{}");}catch(_error){return {};}}
+  function writeGraphPresentation(){try{sessionStorage.setItem(presentationKey,JSON.stringify({level:learningLevel?.value||"intermediate",cursor:pageState.traceCursor,phase:activePhase,operation:selectedOperation?.name,algorithm:selectedAlgorithm?.name}));}catch(_error){/* optional */}}
 
   function isStepByStepEnabled() {
     return !stepToggle || Boolean(stepToggle.checked);
@@ -1135,28 +1386,31 @@ function initGraphPage(model) {
       return [];
     }
     const limit = Math.min(cursor, trace.steps.length - 1);
+    // Snapshot producers publish the complete console at this cursor. Event
+    // producers publish only new fragments: repeated/blank output is valid C.
+    if (trace.console_mode === "snapshot") {
+      return Array.isArray(trace.steps[limit]?.console) ? trace.steps[limit].console.slice() : [];
+    }
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
-      const messages = gExtractPrintfMessagesFromLine(step.line_text);
-      messages.forEach((msg) => {
-        // Evita mostrar literales de formato sin resolver (ej. "%d", "%s").
-        if (gHasPrintfFormatSpecifier(msg)) {
-          return;
-        }
-        gPushUniqueConsoleLine(out, `[printf] ${msg}`);
-      });
-    }
-    if (limit >= trace.steps.length - 1) {
-      const finalMessage = String(trace.message || "").trim();
-      if (finalMessage) {
-        gPushUniqueConsoleLine(out, `[printf] ${finalMessage}`);
-      }
+      const emitted = Array.isArray(step.console) ? step.console : [];
+      out.push(...emitted);
     }
     return out;
   }
 
   function refreshGraphPrintfConsole(cursor) {
+    if(!pageState.consoleTrace && typeof pageState.consoleRawStdout=== "string" && printfConsole){printfConsole.dataset.consoleCopy=pageState.consoleRawStdout;printfConsole.textContent=pageState.consoleRawStdout || "(sin salida printf en esta ruta)";printfConsole.style.whiteSpace="pre-wrap";return;}
+    const steps = pageState.consoleTrace?.steps;
+    const step = Array.isArray(steps) && steps.length ? steps[Math.max(0, Math.min(cursor, steps.length - 1))] : null;
+    const memory = cursor < 0 ? step?.state_snapshot : step?.pedagogy?.memory_state;
+    if (typeof memory?.console_stdout === "string" && printfConsole) {
+      printfConsole.dataset.consoleCopy = memory.console_stdout;
+      printfConsole.textContent = memory.console_stdout || "(sin salida printf en esta ruta)";
+      printfConsole.style.whiteSpace = "pre-wrap";
+      return;
+    }
     const lines = collectGraphPrintfLines(pageState.consoleTrace, cursor);
     renderGraphPrintfConsole(
       printfConsole,
@@ -1179,7 +1433,6 @@ function initGraphPage(model) {
 
   const allowedOperations = new Set(parseJsonArray(controls.dataset.allowedOperations));
   const allowedAlgorithms = new Set(parseJsonArray(controls.dataset.allowedAlgorithms));
-  const activePhase = String(controls.dataset.activePhase || "construccion").trim() || "construccion";
   const phaseRunMode = String(controls.dataset.phaseRunMode || "operation").trim().toLowerCase();
   const defaultAlgorithm = String(controls.dataset.defaultAlgorithm || "").trim();
   const didacticNotesByPhase =
@@ -1202,6 +1455,8 @@ function initGraphPage(model) {
 
   let selectedOperation = operationList[0] || null;
   let selectedAlgorithm = algorithmList.find((op) => op.name === defaultAlgorithm) || algorithmList[0] || null;
+  const savedPresentation=readGraphPresentation();if(learningLevel)learningLevel.value=["basic","intermediate","advanced"].includes(savedPresentation.level)?savedPresentation.level:"intermediate";(model.guided_examples||[]).forEach((example)=>{const option=document.createElement("option");option.value=example.id;option.textContent=example.label;guidedExample?.appendChild(option);});
+  initGraphResponsiveWorkspace();initGraphClassroom();hideComments?.addEventListener("change",()=>enhanceGraphCodeNavigation(null));learningLevel?.addEventListener("change",()=>{renderGraphPedagogy(currentPedagogyFrame,learningLevel.value);writeGraphPresentation();});guidedExample?.addEventListener("change",()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample.value);if(exampleLesson)exampleLesson.textContent=example?example.lesson:"El ejemplo se construye mediante operaciones públicas y no cambia al reproducir.";});
   let activeRunMode = phaseRunMode === "algorithm" ? "algorithm" : "operation";
 
   function resolveDidacticNote(operationName, mode) {
@@ -1267,8 +1522,10 @@ function initGraphPage(model) {
       ),
     );
   });
-  renderGraphHistory(pageState.actionHistory, historyBox, model.didactic);
-  renderGraphState(pageState.graphState, visualState, pageState.simulation);
+  renderGraphHistory(pageState.actionHistory, historyBox, model.didactic, model.main_c);
+  renderGraphState(pageState.graphState, visualState, pageState.simulation, null, {operation:getTargetSelection()?.operation?.name});
+  const capacityPolicy = gById("graph-capacity-policy");
+  if (capacityPolicy && pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)) capacityPolicy.textContent = "Sesion anterior: se conservan todos los vertices. Elimina vertices o limpia para volver al limite de 15; las inserciones y algoritmos estan bloqueados mientras lo supere.";
 
   if (modeSelect) {
     modeSelect.value = pageState.graphState && pageState.graphState.directed ? "true" : "false";
@@ -1280,17 +1537,36 @@ function initGraphPage(model) {
       counterElement: gById("graph-sim-counter"),
       renderState: (stateSnapshot, stepMeta) => {
         pageState.graphState = stateSnapshot;
-        pageState.simulation = buildSimulationFromState(stateSnapshot);
-        renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null);
+        pageState.simulation = null;
+        renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null, {pending:true});
+        if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
         updateGraphStepKind(stepMeta || null);
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
         pageState.traceCursor = cursor;
+        if(event?.trace?.book_instruction_model && pageState.bookFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.bookFinalMessage.text:"Operación preparada: resultado pendiente hasta completar las llamadas C.",done?pageState.bookFinalMessage.success:true);}
+        if(cursor<0 && event?.trace?.book_instruction_model){currentPedagogyFrame=event.trace.steps[0]?.pedagogy?.initial_frame || null;if(currentPedagogyFrame)renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");gFocusBookFunction(model,event.trace.operation_name);}
+        if((event?.trace?.bfs_instruction_model || event?.trace?.dfs_instruction_model) && pageState.bfsFinalMessage)showGraphMessage(cursor===event.trace.steps.length-1?pageState.bfsFinalMessage:`${event?.trace?.dfs_instruction_model ? "DFS" : "BFS"} preparado: resultado pendiente hasta completar la traza.`,true);
+        if(event?.trace?.numeric_instruction_model && pageState.numericFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.numericFinalMessage.text:"Algoritmo preparado: resultado pendiente hasta completar la traza.",done?pageState.numericFinalMessage.success:true);}
+        if((event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model) && pageState.vertexFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.vertexFinalMessage.text:"Operación preparada: resultado pendiente hasta completar la traza.",done?pageState.vertexFinalMessage.success:true);}
+        if(cursor<0 && (event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,null);}
+        if(cursor<0 && event?.trace?.numeric_instruction_model && event.trace.execution_started){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,{graph_memory:currentPedagogyFrame.memory_state,graph_progress:{mode:"path",nodes:[],edges:[]}});}
+        if(cursor<0 && (event?.trace?.bfs_instruction_model || event?.trace?.dfs_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,{bfs_memory:currentPedagogyFrame.memory_state,graph_progress:{mode:"traversal",nodes:[],edges:[]}});}
         pageState.traceTotalSteps = event && event.trace && Array.isArray(event.trace.steps)
           ? event.trace.steps.length
           : 0;
+        const resultPanel=visualState.querySelector('.graph-current-result');
+        if(resultPanel)resultPanel.innerHTML=gGraphPresentedResult(event?.step?.state_after || pageState.graphState,{operation:event?.trace?.operation_name || getTargetSelection()?.operation?.name,pending:pageState.traceTotalSteps>0 && cursor<pageState.traceTotalSteps-1});
         refreshGraphPrintfConsole(cursor);
+        const step=event?.step;
+        if(step?.pedagogy && step.debug?.stage && simStatus && window.ContextualHelp)simStatus.textContent=simStatus.textContent.replace(` - ${step.debug.stage}`,` - ${gGraphPhaseLabel(step.pedagogy)}`);
+        enhanceGraphCodeNavigation(Number.isInteger(step?.line_index)?step.line_index:null);if(cursor<0 && event?.trace?.book_instruction_model)gFocusBookFunction(model,event.trace.operation_name);writeGraphPresentation();
+        if(progressSlider){progressSlider.max=String(Math.max(0,pageState.traceTotalSteps-1));progressSlider.value=String(Math.max(0,cursor));progressSlider.disabled=pageState.traceTotalSteps===0;}
+        if(stepMetadata){const frame=(cursor<0 && (event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model) ? currentPedagogyFrame : step?.pedagogy)||{};const edge=frame.active_edge?`${frame.active_edge.from}→${frame.active_edge.to}`:"—";stepMetadata.textContent=`Función: ${(frame.numeric_algorithm || frame.query_operation || frame.construction_operation) ? frame.instruction_event?.function||(frame.query_operation ? "-" : "caller") : frame.call_stack?.[0]?.function||"—"} · Fase: ${gGraphPhaseLabel(frame)} · Vértice: ${frame.auxiliary?.selected??"—"} · Arista: ${edge}`;}
+        const concealed=Boolean(practiceMode?.checked&&cursor>=0);if(practiceCover)practiceCover.hidden=!concealed;visualState.classList.toggle("graph-practice-hidden",concealed);
+        if(announcer&&step?.pedagogy)announcer.textContent=`Paso ${cursor+1}. ${step.pedagogy.narration?.basic||step.pedagogy.phase?.label||""}`;
+        if (cursor < 0) window.ContextualHelp?.frame("graph", null);
         setSimulationButtonsState();
       },
       defaultDelayMs: 900,
@@ -1347,7 +1623,16 @@ function initGraphPage(model) {
       simPrev.disabled = busy || !stepMode || !hasProgress;
     }
     if (simStep) {
-      simStep.disabled = busy || !stepMode || !canExecute || atEnd || pageState.lockStepUntilInput;
+      simStep.disabled = false;
+    }
+    if (simNext) {
+      simNext.disabled = busy || !stepMode || !hasTrace || atEnd || pageState.lockStepUntilInput;
+    }
+    if (stepNavigation) {
+      stepNavigation.hidden = !stepMode;
+    }
+    if (simStep) {
+      simStep.hidden = false;
     }
     if (speedSlider) {
       speedSlider.disabled = busy || !stepMode;
@@ -1358,6 +1643,9 @@ function initGraphPage(model) {
   }
 
   function invalidateTrace(message) {
+    currentPedagogyFrame = null;
+    const liveMemory = gById("graph-live-memory");
+    if (liveMemory) liveMemory.textContent = "Prepara una traza para observar las reservas y los campos.";
     pageState.finalTraceDebug = null;
     pageState.traceSelectionKey = "";
     pageState.lastTraceOperation = "";
@@ -1365,8 +1653,19 @@ function initGraphPage(model) {
     pageState.traceTotalSteps = 0;
     pageState.lockStepUntilInput = false;
     pageState.consoleTrace = null;
+    pageState.consoleRawStdout = null;
     pageState.consoleFallbackMessage = "";
     tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    const currentResult=visualState.querySelector('.graph-current-result');
+    if(currentResult)currentResult.innerHTML=gGraphPresentedResult(pageState.graphState,{idle:true});
+    // Al cambiar operación o entrada la navegación pertenece a la traza previa.
+    // Restáurase explícitamente el único botón de entrada al modo paso a paso.
+    if (stepNavigation) {
+      stepNavigation.hidden = true;
+    }
+    if (simStep) {
+      simStep.hidden = false;
+    }
     updateGraphStepKind(null);
     refreshGraphPrintfConsole(-1);
     setSimulationButtonsState();
@@ -1538,11 +1837,16 @@ function initGraphPage(model) {
   }
 
   function repaint() {
-    renderGraphState(pageState.graphState, visualState, pageState.simulation, pageState.finalTraceDebug);
+    const policy = gById("graph-capacity-policy");
+    if (policy) policy.textContent = pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)
+      ? "Sesion anterior: se conservan todos los vertices. Elimina vertices o limpia para volver al limite de 15; las inserciones y algoritmos estan bloqueados mientras lo supere."
+      : "Limite educativo: 15 vertices. No se truncan grafos ni se cambia el C descargable.";
+    renderGraphState(pageState.graphState, visualState, pageState.simulation, pageState.finalTraceDebug, {operation:pageState.lastTraceOperation || getTargetSelection()?.operation?.name,pending:pageState.traceTotalSteps>0 && pageState.traceCursor<pageState.traceTotalSteps-1});
     refreshSimulationStatus();
   }
 
   async function executeTargetAndLoadTrace(target, selectionKey, options) {
+    if(pageState.pendingExecution)return null;
     pageState.pendingExecution = true;
     setSimulationButtonsState();
     if (createButton) {
@@ -1552,15 +1856,38 @@ function initGraphPage(model) {
     try {
       const operationName = target.operation.name;
       const payload = target.payload || {};
-      const data = await executeGraphOperation(controls, operationName, payload);
-      showGraphMessage(data.message, Boolean(data.success));
+      const data = await executeGraphOperation(controls, operationName, payload, options?.finalOnly ? "normal" : "step");
+      if(data.preserve_session){showGraphMessage(data.message,false);return null;}
+      if(Array.isArray(data.history))model.history=data.history;
+      pageState.traceUnavailableReason=data.trace_unavailable_reason || "";
+      pageState.consoleRawStdout=typeof data.console_stdout==="string"?data.console_stdout:null;
+      if(!data.execution_trace){
+        tracePlayer?.clear(pageState.traceUnavailableReason || "Sin traza disponible para esta ejecución.");
+        pageState.consoleTrace=null;pageState.traceCursor=-1;pageState.traceTotalSteps=0;
+        pageState.lastTraceOperation="";pageState.traceSelectionKey="";currentPedagogyFrame=null;
+        const memory=gById("graph-live-memory");if(memory)memory.textContent=pageState.traceUnavailableReason || "Sin traza de memoria registrada.";
+      }
+      if (typeof data.main_c === "string") model.main_c = data.main_c;
+      if (data.execution_trace?.graph_snapshot_codec) data.execution_trace = gExpandGraphInstructionTrace(data.execution_trace);
+      pageState.bookFinalMessage = data.execution_trace?.book_instruction_model ? {text:data.message,success:Boolean(data.success)} : null;
+      pageState.vertexFinalMessage = (data.execution_trace?.vertex_instruction_model || data.execution_trace?.neighbor_instruction_model || data.execution_trace?.construction_instruction_model) ? {text:data.message,success:Boolean(data.success)} : null;
+      pageState.bfsFinalMessage = ["run_bfs", "run_dfs"].includes(operationName) && data.success ? data.message : null;
+      pageState.numericFinalMessage = data.execution_trace?.numeric_instruction_model && data.execution_trace.execution_started ? {text:data.message,success:Boolean(data.success)} : null;
+      if(pageState.bookFinalMessage && !options?.finalOnly)showGraphMessage("Operación preparada: resultado pendiente hasta completar las llamadas C.",true);
+      else if(pageState.vertexFinalMessage && !options?.finalOnly)showGraphMessage("Operación preparada: resultado pendiente hasta completar la traza.",true);
+      else if(pageState.numericFinalMessage && !options?.finalOnly)showGraphMessage("Algoritmo preparado: resultado pendiente hasta completar la traza.",true);
+      else showGraphMessage(pageState.bfsFinalMessage && !options?.finalOnly ? `${operationName === "run_dfs" ? "DFS" : "BFS"} preparado: resultado pendiente hasta completar la traza.` : data.message, Boolean(data.success));
       updateGraphDidacticPanel(model, operationName);
       refreshDidacticNote(operationName, target.mode);
+      if(options?.finalOnly && !data.execution_trace){
+        const summary=gById('graph-pedagogy-summary');if(summary)summary.innerHTML=gBookNoTraceMarkup(data);
+        const metadata=gById('graph-step-metadata');if(metadata)metadata.textContent='Resultado normal sin traza · llamada C terminada · no hay pasos guardados';
+      }
 
       const payloadText = summarizeGraphPayload(payload);
       const label = operationLabel.get(operationName) || operationName;
       const subroutine = getGraphSubroutineName(model, operationName, label);
-      gPushUniqueHistoryEntry(
+      if (data.execution_started || data.execution_trace?.execution_started || data.success) gPushUniqueHistoryEntry(
         pageState.actionHistory,
         createGraphHistoryEntry(
           subroutine,
@@ -1570,7 +1897,7 @@ function initGraphPage(model) {
           payload,
         ),
       );
-      renderGraphHistory(pageState.actionHistory, historyBox, model.didactic);
+      renderGraphHistory(pageState.actionHistory, historyBox, model.didactic, model.main_c);
 
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
@@ -1588,8 +1915,16 @@ function initGraphPage(model) {
         pageState.finalTraceDebug = null;
         if (finalOnly && data.execution_trace && Array.isArray(data.execution_trace.steps)) {
           pageState.consoleTrace = data.execution_trace;
-          pageState.consoleFallbackMessage = data.message || "(sin salida printf en esta ruta)";
+          pageState.consoleFallbackMessage = "";
           const finalCursor = data.execution_trace.steps.length ? data.execution_trace.steps.length - 1 : -1;
+          // Keep this actual execution for later replay. Enabling step mode
+          // must not execute the query again or retain an older player trace.
+          if (tracePlayer) {
+            tracePlayer.loadTrace(data.execution_trace);
+            pageState.lastTraceOperation = String(data.execution_trace.operation_name || "");
+            pageState.traceSelectionKey = selectionKey;
+            tracePlayer.seek(finalCursor);
+          }
           refreshGraphPrintfConsole(finalCursor);
           if (finalCursor >= 0) {
             const finalStep = data.execution_trace.steps[finalCursor] || null;
@@ -1599,7 +1934,7 @@ function initGraphPage(model) {
           }
         } else {
           pageState.consoleTrace = null;
-          pageState.consoleFallbackMessage = data.message || "(sin salida printf en esta ruta)";
+          pageState.consoleFallbackMessage = "";
           refreshGraphPrintfConsole(-1);
         }
       }
@@ -1612,12 +1947,13 @@ function initGraphPage(model) {
         if (!hasExecutionTrace) {
           applyNewGraphState(finalVisualState);
           if (simStatus && finalOnly) {
-            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
+            simStatus.textContent = pageState.traceUnavailableReason || "Modo normal: se aplicó el resultado final de las llamadas C.";
           }
         }
       }
       return data;
     } catch (_error) {
+      if (_error.graphCapacityRejected) {showGraphMessage(_error.message, false);return null;}
       showGraphMessage("No fue posible completar la operación.", false);
       return null;
     } finally {
@@ -1650,7 +1986,7 @@ function initGraphPage(model) {
   function applyNewGraphState(newState) {
     stopSimulationTimer(pageState.simulation);
     pageState.graphState = newState;
-    pageState.simulation = buildSimulationFromState(newState);
+    pageState.simulation = null;
     updateGraphStepKind(null);
     repaint();
     if (modeSelect) {
@@ -1814,41 +2150,15 @@ function initGraphPage(model) {
     invalidateTrace("Modo cambiado. Ejecuta nuevamente.");
   });
 
+  restartExecution?.addEventListener("click",()=>{tracePlayer?.reset();setSimulationButtonsState();});
+  resetGraph?.addEventListener("click",async()=>{if(!window.confirm("¿Restablecer el grafo y borrar su historial de esta sesión?"))return;const response=await fetch(controls.dataset.resetUrl,{method:"POST"});const data=await response.json();pageState.actionHistory.length=0;model.main_c=data.main_c;model.main_unavailable_reason=data.main_unavailable_reason||null;gUpdateBookMainAvailability(model);model.history=data.history||[];renderGraphHistory(pageState.actionHistory,historyBox,model.didactic,model.main_c);if(data.visual_state){model.visual_state=data.visual_state;applyNewGraphState(data.visual_state);}invalidateTrace("Grafo restablecido.");showGraphMessage(data.message,Boolean(data.success));});
+  loadExample?.addEventListener("click",async()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample?.value);if(!example){showGraphMessage("Selecciona un ejemplo guiado.",false);return;}loadExample.disabled=true;try{const labelMap=new Map((example.vertices||[]).map((value,index)=>[String(value),index+1]));const resolve=(value)=>labelMap.get(String(value))??value;let data=await executeGraphOperation(controls,"create_graph",{directed:Boolean(example.directed)});if(!data.success)throw new Error(data.message);for(const vertex of example.vertices||[]){data=await executeGraphOperation(controls,"insert_vertex",{vertex:resolve(vertex)});if(!data.success)throw new Error(data.message);}for(const edge of example.edges||[]){data=await executeGraphOperation(controls,"insert_edge",{origin:resolve(edge[0]),target:resolve(edge[1]),weight:edge[2]});if(!data.success)throw new Error(data.message);}if(data.visual_state){model.visual_state=data.visual_state;applyNewGraphState(data.visual_state);}const mappedPayload={};Object.entries(example.payload||{}).forEach(([key,value])=>{mappedPayload[key]=resolve(value);});selectedAlgorithm=algorithmList.find((item)=>item.name===example.operation)||selectedAlgorithm;if(selectedAlgorithm){algorithmSelect.value=selectedAlgorithm.name;buildGraphInputs(selectedAlgorithm,algorithmInputs,"g-alg-field");selectedAlgorithm.inputs.forEach((field)=>{const input=gById(`g-alg-field-${field.name}`);if(input&&Object.prototype.hasOwnProperty.call(mappedPayload,field.name))input.value=mappedPayload[field.name];});setRunMode("algorithm");updateGraphDidacticPanel(model,selectedAlgorithm.name);}pageState.actionHistory.length=0;invalidateTrace("Ejemplo preparado. Reproduce la operación objetivo.");writeGraphPresentation();showGraphMessage(`Ejemplo preparado: ${example.lesson}`,true);}catch(error){showGraphMessage(error.message||"No se pudo preparar el ejemplo.",false);}finally{loadExample.disabled=false;}});
+
   createButton?.addEventListener("click", async () => {
-    const directedValue = modeSelect ? modeSelect.value : "false";
-      const data = await executeGraphOperation(controls, "create_graph", { directed: directedValue });
-    showGraphMessage(data.message, Boolean(data.success));
-    updateGraphDidacticPanel(model, "create_graph");
-    refreshDidacticNote("create_graph", "operation");
-    if (isStepByStepEnabled() && data.execution_trace && tracePlayer) {
-      pageState.lockStepUntilInput = false;
-      pageState.consoleTrace = data.execution_trace;
-      pageState.consoleFallbackMessage = "";
-      tracePlayer.loadTrace(data.execution_trace);
-      pageState.lastTraceOperation = String(data.execution_trace.operation_name || "");
-      pageState.traceSelectionKey = "";
-    } else {
-      pageState.consoleTrace = null;
-      pageState.consoleFallbackMessage = data.message || "(sin salida printf en esta ruta)";
-      refreshGraphPrintfConsole(-1);
-    }
-    const createSubroutine = getGraphSubroutineName(model, "create_graph", "Crear/Recrear grafo");
-    gPushUniqueHistoryEntry(
-      pageState.actionHistory,
-      createGraphHistoryEntry(
-        createSubroutine,
-        `directed=${directedValue}`,
-        data.message,
-        "create_graph",
-        { directed: directedValue },
-      ),
-    );
-    renderGraphHistory(pageState.actionHistory, historyBox, model.didactic);
-    if (data.visual_state) {
-      model.visual_state = data.visual_state;
-      applyNewGraphState(data.visual_state);
-      showSimulationStatus("Tipo de grafo aplicado. Ahora construye el grafo.");
-    }
+    const payload={directed:modeSelect?modeSelect.value:"false"};
+    const data=await executeTargetAndLoadTrace({mode:"operation",operation:{name:"create_graph"},payload},buildSelectionKey("operation","create_graph",payload),!isStepByStepEnabled()?{finalOnly:true}:undefined);
+    if(!data)return;
+    if(isStepByStepEnabled() && tracePlayer?.hasTrace())tracePlayer.reset();
     setSimulationButtonsState();
   });
 
@@ -1880,19 +2190,72 @@ function initGraphPage(model) {
     await tracePlayer.playFromStart();
   });
 
-  simStep?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
+  function renderConceptualProgress(){if(progressSummary)progressSummary.textContent=`Progreso conceptual de esta sesión: ${conceptualProgress.correct} aciertos de ${conceptualProgress.attempts} intentos.`;}
+  function revealPractice(){if(practiceCover)practiceCover.hidden=true;visualState.classList.remove("graph-practice-hidden");}
+  function expectedGraphPrediction(frame){const concept=String(frame?.concept||"");const stage=String(frame?.case||"");if(concept==="extract"||stage==="extract_min")return "extract";if(concept==="discover"||stage==="visit")return "discover";if(stage==="update_distance")return "predecessor";if(concept==="relax"||stage==="relax_edge")return frame?.relaxation?.success===false?"none":"relax";if(concept==="accept"||["accept_edge","union","expand_mst"].includes(stage))return "accept";if(concept==="reject"||stage==="reject_edge")return "reject";if(concept==="negative_cycle"||stage==="detect_negative_cycle")return "negative_cycle";return "none";}
+  checkPrediction?.addEventListener("click",()=>{if(!currentPedagogyFrame||!predictionSelect?.value){if(predictionFeedback)predictionFeedback.textContent="Prepara una traza y selecciona una predicción.";return;}const expected=expectedGraphPrediction(currentPedagogyFrame),correct=predictionSelect.value===expected;conceptualProgress.attempts+=1;if(correct)conceptualProgress.correct+=1;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent=correct?"Correcto: coincide con la decisión ejecutada.":`Revisa el auxiliar, la condición y el invariante. Evidencia: ${expected}.`;hintLevel=0;revealPractice();});
+  hintButton?.addEventListener("click",()=>{hintLevel=Math.min(3,hintLevel+1);const hints=["Observa qué estructura auxiliar cambia.",`El concepto del frame es «${currentPedagogyFrame?.concept||"aún no disponible"}».`,`La decisión esperada es ${expectedGraphPrediction(currentPedagogyFrame)}.`];if(predictionFeedback)predictionFeedback.textContent=hints[hintLevel-1];});
+  skipPrediction?.addEventListener("click",()=>{revealPractice();if(predictionFeedback)predictionFeedback.textContent="Continuaste sin responder; no se registra intento.";});
+  practiceMode?.addEventListener("change",()=>{const concealed=Boolean(practiceMode.checked&&pageState.traceCursor>=0);if(practiceCover)practiceCover.hidden=!concealed;visualState.classList.toggle("graph-practice-hidden",concealed);});
+  resetProgress?.addEventListener("click",()=>{conceptualProgress.attempts=0;conceptualProgress.correct=0;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent="Progreso conceptual reiniciado.";});
+  prepareButton?.addEventListener("click",async()=>{const ready=await ensureTraceForCurrentTarget();if(ready)tracePlayer?.reset();});
+  pauseButton?.addEventListener("click",()=>tracePlayer?.pause());
+  homeButton?.addEventListener("click",()=>tracePlayer?.reset());
+  endButton?.addEventListener("click",()=>{if(tracePlayer?.hasTrace())tracePlayer.seek(Math.max(0,tracePlayer.getTotalSteps()-1));});
+  repeatButton?.addEventListener("click",async()=>{if(tracePlayer?.hasTrace())await tracePlayer.playFromStart();});
+  progressSlider?.addEventListener("input",()=>{if(tracePlayer?.hasTrace())tracePlayer.seek(Number(progressSlider.value));});
+
+  function comparisonCard(side){
+    const summary=side?.summary||{},cost=summary.distance_to_destination??summary.total_weight;
+    const label=({run_bfs:"BFS",run_dfs:"DFS",run_dijkstra:"Dijkstra",run_bellman_ford:"Bellman-Ford",run_prim:"Prim",run_kruskal:"Kruskal"})[side?.algorithm]||"Algoritmo";
+    return `<article class="hier-compare-card"><h4>${gEscape(label)}</h4><p><strong>Estado C:</strong> ${gEscape(side?.c_status_name || "sin estado registrado")}</p><p><strong>Resultado:</strong> ${gEscape(gTeachingValue(summary.order||summary.path||summary.mst_edges||summary))}</p><p><strong>Costo:</strong> ${gEscape(cost ?? "no calculado")}</p><p>${gEscape(side?.message || "Sin certificación adicional de invariantes.")}</p></article>`;
+  }
+  function renderComparison(){if(!comparisonResult||!compareGrid)return;compareGrid.innerHTML=comparisonCard(comparisonResult.left)+comparisonCard(comparisonResult.right);if(compareInput)compareInput.textContent=`Entrada inmutable: ${comparisonResult.input.nodes.length} vértices, ${comparisonResult.input.edges.length} aristas. Concepto ${Number(compareProgress?.value||0)+1}/4.`;if(compareConclusion)compareConclusion.textContent=`${comparisonResult.conclusion} Estado auxiliar, costo, restricción e invariante se calculan sobre copias aisladas.`;}
+  compareRun?.addEventListener("click",async()=>{const response=await fetch(controls.dataset.compareUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:compareKind?.value,graph:model.visual_state,start:compareStart?.value,end:compareEnd?.value})});const data=await response.json();if(!response.ok||!data.success){if(compareConclusion)compareConclusion.textContent=data.message||"No se pudo comparar.";return;}comparisonResult=data;renderComparison();});
+  compareProgress?.addEventListener("input",renderComparison);
+  exportImage?.addEventListener("click", async () => {
+    if (exportImage.disabled) return;
+    const originalText = exportImage.textContent;
+    exportImage.disabled = true;
+    exportImage.setAttribute("aria-busy", "true");
+    try {
+      const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({
+        target: visualState, quality: .92, scale: 2,
+        onProgress: (text) => { exportImage.textContent = text; },
+      });
+      window.InterpreterRuntime.downloadJpg(exported.dataUrl, exported.suggestedName);
+      showGraphMessage("Captura JPG preparada; revisa las descargas del navegador.", true);
+    } catch (error) { showGraphMessage(error.message || "No se pudo exportar la captura.", false); }
+    finally {
+      exportImage.disabled = false;
+      exportImage.removeAttribute("aria-busy");
+      exportImage.textContent = originalText;
+    }
+  });
+  exportSummary?.addEventListener("click",()=>{const report={module:"graph",source_contract:model.source_contract,history:model.history||[],main_c:model.main_c,phase:activePhase,algorithm:selectedAlgorithm?.name||selectedOperation?.name,cursor:pageState.traceCursor,total_steps:pageState.traceTotalSteps,progress:{...conceptualProgress},frame:currentPedagogyFrame,comparison:comparisonResult};const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download="graph-learning-summary.json";link.click();URL.revokeObjectURL(link.href);if(announcer)announcer.textContent="Resumen de aprendizaje exportado.";});
+  document.addEventListener("keydown",(event)=>{if(!event.altKey)return;if(event.key==="ArrowRight"){event.preventDefault();simStep?.click();}else if(event.key==="ArrowLeft"){event.preventDefault();simPrev?.click();}else if(event.key==="Home"){event.preventDefault();homeButton?.click();}else if(event.key==="End"){event.preventDefault();endButton?.click();}else if(event.key.toLowerCase()==="p"){event.preventDefault();pauseButton?.click();}});
+
+  simStep?.addEventListener("click", () => {
+    stepToggle.checked = !stepToggle.checked;
+    stepToggle.dispatchEvent(new Event("change"));
+  });
+
+  simNext?.addEventListener("click", async () => {
+    if (!isStepByStepEnabled() || !tracePlayer?.hasTrace()) {
       return;
     }
-    const ready = await ensureTraceForCurrentTarget();
+    // Applying type owns its loaded creation trace until an input/selection
+    // change invalidates it. Advancing must not dispatch the unrelated selector.
+    const ready = pageState.lastTraceOperation === "create_graph" && tracePlayer.hasTrace()
+      ? true : await ensureTraceForCurrentTarget();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
     const advanced = await tracePlayer.step();
     if (advanced && tracePlayer.isAtEnd()) {
       pageState.lockStepUntilInput = true;
-      setSimulationButtonsState();
     }
+    setSimulationButtonsState();
   });
 
   simPrev?.addEventListener("click", () => {
@@ -1907,36 +2270,24 @@ function initGraphPage(model) {
   });
 
   simPlay?.addEventListener("click", async () => {
-    if (!isStepByStepEnabled()) {
-      const target = resolveFastModeTarget();
-      if (!target || !isTargetSelectionValid(target)) {
-        showSimulationStatus("Completa las entradas para ejecutar.");
-        setSimulationButtonsState();
-        return;
-      }
-      const selectionKey = buildSelectionKey(target.mode, target.operation.name, target.payload);
-      await executeTargetAndLoadTrace(target, selectionKey, { finalOnly: true });
-      return;
-    }
-    const ready = await ensureTraceForCurrentTarget();
-    if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
-      return;
-    }
-    await tracePlayer.playFromStart();
-    if (tracePlayer.isAtEnd()) {
-      pageState.lockStepUntilInput = true;
-      setSimulationButtonsState();
-    }
+    const target = resolveFastModeTarget();
+    if (!target || !isTargetSelectionValid(target)) { showSimulationStatus("Completa las entradas para ejecutar."); return; }
+    const key = buildSelectionKey(target.mode, target.operation.name, target.payload);
+    await executeTargetAndLoadTrace(target, key, { finalOnly: !isStepByStepEnabled() });
+    if (isStepByStepEnabled() && tracePlayer?.hasTrace()) tracePlayer.reset();
   });
 
   stepToggle?.addEventListener("change", () => {
-    updateStepModePanelVisibility();
-    invalidateTrace(
-      isStepByStepEnabled()
-        ? "Modo paso a paso activado. Usa Reproducir o Siguiente paso."
-        : "Modo rapido activado. Reproducir aplicara solo el resultado final.",
-    );
+    simStep.textContent = isStepByStepEnabled() ? "Cerrar paso a paso" : "Paso a paso";
+    simStep.setAttribute("aria-pressed", String(isStepByStepEnabled()));
+    tracePlayer?.pause(true);
+    if (tracePlayer?.hasTrace()) tracePlayer.seek(isStepByStepEnabled() ? -1 : tracePlayer.getTotalSteps() - 1);
+    setSimulationButtonsState();
   });
+  if (stepToggle) { stepToggle.checked = false; stepToggle.hidden = true; }
+  simPrev.textContent = "Paso anterior";
+  simNext.textContent = "Siguiente paso";
+  setSimulationButtonsState();
 
   updateStepModePanelVisibility();
   invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
@@ -1945,8 +2296,36 @@ function initGraphPage(model) {
   focusGraphSectionByHash();
 }
 
+
+// Presentation-only classroom v1; existing render targets retain their identity.
+function graphMountClassroomView() {
+  if (!window.ClassroomView) return;
+  const root = document.querySelector(".graph-primary-workspace");
+  if (!root) return;
+  document.getElementById("graph-code-region")?.classList.add("classroom-code");
+  document.getElementById("graph-code-region")?.classList.remove("didactic-technical");
+  const history = document.getElementById("action-history");
+  const consoleNode = document.getElementById("graph-printf-console");
+  const record = document.getElementById("tad-record");
+  const results = [
+    {label:"Consola C (printf)",panel:consoleNode?.closest("section"),code:consoleNode,getText:()=>consoleNode?.dataset.consoleCopy || ""},
+    {label:"main.c del historial",panel:history?.parentElement,code:history,getText:()=>history?.dataset.rawCode || ""},
+    {label:"Estructura del TAD",panel:record?.parentElement,code:record,getText:()=>record?.dataset.rawCode ?? record?.textContent ?? ""}
+  ];
+  results.forEach(entry=>{
+    entry.panel?.classList.remove("didactic-technical");
+    for(let node=entry.panel?.parentElement;node && node.tagName!=="ARTICLE";node=node.parentElement) {
+      node.classList.remove("didactic-technical", "seq-pilot-collapsed");
+      node.hidden = false;
+      if(node.tagName==="DETAILS") node.open=true;
+    }
+  });
+  window.ClassroomView.mount({root,visual:"#graph-visual-region",stage:"#graph-visual-state",code:"#op-pseudocode",memory:[".graph-live-memory-panel"],results,key:"graph"});
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   if (window.GRAPH_VIEW_MODEL) {
     initGraphPage(window.GRAPH_VIEW_MODEL);
+    graphMountClassroomView();
   }
 });

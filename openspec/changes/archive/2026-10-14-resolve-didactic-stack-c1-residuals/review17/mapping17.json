@@ -1,0 +1,465 @@
+[
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-prepare:15",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Activar modo manual sobretraza existente presentaestadoinicial;ejecutarnuevoesacciónseparada",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2320,
+        "text": "const prepareTitle = hById(\"hier-prepare-title\");"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2448,
+        "text": "const prepareButton=hById(\"hier-prepare\"), pauseButton=hById(\"hier-sim-pause\"), homeButton=hById(\"hier-sim-home\"), endButton=hById(\"hier-sim-end\"), repeatButton=hById(\"hier-sim-repeat\"), progressSlider=hById(\"hier-progress\"), stepMetadata=hById(\"hier-step-metadata\");"
+      },
+      {
+        "line": 3227,
+        "text": "document.addEventListener(\"keydown\",async(event)=>{if(event.target instanceof Element && event.target.closest(\"#hier-variables-view\"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key===\"ArrowLeft\"){event.preventDefault();tracePlayer?.prev();}else if(event.key===\"ArrowRight\"){event.preventD"
+      }
+    ],
+    "behavior_case": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+    "execution_ref": "evidence/review17-hierarchical-flow-resources.log",
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-restart-execution:23",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Home oactivar modomanual reinicia vista sinmutación",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2446,
+        "text": "const restartExecutionButton = hById(\"hier-restart-execution\");"
+      },
+      {
+        "line": 3227,
+        "text": "document.addEventListener(\"keydown\",async(event)=>{if(event.target instanceof Element && event.target.closest(\"#hier-variables-view\"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key===\"ArrowLeft\"){event.preventDefault();tracePlayer?.prev();}else if(event.key===\"ArrowRight\"){event.preventD"
+      }
+    ],
+    "behavior_case": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+    "execution_ref": "evidence/review17-hierarchical-flow-resources.log",
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-end:21",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "End odesactivar modomanual muestrafinal",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2448,
+        "text": "const prepareButton=hById(\"hier-prepare\"), pauseButton=hById(\"hier-sim-pause\"), homeButton=hById(\"hier-sim-home\"), endButton=hById(\"hier-sim-end\"), repeatButton=hById(\"hier-sim-repeat\"), progressSlider=hById(\"hier-progress\"), stepMetadata=hById(\"hier-step-metadata\");"
+      },
+      {
+        "line": 3227,
+        "text": "document.addEventListener(\"keydown\",async(event)=>{if(event.target instanceof Element && event.target.closest(\"#hier-variables-view\"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key===\"ArrowLeft\"){event.preventDefault();tracePlayer?.prev();}else if(event.key===\"ArrowRight\"){event.preventD"
+      }
+    ],
+    "behavior_case": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+    "execution_ref": "evidence/review17-hierarchical-flow-resources.log",
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-home:18",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Home",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2448,
+        "text": "const prepareButton=hById(\"hier-prepare\"), pauseButton=hById(\"hier-sim-pause\"), homeButton=hById(\"hier-sim-home\"), endButton=hById(\"hier-sim-end\"), repeatButton=hById(\"hier-sim-repeat\"), progressSlider=hById(\"hier-progress\"), stepMetadata=hById(\"hier-step-metadata\");"
+      },
+      {
+        "line": 3227,
+        "text": "document.addEventListener(\"keydown\",async(event)=>{if(event.target instanceof Element && event.target.closest(\"#hier-variables-view\"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key===\"ArrowLeft\"){event.preventDefault();tracePlayer?.prev();}else if(event.key===\"ArrowRight\"){event.preventD"
+      }
+    ],
+    "behavior_case": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+    "execution_ref": "evidence/review17-hierarchical-flow-resources.log",
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-pause:17",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Space invoca pausa;vista estable;no seprobóinterrumpir autoplay jerárquico porque ya nohay activadorpúblico",
+    "evidence_status": "LIMITED_PASS_PAUSED_VIEW_NOT_AUTOPLAY_EQUIVALENCE",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2448,
+        "text": "const prepareButton=hById(\"hier-prepare\"), pauseButton=hById(\"hier-sim-pause\"), homeButton=hById(\"hier-sim-home\"), endButton=hById(\"hier-sim-end\"), repeatButton=hById(\"hier-sim-repeat\"), progressSlider=hById(\"hier-progress\"), stepMetadata=hById(\"hier-step-metadata\");"
+      },
+      {
+        "line": 3227,
+        "text": "document.addEventListener(\"keydown\",async(event)=>{if(event.target instanceof Element && event.target.closest(\"#hier-variables-view\"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key===\"ArrowLeft\"){event.preventDefault();tracePlayer?.prev();}else if(event.key===\"ArrowRight\"){event.preventD"
+      }
+    ],
+    "behavior_case": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+    "execution_ref": "evidence/review17-hierarchical-flow-resources.log",
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-repeat:22",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Volverainicio ynavegarmanual conserva caché;autoplayantiguo notienereemplazopúblico demostrado",
+    "evidence_status": "DECISION_REQUIRED_AUTOPLAY_VS_CURRENT_MANUAL_CONTRACT",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2448,
+        "text": "const prepareButton=hById(\"hier-prepare\"), pauseButton=hById(\"hier-sim-pause\"), homeButton=hById(\"hier-sim-home\"), endButton=hById(\"hier-sim-end\"), repeatButton=hById(\"hier-sim-repeat\"), progressSlider=hById(\"hier-progress\"), stepMetadata=hById(\"hier-step-metadata\");"
+      }
+    ],
+    "behavior_case": null,
+    "execution_ref": null,
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-progress:27",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Anterior/siguiente/Home/End;seekarbitrariopor range noexponecontrolactual",
+    "evidence_status": "DECISION_REQUIRED_ARBITRARY_SEEK_PRESENTATION",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2448,
+        "text": "const prepareButton=hById(\"hier-prepare\"), pauseButton=hById(\"hier-sim-pause\"), homeButton=hById(\"hier-sim-home\"), endButton=hById(\"hier-sim-end\"), repeatButton=hById(\"hier-sim-repeat\"), progressSlider=hById(\"hier-progress\"), stepMetadata=hById(\"hier-step-metadata\");"
+      },
+      {
+        "line": 2449,
+        "text": "const predictionSelect=hById(\"hier-prediction\"), checkPrediction=hById(\"hier-check-prediction\"), hintButton=hById(\"hier-hint\"), skipPrediction=hById(\"hier-skip-prediction\"), predictionFeedback=hById(\"hier-prediction-feedback\"), practiceMode=hById(\"hier-practice-mode\"), practiceCover=hById(\"hier-practice-cover\"), progressSummary=hById(\"hier-progress-summary\"), resetProgress=hById(\"hier-reset-progre"
+      }
+    ],
+    "behavior_case": null,
+    "execution_ref": null,
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-end:15",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "AltEnd",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 39,
+        "text": "if (stackPilot) tabs.forEach((tab, index) => tab.addEventListener(\"keydown\", (event) => {"
+      },
+      {
+        "line": 2990,
+        "text": "const simEndButton = byId(\"seq-sim-end\");"
+      },
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3809,
+        "text": "document.addEventListener(\"keydown\", async (event) => {"
+      }
+    ],
+    "behavior_case": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+    "execution_ref": "evidence/review122-legacy-keyboard-resources.log",
+    "reuse": "hash_verified_no_rerun",
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-pause:11",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "AltP trasreplay estabiliza cursor",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 39,
+        "text": "if (stackPilot) tabs.forEach((tab, index) => tab.addEventListener(\"keydown\", (event) => {"
+      },
+      {
+        "line": 2986,
+        "text": "const simPauseButton = byId(\"seq-sim-pause\");"
+      },
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3809,
+        "text": "document.addEventListener(\"keydown\", async (event) => {"
+      }
+    ],
+    "behavior_case": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+    "execution_ref": "evidence/review122-legacy-keyboard-resources.log",
+    "reuse": "hash_verified_no_rerun",
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-prepare:9",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Modo manual devuelveiniciotr azacache;AltHome también;distinguirde Ejecutar",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 39,
+        "text": "if (stackPilot) tabs.forEach((tab, index) => tab.addEventListener(\"keydown\", (event) => {"
+      },
+      {
+        "line": 2985,
+        "text": "const simPrepareButton = byId(\"seq-sim-prepare\");"
+      },
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3809,
+        "text": "document.addEventListener(\"keydown\", async (event) => {"
+      }
+    ],
+    "behavior_case": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+    "execution_ref": "evidence/review122-legacy-keyboard-resources.log",
+    "reuse": "hash_verified_no_rerun",
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-repeat:16",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "AltR replay decaché, sinPOST",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 39,
+        "text": "if (stackPilot) tabs.forEach((tab, index) => tab.addEventListener(\"keydown\", (event) => {"
+      },
+      {
+        "line": 2991,
+        "text": "const simRepeatButton = byId(\"seq-sim-repeat\");"
+      },
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3809,
+        "text": "document.addEventListener(\"keydown\", async (event) => {"
+      }
+    ],
+    "behavior_case": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+    "execution_ref": "evidence/review122-legacy-keyboard-resources.log",
+    "reuse": "hash_verified_no_rerun",
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-start:12",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "AltHome",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 39,
+        "text": "if (stackPilot) tabs.forEach((tab, index) => tab.addEventListener(\"keydown\", (event) => {"
+      },
+      {
+        "line": 2987,
+        "text": "const simStartButton = byId(\"seq-sim-start\");"
+      },
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3809,
+        "text": "document.addEventListener(\"keydown\", async (event) => {"
+      }
+    ],
+    "behavior_case": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+    "execution_ref": "evidence/review122-legacy-keyboard-resources.log",
+    "reuse": "hash_verified_no_rerun",
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-progress-slider:21",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Anterior/siguiente/AltHome/AltEnd;rangearbitrario noactual",
+    "evidence_status": "DECISION_REQUIRED_ARBITRARY_SEEK_PRESENTATION",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 3002,
+        "text": "const progressSlider = byId(\"seq-progress-slider\");"
+      }
+    ],
+    "behavior_case": null,
+    "execution_ref": null,
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-speed-slider:26",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "Modomanualcontrola avance;no UI actualpara ajustartiempo automático",
+    "evidence_status": "DECISION_REQUIRED_SPEED_CAPABILITY",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2439,
+        "text": "const speedSlider = hById(\"hier-speed-slider\");"
+      }
+    ],
+    "behavior_case": null,
+    "execution_ref": null,
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-restart-execution:17",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "AltHome devuelveiniciocaché, no nuevaejecución",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 39,
+        "text": "if (stackPilot) tabs.forEach((tab, index) => tab.addEventListener(\"keydown\", (event) => {"
+      },
+      {
+        "line": 2997,
+        "text": "const restartExecutionButton = byId(\"seq-restart-execution\");"
+      },
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3809,
+        "text": "document.addEventListener(\"keydown\", async (event) => {"
+      }
+    ],
+    "behavior_case": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+    "execution_ref": "evidence/review122-legacy-keyboard-resources.log",
+    "reuse": "hash_verified_no_rerun",
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-play:10",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "AltR autoplaydecaché;botón retiradono se restaura",
+    "evidence_status": "PASS_CACHED_FLOW",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 39,
+        "text": "if (stackPilot) tabs.forEach((tab, index) => tab.addEventListener(\"keydown\", (event) => {"
+      },
+      {
+        "line": 2984,
+        "text": "const simPlayButton = byId(\"seq-sim-play\");"
+      },
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3809,
+        "text": "document.addEventListener(\"keydown\", async (event) => {"
+      }
+    ],
+    "behavior_case": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+    "execution_ref": "evidence/review122-legacy-keyboard-resources.log",
+    "reuse": "hash_verified_no_rerun",
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-speed-slider:20",
+    "old_widget_retained_in_inventory": true,
+    "current_replacement_or_missing": "RefJS retenida inicializaspeedylistener;widgetdesconectado no públic o. Modomanual noes controlvelocidad",
+    "evidence_status": "DECISION_REQUIRED_SPEED_CAPABILITY",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 2994,
+        "text": "const speedSlider = byId(\"seq-speed-slider\");"
+      },
+      {
+        "line": 3343,
+        "text": "technicalControls?.remove();"
+      }
+    ],
+    "behavior_case": null,
+    "execution_ref": null,
+    "reuse": null,
+    "acceptance": "NOT_ADMITTED",
+    "formal_disposition": "PENDING; verified capability replacement does not retire old widget requirement."
+  }
+]

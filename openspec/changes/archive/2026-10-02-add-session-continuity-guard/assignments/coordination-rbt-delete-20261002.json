@@ -1,0 +1,12 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rbt-delete-20261002",
+  "issued_at_utc": "2026-10-02",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "audit-local-quality-and-unified-controls",
+  "operation": "red-black.delete",
+  "task": "Eliminar Rojo-Negro: revisión por instrucción acotada, basada en baseline y plan existentes",
+  "instruction": "Coordinación confirma instrucción explícita MEDIUM EliminarRN; operación asignada red-black.delete. Las solicitudes históricas Lista/Circular no sustituyen esta asignación.",
+  "provenance": "Registro del mensaje de delegación recibido; no autentica conversación ni autoridad de terceros desde Git.",
+  "scope_ref": "openspec/changes/audit-local-quality-and-unified-controls/red-black-delete-instruction-review-plan.md"
+}

@@ -1,0 +1,11 @@
+{
+  "status": "resolved",
+  "approved": true,
+  "kind": "successor",
+  "predecessor_change": "cloud-graph-book-convergence-20261027",
+  "predecessor_operation": "graph-book-convergence",
+  "reason": "Nueva observaci\u00f3n ABB9 del usuario y autorizaci\u00f3n expl\u00edcita UI transversal/resultados despu\u00e9s de entrega v0",
+  "new_scope": "Vista de clase y distribuci\u00f3n de resultados en cinco familias; no algoritmos/C",
+  "owner": "repair-lead",
+  "authority": "scope.md"
+}

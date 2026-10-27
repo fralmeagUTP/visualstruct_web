@@ -1,0 +1,3 @@
+# Adenda propia final ypropuesta noejecutada
+
+Corregir2localizadorespropiosbajoreaperturaexplicita;preservarcopia anterior deJSON/informe. Graph8: definirunescenarioPOSTexacto ycronómetroantesPOST→consumirJSON completo/traza,plainsincoverage/tracemalloc,120s2GiB procesoprivado;noejecuciónautorizadaaún. ConservarreservaGraph15yMAX15/no garantíauniversal.

@@ -1,0 +1,98 @@
+{
+  "schema": "visualstruct-continuity/v1",
+  "phase": "before",
+  "purpose": "before-work-preconditions",
+  "generated_at_utc": "2026-10-27T11:29:17.674365+00:00",
+  "project": "/workspace/scratch/644977913e22/visualstruct_vista_clase_v1_20261027/app",
+  "change": "cloud-classroom-view-v1-20261027",
+  "operation": "classroom-view-v1",
+  "assignment": {
+    "assignment_id": "cloud-classroom-view-v1-20261027",
+    "change": "cloud-classroom-view-v1-20261027",
+    "operation": "classroom-view-v1",
+    "scope_ref": "openspec/changes/cloud-classroom-view-v1-20261027/scope.md"
+  },
+  "global_tasks": {
+    "completed": 0,
+    "total": 6,
+    "meaning": "top-level tasks, not time or operation coverage"
+  },
+  "latest_task_heading": "# Tareas",
+  "operations": {
+    "classroom-view-v1": {
+      "status": "not-signed-off",
+      "source": "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+      "closed_marker": null,
+      "scope": "UI transversal de clase/resultados en copia v1; C/H intactos",
+      "evidence": [],
+      "context_sources": [],
+      "task_prefix": "classroom-view-v1:",
+      "task_status": "pending"
+    }
+  },
+  "sources": [
+    {
+      "path": "openspec/AGENTS.md",
+      "sha256": "ca4b26b9b9c2fa60f435f0c2a9e601cb3479df828580e9ef0684017b2d8f1553",
+      "bytes": 2895,
+      "mtime_ns": 1793100363660584524
+    },
+    {
+      "path": "openspec/project.md",
+      "sha256": "d2ed54aeeb196d536ce96cd8608437a69e185406224d1f419608d06bdd4251d3",
+      "bytes": 4723,
+      "mtime_ns": 1793100363922835414
+    },
+    {
+      "path": "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+      "sha256": "6cec2c028c0a532e1a3694ba06ae2550b7c2aebfb229a5f4511ed4cb3d87fe7a",
+      "bytes": 830,
+      "mtime_ns": 1793100363991715238
+    },
+    {
+      "path": "openspec/changes/cloud-classroom-view-v1-20261027/proposal.md",
+      "sha256": "6d4fc1d97a195755bb96e5f198f17b50e5bba5f205d5c5071f9d658d911c3daf",
+      "bytes": 602,
+      "mtime_ns": 1793100363991755408
+    },
+    {
+      "path": "openspec/changes/cloud-classroom-view-v1-20261027/design.md",
+      "sha256": "3f4f6ae1fe6a5411714fca6d3e9fcf5202f2a513b371a9578e897f688edf5bb5",
+      "bytes": 967,
+      "mtime_ns": 1793100363991782910
+    },
+    {
+      "path": "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md",
+      "sha256": "f6597e3c5eeecdf319d3622e8e1a32266baf6752be690635e008d060cae29a2e",
+      "bytes": 1397,
+      "mtime_ns": 1793100363991808719
+    },
+    {
+      "path": "openspec/changes/cloud-classroom-view-v1-20261027/specs/classroom-view/spec.md",
+      "sha256": "7ec7fcfd107ea20072fed59d92a2d1dbd6a6f67f23d23055331f8c99ee449378",
+      "bytes": 1194,
+      "mtime_ns": 1793100363991833587
+    },
+    {
+      "path": "openspec/changes/cloud-classroom-view-v1-20261027/tasks.md",
+      "sha256": "c2c30db3fb51b0cdfe95d162b0b7e11186223d42685113795cbe9792d3c0b6f2",
+      "bytes": 373,
+      "mtime_ns": 1793100363991861759
+    },
+    {
+      "path": "openspec/continuity/assignments/cloud-classroom-view-v1-20261027.json",
+      "sha256": "280351d82f4071c21ecefd428cac9e6b32ae823723c7cd64a66c7711cf3dba28",
+      "bytes": 219,
+      "mtime_ns": 1793100363996864450
+    }
+  ],
+  "reopen": null,
+  "limits": [
+    "Source declarations and evidence existence are not functional verification.",
+    "Only registered blocks are classified; unknown blocks fail closed.",
+    "No inference of approval, active process, next action or universal coverage.",
+    "Hashes cover listed documents, not every product file or git commit.",
+    "Concurrent edits after the final read remain possible; rerun before action.",
+    "Unregistered new logs do not invalidate a checkpoint; registered edits require a fresh read."
+  ]
+}

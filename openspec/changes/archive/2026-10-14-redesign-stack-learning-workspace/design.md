@@ -1,0 +1,5 @@
+# Diseño vigente reconciliado: Pila en cinco etapas
+
+El diseño anterior de tres áreas/eightstages se conserva íntegro en la copia histórica del expediente de archivo. La instrucción posterior aplica cinco etapas canónicas, preparación/control integrados, paneles Estado/Código y divulgación progresiva. Desktop1366×768 conserva controles/dato/estado/C inicial sinscroll; viewport móvil/tableta usa pestañas Estado/Código,teclado/foco ysticky sin superposición. Sliders/repetición automática ypausa jerárquica dependiente retirados; capacidades manuales yeducativas se conservan. No ampliar este layout aotrosTAD.
+
+Evidencia: cierre residual C1finito12/12,stack-final-panels.json,capturas de4viewports,regresionespermanentes yfuentes actuales. Ventana683 esaproximación deespacioCSSparaampliación,no certificación dezoomnativo universal. Elpilotocierra enesealcance porreconciliación/aprobaciónfinal;nopide nuevo layout ni nuevaspruebas. Reservas/criteriosoriginales ydisposiciónporfila en reconciliation-20261014.md.

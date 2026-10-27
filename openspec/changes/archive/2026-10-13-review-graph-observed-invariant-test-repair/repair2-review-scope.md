@@ -1,0 +1,3 @@
+# Repair2 focal scope
+
+Focal independent review of repair1 explicit-false BFS/DFS C phase bypass. Only pure oracle flag predicate changes: True boolean accepted; missing key accepted only legacy BFS/DFS; explicit False/None/0/1/string rejected. 14 new rule controls use real BFS frame3; DFS is schema-rule projection of that BFS fixture, not actual DFS HTTP verification. Before10FAIL27PASS, after37PASS and all1498 prior real captured frames replayed, guarded2GiB120s. Prior rejected variants preserved. Five source files frozen; no C/runtime/Sorting/optimization/publication/global19case closure. Parent selects independent reviewer.

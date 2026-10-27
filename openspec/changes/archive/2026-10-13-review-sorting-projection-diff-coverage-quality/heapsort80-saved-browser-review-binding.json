@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-projection-diff-coverage-quality",
+  "operation": "audit.heapsort80-saved-response-browser-independent-quality",
+  "task": "heapsort80-saved-response-browser-independent-quality",
+  "assignment_id": "coordination-heapsort80-saved-response-browser-independent-qa-low-20261006",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/evidence/heapsort80-saved-response-browser-independent-review",
+    "openspec/changes/review-sorting-projection-diff-coverage-quality/heapsort80-saved-browser-review-tracker.md"
+  ]
+}

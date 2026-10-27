@@ -1,0 +1,9 @@
+# Decisión vigente: adopción acotada condicionada a diez PASS conjuntos
+
+Nueva instrucción explícita del coordinador01a0fe61-3104-743a-b032-bcc289ad80cd autoriza10casos exigidosQA sobrestagingconsistente fused+fixtures+portabletest, sinbenchmark/cobertura. SiTODOS10PASS yhashes/diffs exactos, autoriza copiar EXACTAMENTE9destinos revisados del paquete vigente. Es el trabajo autorizado por «continua», no reconsulta alusuario ni aprobaciónQA18/cambiosemántico. Si algunoFAIL/timeout/skip/error,nointegrar/reportar.
+
+Asignación coordination-joint-ten-staging-conditional-adoption-low-20261005; operación audit.canonical-correspondence; task ten-joint-staging-cases-then-conditionally-adopt-nine-reviewed-targets. Paquete b51d825938069cc2f96c10d064f3111d1b5ce9a74d0bfe66bd368ffbc95c55f2 y QAadoption-conditions.json se conservan. Alcance9targetshashes before/proposed exactos enpackage/adoption-targets.json, sinimprovisardiffs. Original993 ytodo historial/coberturas permanecen. Aclaración scopes BLOQUE O FOR adjunta en evidencia propia,sinmutarpaquete.
+
+Antes copia: guardbefore/procedencia/10PASS/semántica/hashverify; backupbyteoriginal8archivos+marcaausente delnuevoJSON. Copia9 exactos yverificación completa; si falla la transacción o drift inesperado, restaurar únicamente losbytes cambiados por esta transacción a backups y retirar únicamente nuevoJSONcreado por esta operación sihashpropio coincide (nooverwriteconcurrentes), para preservar estado previo yreportar. Esa recuperación necesaria para copia reversible está dentro de esta adopción acotada; sinresetGit ni borrar logs. No rollback ni nueva semántica por mero gate históricoFAIL.
+
+Después: nueva versión/freezeinmutable deproducto/tests y denominadorfullcurrent estático, rawcoverage nueva sin medir todavía; no mezclar993raw. Devolver planprimera selección Sortingfinita≤30min,NOejecutarla. No otro bloque automático; noaprobación5s/83/85/QA18/11/12/16/19 ni campaña4542; preview5051 sin tocar.

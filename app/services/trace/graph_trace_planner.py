@@ -61,6 +61,11 @@ class GraphTracePlanner:
             adjacency = GraphAlgorithmPlanner.adjacency_from_state(after_state)
             bfs_tree_edges = GraphTracePlanner._derive_bfs_tree_edges(path, adjacency)
             seen_nodes: set[str] = set()
+            parents = {child: parent for parent, child in bfs_tree_edges}
+            levels: dict[str, int] = {path[0]: 0} if path else {}
+            for node in path[1:]:
+                parent = parents.get(node)
+                levels[node] = levels.get(parent, 0) + 1
             staged_nodes: list[str] = []
             staged_edges: list[list[str]] = []
             for index in range(total_steps):
@@ -91,6 +96,12 @@ class GraphTracePlanner:
                             "mode": "traversal",
                             "nodes": deepcopy(staged_nodes),
                             "edges": deepcopy(staged_edges),
+                            "tree_edges": deepcopy(staged_edges),
+                            "queue": deepcopy(path[count:]),
+                            "selected": current,
+                            "previous": {node: parents.get(node) for node in prefix},
+                            "distances": {node: levels.get(node) for node in prefix},
+                            "visited": deepcopy(prefix),
                         },
                     }
                 )
@@ -100,6 +111,7 @@ class GraphTracePlanner:
             path = [str(item) for item in result]
             adjacency = GraphAlgorithmPlanner.adjacency_from_state(after_state)
             dfs_tree_edges = GraphAlgorithmPlanner.derive_dfs_tree_edges(path, adjacency)
+            parents = {child: parent for parent, child in dfs_tree_edges}
             seen_nodes: set[str] = set()
             staged_nodes: list[str] = []
             staged_edges: list[list[str]] = []
@@ -122,6 +134,12 @@ class GraphTracePlanner:
                         if stage != "complete"
                         else f"DFS completado. Ultimo retorno en {current}."
                     )
+                    stack: list[str] = []
+                    cursor: str | None = current
+                    while cursor is not None:
+                        stack.append(cursor)
+                        cursor = parents.get(cursor)
+                    stack.reverse()
                 else:
                     stage = "init"
                     note = "Preparando recorrido DFS."
@@ -134,6 +152,11 @@ class GraphTracePlanner:
                             "mode": "traversal",
                             "nodes": deepcopy(staged_nodes),
                             "edges": deepcopy(staged_edges),
+                            "tree_edges": deepcopy(staged_edges),
+                            "stack": deepcopy(stack if prefix else []),
+                            "selected": current if prefix else None,
+                            "previous": {node: parents.get(node) for node in prefix},
+                            "visited": deepcopy(prefix),
                         },
                     }
                 )
@@ -145,6 +168,37 @@ class GraphTracePlanner:
             destination = str(result.get("end")) if result.get("end") is not None else ""
             reachable = bool(result.get("reachable", False))
             has_negative_cycle = bool(result.get("has_negative_cycle", False))
+            node_ids = [str(node.get("id")) for node in (after_state.get("nodes") or []) if isinstance(node, dict)]
+            final_distances = {str(key): value for key, value in (result.get("distances") or {}).items()}
+            final_previous = {
+                str(key): (None if value is None else str(value))
+                for key, value in (result.get("previous") or {}).items()
+            }
+
+            exact_timeline = GraphTracePlanner._shortest_path_timeline(
+                operation_name=operation_name,
+                state=after_state,
+                origin=origin,
+                result=result,
+            )
+            if exact_timeline:
+                return _sample_timeline(exact_timeline)
+
+            def _progress(*, distances, previous, visited, selected=None, candidates=None, nodes=None, edges=None, iteration=None, old_distance=None, candidate_distance=None, relaxation_succeeded=None):
+                return {
+                    "mode": "shortest",
+                    "nodes": list(nodes or []),
+                    "edges": list(edges or []),
+                    "distances": deepcopy(distances),
+                    "previous": deepcopy(previous),
+                    "visited": list(visited),
+                    "selected": selected,
+                    "candidates": list(candidates or []),
+                    "iteration": iteration,
+                    "old_distance": old_distance,
+                    "candidate_distance": candidate_distance,
+                    "relaxation_succeeded": relaxation_succeeded,
+                }
 
             if operation_name == "run_bellman_ford" and has_negative_cycle:
                 timeline: list[dict[str, Any]] = []
@@ -152,7 +206,7 @@ class GraphTracePlanner:
                     {
                         "stage": "init",
                         "note": f"Iniciando Bellman-Ford desde {origin}.",
-                        "graph_progress": {"mode": "shortest", "nodes": [origin] if origin else [], "edges": []},
+                        "graph_progress": _progress(distances={node: (0.0 if node == origin else None) for node in node_ids}, previous={node: None for node in node_ids}, visited=[], nodes=[origin] if origin else []),
                     }
                 )
                 sample_edges = []
@@ -171,51 +225,55 @@ class GraphTracePlanner:
                         {
                             "stage": "relax_edge",
                             "note": f"Pasada {pass_index}: relajando {edge[0]} -> {edge[1]}.",
-                            "graph_progress": {
-                                "mode": "shortest",
-                                "nodes": [edge[0], edge[1]],
-                                "edges": [edge],
-                            },
+                            "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[], candidates=[edge[1]], nodes=[edge[0], edge[1]], edges=[edge], iteration=pass_index),
                         }
                     )
                 timeline.append(
                     {
                         "stage": "detect_negative_cycle",
                         "note": "Se detecto ciclo negativo: aun hay relajacion tras |V|-1 pasadas.",
-                        "graph_progress": {"mode": "shortest", "nodes": [], "edges": sample_edges},
+                        "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[], edges=sample_edges, iteration=max(1, len(node_ids))),
                     }
                 )
                 timeline.append(
                     {
                         "stage": "complete",
                         "note": "Bellman-Ford finalizo con ciclo negativo.",
-                        "graph_progress": {"mode": "shortest", "nodes": [], "edges": sample_edges},
+                        "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[], edges=sample_edges),
                     }
                 )
                 return _sample_timeline(timeline)
 
             if not path or not reachable:
+                initial_distances = {node: (0.0 if node == origin else None) for node in node_ids}
+                initial_previous = {node: None for node in node_ids}
                 timeline = [
                     {
                         "stage": "init",
                         "note": f"Iniciando desde {origin} y buscando ruta a {destination}.",
+                        "graph_progress": _progress(distances=initial_distances, previous=initial_previous, visited=[]),
                     },
                     {
                         "stage": "detect_unreachable",
                         "note": "No existe ruta entre inicio y destino.",
+                        "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[]),
                     },
                     {
                         "stage": "complete",
                         "note": "Ejecucion finalizada sin ruta alcanzable.",
+                        "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[]),
                     },
                 ]
                 return _sample_timeline(timeline)
 
+            distances = {node: (0.0 if node == origin else None) for node in node_ids}
+            previous = {node: None for node in node_ids}
+            visited: list[str] = []
             timeline = [
                 {
                     "stage": "init",
                     "note": f"Iniciando en {path[0]}.",
-                    "graph_progress": {"mode": "shortest", "nodes": [path[0]], "edges": []},
+                    "graph_progress": _progress(distances=distances, previous=previous, visited=visited, candidates=[path[0]], nodes=[path[0]]),
                 }
             ]
             for i in range(1, len(path)):
@@ -227,49 +285,50 @@ class GraphTracePlanner:
                     {
                         "stage": "extract_min",
                         "note": f"Extrayendo nodo candidato {from_node} de la cola de prioridad.",
-                        "graph_progress": {
-                            "mode": "shortest",
-                            "nodes": path[:i],
-                            "edges": [[path[j - 1], path[j]] for j in range(1, i)],
-                        },
+                        "graph_progress": _progress(distances=distances, previous=previous, visited=visited, selected=from_node, candidates=path[i:], nodes=path[:i]),
                     }
                 )
+                old_distance = distances.get(to_node)
+                edge_weight = GraphTracePlanner._edge_weight(after_state, from_node, to_node)
+                source_distance = distances.get(from_node)
+                candidate_distance = None if source_distance is None or edge_weight is None else source_distance + edge_weight
+                if from_node not in visited:
+                    visited.append(from_node)
                 timeline.append(
                     {
                         "stage": "relax_edge",
                         "note": f"Relajando arista {from_node} -> {to_node}.",
-                        "graph_progress": {
-                            "mode": "shortest",
-                            "nodes": prefix_nodes,
-                            "edges": prefix_edges,
-                        },
+                        "graph_progress": _progress(distances=distances, previous=previous, visited=visited, selected=from_node, candidates=[to_node], nodes=prefix_nodes, edges=prefix_edges, iteration=i, old_distance=old_distance, candidate_distance=candidate_distance, relaxation_succeeded=candidate_distance is not None and (old_distance is None or candidate_distance < old_distance)),
                     }
                 )
+                distances[to_node] = final_distances.get(to_node)
+                previous[to_node] = from_node
                 timeline.append(
                     {
                         "stage": "update_distance",
                         "note": f"Actualizando distancia tentativa de {to_node}.",
-                        "graph_progress": {
-                            "mode": "shortest",
-                            "nodes": prefix_nodes,
-                            "edges": prefix_edges,
-                        },
+                        "graph_progress": _progress(distances=distances, previous=previous, visited=visited, selected=from_node, candidates=[to_node], nodes=prefix_nodes, edges=prefix_edges, iteration=i, old_distance=old_distance, candidate_distance=candidate_distance, relaxation_succeeded=True),
                     }
                 )
+            if path[-1] not in visited:
+                visited.append(path[-1])
             timeline.append(
                 {
                     "stage": "complete",
                     "note": f"Ruta minima consolidada hacia {path[-1]}.",
-                    "graph_progress": {
-                        "mode": "shortest",
-                        "nodes": path,
-                        "edges": [[path[j - 1], path[j]] for j in range(1, len(path))],
-                    },
+                    "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=visited, selected=path[-1], nodes=path, edges=[[path[j - 1], path[j]] for j in range(1, len(path))]),
                 }
             )
             return _sample_timeline(timeline)
 
         if operation_name in {"run_prim", "run_kruskal"} and isinstance(result, dict):
+            exact_timeline = GraphTracePlanner._mst_timeline(
+                operation_name=operation_name,
+                state=after_state,
+                result=result,
+            )
+            if exact_timeline:
+                return _sample_timeline(exact_timeline)
             mst_edges_raw = result.get("mst_edges")
             if not isinstance(mst_edges_raw, list):
                 return [None for _ in range(total_steps)]
@@ -331,6 +390,188 @@ class GraphTracePlanner:
 
     _graph_adjacency_from_state = staticmethod(GraphAlgorithmPlanner.adjacency_from_state)
     _derive_dfs_tree_edges = staticmethod(GraphAlgorithmPlanner.derive_dfs_tree_edges)
+
+    @staticmethod
+    def _shortest_path_timeline(
+        *, operation_name: str, state: dict[str, Any], origin: str, result: dict[str, Any]
+    ) -> list[dict[str, Any]]:
+        """Replay the backend algorithm deterministically and expose every relaxation."""
+        nodes = [str(node.get("id")) for node in state.get("nodes") or [] if isinstance(node, dict)]
+        if not origin or origin not in nodes:
+            return []
+        directed = bool(state.get("directed", False))
+        edges: list[tuple[str, str, float]] = []
+        adjacency: dict[str, list[tuple[str, float]]] = {node: [] for node in nodes}
+        for edge in state.get("edges") or []:
+            if not isinstance(edge, dict):
+                continue
+            source, target = str(edge.get("source")), str(edge.get("target"))
+            weight = float(edge.get("weight", 1))
+            edges.append((source, target, weight))
+            adjacency.setdefault(source, []).append((target, weight))
+            if not directed and source != target:
+                edges.append((target, source, weight))
+                adjacency.setdefault(target, []).append((source, weight))
+        distances: dict[str, float | None] = {node: None for node in nodes}
+        previous: dict[str, str | None] = {node: None for node in nodes}
+        distances[origin] = 0.0
+        timeline: list[dict[str, Any]] = []
+
+        def event(stage: str, note: str, *, selected=None, candidates=None, visited=None, edge=None, iteration=None, old=None, candidate=None, changed=None):
+            return {
+                "stage": stage,
+                "note": note,
+                "graph_progress": {
+                    "mode": "shortest",
+                    "nodes": [node for node, value in distances.items() if value is not None],
+                    "edges": [list(edge)] if edge else [],
+                    "distances": deepcopy(distances),
+                    "previous": deepcopy(previous),
+                    "visited": list(visited or []),
+                    "selected": selected,
+                    "candidates": list(candidates or []),
+                    "iteration": iteration,
+                    "old_distance": old,
+                    "candidate_distance": candidate,
+                    "relaxation_succeeded": changed,
+                },
+            }
+
+        timeline.append(event("init", f"Inicializando distancias desde {origin}.", candidates=[origin], iteration=0))
+        if operation_name == "run_dijkstra":
+            pending = list(nodes)
+            closed: list[str] = []
+            iteration = 0
+            while pending:
+                reachable = [node for node in pending if distances[node] is not None]
+                if not reachable:
+                    break
+                current = min(reachable, key=lambda node: (float(distances[node]), nodes.index(node)))
+                pending.remove(current); iteration += 1
+                timeline.append(event("extract_min", f"Extrayendo mínimo {current}.", selected=current, candidates=pending, visited=closed, iteration=iteration))
+                for neighbor, weight in adjacency.get(current, []):
+                    old = distances.get(neighbor)
+                    candidate = float(distances[current]) + weight
+                    changed = old is None or candidate < old
+                    timeline.append(event("relax_edge", f"Probando {current} -> {neighbor}: {'mejora' if changed else 'sin cambio'}.", selected=current, candidates=[neighbor], visited=closed, edge=(current, neighbor), iteration=iteration, old=old, candidate=candidate, changed=changed))
+                    if changed:
+                        distances[neighbor] = candidate; previous[neighbor] = current
+                        timeline.append(event("update_distance", f"Actualizando distancia y predecesor de {neighbor}.", selected=current, candidates=[neighbor], visited=closed, edge=(current, neighbor), iteration=iteration, old=old, candidate=candidate, changed=True))
+                closed.append(current)
+            timeline.append(event("complete", "Dijkstra finalizado; las distancias cerradas son definitivas.", selected=result.get("end"), visited=closed, iteration=iteration))
+            return timeline
+
+        max_passes = max(0, len(nodes) - 1)
+        for pass_index in range(1, max_passes + 1):
+            changed_in_pass = False
+            for source, target, weight in edges:
+                if distances.get(source) is None:
+                    continue
+                old = distances.get(target); candidate = float(distances[source]) + weight
+                changed = old is None or candidate < old
+                timeline.append(event("relax_edge", f"Pasada {pass_index}: {source} -> {target}, {'mejora' if changed else 'sin cambio'}.", selected=source, candidates=[target], edge=(source, target), iteration=pass_index, old=old, candidate=candidate, changed=changed))
+                if changed:
+                    distances[target] = candidate; previous[target] = source; changed_in_pass = True
+                    timeline.append(event("update_distance", f"Pasada {pass_index}: actualizando {target}.", selected=source, candidates=[target], edge=(source, target), iteration=pass_index, old=old, candidate=candidate, changed=True))
+            if not changed_in_pass:
+                timeline.append(event("early_stop", f"Terminación anticipada en la pasada {pass_index}: no hubo cambios.", iteration=pass_index))
+                break
+        cycle_edge = next(((source, target) for source, target, weight in edges if distances.get(source) is not None and (distances.get(target) is None or float(distances[source]) + weight < float(distances[target]))), None)
+        if cycle_edge:
+            timeline.append(event("detect_negative_cycle", "La pasada adicional aún permite relajar: ciclo negativo alcanzable.", edge=cycle_edge, iteration=max_passes + 1, changed=True))
+        elif not result.get("reachable", False):
+            timeline.append(event("detect_unreachable", "El destino conserva distancia infinita; no es un ciclo negativo.", iteration=max_passes + 1))
+        timeline.append(event("complete", "Bellman-Ford finalizado.", selected=result.get("end"), iteration=max_passes + 1))
+        return timeline
+
+    @staticmethod
+    def _mst_timeline(*, operation_name: str, state: dict[str, Any], result: dict[str, Any]) -> list[dict[str, Any]]:
+        """Produce faithful Prim/Kruskal decisions, including rejected cycle edges."""
+        nodes = [str(node.get("id")) for node in state.get("nodes") or [] if isinstance(node, dict)]
+        raw_edges = [edge for edge in state.get("edges") or [] if isinstance(edge, dict)]
+        edges = [(str(edge.get("source")), str(edge.get("target")), float(edge.get("weight", 1))) for edge in raw_edges]
+        if not nodes or state.get("directed", False):
+            return []
+        timeline: list[dict[str, Any]] = []
+        accepted: list[list[str]] = []
+        total = 0.0
+
+        def event(stage: str, note: str, *, edge=None, selected=None, candidates=None, parents=None, keys=None, ranks=None, roots=None, iteration=0, rejected=False):
+            return {"stage": stage, "note": note, "graph_progress": {
+                "mode": "mst", "nodes": sorted({item for pair in accepted for item in pair}),
+                "edges": deepcopy(accepted), "tree_edges": deepcopy(accepted),
+                "selected": selected, "candidates": list(candidates or []), "iteration": iteration,
+                "active_edge": list(edge[:2]) if edge else None, "edge_weight": edge[2] if edge else None,
+                "total_weight": total, "accepted": not rejected if edge else None, "rejected": rejected,
+                "parents": deepcopy(parents or {}), "ranks": deepcopy(ranks or {}), "roots": deepcopy(roots or {}),
+                "distances": deepcopy(keys or {}), "previous": deepcopy(parents or {}),
+                "components_count": result.get("components_count"), "result_kind": result.get("kind"),
+            }}
+
+        timeline.append(event("init", "Inicializando el bosque de expansión.", iteration=0))
+        if operation_name == "run_prim":
+            incorporated: set[str] = set()
+            start = str(result.get("start") or (nodes[0] if nodes else ""))
+            incorporated.add(start)
+            iteration = 0
+            while len(incorporated) < len(nodes):
+                frontier = [edge for edge in edges if (edge[0] in incorporated) != (edge[1] in incorporated)]
+                if not frontier:
+                    restart = next(node for node in nodes if node not in incorporated)
+                    incorporated.add(restart)
+                    timeline.append(event("restart_component", f"Sin frontera: se inicia otra componente en {restart}.", selected=restart, iteration=iteration))
+                    continue
+                candidate = min(frontier, key=lambda item: item[2]); iteration += 1
+                keys: dict[str, float] = {}; parents: dict[str, str] = {}
+                for node in nodes:
+                    if node in incorporated: continue
+                    options = [(weight, source if target == node else target) for source,target,weight in edges if ((source in incorporated and target == node) or (target in incorporated and source == node))]
+                    if options:
+                        key, parent_node = min(options, key=lambda item: item[0]); keys[node] = key; parents[node] = parent_node
+                timeline.append(event("select_edge", f"La arista mínima de la frontera es {candidate[0]}—{candidate[1]} ({candidate[2]:g}).", edge=candidate, selected=candidate[0], candidates=[f"{a}—{b}:{w:g}" for a,b,w in frontier], parents=parents, keys=keys, iteration=iteration))
+                accepted.append([candidate[0], candidate[1]]); total += candidate[2]
+                incorporated.update((candidate[0], candidate[1]))
+                timeline.append(event("accept_edge", "Se acepta: cruza el corte y no puede formar ciclo.", edge=candidate, selected=candidate[1], candidates=sorted(incorporated), parents=parents, keys=keys, iteration=iteration))
+        else:
+            parent = {node: node for node in nodes}; rank = {node: 0 for node in nodes}
+            def find(node: str) -> str:
+                if parent[node] != node:
+                    parent[node] = find(parent[node])
+                return parent[node]
+            for iteration, candidate in enumerate(sorted(edges, key=lambda item: item[2]), start=1):
+                left_root, right_root = find(candidate[0]), find(candidate[1])
+                roots = {candidate[0]: left_root, candidate[1]: right_root}
+                timeline.append(event("find", f"find({candidate[0]})={left_root}; find({candidate[1]})={right_root}.", edge=candidate, selected=candidate[0], parents=parent, ranks=rank, roots=roots, iteration=iteration))
+                if left_root == right_root:
+                    timeline.append(event("reject_edge", "Se rechaza: ambos extremos ya pertenecen al mismo conjunto y cerraría un ciclo.", edge=candidate, parents=parent, ranks=rank, roots=roots, iteration=iteration, rejected=True))
+                    continue
+                if rank[left_root] < rank[right_root]: left_root, right_root = right_root, left_root
+                parent[right_root] = left_root
+                if rank[left_root] == rank[right_root]: rank[left_root] += 1
+                accepted.append([candidate[0], candidate[1]]); total += candidate[2]
+                timeline.append(event("union", f"union enlaza {right_root} bajo {left_root}.", edge=candidate, selected=left_root, parents=parent, ranks=rank, roots={node: find(node) for node in nodes}, iteration=iteration))
+                timeline.append(event("accept_edge", "Se acepta sin crear ciclo.", edge=candidate, parents=parent, ranks=rank, iteration=iteration))
+        expected_edges = max(0, len(nodes) - int(result.get("components_count") or 1))
+        valid = len(accepted) == expected_edges and abs(total - float(result.get("total_weight", total))) < 1e-9
+        timeline.append(event("complete", f"{result.get('kind', 'mst')}: {len(accepted)} aristas, peso {total:g}; validación {'correcta' if valid else 'fallida'}.", iteration=len(timeline)))
+        return timeline
+
+    @staticmethod
+    def _edge_weight(state: dict[str, Any], source: str, target: str) -> float | None:
+        directed = bool(state.get("directed", False))
+        for edge in state.get("edges") or []:
+            if not isinstance(edge, dict):
+                continue
+            edge_source = str(edge.get("source"))
+            edge_target = str(edge.get("target"))
+            if (edge_source == source and edge_target == target) or (
+                not directed and edge_source == target and edge_target == source
+            ):
+                try:
+                    return float(edge.get("weight", 1))
+                except (TypeError, ValueError):
+                    return None
+        return None
 
     @staticmethod
     def _derive_bfs_tree_edges(path: list[str], adjacency: dict[str, list[str]]) -> list[list[str]]:

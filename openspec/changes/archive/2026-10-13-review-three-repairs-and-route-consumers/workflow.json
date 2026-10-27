@@ -1,0 +1,117 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-three-repairs-and-route-consumers",
+  "operation": "audit.three-repairs-and-route-consumers-independent-qa",
+  "roles": {
+    "specifications": {
+      "enabled": false,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "code": {
+      "enabled": false,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": false,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "documentation": {
+      "enabled": false,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs",
+    "tests",
+    "scripts",
+    "openspec/specs",
+    "openspec/changes/archive",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/review-global-application-quality",
+    "openspec/changes/review-three-repairs-and-route-consumers/proposal.md",
+    "openspec/changes/review-three-repairs-and-route-consumers/design.md",
+    "openspec/changes/review-three-repairs-and-route-consumers/tasks.md",
+    "openspec/changes/review-three-repairs-and-route-consumers/workflow.json",
+    "openspec/changes/review-three-repairs-and-route-consumers/approval.json",
+    "openspec/changes/review-three-repairs-and-route-consumers/review-freeze.json",
+    "openspec/changes/review-three-repairs-and-route-consumers/source-package.zip",
+    "openspec/changes/review-three-repairs-and-route-consumers/selection-proposal.json",
+    "openspec/changes/review-three-repairs-and-route-consumers/QA18-gap-disposition.json",
+    "openspec/changes/review-three-repairs-and-route-consumers/route-reuse-current-sha.json"
+  ],
+  "tasks": {
+    "three-repairs-and-route-consumers-independent-qa": {
+      "objective": "Independent14IDthreefix+routeconsumer acceptance preserving originalQA18gaps, no globalrestart",
+      "role": "quality",
+      "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+      "requirements": [
+        "openspec/changes/audit-local-quality-and-unified-controls/specs/application-quality-audit/spec.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/specs/visual-playback-ui/spec.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/three-reviewed-repairs-canonical-adoption-plan-low.md"
+      ],
+      "base": [
+        "openspec/changes/review-three-repairs-and-route-consumers/design.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/approval.json",
+        "openspec/changes/review-three-repairs-and-route-consumers/review-freeze.json",
+        "openspec/changes/review-three-repairs-and-route-consumers/selection-proposal.json",
+        "openspec/changes/review-three-repairs-and-route-consumers/QA18-gap-disposition.json",
+        "openspec/changes/review-three-repairs-and-route-consumers/route-reuse-current-sha.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-three-reviewed-repairs-canonical-low/adoption-report.json",
+        "openspec/changes/review-global-application-quality/evidence/independent-review/original-freeze-release-20261004T2335.md",
+        "openspec/changes/review-global-application-quality/evidence/independent-review/three-candidate-source-review-20261004T2341.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/review.md",
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/checks-report.json"
+      ],
+      "documentation": [
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/review-three-repairs-and-route-consumers/evidence/independent-review/review-evidence.json"
+      ],
+      "checks": [
+        "independent-review"
+      ],
+      "next_step": "Verifyfreeze, ownbefore, exact14IDselection+documentary/fullstateassertions, verify/after; coordinatoracceptance, no selfclose/global18claim",
+      "state": "pending",
+      "approval": "openspec/changes/review-three-repairs-and-route-consumers/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

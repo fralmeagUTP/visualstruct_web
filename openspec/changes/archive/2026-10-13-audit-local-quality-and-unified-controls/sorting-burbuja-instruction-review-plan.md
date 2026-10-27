@@ -1,0 +1,23 @@
+# Burbuja mejorada: MEDIUM acotado propuesto desde LOW
+
+Preparacion concreta; no implementacion causal autorizada futura sin nueva instruccion. Hay exactamente una variante registrada: burbuja/Burbuja mejorada/ordenar_burbuja en C/H/catalogo/API/DOM. Sin burbuja simple, doble direccion ni metodo nuevo. Kruskal contiene burbuja interna sobre arcos, no comparte tipo ni UI ni contrato con sorting_array; excluir Grafos y sus decisiones numericas.
+
+## Baseline y ajuste LOW
+
+Siete <=4: [7],[1,2,3,4],[4,3,2,1],[2,2,2],[-3,0,-1,0],[INT_MAX,INT_MIN,0],[2,1,3,4].330observacionesC/100framesactuales,230eventos sin representar/79frames localsincompletos. Dos guardas C n0/NULL21observaciones separadas del rechazo API/UIvacio. Resultado/comparaciones/swaps/parada temprana coinciden7/7; pasadas0/1/3/1/2/2/2,sin parada temprana solo single/reverse. Inicialmente4casos con swaps reportaban moves0 vsC; ajuste sencillo LOW optionalcount_moves=True solo en Burbuja mide cada temp/writeA/writeB(3por swap),30moves/10swaps/24comparisons totalesde7cases. DefaulthelperFalse preserva comportamiento previo en otros metodos; no afirmar fidelidad causal por contador. Baseline antes/despues y C/JSONLidenticos quedan en evidence/visible-sorting-burbuja-baseline-low.
+
+## Orden C y criterios MEDIUM
+
+Declarar pasada/j size_t sin inicializar e int hubo_intercambio sin inicializar; helper arreglo_valido calls/scopes/cortocircuito. Exterior pasada=0,test pasada+1<n; bandera=0 al entrar cada cuerpo; interior j=0,test j+1<n-pasada,++j y prueba falsa. Comparar vecinos arreglo[j]>arreglo[j+1] sin alterar indices ni anticipar flag. Si verdadero llamar intercambiar: caller for interno suspendido,aliasdosvecinos distintos,temp int sin inicializar/guard false,temp=*a,*a=*b,*b=temp,retirarhelperlocal yresumircaller; soloDESPUES hubo_intercambio=1. Valores duplicados en arreglo intermedio reales,flag puede ser0 duranteprimerhelpero1duranteotrohelpermismapasada. Cuando no mayor,no helper ni bandera1. Baseline tambien detecta20frameshelper con b:null en call_stack durante swap_temp/swap_assign_a aunque b apunta al vecino real; pointerview conserva vecino. Usar alias reales para parametros, nunca inferirlos de un highlight parcial; screenshot reverse parcial confirma el defecto.
+
+Tras falso forinterno,j conserva el valorlimite n-pasada-1(sin leerj+1);hubo_intercambio conserva0/1. Evaluar !hubo_intercambio:si true,break termina exterior SIN ++pasada ni outer_test falso inventados; confirmararray completo solo en parada demostrada/finalretorno. Si false,cierreexterior,++pasada,ytest. pasadasingle init0/testfalse noflag ni j inicializados. Variables j/bandera tienen scopefuncion y conservan ultimo valor entre pasadas hasta nuevo j=0/flag=0; no retirarlas al cerrar cuerpo. Sufijo confirmado definitivo despuesde pasada completada, sin adelantarprefijofuturo. En sortreturnretirarindices/bandera/callstack,preservearray final,noTADprintf.
+
+## Implementacion propuesta acotada
+
+Modulo burbuja_instructions.py opt-in, source map enfunciones C reales y lexicals; adaptar typed_framepresentacionreusable convariables pasada/j/flag/temporal yloops/stop/break propias. ContextoUI explicitopasada/flag/frontera/vecinos,replayambossentidosarrayreal+helperalias/temporal/condicion/sourcehighlight. FastconservatraceparacambiomodossinPOST. Reutilizarobserver tests/_audit_burbuja_baseline.py yextractor common; contrato nuevo330eventos sin reducir. tests/test_sorting_burbuja_baseline_low.py siete regresiones causales sinxfail debenresolver,counterLOW no debilitarlas. Reusarpartialhelpernative/C deIntercambio/Seleccion como infraestrutura,nosuscierres. No cambiar los3moduloscerrados ni algoritmosC/H/generadormain;optionalLOWcounterpuederetirarsesolocondecisiondocumentadanormalcuandomodulodedicadocontadorescubranmismaevidencia.
+
+UIactualrepresentative3historiasordered/reverse/early_after_swap y4mainsinclvacioC17/Doxygen0;futureampliarotras4mismasentradaspara330restauracioncompleta,nopretenderestabaselinecierre. Ccallerarrayautomatico/0reservas,noallocationfailure ni taggedstability. Guardas/limites/rawNULLobservadosaparte;comparativosearlyafter swap debe detener segunda pasada conflag0 y sin otraintercambiar. NumericosGrafos aparte.
+
+## Continuidad
+
+NecesitanuevaasignacionMEDIUMsorting.burbuja-instructions yguarda before; no escoger desdecheckpointnireutilizarIDbaselinecerrado. Al terminarsemantica devolverLOW yafterreport; preservar logs/evidencia/progresoporfuentes. Intercambio/Seleccion/Insercion3cierresfinitos,8metodospendientesinclBurbuja;global13/22/docs121/208+87sin cambios. Cinco secciones/5051,no push/merge/despliegue,ningunmetodonuevo/archivoauditoriaglobal.

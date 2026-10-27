@@ -1,0 +1,26 @@
+{
+  "schema": "continuity-archive-map-collection/v1",
+  "maps": [
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/add-session-continuity-guard/",
+      "archive_prefix": "openspec/changes/archive/2026-10-02-add-session-continuity-guard/",
+      "input_overrides": {},
+      "meaning": "This change was already archived2026-10-02. Retire stale operational entry, preserve historical metadata; not a new closure."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/adopt-local-role-documentation-example/",
+      "archive_prefix": "openspec/changes/archive/2026-10-02-adopt-local-role-documentation-example/",
+      "input_overrides": {},
+      "meaning": "This change was already archived2026-10-02. Retire stale operational entry, preserve historical metadata; not a new closure."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/extend-continuity-role-workflow/",
+      "archive_prefix": "openspec/changes/archive/2026-10-02-extend-continuity-role-workflow/",
+      "input_overrides": {},
+      "meaning": "This change was already archived2026-10-02. Retire stale operational entry, preserve historical metadata; not a new closure."
+    }
+  ]
+}

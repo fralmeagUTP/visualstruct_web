@@ -1,0 +1,9 @@
+# Mostrar Pila/Cola: baseline LOW independiente
+
+Asignación coordination-stack-queue-show-baseline-low-20261003/opstack-queue.mostrar-baseline-low. Nueva instrucción de coordinación01a0fe61-3104-743a-b032-bcc289ad80cd autoriza baseline, no fixes/cierre ni exposición API/UI. Recuperar sólo evidencia histórica con C/H actual idéntico ytargetMostrar explícito; contar IDs/resultados separados. C/H yproducto protegido,preview5051propio17652/19748,no tocarRNdelpropietariodocumental. Sin nuevas suitescerradas/AISEF/Graphalgorithmedits/publicación.
+
+Capturar contratos reales de pila_mostrar(ptrPila p) ycola_mostrar(structCola q): void, recorrido readonly conauxlocal/guardas/printf diferentes. Casesindependientes vacía,single,LIFO/FIFO,múltiples,duplicados,-1/INT_MIN/MAX, yColaprivadafront-only/rear-only inicializados fueraAPIinvariant. Tipos/scope/roots/nro/sgte/consoleexacta/0allocfree/readonly/progress yreturn sin fakeint. Oráculo nativoC17 seguro con nodosautomáticos inicializados/asserts;sin UB niNULLqstructpointer inventado. ExaminarrawPython,adapterunsupported/serviceprivate trace yrechazo400 sinfakeCsteps. No haymostrarregistered/APIresult hasta evidencia contraria,no inventarlo.
+
+BaselinepermanenteIDs fuertes sinxfail/suppression, conservarfails. Browsermínimo ambosTADsconestado/history/catálogo/five sections reales yrejection/reload, actualcallers sólo siMostrarentra realmente enmains; reusepriorcallershaseexactos antes repetirC17/ownership/Dox. Recursos separados por método/privatevsrejected. Snapshot producto inicial/canonicaldownloadC_H/documentaciónactual. CheckpointantesMEDIUM;map7permanecehasta cierresindependientesLOW posteriores.
+
+La confirmación actualusuario resuelve pesosenterosrepresentables yreglasCdeDijkstra; prepararreconciliaciónGraph siguienteasignación,sinreinterpretardecisionesBellmanFordnoresueltas. No editararchivosRNni ampliararnés.

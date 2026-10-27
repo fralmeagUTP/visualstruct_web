@@ -1,0 +1,156 @@
+{
+  "change": "resolve-didactic-stack-c1-residuals",
+  "task_dispositions": [],
+  "requirements": [
+    {
+      "capability": "application-quality-audit",
+      "requirement": "Asignación explícita a casos ejecutables",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/application-quality-audit/spec.md"
+    },
+    {
+      "capability": "application-quality-audit",
+      "requirement": "User-approved timing scope and informative Sorting performance",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/application-quality-audit/spec.md"
+    },
+    {
+      "capability": "application-quality-audit",
+      "requirement": "Limited Rojo-negro validator remains a global closure finding",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/application-quality-audit/spec.md"
+    },
+    {
+      "capability": "application-quality-validation",
+      "requirement": "Inventario exhaustivo y verificable",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/application-quality-validation/spec.md"
+    },
+    {
+      "capability": "application-quality-validation",
+      "requirement": "Cobertura funcional de todos los módulos",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/application-quality-validation/spec.md"
+    },
+    {
+      "capability": "application-quality-validation",
+      "requirement": "Fidelidad C, estado y traza",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/application-quality-validation/spec.md"
+    },
+    {
+      "capability": "application-quality-validation",
+      "requirement": "Calidad no funcional y reporte",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/application-quality-validation/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-remediation",
+      "requirement": "Un único contrato ejecutable por operación",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/didactic-conformance-remediation/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-remediation",
+      "requirement": "Aritmética y memoria definidas en los límites",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/didactic-conformance-remediation/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-remediation",
+      "requirement": "Contrato coherente para grafos",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/didactic-conformance-remediation/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-remediation",
+      "requirement": "Contrato coherente para hash y secuenciales",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/didactic-conformance-remediation/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-remediation",
+      "requirement": "Estado visual causado por eventos C",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/didactic-conformance-remediation/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-remediation",
+      "requirement": "Consola derivada de ejecución",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/didactic-conformance-remediation/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-remediation",
+      "requirement": "Cierre verificable de los hallazgos QA",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/didactic-conformance-remediation/spec.md"
+    },
+    {
+      "capability": "sequential-structures",
+      "requirement": "Descripción exacta de inserción en primera posición",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/sequential-structures/spec.md"
+    },
+    {
+      "capability": "sequential-structures",
+      "requirement": "Fragmento printf de eliminación simple",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/sequential-structures/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Pestañas accesibles del piloto Pila",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/visual-playback-ui/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Memoria causal de Desapilar exitoso",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/visual-playback-ui/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Educación jerárquica en cinco etapas",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/visual-playback-ui/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Controles separados de ejecutar y reproducir en secuenciales",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/visual-playback-ui/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Disposición de controles de simulación",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/resolve-didactic-stack-c1-residuals/specs/visual-playback-ui/spec.md"
+    }
+  ],
+  "evidence": {
+    "finite_C1_verdict": {
+      "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+      "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+    },
+    "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+    "reserves": [
+      "noLSan",
+      "finiteonly/no universalpaths",
+      "BFS8onlytiming",
+      "privatequeriesunpublished",
+      "noGitHubVPSupdates"
+    ]
+  },
+  "new_tests": 0,
+  "technical_new_defects_demonstrated": 0,
+  "supersessions": [
+    "eightstages→five",
+    "hashtext/rehash→integerfixedcapacity",
+    "repeat/sliders7direct+pause1dependent→retiredNOT_PASS/manualcapabilitiesretained",
+    "old13fullinstrumenteduniversalclaim→approvedfinitewitnesses/gates",
+    "oldC1partial→12/12finite",
+    "Graphpuretime→plainfullHTTPBFS8measurement"
+  ]
+}

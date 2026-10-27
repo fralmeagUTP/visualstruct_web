@@ -43,7 +43,7 @@ class LinkedListAdapter(BaseAdapter):
             return {"message": f"Se inserto '{valor}' en la posicion base {posicion_ui}."}
         if op == "eliminar_primero":
             op = "eliminar_elemento"
-        elif op in {"buscar_posiciones", "primero", "ultimo", "invertir"}:
+        elif op in {"buscar_posiciones", "primero", "ultimo"}:
             # Compatibilidad legacy: se mantiene sin mostrar en UI.
             pass
 
@@ -54,6 +54,8 @@ class LinkedListAdapter(BaseAdapter):
             changed = self._structure.insertar_elemento(posicion_ui, valor, desplazamiento)
             if not changed:
                 return {"message": "Error...Posicion no encontrada..!"}
+            if posicion_ui == 1:
+                return {"message": f"Se inserto '{valor}' al inicio de la lista (posicion 1)."}
             lugar = "antes" if desplazamiento < 0 else "despues"
             return {"message": f"Se inserto '{valor}' {lugar} de la posicion {posicion_ui}."}
         if op == "insertar_inicio":
@@ -112,9 +114,6 @@ class LinkedListAdapter(BaseAdapter):
                 "message": f"Se elimino '{valor}' en la posicion {posicion_ui}.",
                 "result": valor,
             }
-        if op == "invertir":
-            self._structure.invertir()
-            return {"message": "La lista se invirtio correctamente."}
         if op == "primero":
             valor = self._structure.primero()
             return {"message": f"El primer elemento es '{valor}'.", "result": valor}
@@ -238,7 +237,6 @@ class LinkedListAdapter(BaseAdapter):
                     {"name": "position", "label": "Posicion", "type": "number", "min": 1}
                 ],
             },
-            {"name": "invertir", "label": "Invertir (legacy)", "mutates": True, "hidden": True, "inputs": []},
             {"name": "primero", "label": "Primero (legacy)", "mutates": False, "hidden": True, "inputs": []},
             {"name": "ultimo", "label": "Ultimo (legacy)", "mutates": False, "hidden": True, "inputs": []},
         ]

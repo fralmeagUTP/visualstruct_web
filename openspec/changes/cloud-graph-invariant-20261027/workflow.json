@@ -1,0 +1,133 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "/workspace/scratch/644977913e22/visualstruct_reparacion_20261027/app",
+  "change": "cloud-graph-invariant-20261027",
+  "operation": "graph-edge-allocation",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar s\u00f3lo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisi\u00f3n distinta del autor; reproducir comprobaciones y declarar l\u00edmites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar dise\u00f1o visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y l\u00edmites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "static",
+    "templates",
+    "scripts",
+    "openspec/changes/archive"
+  ],
+  "tasks": {
+    "code": {
+      "objective": "Parche m\u00ednimo de extremos existentes ante fallo malloc, manteniendo API",
+      "role": "code",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-graph-invariant-20261027/specs/graph-invariants/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-graph-invariant-20261027/scope.md",
+        "openspec/changes/cloud-graph-invariant-20261027/proposal.md",
+        "openspec/changes/cloud-graph-invariant-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "docs/tads_C/tad_grafo.c",
+        "docs/tads_C/tad_grafo.h",
+        "app/domain/graph/construction_instruction.py",
+        "qa/graph_edge_allocation.c",
+        "qa/test_graph_edge_allocation.py",
+        "openspec/changes/cloud-graph-invariant-20261027/evidence/code"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "docs/tads_C/tad_grafo.c",
+        "docs/tads_C/tad_grafo.h",
+        "app/domain/graph/construction_instruction.py",
+        "qa/graph_edge_allocation.c",
+        "qa/test_graph_edge_allocation.py"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-graph-invariant-20261027/evidence/code/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-graph-invariant-20261027/evidence/code/tests.json",
+        "openspec/changes/cloud-graph-invariant-20261027/evidence/code/independent.json"
+      ],
+      "checks": [
+        "isolated-harness-tests"
+      ],
+      "next_step": "C\u00f3digo revisado; coordinar reinicio5053 y verificar UI grafos antes cierre familia.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-graph-invariant-20261027/evidence/code/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "quality": {
+      "objective": "Parche m\u00ednimo de extremos existentes ante fallo malloc, manteniendo API",
+      "role": "quality",
+      "owner": "auditar_trazas_visualstruct",
+      "requirements": [
+        "openspec/changes/cloud-graph-invariant-20261027/specs/graph-invariants/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-graph-invariant-20261027/scope.md",
+        "openspec/changes/cloud-graph-invariant-20261027/proposal.md",
+        "openspec/changes/cloud-graph-invariant-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-graph-invariant-20261027/evidence/quality"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-graph-invariant-20261027/evidence/quality/review.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-graph-invariant-20261027/evidence/quality/review.md"
+      ],
+      "evidence": [],
+      "checks": [
+        "independent-review"
+      ],
+      "next_step": "Aplicar/checks reales y revisi\u00f3n independiente; no cerrado",
+      "state": "pending",
+      "approval": "openspec/changes/cloud-graph-invariant-20261027/evidence/quality/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

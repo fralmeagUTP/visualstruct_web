@@ -1,0 +1,5 @@
+# Graph observed invariant repair1 LOW
+
+Parent01a0fe61 authorizesfixofrejectedGraphoracle: realinstruction_event-to-step/source/recordedledger/memorycorrespondence andphase-applicable mandatorymemoryfields, exactQA fabricated-emptycounterexample +decouplingnegatives, preservinglegitimateCtransientstates/False rejection andfullfinal/source/continuityassertions. No product/C/Sortingchanges/optimization/broadcampaign. Ownsmall3v tracesunderhard2GiB120s freshbeforebeforeJob/Popen, newdistinctQArepairbinding beforehandoff. Preserveoriginalrejectedsourcevariants/verdict and21PASSnotclosure. Earlieraccepted8filesalready7630e77published; no oraclepublicationuntilindependentacceptance.
+
+- [x] graph-observed-invariant-repair1: genuineevent/source/ledger/memorycontract, negativecounterexamples, focalproof andnewQAidentity.

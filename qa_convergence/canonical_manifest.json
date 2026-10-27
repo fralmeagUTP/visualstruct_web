@@ -1,0 +1,16 @@
+[
+  {
+    "file": "docs/tads_C/tad_grafo.c",
+    "sha256": "13c1bd9ae77ee91fb32aa72ba09f8c33e4d063dd29d3cea4358d23486c3fcc0a",
+    "canonical_source": "/workspace/scratch/644977913e22/auditoria_libro_c_20261027/book_graph/tad_grafo.c",
+    "bytes": 18713,
+    "policy": "Exact book extraction; do not edit to fit interpreter"
+  },
+  {
+    "file": "docs/tads_C/tad_grafo.h",
+    "sha256": "b7bc7f3a97e49e0f61e2d34d111bfe3b69abdad7440210309da3dc6c8c81c80a",
+    "canonical_source": "/workspace/scratch/644977913e22/auditoria_libro_c_20261027/book_graph/tad_grafo.h",
+    "bytes": 2108,
+    "policy": "Exact book extraction; do not edit to fit interpreter"
+  }
+]

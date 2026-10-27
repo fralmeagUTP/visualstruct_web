@@ -1,0 +1,39 @@
+{
+  "executed": false,
+  "authorization": "Plan only; coordinator/user must explicitly authorize rollback. QA may review recovery, not perform it.",
+  "recoverable_baseline": "Prior independently accepted992 revision, with educational30 policy preserved",
+  "files": [
+    {
+      "destination": "app/domain/graph/bfs_instruction.py",
+      "candidate_sha256": "3cc2bb8ecf3afaff63e4453b1e7acb92e1d304458537f6a17e3fab61c67a5a65",
+      "baseline": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/before/app/domain/graph/bfs_instruction.py",
+      "baseline_sha256": "911973086da03102865347a160a48f1332f66afa363676253bcbc2d819265128"
+    },
+    {
+      "destination": "app/domain/graph/snapshot_pool.py",
+      "candidate_sha256": "d0ff8f7be064cd496edb2922b18ac0cdce9ebc6e72f7401de795179d863e5fe3",
+      "baseline": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/before/app/domain/graph/snapshot_pool.py",
+      "baseline_sha256": "fc9732c4d1b7c9e58be16ddf3cea2722345c06f701d07ba6fa7bd1558ed286f2"
+    },
+    {
+      "destination": "app/routes/graph_routes.py",
+      "candidate_sha256": "53300fe6d64379971076a59af284a7daae58cb1a4441642535c6a8e24f9e1cbe",
+      "baseline": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/before/app/routes/graph_routes.py",
+      "baseline_sha256": "ad87ef89db91f2bbf5512b1812ba12f75e6685227c3b3e26417b2849f0e540d6"
+    }
+  ],
+  "introduced_test": {
+    "path": "tests/test_graph_bfs_revision_cache_regression.py",
+    "candidate_sha256": "19fde142888deb5f9b1f3ff42ccfb5b6aa501d26460467d4a323e5e1a7d2d05b",
+    "baseline": "absent",
+    "action_if_explicitly_authorized": "preserve candidate copy first, then remove only this exact new file with currentSHA verified; no glob deletion"
+  },
+  "procedure": [
+    "Obtain explicit rollback instruction; register new continuity assignment/decision and before guard. No rollback in this review.",
+    "Verify canonical D and all candidate/baseline SHA; stop on drift, do not overwrite concurrent edits. Preserve candidateZIP/freeze and current copies.",
+    "Restore only three listed app files from SHA-bound accepted992 copies; remove only introduced test after preservation and hash check. No Git reset/checkout, no C/H/history/cache/otherfile deletion.",
+    "Compare all original992 product hashes to accepted freeze; preserve current educational30 guards and all documentation. Record delta and invalidate993 as active candidate without deleting evidence.",
+    "Choose minimal existing focal30/legacy/equivalence/DOM checks under new authorization; report known42.578s historical performance stillFAIL and coverage stillpending. Do not pretend rollback fixes5s.",
+    "Read/verify preview identity before any separately authorized refresh; never touch5051/histories as a side effect. Run after and hand off scoped state."
+  ]
+}

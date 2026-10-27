@@ -1,0 +1,3 @@
+# ClicmainGraph
+
+Parentautoriza ajuste mínimo disposicióneventos para mainGraph yregresiones clic/teclado reales120s2GiB sinforce. Resolver sólolinkclick,norestaurar/excluir funcionespedagógicas. Resumirdecision12capacidades/30pendientes concontratosfuente. Fuenteissue review122-mouse-gap.json;oldmouseFAILevidencenuevaautorizareparación yretestexacto,nocampañaglobal. Privatecache/browser;C,sesiones y5051intactos.

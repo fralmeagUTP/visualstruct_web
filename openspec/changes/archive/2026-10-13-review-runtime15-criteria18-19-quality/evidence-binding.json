@@ -1,0 +1,24 @@
+{
+  "inputs": {
+    "openspec/changes/audit-local-quality-and-unified-controls/runtime15-user-approved-decision-low.md": "d5385690bdc373a46e06d67fee76ab0b038dccc7a12c1e4acfe74a82862a5b4f",
+    "openspec/changes/audit-local-quality-and-unified-controls/runtime15-authorized-contrast25-low.md": "3c664459a244d8add9e3799278139b86683489f279ed66a49ce37d50e36b1ef9",
+    "openspec/changes/audit-local-quality-and-unified-controls/runtime15-performance-acta-low.md": "6e0108d8062bef01e656e9d57890edf4423d3e83da83ec324a9bb230efb97a29",
+    "openspec/changes/audit-local-quality-and-unified-controls/criteria11-12-16-finite-QA-acceptance-acta-low.md": "ce11a9e91bcff0b16abf41043e86c9cbb5ed4d5cfeb6cfe42ba68fe28dfcf597",
+    "openspec/changes/audit-local-quality-and-unified-controls/tasks.md": "6bdee1f9678d9e217e71617f4c005a78251a505821815ba7a341a1fa972b1252",
+    "openspec/changes/audit-local-quality-and-unified-controls/specs/graph-structures/spec.md": "76373f8c493ad4faa8d1c646c49cfec553e9f8d3c0c4651dcc5c3a3c6a3b8b82",
+    "openspec/changes/audit-local-quality-and-unified-controls/specs/application-quality-audit/spec.md": "4d6834f2cc563b214a946f56107794318ad91f00df9428c6c76a96b0791c758e",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-runtime15-authorized-contrast25-low/report.md": "2b3d4942902fd5a291ba09f68c32c058f24bfd988153b1a4a018325141263046",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-runtime15-authorized-contrast25-low/existing-measurements15-contrast.json": "c910de3f7ec3eeefe90094bd31ae0fded6dc02f98b27ede6b5a422befb97c7d5",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-runtime15-authorized-contrast25-low/authorized-documentary-deltas.json": "c1e78d83fab741121ea2d15319f5ba08fe848942f7cf1e5502eacc86d92518f2",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-runtime15-authorized-contrast25-low/user-delivery19-runtime15.md": "a2a775d339ab52167eb6d8f48bfbb4b659a74bce16d48f7dbb82c20a86d3bbe2",
+    "app/domain/graph/bfs_instruction.py": "3cc2bb8ecf3afaff63e4453b1e7acb92e1d304458537f6a17e3fab61c67a5a65",
+    "app/routes/sorting_routes.py": "2cc6f075ec8f03d2edc5f09707474d6c55768a6277b1a98555676c9f93327be2",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-BFS-structural-isolated-prototype45-low/http_pair/canonical_baseline-plain-result.json": "af1c98feab8bddba9fefc45e5ee725bdff87516768ebe6d59d74d272c6c678a7",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-BFS-structural-isolated-prototype45-low/http-pair-selection-before.json": "dbcd81d8f15f88c41214b658688198fec38718e463a68754930fdb6472e370c1",
+    "openspec/changes/review-final-coverage535-sorting-runner-quality/evidence/independent-review/review.md": "a83b7a84b7996e3df11463dd71ab8e035540d8a813fdafdcb8e27869c75656fd",
+    "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review-delta306/review.md": "ab3c18fc7332af859039cacbb6f52876d08832767da48b8e9d213615ebb4d529",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-runtime15-authorized-contrast25-low/review-input-manifest.json": "a473be2dcb68a5252f0b0ddd87492e0b1b74564b4dba720e48205a63b34700af"
+  },
+  "source_manifest": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-runtime15-authorized-contrast25-low/review-input-manifest.json",
+  "scope": "Only authorized new15s documentary criteria18/19; sourcehash BFS matches, not fullcurrentpipeline timing proof."
+}

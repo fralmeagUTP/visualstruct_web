@@ -1,0 +1,14 @@
+{
+  "global_minimum": 83.0,
+  "components": {
+    "app/domain/sorting/tad_ordenamiento.py": 85.0,
+    "app/domain/graph/tad_grafo.py": 85.0,
+    "app/domain/hash/tad_tabla_hash.py": 85.0,
+    "app/domain/hierarchical/tad_monticulo_binario.py": 85.0
+  },
+  "authoritative_script": "scripts/check_coverage_gates.py",
+  "SHA": "ae98879b29595a05b1da3df6fa9bb59804136f50e22e2c9027398a53215ea970",
+  "required": "Currentmeasurementorvalidreusableprovenance; completeallappdenominator/includescurrentnewmodels/knownsourceSHA/cwd/tool/commands/testIDs/coverageJSON; fourcomponentsmustbepresent. Running actualgate script isrequired. Partial/focalcoverage isneverpassedglobalgate.",
+  "historical": "91.32historicalJSON remainsqualified untilsource/cwdprovenance verified; originalinterruptedcovempty, notnewmeasurement",
+  "efficient_strategy": "Reviewerfirstinspectexistingcoverageprovenance andsource+dependency validity; ifinsufficient choose smallestexplicitapplicablecoverage selection withbudget/commands/outcomes, no4542restart andneverinstrumentperformance; ifgatecannotverifyreportblockedtruthfully, coordinatebeforeexpanding selection"
+}

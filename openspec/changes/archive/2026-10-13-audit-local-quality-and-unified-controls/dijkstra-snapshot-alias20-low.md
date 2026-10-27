@@ -1,0 +1,3 @@
+# Dijkstra snapshot mutability and alias diagnosis
+
+Coordinator 01a0fe61-3104-743a-b032-bcc289ad80cd authorizes maximum20minutes from first action: inspect SnapshotPool.intern and Dijkstra ownership/mutation/alias/cycle/free paths, reuse rejected BFS prototype evidence. Small isolated unit checks only, no largeHTTP or further benchmark. No canonical product adoption/modification. Isolated correction only if exact equivalence and dominant-cost applicability proven; otherwise report concrete proposal before broadening. Do not generalize to other Graph algorithms. Own operational registration/evidence only; no Git/preview.

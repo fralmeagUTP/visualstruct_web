@@ -1,0 +1,9 @@
+# Pila apilar: revisión acotada de trazabilidad autorizada
+
+ID exacto: `stack.apilar.instructions` Motivo exacto: Falta SHA final previo a la desconexion para vincular30tests al codigo final
+
+Nueva autorización coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: antesencolar confirmarSHAhistórico faltante/claimlimitado/evidenciaalternativa;siqueda huecoreal hacerpruebaafectadaacotada(no suiteentera)ocalificacierre,noinferirigualdadsóloporfechas.
+
+Falta manifestSHAfinal de seisproducto justoantes/después30pass:stack_push_instruction,stack_push_session_service,execution_trace_service,sequential_routes,sequential.js,base.html. Sí haySHAC/H/callers compilados ybaselineprotegido; manifiestosrecuperados posteriores no prueban cryptográficamente quéseisfuentes ejecutaron30tests. Se limita claim retrospectivo30testsrepresentanexactocódigofinal.
+
+Alcance:capturarSHAantes/después, comparador actualAPI/helper14calls124events contraoracleCseguroreutilizado sinrerunC;browserúnicofixturevacío(dospushes/dosvistas/reload/main)conrenderer/routeactual;fuenteactualHTTPcuatrohistoriassamebuilderhash. No30suite ni otrasoperaciones ni cambiosproducto. Conservarresultadosprevios;qualificarrestoUIhistórico/noSHAprevio. Registrarresultado yafter; luegoassignencolarbefore. Cierreapilar no seelude conotroID,noampliarcontratos/reimplementar.

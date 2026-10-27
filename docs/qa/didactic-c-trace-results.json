@@ -1,0 +1,3646 @@
+{
+  "schema": "didactic-c-trace-audit/v1",
+  "scope": {
+    "structures": 13,
+    "operations": 120
+  },
+  "summary": {
+    "findings": 29,
+    "severity": {
+      "critical": 1,
+      "high": 28,
+      "medium": 0,
+      "low": 0
+    },
+    "priority": {
+      "P0": 1,
+      "P1": 14,
+      "P2": 14
+    },
+    "generated_sequences": 5000,
+    "new_generated_failures": 0
+  },
+  "operation_results": [
+    {
+      "structure_id": "stack",
+      "operation": "apilar",
+      "c_function": "pila_apilar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "STACK-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/STACK-002.json"
+      ]
+    },
+    {
+      "structure_id": "stack",
+      "operation": "desapilar",
+      "c_function": "pila_desapilar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "stack",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "queue",
+      "operation": "encolar",
+      "c_function": "cola_encolar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "queue",
+      "operation": "desencolar",
+      "c_function": "cola_desencolar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "queue",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "priority_queue",
+      "operation": "encolar",
+      "c_function": "cp_encolar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "PRIORITY-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/PRIORITY-001.json"
+      ]
+    },
+    {
+      "structure_id": "priority_queue",
+      "operation": "desencolar",
+      "c_function": "cp_desencolar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "priority_queue",
+      "operation": "frente",
+      "c_function": "cp_frente",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "PRIORITY-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/PRIORITY-002.json"
+      ]
+    },
+    {
+      "structure_id": "priority_queue",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "insertar_inicio",
+      "c_function": "lista_insertar_inicio",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "insertar_final",
+      "c_function": "lista_insertar_final",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "lista_insertar_elemento",
+      "c_function": "lista_insertar_elemento",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "eliminar_elemento",
+      "c_function": "lista_eliminar_elemento",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "eliminar_repetidos",
+      "c_function": "lista_eliminar_repetidos",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "buscar_elemento",
+      "c_function": "lista_buscar_elemento",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "mostrar",
+      "c_function": "lista_mostrar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "insertar_posicion",
+      "c_function": "lista_insertar_elemento",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "insertar_elemento",
+      "c_function": "lista_insertar_elemento",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "eliminar_primero",
+      "c_function": "lista_eliminar_inicio",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "buscar_posiciones",
+      "c_function": "lista_buscar_elemento",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "eliminar_inicio",
+      "c_function": "lista_eliminar_inicio",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "eliminar_final",
+      "c_function": "lista_eliminar_final",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "eliminar_posicion",
+      "c_function": "lista_eliminar_posicion",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "LINKED-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/LINKED-001.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "invertir",
+      "c_function": "lista_invertir",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "LINKED-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/LINKED-001.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "primero",
+      "c_function": "lista_primero",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "LINKED-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/LINKED-001.json"
+      ]
+    },
+    {
+      "structure_id": "linked_list",
+      "operation": "ultimo",
+      "c_function": "lista_ultimo",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "LINKED-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/LINKED-001.json"
+      ]
+    },
+    {
+      "structure_id": "circular_list",
+      "operation": "insertar_inicio",
+      "c_function": "lcir_insertar_inicio",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "CIRCULAR-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/CIRCULAR-001.json"
+      ]
+    },
+    {
+      "structure_id": "circular_list",
+      "operation": "insertar_final",
+      "c_function": "lcir_insertar_final",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "CIRCULAR-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/CIRCULAR-001.json"
+      ]
+    },
+    {
+      "structure_id": "circular_list",
+      "operation": "eliminar_inicio",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "circular_list",
+      "operation": "eliminar_primero",
+      "c_function": "lcir_eliminar_primero",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "circular_list",
+      "operation": "buscar_posiciones",
+      "c_function": "lcir_buscar_posiciones",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "circular_list",
+      "operation": "invertir",
+      "c_function": "lcir_invertir",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "circular_list",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sublist",
+      "operation": "insertar_padre",
+      "c_function": "sublista_insertar_padre_final",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "SUBLIST-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/SUBLIST-001.json"
+      ]
+    },
+    {
+      "structure_id": "sublist",
+      "operation": "insertar_hijo",
+      "c_function": "sublista_insertar_hijo_final",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sublist",
+      "operation": "eliminar_padre",
+      "c_function": "sublista_eliminar_padre_primero",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sublist",
+      "operation": "eliminar_hijo",
+      "c_function": "sublista_eliminar_hijo_primero",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sublist",
+      "operation": "hijos_de",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sublist",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "failed",
+      "finding_ids": [
+        "SUBLIST-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/SUBLIST-002.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "insertar",
+      "c_function": "abb_insertar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "eliminar",
+      "c_function": "abb_eliminar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "ABB-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/ABB-001.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "buscar",
+      "c_function": "abb_buscar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "minimo",
+      "c_function": "abb_encontrarMinimo",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "maximo",
+      "c_function": "abb_encontrarMaximo",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "altura",
+      "c_function": "abb_altura",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "contar_hojas",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "inorden",
+      "c_function": "abb_inorden",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "preorden",
+      "c_function": "abb_preorden",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "postorden",
+      "c_function": "abb_postorden",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "validar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "abb",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "insertar",
+      "c_function": "avl_insertar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "AVL-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/AVL-001.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "eliminar",
+      "c_function": "avl_eliminar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "buscar",
+      "c_function": "avl_buscar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "minimo",
+      "c_function": "avl_minimo",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "maximo",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "altura",
+      "c_function": "avl_altura",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "inorden",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "validar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "avl",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "red_black",
+      "operation": "insertar",
+      "c_function": "rbt_insertar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "RBT-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/RBT-001.json"
+      ]
+    },
+    {
+      "structure_id": "red_black",
+      "operation": "eliminar",
+      "c_function": "rbt_eliminar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "RBT-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/RBT-002.json"
+      ]
+    },
+    {
+      "structure_id": "red_black",
+      "operation": "buscar",
+      "c_function": "rbt_buscar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "red_black",
+      "operation": "inorden",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "red_black",
+      "operation": "altura",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "red_black",
+      "operation": "validar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "red_black",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "binary_heap",
+      "operation": "insertar",
+      "c_function": "monticulo_insertar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "HEAP-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/HEAP-001.json"
+      ]
+    },
+    {
+      "structure_id": "binary_heap",
+      "operation": "extraer_raiz",
+      "c_function": "monticulo_extraer_raiz",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "binary_heap",
+      "operation": "raiz",
+      "c_function": "monticulo_raiz",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "binary_heap",
+      "operation": "a_lista",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "binary_heap",
+      "operation": "limpiar",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "create_graph",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "failed",
+      "finding_ids": [
+        "GRAPH-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/GRAPH-002.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "generate_random_graph",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "insert_vertex",
+      "c_function": "grafo_insertar_vertice",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "remove_vertex",
+      "c_function": "grafo_eliminar_vertice",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "insert_edge",
+      "c_function": "grafo_insertar_arco",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "GRAPH-001",
+        "GRAPH-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/GRAPH-001.json",
+        "docs/qa/findings/GRAPH-002.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "remove_edge",
+      "c_function": "grafo_eliminar_arco",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "exists_vertex",
+      "c_function": "grafo_existe_vertice",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "exists_edge",
+      "c_function": "grafo_existe_arco",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "list_vertices",
+      "c_function": "grafo_vertices",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "list_edges",
+      "c_function": "grafo_arcos",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "neighbors",
+      "c_function": "grafo_sucesores",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "edge_weight",
+      "c_function": "grafo_costo_arco",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "run_bfs",
+      "c_function": "grafo_bfs",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "GRAPH-003"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/GRAPH-003.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "run_dfs",
+      "c_function": "grafo_dfs",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "GRAPH-003"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/GRAPH-003.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "run_dijkstra",
+      "c_function": "grafo_dijkstra",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "GRAPH-004",
+        "GRAPH-005"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/GRAPH-004.json",
+        "docs/qa/findings/GRAPH-005.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "run_bellman_ford",
+      "c_function": "grafo_bellman_ford",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "GRAPH-005"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/GRAPH-005.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "run_prim",
+      "c_function": "grafo_prim",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "GRAPH-006"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/GRAPH-006.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "run_kruskal",
+      "c_function": "grafo_kruskal",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "GRAPH-006"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/GRAPH-006.json"
+      ]
+    },
+    {
+      "structure_id": "graph",
+      "operation": "clear_graph",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "create_table",
+      "c_function": "th_inicializar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "insert",
+      "c_function": "th_insertar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "HASH-001",
+        "HASH-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/HASH-001.json",
+        "docs/qa/findings/HASH-002.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "get",
+      "c_function": "th_buscar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "contains",
+      "c_function": "th_contiene",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "remove",
+      "c_function": "th_eliminar",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "HASH-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/HASH-002.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "keys",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "values",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "items",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "stats",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "hash_table",
+      "operation": "clear",
+      "c_function": "th_vaciar",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "create_array",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "generate_random_array",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "select_algorithm",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "run",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "step",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "reset",
+      "c_function": null,
+      "mapping_status": "unmapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "intercambio",
+      "c_function": "ordenar_intercambio",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "seleccion",
+      "c_function": "ordenar_seleccion",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "insercion",
+      "c_function": "ordenar_insercion",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "burbuja",
+      "c_function": "ordenar_burbuja",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "shell",
+      "c_function": "ordenar_shell",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "quicksort",
+      "c_function": "ordenar_quicksort",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "SORT-001"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/SORT-001.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "mergesort",
+      "c_function": "ordenar_mergesort",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "SORT-002"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/SORT-002.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "heapsort",
+      "c_function": "ordenar_heapsort",
+      "mapping_status": "mapped",
+      "result": "passed",
+      "finding_ids": [],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "counting_sort",
+      "c_function": "ordenar_counting_sort",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "SORT-004"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/SORT-004.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "binsort",
+      "c_function": "ordenar_binsort",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "SORT-002",
+        "SORT-004"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/SORT-002.json",
+        "docs/qa/findings/SORT-004.json"
+      ]
+    },
+    {
+      "structure_id": "sorting_array",
+      "operation": "radixsort",
+      "c_function": "ordenar_radixsort",
+      "mapping_status": "mapped",
+      "result": "failed",
+      "finding_ids": [
+        "SORT-003"
+      ],
+      "evidence": [
+        "docs/qa/didactic-c-trace-inventory.json",
+        "docs/qa/generated-audit-v1.json",
+        "docs/qa/findings/SORT-003.json"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "ABB-001",
+      "structure_id": "abb",
+      "operation": "eliminar",
+      "input": {
+        "before": [
+          2,
+          [
+            1,
+            null,
+            null
+          ],
+          [
+            3,
+            null,
+            null
+          ]
+        ],
+        "value": 2
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_abb.c:abb_eliminar",
+          "state": {
+            "shape": [
+              2,
+              [
+                1,
+                null,
+                null
+              ],
+              [
+                3,
+                null,
+                null
+              ]
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_abb.c:nodo->valor=temp->valor",
+          "state": {
+            "shape": [
+              3,
+              [
+                1,
+                null,
+                null
+              ],
+              [
+                3,
+                null,
+                null
+              ]
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_abb.c:recursive successor delete",
+          "state": {
+            "shape": [
+              3,
+              [
+                1,
+                null,
+                null
+              ],
+              null
+            ]
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:TreeTraceStrategy",
+          "state": {
+            "shape": [
+              2,
+              [
+                1,
+                null,
+                null
+              ],
+              [
+                3,
+                null,
+                null
+              ]
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:TreeTraceStrategy",
+          "state": {
+            "shape": [
+              3,
+              [
+                1,
+                null,
+                null
+              ],
+              null
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "La traza visual omite el estado temporal donde el valor del sucesor ya fue copiado pero el nodo sucesor aún no ha sido eliminado.",
+      "probable_cause": "TreeTraceStrategy conmuta directamente entre before_state y after_state en un único mutation_boundary.",
+      "location": "app/services/trace/strategies.py:TreeTraceStrategy.build_boundaries",
+      "recommended_test": "Eliminar una raíz con dos hijos y exigir el snapshot duplicado tras nodo->valor=temp->valor antes de la eliminación recursiva.",
+      "suggested_fix": "Consumir snapshots de asignación y free del oráculo recursivo, preservando identidades lógicas distintas aunque temporalmente compartan valor. No se modifica código funcional durante esta auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "AVL-001",
+      "structure_id": "avl",
+      "operation": "insertar",
+      "input": {
+        "before": [
+          30,
+          [
+            10,
+            null,
+            null
+          ],
+          null
+        ],
+        "value": 20,
+        "rotation": "LR/RDD"
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_avl.c:avl_insertar",
+          "state": {
+            "shape": [
+              30,
+              [
+                10,
+                null,
+                null
+              ],
+              null
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_avl.c:padre->der=nuevo",
+          "state": {
+            "shape": [
+              30,
+              [
+                10,
+                null,
+                [
+                  20,
+                  null,
+                  null
+                ]
+              ],
+              null
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_avl.c:avl_RSI(r,B)",
+          "state": {
+            "shape": [
+              30,
+              [
+                20,
+                [
+                  10,
+                  null,
+                  null
+                ],
+                null
+              ],
+              null
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_avl.c:avl_RSD(r,A)",
+          "state": {
+            "shape": [
+              20,
+              [
+                10,
+                null,
+                null
+              ],
+              [
+                30,
+                null,
+                null
+              ]
+            ]
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:TreeTraceStrategy",
+          "state": {
+            "shape": [
+              30,
+              [
+                10,
+                null,
+                null
+              ],
+              null
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:TreeTraceStrategy",
+          "state": {
+            "shape": [
+              30,
+              [
+                10,
+                null,
+                [
+                  20,
+                  null,
+                  null
+                ]
+              ],
+              null
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:TreeTraceStrategy",
+          "state": {
+            "shape": [
+              20,
+              [
+                10,
+                null,
+                null
+              ],
+              [
+                30,
+                null,
+                null
+              ]
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "Las rotaciones dobles LR y RL saltan del árbol desequilibrado al árbol final; no visualizan los enlaces, alturas ni factores de equilibrio producidos por la primera rotación simple.",
+      "probable_cause": "TreeTraceStrategy reconoce cualquier llamada avl_R* como un único punto de transición y sólo sintetiza un estado intermedio de inserción, aunque avl_RDD y avl_RDI ejecutan dos rotaciones.",
+      "location": "app/services/trace/strategies.py:TreeTraceStrategy.build_boundaries",
+      "recommended_test": "Insertar 30,10,20 y 10,30,20; exigir un frame por cada llamada interna RSI/RSD con raíz, enlaces, alturas y factores calculados en ese instante.",
+      "suggested_fix": "Alimentar la traza con snapshots del oráculo dentro de cada rotación simple y recalcular metadatos visuales por frame, preservando las identidades lógicas de los tres nodos. No se modifica código funcional durante esta auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "CIRCULAR-001",
+      "structure_id": "circular_list",
+      "operation": "insertar_inicio/insertar_final",
+      "input": {
+        "before": [],
+        "value": 7
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_lista_circular.c:lcir_insertar_inicio",
+          "state": {
+            "items": [
+              7
+            ],
+            "tail_next": "head",
+            "self_loop": true
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "static/js/sequential.js:drawCircularLoop",
+          "state": {
+            "items": [
+              7
+            ],
+            "tail_next": "head",
+            "self_loop": true
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_lista_circular.c:lcir_insertar_inicio",
+          "state": {
+            "items": [
+              7
+            ],
+            "tail_next": "head",
+            "self_loop": true
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "static/js/sequential.js:drawCircularLoop",
+          "state": {
+            "items": [
+              7
+            ],
+            "loop_drawn": false
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El renderer no dibuja el autoenlace del único nodo aunque C establece nuevo->sgte = nuevo; visualmente la estructura deja de parecer circular.",
+      "probable_cause": "drawCircularLoop retorna cuando nodes.length < 2 y renderLinearWithHeadTail solo crea el host del lazo con más de un item.",
+      "location": "static/js/sequential.js:drawCircularLoop; renderLinearWithHeadTail",
+      "recommended_test": "Insertar el primer nodo y comprobar mediante DOM/SVG que existe una flecha desde el nodo hacia sí mismo; repetir tras eliminar hasta quedar uno.",
+      "suggested_fix": "Dibujar un arco de autoenlace para un nodo y mantener las etiquetas HEAD/COLA sobre la misma entidad lógica. No se modifica código funcional durante esta auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "GRAPH-001",
+      "structure_id": "graph",
+      "operation": "insert_edge",
+      "input": {
+        "operations": [
+          [
+            "insert_edge",
+            1,
+            2,
+            5
+          ],
+          [
+            "insert_edge",
+            1,
+            2,
+            7
+          ]
+        ],
+        "initial_vertices": []
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "tad_grafo.c:grafo_insertar_arco",
+          "state": {
+            "vertices": [],
+            "edges": [
+              [
+                1,
+                2,
+                5
+              ]
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "c",
+          "source_location": "tad_grafo.c:grafo_insertar_arco",
+          "state": {
+            "vertices": [],
+            "edges": [
+              [
+                1,
+                2,
+                5
+              ],
+              [
+                1,
+                2,
+                7
+              ]
+            ]
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "backend",
+          "source_location": "app/domain/graph/tad_grafo.py:grafo_insertar_arco",
+          "state": {
+            "vertices": [
+              1,
+              2
+            ],
+            "edges": [
+              [
+                1,
+                2,
+                5
+              ]
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/graph/tad_grafo.py:grafo_insertar_arco",
+          "state": {
+            "vertices": [
+              1,
+              2
+            ],
+            "edges": [
+              [
+                1,
+                2,
+                7
+              ]
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "Python crea automáticamente los extremos ausentes y actualiza una arista repetida; el C enlaza cada arco sin validar extremos ni duplicados.",
+      "probable_cause": "La transcripción Python añadió normalización y reglas de integridad que no existen en grafo_insertar_vertice/grafo_insertar_arco del C.",
+      "location": "app/domain/graph/tad_grafo.py:grafo_insertar_vertice y grafo_insertar_arco",
+      "recommended_test": "Insertar un arco en grafo vacío y repetir el mismo par con otro peso; comparar vértices, cantidad, orden y pesos contra el harness C.",
+      "suggested_fix": "Definir un único contrato: o endurecer el C y mostrar ese nuevo C, o retirar la normalización Python. La visualización debe consumir exactamente el estado resultante del contrato elegido. No se modifica código funcional durante la auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "GRAPH-002",
+      "structure_id": "graph",
+      "operation": "create_graph/insert_edge",
+      "input": {
+        "directed": false,
+        "edge": [
+          1,
+          2,
+          2.75
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "tad_grafo.h:Grafo",
+          "state": {
+            "directed": true,
+            "weight_type": "int"
+          }
+        },
+        {
+          "step": 1,
+          "layer": "c",
+          "source_location": "tad_grafo.c:grafo_insertar_arco",
+          "state": {
+            "edge": [
+              1,
+              2,
+              2
+            ]
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "GraphAdapter.create_graph",
+          "state": {
+            "directed": false
+          }
+        },
+        {
+          "step": 1,
+          "layer": "console",
+          "source_location": "GraphAdapter.insert_edge",
+          "state": {
+            "reported_weight": 2.75
+          }
+        },
+        {
+          "step": 2,
+          "layer": "visual",
+          "source_location": "GraphAdapter.to_visual_state",
+          "state": {
+            "edge": [
+              1,
+              2,
+              2.0
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "La aplicación ofrece grafos no dirigidos y pesos decimales sobre un C exclusivamente dirigido con costo int; además, la consola conserva 2.75 mientras el estado interno/visual lo trunca a 2.0.",
+      "probable_cause": "GraphAdapter amplió el contrato con dirigido y float, pero el wrapper convierte el peso mediante int(w) antes de llamar a la transcripción del TAD C.",
+      "location": "app/adapters/graph_adapter.py y app/domain/graph/tad_wrappers.py:Grafo.insertar_arista",
+      "recommended_test": "Crear dirigido/no dirigido e insertar pesos 2.75, negativos y extremos; exigir igualdad entre mensaje, historial, estado interno, visual y parámetro int del C.",
+      "suggested_fix": "Restringir la UI al contrato C o extender formalmente el TAD C con dirección y un tipo de peso coherente; nunca informar el valor previo a la conversión como si hubiera sido almacenado. No se modifica código funcional durante la auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "GRAPH-003",
+      "structure_id": "graph",
+      "operation": "run_bfs/run_dfs",
+      "input": {
+        "directed_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "start": 1
+      },
+      "expected": [
+        {
+          "layer": "c",
+          "source_location": "grafo_bfs/grafo_dfs_recursivo",
+          "state": {
+            "returned_list": [
+              3,
+              2,
+              1
+            ]
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "backend",
+          "source_location": "app/domain/graph/tad_grafo.py",
+          "state": {
+            "returned_list": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El C antepone cada visita a recorrido y devuelve la lista inversa; Python construye y presenta el orden de visita directo.",
+      "probable_cause": "La transcripción sustituyó tmp->sig=recorrido por acumulación append y _build_vertices_list en orden directo.",
+      "location": "app/domain/graph/tad_grafo.py:grafo_bfs y grafo_dfs_recursivo",
+      "recommended_test": "Ejecutar la cadena dirigida 1->2->3 y comparar por separado orden de visita y lista retornada C.",
+      "suggested_fix": "Aclarar si la API debe mostrar visitas o retorno; si interpreta el C, reproducir el prepend o corregir el C mostrado. No se modifica código funcional durante la auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "GRAPH-004",
+      "structure_id": "graph",
+      "operation": "run_dijkstra",
+      "input": {
+        "edges": [
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            1,
+            3,
+            -5
+          ]
+        ],
+        "start": 1,
+        "end": 3
+      },
+      "expected": [
+        {
+          "layer": "c",
+          "source_location": "grafo_dijkstra:costo>=0",
+          "state": {
+            "path": [
+              1,
+              2,
+              3
+            ],
+            "cost": 3,
+            "negative_edge": "ignored"
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "backend",
+          "source_location": "Grafo._validar_pesos_no_negativos",
+          "state": {
+            "result": "error before algorithm"
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El C omite aristas negativas durante la relajación; el backend rechaza el grafo completo antes de ejecutar Dijkstra.",
+      "probable_cause": "El wrapper añadió una precondición global que no existe en grafo_dijkstra.",
+      "location": "app/domain/graph/tad_wrappers.py:Grafo.dijkstra",
+      "recommended_test": "Combinar una ruta positiva válida con una arista negativa y contrastar error, ramas y camino contra C.",
+      "suggested_fix": "Unificar la política de pesos inválidos y reflejarla tanto en C como en la traza y la consola. No se modifica código funcional durante la auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "GRAPH-005",
+      "structure_id": "graph",
+      "operation": "run_dijkstra/run_bellman_ford",
+      "input": {
+        "path": [
+          1,
+          2,
+          3
+        ],
+        "weights": [
+          4,
+          1
+        ]
+      },
+      "expected": [
+        {
+          "layer": "c",
+          "source_location": "relaxation loops",
+          "state": {
+            "temporaries": [
+              "dist",
+              "prev",
+              "visitado",
+              "u",
+              "v",
+              "nueva_dist"
+            ]
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "frontend",
+          "source_location": "GraphTracePlanner",
+          "state": {
+            "graph_progress": [
+              "nodes",
+              "edges"
+            ],
+            "temporary_tables": "absent"
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "La traza resalta una ruta derivada del resultado final, pero no muestra distancias tentativas, predecesores, visitados ni el efecto real de cada relajación.",
+      "probable_cause": "GraphTracePlanner muestrea una línea temporal sintética basada en path y no en snapshots de los vectores C.",
+      "location": "app/services/trace/graph_trace_planner.py:_build_graph_debug_steps",
+      "recommended_test": "Exigir tablas dist/prev/visitado después de cada relajación y compararlas con el oráculo para Dijkstra y Bellman-Ford, incluido ciclo negativo.",
+      "suggested_fix": "Transportar eventos de inicialización, selección y relajación del harness con sus vectores canónicos. No se modifica código funcional durante la auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "GRAPH-006",
+      "structure_id": "graph",
+      "operation": "run_prim/run_kruskal",
+      "input": {
+        "vertices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "edges": [
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            3,
+            2
+          ]
+        ],
+        "disconnected": true
+      },
+      "expected": [
+        {
+          "layer": "c",
+          "source_location": "grafo_prim/grafo_kruskal",
+          "state": {
+            "result_edges": 2,
+            "directed_guard": false
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "backend",
+          "source_location": "Grafo.prim/kruskal",
+          "state": {
+            "result_edges": 2,
+            "connected_status": "absent",
+            "directed": "rejected"
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El backend bloquea grafos dirigidos aunque el C ejecuta ambos algoritmos sin esa guarda; en desconectados devuelve un bosque parcial pero lo presenta como árbol sin advertir que no abarca todos los vértices.",
+      "probable_cause": "Las restricciones del wrapper no forman parte del C y el resultado público carece de connected/components/spanning.",
+      "location": "app/domain/graph/tad_wrappers.py y app/adapters/graph_adapter.py",
+      "recommended_test": "Ejecutar Prim/Kruskal en dirigido y desconectado; exigir cobertura V-1 o una clasificación explícita como bosque parcial.",
+      "suggested_fix": "Formalizar la guarda en C y exponer conectividad/componentes; visualizar candidatos, visitados y union-find por instrucción. No se modifica código funcional durante la auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "HASH-001",
+      "structure_id": "hash_table",
+      "operation": "insert",
+      "input": {
+        "initial_capacity": 3,
+        "entries": [
+          [
+            "a",
+            "1"
+          ],
+          [
+            "b",
+            "2"
+          ],
+          [
+            "c",
+            "3"
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_tabla_hash.c:75",
+          "state": {
+            "capacity": 3,
+            "rehash": false
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/hash/tad_wrappers.py:59",
+          "state": {
+            "capacity": 3,
+            "rehash": false
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_tabla_hash.c:75",
+          "state": {
+            "capacity": 3,
+            "rehash": false
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/hash/tad_wrappers.py:59",
+          "state": {
+            "capacity": 7,
+            "rehash": true
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El backend redimensiona automáticamente al superar 0.75, pero el TAD C interpretado conserva una capacidad fija y no implementa rehash.",
+      "probable_cause": "La política _redimensionar fue añadida al wrapper Python sin una función o bloque C equivalente.",
+      "location": "app/domain/hash/tad_wrappers.py:_redimensionar; docs/tads_C/tad_tabla_hash.c:th_insertar",
+      "recommended_test": "Ejecutar tres inserciones con capacidad 3 y comparar capacidad y buckets del oráculo C, backend, traza y visualización después de cada inserción.",
+      "suggested_fix": "Definir una única semántica: implementar rehash en el TAD C y trazar sus pasos, o retirar el redimensionamiento automático del wrapper y de la visualización. No se modifica código funcional durante esta auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "HASH-002",
+      "structure_id": "hash_table",
+      "operation": "insert/search/remove",
+      "input": {
+        "capacity": 17,
+        "key": "A",
+        "value": "1"
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_tabla_hash.c:39",
+          "state": {
+            "key_type": "int",
+            "index_rule": "key % capacity",
+            "deterministic": true
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/hash/tad_wrappers.py:34",
+          "state": {
+            "key_type": "int",
+            "index_rule": "key % capacity",
+            "deterministic": true
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_tabla_hash.c:39",
+          "state": {
+            "key_type": "int",
+            "index_rule": "key % capacity",
+            "deterministic": true
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/hash/tad_wrappers.py:34",
+          "state": {
+            "key_type": "text",
+            "index_rule": "python_hash(key) % capacity",
+            "deterministic": false
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "La interfaz acepta claves de texto y calcula el bucket con hash() de Python, cuyo resultado cambia entre procesos; el C mostrado acepta enteros y usa clave % capacidad.",
+      "probable_cause": "El wrapper convierte claves genéricas en identificadores enteros mediante hash() sin definir en C la misma conversión ni fijar una función reproducible.",
+      "location": "app/adapters/hash_table_adapter.py:_require_key; app/domain/hash/tad_wrappers.py:_indice; docs/tads_C/tad_tabla_hash.c:th_indice",
+      "recommended_test": "Ejecutar las mismas claves de texto en procesos con semillas hash diferentes y comparar bucket, colisiones, traza e imagen final contra el índice del código C.",
+      "suggested_fix": "Restringir la UI a claves enteras o definir e implementar la misma función hash determinista para texto en C y Python, mostrando sus pasos y resultado. No se modifica código funcional durante esta auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "HEAP-001",
+      "structure_id": "binary_heap",
+      "operation": "insertar",
+      "input": {
+        "before": [
+          2,
+          5,
+          3
+        ],
+        "value": 1
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_monticulo_binario.c:150",
+          "state": {
+            "values": [
+              2,
+              5,
+              3
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_monticulo_binario.c:163",
+          "state": {
+            "values": [
+              2,
+              5,
+              3,
+              1
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_monticulo_binario.c:113",
+          "state": {
+            "values": [
+              2,
+              1,
+              3,
+              5
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_monticulo_binario.c:113",
+          "state": {
+            "values": [
+              1,
+              2,
+              3,
+              5
+            ]
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:162",
+          "state": {
+            "values": [
+              2,
+              5,
+              3
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:162",
+          "state": {
+            "values": [
+              2,
+              5,
+              3
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:162",
+          "state": {
+            "values": [
+              2,
+              5,
+              3
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:162",
+          "state": {
+            "values": [
+              1,
+              2,
+              3,
+              5
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El modo paso a paso omite el append temporal y los intercambios de sift-up; congela el heap y salta al estado final.",
+      "probable_cause": "TreeTraceStrategy reutiliza una transición genérica basada en SequenceMatcher en lugar de consumir estados emitidos por las instrucciones del heap.",
+      "location": "app/services/trace/strategies.py:TreeTraceStrategy.build_heap_boundaries",
+      "recommended_test": "Insertar 1 sobre [2,5,3] y exigir exactamente [2,5,3,1], [2,1,3,5] y [1,2,3,5], con árbol reconstruido en cada límite.",
+      "suggested_fix": "Generar eventos de append, comparación e intercambio desde monticulo_insertar/heapify_up y hacer que la visualización consuma esos snapshots en orden. No se modifica código funcional durante esta auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "LINKED-001",
+      "structure_id": "linked_list",
+      "operation": "invertir/primero/ultimo/eliminar_posicion",
+      "input": {
+        "values": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_lista.h",
+          "state": {
+            "operations_backed_by_c": true
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/sequential/tad_wrappers.py:ListaEnlazada",
+          "state": {
+            "same_algorithm_as_c": true
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_lista.h",
+          "state": {
+            "operations_backed_by_c": false
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/sequential/tad_wrappers.py:ListaEnlazada",
+          "state": {
+            "operations_implemented_only_in_python": [
+              "invertir",
+              "primero",
+              "ultimo",
+              "eliminar_posicion"
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "Varias operaciones ejecutables por el adapter no tienen función ni algoritmo equivalente en el TAD C mostrado, por lo que no pueden interpretarse fielmente instrucción por instrucción.",
+      "probable_cause": "El wrapper amplió el TAD para compatibilidad legacy sin ampliar el contrato C ni sus mapas de código.",
+      "location": "app/domain/sequential/tad_wrappers.py:ListaEnlazada; docs/tads_C/tad_lista.h",
+      "recommended_test": "Para cada operación publicada exigir una función C mapeada, compilable, y comparar sus snapshots con backend/traza; fallar si se usa default_operation.",
+      "suggested_fix": "Implementar y declarar las operaciones faltantes en C o retirarlas del contrato ejecutable; después mapearlas explícitamente y generar trazas desde ese C. No se modifica código funcional durante esta auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "PRIORITY-001",
+      "structure_id": "priority_queue",
+      "operation": "encolar",
+      "input": {
+        "items": [
+          [
+            100,
+            5
+          ],
+          [
+            200,
+            1
+          ],
+          [
+            300,
+            3
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_cola_prioridad.c:cp_encolar",
+          "state": {
+            "items": [
+              [
+                100,
+                5
+              ],
+              [
+                200,
+                1
+              ],
+              [
+                300,
+                3
+              ]
+            ],
+            "dequeue_scan_result": 200
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/sequential/tad_cola_prioridad.py:cp_encolar",
+          "state": {
+            "items": [
+              [
+                100,
+                5
+              ],
+              [
+                200,
+                1
+              ],
+              [
+                300,
+                3
+              ]
+            ],
+            "dequeue_scan_result": 200
+          }
+        },
+        {
+          "step": 2,
+          "layer": "frontend",
+          "source_location": "app/adapters/priority_queue_adapter.py:to_visual_state",
+          "state": {
+            "items": [
+              [
+                100,
+                5
+              ],
+              [
+                200,
+                1
+              ],
+              [
+                300,
+                3
+              ]
+            ],
+            "out_index": 1
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_cola_prioridad.c:cp_desencolar",
+          "state": {
+            "items": [
+              [
+                100,
+                5
+              ],
+              [
+                200,
+                1
+              ],
+              [
+                300,
+                3
+              ]
+            ],
+            "algorithm": "linear scan on dequeue",
+            "result": 200
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/sequential/tad_cola_prioridad.py:cp_encolar",
+          "state": {
+            "items": [
+              [
+                200,
+                1
+              ],
+              [
+                300,
+                3
+              ],
+              [
+                100,
+                5
+              ]
+            ],
+            "algorithm": "ordered insertion then pop front",
+            "result": 200
+          }
+        },
+        {
+          "step": 2,
+          "layer": "frontend",
+          "source_location": "app/adapters/priority_queue_adapter.py:to_visual_state",
+          "state": {
+            "items": [
+              [
+                100,
+                5
+              ],
+              [
+                200,
+                1
+              ],
+              [
+                300,
+                3
+              ]
+            ],
+            "out_index": 1
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "C conserva enlaces por llegada y busca la prioridad mínima durante dequeue O(n); Python inserta ordenado y hace dequeue del frente. Coinciden en salida, pero ejecutan y trazan algoritmos distintos.",
+      "probable_cause": "La transcripción Python cambió la estrategia de cp_encolar/cp_desencolar manteniendo solo equivalencia del resultado final; el adapter añadió una lista auxiliar para reconstruir llegada.",
+      "location": "docs/tads_C/tad_cola_prioridad.c:cp_encolar; app/domain/sequential/tad_cola_prioridad.py:cp_encolar; app/adapters/priority_queue_adapter.py:to_visual_state",
+      "recommended_test": "Encolar prioridades 5,1,3 y exigir que backend/traza recorran los candidatos en orden de llegada como cp_desencolar C, elijan 200 y preserven estabilidad; repetir con empates e INT_MIN/INT_MAX.",
+      "suggested_fix": "Transcribir fielmente append en cp_encolar y búsqueda lineal en cp_desencolar, usando una sola fuente de estado para backend y visualización. No se modifica código funcional durante esta auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "PRIORITY-002",
+      "structure_id": "priority_queue",
+      "operation": "frente",
+      "input": {
+        "items": [
+          [
+            100,
+            5
+          ],
+          [
+            200,
+            1
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "app/services/c_code_service.py:_build_priority_queue_data",
+          "state": {
+            "front_semantics": "next item to dequeue",
+            "value": 200
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "app/services/c_code_service.py:_build_priority_queue_data",
+          "state": {
+            "front_semantics": "first linked item copied",
+            "value": 100
+          }
+        },
+        {
+          "step": 1,
+          "layer": "backend",
+          "source_location": "app/domain/sequential/tad_wrappers.py:ColaPrioridad.frente",
+          "state": {
+            "front_semantics": "next item to dequeue",
+            "value": 200
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El snippet C de frente copia el primer nodo enlazado, pero el backend retorna el elemento de mayor prioridad que será desencolado; pueden ser valores distintos.",
+      "probable_cause": "El TAD C no expone cp_frente y el snippet derivado usa cp_copiar_items sin reproducir el recorrido selector de cp_desencolar.",
+      "location": "app/services/c_code_service.py:_build_priority_queue_data",
+      "recommended_test": "Con (100,p5),(200,p1), exigir frente=200 en C derivado, backend, consola y frontend sin mutar la cola.",
+      "suggested_fix": "Añadir cp_frente que reutilice la misma selección estable de cp_desencolar sin liberar el nodo y mapear el panel a esa función. No se modifica código funcional durante esta auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "QUEUE-001",
+      "structure_id": "queue",
+      "operation": "frente/final",
+      "input": {
+        "values_front_to_rear": [
+          10,
+          20
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_cola.c:122",
+          "state": {
+            "front_call": "cola_frente(cola)",
+            "front": 10
+          }
+        },
+        {
+          "step": 1,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_cola.h:Cola",
+          "state": {
+            "rear_expression": "cola.atras->nro",
+            "rear": 20
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "app/services/c_code_service.py:253",
+          "state": {
+            "call": "cola_copiar_valores",
+            "declared": false
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "app/services/c_code_service.py:263",
+          "state": {
+            "call": "cola_copiar_valores",
+            "declared": false
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El panel afirma que cola_frente no existe aunque está implementada, y tanto frente como final llaman cola_copiar_valores, símbolo inexistente que impide compilar los snippets.",
+      "probable_cause": "Los snippets derivados quedaron desactualizados respecto al TAD C y no se validan contra sus símbolos públicos.",
+      "location": "app/services/c_code_service.py:CCodeService._build_queue_data",
+      "recommended_test": "Compilar cada snippet contra tad_cola.h/c y exigir cola_frente para frente y una lectura segura de atras para final.",
+      "suggested_fix": "Extraer cola_frente directamente del C y añadir cola_final al TAD o mostrar una expresión válida con control de cola vacía. No se modifica código funcional durante esta auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "RBT-001",
+      "structure_id": "red_black",
+      "operation": "insertar",
+      "input": {
+        "sequence": [
+          10,
+          5,
+          15,
+          1
+        ],
+        "case": "uncle red"
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "tad_rojo_negro.c:padre->izq=actual",
+          "state": {
+            "colors_preorder": [
+              "BLACK",
+              "RED",
+              "RED",
+              "RED"
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "c",
+          "source_location": "tad_rojo_negro.c:n->padre->rbt_color=NEGRO",
+          "state": {
+            "colors_preorder": [
+              "BLACK",
+              "BLACK",
+              "RED",
+              "RED"
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "layer": "c",
+          "source_location": "tad_rojo_negro.c:t->rbt_color=NEGRO",
+          "state": {
+            "colors_preorder": [
+              "BLACK",
+              "BLACK",
+              "RED",
+              "BLACK"
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "layer": "c",
+          "source_location": "tad_rojo_negro.c:a->rbt_color=ROJO",
+          "state": {
+            "root_color": "RED"
+          }
+        },
+        {
+          "step": 4,
+          "layer": "c",
+          "source_location": "tad_rojo_negro.c:rbt_insercion_caso1",
+          "state": {
+            "root_color": "BLACK"
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "TreeTraceStrategy:rbt_insercion_caso1(actual,arbol)",
+          "state": {
+            "colors_preorder": [
+              "BLACK",
+              "BLACK",
+              "RED",
+              "BLACK"
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "TreeAlgorithmPlanner:internal color assignments",
+          "state": "unchanged final state"
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "La visualización aplica todos los recoloreos al invocar el fix-up, antes de ejecutar las asignaciones C que cambian cada color.",
+      "probable_cause": "TreeTraceStrategy sólo conserva el árbol insertado y el estado final; TreeAlgorithmPlanner expande las líneas internas sin aportar snapshots mutables por asignación.",
+      "location": "app/services/trace/strategies.py:TreeTraceStrategy.build_boundaries",
+      "recommended_test": "Insertar 10,5,15,1 y exigir un cambio de color exactamente en cada asignación del caso 3 y del caso 1 recursivo.",
+      "suggested_fix": "Generar estados desde el modelo RN del planificador después de cada asignación y rotación, en lugar de conmutar al after_state en la llamada. No se modifica código funcional durante la auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "RBT-002",
+      "structure_id": "red_black",
+      "operation": "eliminar",
+      "input": {
+        "sequence": [
+          7,
+          3,
+          18,
+          10,
+          22,
+          8,
+          11,
+          26
+        ],
+        "remove": 3
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "tad_rojo_negro.c:search loop",
+          "state": {
+            "visited": [
+              7,
+              3
+            ]
+          }
+        },
+        {
+          "step": 1,
+          "layer": "c",
+          "source_location": "tad_rojo_negro.c:if(z->izq==NULL)",
+          "state": {
+            "branch": "x=z->der"
+          }
+        },
+        {
+          "step": 2,
+          "layer": "c",
+          "source_location": "tad_rojo_negro.c:arreglarEliminacion",
+          "state": "fix-up cases in causal order"
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "trace",
+          "source_location": "tree deletion planner",
+          "state": {
+            "search_condition_evaluations": 9
+          }
+        },
+        {
+          "step": 1,
+          "layer": "trace",
+          "source_location": "tree deletion planner",
+          "state": {
+            "branch": "x=z->izq"
+          }
+        },
+        {
+          "step": 2,
+          "layer": "frontend",
+          "source_location": "TreeTraceStrategy:free(z)",
+          "state": "final tree applied before fix-up lines"
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "La traza de eliminación inventa iteraciones, selecciona una rama incompatible con el nodo hoja real y aplica el estado final en free(z), antes de representar el fix-up.",
+      "probable_cause": "La expansión genérica de eliminación no simula el modelo RN ni los punteros z, y, x, x_parent y w; las fronteras visuales sólo conocen before/after.",
+      "location": "app/services/trace/tree_planner.py y app/services/trace/strategies.py",
+      "recommended_test": "Eliminar la hoja negra 3 de la secuencia indicada y comparar ruta, rama, hermano, recoloreos y rotaciones evento por evento contra el harness C.",
+      "suggested_fix": "Implementar un planificador específico de eliminación RN respaldado por snapshots del oráculo y mantener identidades lógicas para z, y, x, x_parent y w. No se modifica código funcional durante la auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "SORT-001",
+      "structure_id": "sorting_array",
+      "operation": "quicksort",
+      "input": {
+        "values": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": [
+        {
+          "layer": "c",
+          "source_location": "quicksort_recursivo",
+          "state": {
+            "comparisons": [
+              "1<2 true",
+              "2<2 false",
+              "3>2 true",
+              "2>2 false"
+            ]
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "trace",
+          "source_location": "SortingInterpreter._quicksort_rec",
+          "state": {
+            "failed_inner_comparisons": "not emitted"
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "Quicksort sólo visualiza las comparaciones que hacen avanzar i/j; omite las comparaciones falsas que detienen ambos while y determinan el intercambio.",
+      "probable_cause": "Los eventos se registran dentro del cuerpo de los while, no al evaluar su condición.",
+      "location": "app/domain/sorting/tad_ordenamiento.py:_quicksort_rec",
+      "recommended_test": "Particionar [1,2,3] y exigir las cuatro evaluaciones contra el pivote, incluidas las dos falsas.",
+      "suggested_fix": "Emitir un evento antes de cada evaluación de condición y registrar su resultado booleano. No se modifica código funcional durante la auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "SORT-002",
+      "structure_id": "sorting_array",
+      "operation": "mergesort/binsort",
+      "input": {
+        "values": [
+          5,
+          -1,
+          4,
+          2,
+          2,
+          0
+        ]
+      },
+      "expected": [
+        {
+          "layer": "c",
+          "source_location": "recursive/delegated subroutines",
+          "state": "every visual mutation mapped to a displayed C line"
+        }
+      ],
+      "observed": [
+        {
+          "layer": "trace",
+          "source_location": "SortingAdapter._build_line_lookup",
+          "state": {
+            "mergesort_unmapped_steps": 21,
+            "binsort_unmapped_steps": 15
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "MergeSort no carga sus auxiliares recursivos en el fragmento mostrado y Binsort anima Counting Sort después de una única línea delegada; la mayoría de frames carecen de línea C resaltable.",
+      "probable_cause": "CCodeService extrae sólo la función pública, mientras los patrones apuntan a funciones auxiliares ausentes del fragmento.",
+      "location": "app/services/c_code_service.py y app/adapters/sorting_adapter.py:_LINE_PATTERNS",
+      "recommended_test": "Para cada algoritmo exigir line_index válido en toda comparación, movimiento, swap, llamada recursiva y escritura auxiliar.",
+      "suggested_fix": "Incluir las subrutinas transitivamente llamadas y mapear cada token a su línea exacta. No se modifica código funcional durante la auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "SORT-003",
+      "structure_id": "sorting_array",
+      "operation": "radixsort",
+      "input": {
+        "values": [
+          -2147483648,
+          -1,
+          0,
+          7
+        ]
+      },
+      "expected": [
+        {
+          "layer": "c",
+          "source_location": "ordenar_radixsort",
+          "state": {
+            "result": [
+              -2147483648,
+              -1,
+              0,
+              7
+            ],
+            "defined_behavior": true
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "c",
+          "source_location": "negativos[cant_negativos++]=-arreglo[i]",
+          "state": {
+            "signed_overflow": true
+          }
+        },
+        {
+          "layer": "backend",
+          "state": {
+            "result": [
+              -2147483648,
+              -1,
+              0,
+              7
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "critical",
+      "discrepancy": "Negar INT_MIN no es representable en int y produce comportamiento indefinido en C, mientras Python lo ordena correctamente.",
+      "probable_cause": "Las magnitudes negativas se almacenan en int sin tratar INT_MIN ni usar un tipo más ancho.",
+      "location": "docs/tads_C/tad_ordenamiento.c:ordenar_radixsort",
+      "recommended_test": "Ejecutar Radix con INT_MIN bajo UBSan y exigir ausencia de signed-integer-overflow y resultado ordenado.",
+      "suggested_fix": "Convertir a un tipo sin signo/ancho antes de obtener la magnitud y ajustar counting_por_digito. No se modifica código funcional durante la auditoría.",
+      "priority": "P0"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "SORT-004",
+      "structure_id": "sorting_array",
+      "operation": "counting_sort/binsort",
+      "input": {
+        "values": [
+          -2147483648,
+          2147483647
+        ]
+      },
+      "expected": [
+        {
+          "layer": "application",
+          "state": {
+            "result": "bounded validation error"
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "c",
+          "state": {
+            "requested_count_entries": 4294967296
+          }
+        },
+        {
+          "layer": "backend",
+          "state": {
+            "allocation": "Python list of same range"
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El tamaño del arreglo está limitado, pero la amplitud del rango no; dos valores pueden solicitar miles de millones de contadores y agotar memoria.",
+      "probable_cause": "Counting/Binsort calculan max-min+1 sin un límite didáctico ni selección alternativa por densidad.",
+      "location": "docs/tads_C/tad_ordenamiento.c:ordenar_counting_sort y app/domain/sorting/tad_ordenamiento.py:_run_counting_sort",
+      "recommended_test": "Probar rangos extremos en proceso aislado y exigir rechazo previo sin intentar reservar memoria proporcional al rango.",
+      "suggested_fix": "Validar rango máximo antes de calloc/list allocation y devolver un error reproducible mostrado en consola. No se modifica código funcional durante la auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "STACK-001",
+      "structure_id": "stack",
+      "operation": "cima",
+      "input": {
+        "values_top_to_bottom": [
+          20,
+          10
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_pila.h",
+          "state": {
+            "available_function": false,
+            "valid_equivalent": "pila != NULL ? pila->nro : error"
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "app/services/c_code_service.py:210",
+          "state": {
+            "shown_call": "pila_copiar_valores(&pila, &cima, 1)",
+            "declared_in_tad": false
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El panel de cima muestra una llamada a pila_copiar_valores que no existe en el TAD C y por tanto el fragmento no compila ni representa la ejecución real.",
+      "probable_cause": "CCodeService fabricó una operación auxiliar para cubrir una consulta ausente sin añadirla al contrato ni a la implementación C.",
+      "location": "app/services/c_code_service.py:CCodeService._build_stack_data",
+      "recommended_test": "Obtener el snippet de cima, compilarlo contra tad_pila.h/tad_pila.c y exigir que use únicamente símbolos declarados; comparar el retorno con stack->nro sin mutación.",
+      "suggested_fix": "Añadir pila_cima al TAD C o mostrar un fragmento válido que compruebe NULL y lea pila->nro, instrumentando condición y retorno. No se modifica código funcional durante esta auditoría.",
+      "priority": "P1"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "STACK-002",
+      "structure_id": "stack",
+      "operation": "apilar",
+      "input": {
+        "before": [],
+        "value": 9
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "docs/tads_C/tad_pila.c:27",
+          "state": {
+            "temporary": "aux allocated"
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "docs/tads_C/tad_pila.c:32",
+          "state": {
+            "temporary": "aux->nro = 9"
+          }
+        },
+        {
+          "step": 2,
+          "layer": "frontend",
+          "source_location": "docs/tads_C/tad_pila.c:33",
+          "state": {
+            "temporary_link": "aux->sgte = old_top"
+          }
+        },
+        {
+          "step": 3,
+          "layer": "frontend",
+          "source_location": "docs/tads_C/tad_pila.c:34",
+          "state": {
+            "values": [
+              9
+            ],
+            "top": 9
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:SequentialTraceStrategy",
+          "state": {
+            "values": []
+          }
+        },
+        {
+          "step": 1,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:SequentialTraceStrategy",
+          "state": {
+            "values": []
+          }
+        },
+        {
+          "step": 2,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:SequentialTraceStrategy",
+          "state": {
+            "values": []
+          }
+        },
+        {
+          "step": 3,
+          "layer": "frontend",
+          "source_location": "app/services/trace/strategies.py:SequentialTraceStrategy",
+          "state": {
+            "values": [
+              9
+            ]
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "Durante malloc y asignaciones de aux la visualización no muestra el nodo temporal, su valor ni su enlace al tope anterior.",
+      "probable_cause": "El estado visual solo modela items pertenecientes a la pila y la transición genérica no posee entidades temporales ni punteros locales.",
+      "location": "app/services/trace/strategies.py:SequentialTraceStrategy; app/adapters/stack_adapter.py:to_visual_state",
+      "recommended_test": "Avanzar por malloc, aux->nro, aux->sgte y *p=aux y comprobar presencia, contenido y enlace del nodo temporal en cada paso.",
+      "suggested_fix": "Extender el snapshot didáctico con temporales y enlaces lógicos, alimentados por eventos allocation/pointer_link antes de incorporar el nodo a items. No se modifica código funcional durante esta auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "SUBLIST-001",
+      "structure_id": "sublist",
+      "operation": "insertar_padre/to_visual_state",
+      "input": {
+        "parents": [
+          1,
+          1
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "app/adapters/sublist_adapter.py:to_visual_state",
+          "state": {
+            "parents": [
+              1,
+              1
+            ],
+            "size": 2
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "frontend",
+          "source_location": "app/domain/sequential/tad_wrappers.py:a_diccionario",
+          "state": {
+            "parents": [
+              1
+            ],
+            "size": 1
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El C conserva padres duplicados como nodos distintos, pero el wrapper los convierte en diccionario y el último sobrescribe visualmente al anterior.",
+      "probable_cause": "a_diccionario usa actual.nro como clave única aunque el TAD C no impone unicidad.",
+      "location": "app/domain/sequential/tad_wrappers.py:Sublista.a_diccionario",
+      "recommended_test": "Insertar dos padres con el mismo valor y exigir dos identidades lógicas, dos enlaces externos y sublistas independientes en C/backend/frontend.",
+      "suggested_fix": "Serializar una lista ordenada de nodos padre con IDs lógicos, no un diccionario por valor, o rechazar duplicados explícitamente también en C. No se modifica código funcional durante esta auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "SUBLIST-002",
+      "structure_id": "sublist",
+      "operation": "limpiar",
+      "input": {
+        "parents": [
+          {
+            "parent": 1,
+            "children": [
+              10,
+              20
+            ]
+          }
+        ]
+      },
+      "expected": [
+        {
+          "step": 0,
+          "layer": "c",
+          "source_location": "docs/tads_C/tad_sublista.c:sublista_destruir",
+          "state": {
+            "freed_children": 2,
+            "freed_parents": 1,
+            "head": null
+          }
+        }
+      ],
+      "observed": [
+        {
+          "step": 0,
+          "layer": "backend",
+          "source_location": "app/domain/sequential/tad_wrappers.py:Sublista.limpiar",
+          "state": {
+            "assignment": "self._lista_ref[0] = None",
+            "c_destroy_called": false
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "La limpieza del backend no ejecuta la transcripción de sublista_destruir ni sus liberaciones hijo-a-padre mostradas en C.",
+      "probable_cause": "El wrapper descarta la referencia confiando en el recolector de Python y evita el algoritmo didáctico de destrucción.",
+      "location": "app/domain/sequential/tad_wrappers.py:Sublista.limpiar",
+      "recommended_test": "Limpiar dos padres con hijos y exigir eventos free por cada hijo y padre, en el mismo orden que sublista_destruir, hasta head=NULL.",
+      "suggested_fix": "Llamar a la transcripción sublista_destruir y propagar sus eventos de liberación lógica al historial y frontend. No se modifica código funcional durante esta auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "TRACE-001",
+      "structure_id": "application",
+      "operation": "console playback",
+      "input": {
+        "printf_examples": [
+          "printf(\"%d \", valor)",
+          "printf(\"Error %s\", detalle)"
+        ]
+      },
+      "expected": [
+        {
+          "layer": "c",
+          "state": {
+            "console": "formatted runtime values in causal order"
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "frontend",
+          "source_location": "collect*PrintfLines",
+          "state": {
+            "formatted_printf": "discarded",
+            "trace_message": "labeled as printf"
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El frontend intenta reconstruir stdout leyendo literales del código: descarta formatos no resueltos y al final presenta trace.message como salida printf aunque no provenga de C.",
+      "probable_cause": "Los pasos productivos no transportan eventos console concretos y cada página implementa una heurística de extracción textual.",
+      "location": "static/js/sequential.js, hierarchical.js, graph.js y hash.js",
+      "recommended_test": "Emitir printf con %d/%s, avanzar y retroceder; exigir valores concretos acumulados exactamente en el frame causal y retirar mensajes no C.",
+      "suggested_fix": "Propagar el canal console del oráculo a TraceStep y renderizarlo directamente, sin analizar literales fuente. No se modifica código funcional durante la auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "TRACE-002",
+      "structure_id": "application",
+      "operation": "trace validation/playback",
+      "input": {
+        "step0_after": {
+          "size": 1
+        },
+        "step1_before": {
+          "size": 99
+        }
+      },
+      "expected": [
+        {
+          "layer": "validator",
+          "state": {
+            "result": "reject discontinuous trace"
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "validator",
+          "source_location": "TraceEngine.validate_steps",
+          "state": {
+            "result": "accepted"
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "El contrato sólo compara el último after con final_state; no exige que after[i] sea igual a before[i+1], por lo que avanzar y retroceder puede saltar entre historias incompatibles.",
+      "probable_cause": "Falta una validación de continuidad causal entre pasos consecutivos.",
+      "location": "app/services/trace/engine.py:TraceEngine.validate_steps",
+      "recommended_test": "Inyectar una discontinuidad intermedia y exigir TraceContractError antes de entregar la traza al reproductor.",
+      "suggested_fix": "Validar continuidad profunda y, cuando sea intencional, exigir un evento explícito de reset/rebase. No se modifica código funcional durante la auditoría.",
+      "priority": "P2"
+    },
+    {
+      "schema": "didactic-qa-result/v1",
+      "case_id": "TRACE-003",
+      "structure_id": "application",
+      "operation": "source highlighting",
+      "input": {
+        "source_code": "linea real",
+        "line_index": 50,
+        "line_text": "linea inventada"
+      },
+      "expected": [
+        {
+          "layer": "validator",
+          "state": {
+            "result": "reject out-of-range/mismatched source line"
+          }
+        }
+      ],
+      "observed": [
+        {
+          "layer": "validator",
+          "source_location": "TraceStep/TraceEngine",
+          "state": {
+            "result": "accepted"
+          }
+        }
+      ],
+      "result": "failed",
+      "severity": "high",
+      "discrepancy": "Una traza puede resaltar un índice fuera del código o asociar texto distinto y aun superar la validación.",
+      "probable_cause": "TraceStep sólo comprueba que line_index sea no negativo; TraceEngine no lo contrasta con source_code.",
+      "location": "app/services/trace/models.py y app/services/trace/engine.py",
+      "recommended_test": "Alterar índice/texto manteniendo estados válidos y exigir rechazo por falta de correspondencia exacta.",
+      "suggested_fix": "Validar límites y equivalencia normalizada de source_code.splitlines()[line_index] con line_text. No se modifica código funcional durante la auditoría.",
+      "priority": "P2"
+    }
+  ],
+  "residual_validation": [
+    "Eventos semánticos/intermedios específicos por familia (2.1).",
+    "Eventos por cada reserva/reasignación/liberación intermedia (2.3).",
+    "Matriz ASan/UBSan en Linux (2.5)."
+  ],
+  "product_logic_modified": false
+}

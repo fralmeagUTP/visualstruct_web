@@ -1,0 +1,3 @@
+# Reconciliación documental535 y disposiciones LOW
+
+Nueva instrucción coordinador01a0fe61 tras QA535 ACEPTO finito: reconciliar matriz11/12 yregistro16 con aceptacionesexistentes; disponer pendientes18 por escenario/SHA/dependencias ylistar ausencias reales únicamente. Máximo25min,sinpruebasni producto. Registros propios auditoría autorizados; no cierreglobal niaceptaciónporcoincidenciaID/SHA;40NAcontextuales ylimitaciónvertex_instruction explícitos. Propuestasde decisionesporcriterio/entrega19. BFSestructural pendienteusuario. QAlimits: runnerselect_algorithmantesrun; stepno certificado; noparidadwebinline; unión535derivadano535ejecucionesnuevas.

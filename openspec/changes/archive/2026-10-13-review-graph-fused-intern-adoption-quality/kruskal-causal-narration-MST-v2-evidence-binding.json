@@ -1,0 +1,15 @@
+{
+  "package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-kruskal-causal-narration-repair-low/MST-causal-narration-QA-v2.zip",
+  "SHA256": "5fa5574b9480e1c3ca41cfa6050e044aef31af33d8d4e7cc503a380562ed0089",
+  "manifest": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-kruskal-causal-narration-repair-low/sealed-manifest-MST-v2.json",
+  "manifest_SHA": "2e6d0252eb1d152f8ac35c6c911211e77fa45127aa0aa2a7dfdda79cfe7568eb",
+  "data_entries": 39,
+  "zip_entries": 40,
+  "PASS": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-kruskal-causal-narration-repair-low/kruskal.xml",
+  "FAIL": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-kruskal-causal-narration-repair-low/prior-fail/kruskal.xml",
+  "equivalence": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-kruskal-causal-narration-repair-low/full-trace-equivalence-and-acceptance-control.json",
+  "freeze999": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-kruskal-causal-narration-repair-low/source-freeze-after.json",
+  "MST_stage_SHA": "35f131cd752da8e95169370f3e9041ce1372d109ef2ccc0dc0b701b03a4faff2",
+  "product_source_SHA": "37aa05eda6c78e0ad7f18d69e9235063f33c17d5c4bc56d1b079911255100c7d",
+  "QA_verdict": "PENDING"
+}

@@ -1,0 +1,45 @@
+{
+  "activation": "REGISTERED_READ_ONLY_QA_REQUIRES_OWNER_FRESH_BEFORE",
+  "UTC": "2026-10-05T19:13:21.540714+00:00",
+  "change": "review-documentary-successors-and-criteria11-12-16-18-quality",
+  "operation": "audit.documentary-successors-criteria-quality",
+  "task": "documentary-successors-criteria11-12-16-18-independent-review",
+  "assignment_id": "coordination-documentary306-delta20-independent-qa-low-20261005",
+  "assignment_source": "openspec/continuity/assignments/coordination-documentary306-delta20-independent-qa-low-20261005.json",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-scope.md",
+  "evidence_binding": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence-binding.json",
+  "packet": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/documentary306-corrections-review.zip",
+  "packet_SHA256": "76c87e810ab539059d05c95d901d67d3b3d10d66c7f635e5196b5ce424251c13",
+  "allowed_paths": [
+    "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review-delta306",
+    "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/review-tracker.md (append only)"
+  ],
+  "forbidden": "Allnewrequests/benchmarks/profile/runtime/tests andproduct/paquetemutations; noadoption/campaign",
+  "maximum_BFS_requests": 0,
+  "maximum_new_measurements": 0,
+  "review_executed": false,
+  "previous_assignment_preserved": "openspec/continuity/assignments/coordination-documentary-corrections-delta20-independent-qa-low-20261005.json",
+  "previous_binding_preserved": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-documentary306-corrections25-low/previous-QA-delta20-review-binding.json",
+  "previous_verdict_preserved": {
+    "file": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review/review.md",
+    "SHA256": "a2056e72f3a26051e88de61262c58ed2ed0e5a02aaa5088be2560f592cba70a5"
+  },
+  "maximum_minutes": 20,
+  "delta_only": true,
+  "BFS_excluded": true,
+  "accepted_verifications_excluded": true,
+  "previous_verdicts_preserved": [
+    {
+      "file": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review/review.md",
+      "SHA256": "a2056e72f3a26051e88de61262c58ed2ed0e5a02aaa5088be2560f592cba70a5"
+    },
+    {
+      "file": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/evidence/independent-review-delta20/review.md",
+      "SHA256": "a508f82f0595bdf4b56cd967f7c9a6fcce1b6035b0be89c448f7a860826fdc25"
+    }
+  ]
+}

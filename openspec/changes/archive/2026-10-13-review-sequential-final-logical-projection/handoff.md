@@ -1,0 +1,12 @@
+# QA identity
+
+change: review-sequential-final-logical-projection
+assignment_id: coordination-sequential-final-logical-projection-independent-qa-low-20261007
+operation: qa.sequential-final-logical-projection
+task: sequential-final-logical-projection-independent-qa
+
+Independent focal review exact4files: PQdequeue/PQfront/queueDequeue public return projection from actual Cstate, drop physical-only root/local/output keys, PQout_index from remaining minimum/empty-1; keep full old Csnapshot in memory_state and all explicit Cmemory/event/source/scopes/output/freehistory. Three exactEcbCIbugs, existing asserts unedited; before17FAIL, after17PASS includes14new controls with3futuretargetpoison negatives. Direct old/new172frames across11overlappingfixtures not extraunique tests: every Caxis/intermediate state unchanged. No after_state copy into return; existing topfinalexpectedmetadata contract retained. No Csource/algorithms/Sorting/optimization/browser/longsuite/publication. DeliveryQA inputs59unchanged andaccepted; parent chooses reviewer; group publication onlyafter acceptance.
+
+Manifest: evidence/review-input-sha-binding.json
+Author report: openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sequential-final-logical-projection-low/report.md
+Own before/after required. Four source files frozen pending verdict. Currentmain still ecb91114; acceptedchannel delivery fourfiles heldforjointpublication.

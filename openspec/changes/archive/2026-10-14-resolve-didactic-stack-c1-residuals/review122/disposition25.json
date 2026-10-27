@@ -1,0 +1,1360 @@
+[
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-compare-run:30",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-hint:8",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-load-example:5",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-prepare:15",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": "Execute in manual mode obtains a trace; toggling an existing trace into manual resets view without new operation.",
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-reset-progress:11",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-restart-execution:23",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": "Existing trace returns to initial via Home or manual-mode toggle.",
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-end:21",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": "End key seeks final.",
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-home:18",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": "Home key seeks-1.",
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-pause:17",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": "Space key pauses existing trace.",
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-repeat:22",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": "Manual navigation preserves cached trace; exact autoplay-equivalence not established for this removed widget.",
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-skip-prediction:9",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-compare-progress:31",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-compare-values:29",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-practice-mode:10",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-progress:27",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": "Manual prev/next and Home/End replace presentation; arbitrary slider seek not explicitly required by current layout rule.",
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-compare-kind:28",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-guided-example:4",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-learning-level:3",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-prediction:6",
+    "classification": "CURRENT_PEDAGOGICAL_RETENTION_GAP_SCOPE_CONFLICT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "Five stages require conserving additional content and justification/testing of control exceptions, not deleting pedagogical capability.",
+    "current_purpose": null,
+    "implementation_evidence": {
+      "path": "static/js/hierarchical.js",
+      "sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+      "refs": [
+        {
+          "line": 2331,
+          "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2332,
+          "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+        },
+        {
+          "line": 2333,
+          "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+        },
+        {
+          "line": 2336,
+          "text": "hById(\"hier-load-example\")?.remove();"
+        },
+        {
+          "line": 2352,
+          "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+        },
+        {
+          "line": 2382,
+          "text": "technical?.remove();"
+        },
+        {
+          "line": 2383,
+          "text": "controlStage.remove();"
+        },
+        {
+          "line": 2442,
+          "text": "const learningLevel = hById(\"hier-learning-level\");"
+        },
+        {
+          "line": 2444,
+          "text": "const loadExampleButton = hById(\"hier-load-example\");"
+        },
+        {
+          "line": 2450,
+          "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-end:15",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "openspec/specs/visual-playback-ui/spec.md:138 literal visible Preparar/Reproducir conflicts with later compact controls",
+    "current_purpose": "Alt+End seeks final, verified.",
+    "implementation_evidence": {
+      "path": "static/js/sequential.js",
+      "sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+      "refs": [
+        {
+          "line": 3317,
+          "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+        },
+        {
+          "line": 3343,
+          "text": "technicalControls?.remove();"
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-pause:11",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "openspec/specs/visual-playback-ui/spec.md:138 literal visible Preparar/Reproducir conflicts with later compact controls",
+    "current_purpose": "Alt+P pauses, verified.",
+    "implementation_evidence": {
+      "path": "static/js/sequential.js",
+      "sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+      "refs": [
+        {
+          "line": 3317,
+          "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+        },
+        {
+          "line": 3343,
+          "text": "technicalControls?.remove();"
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-prepare:9",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "openspec/specs/visual-playback-ui/spec.md:138 literal visible Preparar/Reproducir conflicts with later compact controls",
+    "current_purpose": "Manual-mode activation resets an existing trace; conceptual distinction from new execute preserved.",
+    "implementation_evidence": {
+      "path": "static/js/sequential.js",
+      "sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+      "refs": [
+        {
+          "line": 3317,
+          "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+        },
+        {
+          "line": 3343,
+          "text": "technicalControls?.remove();"
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-repeat:16",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "openspec/specs/visual-playback-ui/spec.md:138 literal visible Preparar/Reproducir conflicts with later compact controls",
+    "current_purpose": "Alt+R plays existing trace fromstart without new POST, verified.",
+    "implementation_evidence": {
+      "path": "static/js/sequential.js",
+      "sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+      "refs": [
+        {
+          "line": 3317,
+          "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+        },
+        {
+          "line": 3343,
+          "text": "technicalControls?.remove();"
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-start:12",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "openspec/specs/visual-playback-ui/spec.md:138 literal visible Preparar/Reproducir conflicts with later compact controls",
+    "current_purpose": "Alt+Home seeks-1, verified in new private flow.",
+    "implementation_evidence": {
+      "path": "static/js/sequential.js",
+      "sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+      "refs": [
+        {
+          "line": 3317,
+          "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+        },
+        {
+          "line": 3343,
+          "text": "technicalControls?.remove();"
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-progress-slider:21",
+    "classification": "PRIOR_PRESENTATION_WITH_SCOPE_CONFLICT_RETAIN_REQUIREMENT",
+    "internal_control": false,
+    "approved_basis": [
+      "openspec/specs/visual-playback-ui/spec.md:10",
+      "openspec/specs/visual-playback-ui/spec.md:28",
+      "openspec/specs/visual-playback-ui/spec.md:179",
+      "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/reconciliation-detailed.md:2061"
+    ],
+    "decision_limit": "Approved substitution concerns placement/labels/visibility and preserving capabilities; no per-ID deletion authorization found in the cited decisions.",
+    "opposing_contract": "openspec/specs/visual-playback-ui/spec.md:138 literal visible Preparar/Reproducir conflicts with later compact controls",
+    "current_purpose": "Prev/next and Home/End navigation remain; exact slider itself absent.",
+    "implementation_evidence": {
+      "path": "static/js/sequential.js",
+      "sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+      "refs": [
+        {
+          "line": 3317,
+          "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+        },
+        {
+          "line": 3343,
+          "text": "technicalControls?.remove();"
+        }
+      ]
+    },
+    "acceptance": "NOT_ADMITTED",
+    "requirement_removed": false
+  }
+]

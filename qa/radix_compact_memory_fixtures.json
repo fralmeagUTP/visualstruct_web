@@ -1,0 +1,1307 @@
+[
+  {
+    "display_step": 9,
+    "frame": {
+      "source": {
+        "line_token": "negative_allocate",
+        "line_index": 54,
+        "line_text": "\tnegativos = (uint32_t *)malloc(n * sizeof(uint32_t));",
+        "function": "ordenar_radixsort"
+      },
+      "variables": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "value": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "caller"
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "n",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": null,
+          "changed": true,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "value": null,
+          "scope": "ordenar_radixsort",
+          "initialized": false,
+          "previous": null,
+          "changed": false,
+          "meaning": "ordenar_radixsort; sin inicializar"
+        },
+        {
+          "name": "cant_negativos",
+          "type": "size_t",
+          "value": 0,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 0,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_positivos",
+          "type": "size_t",
+          "value": 0,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 0,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "i",
+          "type": "size_t",
+          "value": null,
+          "scope": "ordenar_radixsort",
+          "initialized": false,
+          "previous": null,
+          "changed": false,
+          "meaning": "ordenar_radixsort; sin inicializar"
+        },
+        {
+          "name": "indice",
+          "type": "size_t",
+          "value": null,
+          "scope": "ordenar_radixsort",
+          "initialized": false,
+          "previous": null,
+          "changed": false,
+          "meaning": "ordenar_radixsort; sin inicializar"
+        }
+      ],
+      "pointers": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "target": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "target": null,
+          "scope": "ordenar_radixsort"
+        }
+      ]
+    }
+  },
+  {
+    "display_step": 10,
+    "frame": {
+      "source": {
+        "line_token": "positive_allocate",
+        "line_index": 55,
+        "line_text": "\tpositivos = (uint32_t *)malloc(n * sizeof(uint32_t));",
+        "function": "ordenar_radixsort"
+      },
+      "variables": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "value": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "caller"
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "n",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": null,
+          "changed": true,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_negativos",
+          "type": "size_t",
+          "value": 0,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 0,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_positivos",
+          "type": "size_t",
+          "value": 0,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 0,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "i",
+          "type": "size_t",
+          "value": null,
+          "scope": "ordenar_radixsort",
+          "initialized": false,
+          "previous": null,
+          "changed": false,
+          "meaning": "ordenar_radixsort; sin inicializar"
+        },
+        {
+          "name": "indice",
+          "type": "size_t",
+          "value": null,
+          "scope": "ordenar_radixsort",
+          "initialized": false,
+          "previous": null,
+          "changed": false,
+          "meaning": "ordenar_radixsort; sin inicializar"
+        }
+      ],
+      "pointers": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "target": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort"
+        }
+      ]
+    }
+  },
+  {
+    "display_step": 50,
+    "frame": {
+      "source": {
+        "line_token": "digit_allocate",
+        "line_index": 24,
+        "line_text": "\tsalida = (uint32_t *)malloc(n * sizeof(uint32_t));",
+        "function": "counting_por_digito"
+      },
+      "variables": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "value": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "caller"
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "n",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              3,
+              1,
+              2,
+              1
+            ]
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              3,
+              1,
+              2,
+              1
+            ]
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_negativos",
+          "type": "size_t",
+          "value": 0,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 0,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_positivos",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "i",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "indice",
+          "type": "size_t",
+          "value": null,
+          "scope": "ordenar_radixsort",
+          "initialized": false,
+          "previous": null,
+          "changed": false,
+          "meaning": "ordenar_radixsort; sin inicializar"
+        },
+        {
+          "name": "maximo",
+          "type": "uint32_t",
+          "value": 3,
+          "scope": "ordenar_radixsort/bloque_positivos",
+          "initialized": true,
+          "previous": 3,
+          "changed": false,
+          "meaning": "ordenar_radixsort/bloque_positivos; valor tras instruccion"
+        },
+        {
+          "name": "exp",
+          "type": "uint32_t",
+          "value": 1,
+          "scope": "ordenar_radixsort/bloque_positivos",
+          "initialized": true,
+          "previous": 1,
+          "changed": false,
+          "meaning": "ordenar_radixsort/bloque_positivos; valor tras instruccion"
+        },
+        {
+          "name": "arreglo",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "positive",
+            "cells": [
+              3,
+              1,
+              2,
+              1
+            ]
+          },
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": {
+            "alias": "positive",
+            "cells": [
+              3,
+              1,
+              2,
+              1
+            ]
+          },
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "n",
+          "type": "size_t",
+          "value": 4,
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "exp",
+          "type": "uint32_t",
+          "value": 1,
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": 1,
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "conteo",
+          "type": "size_t[10]",
+          "value": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "salida",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "output",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": null,
+          "changed": true,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "i",
+          "type": "size_t",
+          "value": null,
+          "scope": "counting_por_digito",
+          "initialized": false,
+          "previous": null,
+          "changed": false,
+          "meaning": "counting_por_digito; sin inicializar"
+        }
+      ],
+      "pointers": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "target": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              3,
+              1,
+              2,
+              1
+            ]
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "arreglo",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "positive",
+            "cells": [
+              3,
+              1,
+              2,
+              1
+            ]
+          },
+          "scope": "counting_por_digito"
+        },
+        {
+          "name": "salida",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "output",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "counting_por_digito"
+        }
+      ]
+    }
+  },
+  {
+    "display_step": 135,
+    "frame": {
+      "source": {
+        "line_token": "digit_free",
+        "line_index": 35,
+        "line_text": "\tfree(salida);",
+        "function": "counting_por_digito"
+      },
+      "variables": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "value": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "caller"
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "n",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_negativos",
+          "type": "size_t",
+          "value": 0,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 0,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_positivos",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "i",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "indice",
+          "type": "size_t",
+          "value": null,
+          "scope": "ordenar_radixsort",
+          "initialized": false,
+          "previous": null,
+          "changed": false,
+          "meaning": "ordenar_radixsort; sin inicializar"
+        },
+        {
+          "name": "maximo",
+          "type": "uint32_t",
+          "value": 3,
+          "scope": "ordenar_radixsort/bloque_positivos",
+          "initialized": true,
+          "previous": 3,
+          "changed": false,
+          "meaning": "ordenar_radixsort/bloque_positivos; valor tras instruccion"
+        },
+        {
+          "name": "exp",
+          "type": "uint32_t",
+          "value": 1,
+          "scope": "ordenar_radixsort/bloque_positivos",
+          "initialized": true,
+          "previous": 1,
+          "changed": false,
+          "meaning": "ordenar_radixsort/bloque_positivos; valor tras instruccion"
+        },
+        {
+          "name": "arreglo",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "positive",
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": {
+            "alias": "positive",
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "n",
+          "type": "size_t",
+          "value": 4,
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "exp",
+          "type": "uint32_t",
+          "value": 1,
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": 1,
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "conteo",
+          "type": "size_t[10]",
+          "value": [
+            0,
+            0,
+            2,
+            3,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": [
+            0,
+            0,
+            2,
+            3,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "salida",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "output",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": {
+            "alias": "output",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "changed": true,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        },
+        {
+          "name": "i",
+          "type": "size_t",
+          "value": 4,
+          "scope": "counting_por_digito",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "counting_por_digito; valor tras instruccion"
+        }
+      ],
+      "pointers": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "target": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "arreglo",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "positive",
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "scope": "counting_por_digito"
+        },
+        {
+          "name": "salida",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "output",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "scope": "counting_por_digito"
+        }
+      ]
+    }
+  },
+  {
+    "display_step": 158,
+    "frame": {
+      "source": {
+        "line_token": "negative_free",
+        "line_index": 85,
+        "line_text": "\tfree(negativos); free(positivos);",
+        "function": "ordenar_radixsort"
+      },
+      "variables": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "value": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "caller"
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "n",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "negative",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "negative",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "changed": true,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_negativos",
+          "type": "size_t",
+          "value": 0,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 0,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_positivos",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "i",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "indice",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        }
+      ],
+      "pointers": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "target": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "negative",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "scope": "ordenar_radixsort"
+        }
+      ]
+    }
+  },
+  {
+    "display_step": 159,
+    "frame": {
+      "source": {
+        "line_token": "positive_free",
+        "line_index": 85,
+        "line_text": "\tfree(negativos); free(positivos);",
+        "function": "ordenar_radixsort"
+      },
+      "variables": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "value": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "caller"
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "n",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "negative",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "negative",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "value": {
+            "alias": "positive",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": {
+            "alias": "positive",
+            "status": "live",
+            "capacity": 4,
+            "cells": [
+              1,
+              1,
+              2,
+              3
+            ]
+          },
+          "changed": true,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_negativos",
+          "type": "size_t",
+          "value": 0,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 0,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "cant_positivos",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "i",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        },
+        {
+          "name": "indice",
+          "type": "size_t",
+          "value": 4,
+          "scope": "ordenar_radixsort",
+          "initialized": true,
+          "previous": 4,
+          "changed": false,
+          "meaning": "ordenar_radixsort; valor tras instruccion"
+        }
+      ],
+      "pointers": [
+        {
+          "name": "arreglo",
+          "type": "int *",
+          "target": {
+            "alias": "caller"
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "negativos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "negative",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "scope": "ordenar_radixsort"
+        },
+        {
+          "name": "positivos",
+          "type": "uint32_t *",
+          "target": {
+            "alias": "positive",
+            "status": "freed",
+            "capacity": 4,
+            "cells": null
+          },
+          "scope": "ordenar_radixsort"
+        }
+      ]
+    }
+  }
+]

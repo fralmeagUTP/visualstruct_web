@@ -21,8 +21,13 @@ class RedBlackAdapter(BaseAdapter):
     def execute(self, operation_name: str, payload: dict[str, Any]) -> dict[str, Any]:
         if operation_name == "insertar":
             value = self._require_int(payload, "value", "valor")
+            if not -2147483648 <= value <= 2147483647:
+                raise ValueError("El valor debe estar entre -2147483648 y 2147483647 (int de C de 32 bits).")
             self._structure.insertar(value)
-            return {"message": f"Se insertó {value} en el Rojo-Negro."}
+            return {
+                "message": f"Se insertó {value} en el Rojo-Negro.",
+                "console": ["El numero ha sido insertado"],
+            }
         if operation_name == "eliminar":
             value = self._require_int(payload, "value", "valor")
             self._structure.eliminar(value)
@@ -44,6 +49,41 @@ class RedBlackAdapter(BaseAdapter):
             self._structure.limpiar()
             return {"message": "El Rojo-Negro se limpió correctamente."}
         raise ValueError(f"Operación no soportada: {operation_name}.")
+
+    def _validation_projection(self) -> dict[str, Any]:
+        """Snapshot raw identities for tracing, without rebuilding NIL parents.
+
+        This is an internal representation of live Python objects, not a public
+        corruption input or the validator's algorithm. Flat identity traversal
+        prevents recursive serialization of cycles/shared nodes in QA.
+        """
+        root = self._structure._root_ref[0]
+        nodes, identities, pending = [], {}, [root]
+        while pending:
+            node = pending.pop()
+            if node is None or id(node) in identities:
+                continue
+            identities[id(node)] = "N" + str(len(nodes) + 1)
+            nodes.append(node)
+            pending.extend([node.padre, node.der, node.izq])
+        def pointer(node):
+            return "NULL" if node is None else identities[id(node)]
+        graph_view = root is not None and root.padre is not None
+        child_identities = {id(root)} if root is not None else set()
+        keys = set()
+        for node in nodes:
+            graph_view = graph_view or node.rbt_color not in ("r", "n") or node.nro in keys
+            keys.add(node.nro)
+            for child in (node.izq, node.der):
+                if child is not None:
+                    graph_view = graph_view or child.padre is not node or id(child) in child_identities
+                    child_identities.add(id(child))
+        return {
+            "head": pointer(root), "graph_view": graph_view,
+            "heap_nodes": [{"id": pointer(node), "value": node.nro,
+                "color": "RED" if node.rbt_color == "r" else "BLACK" if node.rbt_color == "n" else "INVALID",
+                "parent": pointer(node.padre), "left": pointer(node.izq), "right": pointer(node.der), "status": "linked"} for node in nodes],
+        }
 
     def _to_node(self, node: Any) -> dict[str, Any] | None:
         nil = self._structure._nil

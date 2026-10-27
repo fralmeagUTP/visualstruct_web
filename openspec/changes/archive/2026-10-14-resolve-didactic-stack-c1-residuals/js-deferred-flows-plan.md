@@ -1,0 +1,3 @@
+# Inventario finito de12factories restantes
+
+Parent solicita activar flujosreales en páginas privadas, datospropios, clasificar visible/operable/transitorio/contextopendiente. Alcance exacto:10anchors deexportación módulos,1anchor runtime JPG global y1button reflecciónSibling. No algoritmos,campaña global,containers,commit/push/despliegue. Privatesessioncache,playwrightdownloadsTemp propios. Cada bloque120s/2GiB;probar un dato7 por módulos si hacefalta. Bindingreal soloevidencia concreta; referencias AST no equivalen ejecución. Conservar127source-links/248unassigned hastaadmisiónexplícita de nuevos casos compatibles.

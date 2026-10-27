@@ -1,0 +1,25 @@
+{
+  "schema": "didactic-qa-result/v1",
+  "case_id": "RBT-001",
+  "structure_id": "red_black",
+  "operation": "insertar",
+  "input": {"sequence": [10, 5, 15, 1], "case": "uncle red"},
+  "expected": [
+    {"step": 0, "layer": "c", "source_location": "tad_rojo_negro.c:padre->izq=actual", "state": {"colors_preorder": ["BLACK", "RED", "RED", "RED"]}},
+    {"step": 1, "layer": "c", "source_location": "tad_rojo_negro.c:n->padre->rbt_color=NEGRO", "state": {"colors_preorder": ["BLACK", "BLACK", "RED", "RED"]}},
+    {"step": 2, "layer": "c", "source_location": "tad_rojo_negro.c:t->rbt_color=NEGRO", "state": {"colors_preorder": ["BLACK", "BLACK", "RED", "BLACK"]}},
+    {"step": 3, "layer": "c", "source_location": "tad_rojo_negro.c:a->rbt_color=ROJO", "state": {"root_color": "RED"}},
+    {"step": 4, "layer": "c", "source_location": "tad_rojo_negro.c:rbt_insercion_caso1", "state": {"root_color": "BLACK"}}
+  ],
+  "observed": [
+    {"step": 0, "layer": "frontend", "source_location": "TreeTraceStrategy:rbt_insercion_caso1(actual,arbol)", "state": {"colors_preorder": ["BLACK", "BLACK", "RED", "BLACK"]}},
+    {"step": 1, "layer": "frontend", "source_location": "TreeAlgorithmPlanner:internal color assignments", "state": "unchanged final state"}
+  ],
+  "result": "failed",
+  "severity": "high",
+  "discrepancy": "La visualización aplica todos los recoloreos al invocar el fix-up, antes de ejecutar las asignaciones C que cambian cada color.",
+  "probable_cause": "TreeTraceStrategy sólo conserva el árbol insertado y el estado final; TreeAlgorithmPlanner expande las líneas internas sin aportar snapshots mutables por asignación.",
+  "location": "app/services/trace/strategies.py:TreeTraceStrategy.build_boundaries",
+  "recommended_test": "Insertar 10,5,15,1 y exigir un cambio de color exactamente en cada asignación del caso 3 y del caso 1 recursivo.",
+  "suggested_fix": "Generar estados desde el modelo RN del planificador después de cada asignación y rotación, en lugar de conmutar al after_state en la llamada. No se modifica código funcional durante la auditoría."
+}

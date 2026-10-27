@@ -19,6 +19,7 @@ SORTING_ALGORITHMS: list[dict[str, str]] = [
     {"id": "binsort", "label": "Binsort", "c_function": "ordenar_binsort"},
     {"id": "radixsort", "label": "Radix sort", "c_function": "ordenar_radixsort"},
 ]
+ORDENAMIENTO_RANGO_MAX = 1_000_000
 
 
 class SortingExecutionError(ValueError):
@@ -36,7 +37,10 @@ class _Metrics:
 class SortingInterpreter:
     """Generate didactic traces for sorting algorithms."""
 
-    def __init__(self, values: list[int], algorithm_id: str) -> None:
+    def __init__(self, values: list[int], algorithm_id: str, *, counting_allocator=None, radix_allocator=None) -> None:
+        self._counting_allocator = counting_allocator
+        self._radix_allocator = radix_allocator
+        self._radix_instruction_engine = None
         self.values = list(values)
         self.algorithm_id = str(algorithm_id).strip()
         self.metrics = _Metrics()
@@ -50,11 +54,139 @@ class SortingInterpreter:
         if not self.values:
             raise SortingExecutionError("El arreglo no puede estar vacio.")
 
+        if self.algorithm_id == "intercambio":
+            from app.domain.sorting.intercambio_instructions import run_intercambio_trace
+            result = run_intercambio_trace(self.values)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "seleccion":
+            from app.domain.sorting.seleccion_instructions import run_seleccion_trace
+            result = run_seleccion_trace(self.values)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "insercion":
+            from app.domain.sorting.insercion_instructions import run_insercion_trace
+            result = run_insercion_trace(self.values)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "burbuja":
+            from app.domain.sorting.burbuja_instructions import run_burbuja_trace
+            result = run_burbuja_trace(self.values)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "shell":
+            from app.domain.sorting.shell_instructions import run_shell_trace
+            result = run_shell_trace(self.values)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "quicksort":
+            from app.domain.sorting.quicksort_instructions import run_quicksort_trace
+            result = run_quicksort_trace(self.values)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "mergesort":
+            from app.domain.sorting.mergesort_instructions import run_mergesort_trace
+            result = run_mergesort_trace(self.values)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "heapsort":
+            from app.domain.sorting.heapsort_instructions import run_heapsort_trace
+            result = run_heapsort_trace(self.values)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "counting_sort":
+            from app.domain.sorting.counting_sparse_instructions import run_counting_sparse_trace
+            result = run_counting_sparse_trace(self.values, allocator=self._counting_allocator)
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "binsort":
+            result = self._run_binsort()
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
+        if self.algorithm_id == "radixsort":
+            from app.domain.sorting.radix_instructions import RadixInstructionEngine
+            engine = RadixInstructionEngine(self.values, allocator=self._radix_allocator)
+            self._radix_instruction_engine = engine
+            try:
+                result = engine.run(self._counting_digit)
+            except MemoryError as error:
+                raise SortingExecutionError("No se pudo reservar memoria en el modelo Python de Radix; no se acepto la ejecucion.") from error
+            finally:
+                self._radix_instruction_engine = None
+            self.values = list(result["final_state"]["items"])
+            self._steps = result["steps"]
+            self.metrics = _Metrics(**result["metrics"])
+            self.sorted_indices = set(range(len(self.values)))
+            result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
+            return result
+
         self._record("Inicio de ejecucion.", line_token="entry")
+        self._record(
+            "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
+            line_token="validate_array",
+        )
         method = getattr(self, f"_run_{self.algorithm_id}")
         method()
         self.sorted_indices = set(range(len(self.values)))
         self._record("Arreglo ordenado.", line_token="return")
+        if self.algorithm_id == "heapsort":
+            # Heap sort and its helpers have no TAD printf; narration remains in action.
+            for step in self._steps:
+                step["console_output"] = ""
+        if self.algorithm_id == "counting_sort":
+            # The TAD has no printf: keep narration in action only.
+            for step in self._steps:
+                step["console_output"] = ""
         final_state = self._build_state(last_action="Ordenamiento finalizado.")
         return {
             "steps": self._steps,
@@ -77,6 +209,8 @@ class SortingInterpreter:
         active_range: list[int] | None = None,
         pivot_index: int | None = None,
         auxiliary: list[int] | None = None,
+        temporaries: dict[str, int] | None = None,
+        pointer_indices: list[int] | None = None,
         console: str | None = None,
     ) -> None:
         self.metrics.steps += 1
@@ -92,7 +226,9 @@ class SortingInterpreter:
                 "active_range": list(active_range) if active_range else None,
                 "pivot_index": pivot_index,
                 "auxiliary_snapshot": list(auxiliary) if auxiliary is not None else None,
-                "console_output": console or action,
+                "temporaries": dict(temporaries or {}),
+                "pointer_indices": list(pointer_indices or []),
+                "console_output": "" if self.algorithm_id == "binsort" else console or action,
                 "metrics": {
                     "comparisons": self.metrics.comparisons,
                     "swaps": self.metrics.swaps,
@@ -108,18 +244,60 @@ class SortingInterpreter:
             line_token=line_token,
             comparing=[i, j],
             active_range=active_range,
+            pointer_indices=[i, j],
         )
         return self.values[i] > self.values[j]
 
-    def _swap(self, i: int, j: int, *, active_range: list[int] | None = None, line_token: str = "swap") -> None:
-        self.values[i], self.values[j] = self.values[j], self.values[i]
-        self.metrics.swaps += 1
+    def _swap(self, i: int, j: int, *, active_range: list[int] | None = None, line_token: str = "swap", count_moves: bool = False, emit_console: bool = True) -> None:
+        first = self.values[i]
+        second = self.values[j]
         self._record(
-            f"Intercambiar posiciones {i} y {j}.",
+            f"Llamar intercambiar para las posiciones {i} y {j}.",
             line_token=line_token,
             swapping=[i, j],
             active_range=active_range,
-            console=f"Intercambio: {i} <-> {j}",
+            pointer_indices=[i, j],
+        )
+        self._record(
+            "intercambiar valida que ambos punteros sean distintos de NULL.",
+            line_token="swap_guard",
+            swapping=[i, j],
+            active_range=active_range,
+            pointer_indices=[i, j] if not emit_console else None,
+        )
+        if count_moves:
+            self.metrics.moves += 1
+        self._record(
+            f"Guardar {first} en la variable temporal.",
+            line_token="swap_temp",
+            swapping=[i],
+            active_range=active_range,
+            temporaries={"temporal": first},
+            pointer_indices=[i, j],
+        )
+        self.values[i] = second
+        if count_moves:
+            self.metrics.moves += 1
+        self._record(
+            f"Asignar {second} a la primera posicion; temporal conserva {first}.",
+            line_token="swap_assign_a",
+            swapping=[i],
+            active_range=active_range,
+            temporaries={"temporal": first},
+            pointer_indices=[i, j],
+        )
+        self.values[j] = first
+        if count_moves:
+            self.metrics.moves += 1
+        self.metrics.swaps += 1
+        self._record(
+            f"Asignar temporal ({first}) a la segunda posicion.",
+            line_token="swap_assign_b",
+            swapping=[i, j],
+            active_range=active_range,
+            temporaries={"temporal": first},
+            pointer_indices=[i, j],
+            console=f"Intercambio: {i} <-> {j}" if emit_console else "",
         )
 
     def _run_intercambio(self) -> None:
@@ -209,7 +387,7 @@ class SortingInterpreter:
             swapped = False
             for j in range(0, n - 1 - passed):
                 if self._cmp(j, j + 1, active_range=[0, n - 1 - passed]):
-                    self._swap(j, j + 1, active_range=[0, n - 1 - passed])
+                    self._swap(j, j + 1, active_range=[0, n - 1 - passed], count_moves=True)
                     swapped = True
             self.sorted_indices.add(n - 1 - passed)
             if not swapped:
@@ -277,29 +455,33 @@ class SortingInterpreter:
             pivot_index=pivot_index,
         )
         while i <= j:
-            while self.values[i] < pivot:
+            while True:
                 self.metrics.comparisons += 1
                 self._record(
-                    f"Avanzar i ({i}) porque {self.values[i]} < pivote {pivot}.",
+                    f"Evaluar arreglo[{i}] < pivote {pivot}: {self.values[i] < pivot}.",
                     line_token="move_i",
                     comparing=[i, pivot_index],
                     active_range=[first, last],
                     pivot_index=pivot_index,
                 )
+                if not self.values[i] < pivot:
+                    break
                 i += 1
-            while self.values[j] > pivot:
+            while True:
                 self.metrics.comparisons += 1
                 self._record(
-                    f"Retroceder j ({j}) porque {self.values[j]} > pivote {pivot}.",
+                    f"Evaluar arreglo[{j}] > pivote {pivot}: {self.values[j] > pivot}.",
                     line_token="move_j",
                     comparing=[j, pivot_index],
                     active_range=[first, last],
                     pivot_index=pivot_index,
                 )
+                if not self.values[j] > pivot:
+                    break
                 j -= 1
             self.metrics.comparisons += 1
             if i <= j:
-                self._swap(i, j, active_range=[first, last], line_token="partition_swap")
+                self._swap(i, j, active_range=[first, last], line_token="partition_swap", count_moves=True)
                 i += 1
                 j -= 1
         if first < j:
@@ -368,7 +550,7 @@ class SortingInterpreter:
         for i in range(n // 2 - 1, -1, -1):
             self._heapify(n, i)
         for end in range(n - 1, 0, -1):
-            self._swap(0, end, active_range=[0, end], line_token="heap_extract")
+            self._swap(0, end, active_range=[0, end], line_token="heap_extract", count_moves=True, emit_console=False)
             self.sorted_indices.add(end)
             self._heapify(end, 0)
         if n:
@@ -383,7 +565,7 @@ class SortingInterpreter:
             self.metrics.comparisons += 1
             self._record(
                 f"Comparar hijo izquierdo {left} con raiz {largest}.",
-                line_token="heap_compare",
+                line_token="heap_compare_left",
                 comparing=[left, largest],
                 active_range=[0, n - 1],
             )
@@ -393,7 +575,7 @@ class SortingInterpreter:
             self.metrics.comparisons += 1
             self._record(
                 f"Comparar hijo derecho {right} con mayor {largest}.",
-                line_token="heap_compare",
+                line_token="heap_compare_right",
                 comparing=[right, largest],
                 active_range=[0, n - 1],
             )
@@ -401,14 +583,24 @@ class SortingInterpreter:
                 largest = right
 
         if largest != root:
-            self._swap(root, largest, active_range=[0, n - 1], line_token="heap_swap")
+            self._swap(root, largest, active_range=[0, n - 1], line_token="heap_swap", count_moves=True, emit_console=False)
             self._heapify(n, largest)
 
-    def _run_counting_sort(self) -> None:
+    def _run_counting_sort(self) -> Any:
+        if self.algorithm_id == "binsort":
+            from app.domain.sorting.binsort_instructions import run_binsort_sparse_trace
+            return run_binsort_sparse_trace(self.values, allocator=self._counting_allocator)
         min_v = min(self.values)
         max_v = max(self.values)
         rng = max_v - min_v + 1
+        if rng > ORDENAMIENTO_RANGO_MAX:
+            raise SortingExecutionError(
+                f"El rango de conteo ({rng}) supera el máximo permitido ({ORDENAMIENTO_RANGO_MAX})."
+            )
         count = [0] * rng
+        if self.algorithm_id in {"counting_sort", "binsort"}:
+            # obtener_minimo_maximo evaluates both value comparisons for each i=1..n-1.
+            self.metrics.comparisons += 2 * (len(self.values) - 1)
         self._record(
             f"Inicializar arreglo de conteo con rango [{min_v}, {max_v}].",
             line_token="count_init",
@@ -428,7 +620,8 @@ class SortingInterpreter:
                 self.values[idx] = offset + min_v
                 idx += 1
                 amount -= 1
-                self.metrics.moves += 1
+                # The C body writes arreglo[indice++] and then decrements conteo[i].
+                self.metrics.moves += 2 if self.algorithm_id in {"counting_sort", "binsort"} else 1
                 count[offset] = amount
                 self._record(
                     "Reconstruir arreglo desde conteos.",
@@ -437,12 +630,12 @@ class SortingInterpreter:
                     auxiliary=count,
                 )
 
-    def _run_binsort(self) -> None:
-        self._record(
-            "Binsort delega en Counting Sort segun implementacion C.",
-            line_token="binsort_delegate",
-        )
-        self._run_counting_sort()
+    def _run_binsort(self) -> dict[str, Any]:
+        # Preserve the delegate entry point, including controlled model failures.
+        try:
+            return self._run_counting_sort()
+        except MemoryError as error:
+            raise SortingExecutionError("No se pudo reservar memoria del modelo Python para el conteo de Binsort.") from error
 
     def _run_radixsort(self) -> None:
         negatives = [-value for value in self.values if value < 0]
@@ -471,6 +664,8 @@ class SortingInterpreter:
             exp *= 10
 
     def _counting_digit(self, arr: list[int], exp: int) -> None:
+        if self._radix_instruction_engine is not None:
+            return self._radix_instruction_engine.counting_digit(arr, exp)
         output = [0] * len(arr)
         count = [0] * 10
         for number in arr:
@@ -516,4 +711,3 @@ class SortingInterpreter:
                 "message": last_action,
             },
         }
-

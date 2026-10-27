@@ -1,0 +1,8 @@
+test_exact_boundary_and_normal_fallback (qa_convergence.test_book_capture_budget.CaptureBudgetTests.test_exact_boundary_and_normal_fallback) ... ok
+test_normal_c_failure_without_trace_is_still_executed_history (qa_convergence.test_book_capture_budget.CaptureBudgetTests.test_normal_c_failure_without_trace_is_still_executed_history) ... ok
+test_random_seed_preflight_exact_replay (qa_convergence.test_book_capture_budget.CaptureBudgetTests.test_random_seed_preflight_exact_replay) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.436s
+
+OK

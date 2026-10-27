@@ -1,0 +1,25 @@
+# Insercion: MEDIUM acotado propuesto desde baseline LOW
+
+Preparacion concreta; no implementada. Instruccion vigente LOW permite delimitar MEDIUM cuando no baste un arreglo sencillo. Baseline: evidence/visible-sorting-insercion-baseline-low/native-current/report.json y browser/report.json. Seis entradas <=4: [7],[1,2],[2,1],[2,2],[-3,0,-1,0],[INT_MAX,INT_MIN,0]. Resultado/mutaciones parciales/metricas coinciden;162observaciones C vs48frames actuales,114observaciones sin representacion y30frames sin todos los locales reales. Dos guardas nativas/19observaciones, rechazoAPI/UIvacio separado. Navegador96restauraciones de48frames existentes,0POST/JSerrors; cuatro shifts distintos muestran clave ausente y hueco erroneo (ocho observaciones UI por avance/retroceso, no8casos). Doxygen/caller existentes correctos.
+
+## Por que delimitar MEDIUM
+
+La replica Python ya ordena correctamente y sus contadores coinciden. Cambiar una expresion/regex de UI no cubre declaraciones, clausulas de for, dos operandos y resultado compuesto del while, decremento independiente, entradas/salidas de scopes ni validacion helper. Hace falta un contrato de eventos dedicado y contraste causal completo, sin inferir variables desde indices coloreados. Ese cambio semantico de traza se reserva a MEDIUM acotado; LOW no altera produccion ni inventa cierre por resultado.
+
+## Orden y scopes exactos desde C
+
+ordenar_insercion es void; declarar i size_t sin inicializar; llamar/retornar arreglo_valido, guardas cortocircuito de puntero y n; outer i=1,test i<n,incremento con prueba falsa final. Cada cuerpo int clave=arreglo[i] declara e inicializa en una sola instruccion, luego size_t j=i; no fabricar intervalo de clave sin inicializar ni j antes de declararse. while j>0 se evalua antes de arreglo[j-1]>clave; si j==0 omitir segundo operando y acceso, emitir resultado compuesto falso sin underflow. Comparisons solo al evaluar el segundo operando, no por cada prueba j>0. Shifts arreglo[j]=arreglo[j-1] dejan duplicacion provisional; conservar clave y j. --j debe ser frame propio, sin mutation de array. Al terminar while, arreglo[j]=clave aun si no hubo shift; moves incluye take-key, cada shift y write-key, swaps siempre0. Al cerrar cuerpo retirar clave/j antes de ++i; siguiente pasada crea nuevos locals. Retorno final retira i/parametros/callstack; no printf propio. Invariante: prefijo procesado ordenado, no afirmar posicion global definitiva de indices ya procesados; futuros menores pueden desplazar el prefijo. Sin helper intercambiar ni alias a/b inventados.
+
+## Cambios propuestos minimos
+
+Nuevo modulo insercion_instructions.py opt-in, entradas y salida compatibles con SortingInterpreter, source-map acotado a cuerpos reales. Reusar typed_frame de Intercambio como presentacion, definir loops/scopes/condition/expression propios, y contexto clave/j explicito en adapter/estrategia. Fast conserva traza para cambio a pasos, sin POST; estados before-after mismos even sin mutation. No tocar modulos cerrados Intercambio/Seleccion, algoritmos C/H, generador main ni otros ocho metodos. Baseline original preservado; corregido sera evidencia nueva.
+
+## Infraestructura lista y criterios
+
+tests/_audit_insercion_baseline.py extrae/instrumenta C real con tests/_audit_sorting_c_source.py, entrega162eventos nativos/guardas en JSONL; elevar proyeccion coarse a igualdad debug event/array/condition/locals, comprobar lineas por funcion del source de trace (excerpt, no offset deC completo). No reimplementar sorter nativo. Punteros observers retirados antes de fin de scopes; nunca leer locals sin inicializar o array[-1]. tests/_audit_insercion_baseline_browser.py navega states existentes, tabla/stack/estrategia/lineas; cambiar a todos los162eventos con restitucion bidireccional y botones existentes, ceroPOST/JSerrors. Capturar shift parcial antes del decremento y despues, clave persistente/huecoactual, igualdades y negative/extreme/corto-j0. Caller actual siete descargas (seisrun+vacio) reutiliza tests/_audit_sorting_main_native.py C17,Doxygen,ownership; no segundo renderer ni source literalizado.
+
+Regresiones permanentes tests/test_sorting_insercion_baseline_low.py:21IDs,15passed/6failing de completitud causal sin xfail,2.69s. Esos fallos deben resolverse con los162eventos en futuro bloque, no reducir oracle ni borrar baseline. Conservar paridad y caller/historia/recarga repetidos; no sumar pruebas del baseline a cierre MEDIUM. Repetidos int no son prueba etiquetada de estabilidad, ni0malloc prueba fallo de reservas.
+
+## Continuidad para ejecutar
+
+Necesita nueva instruccion/asignacion fina MEDIUM para Insercion y guarda before, no reutilizar assignment LOW cerrado ni elegir desde checkpoint. Scope propuesto sorting.insercion-instructions (nuevo contrato, distinto de baseline collection); coordenar ID real al autorizar. Al terminar semantica devolverLOW y guardaafter; actualizar solo seguimiento/evidencia propia. Mantener5051parent18520/hijo2824 canonicorun.py, cinco secciones,global13/22,docs121/208+87pendientes; Grafos numeric/cycle aparte. Sinpush/merge/despliegue. No archive ni firma global.

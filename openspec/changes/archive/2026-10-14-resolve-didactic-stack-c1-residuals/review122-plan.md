@@ -1,0 +1,3 @@
+# Bloque finito122pendientes
+
+Parent01a0fe61-3104-743a-b032-bcc289ad80cd:25controles retirados/ocultos cotejarcontratos/decisionesaprobadas,clasificar anterior/interno/brecha,no restaurar/excluirautomáticamente. Otros97sin candidato revisarcasosreales ycrear focales faltantes coninput/expectedclaro. Reutilizar pruebas/evidencia yseparar requisito/vínculo/ejecución/aceptación. Bloquesprivados120s2GiB;noDocker/proveedores externos/campañasconsumidas/publicación/despliegue. Fuente253bindings/122unassigned,classification40 ymanifiesto original375. Navegación/decode archivos locales/browserlocalhost,sinusuariosessions/5051. Mantener25requisitos alclasificaralcances históricos;ninguna admisión automática.

@@ -1,0 +1,11 @@
+✔ hierarchical: host feedback never assigned as C console fallback (1.286446ms)
+✔ hierarchical fast path retains executed trace and uses final cursor (1.674082ms)
+✔ hierarchical: non-printing executed path stays empty, query stdout retained exactly (0.904328ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.835605

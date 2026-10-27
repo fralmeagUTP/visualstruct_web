@@ -1,0 +1,12 @@
+{
+  "approved": true,
+  "owner": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "allowed_paths": [
+    "openspec/changes/reconcile-session-query-history-documentation",
+    "openspec/specs/session-state/spec.md"
+  ],
+  "provenance": "openspec/changes/reconcile-session-query-history-documentation/adoption-instruction-20261004.md",
+  "accepted_delta_sha256": "0dd4170ae53e7c6b3ab6656e74eb98f7b3b6234f9bc8b0208a84346223e57e3f",
+  "review": "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004/review.md",
+  "meaning": "Adopción documental3MODIFIED yPurpose, sin función/certificación global/archivo"
+}

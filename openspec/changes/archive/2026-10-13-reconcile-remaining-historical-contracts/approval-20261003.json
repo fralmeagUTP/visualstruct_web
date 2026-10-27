@@ -1,0 +1,9 @@
+{
+  "approved": true,
+  "owner": "c1-documentary-author-01a0f0a7",
+  "allowed_paths": [
+    "openspec/changes/reconcile-remaining-historical-contracts"
+  ],
+  "provenance": "openspec/changes/reconcile-remaining-historical-contracts/instruction-20261003.md",
+  "meaning": "Nueva autorización de actualización documental,no ejecución técnica ni QA propia"
+}

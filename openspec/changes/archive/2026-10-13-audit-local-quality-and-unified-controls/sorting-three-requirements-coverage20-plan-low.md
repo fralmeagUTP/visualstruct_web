@@ -1,0 +1,1 @@
+Execute only the three IDs previously proposed, correct canonical C preparation, max20min. Preserve994product and sessions. Fresh incremental compatible full denominator coverage; exact failures, no expectation edits. Joint report includes previous8PASS and fixture pending adoption; minimum next proposal, no extra suites.

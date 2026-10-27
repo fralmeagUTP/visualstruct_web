@@ -1,0 +1,11 @@
+--- ../qa_independent/baseline_test_real_stdout.js
++++ qa/test_real_stdout.js
+@@ -6,7 +6,7 @@
+ function fixture(kind){
+  const source=file(kind),hier=kind==='hierarchical';
+  const code=hier?extract(source,'  function collectHierPrintfLines','  operations.forEach'):extract(source,'  function collectGraphPrintfLines','  function parseJsonArray');
+- const consoleEl={textContent:'',innerHTML:'',style:{}},state={trace:null,fallbackMessage:''},page={modelId:'avl',consoleTrace:null,consoleFallbackMessage:''};
++ const consoleEl={dataset:{},textContent:'',innerHTML:'',style:{}},state={trace:null,fallbackMessage:''},page={modelId:'avl',consoleTrace:null,consoleFallbackMessage:''};
+  const render=(element,lines,fallback)=>{element.textContent=lines.length?lines.join('\n'):fallback;};
+  const push=(out,line)=>{if(String(line).trim()&&out.at(-1)!==line)out.push(line);};
+  const context={consoleState:state,pageState:page,printfConsole:consoleEl,renderHierPrintfConsole:render,renderGraphPrintfConsole:render,hPushUniqueConsoleLine:push,gPushUniqueConsoleLine:push};vm.createContext(context);vm.runInContext(code,context);

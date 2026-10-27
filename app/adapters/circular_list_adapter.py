@@ -38,7 +38,7 @@ class CircularListAdapter(BaseAdapter):
             return {"message": f"No se encontró '{valor}' para eliminar."}
         if operation_name == "buscar_posiciones":
             valor = self._require_int(payload, "value", "valor")
-            posiciones = [posicion + 1 for posicion in self._structure.buscar_posiciones(valor)]
+            posiciones = self._structure.buscar_posiciones(valor)
             if posiciones:
                 return {
                     "message": f"'{valor}' aparece en posiciones {posiciones}.",

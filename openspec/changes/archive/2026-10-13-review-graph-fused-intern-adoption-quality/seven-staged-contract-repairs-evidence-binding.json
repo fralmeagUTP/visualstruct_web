@@ -1,0 +1,13 @@
+{
+  "package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-seven-staged-contract-repairs-group-low/Seven-staged-contract-repairs-QA-v1.zip",
+  "SHA256": "c336672d660eedfee2b51a538ab3dd83fde3eddb9b64a8dc5bcf6a8ee7f261b0",
+  "manifest": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-seven-staged-contract-repairs-group-low/sealed-manifest.json",
+  "manifest_SHA256": "4a43aa69a3e322fed4fc4cf7616d7122be195f68e4f7ff05f05351e5bfecffb4",
+  "verified_data_entries": 46,
+  "zip_entries": 47,
+  "selection": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-seven-staged-contract-repairs-group-low/selection.json",
+  "source_binding": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-seven-staged-contract-repairs-group-low/staging-source-binding.json",
+  "freeze999": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-seven-staged-contract-repairs-group-low/source-freeze-before.json",
+  "coverage_preserved": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-seven-staged-contract-repairs-group-low/coverage-preserved-binding.json",
+  "independent_verdict": "PENDING"
+}

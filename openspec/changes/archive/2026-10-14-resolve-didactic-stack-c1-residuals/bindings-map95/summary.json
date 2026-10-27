@@ -1,0 +1,20 @@
+{
+  "candidates_reviewed": 95,
+  "shared_contexts_reviewed": 14,
+  "shared_requirements_removed": 0,
+  "new_source_links": 24,
+  "new_links_by_category": {
+    "algorithm": 9,
+    "operation": 10,
+    "phase": 4,
+    "route": 1
+  },
+  "before_links": 143,
+  "after_links": 167,
+  "before_pending": 232,
+  "after_pending": 208,
+  "candidate_contexts_remaining": 71,
+  "application_test_bodies_executed": 0,
+  "new_acceptances": 0,
+  "gate_errors": 0
+}

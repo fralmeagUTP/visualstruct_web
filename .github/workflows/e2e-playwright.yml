@@ -12,7 +12,53 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: ${{ matrix.minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - group: graph-algorithms
+            suite: chromium
+            target: tests/test_ui_playwright_e2e.py
+            cases: "--case test_playwright_graph_execute_completes_algorithms_across_phases"
+            addopts: ""
+            minutes: 40
+          - group: chromium-general-0
+            suite: chromium
+            target: tests
+            cases: "--shard-index 0 --shard-count 4"
+            addopts: "-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
+            minutes: 40
+          - group: chromium-general-1
+            suite: chromium
+            target: tests
+            cases: "--shard-index 1 --shard-count 4"
+            addopts: "-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
+            minutes: 40
+          - group: chromium-general-2
+            suite: chromium
+            target: tests
+            cases: "--shard-index 2 --shard-count 4"
+            addopts: "-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
+            minutes: 40
+          - group: chromium-general-3
+            suite: chromium
+            target: tests
+            cases: "--shard-index 3 --shard-count 4"
+            addopts: "-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
+            minutes: 40
+          - group: firefox-general
+            suite: firefox
+            target: tests/test_playwright_firefox_smoke.py
+            cases: ""
+            addopts: ""
+            minutes: 20
+    env:
+      PYTHONUNBUFFERED: "1"
+      PYTEST_ADDOPTS: ${{ matrix.addopts }}
+      VISUALSTRUCT_E2E_DIAGNOSTICS: "1"
+      VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: e2e-safe-diagnostics
 
     steps:
       - name: Checkout
@@ -27,13 +73,27 @@ jobs:
       - name: Install project dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest-cov playwright
+          pip install -r requirements-test.txt
 
-      - name: Install Playwright browsers
+      - name: Install and record required Doxygen
         run: |
-          python -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y doxygen
+          doxygen --version
 
-      - name: Run Playwright E2E tests
-        run: |
-          python -m pytest -q tests/test_ui_playwright_e2e.py
+      - name: Install selected Playwright browser
+        run: python -m playwright install --with-deps ${{ matrix.suite }}
+
+      - name: Run complete E2E partition
+        run: python -B scripts/run_e2e_diagnostics.py --suite ${{ matrix.suite }} ${{ matrix.target }} ${{ matrix.cases }}
+
+      - name: Preserve E2E diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-diagnostics-${{ matrix.group }}
+          path: |
+            e2e-safe-diagnostics/*.jsonl
+            e2e-safe-diagnostics/*-result.json
+          if-no-files-found: warn
+          include-hidden-files: false

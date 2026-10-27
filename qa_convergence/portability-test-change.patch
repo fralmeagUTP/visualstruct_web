@@ -1,0 +1,21 @@
+# RECONSTRUCCIÓN de las dos ediciones registradas por el lead, no snapshot raw anterior retenido.
+# La aceptación independiente verifica los fixtures auténticos, assertions actuales y cuatro tests.
+--- reconstructed-before/test_book_main_help.py
++++ current/test_book_main_help.py
+@@ -5,8 +5,15 @@
+ from app.config import Config
+ from app.services.graph_help_service import GraphHelpService
+ ROOT=Path(__file__).resolve().parents[1]
+-FROZEN=ROOT.parents[1]/'visualstruct_reparacion_20261027/app'
++FROZEN=ROOT/'qa_convergence/checkpoint_fixture'
+ class BookGuide(unittest.TestCase):
++ @classmethod
++ def setUpClass(cls):
++  import json,hashlib
++  manifest=json.loads((FROZEN/'manifest.json').read_text())
++  for name,digest in manifest['files'].items():
++   if hashlib.sha256((FROZEN/name).read_bytes()).hexdigest()!=digest:
++    raise AssertionError('Frozen checkpoint fixture changed: '+name)
+  def test_book_contract_content(self):
+   data=GraphHelpService.get_structure_help('graph');text=' '.join(data['book_contract'])
+   for item in ['GrafoEstado','7 RANGO','NULL con GRAFO_OK','int *salida','long long','no se usa como infinito','no repite esa eliminación','no se liberan','No hay transacción conjunta']:

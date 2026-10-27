@@ -1,0 +1,18 @@
+{
+  "package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting17-portable-optional-v2-low/AVL-Sorting17-portable-optional-QA-v2.zip",
+  "SHA256": "d850aaa70b3e931cd916534be430140170eb9c09f42d25016b0c7b88a4b748da",
+  "bytes": 1516586,
+  "entries": 36,
+  "verified_data_entries": 35,
+  "freeze": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-avl-causal-stages-sorting17-group-low/new-product-test-freeze.json",
+  "freeze_SHA256": "5deae3c17880bd89c374babb76f18447682b2c58f56cb70d9527b489daae06f7",
+  "current_coverage_measured": true,
+  "Sorting17_previous_version_only": true,
+  "artifact_version": "sorting17-portable-optional-v2",
+  "previous_evidence_binding_SHA": "852eb44186fe4d4fba9a34d73b9fd2148b447ae0d28712359bb120675d104e87",
+  "previous_binding_copy": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting17-portable-optional-v2-low/prior-avl-causal-stages-sorting17-evidence-binding.json",
+  "coverage_scope": "Optionalinstrumentation17only 186/24147/4; notglobalcampaign",
+  "product_freeze": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting17-portable-optional-v2-low/source-freeze-before.json",
+  "product_freeze_SHA": "5deae3c17880bd89c374babb76f18447682b2c58f56cb70d9527b489daae06f7",
+  "product994unchanged": true
+}

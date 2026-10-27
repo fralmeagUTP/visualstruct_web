@@ -1,0 +1,241 @@
+{
+  "change": "redesign-stack-learning-workspace",
+  "task_dispositions": [
+    {
+      "original_task": "- [ ] 1.1 Medir el recorrido actual de Pila en escritorio, tableta y móvil: insertar, ejecutar, reproducir, desapilar y consultar C.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 1.3 Establecer los límites de alto, ancho, scroll interno, teclado y contraste para el piloto.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 3.2 Implementar la composición de tableta sin ocultar la operación ni los controles principales.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 3.3 Mantener en móvil las pestañas Estado/Código y una zona de control accesible sin superposición.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 4.1 Probar insertar, duplicar, desapilar, preparar, reproducir, pausar y avanzar paso a paso en Pila.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 4.2 Confirmar que estado visual y línea C resaltada continúan sincronizados tras el rediseño.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 4.3 Ejecutar pruebas de teclado, foco, contraste, navegación interna y reducción de movimiento.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 4.4 Ejecutar Playwright con capturas en escritorio, tableta y móvil; validar que la acción principal no requiere scroll de página.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 4.5 Presentar el piloto de Pila para aprobación antes de extenderlo a las otras estructuras.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 4.6 Verificar que abrir o cerrar paneles no altere la traza, el estado de la pila ni la navegación por teclado.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "capability": "sequential-structures",
+      "requirement": "Piloto visual limitado a Pila",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/redesign-stack-learning-workspace/specs/sequential-structures/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Laboratorio compacto de Pila",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/redesign-stack-learning-workspace/specs/visual-playback-ui/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Divulgación progresiva de detalles de Pila",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/redesign-stack-learning-workspace/specs/visual-playback-ui/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Secuencia pedagógica y paneles plegables de Pila",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/redesign-stack-learning-workspace/specs/visual-playback-ui/spec.md"
+    },
+    {
+      "capability": "visual-playback-ui",
+      "requirement": "Adaptación y controles pertinentes del piloto Pila",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/redesign-stack-learning-workspace/specs/visual-playback-ui/spec.md"
+    }
+  ],
+  "evidence": {
+    "finite_C1_verdict": {
+      "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+      "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+    },
+    "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+    "reserves": [
+      "noLSan",
+      "finiteonly/no universalpaths",
+      "BFS8onlytiming",
+      "privatequeriesunpublished",
+      "noGitHubVPSupdates"
+    ]
+  },
+  "new_tests": 0,
+  "technical_new_defects_demonstrated": 0,
+  "supersessions": [
+    "eightstages→five",
+    "hashtext/rehash→integerfixedcapacity",
+    "repeat/sliders7direct+pause1dependent→retiredNOT_PASS/manualcapabilitiesretained",
+    "old13fullinstrumenteduniversalclaim→approvedfinitewitnesses/gates",
+    "oldC1partial→12/12finite",
+    "Graphpuretime→plainfullHTTPBFS8measurement"
+  ]
+}

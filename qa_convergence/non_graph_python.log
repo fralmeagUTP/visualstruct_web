@@ -1,0 +1,61 @@
+test_legacy_position_history_preserved_not_replayed_as_c (qa.test_c_position_bounds.PositionBoundsTests.test_legacy_position_history_preserved_not_replayed_as_c) ... ok
+test_new_c_position_and_relative_rejected_before_body (qa.test_c_position_bounds.PositionBoundsTests.test_new_c_position_and_relative_rejected_before_body) ... ok
+test_optional_relative_preserves_existing_default (qa.test_c_position_bounds.PositionBoundsTests.test_optional_relative_preserves_existing_default) ... ok
+test_representable_positions_keep_native_contract (qa.test_c_position_bounds.PositionBoundsTests.test_representable_positions_keep_native_contract) ... ok
+test_http_no_writes_export_reset (qa.test_hash_capacity_policy.HashCapacityTests.test_http_no_writes_export_reset) ... [2026-10-27 05:16:32,594] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+ok
+test_legacy_before_replay (qa.test_hash_capacity_policy.HashCapacityTests.test_legacy_before_replay) ... ok
+test_new_frontier (qa.test_hash_capacity_policy.HashCapacityTests.test_new_frontier) ... ok
+test_actual_page_limits_and_history (qa.test_hash_help.HashHelp.test_actual_page_limits_and_history) ... [2026-10-27 05:16:33,301] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+ok
+test_only_terminal_narration_changes (qa.test_heap_query_return.QueryReturn.test_only_terminal_narration_changes) ... ok
+test_root_and_list_terminal_vs_callee (qa.test_heap_query_return.QueryReturn.test_root_and_list_terminal_vs_callee) ... ok
+[2026-10-27 05:16:33,789] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+test_comparison_frontier_keeps_c_int_validation (qa.test_history_validation.HistoryValidationTests.test_comparison_frontier_keeps_c_int_validation) ... ok
+test_incompatible_history_does_not_expose_saved_stack_trace (qa.test_history_validation.HistoryValidationTests.test_incompatible_history_does_not_expose_saved_stack_trace) ... ok
+test_legacy_states_preserved_new_execution_blocked_and_reset_recovers (qa.test_history_validation.HistoryValidationTests.test_legacy_states_preserved_new_execution_blocked_and_reset_recovers) ... ok
+test_new_int32_boundaries_and_rejection (qa.test_history_validation.HistoryValidationTests.test_new_int32_boundaries_and_rejection) ... ok
+test_abb_publication_and_void_caller (qa.test_insert_scope.InsertScope.test_abb_publication_and_void_caller) ... ok
+test_rn_void_does_not_claim_pointer (qa.test_insert_scope.InsertScope.test_rn_void_does_not_claim_pointer) ... ok
+test_scope_matches_post_instruction_memory (qa.test_insert_scope.InsertScope.test_scope_matches_post_instruction_memory) ... ok
+test_original_instruction_and_memory_stream_is_preserved (qa.test_insert_scope_equivalence.ScopeEquivalence.test_original_instruction_and_memory_stream_is_preserved) ... ok
+[2026-10-27 05:16:42,547] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+test_main_access_for_all_ten_structure_pages (qa.test_main_help.MainHelpTests.test_main_access_for_all_ten_structure_pages) ... ok
+test_manual_no_longer_requires_manual_headers (qa.test_main_help.MainHelpTests.test_manual_no_longer_requires_manual_headers) ... ok
+test_sublist_and_circular_guide_match_generated_main (qa.test_main_help.MainHelpTests.test_sublist_and_circular_guide_match_generated_main) ... ok
+test_legacy_and_explicit_modes_return_independent_copies (qa.test_restored_console_mode.RestoredConsoleModeTests.test_legacy_and_explicit_modes_return_independent_copies) ... ok
+test_native_and_simulator_agree (qa.test_sorting_native.NativeSortingTests.test_native_and_simulator_agree) ... ok
+[2026-10-27 05:16:49,976] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+test_all_algorithms_both_modes (qa.test_sorting_regressions.SortingRegressionTests.test_all_algorithms_both_modes) ... ok
+test_c_int_extremes_and_counting_range_rejection (qa.test_sorting_regressions.SortingRegressionTests.test_c_int_extremes_and_counting_range_rejection) ... ok
+test_unknown_algorithm_is_validation_not_server_error (qa.test_sorting_regressions.SortingRegressionTests.test_unknown_algorithm_is_validation_not_server_error) ... ok
+test_c_literal_unicode_and_newlines (qa.test_spanish_encoding.SpanishEncodingTests.test_c_literal_unicode_and_newlines) ... ok
+test_priority_trace_text_utf8 (qa.test_spanish_encoding.SpanishEncodingTests.test_priority_trace_text_utf8) ... ok
+test_source_text_has_no_corrupted_utf8 (qa.test_spanish_encoding.SpanishEncodingTests.test_source_text_has_no_corrupted_utf8) ... ok
+test_generic_adapter_only_events_preserve_repetitions_and_newlines (qa.test_stdout_contract.StdoutContractTests.test_generic_adapter_only_events_preserve_repetitions_and_newlines) ... ok
+test_generic_literal_events_do_not_repeat_adapter_summary (qa.test_stdout_contract.StdoutContractTests.test_generic_literal_events_do_not_repeat_adapter_summary) ... ok
+test_linked_show_snapshot_and_search_events (qa.test_stdout_contract.StdoutContractTests.test_linked_show_snapshot_and_search_events) ... ok
+[2026-10-27 05:17:09,226] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+test_all_landing_and_phase_pages (qa.test_http_sessions.HttpSessionTests.test_all_landing_and_phase_pages) ... ok
+test_all_operation_routes_refresh_and_reset (qa.test_http_sessions.HttpSessionTests.test_all_operation_routes_refresh_and_reset) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 74.157s
+
+OK
+PASS 10 actual rendering paths; exact decoded source, empty/trailing lines, macro continuation, line indices and C17 execution
+PASS abb actual highlighted markup characters unchanged; downloaded C/H compile and run
+PASS avl actual highlighted markup characters unchanged; downloaded C/H compile and run
+PASS red_black actual highlighted markup characters unchanged; downloaded C/H compile and run
+PASS binary_heap actual highlighted markup characters unchanged; downloaded C/H compile and run
+   Error...Posicion no encontrada..!
+   Error...Posicion no encontrada..!
+   Error...Posicion no encontrada..!
+
+
+ Valores eliminados..
+
+
+
+ Valores eliminados..
+

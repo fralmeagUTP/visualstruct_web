@@ -1,0 +1,12 @@
+{
+  "schema": "didactic-qa-result/v1", "case_id": "GRAPH-003", "structure_id": "graph", "operation": "run_bfs/run_dfs",
+  "input": {"directed_edges": [[1, 2], [2, 3]], "start": 1},
+  "expected": [{"layer": "c", "source_location": "grafo_bfs/grafo_dfs_recursivo", "state": {"returned_list": [3, 2, 1]}}],
+  "observed": [{"layer": "backend", "source_location": "app/domain/graph/tad_grafo.py", "state": {"returned_list": [1, 2, 3]}}],
+  "result": "failed", "severity": "high",
+  "discrepancy": "El C antepone cada visita a recorrido y devuelve la lista inversa; Python construye y presenta el orden de visita directo.",
+  "probable_cause": "La transcripción sustituyó tmp->sig=recorrido por acumulación append y _build_vertices_list en orden directo.",
+  "location": "app/domain/graph/tad_grafo.py:grafo_bfs y grafo_dfs_recursivo",
+  "recommended_test": "Ejecutar la cadena dirigida 1->2->3 y comparar por separado orden de visita y lista retornada C.",
+  "suggested_fix": "Aclarar si la API debe mostrar visitas o retorno; si interpreta el C, reproducir el prepend o corregir el C mostrado. No se modifica código funcional durante la auditoría."
+}

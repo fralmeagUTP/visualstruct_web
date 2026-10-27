@@ -5,12 +5,15 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
+from app.domain.hash.educational_capacity import MAX_VISUAL_CAPACITY, CAPACITY_MESSAGE, oversized_history_capacity
 from app.adapters.base_adapter import BaseAdapter
 from app.adapters.hash_table_adapter import HashTableAdapter
 from app.services.observability import observe_replay
+from app.services.hash_main_service import build_hash_main
 from app.services.c_code_service import CCodeService
 from app.services.execution_trace_service import ExecutionTraceService
 from app.services.pseudocode_service import PseudocodeService
+from app.domain.hash.pedagogy import HASH_GUIDED_EXAMPLES, HASH_LEARNING_CATALOG
 
 
 class HashStructureService:
@@ -19,7 +22,7 @@ class HashStructureService:
     _REGISTRY: dict[str, dict[str, Any]] = {
         "hash_table": {
             "name": "Tabla Hash",
-            "description": "Tabla hash con encadenamiento separado y redimensionamiento automatico.",
+            "description": "Tabla hash de capacidad fija con claves/valores enteros y encadenamiento separado.",
             "adapter": HashTableAdapter,
         }
     }
@@ -91,18 +94,61 @@ class HashStructureService:
         return "Ocurrio un error inesperado durante la operacion."
 
     @staticmethod
+    def _operations(adapter):
+        operations = deepcopy(adapter.get_supported_operations())
+        for operation in operations:
+            if operation["name"] == "create_table":
+                for field in operation.get("inputs", []):
+                    if field["name"] == "capacity":
+                        field.update(min=1, max=MAX_VISUAL_CAPACITY, step=1)
+        return operations
+
+    @staticmethod
+    def _suspended_state(capacity):
+        message = (f"Visualización suspendida: el historial contiene una tabla de capacidad {capacity}. "
+                   + CAPACITY_MESSAGE + " El historial y el main se conservan; esto no significa que la tabla esté vacía. "
+                   "Puedes exportarlos o restablecer los datos mediante confirmación.")
+        return {"structure": "hash_table", "title": "Tabla Hash — visualización suspendida",
+                "suspended": True, "suspension_reason": message,
+                "metadata": {"capacity": capacity, "capacity_policy": "fixed"}}
+
+    @staticmethod
+    def _policy_rejection(structure_id, operation_name, payload, history, state, message):
+        didactic = HashStructureService._didactic_content(structure_id)
+        source, title = ExecutionTraceService._get_operation_source(
+            didactic_data=didactic, operation_name=operation_name)
+        trace = {"structure_id": structure_id, "operation_name": operation_name,
+                 "payload": deepcopy(payload), "success": False, "mutates": False,
+                 "message": message, "source_code": source, "code_title": title,
+                 "steps": [], "final_state": deepcopy(state), "execution_started": False,
+                 "validation": {"stage": "API", "accepted": False, "message": message}}
+        return {"success": False, "message": message, "result": None,
+                "visual_state": state, "history": deepcopy(history), "main_c": build_hash_main(history),
+                "execution_trace": trace, "preserve_session": True}
+
+    @staticmethod
     def get_view_model(structure_id: str, history: list[dict[str, Any]]) -> dict[str, Any]:
         """Build data needed to render hash structure page."""
         structure = HashStructureService.get_structure(structure_id)
-        adapter, valid_history = HashStructureService._rebuild_adapter(structure_id, history)
+        capacity = oversized_history_capacity(history)
+        if capacity is not None:
+            adapter = HashStructureService._new_adapter(structure_id)
+            valid_history = deepcopy(history)
+            state = HashStructureService._suspended_state(capacity)
+        else:
+            adapter, valid_history = HashStructureService._rebuild_adapter(structure_id, history)
+            state = adapter.to_visual_state()
         return {
             "id": structure_id,
             "name": structure["name"],
             "description": structure["description"],
-            "operations": adapter.get_supported_operations(),
-            "visual_state": adapter.to_visual_state(),
+            "operations": HashStructureService._operations(adapter),
+            "visual_state": state,
             "didactic": HashStructureService._didactic_content(structure_id),
             "history": valid_history,
+            "main_c": build_hash_main(valid_history),
+            "guided_examples": deepcopy(HASH_GUIDED_EXAMPLES),
+            "learning_profile": deepcopy(HASH_LEARNING_CATALOG),
         }
 
     @staticmethod
@@ -113,7 +159,21 @@ class HashStructureService:
         history: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Execute one operation over rebuilt hash-table state."""
+        HashStructureService.get_structure(structure_id)
+        capacity = oversized_history_capacity(history)
+        if capacity is not None:
+            state = HashStructureService._suspended_state(capacity)
+            return HashStructureService._policy_rejection(structure_id, operation_name, payload, history,
+                                                         state, state["suspension_reason"])
         adapter, valid_history = HashStructureService._rebuild_adapter(structure_id, history)
+        if operation_name == "create_table":
+            try:
+                capacity = BaseAdapter._require_int(payload, "capacity", "capacidad")
+            except (ValueError, TypeError):
+                capacity = None
+            if capacity is not None and capacity > MAX_VISUAL_CAPACITY:
+                return HashStructureService._policy_rejection(structure_id, operation_name, payload, history,
+                                                             adapter.to_visual_state(), CAPACITY_MESSAGE)
         didactic_data = HashStructureService._didactic_content(structure_id)
         before_state = adapter.to_visual_state()
         operations = adapter.get_supported_operations()
@@ -135,13 +195,17 @@ class HashStructureService:
             return {
                 "success": False,
                 "message": message,
+                "result": None,
                 "visual_state": before_state,
                 "history": valid_history,
+            "main_c": build_hash_main(valid_history),
                 "execution_trace": trace,
             }
 
         try:
             result = adapter.execute(operation_name, payload)
+            if operation_name == "get" and result.get("result") is None:
+                raise ValueError(result["message"])
         except (ValueError, TypeError) as error:
             message = HashStructureService._didactic_error(error)
             if hasattr(adapter, "record_failed_operation"):
@@ -161,8 +225,10 @@ class HashStructureService:
             return {
                 "success": False,
                 "message": message,
+                "result": None,
                 "visual_state": after_state,
                 "history": valid_history,
+            "main_c": build_hash_main(valid_history),
                 "execution_trace": trace,
             }
 
@@ -181,6 +247,7 @@ class HashStructureService:
             success=True,
             message=message,
             mutates=bool(operation_meta.get("mutates", False)),
+            console_events=result.get("console") if isinstance(result.get("console"), list) else [],
         )
         return {
             "success": True,
@@ -188,5 +255,64 @@ class HashStructureService:
             "result": result.get("result"),
             "visual_state": after_state,
             "history": valid_history,
+            "main_c": build_hash_main(valid_history),
             "execution_trace": trace,
+        }
+
+    @staticmethod
+    def compare_capacities(entries: Any, success_key: Any, absent_key: Any) -> dict[str, Any]:
+        """Compare isolated fixed-capacity tables using one immutable input."""
+        if not isinstance(entries, list) or not entries:
+            raise ValueError("Debes proporcionar al menos un par clave:valor.")
+        frozen_entries: tuple[tuple[int, int], ...] = tuple(
+            (
+                BaseAdapter._require_int({"key": pair[0]}, "key", "clave"),
+                BaseAdapter._require_int({"value": pair[1]}, "value", "valor"),
+            )
+            for pair in entries
+            if isinstance(pair, (list, tuple)) and len(pair) == 2
+        )
+        if len(frozen_entries) != len(entries):
+            raise ValueError("Cada entrada debe ser un par entero clave:valor.")
+        found_key = BaseAdapter._require_int({"key": success_key}, "key", "clave")
+        missing_key = BaseAdapter._require_int({"key": absent_key}, "key", "clave")
+
+        def lookup_cost(state: dict[str, Any], key: int) -> dict[str, int | bool]:
+            capacity = int((state.get("metadata") or {}).get("capacity", 0))
+            index = ((key % capacity) + capacity) % capacity if capacity else -1
+            bucket = next((item for item in state.get("buckets") or [] if int(item.get("index", -1)) == index), {})
+            chain = list(bucket.get("entries") or []) if isinstance(bucket, dict) else []
+            position = next((i for i, entry in enumerate(chain) if int(entry.get("key")) == key), None)
+            comparisons = len(chain) if position is None else position + 1
+            return {"found": position is not None, "bucket": index, "hash_evaluations": 1, "comparisons": comparisons, "nodes_visited": comparisons}
+
+        variants: list[dict[str, Any]] = []
+        for capacity in (3, 7, 17):
+            adapter = HashTableAdapter()
+            adapter.execute("create_table", {"capacity": capacity})
+            snapshots = [deepcopy(adapter.to_visual_state())]
+            for key, value in frozen_entries:
+                adapter.execute("insert", {"key": key, "value": value})
+                snapshots.append(deepcopy(adapter.to_visual_state()))
+            final = snapshots[-1]
+            variants.append(
+                {
+                    "capacity": capacity,
+                    "snapshots": snapshots,
+                    "final": final,
+                    "distribution": {
+                        "occupied_buckets": final["metadata"].get("occupied_buckets", 0),
+                        "collisions": final["metadata"].get("collisions", 0),
+                        "chain_lengths": final["metadata"].get("chain_lengths", []),
+                        "load_factor": final["metadata"].get("load_factor", 0),
+                    },
+                    "successful_lookup": lookup_cost(final, found_key),
+                    "absent_lookup": lookup_cost(final, missing_key),
+                }
+            )
+        return {
+            "success": True,
+            "input": {"entries": [list(pair) for pair in frozen_entries], "success_key": found_key, "absent_key": missing_key},
+            "variants": variants,
+            "conclusion": "Las mediciones corresponden únicamente a esta entrada y estas capacidades; no prueban por sí solas una complejidad promedio universal.",
         }

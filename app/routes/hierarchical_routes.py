@@ -85,3 +85,14 @@ def reset_structure(structure_id: str) -> Any:
             "history": [],
         }
     )
+
+
+@hierarchical_bp.post("/compare")
+def compare_structures() -> Any:
+    """Compare two isolated hierarchical executions over one immutable input."""
+    body=request.get_json(silent=True) or {}
+    try:
+        result=HierarchicalStructureService.compare_structures(str(body.get("kind", "")),body.get("values"))
+    except ValueError as error:
+        return jsonify({"success":False,"message":str(error)}),400
+    return jsonify({"success":True,**result})

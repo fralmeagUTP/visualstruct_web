@@ -1,0 +1,3 @@
+# Encolar readiness LOW, ajuste MEDIUM propuesto
+
+Delegación actualparent01a0fe61-3104-743a-b032-bcc289ad80cd despuésQA/cierreRNfinito:retomarplanMEDIUMEncolarbaseline14fallos sinrepetirbaseline. SóloverificarvigenciaC/H/artefactos/rutas yproponerbloque/checkpointacotado;NOimplementarEncolar enestaLOW. RNclosedfinite/otrasoperacionespreservadas. ActualCcola_encolar(structCola*q,intvalor)NodoCola*nro/sgte,void,guardqNULL/mallocNULL/FIFOvigentes. Propuesta nonewcontract/noC-H/noAPIflagfault/noendpointHTTPmain. AntesMEDIUM nuevainstrucción/asignación/before ySHAactualesD postRN;nocheckpointbaselineglobal223igual porque12RNcambioslegítimosse preservan.

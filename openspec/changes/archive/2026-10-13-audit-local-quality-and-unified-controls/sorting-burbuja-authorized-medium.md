@@ -1,0 +1,5 @@
+# Instruccion vigente Burbuja mejorada semantica
+
+Asignacion coordination-sorting-burbuja-medium-20261002; operacion sorting.burbuja-instructions. Nueva coordinacion explicita autoriza sorting-burbuja-instruction-review-plan.md; preparacion-only anterior queda supersedida para este bloque, history/assignmentLOWpreservados. Una sola variante ordenar_burbuja(no metodos nuevos). Siete <=4/330observacionesC yguardas21separadas del APIempty;resolver7regresiones causales originales sinweaken/xfail,oracleC intacto. Flagdespueshelper,forclauses/earlybreaksinphantomincrement,test/scopes/callerinternosuspendido,aliasrealesa/b,temporal/3writes/arraysbeforeafter,source exacto,replayambosmodossinPOST,callersrealesreusados.
+
+Conservar C/H/intercambio-seleccion-insercionmodulos/cierres,mainexisting/numerosGrafos/global13/22/docs121/208,5secciones/5051. MantenercounterLOW default helper sin alterar otrosmetodos; modulo dedicado posee sus propios contadores equivalentes. No ejecutar suite once ni publicar/merge/desplegar. Al terminar bloque solicitarLOW para nueva instruccion fina; no tomar siguiente tarea de checkpoint.

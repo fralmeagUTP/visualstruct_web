@@ -1,0 +1,11 @@
+# Hito3 Graph: main compartido DOM/HTTP
+
+Publicado 2026-10-04T05:56:29.629093+00:00. Proyecto canónico D:\MisProyectos\Web_VisualEstruct; asignación coordination-graph-three-approved-adjustments-medium-20261004; operación graph.bellman-prim-integer-cycle-approved-medium.
+
+Un único build_graph_main para página, respuesta de operación y GET /help/source/graph/main. DOM muestra exactamente main_c del servidor; sin generador JS divergente. main.c attachment UTF8/private no-store de misma sesión; consultas iguales aceptadas permanecen, rechazo/ciclo no agrega llamada, GET no ejecuta consultas. Caller imprime resultados C reales y libera listas propias y grafo antes de create/clear/random. Generación aleatoria usa semilla registrada y operaciones mutantes, no algoritmos.
+
+Cuatro E2E reales pasan77.35s: DOM/HTTP byte iguales,2consultas/reload/ciclo/aislamiento/0POST de reproducción,4mains HTTP C17-O2-Werror con outputs actuales. Cinco IDs originales de contrato: random pasó primero;4ownership fallaron por instrumentación privada y después pasan12.43s con malloc+calloc/free correctos y resets no vacíos. Dos IDs nuevos de normalización booleana pasan0.31s. Ownership BF14/14,Prim21/21,Dijkstra16/16,Kruskal13/13,0vivos en cuatro historias instrumentadas distintas; no sumar a cohortes previas como grafos únicos. Doxygen real4mains0advertencias/XML con main documentado.
+
+C/H, modelos numéricos/AST, codec y player compartido preservados frente a freeze2r1; cambios integradores sólo get_view_model/execute_operation/reset_structure/download_tad_source, JS rendering/main update y enlace UI. Originales/incidentes/XML fallidos conservados. QA independiente pendiente con binding existente, freeze3-product.zip + freeze3-inputs.json + freeze3-publication.json; no cierre de algoritmo/global y no consolidación de docs ledger ajeno.
+
+Los tres ajustes están implementados y verificados en alcance finito; bloque2 limita recursos a3vértices y registra CPU mayor y prueba adicional standalone de inmutabilidad bloqueada (cuatro player E2E sí pasan). Preview5051 renovado sólo tras verificar identidad propia, GET200 actual; identidad final en preview-current-identity.json. Siguiente: dictamen revisor01a0ff54-79d7-7520-8e9f-224ef5ed700f y consolidación LOW por coordinación sin ampliar bloque. Sin push/merge/despliegue.

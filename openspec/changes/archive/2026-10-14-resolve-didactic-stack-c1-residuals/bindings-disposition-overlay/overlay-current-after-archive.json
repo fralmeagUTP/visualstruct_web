@@ -1,0 +1,1289 @@
+{
+  "schema": "app-disposition-overlay/v1",
+  "original_identity": "44c79f35d2ac53c74a0223bc5334ab85569463fb42ad90b331fe87b942b84fd5",
+  "dispositions": [
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-check-prediction:7",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-check-prediction",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-check-prediction"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-compare-run:30",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-compare-run",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-compare-run"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-hint:8",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-hint",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-hint"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-load-example:5",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-load-example",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-load-example"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-prepare:15",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review17-hierarchical-flow-resources.log",
+        "sha256": "34d632d82c109a6077e506af6f52eabef1acacfa9cd9ad4c9e386b8fa6c57817"
+      },
+      "binding": {
+        "test_node": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+        "layer": "e2e",
+        "input": {
+          "family": "abb",
+          "operation": "insertar",
+          "value": 7,
+          "gestures": "step mode;Home/End/ArrowRight/Space",
+          "purpose": "Activar modo manual sobretraza existente presentaestadoinicial;ejecutarnuevoesacciÃ³nseparada"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "Activar modo manual sobretraza existente presentaestadoinicial;ejecutarnuevoesacciÃ³nseparada"
+        },
+        "provenance": {
+          "test_source_sha256": "cdfa01dc1e798a5db8abc65777d9fae920072a013aee4f50fb4d37ca9338163b",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-reset-progress:11",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-reset-progress",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-reset-progress"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-restart-execution:23",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review17-hierarchical-flow-resources.log",
+        "sha256": "34d632d82c109a6077e506af6f52eabef1acacfa9cd9ad4c9e386b8fa6c57817"
+      },
+      "binding": {
+        "test_node": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+        "layer": "e2e",
+        "input": {
+          "family": "abb",
+          "operation": "insertar",
+          "value": 7,
+          "gestures": "step mode;Home/End/ArrowRight/Space",
+          "purpose": "Home oactivar modomanual reinicia vista sinmutaciÃ³n"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "Home oactivar modomanual reinicia vista sinmutaciÃ³n"
+        },
+        "provenance": {
+          "test_source_sha256": "cdfa01dc1e798a5db8abc65777d9fae920072a013aee4f50fb4d37ca9338163b",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-sim-end:21",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review17-hierarchical-flow-resources.log",
+        "sha256": "34d632d82c109a6077e506af6f52eabef1acacfa9cd9ad4c9e386b8fa6c57817"
+      },
+      "binding": {
+        "test_node": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+        "layer": "e2e",
+        "input": {
+          "family": "abb",
+          "operation": "insertar",
+          "value": 7,
+          "gestures": "step mode;Home/End/ArrowRight/Space",
+          "purpose": "End odesactivar modomanual muestrafinal"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "End odesactivar modomanual muestrafinal"
+        },
+        "provenance": {
+          "test_source_sha256": "cdfa01dc1e798a5db8abc65777d9fae920072a013aee4f50fb4d37ca9338163b",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-sim-home:18",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review17-hierarchical-flow-resources.log",
+        "sha256": "34d632d82c109a6077e506af6f52eabef1acacfa9cd9ad4c9e386b8fa6c57817"
+      },
+      "binding": {
+        "test_node": "tests/test_review17_current_presentation.py::test_review17_hierarchical_keyboard_and_manual_reset_use_cached_trace",
+        "layer": "e2e",
+        "input": {
+          "family": "abb",
+          "operation": "insertar",
+          "value": 7,
+          "gestures": "step mode;Home/End/ArrowRight/Space",
+          "purpose": "Home"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "Home"
+        },
+        "provenance": {
+          "test_source_sha256": "cdfa01dc1e798a5db8abc65777d9fae920072a013aee4f50fb4d37ca9338163b",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-sim-pause:17",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/hierarchical-pause-dependency-decision.md",
+        "sha256": "867de9826e75212f50ef5717685dd6fa9dd16ef6591ccc4e8f99ba50768a2f85"
+      },
+      "status": "RETIRED_DEPENDENCY",
+      "result": "NOT_PASS",
+      "depends_on": "control:templates/hierarchical/structure.html:button:hier-sim-repeat:22",
+      "dependency_analysis": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/hierarchical-pause-dependency-decision.md",
+        "sha256": "867de9826e75212f50ef5717685dd6fa9dd16ef6591ccc4e8f99ba50768a2f85"
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-sim-repeat:22",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "RETIRED_AUTHORIZED",
+      "result": "NOT_PASS"
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:button:hier-skip-prediction:9",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-skip-prediction",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-skip-prediction"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:input:hier-compare-progress:31",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "RETIRED_AUTHORIZED",
+      "result": "NOT_PASS"
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:input:hier-compare-values:29",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-compare-values",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-compare-values"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:input:hier-practice-mode:10",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-practice-mode",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-practice-mode"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:input:hier-progress:27",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "RETIRED_AUTHORIZED",
+      "result": "NOT_PASS"
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:input:hier-speed-slider:26",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "RETIRED_AUTHORIZED",
+      "result": "NOT_PASS"
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:select:hier-compare-kind:28",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-compare-kind",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-compare-kind"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:select:hier-guided-example:4",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-guided-example",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-guided-example"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:select:hier-learning-level:3",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-learning-level",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-learning-level"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/hierarchical/structure.html:select:hier-prediction:6",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "examples": {
+            "abb": "empty",
+            "avl": "ll",
+            "red_black": "black-parent",
+            "binary_heap": "single"
+          },
+          "comparison_values": [
+            9,
+            3,
+            7
+          ],
+          "control_id": "hier-prediction",
+          "context": "full parametrized function, not isolated gesture"
+        },
+        "expected": {
+          "levels": [
+            "basic",
+            "advanced",
+            "intermediate"
+          ],
+          "prediction_correct_attempts": "1/1",
+          "hints": [
+            1,
+            2,
+            3
+          ],
+          "skip_no_attempt": true,
+          "reset": 0,
+          "comparison_two_cards": true,
+          "manual_navigation_no_extra_POST": true,
+          "stage_count": 5,
+          "control": "assertions in full existing E2E for hier-prediction"
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:seq-restart-execution:17",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review122-legacy-keyboard-resources.log",
+        "sha256": "f6c9fecf2a989f059f62933ad6fd5846b3c0e67e0f85fd3aaca990156ff72c76"
+      },
+      "binding": {
+        "test_node": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+        "layer": "e2e",
+        "input": {
+          "family": "stack",
+          "operation": "apilar",
+          "value": 7,
+          "gestures": "Alt+End/Alt+Home/Alt+r/Alt+p",
+          "purpose": "AltHome devuelveiniciocachÃ©, no nuevaejecuciÃ³n"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "AltHome devuelveiniciocachÃ©, no nuevaejecuciÃ³n"
+        },
+        "provenance": {
+          "test_source_sha256": "e62160bd045fc5426a332d72bc8f72c2dc63122de94cbde13df1ede2c8ed88cd",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:seq-sim-end:15",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review122-legacy-keyboard-resources.log",
+        "sha256": "f6c9fecf2a989f059f62933ad6fd5846b3c0e67e0f85fd3aaca990156ff72c76"
+      },
+      "binding": {
+        "test_node": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+        "layer": "e2e",
+        "input": {
+          "family": "stack",
+          "operation": "apilar",
+          "value": 7,
+          "gestures": "Alt+End/Alt+Home/Alt+r/Alt+p",
+          "purpose": "AltEnd"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "AltEnd"
+        },
+        "provenance": {
+          "test_source_sha256": "e62160bd045fc5426a332d72bc8f72c2dc63122de94cbde13df1ede2c8ed88cd",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:seq-sim-pause:11",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review122-legacy-keyboard-resources.log",
+        "sha256": "f6c9fecf2a989f059f62933ad6fd5846b3c0e67e0f85fd3aaca990156ff72c76"
+      },
+      "binding": {
+        "test_node": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+        "layer": "e2e",
+        "input": {
+          "family": "stack",
+          "operation": "apilar",
+          "value": 7,
+          "gestures": "Alt+End/Alt+Home/Alt+r/Alt+p",
+          "purpose": "AltP trasreplay estabiliza cursor"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "AltP trasreplay estabiliza cursor"
+        },
+        "provenance": {
+          "test_source_sha256": "e62160bd045fc5426a332d72bc8f72c2dc63122de94cbde13df1ede2c8ed88cd",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:seq-sim-play:10",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review122-legacy-keyboard-resources.log",
+        "sha256": "f6c9fecf2a989f059f62933ad6fd5846b3c0e67e0f85fd3aaca990156ff72c76"
+      },
+      "binding": {
+        "test_node": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+        "layer": "e2e",
+        "input": {
+          "family": "stack",
+          "operation": "apilar",
+          "value": 7,
+          "gestures": "Alt+End/Alt+Home/Alt+r/Alt+p",
+          "purpose": "AltR autoplaydecachÃ©;botÃ³n retiradono se restaura"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "AltR autoplaydecachÃ©;botÃ³n retiradono se restaura"
+        },
+        "provenance": {
+          "test_source_sha256": "e62160bd045fc5426a332d72bc8f72c2dc63122de94cbde13df1ede2c8ed88cd",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:seq-sim-prepare:9",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review122-legacy-keyboard-resources.log",
+        "sha256": "f6c9fecf2a989f059f62933ad6fd5846b3c0e67e0f85fd3aaca990156ff72c76"
+      },
+      "binding": {
+        "test_node": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+        "layer": "e2e",
+        "input": {
+          "family": "stack",
+          "operation": "apilar",
+          "value": 7,
+          "gestures": "Alt+End/Alt+Home/Alt+r/Alt+p",
+          "purpose": "Modo manual devuelveiniciotr azacache;AltHome tambiÃ©n;distinguirde Ejecutar"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "Modo manual devuelveiniciotr azacache;AltHome tambiÃ©n;distinguirde Ejecutar"
+        },
+        "provenance": {
+          "test_source_sha256": "e62160bd045fc5426a332d72bc8f72c2dc63122de94cbde13df1ede2c8ed88cd",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:seq-sim-repeat:16",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "RETIRED_AUTHORIZED",
+      "result": "NOT_PASS"
+    },
+    {
+      "id": "control:templates/sequential/structure.html:button:seq-sim-start:12",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "ACTIVE_REPLACEMENT",
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/review122-legacy-keyboard-resources.log",
+        "sha256": "f6c9fecf2a989f059f62933ad6fd5846b3c0e67e0f85fd3aaca990156ff72c76"
+      },
+      "binding": {
+        "test_node": "tests/test_review122_named_widgets.py::test_review122_legacy_sequential_purposes_preserved_by_keyboard",
+        "layer": "e2e",
+        "input": {
+          "family": "stack",
+          "operation": "apilar",
+          "value": 7,
+          "gestures": "Alt+End/Alt+Home/Alt+r/Alt+p",
+          "purpose": "AltHome"
+        },
+        "expected": {
+          "start_cursor": 0,
+          "final_cursor_positive": true,
+          "post_count_after_execute": 0,
+          "pause_cached_cursor_stable": "seq only;hierarchy pause not claimed",
+          "purpose": "AltHome"
+        },
+        "provenance": {
+          "test_source_sha256": "e62160bd045fc5426a332d72bc8f72c2dc63122de94cbde13df1ede2c8ed88cd",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "id": "control:templates/sequential/structure.html:input:seq-progress-slider:21",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "RETIRED_AUTHORIZED",
+      "result": "NOT_PASS"
+    },
+    {
+      "id": "control:templates/sequential/structure.html:input:seq-speed-slider:20",
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "status": "RETIRED_AUTHORIZED",
+      "result": "NOT_PASS"
+    }
+  ],
+  "additions": [
+    {
+      "item": {
+        "id": "control:dynamic:static/js/hierarchical.js:hier-compare-prev",
+        "category": "control",
+        "module": "hierarchical",
+        "source": "static/js/hierarchical.js",
+        "metadata": {
+          "identifier": "hier-compare-prev",
+          "runtime_dynamic": true
+        },
+        "coverage": {
+          "case_id": "QA-CONTROL-DYNAMIC-STATIC-JS-HIERARCHICAL-JS-HIER-COMPARE-PREV",
+          "layer": "e2e",
+          "oracle": "Comparison manual snapshot navigation without main state or POST changes."
+        }
+      },
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "values": [
+            9,
+            3,
+            7
+          ],
+          "comparison_gestures": [
+            "next",
+            "prev"
+          ],
+          "control_id": "hier-compare-prev"
+        },
+        "expected": {
+          "main_state_unchanged": true,
+          "comparison_snapshots_restore": true,
+          "no_extra_POST": true
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "control:dynamic:static/js/hierarchical.js:hier-compare-next",
+        "category": "control",
+        "module": "hierarchical",
+        "source": "static/js/hierarchical.js",
+        "metadata": {
+          "identifier": "hier-compare-next",
+          "runtime_dynamic": true
+        },
+        "coverage": {
+          "case_id": "QA-CONTROL-DYNAMIC-STATIC-JS-HIERARCHICAL-JS-HIER-COMPARE-NEXT",
+          "layer": "e2e",
+          "oracle": "Comparison manual snapshot navigation without main state or POST changes."
+        }
+      },
+      "decision": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/decision-education-and-retirement-20261014.md",
+        "sha256": "5d8efc9895bbd26dceb0172c12da51c546e25768df1b4f7c69e6a6e94d367ae5"
+      },
+      "evidence": {
+        "path": "openspec/changes/archive/2026-10-14-resolve-didactic-stack-c1-residuals/evidence/education-abb-owned/test_restored_education_real_f0/education-restored-proof.json",
+        "sha256": "644042de3a698840ebfa0811e91b62c45cfd233492dfa88ac5381b4f0cb4fa06"
+      },
+      "binding": {
+        "test_node": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation",
+        "layer": "e2e",
+        "input": {
+          "families": [
+            "abb",
+            "avl",
+            "red_black",
+            "binary_heap"
+          ],
+          "values": [
+            9,
+            3,
+            7
+          ],
+          "comparison_gestures": [
+            "next",
+            "prev"
+          ],
+          "control_id": "hier-compare-next"
+        },
+        "expected": {
+          "main_state_unchanged": true,
+          "comparison_snapshots_restore": true,
+          "no_extra_POST": true
+        },
+        "provenance": {
+          "test_source_sha256": "d62fe0699f3cb729112b191f788b67f1db7f9e44cdefd6d201e97b0ce1797716",
+          "status": "REVIEWED_EXISTING_EXECUTION_REFERENCE_NOT_RERUN",
+          "archival_transition": "LiteralpathonlynormalizedASTequivalent;historicalexecutionnotrerun"
+        }
+      }
+    }
+  ],
+  "expected_summary": {
+    "original": 375,
+    "retired_authorized_not_PASS": 7,
+    "retired_dependency_not_PASS": 1,
+    "added": 2,
+    "active": 369,
+    "bound": 369
+  }
+}

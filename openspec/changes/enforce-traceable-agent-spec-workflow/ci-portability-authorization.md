@@ -1,0 +1,6 @@
+# Aclaración vigente: reparación de publicación, no implementación de propuesta
+
+Operación: delivery.diagnose-publication-portability. Tarea: ci-portability.
+Coordinación01a0fe61-3104-743a-b032-bcc289ad80cd aclara que la prohibición previa de CI impedía activar el nuevo OpenSpec, no corregir el pipeline existente para actualizar GitHub/VPS pedido por Sentinel_1be9499cd90881919eab53f640f6c4da.
+Autorizado: dependencias, inputs/referencias de prueba y selección de jobs existentes preservando todos los casos/cobertura/gates; publicar reparación y comprobar CI completo. Sin modificar permisos, secretos, protecciones o seguridad; sin controles/roles/enforcement nuevos, ni implementación de la propuesta pendiente. Criterios/inputs independientes reales y originales preservados; no repetir campañas únicas consumidas. Checks nuevos necesarios por esta reparación se documentan con alcance; locales120s/2GiB. VPS otro escritor y pendiente deCIverde.
+Esta instrucción sustituye el límite deCI del registro anterior; el registro anterior permanece histórico. No reabre casos funcionales cerrados; corrige su empaquetado y oráculos supersedidos. Documentos depropuesta/diseño/delta deagent-spec-workflow siguen PROPOSED ysin implementar.

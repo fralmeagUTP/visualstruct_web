@@ -1,0 +1,6 @@
+# Cierre autorizado del piloto tres roles
+Nueva delegación del coordinador del hilo01a0f0a7-80d9-722c-85ae-b3a1660740fc autoriza cerrar tres tareas y alcance comprobado tras QA genuina. Se enlazó copia preparada por QA comprobando que sólo agrega evidence, con records originales ejecutados/aprobados, autores exactos y revisor independiente. PNG integridad suplementaria pasó antes de close. Tres close0; luego state=closed; tres after0 antes del archivo.
+
+Aceptación finita: dos requisitos/seis escenarios, seis tests, HTML regenerado idéntico, visual/teclado1280/390/320, capturas inspeccionadas y corrupción PNG negativa. Sin aplicación/WCAG global/aislamiento OS/motor autónomo. Mismo autor specifications/code/visual en secuencia, QA distinta; documentation/QA previamente adoptados en otro piloto. No cinco agentes ni uso rutinario universal/dependencias formalmente cerradas entre esos roles.
+
+Copias exactas de HTML/CSS/builder/test/source-profile permanentes bajo continuity/examples/local-task; source-profile es histórico. Mapa de archivo preserva hashes y fuentes aceptadas sin editar QA. Tareas retiradas del índice al archivar; guías nuevas describen operación vigente, no se atribuyen a aceptación original. Core permanece intacto.

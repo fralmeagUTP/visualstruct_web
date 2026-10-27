@@ -1,0 +1,3 @@
+# Corrección documental R1 y cobertura staged sucesora
+
+Coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: QAaceptafuncionalfinalSHA40777...pero retienepaqueteR1diff4cambioscodificaciónfalsos. CorregirSÓLOdiffmedido→final,preservardefectuosohistórico/renovarevidencia/bindings. Prepararcoberturasucesorafinal/remapeoverificablesinADOPTARnibenchmark. Máximo20min desdeprimeracto. Noalterarcandidato/producto/nuevascorrecciones/campañas;tiempo15.7711sdelSHAprevioFAILnolatenciafinal. Dictamenreview-sorting-projection-identity-candidate-quality/evidence/independent-review/review.md.

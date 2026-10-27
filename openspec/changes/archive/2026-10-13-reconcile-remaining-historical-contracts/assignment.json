@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-c1-remaining-documentary-20261002",
+  "issued_at_utc": "2026-10-02T17:53:19.359862+00:00",
+  "source_thread_id": "01a0f0a7-80d9-722c-85ae-b3a1660740fc",
+  "change": "reconcile-remaining-historical-contracts",
+  "operation": "c1.remaining-documentary",
+  "task": "c1-documentary",
+  "instruction": "Continuar los once pendientes C1 según instruction.md; independiente de Counting",
+  "scope_ref": "openspec/changes/reconcile-remaining-historical-contracts/instruction.md"
+}

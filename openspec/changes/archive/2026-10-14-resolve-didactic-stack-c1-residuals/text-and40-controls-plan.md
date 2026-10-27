@@ -1,0 +1,3 @@
+# TextoLista y40controles
+
+Parent01a0fe61-3104-743a-b032-bcc289ad80cd autoriza corregirmensaje deinsertar_elemento pos1 según C vigente yregresiónfocal;después40IDs REFERENCE_ONLY_REQUIRES_CASE_REVIEW degap-inventory232. Recuperarflujos reales,crear/reusar tests input/expected de comportamiento, noDOMpresencia. Fuente/ejecución/aceptación separadas,noexcluir requisitos porcontroles ocultos. Tests nuevosprivatecache/server/cookies,focal120s2GiB porbloque;sinDocker/campañasconsumidas/publicación. No modificarC/sesiones/5051. Textfinding residual58-list-insertion-pos1-wording esnuevo yopen;no reabrirmotores Lista cerrados.40controles puedenincluirUIlegacy:registrarbrecha/decisiónfaltante envez deforceclick/revivircontrolesretirados.

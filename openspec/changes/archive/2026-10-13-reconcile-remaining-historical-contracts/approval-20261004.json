@@ -1,0 +1,10 @@
+{
+  "approved": true,
+  "owner": "c1-documentary-writer-01a0fad1-4046-71ae-990c-a53383e81006",
+  "allowed_paths": [
+    "openspec/changes/reconcile-remaining-historical-contracts",
+    "openspec/changes/reconcile-session-query-history-documentation"
+  ],
+  "provenance": "openspec/changes/reconcile-remaining-historical-contracts/instruction-20261004.md",
+  "meaning": "Delegación documental actual; no adopción canónica ni QA independiente propia"
+}

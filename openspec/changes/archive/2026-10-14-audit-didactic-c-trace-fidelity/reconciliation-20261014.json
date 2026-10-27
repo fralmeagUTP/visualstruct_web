@@ -1,0 +1,229 @@
+{
+  "change": "audit-didactic-c-trace-fidelity",
+  "task_dispositions": [
+    {
+      "original_task": "- [ ] 2.1 Extender los harnesses de los 13 TAD para emitir eventos por instrucción relevante y estados canónicos intermedios.",
+      "disposition": "SUPERSEDED_BROADER_MATRIX_BY_APPROVED_FINITE_CORPUS_NOT_UNIVERSAL_PASS",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "  - [ ] Añadir eventos semánticos y estados intermedios específicos de cada familia.",
+      "disposition": "SUPERSEDED_BROADER_MATRIX_BY_APPROVED_FINITE_CORPUS_NOT_UNIVERSAL_PASS",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 2.3 Instrumentar identidad lógica, enlaces de punteros, reservas, reasignaciones y liberaciones sin exponer direcciones como contrato.",
+      "disposition": "SUPERSEDED_BROADER_MATRIX_BY_APPROVED_FINITE_CORPUS_NOT_UNIVERSAL_PASS",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "  - [ ] Registrar cada reserva/reasignación/liberación intermedia.",
+      "disposition": "SUPERSEDED_BROADER_MATRIX_BY_APPROVED_FINITE_CORPUS_NOT_UNIVERSAL_PASS",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 2.4 Capturar `printf`, valores de retorno, errores y estado final con un protocolo JSON reproducible.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "- [ ] 2.5 Compilar y ejecutar los harnesses con C17 estricto, ASan y UBSan.",
+      "disposition": "RESOLVED_BY_ACCEPTED_FINITE_EVIDENCE",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    },
+    {
+      "original_task": "  - [ ] Repetir la matriz instrumentada con ASan y UBSan en Linux.",
+      "disposition": "SUPERSEDED_BROADER_MATRIX_BY_APPROVED_FINITE_CORPUS_NOT_UNIVERSAL_PASS",
+      "evidence": {
+        "finite_C1_verdict": {
+          "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+          "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+        },
+        "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+        "reserves": [
+          "noLSan",
+          "finiteonly/no universalpaths",
+          "BFS8onlytiming",
+          "privatequeriesunpublished",
+          "noGitHubVPSupdates"
+        ]
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Inventario exhaustivo y trazable",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Código C como oráculo semántico",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Comparación paso a paso entre capas",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Causalidad entre ejecución C y visualización del TAD",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Fidelidad del flujo de control",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Temporales, punteros y consola didáctica",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Invariantes específicos por familia",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Controles reproducibles y equivalencia de modos",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Casos normales, límites e inválidos",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Informe QA estructurado",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Correcciones separadas de la auditoría",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    },
+    {
+      "capability": "didactic-conformance-qa",
+      "requirement": "Alcance finito aprobado y reservas verificables",
+      "disposition": "SATISFIED_WITH_FINITE_SCOPE_AND_RECORDED_SUPERSESSIONS",
+      "source_delta": "openspec/changes/audit-didactic-c-trace-fidelity/specs/didactic-conformance-qa/spec.md"
+    }
+  ],
+  "evidence": {
+    "finite_C1_verdict": {
+      "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/c1-finite-final-admission/confirmed-independent-verdict.json",
+      "sha256": "3539fe67177f336ba24787f2b571af725c556f20e8756a53c792e33d8defb5d0"
+    },
+    "user_archive_authorization": "coordination-four-openspec-final-reconciliation-archive-low-20261014",
+    "reserves": [
+      "noLSan",
+      "finiteonly/no universalpaths",
+      "BFS8onlytiming",
+      "privatequeriesunpublished",
+      "noGitHubVPSupdates"
+    ]
+  },
+  "new_tests": 0,
+  "technical_new_defects_demonstrated": 0,
+  "supersessions": [
+    "eightstages→five",
+    "hashtext/rehash→integerfixedcapacity",
+    "repeat/sliders7direct+pause1dependent→retiredNOT_PASS/manualcapabilitiesretained",
+    "old13fullinstrumenteduniversalclaim→approvedfinitewitnesses/gates",
+    "oldC1partial→12/12finite",
+    "Graphpuretime→plainfullHTTPBFS8measurement"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "status": "resolved",
+  "approved": true,
+  "kind": "successor",
+  "owner": "repair-lead",
+  "predecessor_change": "cloud-graph-invariant-20261027",
+  "predecessor_operation": "graph-edge-allocation",
+  "reason": "UI020 new evidence: edge_weight API publication describes a borrowed list despite scalar return; insert_vertex describes unrelated removal. This is new pedagogical narration scope, not reimplementation of the closed C allocation invariant.",
+  "new_scope": "Only API projection commentary/narration in graph vertex/construction traces, with operation-specific scalar/list/host distinctions and source/state equivalence tests.",
+  "allowed_paths": [
+    "app/domain/graph/vertex_instruction.py",
+    "app/domain/graph/construction_instruction.py",
+    "qa"
+  ],
+  "protected_scope": "No C/H edit, no supported-body hash or graph guard change, no API migration, no Dijkstra/Kruskal semantic changes.",
+  "authorization": "User authorized all application execution/pedagogy/usability repairs in isolated copy; lead delegated owner. Parent informed of this precise new evidence and separation."
+}

@@ -1,0 +1,45 @@
+{
+  "audit_complete": false,
+  "user_decision_deadline_UTC": "2026-10-05T05:00:00Z",
+  "no_new_campaign": true,
+  "criteria": [
+    {
+      "id": "capacity30-boundary31-legacy",
+      "status": "independent previous99247scenarios accepted; current993 changes do not alter policy, currentQA verdictpending",
+      "source": "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/review.md"
+    },
+    {
+      "id": "candidate993-cache-equivalence",
+      "status": "author26focal IDs pass; independent current acceptancepending",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/checkpoint.json"
+    },
+    {
+      "id": "BFS30-budget5s",
+      "status": "FAILED;13.1711725s actual original uninstrumented test, exit1 no timeout; benchmark NOT to repeat",
+      "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-bfs-revision-cache-low/plain-gate-v5/gate.xml"
+    },
+    {
+      "id": "coverage-global83-critical85",
+      "status": "UNACCREDITED; current completeJSON/gate absent; plan notmeasurement",
+      "source": "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/minimum-coverage-plan.json"
+    },
+    {
+      "id": "literal-numeric-fixture-regression",
+      "status": "prior independent provenance explains all5fixtures coordinate/comment differences; original literal failures preserved; fixture/contract migration notperformed",
+      "source": "openspec/changes/review-graph-limit30-and-boundary-quality/evidence/independent-review/numeric-fixture-positional-provenance-independent.json"
+    },
+    {
+      "id": "global-residual-obligations",
+      "status": "remain governed by exact existing disposition IDs, no acceptance derived from candidate26/sourceSHA; reviewer must reconcile current sources and list unresolved IDs",
+      "sources": [
+        "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review/review.md",
+        "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review/pending-case-dispositions.json",
+        "openspec/changes/review-four-hidden-terminal-and-final-quality/evidence/independent-review/current-failure-disposition.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-four-hidden-residual-and-final-disposition-low/QA18-obligation-disposition-current.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/current-operation-contract.md"
+      ]
+    }
+  ],
+  "rollback": "review-only rollback-plan.json; three accepted992 full images and14runtime baselines SHA-bound; no execution",
+  "preview": "unchanged; current candidate not represented as refreshed5051"
+}

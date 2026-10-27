@@ -20,7 +20,9 @@
     }());
   </script>
   <title>{% block title %}Visualizador Web de Estructuras{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css', v='20260516w') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css', v='20260930q') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/contextual_help.css', v='20261027') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/classroom_view.css', v='20261027scroll1') }}">
 </head>
 <body>
   {% include '_header.html' %}
@@ -29,13 +31,18 @@
     {% block content %}{% endblock %}
   </main>
   {% include '_footer.html' %}
-  <script src="{{ url_for('static', filename='js/interpreter_runtime.js', v='20260521e') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/sequential.js', v='20260516x') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/hierarchical.js', v='20260516d') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/graph.js', v='20260516f') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/hash.js', v='20260516d') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/sorting.js', v='20260518b') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/help_code_highlight.js', v='20260518a') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/interpreter_runtime.js', v='20260930q') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/contextual_help.js', v='20261027') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/c_code_navigation.js', v='20261027') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/classroom_view.js', v='20261027scroll1') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/multiple_input.js', v='20261027batch1') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/sequential.js', v='20261027batch1') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/hierarchical.js', v='20261027batch1') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/graph.js', v='20260930q') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/hash.js', v='20261003-hash-clear-destroy-medium1') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/counting_runtime.js', v='20261002-radix-medium1') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/sorting.js', v='20261002-radix-medium1') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/help_code_highlight.js', v='20260930q') }}" defer></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

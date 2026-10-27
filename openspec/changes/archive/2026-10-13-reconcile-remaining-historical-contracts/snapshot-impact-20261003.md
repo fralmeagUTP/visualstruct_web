@@ -1,0 +1,15 @@
+# Corrección: fotografía fechada e impacto concurrente
+
+Captura iniciada 2026-10-03T01:25:16.426862+00:00; terminada 2026-10-03T01:25:16.452889+00:00. `evidence/frozen-source-manifest-20261003.json` vincula 39 lecturas fechadas a copias de texto exactas y SHA256. Es una captura por archivo, no una revisión atómica del repo ni promesa de frescura futura. La auditoría puede continuar. SHA anterior del servicio: `f5e3ebcb72bd0a643ccbf0670e041688529a8d9a632800a739616d5495dbd90e`; SHA capturado ahora: `658b0d6af7b909328d665beb2736bbea9799472ff6e7b30142db14d6f824fa02`. Copia leída: `openspec/changes/reconcile-remaining-historical-contracts/evidence/frozen-sources-20261003/00.txt`.
+
+QA aceptó coherencia documental: once requisitos, veinte escenarios y 43 referencias; rechazó actualidad total al observar 38/39 fuentes iguales tras una edición concurrente. Las 52 fuentes protegidas permanecían iguales en aquella revisión. Esos resultados fechados se conservan; no se reescribe el informe ni se renueva indefinidamente el snapshot hasta congelar al auditor.
+
+## Impacto leído, sin pruebas ni atribución de autoría
+A las 01:23:22 UTC se releyó execution_trace_service.py, SHA658b0d6af7b909328d665beb2736bbea9799472ff6e7b30142db14d6f824fa02. En líneas1282-1286, remove Hash despacha al intérprete dedicado build_hash_remove_trace; get/contains ycreate/insert mantienen rutas separadas en1287-1296. El fallback genérico printf literal/consola al último paso permanece visible en1484-1499. No hay bytes originales anteriores para atribuir toda la diferencia a esas líneas: ésta es inspección del estado leído, no diff completo certificado.
+
+Hash remove está en trabajo concurrente del único auditor. El baseline hash-remove-baseline-checkpoint-low.md conserva23resultados/317eventos,6pass/3fail y sus límites; ni el despacho nuevo ni esos resultados prueban cierre de la implementación activa. Todo cambio nuevo queda provisional hasta checkpoint/evidencia y eventual consolidación del dueño; no extrapolar119/115IDs ni sumar106+106.
+
+REM-07 permanece PARTIAL: la ruta remove nueva necesita prueba causal/no-printf propia del auditor. La existencia de fallback no demuestra por sí sola un defecto, y tampoco garantiza exclusividad C global. QA-03/REM-01/REM-05 mantienen gaps por operaciones pendientes. No cambia C1(1/12admitido,11pendientes,0nuevasadmisiones). Los cierres Sorting11 yHash4 son históricos bajo sus alcances/fechas; no una certificación funcional instantánea del árbol actual.
+
+## Criterio para re-QA acotada
+Aceptar/rechazar integridad del snapshot congelado, fecha/hashes/copias, alcance por fuente y explicación de impacto. Cotejar entregables actuales contra inputs de verificación propios y once textos/veinte escenarios intactos. Confirmar que no se proclama frescura total ni cierre remove. No exigir igualdad perpetua con archivos live, freeze del auditor, tests nuevos o reabrir núcleo/pilotos. Si el repo cambió después, registrar límite temporal, no reemplazar el snapshot ni iniciar bucle.

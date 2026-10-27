@@ -1,0 +1,249 @@
+.contextual-help-points { margin: .4rem 0; padding-left: 1.35rem; max-width: 78ch; }
+.contextual-help-points li { margin: .35rem 0; line-height: 1.5; }
+.contextual-help-reference { margin: .65rem 0; font-size: .95em; }
+.contextual-help-reference summary { cursor: pointer; font-weight: 600; }
+.contextual-help-reference p { max-width: 85ch; line-height: 1.5; }
+/* Stable classroom workspace: advancing code scrolls panels, never the page. */
+.sorting-workspace .sorting-sticky-controls { position: sticky; top: 0; z-index: 8; margin: .5rem 0; padding: .55rem; background: #fffdf8; border: 1px solid #d7c7aa; border-radius: .5rem; min-height: 3.5rem; }
+.sorting-live-memory { padding: .5rem .65rem; border: 1px solid #aac8e7; border-radius: .4rem; background: #eef6ff; overflow: auto; min-height: 0; }
+.sorting-live-memory p { margin: .2rem 0; }
+.sorting-live-memory ul { display: flex; flex-wrap: wrap; gap: .15rem .9rem; list-style: none; margin: .35rem 0; padding: 0; }
+.sorting-live-memory li { font-family: monospace; }
+.sorting-live-memory small { color: #46566a; }
+@media (min-width: 1000px) {
+  .sorting-workspace .sorting-primary-workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); height: clamp(420px, 62vh, 570px); align-items: stretch; overflow-anchor: none; }
+  .sorting-workspace .sorting-workspace-panel { height: 100%; min-height: 0; overflow: hidden; box-sizing: border-box; }
+  .sorting-workspace #sorting-visual-region { display: grid; grid-template-rows: auto minmax(120px, 1fr) minmax(115px, .65fr) auto; gap: .35rem; }
+  .sorting-workspace #sorting-visual-region > h3 { margin: 0; }
+  .sorting-workspace #sorting-visual-state { overflow: auto; min-height: 0; overflow-anchor: none; }
+  .sorting-workspace .sorting-legend { margin: .15rem 0; font-size: .8rem; }
+  .sorting-workspace #sorting-code-region { display: flex; flex-direction: column; resize: none; min-width: 0; max-width: none; }
+  .sorting-workspace .sorting-code-toolbar { flex: 0 0 auto; }
+  .sorting-workspace .sorting-code-toolbar h3 { margin: 0; }
+  .sorting-workspace .sorting-code-layout { flex: 1 1 auto; min-height: 0; grid-template-columns: minmax(85px, .22fr) minmax(0, 1fr); }
+  .sorting-workspace .sorting-code-pane { display: flex; flex-direction: column; min-height: 0; }
+  .sorting-workspace .sorting-code-pane h4 { margin: .35rem 0; }
+  .sorting-workspace #sorting-code { flex: 1 1 auto; min-height: 0; max-height: none; margin-bottom: 0; overflow: auto; overscroll-behavior: contain; overflow-anchor: none; }
+  .sorting-workspace .sorting-function-index { position: static; max-height: 100%; overflow: auto; }
+}
+
+@media (max-width: 800px) { .sorting-workspace .sorting-sticky-controls { position: static; } }
+/* Keep the entire active C instruction readable without horizontal panning.
+   Soft wrapping changes presentation only, never the source/copied text. */
+.sorting-workspace #sorting-code,
+.sorting-workspace #sorting-code .code-line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+/* The shared code theme uses width:max-content for horizontal code scrolling.
+   Override that intrinsic sizing in this narrow classroom panel so soft wrap
+   uses the available content box (including line padding), not the C text width. */
+.sorting-workspace #sorting-code .code-line {
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.sorting-workspace .sorting-code-pane,
+.sorting-workspace #sorting-code {
+  min-width: 0;
+}
+/* Sequential classroom view: source position must not shrink its useful area. */
+@media (min-width: 1101px) {
+  .sequential-learning-shell > .sequential-primary-workspace {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    height: clamp(420px, 62vh, 570px); min-height: 420px;
+    align-items: stretch; overflow-anchor: none;
+  }
+  .sequential-learning-shell .seq-visual, .sequential-learning-shell .seq-code {
+    display: flex; flex-direction: column; min-width: 0; min-height: 0;
+    height: 100%; box-sizing: border-box; overflow: hidden; resize: none;
+  }
+  .sequential-learning-shell #visual-state { flex: 1 1 0; min-height: 0; max-height: none; overflow: auto; overflow-anchor: none; }
+  .sequential-learning-shell .seq-code-layout, .sequential-learning-shell .seq-code-content { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; min-width: 0; }
+  .sequential-learning-shell .seq-function-index { flex: 0 0 auto; max-height: 3rem; overflow: auto; }
+  .sequential-learning-shell #op-pseudocode { flex: 1 1 0; min-height: 0; max-height: none; overflow: auto; overflow-anchor: none; overscroll-behavior: contain; }
+  .sequential-learning-shell .stack-linked-chain:has([data-stack-push-node]) { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .5rem; align-items: start; }
+  .sequential-learning-shell [data-stack-push-node] .stack-linked-node-id,
+  .sequential-learning-shell [data-stack-push-node] .stack-linked-field { min-height: 2.5rem; overflow-wrap: anywhere; }
+}
+.sequential-learning-shell #op-pseudocode, .sequential-learning-shell #op-pseudocode .code-line { white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; }
+.sequential-learning-shell #op-pseudocode .code-line { width: auto; min-width: 0; max-width: 100%; box-sizing: border-box; }
+/* Shared sequential controls: keep status on compact rows, not tall paragraphs.
+   Buttons and every status remain available; mobile retains larger targets. */
+@media (min-width: 1101px) {
+  .sequential-learning-shell:not(.is-stack-pilot) > .seq-prepare { padding: .5rem .65rem; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-prepare > .seq-execute { margin: .4rem 0 0; padding: .4rem 0 0; border: 0; border-top: 1px solid #c4d4e1; box-shadow: none; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-execute h3 { font-size: .9rem; margin: 0 0 .35rem; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-execute .actions { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-execute .actions .btn { min-height: 32px; padding: .3rem .5rem; font-size: .85rem; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-pilot-step-navigation { display: inline-flex; gap: .35rem; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-pilot-step-navigation[hidden] { display: none; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-pilot-trace-status { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .6rem; font-size: .8rem; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-pilot-trace-status p { margin: 0; }
+  .sequential-learning-shell:not(.is-stack-pilot) .seq-control-explanation { margin: .3rem 0 0; font-size: .8rem; }
+}
+/* Sublist memory keeps nodes and copied cells ahead of optional stack detail. */
+.seq-sublist-classroom .seq-sublist-aliases { display: flex; flex-wrap: wrap; gap: .2rem .65rem; margin: .25rem 0; }
+.seq-sublist-classroom .seq-sublist-aliases .stack-linked-pointer { display: inline-flex; gap: .25rem; align-items: baseline; padding: 0; margin: 0; border: 0; font-size: .8rem; }
+.seq-sublist-classroom .seq-sublist-aliases .stack-linked-pointer strong { font-size: inherit; }
+.seq-sublist-classroom [data-sublist-buffer-capacity] { margin: .3rem 0; padding: .3rem .4rem; border: 1px solid #aac8e7; background: #eef6ff; font-size: .85rem; }
+.seq-sublist-classroom .seq-sublist-call-detail { margin-top: .4rem; font-size: .8rem; }
+.seq-sublist-classroom .seq-sublist-call-detail summary { cursor: pointer; }
+@media (min-width: 1101px) {
+  .seq-sublist-classroom .stack-linked-node { min-width: 0; grid-template-columns: 2.8rem minmax(3.5rem, 1fr) minmax(4.5rem, 1.1fr); }
+  .seq-sublist-classroom .stack-linked-node-id, .seq-sublist-classroom .stack-linked-field { min-height: 2rem; padding: .2rem .3rem; font-size: .8rem; overflow-wrap: anywhere; }
+  .seq-sublist-classroom .stack-sublist-parent { padding: .25rem; margin: .2rem 0; min-width: 0; }
+  .seq-sublist-classroom .stack-sublist-children { padding: .25rem 0; }
+  .seq-sublist-classroom .stack-sublist-children-label { padding: .2rem .3rem; font-size: .8rem; }
+}
+/* Hierarchical classroom: controls remain reachable while C/tree/memory share
+   a stable budget. Scroll is internal; wrapping never modifies source text. */
+.hier-classroom-controls { padding: .45rem .6rem; border: 1px solid #c4d4e1; border-radius: .5rem; background: #fffdf8; }
+.hier-classroom-controls .actions { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
+.hier-classroom-controls .actions .btn { min-height: 32px; padding: .3rem .5rem; font-size: .85rem; }
+.hier-classroom-controls > p { display: inline; margin: .2rem .6rem 0 0; font-size: .8rem; }
+.hier-learning-shell #op-pseudocode, .hier-learning-shell #op-pseudocode .code-line { white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; }
+.hier-learning-shell #op-pseudocode .code-line { width: auto; min-width: 0; max-width: 100%; box-sizing: border-box; }
+@media (min-width: 1000px) {
+  .hier-classroom-controls { position: sticky; top: 0; z-index: 8; }
+  .hier-learning-shell .hier-primary-workspace { height: clamp(420px, 62vh, 570px); align-items: stretch; overflow-anchor: none; }
+  .hier-learning-shell #hier-visual-region, .hier-learning-shell #hier-code-region { display: flex; flex-direction: column; min-height: 0; min-width: 0; height: 100%; overflow: hidden; box-sizing: border-box; padding: .65rem; }
+  .hier-learning-shell #hier-visual-region > h3, .hier-learning-shell .hier-code-toolbar h3 { margin: 0 0 .35rem; }
+  .hier-learning-shell .hier-code-layout, .hier-learning-shell .hier-code-layout > div { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; min-width: 0; }
+  .hier-learning-shell .hier-function-index { flex: 0 0 auto; max-height: 3.2rem; overflow: auto; padding: .25rem .4rem; }
+  .hier-learning-shell #op-pseudocode { flex: 1 1 0; min-height: 0; max-height: none; overflow: auto; overscroll-behavior: contain; overflow-anchor: none; margin-bottom: 0; }
+  .hier-learning-shell #visual-state { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; overflow: auto; overflow-anchor: none; }
+  .hier-learning-shell #visual-state > .viz-canvas { flex: 1 1 auto; min-height: 120px; overflow: auto; padding: .3rem; }
+  .hier-learning-shell #visual-state:has(.abb-instruction-memory) > .viz-canvas { flex: 0 0 45%; }
+  .hier-learning-shell #visual-state .viz-tree-svg { max-width: 100%; height: auto; min-width: 0; }
+  .hier-learning-shell #visual-state > .abb-instruction-memory { flex: 1 1 0; min-height: 100px; overflow: auto; padding: .25rem; font-size: .8rem; }
+  .hier-learning-shell .abb-instruction-memory p, .hier-learning-shell .abb-instruction-memory h4 { margin: .2rem 0; }
+  .hier-learning-shell .abb-instruction-memory .hier-stack-frame { margin: .25rem 0; padding: .3rem; }
+  .hier-learning-shell .hier-memory-call-detail { margin: .3rem 0; }
+}
+/* Keep C settings on compact labeled rows: global form styles otherwise make
+   a lone checkbox full-width and stack its label/select into four lines. */
+.hier-learning-shell .hier-code-toolbar { gap: .35rem .6rem; align-items: center; }
+.hier-learning-shell .hier-code-toolbar > h3 { flex: 1 1 100%; }
+.hier-learning-shell .hier-code-toolbar > label { display: inline-flex; flex: 0 1 auto; align-items: center; gap: .35rem; margin: 0; }
+.hier-learning-shell .hier-code-toolbar input[type="checkbox"] { width: auto; margin: 0; }
+.hier-learning-shell .hier-code-toolbar select { width: auto; max-width: 12rem; margin: 0; padding: .3rem .45rem; }
+@media (min-width: 1000px) {
+  .hier-learning-shell #visual-state > .viz-canvas { display: flex; flex-direction: column; }
+  .hier-learning-shell #visual-state .viz-tree-svg { flex: 1 1 0; width: 100%; height: 100%; min-height: 0; max-height: 100%; }
+  .hier-learning-shell .hier-retired-memory { flex: 0 0 auto; font-size: .8rem; }
+  .hier-learning-shell .hier-retired-memory[open] { max-height: 6rem; overflow: auto; }
+  .hier-learning-shell .is-current-memory { border-color: #cf761a; background: #fff5df; }
+}
+.hier-comparison-shape { min-width: 0; overflow: auto; border: 1px solid #d8e2ec; border-radius: .4rem; background: #fff; }
+.hier-comparison-shape .viz-tree-svg { display: block; width: 100%; height: auto; min-width: 0; max-height: 340px; }
+.hier-compare-grid > .hier-comparison-shape { grid-column: 1 / -1; }
+@media (min-width: 1000px) {
+  .hier-learning-shell #visual-state:has(.abb-instruction-memory) > .viz-canvas { flex-basis: 58%; }
+  .hier-learning-shell #visual-state .viz-meta { margin: 0; flex: 0 0 auto; }
+  .hier-learning-shell .hier-traversal-summary { flex: 0 0 auto; margin: .15rem 0; font-size: .8rem; }
+  .hier-learning-shell .hier-traversal-summary[open] { max-height: 5rem; overflow: auto; }
+  .hier-learning-shell #visual-state .viz-tree-text { font-size: 18px; }
+}
+/* Empty C lines occupy one line visually without inserting non-C NBSP bytes
+   into copied main programs or changing data-line numbering. */
+.didactic-code .code-line:empty { min-height: 1.4em; }
+.hier-diagram-note { flex: 0 0 auto; margin: .15rem 0; font-size: .8rem; }
+.hier-diagram-note[open] { max-height: 5rem; overflow: auto; }
+.hier-memory-projection { flex: 0 0 auto; font-size: .75rem; line-height: 1.2; margin: .1rem 0; }
+@media (min-width: 1000px) {
+  .hier-learning-shell #visual-state > .viz-canvas > h4 { margin: .15rem 0; font-size: .8rem; flex: 0 0 auto; }
+  .hier-learning-shell .abb-instruction-memory code { white-space: normal; overflow-wrap: anywhere; }
+}
+@media (min-width: 1000px) {
+  .hier-learning-shell #visual-state:has(.abb-instruction-memory) > .heap-classroom-canvas { flex-basis: 68%; }
+  .hier-learning-shell .heap-classroom-canvas .viz-array-wrap { margin: .1rem 0; gap: .2rem; flex: 0 0 auto; }
+}
+/* UI020: same stable teaching budget; hidden phase rules must beat grid display. */
+.graph-prepare-grid.graph-phase-hidden { display: none !important; }
+.graph-classroom-controls { background: #fff; border: 1px solid #b9cbe0; border-radius: .6rem; padding: .4rem .65rem; }
+.graph-classroom-controls .graph-control-row { margin: 0; padding: 0; border: 0; }
+.graph-classroom-controls p { margin: .15rem 0; font-size: .8rem; }
+.graph-live-memory-panel { min-height: 0; overflow: auto; overscroll-behavior: contain; border-top: 1px solid #b9cbe0; }
+.graph-live-memory-panel h4 { margin: .3rem 0; font-size: .88rem; }
+.graph-memory-context,.graph-live-variables { margin: .2rem 0; font-size: .8rem; overflow-wrap: anywhere; }
+.graph-live-cards { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .3rem; }
+.graph-memory-card { padding: .3rem; border: 1px solid #b9cbe0; border-radius: .3rem; font-size: .8rem; overflow-wrap: anywhere; }
+.graph-code-toolbar label { display: inline-flex; align-items: center; width: auto; gap: .3rem; font-size: .8rem; }
+.graph-code-toolbar input[type=checkbox] { width: auto; margin: 0; }
+@media(min-width:901px) {
+ .graph-classroom-controls { position: sticky; top: .25rem; z-index: 5; }
+ .graph-primary-workspace { height: clamp(420px,62vh,570px); align-items: stretch; }
+ .graph-primary-workspace > section { height: 100%; box-sizing: border-box; padding: .65rem; display: flex; flex-direction: column; min-height: 0; }
+ .graph-primary-workspace h3 { font-size: 1rem; margin: 0 0 .3rem; }
+ .graph-visual-help { display: none; }
+ #graph-visual-state { flex: 1 1 57%; min-height: 0; overflow: hidden; }
+ #graph-visual-state .viz-canvas { height: 100%; min-height: 0; display: flex; flex-direction: column; padding: .2rem; }
+ #graph-visual-state .viz-meta { font-size: .75rem; margin: 0; }
+ #graph-visual-state .viz-stage,#graph-visual-state .viz-stage-center { flex: 1; min-height: 0; width: 100%; height: 100%; overflow: hidden; }
+ #graph-visual-state .viz-graph-svg { width: 100%; height: 100%; min-height: 0; max-height: 100%; }
+ #graph-visual-state .viz-traversals { max-height: 3rem; overflow: auto; margin: 0; font-size: .8rem; }
+ .graph-live-memory-panel { flex: 1 1 40%; }
+ .graph-state-legend { font-size: .65rem; gap: .2rem; margin: .2rem 0 0; }
+ .graph-state-legend span { padding: .1rem .2rem; }
+ .graph-code-layout { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: .3rem; }
+ .graph-function-index { max-height: 4.5rem; overflow: auto; flex-shrink: 0; padding: .2rem; font-size: .75rem; }
+ .graph-code-content { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+ .graph-code-content h4 { font-size: .8rem; }
+ .graph-code-content #op-pseudocode { flex: 1; min-height: 0; max-height: none; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+ .graph-code-content .code-line { white-space: pre-wrap; overflow-wrap: anywhere; }
+}
+
+.graph-learning-shell #op-pseudocode .code-line { width: auto; min-width: 0; max-width: 100%; box-sizing: border-box; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* Hash: C, active chain and real scoped memory share a stable classroom. */
+.hash-classroom-controls { background: #fff; border: 1px solid #b9cbe0; border-radius: .6rem; padding: .35rem .6rem; }
+.hash-classroom-controls .hash-execution-controls { margin: 0; }
+.hash-classroom-controls p { margin: .15rem 0; font-size: .8rem; }
+.hash-live-memory-panel { min-height: 0; overflow: auto; overscroll-behavior: contain; border-top: 1px solid #b9cbe0; }
+.hash-live-memory-panel h4 { margin: .3rem 0; font-size: .85rem; }
+.hash-live-variables { margin: .2rem 0; font-size: .8rem; overflow-wrap: anywhere; }
+.hash-live-cards { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .3rem; }
+.hash-memory-card { padding: .3rem; border: 1px solid #b9cbe0; border-radius: .3rem; font-size: .8rem; overflow-wrap: anywhere; }
+.hash-suspended { padding: .6rem; border: 2px solid #a66c00; background: #fff8e8; }
+.hash-code-toolbar label,.hash-view-toolbar label { display: inline-flex; align-items: center; width: auto; gap: .25rem; font-size: .75rem; }
+.hash-code-toolbar input[type=checkbox],.hash-view-toolbar input[type=checkbox] { width: auto; margin: 0; }
+.hash-learning-shell #op-pseudocode .code-line { width: auto; min-width: 0; max-width: 100%; box-sizing: border-box; white-space: pre-wrap; overflow-wrap: anywhere; }
+@media(min-width:901px) {
+ .hash-classroom-controls { position: sticky; top: .25rem; z-index: 5; }
+ .hash-workspace .hash-primary-workspace { height: clamp(420px,62vh,570px); align-items: stretch; }
+ .hash-primary-workspace > section { height: 100%; box-sizing: border-box; padding: .65rem; display: flex; flex-direction: column; min-height: 0; }
+ .hash-primary-workspace h3 { font-size: 1rem; margin: 0 0 .3rem; }
+ .hash-primary-workspace h4 { font-size: .8rem; margin: .2rem 0; }
+ #hash-visual-state { flex: 1 1 60%; min-height: 0; overflow: auto; overscroll-behavior: contain; }
+ #hash-visual-state .viz-canvas,#hash-visual-state .viz-stage { min-height: 0; padding: .2rem; overflow: visible; }
+ #hash-visual-state .viz-meta { margin: .1rem 0; font-size: .75rem; }
+ #hash-visual-state .hash-formulas,#hash-visual-state .hash-capacity-note { display: none; }
+ .hash-live-memory-panel { flex: 1 1 35%; }
+ .hash-bucket { padding: .3rem; }
+ .hash-bucket-head { font-size: .75rem; }
+ .hash-bucket-body { flex-wrap: wrap; }
+ .hash-entry { font-size: .75rem; padding: .25rem; }
+ .hash-minimap { max-height: 1.6rem; overflow: auto; flex-shrink: 0; }
+ .hash-code-layout { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: .3rem; }
+ .hash-function-index { max-height: 4rem; overflow: auto; flex-shrink: 0; padding: .2rem; font-size: .75rem; }
+ .hash-code-content { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+ .hash-code-content #op-pseudocode { flex: 1; min-height: 0; max-height: none; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+}
+/* The shared viz-stage uses max-content; override it so chains use the actual panel width. */
+.hash-workspace #hash-visual-state .viz-stage { width: 100%; min-width: 0; box-sizing: border-box; }
+.hash-workspace #hash-visual-state .hash-buckets-wrap { grid-template-columns: minmax(0,1fr); min-width: 0; }
+.hash-workspace #hash-visual-state .hash-bucket-body { flex-wrap: wrap; overflow-x: hidden; }
+.hash-workspace #hash-visual-state .hash-head-pointer { flex-basis: 100%; padding: .1rem; }
+.hash-workspace #hash-visual-state .hash-entry { flex: 0 1 7rem; min-width: 0; overflow-wrap: anywhere; }
+@media(min-width:901px) { .hash-live-cards { grid-template-columns: repeat(3,minmax(0,1fr)); } .hash-memory-card { font-size: .75rem; } }
+
+/* Graph book: duplicate long narration must not shrink the actual graph. */
+.graph-workspace .viz-sim-note { flex: 0 0 auto; margin: .15rem 0 0; font-size: .75rem; }
+.graph-workspace .viz-sim-note > p { max-height: 3rem; overflow: auto; margin: .2rem 0; }
+
+/* Keep graph text legible; large images pan locally, not the document. */
+#graph-visual-state .viz-stage.graph-local-pan { overflow: auto; overscroll-behavior: contain; }
+#graph-visual-state .graph-local-pan .viz-stage-center { overflow: visible; display: block; width: max-content; min-width: 100%; height: auto; min-height: 100%; }
+.graph-image-pan-note { font-weight: 600; }

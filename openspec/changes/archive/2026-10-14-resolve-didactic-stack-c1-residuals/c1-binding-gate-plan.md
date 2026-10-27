@@ -1,0 +1,3 @@
+# Gate C1-QA-01 focal
+
+Separar IDs sintéticos del inventario y asignaciones explícitas a test ejecutable con input/expected y capa. Añadir validación estricta opt-in --bindings sin sustituir el manifiesto histórico ni inventar asignaciones. En modo estricto incluir controles sin identificador en vez de omitirlos y reportar cada elemento sin asignación. Validar rutas tests/ y función AST existente, datos y oráculo esperado; controles requieren E2E. Esto verifica la asignación, no que la prueba haya pasado ni todos los casos. Pruebas focales de rechazo/aceptación,120s/2GiB; sin app/session/generación global/campañas. C1 seguirá pendiente hasta asignaciones completas/evidencia real y admisión.

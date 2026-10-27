@@ -3,52 +3,56 @@
 {% block content %}
 <section>
   <h2>{{ help_data.title }}</h2>
-  <h3>Descripcion del TAD</h3>
-  <p>{{ help_data.tad_description }}</p>
+  {% include "help/_student_start.html" %}
+  <p><a class="btn" href="{{ url_for('sorting.sorting_view') }}">Ir a la visualización e ingresar estos datos</a></p>
+  {% include "help/_execution_guide.html" %}
 
-  <h3>Controles de ejecucion paso a paso</h3>
-  <ul>
-    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra traza completa; desactivado aplica resultado final.</li>
-    <li>Controles disponibles: <strong>Reproducir</strong>, <strong>Anterior paso</strong>, <strong>Siguiente paso</strong>, <strong>Reiniciar</strong>.</li>
-    <li>Velocidad de simulacion: slider de <strong>-2x</strong> a <strong>+2x</strong>.</li>
-    <li>El resultado final del modo rapido debe coincidir con el ultimo paso del modo interpretado.</li>
-  </ul>
+  {% set algorithm_errors = {'intercambio': 'No confundas cada comparación con un intercambio: sólo se permutan valores cuando están en el orden incorrecto.', 'seleccion': 'No creas que el mínimo encontrado se coloca al comparar: primero se busca en todo el tramo pendiente y luego se ubica.', 'insercion': 'No pierdas el valor de la clave mientras se desplazan otros datos: su copia temporal permite insertarla al final del desplazamiento.', 'burbuja': 'No supongas que una pasada ordena todo: observa qué extremo queda resuelto y cuándo una pasada sin intercambios permite terminar.', 'shell': 'No interpretes cada salto como vecinos consecutivos: los grupos se forman con la separación actual, que luego disminuye.', 'quicksort': 'No sigas sólo la posición inicial del pivote: el algoritmo conserva un valor de referencia mientras los elementos se intercambian.', 'mergesort': 'No confundas ordenar cada mitad con terminar: todavía hay que fusionar las mitades en orden usando el auxiliar.', 'heapsort': 'No confundas un heap con un arreglo totalmente ordenado: la propiedad padre-hijos permite elegir extremos, no ordena todos los pares.', 'counting_sort': 'No confundas cantidad de datos n con rango k: pocos valores muy separados pueden superar el límite del rango.', 'binsort': 'No esperes urnas independientes en este TAD: Binsort delega en Counting y hereda su límite de rango.', 'radixsort': 'No trates un número negativo como si sus dígitos bastaran para colocarlo: sigue la separación de signos y la recomposición del orden.'} %}
+  <h3>Elige un algoritmo para profundizar</h3>
+  <p>Empieza con Burbuja o Inserción y el ejemplo anterior. Abre una ficha cada vez: no necesitas estudiar los once métodos a la vez.</p>
+  {% for algorithm in help_data.supported_algorithms %}
+  <details class="sorting-help-card"><summary>{{ algorithm.label }}</summary>
+    <h4>Qué hace</h4><p>{{ algorithm.summary }}</p>
+    <h4>Qué observar</h4><ul>{% for item in algorithm.mastery %}<li>{{ item }}</li>{% endfor %}</ul>
+    <h4>Error que evitar</h4><p>{{ algorithm_errors.get(algorithm.id, algorithm.common_error) }}</p>
+    <h4>Costo y memoria</h4><ul><li>Mejor caso: {{ algorithm.theory.best }}.</li><li>Caso promedio: {{ algorithm.theory.average }}.</li><li>Peor caso: {{ algorithm.theory.worst }}.</li><li>Memoria: {{ algorithm.theory.memory }}.</li></ul>
+  </details>
+  {% endfor %}
+  <details><summary>Glosario y cómo leer la complejidad</summary>
+  <p>La complejidad explica cómo aumenta el trabajo con la entrada, no la velocidad elegida para la animación. n es cantidad de valores; k, amplitud del rango; d, cantidad de dígitos; b, base usada para los dígitos.</p>
+  <dl><dt>Pivote</dt><dd>Valor copiado que guía una partición de Quicksort.</dd><dt>Estabilidad</dt><dd>Conservar el orden relativo de elementos con claves iguales.</dd><dt>In-place</dt><dd>Trabajar sin memoria auxiliar proporcional a la entrada.</dd><dt>Heap</dt><dd>Árbol completo representado en arreglo con una regla entre cada padre y sus hijos.</dd><dt>Bucket o urna</dt><dd>Grupo asociado a un valor o dígito durante una distribución.</dd></dl>
+  </details>
 
-  <h3>Operaciones soportadas</h3>
-  <ul>
-    {% for op in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
-    <li>{{ op }}</li>
-    {% endfor %}
-  </ul>
+  <h3>Atajos de teclado</h3>
+  <ul><li><kbd>Alt</kbd> + <kbd>→</kbd>: avanzar al siguiente paso.</li><li><kbd>Alt</kbd> + <kbd>←</kbd>: regresar al paso anterior.</li><li><kbd>Alt</kbd> + <kbd>Inicio</kbd>: volver al comienzo de la traza.</li><li><kbd>Alt</kbd> + <kbd>Fin</kbd>: ir al último paso.</li><li><kbd>Alt</kbd> + <kbd>P</kbd>: pausar la reproducción.</li><li><kbd>Alt</kbd> + <kbd>R</kbd>: reproducir la traza; si está al final, comienza otra vez.</li></ul>
 
-  <h3>Pendientes / discrepancias</h3>
-  {% if help_data.pending_operations %}
-  <ul>
-    {% for item in help_data.pending_operations %}
-    <li>{{ item }}</li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p>No hay pendientes registrados.</p>
-  {% endif %}
 
-  <h3>Estructura del TAD en C</h3>
-  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre>
+  <h3>Elige un ejemplo pequeño para empezar</h3><p>La interfaz admite de 1 a 80 enteros. Counting y Binsort requieren un rango inclusivo máximo−mínimo+1 no mayor que 1.000.000. Si el ejemplo no se acepta, corrige el dato indicado antes de volver a ejecutar.</p>
 
-  <h3>Metodos del TAD en C</h3>
+  {% include "help/_operation_contracts.html" %}
+  {% include "help/_source_download.html" %}
+
+  <details><summary>Referencia: estructura del TAD en C</summary>
+  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre></details>
+
+  <h3>Código C y llamadores equivalentes</h3>
   {% if help_data.c_methods %}
     {% for method in help_data.c_methods %}
-    <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
-    <p>{{ method.explanation }}</p>
-    <pre class="didactic-code">{{ method.code }}</pre>
+    <details><summary>{% include "help/_method_title.html" %}</summary>
+    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>El C del libro elimina el vértice y sus arcos incidentes dentro de la misma operación.</p>
+    {% elif structure_id == "graph" and method.operation == "generate_random_graph" %}<p>La generación aleatoria pertenece a la aplicación; no existe una función C descargable equivalente de generación. Los vértices y arcos materializados se reproducen mediante llamadas reales del main.</p>
+    {% elif structure_id == "hash_table" and method.operation == "create_table" %}<p>Inicializa los buckets con capacidad fija. Recrear en la aplicación destruye antes la tabla anterior; th_inicializar por sí solo no la libera.</p>
+    {% elif method.operation == "extraer_raiz" %}<p>Copia el mínimo a la salida, reduce la cantidad y repara el orden bajando el nuevo valor de la raíz. Distingue el valor extraído del indicador de éxito.</p>
+    {% elif method.operation == "validar" %}<p>Consulta las reglas indicadas en la referencia avanzada de este TAD. No modifica ni repara la estructura; observa las condiciones que hacen devolver verdadero o falso.</p>
+    {% else %}{% include "help/_method_explanation.html" %}{% endif %}
+    <pre class="didactic-code">{{ method.code }}</pre></details>
     {% endfor %}
   {% else %}
   <p>No hay metodos C documentados para esta estructura.</p>
   {% endif %}
 
   <p>
-    <a class="btn" href="{{ url_for('sorting.sorting_view') }}">Ir a la visualizacion</a>
+    <a class="btn" href="{{ url_for('sorting.sorting_view') }}">Ir a la visualización</a>
   </p>
 </section>
 {% endblock %}
-

@@ -1,0 +1,400 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "/workspace/scratch/644977913e22/visualstruct_reparacion_20261027/app",
+  "change": "cloud-pedagogical-repair-20261027",
+  "operation": "pedagogical-repair",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "docs/tads_C",
+    "openspec/changes/archive",
+    "scripts/role_workflow.py",
+    "scripts/check_session_continuity.py",
+    "openspec/continuity/role-workflow.json"
+  ],
+  "tasks": {
+    "specifications": {
+      "objective": "Definir criterios por defecto y alcance finito",
+      "role": "specifications",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/requirements.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/scope.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/proposal.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/design.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/role-adoption.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/requirements.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/requirements.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/requirements.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/specifications/final-check.json",
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/specifications/final-independent.json"
+      ],
+      "checks": [
+        "specification-validation"
+      ],
+      "next_step": "Aceptación finita verificada; futuros cambios requieren una nueva instrucción y revalidación. Libro/IA permanecen fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-pedagogical-repair-20261027/evidence/specifications/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "code": {
+      "objective": "Integrar reparaciones y regresiones autorizadas",
+      "role": "code",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/requirements.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/scope.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/proposal.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/design.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/role-adoption.md"
+      ],
+      "allowed_paths": [
+        "app",
+        "static",
+        "templates",
+        "qa"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "app/adapters/base_adapter.py",
+        "app/domain/graph/construction_instruction.py",
+        "app/domain/graph/numeric_instruction.py",
+        "app/domain/graph/vertex_instruction.py",
+        "app/domain/hash/educational_capacity.py",
+        "app/domain/hierarchical/abb_instruction.py",
+        "app/domain/hierarchical/avl_insert_instruction.py",
+        "app/domain/hierarchical/heap_insert_instruction.py",
+        "app/domain/hierarchical/heap_query_instruction.py",
+        "app/domain/hierarchical/rbt_insert_instruction.py",
+        "app/domain/sequential/hidden_list_terminal_instruction.py",
+        "app/domain/sequential/hidden_positional_instruction.py",
+        "app/domain/sequential/priority_queue_dequeue_instruction.py",
+        "app/domain/sequential/priority_queue_front_instruction.py",
+        "app/domain/sequential/queue_dequeue_instruction.py",
+        "app/domain/sequential/queue_enqueue_instruction.py",
+        "app/domain/sequential/show_instruction.py",
+        "app/domain/sequential/stack_push_instruction.py",
+        "app/routes/hash_routes.py",
+        "app/routes/sequential_routes.py",
+        "app/services/execution_trace_service.py",
+        "app/services/graph_help_service.py",
+        "app/services/hash_help_service.py",
+        "app/services/hash_structure_service.py",
+        "app/services/help_service.py",
+        "app/services/hierarchical_structure_service.py",
+        "app/services/queue_dequeue_session_service.py",
+        "app/services/queue_enqueue_session_service.py",
+        "app/services/sorting_structure_service.py",
+        "app/services/stack_push_session_service.py",
+        "app/services/structure_service.py",
+        "qa/LEAD_QUALITY_REVIEW.md",
+        "qa/LEAD_VISUAL_REVIEW.md",
+        "qa/README.md",
+        "qa/backend-review.md",
+        "qa/capture_contextual_metadata_fixtures.py",
+        "qa/capture_graph_classroom_fixtures.py",
+        "qa/capture_hash_classroom_fixtures.py",
+        "qa/capture_hash_failure_fixtures.py",
+        "qa/capture_hier_classroom_fixtures.py",
+        "qa/capture_hier_comparison_fixtures.py",
+        "qa/capture_hier_prediction_fixtures.py",
+        "qa/capture_sequential_ui_fixtures.py",
+        "qa/capture_sorting_memory_fixtures.py",
+        "qa/capture_sublist_classroom_fixtures.py",
+        "qa/contextual_metadata_fixtures.json",
+        "qa/export_code_renderer_fixtures.js",
+        "qa/frontend_hier_dom_export.js",
+        "qa/frontend_main_audit.py",
+        "qa/frontend_main_export.js",
+        "qa/frontend_main_memory.py",
+        "qa/frontend_main_operation_matrix.py",
+        "qa/graph_classroom_fixtures.json",
+        "qa/graph_edge_allocation.c",
+        "qa/hash_buffer_fixture.json",
+        "qa/hash_classroom_fixtures.json",
+        "qa/hash_destroy_fixture.json",
+        "qa/hash_failure_fixtures.json",
+        "qa/heap_classroom_fixtures.json",
+        "qa/hier_classroom_fixtures.json",
+        "qa/hier_comparison_fixtures.json",
+        "qa/hier_delete_classroom_fixtures.json",
+        "qa/hier_prediction_fixtures.json",
+        "qa/inventory.json",
+        "qa/radix_compact_memory_fixtures.json",
+        "qa/rn_classroom_fixture.json",
+        "qa/sequential_ui_fixtures.json",
+        "qa/sorting_memory_control_fixtures.json",
+        "qa/sublist_classroom_fixtures.json",
+        "qa/test_c_code_navigation.js",
+        "qa/test_c_position_bounds.py",
+        "qa/test_code_renderer_copy.py",
+        "qa/test_console_modes.js",
+        "qa/test_contextual_help.js",
+        "qa/test_contextual_metadata.js",
+        "qa/test_export_jpg.js",
+        "qa/test_export_jpg_graph.js",
+        "qa/test_export_jpg_hash.js",
+        "qa/test_export_jpg_hierarchical.js",
+        "qa/test_frontend_hier_dom_main.py",
+        "qa/test_graph_classroom.js",
+        "qa/test_graph_edge_allocation.py",
+        "qa/test_graph_help.py",
+        "qa/test_graph_numeric_receipt.py",
+        "qa/test_graph_query_publication.py",
+        "qa/test_graph_vertex_publication.py",
+        "qa/test_hash_capacity_policy.py",
+        "qa/test_hash_classroom.js",
+        "qa/test_hash_failed_execution.js",
+        "qa/test_hash_help.py",
+        "qa/test_hash_reset_export.js",
+        "qa/test_heap_query_return.py",
+        "qa/test_hier_classroom.js",
+        "qa/test_hier_comparison.js",
+        "qa/test_hier_prediction.js",
+        "qa/test_hierarchical_validation.js",
+        "qa/test_history_validation.py",
+        "qa/test_http_sessions.py",
+        "qa/test_insert_scope.py",
+        "qa/test_insert_scope_equivalence.py",
+        "qa/test_main_help.py",
+        "qa/test_real_stdout.js",
+        "qa/test_restored_console_mode.py",
+        "qa/test_sequential_classroom.js",
+        "qa/test_sequential_results.js",
+        "qa/test_sorting_code_wrap.js",
+        "qa/test_sorting_compact_memory.js",
+        "qa/test_sorting_memory_format.js",
+        "qa/test_sorting_mutations.js",
+        "qa/test_sorting_native.py",
+        "qa/test_sorting_regressions.py",
+        "qa/test_spanish_encoding.py",
+        "qa/test_stdout_contract.py",
+        "qa/test_stdout_raw_renderer.js",
+        "qa/test_sublist_classroom.js",
+        "qa/test_trace_player.js",
+        "qa/test_trace_player_paged.js",
+        "static/css/contextual_help.css",
+        "static/js/c_code_navigation.js",
+        "static/js/contextual_help.js",
+        "static/js/counting_runtime.js",
+        "static/js/graph.js",
+        "static/js/hash.js",
+        "static/js/help_code_highlight.js",
+        "static/js/hierarchical.js",
+        "static/js/interpreter_runtime.js",
+        "static/js/sequential.js",
+        "static/js/sorting.js",
+        "templates/base.html",
+        "templates/graph/structure.html",
+        "templates/hash/structure.html",
+        "templates/help/_operation_contracts.html",
+        "templates/help/_source_download.html",
+        "templates/help/graph_structure.html",
+        "templates/help/hash_structure.html",
+        "templates/help/manual.html",
+        "templates/hierarchical/structure.html",
+        "templates/sequential/structure.html",
+        "templates/sorting/structure.html"
+      ],
+      "documentation": [
+        "qa/README.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/code/final-check.json",
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/code/final-independent.json"
+      ],
+      "checks": [
+        "isolated-harness-tests"
+      ],
+      "next_step": "Aceptación finita verificada; futuros cambios requieren una nueva instrucción y revalidación. Libro/IA permanecen fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-pedagogical-repair-20261027/evidence/code/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/decisions/ui020-graph-projection.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "quality": {
+      "objective": "Revisión independiente de trazas, límites e integración",
+      "role": "quality",
+      "owner": "auditar_trazas_visualstruct",
+      "requirements": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/requirements.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/scope.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/proposal.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/design.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/role-adoption.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/quality"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/quality/review.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/quality/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/quality/final-check.json",
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/quality/final-independent.json"
+      ],
+      "checks": [
+        "independent-review"
+      ],
+      "next_step": "Aceptación finita verificada; futuros cambios requieren una nueva instrucción y revalidación. Libro/IA permanecen fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-pedagogical-repair-20261027/evidence/quality/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "visual": {
+      "objective": "Revisión usuario real, concisión, controles y accesibilidad",
+      "role": "visual",
+      "owner": "auditar_visualstruct_interfaz",
+      "requirements": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/requirements.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/scope.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/proposal.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/design.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/role-adoption.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/visual"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/visual/review.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/visual/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/visual/final-check.json",
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/visual/final-independent.json"
+      ],
+      "checks": [
+        "visual-accessibility-responsive"
+      ],
+      "next_step": "Aceptación finita verificada; futuros cambios requieren una nueva instrucción y revalidación. Libro/IA permanecen fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-pedagogical-repair-20261027/evidence/visual/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "documentation": {
+      "objective": "Informe reproducible, límites y paquete reversible",
+      "role": "documentation",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/requirements.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/scope.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/proposal.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/design.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/role-adoption.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/delivery-notes.md",
+        "README.md"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/delivery-notes.md",
+        "README.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/delivery-notes.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/documentation/final-check.json",
+        "openspec/changes/cloud-pedagogical-repair-20261027/evidence/documentation/final-independent.json"
+      ],
+      "checks": [
+        "documentation-coherence"
+      ],
+      "next_step": "Aceptación finita verificada; futuros cambios requieren una nueva instrucción y revalidación. Libro/IA permanecen fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-pedagogical-repair-20261027/evidence/documentation/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

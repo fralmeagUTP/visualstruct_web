@@ -1,0 +1,10 @@
+{
+  "previous_source_links": 127,
+  "new_links": 9,
+  "existing_links_enriched": 2,
+  "total_links": 136,
+  "still_unassigned": 239,
+  "runtime_export_cases": 11,
+  "e2e_tests_executed": 1,
+  "gate_errors": 0
+}

@@ -1,0 +1,13 @@
+# Hash get/contains: cierre LOW sólo de casos registrados
+
+Instrucción nueva01a0fe61-3104-743a-b032-bcc289ad80cd, coordinación-hash-query-finite-consolidation-low-20261003. Se verifican get/th_buscar y contains/th_contiene junto al helper th_indice sólo en los casos/plataforma descritos por hash-query-instructions-checkpoint-medium.md. No cierre universal ni auditoría Hash completa.
+
+24consultas nativas/API: tabla vacía, head/middle/tail/cadenas<=3, ausentes, negativas (residuo negativo y cero), INT_MIN/INT_MAX, capacidad3. Las máscaras de salida conservan sentinel en ausencia; dummy nunca se lee indeterminado y expira; scopes const/int/punteros/alias raíz y helper/retorno por instrucción. GuardasNULLtabla/NULLsalida/tabla0/destruida verificadas separadamente en C, no rutasAPI que no las expone. Parser público/rechazos definidos. HTTPgetausente400 existente, containsausentefalse200, kernel/resultadosH1 intactos.
+
+106IDs únicos =98previos +3regresionesbaseline +5nuevos. Intersección98; no perder IDs. 106pass35.25s. Única supersesión de expectativa legacy200→400 preservaID y originalarchivado; creación/inserción assertions intactas. Repeticiones de suite/native/UI/callers no se suman como IDs nuevos. ID-overlap.json, protected.json y evidencia MEDIUM documentan conservación.
+
+UI25consultas/450frames/425restauraciones, cinco secciones, scopes/salida/máscaras, líneas, ausencia de consola futura y recarga idéntica;0POST navegación/0JS. Cuatro main.c reales C17,17alloc17free0vivos y17fallosNULLsimulados externoscleanupstatus1; caller reproduce consultas repetidas/intercaladas10→20/ausentes y salida calculada. Doxygen C/H+mains0warnings; no nuevo cierre por símbolo documental. C/H/creación-inserción/11Sorting/arnés preservados.
+
+Recursos actuales de las mismas24consultas: maxtracemalloc3572324bytes, JSON261377bytes, tiempo instrumentado0.265324s; incluyeFlask/JSON/session/journal. NoRSS/SLA/threshold. Journal sin cuota y truncamiento del historial pueden invalidar retención; no sesiones arbitrarias/grandes cadenas/OOM real. PlataformaWindows/Python3.10.5/GCCint32/puntero64/Chromium147. AliasUI simbólicos poroperación; no intérpreteuniversal ni multipantalla exhaustiva.
+
+Hash4/11 métodos con cierres finitos: create_table, insert, get, contains. Restan exactamente7: remove, keys, values, items, stats, clear, destroy_table. Cleanupcaller no cierra lifecycle. Global13/22/docs121/208 unchanged. Siguiente baselineLOW remove segúnmapa, sin cambiar C/H/contrato y sin repetir métodos cerrados. Guardas before/after0; previewD5051preservado. SinRN/Grafos/publicación/Gitmutations.

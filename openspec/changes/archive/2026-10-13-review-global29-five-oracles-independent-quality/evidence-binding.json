@@ -1,0 +1,31 @@
+{
+  "inputs": {
+    "tests/test_hierarchical_interpreter_simulation_unit.py": "0851ca31d5e727223dceea49aba4c1deda9e902aab39b93ff0d5766a158e6197",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/test-original.py": "216f78fada080cb5296fd8d96a096799d1c0dc33a8b4ff935ff6e56c2cfd8a73",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/five-oracle-corrections.diff": "7593c13679cac91cb6db061ec1ec04635fff28f6703c03fa79ae4dc39cbf09c4",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/selection.json": "cb339f8381828862b809e39ded73a3354b9cf9609c58a2f80831f9bd2f2569b6",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/source-freeze-before.json": "2a6c5ee2013a35525234e86a3a58ca832febc8d22ee93fde9f7304d6ce355ef4",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/gates-and-pass-provenance.json": "070a17b904c583c4e41a2bfcde27d35e47da0284e77e6bdd6001ff21a524fab6",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/report.md": "b44dca7e55ec56b8182afe6b31314d28c6efbd1f4d0e4b143eeae5dce31528af",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/stable29.xml": "02327d1a7974db8283f2db050bf806628e2599450e8503aafe70a672c314a233",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/stdout.log": "92367db77595556022c534293bfbae25c6a1d6573d931e373803a3d7602109d8",
+    "app/domain/hierarchical/rbt_insert_instruction.py": "2326526b9abb696b901c93281b7686022ec0b6c94946f6595a6c06bd15c9d604",
+    "app/domain/hierarchical/avl_insert_instruction.py": "db635b6da860a86ecbce820241190eab15650c9819ced8a57df4953c4c164658",
+    "app/domain/hierarchical/avl_extreme_instruction.py": "892e33b562e4c914d53b7b47d42bcd7632e6002776b11d9f382e02f9844c1241",
+    "docs/tads_C/tad_rojo_negro.c": "4b01e6e456c5803e2d177b222fb6b35c3bcdd8249b2b81eb90a08e962a108874",
+    "docs/tads_C/tad_avl.c": "69e2e3cd856f08b99e7f6851f97e7eeb488a1826e2e1bdee36ff01486ab821eb",
+    "openspec/specs/c-code-interpreter/spec.md": "1ce41c73bb17faca390bed0a25166e588e4160d55bb71a51c3f9495d1ebb3320",
+    "openspec/changes/audit-local-quality-and-unified-controls/specs/application-quality-audit/spec.md": "4abb4de01a632ab66e93accf69e6d58a1d7208643508e6b767b12cbdcc058542"
+  },
+  "current_test_SHA256": "0851ca31d5e727223dceea49aba4c1deda9e902aab39b93ff0d5766a158e6197",
+  "exact_author_output": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low",
+  "source_freeze1000": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-global29-five-oracles-repair-low/source-freeze-before.json",
+  "independent_output": "openspec/changes/review-global29-five-oracles-independent-quality/evidence/independent-review",
+  "five_functions": [
+    "test_red_black_duplicate_insert_returns_before_malloc_and_fixup",
+    "test_red_black_insert_state_changes_on_link_line_not_during_search",
+    "test_avl_insert_state_changes_on_link_line_not_local_assignment",
+    "test_avl_insert_without_rotation_does_not_emit_rotation_hint",
+    "test_avl_minimo_trace_expands_while_by_left_depth"
+  ]
+}

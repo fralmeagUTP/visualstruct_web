@@ -1,0 +1,3 @@
+# Verify C Burbuja80 versus preparing instructional visualization
+
+Explicit user request via coordinator01a0fe61-3104-743a-b032-bcc289ad80cd: verify whether80..1algorithm is fast but visual explanation request slow. Maximum15minutes. Reuse earlier instrumented phases with exact historical SHA labels; measure CURRENT downloaded C pure kernel with output oracle and correct metrics. Separate compile/processstartup/I/O/timingresolution, one predefined small repeated batch for resolution (not best-run selection). No product/gate15/adoption/redesign; current minimal profile only if indispensable. FullHTTP15.8841 measured currentengine40777; rendering/human advance excluded. Own evidence/continuity only; no Git/preview.

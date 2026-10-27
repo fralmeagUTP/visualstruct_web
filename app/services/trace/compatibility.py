@@ -12,17 +12,17 @@ class LegacyTraceAdapter:
     """Convert trace steps without losing frontend-specific extension fields."""
 
     @staticmethod
-    def to_semantic(raw_steps: list[dict[str, Any]]) -> list[TraceStep]:
+    def to_semantic(raw_steps: list[dict[str, Any]], *, copy_value=deepcopy) -> list[TraceStep]:
         if not isinstance(raw_steps, list):
             raise TypeError("raw_steps debe ser una lista.")
-        return [TraceStep.from_legacy(step) for step in raw_steps]
+        return [TraceStep.from_legacy(step, copy_value=copy_value) for step in raw_steps]
 
     @staticmethod
-    def to_public(step: TraceStep, *, step_index: int | None = None) -> dict[str, Any]:
+    def to_public(step: TraceStep, *, step_index: int | None = None, copy_value=deepcopy) -> dict[str, Any]:
         """Return the exact original step when it came from the legacy boundary."""
         original = step.metadata.get("legacy_step")
         if isinstance(original, dict):
-            return deepcopy(original)
+            return copy_value(original)
 
         index = step_index if step_index is not None else step.metadata.get("step_index", 0)
         public: dict[str, Any] = {
@@ -43,7 +43,7 @@ class LegacyTraceAdapter:
         return public
 
     @classmethod
-    def round_trip(cls, raw_steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def round_trip(cls, raw_steps: list[dict[str, Any]], *, copy_value=deepcopy) -> list[dict[str, Any]]:
         """Normalize and project steps back to their public representation."""
-        return [cls.to_public(step, step_index=index) for index, step in enumerate(cls.to_semantic(raw_steps))]
+        return [cls.to_public(step, step_index=index, copy_value=copy_value) for index, step in enumerate(cls.to_semantic(raw_steps, copy_value=copy_value))]
 

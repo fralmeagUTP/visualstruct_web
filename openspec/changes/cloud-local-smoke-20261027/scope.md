@@ -1,0 +1,1 @@
+Nueva instrucción de Francisco: montar VisualStruct en nuestro entorno cloud local y probar funcionamiento, permitiendo mirar la app. No PC usuario, VPS, publicación ni modificación funcional. Copia aislada expresamente autorizada; no representa validación del destino D:. Pruebas finitas HTTP y navegador; suites originales ausentes.

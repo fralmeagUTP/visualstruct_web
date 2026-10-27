@@ -1,0 +1,224 @@
+{
+  "schema": "visualstruct-continuity-index/v1",
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "changes": {
+    "audit-local-quality-and-unified-controls": {
+      "sources": [
+        "openspec/changes/audit-local-quality-and-unified-controls/proposal.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/design.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/tasks.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/progress.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/current-operation-contract.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/specs/application-quality-audit/spec.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/specs/visual-playback-ui/spec.md",
+        "AGENTS.md",
+        "scripts/check_session_continuity.py",
+        "openspec/changes/add-session-continuity-guard/continuity-index.json",
+        "openspec/specs/didactic-conformance-remediation/spec.md"
+      ],
+      "tasks": "openspec/changes/audit-local-quality-and-unified-controls/tasks.md",
+      "operations": {
+        "linked-list.search-history": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/successful-search-history-review/verification.md",
+          "closed_marker": "# Historial de búsquedas exitosas: contrato aprobado corregido",
+          "scope": "Historial de búsquedas Lista, casos registrados; no toda instrucción Buscar.",
+          "evidence": [
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/successful-search-history-review/search-history-final.log"
+          ]
+        },
+        "circular-list.search-history": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/successful-search-history-review/verification.md",
+          "closed_marker": "# Historial de búsquedas exitosas: contrato aprobado corregido",
+          "scope": "Historial Circular, casos registrados.",
+          "evidence": [
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/successful-search-history-review/search-history-final.log"
+          ]
+        },
+        "circular-list.search-instructions": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-circular-search-review/verification.md",
+          "closed_marker": "# Circular Buscar posiciones: LOW verificado",
+          "scope": "Buscar Circular por instrucción, cinco casos registrados.",
+          "evidence": [
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-circular-search-review/circular-search-browser-final.log"
+          ]
+        },
+        "red-black.insert": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-red-black-insert-final-low/README.md",
+          "closed_marker": "# Insertar Rojo-Negro verified closure for recorded cases",
+          "scope": "Insertar RN, cierre de casos registrados y límites del README.",
+          "evidence": [
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-red-black-insert-final-low/final-summary.json"
+          ]
+        },
+        "red-black.delete": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/tasks.md",
+          "closed_marker": "## Eliminar Rojo-Negro verified LOW closure",
+          "scope": "Eliminar RN: baseline nativo/documental y plan acotado existentes; cierre por instrucción independiente del task transversal. No extender Validar silenciosamente.",
+          "evidence": [
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-red-black-delete-baseline-low/summary.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-red-black-delete-baseline-low/rbt-delete-baseline-final-low.log"
+          ],
+          "context_sources": [
+            "openspec/changes/audit-local-quality-and-unified-controls/red-black-delete-instruction-review-plan.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-red-black-delete-baseline-low/README.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-red-black-delete-baseline-low/reviewed-revision.json",
+            "openspec/changes/audit-local-quality-and-unified-controls/red-black-validation-limit-decision.md"
+          ],
+          "task_prefix": "Auditar sección 2 por instrucción"
+        },
+        "graph.construction": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md",
+          "scope": "Construcción/edición de Grafos; revisar rutas/casos antes de elegir operación.",
+          "context_sources": [
+            "docs/qa/graph-construction-audit-summary.md",
+            "openspec/specs/graph-structures/spec.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Auditar sección 2 por instrucción"
+        },
+        "graph.traversal": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md",
+          "scope": "BFS/DFS por instrucción; BFS negativo ya corregido no implica cierre de toda familia.",
+          "context_sources": [
+            "docs/qa/graph-traversal-audit-summary.md",
+            "openspec/specs/graph-structures/spec.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/bfs-approved-fix/verification.txt"
+          ],
+          "evidence": [],
+          "task_prefix": "Auditar sección 2 por instrucción"
+        },
+        "graph.shortest-path": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md",
+          "scope": "Dijkstra/Bellman-Ford: relajaciones, inalcanzables y límites por instrucción.",
+          "context_sources": [
+            "docs/qa/graph-shortest-path-audit-summary.md",
+            "openspec/specs/graph-structures/spec.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Auditar sección 2 por instrucción"
+        },
+        "graph.minimum-spanning": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md",
+          "scope": "Prim/Kruskal: candidatos, union-find, costo y caminos registrados.",
+          "context_sources": [
+            "docs/qa/graph-mst-audit-summary.md",
+            "openspec/specs/graph-structures/spec.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Auditar sección 2 por instrucción"
+        },
+        "hash.instructions": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md",
+          "scope": "Hash por instrucción; C entero/capacidad fija frente a spec canónica contradictoria, sin autorización implícita de rediseño.",
+          "context_sources": [
+            "docs/qa/hash-table-audit-summary.md",
+            "openspec/specs/hash-table/spec.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/reconciliation.md",
+            "openspec/changes/archive/2026-08-23-enhance-hash-table-pedagogy/specs/hash-table/spec.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Auditar sección 2 por instrucción"
+        },
+        "sorting.instructions": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/native-instruction-worklist.md",
+          "scope": "Once algoritmos: casos registrados por instrucción; elegir algoritmo/camino explícito.",
+          "context_sources": [
+            "docs/qa/sorting-audit-summary.md",
+            "openspec/specs/sorting-visualizer/spec.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Auditar sección 2 por instrucción"
+        },
+        "documentation.symbols": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/documentation-symbol-signoff-ledger.md",
+          "scope": "Exactitud por símbolo desde descarga real; el conteo se lee del ledger original, no se copia.",
+          "context_sources": [
+            "openspec/changes/audit-local-quality-and-unified-controls/documentary-contract-review.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/specs/application-quality-audit/spec.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Descargar C/H desde HTTP"
+        },
+        "documentation.manual": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/documentary-contract-review.md",
+          "scope": "Manual/ayudas comparados con contrato real; lectura no equivale a pruebas.",
+          "context_sources": [
+            "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/current-operation-contract.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Contrastar manual/ayudas"
+        },
+        "dependencies.hidden-api": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/current-operation-contract.md",
+          "scope": "Raíces/dependencias y contratos API ambiguos; no eliminar por hidden.",
+          "context_sources": [
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-linked-clear-review/hidden-api-dependency-review.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Auditar raíces de uso"
+        },
+        "decisions.red-black-validator": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/red-black-validation-limit-decision.md",
+          "scope": "Decisión de producto sobre validador parcial: abierta incluso al cerrar7/7.",
+          "context_sources": [
+            "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-red-black-query-instruction-review/README.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Consultar antes de cambios semánticos"
+        },
+        "audit.final-regression": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/validation-plan.md",
+          "scope": "Regresión/cobertura final sobre revisión coherente; ejecutar solo cuando coordinación lo autorice.",
+          "context_sources": [
+            "openspec/changes/audit-local-quality-and-unified-controls/reconciliation.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Ejecutar pruebas aplicables en revisión final"
+        },
+        "audit.delivery": {
+          "source": "openspec/changes/audit-local-quality-and-unified-controls/tasks.md",
+          "scope": "Entrega y decisión de consolidación/archivo; no archivar por suite verde o familia cerrada.",
+          "context_sources": [
+            "openspec/changes/audit-local-quality-and-unified-controls/proposal.md",
+            "openspec/changes/audit-local-quality-and-unified-controls/reconciliation-detailed.md"
+          ],
+          "evidence": [],
+          "task_prefix": "Entregar matriz, hallazgos"
+        }
+      },
+      "assignment_source": "openspec/changes/add-session-continuity-guard/assignments/coordination-rbt-delete-20261002.json"
+    },
+    "add-session-continuity-guard": {
+      "sources": [
+        "openspec/changes/add-session-continuity-guard/proposal.md",
+        "openspec/changes/add-session-continuity-guard/design.md",
+        "openspec/changes/add-session-continuity-guard/tasks.md",
+        "openspec/changes/add-session-continuity-guard/specs/session-continuity/spec.md",
+        "openspec/changes/add-session-continuity-guard/reconciliation-decisions.md",
+        "openspec/changes/add-session-continuity-guard/README.md",
+        "openspec/changes/add-session-continuity-guard/continuity-index.json",
+        "scripts/check_session_continuity.py",
+        "scripts/tests/test_session_continuity.py",
+        "AGENTS.md",
+        "openspec/changes/add-session-continuity-guard/traceability.md",
+        "openspec/changes/add-session-continuity-guard/adoption.md",
+        "openspec/changes/add-session-continuity-guard/reconciliation-options.md",
+        "openspec/specs/didactic-conformance-remediation/spec.md",
+        "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/reconciliation.md",
+        "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/requirement-decisions.json",
+        "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/transfer-proof.json",
+        "scripts/tests/test_historical_reconciliation.py"
+      ],
+      "tasks": "openspec/changes/add-session-continuity-guard/tasks.md",
+      "operations": {
+        "continuity.implementation": {
+          "source": "openspec/changes/add-session-continuity-guard/tasks.md",
+          "scope": "Verificación propia del arnés; no suite de aplicación.",
+          "evidence": []
+        }
+      }
+    }
+  }
+}

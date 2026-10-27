@@ -1,0 +1,377 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "/workspace/scratch/644977913e22/visualstruct_convergencia_libro_20261027/app",
+  "change": "cloud-graph-book-convergence-20261027",
+  "operation": "graph-book-convergence",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "openspec/changes/archive",
+    "scripts/role_workflow.py",
+    "scripts/check_session_continuity.py"
+  ],
+  "tasks": {
+    "specifications": {
+      "objective": "Convergencia canónica: specifications",
+      "role": "specifications",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/requirements.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/specs/graph-book-contract/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/scope.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/proposal.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-graph-book-convergence-20261027"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/requirements.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/requirements.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/specifications/final-check.json",
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/specifications/final-independent.json"
+      ],
+      "checks": [
+        "specification-validation"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-graph-book-convergence-20261027/evidence/specifications/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/decisions/canonical-book-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "code": {
+      "objective": "Convergencia canónica: code",
+      "role": "code",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/requirements.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/specs/graph-book-contract/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/scope.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/proposal.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "app/domain/graph",
+        "app/adapters/graph_adapter.py",
+        "app/services/graph_structure_service.py",
+        "app/services/graph_main_service.py",
+        "app/services/graph_help_service.py",
+        "app/services/graph_mark_effects.py",
+        "app/services/c_code_service.py",
+        "app/services/execution_trace_service.py",
+        "app/routes/graph_routes.py",
+        "docs/tads_C/tad_grafo.c",
+        "docs/tads_C/tad_grafo.h",
+        "static/js/graph.js",
+        "static/css/contextual_help.css",
+        "templates/graph",
+        "templates/help/graph_structure.html",
+        "qa_convergence",
+        "templates/help/_operation_contracts.html",
+        "app/routes/help_routes.py",
+        "app/services/graph_session_history.py"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "app/adapters/graph_adapter.py",
+        "app/domain/graph/book_application.py",
+        "app/domain/graph/book_c_subset.py",
+        "app/domain/graph/book_source.py",
+        "app/domain/graph/book_trace.py",
+        "app/domain/graph/graph_commands.py",
+        "app/domain/graph/trace_budget.py",
+        "app/routes/graph_routes.py",
+        "app/routes/help_routes.py",
+        "app/services/c_code_service.py",
+        "app/services/execution_trace_service.py",
+        "app/services/graph_help_service.py",
+        "app/services/graph_main_service.py",
+        "app/services/graph_session_history.py",
+        "app/services/graph_structure_service.py",
+        "docs/tads_C/tad_grafo.c",
+        "docs/tads_C/tad_grafo.h",
+        "qa_convergence/INTEGRATION_STATUS.md",
+        "qa_convergence/LEAD_FINAL_REVIEW.md",
+        "qa_convergence/README.md",
+        "qa_convergence/book_active_fields_fixture.json",
+        "qa_convergence/book_adapter_gate_after.json",
+        "qa_convergence/book_adapter_tests.log",
+        "qa_convergence/book_engine_budget.log",
+        "qa_convergence/book_engine_combined.log",
+        "qa_convergence/book_engine_dense_count.json",
+        "qa_convergence/book_engine_ownership_trace.log",
+        "qa_convergence/book_engine_resources5.json",
+        "qa_convergence/book_engine_resources8.json",
+        "qa_convergence/book_engine_resources8_retired.json",
+        "qa_convergence/book_engine_retired.log",
+        "qa_convergence/book_engine_retired_before.log",
+        "qa_convergence/book_engine_retired_budget_final.log",
+        "qa_convergence/book_engine_tests.log",
+        "qa_convergence/book_engine_trace_tests.log",
+        "qa_convergence/book_frontend_fixtures.json",
+        "qa_convergence/book_frontend_gate_after.json",
+        "qa_convergence/book_frontend_gate_before.json",
+        "qa_convergence/book_graph_layout_gate_after.json",
+        "qa_convergence/book_graph_layout_gate_before.json",
+        "qa_convergence/book_graph_pan_gate_after.json",
+        "qa_convergence/book_graph_pan_gate_before.json",
+        "qa_convergence/book_no_trace_gate_after.json",
+        "qa_convergence/book_no_trace_gate_before.json",
+        "qa_convergence/book_null_caption_gate_after.json",
+        "qa_convergence/book_null_caption_gate_before.json",
+        "qa_convergence/book_retired_fixture.json",
+        "qa_convergence/book_retired_frontend_gate_after.json",
+        "qa_convergence/book_retired_frontend_gate_before.json",
+        "qa_convergence/budget_history_retest.log",
+        "qa_convergence/canonical_manifest.json",
+        "qa_convergence/canonical_node_all.log",
+        "qa_convergence/canonical_python_all.log",
+        "qa_convergence/checkpoint_differences.json",
+        "qa_convergence/checkpoint_fixture/app/routes/help_routes.py",
+        "qa_convergence/checkpoint_fixture/manifest.json",
+        "qa_convergence/checkpoint_fixture/templates/help/_operation_contracts.html",
+        "qa_convergence/documentation_scope_after.json",
+        "qa_convergence/engine_gate_after.json",
+        "qa_convergence/engine_gate_before.json",
+        "qa_convergence/help_precision_retest.log",
+        "qa_convergence/integration_gate_after.json",
+        "qa_convergence/integration_gate_before.json",
+        "qa_convergence/integration_tests.log",
+        "qa_convergence/non_graph_node.log",
+        "qa_convergence/non_graph_node_final.log",
+        "qa_convergence/non_graph_node_remainder.log",
+        "qa_convergence/non_graph_python.log",
+        "qa_convergence/non_graph_stdout_node.log",
+        "qa_convergence/portability-before.log",
+        "qa_convergence/portability-test-change.patch",
+        "qa_convergence/run_non_graph_node.sh",
+        "qa_convergence/run_non_graph_regressions.py",
+        "qa_convergence/test_book_active_fields.js",
+        "qa_convergence/test_book_adapter.py",
+        "qa_convergence/test_book_adapter_report.md",
+        "qa_convergence/test_book_capture_budget.py",
+        "qa_convergence/test_book_engine.py",
+        "qa_convergence/test_book_engine_budget.py",
+        "qa_convergence/test_book_engine_report.md",
+        "qa_convergence/test_book_engine_resources.py",
+        "qa_convergence/test_book_engine_retired.py",
+        "qa_convergence/test_book_engine_trace.py",
+        "qa_convergence/test_book_engine_trace_before_retired.py.snapshot",
+        "qa_convergence/test_book_frontend.js",
+        "qa_convergence/test_book_frontend_execution.js",
+        "qa_convergence/test_book_frontend_report.md",
+        "qa_convergence/test_book_frontend_retired.js",
+        "qa_convergence/test_book_frontend_stdout.js",
+        "qa_convergence/test_book_graph_labels.js",
+        "qa_convergence/test_book_graph_pan.js",
+        "qa_convergence/test_book_http.py",
+        "qa_convergence/test_book_main_guide_navigation.js",
+        "qa_convergence/test_book_main_help.py",
+        "qa_convergence/test_book_main_native.py",
+        "qa_convergence/test_book_main_report.md",
+        "qa_convergence/test_book_service.py",
+        "qa_convergence/test_random_commands.py",
+        "static/css/contextual_help.css",
+        "static/js/graph.js",
+        "templates/graph/structure.html",
+        "templates/help/_operation_contracts.html",
+        "templates/help/graph_structure.html"
+      ],
+      "documentation": [
+        "qa_convergence/README.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/code/final-check.json",
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/code/final-independent.json"
+      ],
+      "checks": [
+        "isolated-harness-tests"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-graph-book-convergence-20261027/evidence/code/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/decisions/canonical-book-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "quality": {
+      "objective": "Convergencia canónica: quality",
+      "role": "quality",
+      "owner": "auditar_trazas_visualstruct",
+      "requirements": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/requirements.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/specs/graph-book-contract/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/scope.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/proposal.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/quality"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/quality/review.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/quality/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/quality/final-check.json",
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/quality/final-independent.json"
+      ],
+      "checks": [
+        "independent-review"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-graph-book-convergence-20261027/evidence/quality/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/decisions/canonical-book-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "visual": {
+      "objective": "Convergencia canónica: visual",
+      "role": "visual",
+      "owner": "auditar_visualstruct_interfaz",
+      "requirements": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/requirements.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/specs/graph-book-contract/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/scope.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/proposal.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/visual"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/visual/review.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/visual/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/visual/final-check.json",
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/visual/final-independent.json"
+      ],
+      "checks": [
+        "visual-accessibility-responsive"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-graph-book-convergence-20261027/evidence/visual/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/decisions/canonical-book-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "documentation": {
+      "objective": "Convergencia canónica: documentation",
+      "role": "documentation",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/requirements.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/specs/graph-book-contract/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/scope.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/proposal.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/delivery-notes.md",
+        "README.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/documentation/review.md"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/delivery-notes.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/delivery-notes.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/documentation/final-check.json",
+        "openspec/changes/cloud-graph-book-convergence-20261027/evidence/documentation/final-independent.json"
+      ],
+      "checks": [
+        "documentation-coherence"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-graph-book-convergence-20261027/evidence/documentation/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/decisions/canonical-book-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

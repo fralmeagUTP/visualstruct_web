@@ -1,0 +1,5 @@
+# Known CI reconciliation and publication LOW
+
+Parent01a0fe61 conveys explicituserinstruction replacingpause: resolveknownproblems and updateGitHubmain, preserve bothhistories/allfiles, noforcepush/destructive reset/mass evidence/secrets. Prepare independentQAidentitiesfirst, resolveprovedCIcauses andsmallnecessarybrowserdiagnostic withoutoptimization/newbroadaudit. PreservelockedQAfiles. Publishreviewednecessarycode/tests/docsandboundedclosurechecklist only; other28OpenSpecchangesnotclosedwithoutown evidence. SortingA/Bpendingnotselected; VPSlateraccesspending. Useisolatedcleanmaincheckout, explicitfilelist/hashreview, normalpushonlyafteracceptance. Newinstruction supersedespause; originalGraphcodec/lifetime/supportdraft retained with13PASS3unresolvedinvariantFAIL.
+
+- [ ] known-CI-reconcile-publish: independentbindings, verifiedsharedCIcauses, smallcausal/browserchecks, reviewedfilelists/non-destructivepublicationandboundedclosureevidence.

@@ -146,6 +146,16 @@ def lista_eliminar_repetidos(lista: list[Tlista], valor: int) -> None:
     print("\n\n Valores eliminados..\n")
 
 
+def lista_limpiar(lista: list[Tlista]) -> None:
+    """Equivalente Python de ``lista_limpiar``: desconecta cada nodo."""
+    if lista is None:
+        return
+    while lista[0] is not None:
+        q = lista[0]
+        lista[0] = q.sgte
+        q.sgte = None  # representa el nodo que C libera con free(q)
+
+
 def lista_buscar_posiciones(lista: Tlista, valor: int) -> list[int]:
     """Helper para la app: devuelve posiciones base 1."""
     posiciones: list[int] = []

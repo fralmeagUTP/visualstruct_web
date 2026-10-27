@@ -1,0 +1,11 @@
+{
+  "schema": "continuity-archive-map/v1",
+  "retired_prefix": "openspec/changes/extend-continuity-role-workflow/",
+  "archive_prefix": "openspec/changes/archive/2026-10-02-extend-continuity-role-workflow/",
+  "input_overrides": {
+    "openspec/continuity/ROLE-WORKFLOW.md": "openspec/changes/archive/2026-10-02-extend-continuity-role-workflow/evidence/closure-final/accepted-protocol.md",
+    "openspec/continuity/ROLE-WORKFLOW-QUICKSTART.md": "openspec/changes/archive/2026-10-02-extend-continuity-role-workflow/evidence/closure-final/accepted-quickstart.md",
+    "openspec/continuity/role-workflow-approval.json": "openspec/changes/archive/2026-10-02-extend-continuity-role-workflow/evidence/closure-final/accepted-implementation-approval.json"
+  },
+  "meaning": "Resolve dated evidence inputs to exact archived bytes; not approval of rewritten runtime guides"
+}

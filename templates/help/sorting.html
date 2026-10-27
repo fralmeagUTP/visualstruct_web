@@ -1,39 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Ayuda Ordenamiento{% endblock %}
+{% block title %}Ayuda | Ordenamiento{% endblock %}
 {% block content %}
-<section>
+<section class="help-module-page">
   <h2>{{ module_help.title }}</h2>
   <p>{{ module_help.description }}</p>
-  <p>
-    Si es tu primera vez, empieza por el
-    <a class="link" href="{{ url_for('help.user_manual') }}">Manual de uso</a>
-    para entender objetivos, flujo de trabajo y controles.
-  </p>
-
-  <h3>Como usar esta ayuda</h3>
-  <ul>
-    <li>Crea un arreglo manual o aleatorio.</li>
-    <li>Selecciona algoritmo y usa <strong>Reproducir</strong>.</li>
-    <li>Con el checkbox activado veras toda la traza paso a paso.</li>
-    <li>Con el checkbox desactivado se aplica solo el estado final.</li>
-  </ul>
-
-  <h3>Recomendaciones</h3>
-  <ul>
-    {% for tip in module_help.tips %}
-    <li>{{ tip }}</li>
-    {% endfor %}
-  </ul>
-
-  <h3>Estructuras disponibles</h3>
-  <ul>
-    {% for structure in structures %}
-    <li>
-      <a class="link" href="{{ url_for('help.sorting_structure_help', structure_id=structure.id) }}">
-        {{ structure.name }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
+  <section class="help-source-download"><h3>Cómo trabajar este módulo</h3><ol><li>Crea un arreglo manual o aleatorio.</li><li>Selecciona el método de ordenamiento.</li><li>Ejecuta el algoritmo o avanza y retrocede por la traza.</li><li>Relaciona comparaciones, intercambios y auxiliares con el código C.</li></ol></section>
+  <section class="help-source-download"><h3>Compara con los mismos datos</h3><p>Crea el arreglo 4, 1, 3, 2, elige Burbuja y activa Paso a paso. Predice cuándo se intercambiarán dos vecinos. Para comparar con Inserción, vuelve a crear el mismo arreglo inicial: ordenar uno ya ordenado sería otro experimento.</p><p><strong>Ten en cuenta:</strong> La entrada de arreglo admite de 1 a 80 enteros de 32 bits separados por comas; no es el lote Agregar varios. Counting y Binsort limitan el rango máximo−mínimo+1 a 1.000.000. Binsort usa Counting en este TAD.</p><p><a href="{{ url_for('help.user_manual') }}#vista">Vista de clase y controles comunes</a> · <a href="{{ url_for('help.user_manual') }}#problemas">Si algo no sale como esperabas</a></p></section>
+  <h3>Recomendaciones</h3><ul>{% for tip in module_help.tips %}<li>{% if "historial" in tip|lower %}Consulta main.c del historial en Resultados para relacionar tus ejecuciones con las llamadas C.{% else %}{{ tip }}{% endif %}</li>{% endfor %}</ul>
+  <h3>Guía de métodos de ordenamiento</h3><div class="cards">{% for structure in structures %}<article class="card"><h4>{{ structure.name }}</h4><p>{{ structure.description }}</p><a class="link" href="{{ url_for('help.sorting_structure_help', structure_id=structure.id) }}">Ver guía y código C</a></article>{% endfor %}</div>
+  <p><a class="link" href="{{ url_for('help.user_manual') }}">Volver al Manual de uso</a></p>
 </section>
 {% endblock %}

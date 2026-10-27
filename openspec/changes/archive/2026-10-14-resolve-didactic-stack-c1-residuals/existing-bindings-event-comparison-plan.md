@@ -1,0 +1,3 @@
+# Fase independiente vigente
+
+Coordinación solicita mapear375vinculaciones desde pruebas/evidencia reales, inventariar controlesJS y desarrollar comparación por familias. Docker pendiente de aprobación explícita: no arrancar/instalar/crear contenedores. Generar registro parcial de casos con requests/expected literales y referencias AST reales; desconocidos siguen pendientes. No interpretar nombres/coincidencias como pruebas ejecutadas. Reutilizar eventos nativos ya obtenidos sin recompilar casos caros; comparar con trazas propias de sesiones privadas solo donde hace falta evidencia nueva. Límites120s/2GiB por bloque; sin campañas globales, intentos consumidos/Bellman900, cambios de algoritmos educativos ni publicación. Reportar preparados versus verificados.

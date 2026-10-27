@@ -1,0 +1,11 @@
+# RN V3 baseline LOW — checkpoint seguro
+
+Proyecto canónico D:, operación red-black.validate-full-baseline-low, asignación coordination-rn-full-validator-baseline-low-20261003. Contrato corregido extend-red-black-full-validation leído y guarda before verde. Sin implementación producto.
+
+17 fixtures únicos vivos: 6 válidos, 11 inválidos; C17 -O2 -Wall -Wextra -Wpedantic -Werror, proceso termina dentro de timeout5s. Python RAW y helper C mostrado coinciden17/17; contrato13/17. Falsos positivos: invalid_color, black_height, root_parent, child_parent. rbt_validar no exportada C/H. Ciclo propio/interior y nodo compartido rechazados en estos fixtures por cotas actuales; no promesa universal de memoria arbitraria. Snapshot por campos17/17 readonly en ambos. Sin serializer/destructor recursivo ni punteros colgantes. No medición alloc/free/printf declarada. Dos contraejemplos históricos incluidos en estos17, no sumados.
+
+Regresiones permanentes tests/test_rbt_full_validator_baseline_low.py:52 IDs,43pass9fail0xfail (2.74s):4fallos Python+4C+exportausente;52 pruebas no equivale52 fixtures. Harness tests/_audit_rbt_full_validator_baseline_low.py. Evidencia native/report.json, fuentes descargadas HTTP200 iguales D:, main, stdout y compile.log. Primer intento QA rechazado por misleading-indentation antes de ejecutar C; compile-first-QA-indentation.log conservado, harness corregido, producto intacto. No ejecuciónUB.
+
+223 hashes de producto before/after idénticos; sin tocar algoritmos RN/otros C/H ni ledger C1. Encolar conserva queue-encolar-baseline-checkpoint-low.md:33IDs19pass14fail,14llamadasC140eventos35condiciones,12alloc12free0vivos;4reloadhistoria/0reloadtraza,HTTPmain404 real. Implementación Encolar pendiente, prioridad RN vigente. Apilar conserva revisión SHA actual6/6,14llamadas124eventos27condiciones32observaciones sin divergencia;30tests históricos siguen calificados por faltaSHAfinal contemporáneo, no se recontaron.
+
+Siguiente paso: autorización de coordinación MEDIUM acotado al plan red-black-full-validation-plan-medium-proposed.md; no inferir implementación/aceptación de contrato ni cierre global. No comando de producto activo. Guarda after reporta este checkpoint; no reabre operaciones cerradas.

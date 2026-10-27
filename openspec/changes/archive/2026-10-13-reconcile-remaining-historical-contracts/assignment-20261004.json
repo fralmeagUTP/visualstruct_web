@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-c1-current-evidence-and-query-history-low-20261004",
+  "issued_at_utc": "2026-10-04T14:20:06.061267+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "writer_thread_id": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "owner": "c1-documentary-writer-01a0fad1-4046-71ae-990c-a53383e81006",
+  "change": "reconcile-remaining-historical-contracts",
+  "operation": "c1.remaining-documentary",
+  "task": "c1-documentary",
+  "instruction": "Coordinación 01a0fe61-3104-743a-b032-bcc289ad80cd asigna al hilo real 01a0fad1-4046-71ae-990c-a53383e81006 como escritor documental actual, preservando identidad y snapshot histórico. Registrar coordination-c1-current-evidence-and-query-history-low-20261004. Misma operación c1.remaining-documentary/task c1-documentary. Actualizar once requisitos/veinte escenarios con evidencia vigente sin admisión automática; preservar C1-REM-06. Preparar expediente dedicado session-state sobre consultas cronológicas aprobadas y replay sin redispatch, sin cambiar semántica/producto. Devolver delta exacto y revisión antes de adoptar canónicos. Escrituras sólo change C1, expediente documental nuevo y asignaciones necesarias; no auditor/runtime/C/H/preview/pruebas. Guardas before/after; no eludir rechazo. Auditor mantiene11/12/16.",
+  "scope_ref": "openspec/changes/reconcile-remaining-historical-contracts/instruction-20261004.md"
+}

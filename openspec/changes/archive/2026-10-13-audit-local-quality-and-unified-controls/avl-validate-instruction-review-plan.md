@@ -1,0 +1,9 @@
+# Next bounded AVL instructional block: Validar
+
+LOW baseline completed: evidence/visible-avl-validate-baseline-low/README.md. Native rotation repair independently verified;4actual-main Chromium regressionspass andC/H Doxygen0. Documentation68/208; no further signoff from this baseline.
+
+MEDIUM is needed only for Validar recursive-helper+height scopes, before/after initialization and result/short-circuit synchronization. Preserve finiteacyclic Csemantics, no allocation/free/mutation, immutable nodes/parents/FE, no future-result leakage; borrowed parameter aliases disappear on return. Build independent native observation harness for helperandavl_altura rather than drive expected events from newPythonmodel. Include empty,singleton,LL/RR/LR/RLpublicseeds,multilevel,signedextrema andnegativefixture branches. Testactualcurrent sourceindices, conditionaltruth, live/uninitialized/assignedlocals, callreturnframes, callerresult, consoleempty andbothviews/replayzeroPOST. C subtraction operands lack fixed evaluation order; document selectedlegal order and representcalls withoutclaiminglanguage guarantees thatorder. No need alter public C/H or backend validation policy.
+
+Separate helper equilibrium-by-heights result from backend order-and-height metadata; do not substitute one result with theother or inventstoredFEvalidation. If a change to productvalidation semantics is proposed, reportdecision rather than silentlyimplement. Source/display/helperdocs/manual/generatedmain must saywhatthiscodeactuallychecks. No newfeature/export.
+
+Exitboundedturn once Validarrecordedcases/native/browserregressionsverified; returnLOWimmediately. ThenInsertar(includingrotationhelpers) andEliminar are their own pendingblocks using provennativeprefix andownership evidence, not partofValidar. Globalfinalgate andremainingfamiliesstillopen. D:,preview5051,no push/merge/deployment.

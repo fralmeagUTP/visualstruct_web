@@ -1,0 +1,45 @@
+{
+  "pending_before": 232,
+  "pending_after": 232,
+  "bindings_before": 143,
+  "bindings_after": 143,
+  "new_validated_bindings": 0,
+  "categories": {
+    "algorithm": 21,
+    "control": 139,
+    "operation": 59,
+    "phase": 4,
+    "route": 9
+  },
+  "causes": {
+    "EXISTING_TEST_CONTEXT_NOT_MAPPED": 95,
+    "NO_SOURCE_CASE_CANDIDATE_FOUND_ABSENCE_UNCONFIRMED": 97,
+    "REFERENCE_ONLY_REQUIRES_CASE_REVIEW": 40
+  },
+  "by_category_cause": {
+    "algorithm": {
+      "EXISTING_TEST_CONTEXT_NOT_MAPPED": 21
+    },
+    "control": {
+      "EXISTING_TEST_CONTEXT_NOT_MAPPED": 4,
+      "NO_SOURCE_CASE_CANDIDATE_FOUND_ABSENCE_UNCONFIRMED": 95,
+      "REFERENCE_ONLY_REQUIRES_CASE_REVIEW": 40
+    },
+    "operation": {
+      "EXISTING_TEST_CONTEXT_NOT_MAPPED": 59
+    },
+    "phase": {
+      "EXISTING_TEST_CONTEXT_NOT_MAPPED": 4
+    },
+    "route": {
+      "EXISTING_TEST_CONTEXT_NOT_MAPPED": 7,
+      "NO_SOURCE_CASE_CANDIDATE_FOUND_ABSENCE_UNCONFIRMED": 2
+    }
+  },
+  "confirmed_real_absence": 0,
+  "confirmed_duplicates_or_exclusions": 0,
+  "items_with_scope_duplicate_review_flags": 14,
+  "existing_bound_source_cases_requiring_execution_or_accepted_evidence": 132,
+  "test_bodies_executed": 0,
+  "warning": "Candidates are references, not proof of relevant assertions or executable case; zero confirmed absence does not mean no missing tests."
+}

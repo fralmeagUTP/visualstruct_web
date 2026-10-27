@@ -1,0 +1,10 @@
+{
+  "utc": "2026-10-27T12:04:46.118528+00:00",
+  "scope": "shared presentation/base/export-only; source frozen after independent UI acceptance",
+  "files": {
+    "static/js/classroom_view.js": "e6544056d590ea97bbe0578212eeff00d83d486b67084ec76828dab16fd42547",
+    "static/css/classroom_view.css": "1e395a96e7eae5b5534735f693016a03cf621f52c1c1dabe150d426f79dbdc0f",
+    "static/js/interpreter_runtime.js": "9c053251f39f44681479d312f42a1f882bbb8fcf4bf048bae8cc83843b145456",
+    "templates/base.html": "21d7c6d776054e49778d6e33cdf44a48e4194d745682e9bb0b05dc5518af5335"
+  }
+}

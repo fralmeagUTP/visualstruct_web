@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-audit-partial-delivery-graph15max-low-20261006",
+  "issued_at_utc": "2026-10-06T16:23:15.655760+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "owner": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "writer_thread_id": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "change": "reconcile-remaining-historical-contracts",
+  "operation": "c1.remaining-documentary",
+  "task": "c1-documentary",
+  "instruction": "Delegación vigente coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: actualizar únicamente documento entrega-parcial-visualstruct-20261006.md con DFS canónico/QA,83.235427%coverage,Dijkstra30privado122.546s/22430stepsQA/UI,BF20privado1861.922s/60239steps/176.67MiB/121.57MiBPrivate/sesión40→41QA. BFUIguardada aún sin resultado final;Prim/Kruskal/integraciónglobalpendientes20/22. Usuario dice «No, es que optimizarlo no vamos a poder más» tras proponer detener optimización/dejar demora declarada: registrar decisión de cesar nuevas optimizaciones,no imposibilidad técnica demostrada. Documento para revisión inmediata,no ya entregado,cierre,cancelación,nuevas pruebas/código/auditor/paquetes congelados. Preservar algoritmos y pasos,SLAnoSorting,separarC/preparación/replay. Nueva dirección expresa: fidelidad/correctitud centrales; usuario «en grafos yo creo que con quince nodos que podamos evaluar es más que suficiente».15tamaño suficiente de evaluación didáctica,no cambio expreso del máximoAPI30;sin nuevaoptimización ni repetirBF20;demorasdeclaradas. Instrucción explícita definitiva sustituye15sóloevaluación: usuario «Déjémole un rango máximo de quince nodos, en grafos» y «en la parte de grafos con quince nodos puede servirme, no necesito más». MáximoGraph15reemplaza30; aprobación registrada, implementaciónAPI/UI/generación/OpenSpec focal ypruebas15/16rechazosinmutación por auditor aúnpendiente;legacyintacto. No confundir15nodos con15segundos. Actualizar sólo entrega propia.",
+  "scope_ref": "openspec/changes/reconcile-remaining-historical-contracts/assignment-delivery-graph15max-20261006.json"
+}

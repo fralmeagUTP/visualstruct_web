@@ -1,0 +1,1248 @@
+{
+  "sequential": {
+    "stack": {
+      "operations": [
+        {
+          "name": "apilar",
+          "label": "Apilar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "desapilar",
+          "label": "Desapilar",
+          "mutates": true,
+          "inputs": []
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    },
+    "queue": {
+      "operations": [
+        {
+          "name": "encolar",
+          "label": "Encolar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "desencolar",
+          "label": "Desencolar",
+          "mutates": true,
+          "inputs": []
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    },
+    "priority_queue": {
+      "operations": [
+        {
+          "name": "encolar",
+          "label": "Encolar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            },
+            {
+              "name": "priority",
+              "label": "Prioridad",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "desencolar",
+          "label": "Desencolar",
+          "mutates": true,
+          "inputs": []
+        },
+        {
+          "name": "frente",
+          "label": "Ver frente",
+          "mutates": false,
+          "inputs": [],
+          "hidden": true
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    },
+    "linked_list": {
+      "operations": [
+        {
+          "name": "insertar_inicio",
+          "label": "Insertar inicio",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "insertar_final",
+          "label": "Insertar final",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "lista_insertar_elemento",
+          "label": "Lista insertar elemento",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            },
+            {
+              "name": "position",
+              "label": "Posicion",
+              "type": "number",
+              "min": 1
+            }
+          ]
+        },
+        {
+          "name": "eliminar_elemento",
+          "label": "Eliminar elemento",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "eliminar_repetidos",
+          "label": "Eliminar repetidos",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "buscar_elemento",
+          "label": "Buscar elemento",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "mostrar",
+          "label": "Mostrar (legacy)",
+          "mutates": false,
+          "hidden": true,
+          "inputs": []
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        },
+        {
+          "name": "insertar_posicion",
+          "label": "Insertar posicion (legacy)",
+          "mutates": true,
+          "hidden": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            },
+            {
+              "name": "position",
+              "label": "Posicion",
+              "type": "number",
+              "min": 1
+            }
+          ]
+        },
+        {
+          "name": "insertar_elemento",
+          "label": "Insertar elemento (legacy)",
+          "mutates": true,
+          "hidden": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            },
+            {
+              "name": "position",
+              "label": "Posicion",
+              "type": "number",
+              "min": 1
+            },
+            {
+              "name": "relative",
+              "label": "Modo (-1 antes, 0 despues)",
+              "type": "number",
+              "min": -1
+            }
+          ]
+        },
+        {
+          "name": "eliminar_primero",
+          "label": "Eliminar primero (legacy)",
+          "mutates": true,
+          "hidden": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "buscar_posiciones",
+          "label": "Buscar posiciones (legacy)",
+          "mutates": false,
+          "hidden": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "eliminar_inicio",
+          "label": "Eliminar inicio (legacy)",
+          "mutates": true,
+          "hidden": true,
+          "inputs": []
+        },
+        {
+          "name": "eliminar_final",
+          "label": "Eliminar final (legacy)",
+          "mutates": true,
+          "hidden": true,
+          "inputs": []
+        },
+        {
+          "name": "eliminar_posicion",
+          "label": "Eliminar posicion (legacy)",
+          "mutates": true,
+          "hidden": true,
+          "inputs": [
+            {
+              "name": "position",
+              "label": "Posicion",
+              "type": "number",
+              "min": 1
+            }
+          ]
+        },
+        {
+          "name": "primero",
+          "label": "Primero (legacy)",
+          "mutates": false,
+          "hidden": true,
+          "inputs": []
+        },
+        {
+          "name": "ultimo",
+          "label": "Ultimo (legacy)",
+          "mutates": false,
+          "hidden": true,
+          "inputs": []
+        }
+      ]
+    },
+    "circular_list": {
+      "operations": [
+        {
+          "name": "insertar_inicio",
+          "label": "Insertar inicio",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "insertar_final",
+          "label": "Insertar final",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "eliminar_inicio",
+          "label": "Eliminar inicio",
+          "mutates": true,
+          "inputs": []
+        },
+        {
+          "name": "eliminar_primero",
+          "label": "Eliminar primero por valor",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "buscar_posiciones",
+          "label": "Buscar posiciones",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "invertir",
+          "label": "Invertir",
+          "mutates": true,
+          "inputs": []
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    },
+    "sublist": {
+      "operations": [
+        {
+          "name": "insertar_padre",
+          "label": "Insertar padre",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "parent",
+              "label": "Padre",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "insertar_hijo",
+          "label": "Insertar hijo",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "parent",
+              "label": "Padre",
+              "type": "number"
+            },
+            {
+              "name": "child",
+              "label": "Hijo",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "eliminar_padre",
+          "label": "Eliminar padre",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "parent",
+              "label": "Padre",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "eliminar_hijo",
+          "label": "Eliminar hijo",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "parent",
+              "label": "Padre",
+              "type": "number"
+            },
+            {
+              "name": "child",
+              "label": "Hijo",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "hijos_de",
+          "label": "Listar hijos",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "parent",
+              "label": "Padre",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    }
+  },
+  "hierarchical": {
+    "abb": {
+      "operations": [
+        {
+          "name": "insertar",
+          "label": "Insertar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "eliminar",
+          "label": "Eliminar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "buscar",
+          "label": "Buscar",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "minimo",
+          "label": "Mínimo",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "maximo",
+          "label": "Máximo",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "altura",
+          "label": "Altura",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "contar_hojas",
+          "label": "Contar hojas",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "inorden",
+          "label": "Inorden",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "preorden",
+          "label": "Preorden",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "postorden",
+          "label": "Postorden",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "validar",
+          "label": "Validar",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    },
+    "avl": {
+      "operations": [
+        {
+          "name": "insertar",
+          "label": "Insertar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "eliminar",
+          "label": "Eliminar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "buscar",
+          "label": "Buscar",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "minimo",
+          "label": "Mínimo",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "maximo",
+          "label": "Máximo",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "altura",
+          "label": "Altura",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "inorden",
+          "label": "Inorden",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "validar",
+          "label": "Validar",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    },
+    "red_black": {
+      "operations": [
+        {
+          "name": "insertar",
+          "label": "Insertar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "eliminar",
+          "label": "Eliminar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "buscar",
+          "label": "Buscar",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "inorden",
+          "label": "Inorden",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "altura",
+          "label": "Altura",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "validar",
+          "label": "Validar",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    },
+    "binary_heap": {
+      "operations": [
+        {
+          "name": "insertar",
+          "label": "Insertar",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "value",
+              "label": "Valor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "extraer_raiz",
+          "label": "Extraer raíz",
+          "mutates": true,
+          "inputs": []
+        },
+        {
+          "name": "raiz",
+          "label": "Ver raíz",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "a_lista",
+          "label": "Ver arreglo",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "limpiar",
+          "label": "Limpiar",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    }
+  },
+  "graph": {
+    "graph": {
+      "operations": [
+        {
+          "name": "create_graph",
+          "label": "Crear grafo",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "directed",
+              "label": "Tipo",
+              "type": "select",
+              "options": [
+                {
+                  "value": "false",
+                  "label": "No dirigido"
+                },
+                {
+                  "value": "true",
+                  "label": "Dirigido"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "generate_random_graph",
+          "label": "Generar grafo aleatorio",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "vertices_count",
+              "label": "Cantidad de vertices (maximo 15)",
+              "type": "number",
+              "min": 1,
+              "max": 15,
+              "step": 1
+            }
+          ]
+        },
+        {
+          "name": "insert_vertex",
+          "label": "Insertar vertice",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "vertex",
+              "label": "Vertice",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "remove_vertex",
+          "label": "Eliminar vertice",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "vertex",
+              "label": "Vertice",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "insert_edge",
+          "label": "Insertar arista",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "origin",
+              "label": "Origen",
+              "type": "number"
+            },
+            {
+              "name": "target",
+              "label": "Destino",
+              "type": "number"
+            },
+            {
+              "name": "weight",
+              "label": "Peso",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "remove_edge",
+          "label": "Eliminar arista",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "origin",
+              "label": "Origen",
+              "type": "number"
+            },
+            {
+              "name": "target",
+              "label": "Destino",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "exists_vertex",
+          "label": "Existe vertice",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "vertex",
+              "label": "Vertice",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "exists_edge",
+          "label": "Existe arista",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "origin",
+              "label": "Origen",
+              "type": "number"
+            },
+            {
+              "name": "target",
+              "label": "Destino",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "list_vertices",
+          "label": "Listar vertices",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "list_edges",
+          "label": "Listar aristas",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "neighbors",
+          "label": "Vecinos",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "vertex",
+              "label": "Vertice",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "edge_weight",
+          "label": "Consultar peso",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "origin",
+              "label": "Origen",
+              "type": "number"
+            },
+            {
+              "name": "target",
+              "label": "Destino",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "run_bfs",
+          "label": "BFS",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "start",
+              "label": "Inicio",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "run_dfs",
+          "label": "DFS",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "start",
+              "label": "Inicio",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "run_dijkstra",
+          "label": "Dijkstra",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "start",
+              "label": "Inicio",
+              "type": "number"
+            },
+            {
+              "name": "end",
+              "label": "Destino",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "run_bellman_ford",
+          "label": "Bellman-Ford",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "start",
+              "label": "Inicio",
+              "type": "number"
+            },
+            {
+              "name": "end",
+              "label": "Destino",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "run_prim",
+          "label": "Prim",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "start",
+              "label": "Inicio",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "run_kruskal",
+          "label": "Kruskal",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "clear_graph",
+          "label": "Limpiar grafo",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    }
+  },
+  "hash": {
+    "hash_table": {
+      "operations": [
+        {
+          "name": "create_table",
+          "label": "Crear tabla",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "capacity",
+              "label": "Capacidad",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "insert",
+          "label": "Insertar/Actualizar clave-valor",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "key",
+              "label": "Clave",
+              "type": "number"
+            },
+            {
+              "name": "value",
+              "label": "Valor entero",
+              "type": "number"
+            },
+            {
+              "name": "simulate_allocation_failure",
+              "label": "Simular fallo de malloc",
+              "type": "checkbox",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "label": "Buscar clave",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "key",
+              "label": "Clave",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "contains",
+          "label": "Verificar existencia de clave",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "key",
+              "label": "Clave",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "label": "Eliminar clave",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "key",
+              "label": "Clave",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "keys",
+          "label": "Listar claves",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "values",
+          "label": "Listar valores",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "items",
+          "label": "Listar items",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "stats",
+          "label": "Tamano/capacidad/factor",
+          "mutates": false,
+          "inputs": []
+        },
+        {
+          "name": "clear",
+          "label": "Limpiar tabla",
+          "mutates": true,
+          "inputs": []
+        },
+        {
+          "name": "destroy_table",
+          "label": "Destruir tabla",
+          "mutates": true,
+          "inputs": []
+        }
+      ]
+    }
+  },
+  "sorting": {
+    "sorting_array": {
+      "operations": [
+        {
+          "name": "create_array",
+          "label": "Crear arreglo",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "values",
+              "label": "Valores (csv)",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "name": "generate_random_array",
+          "label": "Generar arreglo aleatorio",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "size",
+              "label": "Tamano",
+              "type": "number"
+            },
+            {
+              "name": "min_value",
+              "label": "Minimo",
+              "type": "number"
+            },
+            {
+              "name": "max_value",
+              "label": "Maximo",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "select_algorithm",
+          "label": "Seleccionar algoritmo",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "algorithm_id",
+              "label": "Algoritmo",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "name": "run",
+          "label": "Ejecutar ordenamiento",
+          "mutates": true,
+          "inputs": [
+            {
+              "name": "mode",
+              "label": "Modo",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "name": "step",
+          "label": "Paso de ejecucion",
+          "mutates": false,
+          "inputs": [
+            {
+              "name": "direction",
+              "label": "Direccion",
+              "type": "text"
+            },
+            {
+              "name": "cursor",
+              "label": "Cursor",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "reset",
+          "label": "Reiniciar",
+          "mutates": true,
+          "inputs": []
+        }
+      ],
+      "algorithms": [
+        {
+          "id": "intercambio",
+          "label": "Intercambio directo",
+          "c_function": "ordenar_intercambio"
+        },
+        {
+          "id": "seleccion",
+          "label": "Seleccion directa",
+          "c_function": "ordenar_seleccion"
+        },
+        {
+          "id": "insercion",
+          "label": "Insercion directa",
+          "c_function": "ordenar_insercion"
+        },
+        {
+          "id": "burbuja",
+          "label": "Burbuja mejorada",
+          "c_function": "ordenar_burbuja"
+        },
+        {
+          "id": "shell",
+          "label": "Shell sort",
+          "c_function": "ordenar_shell"
+        },
+        {
+          "id": "quicksort",
+          "label": "Quick sort",
+          "c_function": "ordenar_quicksort"
+        },
+        {
+          "id": "mergesort",
+          "label": "Merge sort",
+          "c_function": "ordenar_mergesort"
+        },
+        {
+          "id": "heapsort",
+          "label": "Heap sort",
+          "c_function": "ordenar_heapsort"
+        },
+        {
+          "id": "counting_sort",
+          "label": "Counting sort",
+          "c_function": "ordenar_counting_sort"
+        },
+        {
+          "id": "binsort",
+          "label": "Binsort",
+          "c_function": "ordenar_binsort"
+        },
+        {
+          "id": "radixsort",
+          "label": "Radix sort",
+          "c_function": "ordenar_radixsort"
+        }
+      ]
+    }
+  }
+}

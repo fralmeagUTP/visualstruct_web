@@ -1,0 +1,3 @@
+# Única medición canónica Burbuja80 posterior a adopción
+
+Orden coordinador01a0fe61-3104-743a-b032-bcc289ad80cd: QA aceptó adopción exacta y cobertura83,1338; ejecutar únicamente una petición canónica completa Burbuja80..1 plain sin profiler, límite2GiB igual, timeout60s. Máximo10min incluido informe desde primer acto. Verificar SHA efectivo, conservar respuesta/traza/duración/errores. No16/reintentos/recursos mayores/optimización/productchanges/preview restart/Git/deploy. QA dictamen review-sorting-validation-adoption-coverage-quality/evidence/independent-review/review.md. Nueva versión justifica esta medición distinta del MemoryError histórico; no repetición de bloque cerrado ni cierre18.

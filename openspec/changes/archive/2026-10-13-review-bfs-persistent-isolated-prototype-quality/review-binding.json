@@ -1,0 +1,25 @@
+{
+  "activation": "REGISTERED_READ_ONLY_QA_REQUIRES_OWNER_FRESH_BEFORE",
+  "UTC": "2026-10-05T18:02:53.211786+00:00",
+  "change": "review-bfs-persistent-isolated-prototype-quality",
+  "operation": "audit.bfs-persistent-prototype-independent-quality",
+  "task": "bfs-persistent-isolated-prototype-independent-review",
+  "assignment_id": "coordination-bfs-persistent-prototype-independent-qa-low-20261005",
+  "assignment_source": "openspec/continuity/assignments/coordination-bfs-persistent-prototype-independent-qa-low-20261005.json",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-bfs-persistent-isolated-prototype-quality/review-scope.md",
+  "evidence_binding": "openspec/changes/review-bfs-persistent-isolated-prototype-quality/evidence-binding.json",
+  "packet": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-BFS-structural-isolated-prototype45-low/BFS-persistent-isolated-review.zip",
+  "packet_SHA256": "6089a03b1a5ef5aca00f7857227d20ba791d3296453d72611190dd05a059b6f6",
+  "allowed_paths": [
+    "openspec/changes/review-bfs-persistent-isolated-prototype-quality/evidence/independent-review",
+    "openspec/changes/review-bfs-persistent-isolated-prototype-quality/review-tracker.md"
+  ],
+  "forbidden": "Allnewrequests/benchmarks/profile/runtime/tests andproduct/paquetemutations; noadoption/campaign",
+  "maximum_BFS_requests": 0,
+  "maximum_new_measurements": 0,
+  "review_executed": false
+}

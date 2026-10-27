@@ -1,0 +1,13 @@
+# IndependentQA identity
+
+change: review-graph-observed-invariant-test-repair
+
+assignment_id: coordination-graph-observed-invariant-independent-qa-low-20261007
+
+operation: qa.graph-observed-invariant-test-repair
+
+task: graph-observed-invariant-independent-qa
+
+Parent01a0fe61 latestexplicituserrequest authorizes resolvingknownCI andpublishingacceptedchanges non-destructively. DistinctindependentQAofexact3testfiles: fullHTTPGraphdecode+allstate/source/continuitychecks, honestpartialinvariantNonewithactualCmemorystructural/lifetimechecks, independentfinalgraphshapeoracle with16controls, fiveoriginalsmallHTTPcases21PASS12.03s. No product/C/Sortingpolicychanges. Universalholds predicate replacedonlybyconditionalprovedpartialobservation+fullfinalgraphoracle; explicitFalse stillfails. Verify no broad19/116/globalPASSclaim; other14Graphmatrixcasesunexecutedlocally. Decoder files frozenin separateGraphlifetimeQA unchanged. Parentselectsreviewer; noauthorQAapproval. No newlarge/native/browser/optimizations/publication byQA.
+
+Ownbefore/afterrequired; identitybefore0 notverdict. ThreefilesfrozenuntilQA. All19HTTPcases benefitsharedchecks butonlyfive executedhere. Rejecttestweakening or unsupportedpartialframes; reportactualcounterexamples beforechanges.

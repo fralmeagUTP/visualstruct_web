@@ -1,0 +1,42 @@
+{
+  "activation": "REGISTERED_BY_EXPLICIT_COORDINATOR_REVIEWER_OWN_BEFORE_REQUIRED",
+  "registered_at_utc": "2026-10-05T09:44:02.463270+00:00",
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.avl-hint-five-expectations-quality",
+  "task": "avl-hint-five-expectations-and-prior-sorting-fixture-review",
+  "assignment_id": "coordination-avl-hint-five-expectations-independent-qa-low-20261005",
+  "assignment_source": "openspec/continuity/assignments/coordination-avl-hint-five-expectations-independent-qa-low-20261005.json",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW independent",
+  "scope_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/avl-hint-package-review-scope.md",
+  "tasks_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/tasks.md",
+  "evidence_binding": "openspec/changes/review-graph-fused-intern-adoption-quality/avl-hint-package-evidence-binding.json",
+  "allowed_paths": [
+    "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/avl-hint-five-expectations-independent-qa-low",
+    "openspec/changes/review-graph-fused-intern-adoption-quality/avl-hint-package-review-tasks.md"
+  ],
+  "protected": [
+    "app",
+    "tests",
+    "docs",
+    "static",
+    "templates",
+    "scripts",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "prior QA evidence/tasks"
+  ],
+  "package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-avl-hint-five-expectations-group-low/avl-hint-five-expectations-grouped-QA.zip",
+  "package_sha256": "9c84617137bfd5c6d5f3c93d11fca6415973089b401a3636c5e5eb12501e4e7f",
+  "review_only": true,
+  "product_integration_authorized": false,
+  "benchmark_repeat_authorized": false,
+  "coverage_execution_authorized": false,
+  "pytest_native_browser_execution_authorized": false,
+  "recommendation_only": true,
+  "prior_assignment_source": "openspec/continuity/assignments/coordination-joint-fused-fixtures-independent-qa-low-20261005.json",
+  "tracker_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/avl-hint-package-review-tasks.md",
+  "effective_task_prefix": "avl-hint-five-expectations-and-prior-sorting-fixture-review",
+  "continuity_repair": "Effective common table has exactly one current prefix; separate allowed tracker uses three distinct steps. Same IDs/owner/package; no review verdict."
+}

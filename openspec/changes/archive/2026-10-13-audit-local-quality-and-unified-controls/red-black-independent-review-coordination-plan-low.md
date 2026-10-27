@@ -1,0 +1,3 @@
+# RN revisión independiente: coordinación LOW
+
+Nueva instrucción parent01a0fe61-3104-743a-b032-bcc289ad80cd: registrar binding/asignación para revisor01a0ff54-79d7-7520-8e9f-224ef5ed700f sin reasignar dueño funcional. Read-only RN, pruebasacotadas yreportespropios evidence/independent-review-RN-implementation, sin preview/appmutations; registro de QA separadoenchange review-red-black-full-validation, calidad, permitted own outputs. Analizar RN-IMPL-01 nohistorial vsconsultasregistradas,proponer distinciónsin cambiossemánticos;SDDownerclarificaráo decisiónpendiente. No sourceedits ni suitesrepetidas porautor,noarchive/cierrefinalhastaQA.

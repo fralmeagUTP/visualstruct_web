@@ -1,0 +1,197 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "adopt-local-role-documentation-example",
+  "operation": "roles.local-example",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs/tads_C",
+    "tests",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "openspec/changes/archive",
+    "scripts/role_workflow.py",
+    "scripts/check_session_continuity.py",
+    "scripts/tests",
+    "openspec/continuity"
+  ],
+  "tasks": {
+    "example-specifications": {
+      "objective": "Requisitos y escenarios del ejemplo local",
+      "role": "specifications",
+      "owner": "continuity-author-01a0fad1-specifications",
+      "requirements": [
+        "openspec/changes/adopt-local-role-documentation-example/specs/continuity-documentation-example/spec.md"
+      ],
+      "base": [
+        "openspec/changes/adopt-local-role-documentation-example/proposal.md",
+        "openspec/changes/adopt-local-role-documentation-example/design.md",
+        "openspec/continuity/ROLE-WORKFLOW.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/adopt-local-role-documentation-example/specs/continuity-documentation-example/spec.md",
+        "openspec/changes/adopt-local-role-documentation-example/acceptance-plan.md",
+        "openspec/changes/adopt-local-role-documentation-example/acceptance-plan.md",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-specifications"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/adopt-local-role-documentation-example/specs/continuity-documentation-example/spec.md",
+        "openspec/changes/adopt-local-role-documentation-example/acceptance-plan.md"
+      ],
+      "documentation": [
+        "openspec/changes/adopt-local-role-documentation-example/acceptance-plan.md"
+      ],
+      "evidence": [
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-specifications/verification.json",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/independent-review/example-specifications-independent-qa.json"
+      ],
+      "checks": [
+        "specification-validation"
+      ],
+      "next_step": "Alcance finito aceptado; conservar archivo. Nuevo trabajo requiere instrucción/change/tarea nuevos.",
+      "state": "closed",
+      "approval": "openspec/changes/adopt-local-role-documentation-example/evidence/example-specifications/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "example-code": {
+      "objective": "Generador seguro desde contexto persistido y pruebas",
+      "role": "code",
+      "owner": "continuity-author-01a0fad1-code",
+      "requirements": [
+        "openspec/changes/adopt-local-role-documentation-example/specs/continuity-documentation-example/spec.md"
+      ],
+      "base": [
+        "openspec/changes/adopt-local-role-documentation-example/proposal.md",
+        "openspec/changes/adopt-local-role-documentation-example/design.md",
+        "openspec/continuity/ROLE-WORKFLOW.md",
+        "openspec/changes/adopt-local-role-documentation-example/acceptance-plan.md",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-specifications/verification.json"
+      ],
+      "allowed_paths": [
+        "openspec/changes/adopt-local-role-documentation-example/build_example.py",
+        "openspec/changes/adopt-local-role-documentation-example/artifact/index.html",
+        "openspec/changes/adopt-local-role-documentation-example/checks/test_example.py",
+        "openspec/changes/adopt-local-role-documentation-example/README.md",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-code"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/adopt-local-role-documentation-example/build_example.py",
+        "openspec/changes/adopt-local-role-documentation-example/artifact/index.html",
+        "openspec/changes/adopt-local-role-documentation-example/checks/test_example.py"
+      ],
+      "documentation": [
+        "openspec/changes/adopt-local-role-documentation-example/README.md"
+      ],
+      "evidence": [
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-code/verification.json",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/independent-review/example-code-independent-qa.json"
+      ],
+      "checks": [
+        "isolated-harness-tests"
+      ],
+      "next_step": "Alcance finito aceptado; conservar archivo. Nuevo trabajo requiere instrucción/change/tarea nuevos.",
+      "state": "closed",
+      "approval": "openspec/changes/adopt-local-role-documentation-example/evidence/example-code/approval.json",
+      "decisions": [
+        "openspec/changes/adopt-local-role-documentation-example/evidence/handoff-spec-to-code.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "example-visual": {
+      "objective": "Diseño local legible con teclado y responsive",
+      "role": "visual",
+      "owner": "continuity-author-01a0fad1-visual",
+      "requirements": [
+        "openspec/changes/adopt-local-role-documentation-example/specs/continuity-documentation-example/spec.md"
+      ],
+      "base": [
+        "openspec/changes/adopt-local-role-documentation-example/proposal.md",
+        "openspec/changes/adopt-local-role-documentation-example/design.md",
+        "openspec/continuity/ROLE-WORKFLOW.md",
+        "openspec/changes/adopt-local-role-documentation-example/artifact/index.html",
+        "openspec/changes/adopt-local-role-documentation-example/acceptance-plan.md",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-code/verification.json"
+      ],
+      "allowed_paths": [
+        "openspec/changes/adopt-local-role-documentation-example/artifact/style.css",
+        "openspec/changes/adopt-local-role-documentation-example/STYLE-NOTES.md",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-visual"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/adopt-local-role-documentation-example/artifact/style.css",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-visual/check_visual.py",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-visual/browser-results.json",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-visual/image-hashes.json",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-visual/check_image_integrity.py"
+      ],
+      "documentation": [
+        "openspec/changes/adopt-local-role-documentation-example/STYLE-NOTES.md"
+      ],
+      "evidence": [
+        "openspec/changes/adopt-local-role-documentation-example/evidence/example-visual/verification.json",
+        "openspec/changes/adopt-local-role-documentation-example/evidence/independent-review/example-visual-independent-qa.json"
+      ],
+      "checks": [
+        "visual-accessibility-responsive"
+      ],
+      "next_step": "Alcance finito aceptado; conservar archivo. Nuevo trabajo requiere instrucción/change/tarea nuevos.",
+      "state": "closed",
+      "approval": "openspec/changes/adopt-local-role-documentation-example/evidence/example-visual/approval.json",
+      "decisions": [
+        "openspec/changes/adopt-local-role-documentation-example/evidence/handoff-code-to-visual.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

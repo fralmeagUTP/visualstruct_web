@@ -1,0 +1,15 @@
+{
+  "change": "review-sorting-validation-incremental-candidate-quality",
+  "operation": "audit.sorting-validation-incremental-candidate-independent-quality",
+  "task": "sorting-validation-incremental-candidate-independent-review",
+  "assignment_id": "coordination-sorting-validation-incremental-candidate-independent-qa-low-20261005",
+  "owner_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "role": "quality",
+  "model": "Sol LOW",
+  "scope_ref": "openspec/changes/review-sorting-validation-incremental-candidate-quality/review-scope.md",
+  "evidence_binding": "openspec/changes/review-sorting-validation-incremental-candidate-quality/evidence-binding.json",
+  "outputs": [
+    "openspec/changes/review-sorting-validation-incremental-candidate-quality/evidence/independent-review",
+    "openspec/changes/review-sorting-validation-incremental-candidate-quality/review-tracker.md"
+  ]
+}

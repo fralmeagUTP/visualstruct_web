@@ -1,0 +1,11 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-rn-history-clarification-20261003",
+  "issued_at_utc": "2026-10-03T16:26:58.777789+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "change": "extend-red-black-full-validation",
+  "operation": "rn.validation-contract",
+  "task": "rn-contract-documentation",
+  "instruction": "AclararRN-IMPL-01 sólo docs propios si preserva historial existente; no implementación ni comportamiento nuevo",
+  "scope_ref": "openspec/changes/extend-red-black-full-validation/history-clarification-decision.md"
+}

@@ -1,0 +1,13 @@
+# Consolidación aceptada y residual exacto LOW
+
+Aceptación independiente vigente: tres reparaciones,14IDs y18consumidores finitos; fuentes1930/ZIP868íntegros,verify/after0.1938resultados originales preservados (1561callpassed/131callfailed/242setupfailed/4xfail);2604pendientes noaprobados. No nueva campaña global ni cambiofuncional en este bloque. Previewquieto.
+
+Cuatro métodos ocultos: eliminar_inicio, eliminar_final, mostrar, primero.12fixtures nuevosC17strict desdeC/HHTTPactuales(0/1/3nodos),compile/run0. ResultadoAPIcorrecto en los casos válidos, pero trazascausales defectuosas: guardasNULLTRUEconlistasvivas eneliminar_inicio/primero; eliminar_final pierde2avances/3condiciones y sustituyeNULL->sgte; mostrar conserva iteracionesperoauxNULL/condicionescontradictoriasysinprintfenconsola. Esto no es UB nativo ejecutado, sino datos pedagógicos falsos. No puedenNAporestarocultos niaprobarseporigualdadfinal.
+
+Corrección mínima propuesta: unmodelo exclusivo4métodos,4dispatches,12oráculos permanentes reutilizando baselineactual y4contextosplayerambasvistasadelanteatrássinPOST; conservarAPI/C/H/firmas/semántica/lista7cerrada. Precisa coordinación antesdeaplicar funcionalesnuevos. No reservaen4callees:mallocNULLinternoNA; free/alias de2eliminacionesobligatorio.
+
+11/12globalesabiertos;18rutasyaresueltas.16tiene baseparacierreporcoordinación sobreimplementacionesaprobadas:unión previa24registros22diffs2modelos ycadenaadopciónactual(+3fuentes/doc/2nuevos), RNmanualrecuperado/revisiónregresión. No movercasilla porinferenciadel14verde; dictamennoaceptaglobal. Archivoanteriorvertexcompletonorecuperado siguelimitaciónhistóricaadmitida, no reconstruirlo.
+
+QA18: sanitizadores realmenteindisponibles (-lasan/-lubsan) puedeninformarse bloqueadossinrepetirinstalación; C/H/DoxygenpruebaspreviasvigentesreutilizablesporSHA;14IDs/18rutasaceptados. Siguenrequisitos sinprueba actual: cobertura/no-regresión (covoriginalvacío tras interrupción,91.32históricaprocedenciaqualificada),3performanceexcluidospero disponibles/noNA, disposiciónde2604porscenario/readiness/expectativasobservercontra contrato. No confundir estasobligacionesconlimitacionesyaadmitidas. Ver QA18-obligation-disposition-current.json.
+
+Entrega19 puede preparar matriz/hallazgos/diffs/reproducción/evidencia/limitaciones/version/previewyfuentes sinarchivo; aceptaciónfinal18noescompletaporinventario ni14pruebas. Próximo: coordinaciónautoriza4correccionesacotadasytoma decisiónexplícita sobrecobertura/rendimiento/pendientes, revisiónfinalindependiente delalcanceaplicable yentrega verazantes05UTCsi evidencia suficiente. Global17/22sin cierre nuevo.

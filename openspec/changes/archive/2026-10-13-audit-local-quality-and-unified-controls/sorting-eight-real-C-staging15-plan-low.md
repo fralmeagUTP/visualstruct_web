@@ -1,0 +1,1 @@
+Apply only shared canonical C fixture in staging, preserve IDs/assertions. Execute only eight previously blocked cases, max15min. Preserve original failures; report any new assertions without fixing. No integration or product changes;994inputs intact. Incremental coverage only if compatible and within budget.

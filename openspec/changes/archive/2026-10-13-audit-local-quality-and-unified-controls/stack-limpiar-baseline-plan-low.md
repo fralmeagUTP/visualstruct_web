@@ -1,0 +1,3 @@
+# Pila limpiar: baseline LOW autorizado
+
+Nueva instrucción vigente: coordination-stack-limpiar-baseline-low-20261003 / stack.limpiar-baseline-low. Inventariar cierre previo antes de pruebas; no duplicar pop cerrado ni Hash/Sorting. Baseline limpiar→pila_destruir:vacío/un nodo/3nodos(negativos,duplicados),repetición/reapilar. C real/API/source/pointers/freeorder/scopes/caller/replay/5secciones. Capturar regresiones reales sinxfail, sin reparar motorLOW ni C/H/contratos. DelimitarMEDIUM sólo despuéscheckpoint y coordinación. Guards reales sóloinputsdefinidos; sinNULLroot queCdesreferencia si no tiene guarda. SinOOMreal. Global13/22/docs121/208 sin cambios por cierrefamiliaHash.

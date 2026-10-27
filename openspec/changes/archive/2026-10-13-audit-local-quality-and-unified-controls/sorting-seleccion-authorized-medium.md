@@ -1,0 +1,5 @@
+# Seleccion MEDIUM acotado: instruccion vigente
+
+Nueva instruccion explicita source_thread01a0f0a7-80d9-722c-85ae-b3a1660740fc autoriza asignar y ejecutar Seleccion por instruccion segun plan: comparaciones, indice minimo, intercambio parcial, caller suspendido/retorno y estado forward/back sin ejecucion nueva. Reusar infraestructura Intercambio/main, conservar C, seis entradas <=4 y guardas vacio/NULL separadas de API. Guardas/evidenciaD:5051; terminar semantica para handoffLOW. No push/merge/despliegue. Esta autorizacion reemplaza «preparacion solamente» del plan; preserva cierres Intercambio/main y demas familias. No se reimplementan ni repiten esas familias cerradas.
+
+Implementacion dedicada y opt-in para seleccion, base de frame tipada ya usada por Intercambio sin cambiar su motor. Orden: indice_menor=i, pruebas/compares, min_set solo verdadero, guarda indice_menor!=i, helper si guarda verdadera, tres asignaciones, prefijo confirmado solo al acabar body. Minimum provisional no se confunde con valor en indice_menor despues del swap. Helpers y funciones C descargados sirven de oraculo observado, nunca otro sorter nativo implementado.

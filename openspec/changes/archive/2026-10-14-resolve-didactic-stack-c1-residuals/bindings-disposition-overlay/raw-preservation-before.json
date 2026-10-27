@@ -1,0 +1,26 @@
+[
+  {
+    "path": "openspec/changes/resolve-didactic-stack-c1-residuals/bindings-graph-main-fixed/app-executable-bindings.json",
+    "sha256": "b9450d1260c792d29116e5ac86013dbbf6a420540ea477272594d09876765055"
+  },
+  {
+    "path": "openspec/changes/resolve-didactic-stack-c1-residuals/bindings-graph-main-fixed/unassigned.json",
+    "sha256": "7627c794dc5b977b5bef0e8ba093c336bc9442fdc591fb3787f110b178df916c"
+  },
+  {
+    "path": "openspec/changes/resolve-didactic-stack-c1-residuals/review17/mapping17.json",
+    "sha256": "886611de9ad0deaa14073c867229164b7f01ddc4e4b07224102fc8a707b4cce0"
+  },
+  {
+    "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/education-retirement-final.json",
+    "sha256": "6a1dda8518bed1116ed69afe8626ebacb4ad073033329543b919b157020a2b26"
+  },
+  {
+    "path": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/manual-c1-reconciled.json",
+    "sha256": "cfe4c3df2c857258addbc275d2b38abf103ddd82514537fd75cfa4ef41f91271"
+  },
+  {
+    "path": "docs/qa/remediation-regression-matrix-v1.json",
+    "sha256": "99dfa1375247b15b7cc0641d873685dc6cb35e190af94a343898e139d745548a"
+  }
+]

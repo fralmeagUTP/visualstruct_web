@@ -1,0 +1,9 @@
+{
+  "approved": true,
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "allowed_paths": [
+    "openspec/changes/review-c1-session-query-history-documentation/evidence/independent-review"
+  ],
+  "provenance": "Delegación vigente coordinación01a0fe61-3104-743a-b032-bcc289ad80cd a escritor documental para preparar binding de revisor real 01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "meaning": "Revisión documental independiente con reportes propios; no producto,adopción,pruebas técnicas o cierre"
+}

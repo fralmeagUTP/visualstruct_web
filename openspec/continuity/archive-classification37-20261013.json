@@ -1,0 +1,327 @@
+{
+  "schema": "continuity-archive-map-collection/v1",
+  "maps": [
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/audit-local-quality-and-unified-controls/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/extend-red-black-full-validation/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-extend-red-black-full-validation/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/reconcile-remaining-historical-contracts/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-reconcile-remaining-historical-contracts/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/reconcile-session-query-history-documentation/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-reconcile-session-query-history-documentation/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-bfs-persistent-isolated-prototype-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-bfs-persistent-isolated-prototype-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-c1-session-query-history-documentation/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-c1-session-query-history-documentation/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-documentary-successors-and-criteria11-12-16-18-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-documentary-successors-and-criteria11-12-16-18-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-four-hidden-terminal-and-final-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-four-hidden-terminal-and-final-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-global-application-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-global-application-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-bfs-phases-private-diagnostic-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-bfs-phases-private-diagnostic-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-bfs-revision-cache-partial-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-bfs-revision-cache-partial-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-codec-e2e-diagnostics/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-codec-e2e-diagnostics/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-fused-intern-adoption-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-fused-intern-adoption-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-limit30-and-boundary-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-limit30-and-boundary-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-observed-invariant-test-repair/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-observed-invariant-test-repair/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-three-approved-adjustments/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-three-approved-adjustments/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-hierarchical-frame-oracle-fidelity/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-hierarchical-frame-oracle-fidelity/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-main-0ddfea30-contract-classification/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-main-0ddfea30-contract-classification/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-pq-cleanup-event-delta/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-pq-cleanup-event-delta/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-priority-dequeue-legacy-memory-consumer/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-priority-dequeue-legacy-memory-consumer/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-red-black-full-validation/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-red-black-full-validation/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-runtime15-criteria18-19-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-runtime15-criteria18-19-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-runtime15-sixteen-focal-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-runtime15-sixteen-focal-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sequential-final-logical-projection/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sequential-final-logical-projection/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-session-query-history-documentation/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-session-query-history-documentation/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-boundary-radix-fidelity/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-boundary-radix-fidelity/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-projection-diff-coverage-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-projection-diff-coverage-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-projection-identity-candidate-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-projection-identity-candidate-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-source-A-approved/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-source-A-approved/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-validation-adoption-coverage-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-validation-adoption-coverage-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-validation-incremental-candidate-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-validation-incremental-candidate-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-stack-push-legacy-memory-consumers/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-stack-push-legacy-memory-consumers/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-three-repairs-and-route-consumers/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-three-repairs-and-route-consumers/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/sorting-explicit-supported-source/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-sorting-explicit-supported-source/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/sorting-trace-source-boundaries/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-sorting-trace-source-boundaries/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-direct-range-error-oracle/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-direct-range-error-oracle/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-graph-codec-lifetime-support-test-repair/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-graph-codec-lifetime-support-test-repair/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-hierarchical-current-helper-oracles/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-hierarchical-current-helper-oracles/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-linked-list-console-emitter/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-linked-list-console-emitter/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-priority-format-current-c-oracle/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-priority-format-current-c-oracle/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-radix-source-consumer/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-radix-source-consumer/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-stdout-legacy-test-repair/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-stdout-legacy-test-repair/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-coverage387-provenance-independent-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-coverage387-provenance-independent-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-final-coverage535-sorting-runner-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-final-coverage535-sorting-runner-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-global29-five-oracles-independent-quality/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-global29-five-oracles-independent-quality/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    },
+    {
+      "schema": "continuity-archive-map/v1",
+      "retired_prefix": "openspec/changes/review-sorting-four-later-oracles/",
+      "archive_prefix": "openspec/changes/archive/2026-10-13-review-sorting-four-later-oracles/",
+      "input_overrides": {},
+      "meaning": "Resolve original dated immutable inputs to preserved archived bytes; not current assignments."
+    }
+  ]
+}

@@ -1,0 +1,524 @@
+[
+  {
+    "id": "algorithm:graph/camino-minimo/run_bellman_ford",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/camino-minimo/run_bellman_ford]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/camino-minimo/run_dijkstra",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/camino-minimo/run_dijkstra]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bellman_ford",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/construccion/run_bellman_ford]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bfs",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/construccion/run_bfs]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dfs",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/construccion/run_dfs]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dijkstra",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/construccion/run_dijkstra]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/construccion/run_kruskal",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/construccion/run_kruskal]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/construccion/run_prim",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/construccion/run_prim]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_kruskal",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/expansion-minima/run_kruskal]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_prim",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/expansion-minima/run_prim]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_bfs",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/recorridos/run_bfs]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_dfs",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph-algorithms::algorithm:graph/recorridos/run_dfs]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-algorithms-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "control:templates/_navbar.html:select:export-jpg-scale:10",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_export_scale_real_downloads",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-browser-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:graph/graph/clear_graph",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph::operation:graph/graph/clear_graph]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-two-contract-corrections-resources.log",
+    "test_correction": true
+  },
+  {
+    "id": "operation:graph/graph/edge_weight",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph::operation:graph/graph/edge_weight]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-operations-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:graph/graph/exists_edge",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph::operation:graph/graph/exists_edge]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-operations-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:graph/graph/exists_vertex",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph::operation:graph/graph/exists_vertex]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-operations-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:graph/graph/list_edges",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph::operation:graph/graph/list_edges]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-operations-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:graph/graph/list_vertices",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph::operation:graph/graph/list_vertices]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-operations-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:graph/graph/neighbors",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[graph::operation:graph/graph/neighbors]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-graph-operations-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/altura",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/altura]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/buscar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/buscar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/contar_hojas",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/contar_hojas]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/eliminar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/eliminar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/limpiar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/limpiar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/maximo",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/maximo]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/minimo",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/minimo]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/postorden",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/postorden]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/abb/preorden",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/abb/preorden]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/avl/altura",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/avl/altura]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/avl/buscar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/avl/buscar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/avl/eliminar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/avl/eliminar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/avl/limpiar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/avl/limpiar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/avl/maximo",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/avl/maximo]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/avl/minimo",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/avl/minimo]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/a_lista",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/binary_heap/a_lista]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/limpiar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/binary_heap/limpiar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/binary_heap/raiz",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/binary_heap/raiz]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/red_black/altura",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/red_black/altura]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/red_black/buscar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/red_black/buscar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/red_black/eliminar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/red_black/eliminar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:hierarchical/red_black/limpiar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[hierarchical::operation:hierarchical/red_black/limpiar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-hierarchical-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/circular_list/eliminar_inicio",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/circular_list/eliminar_inicio]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/buscar_elemento",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/buscar_elemento]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_elemento",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/eliminar_elemento]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_final",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/eliminar_final]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_inicio",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/eliminar_inicio]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/eliminar_repetidos",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/eliminar_repetidos]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_elemento",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/insertar_elemento]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-two-contract-corrections-resources.log",
+    "test_correction": true
+  },
+  {
+    "id": "operation:sequential/linked_list/insertar_posicion",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/insertar_posicion]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/limpiar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/limpiar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/mostrar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/mostrar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/primero",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/primero]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/linked_list/ultimo",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/linked_list/ultimo]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/priority_queue/limpiar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/priority_queue/limpiar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sequential/queue/limpiar",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sequential::operation:sequential/queue/limpiar]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sequential-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "operation:sorting/sorting_array/select_algorithm",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[sorting::operation:sorting/sorting_array/select_algorithm]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-sorting-resources.log",
+    "test_correction": false
+  },
+  {
+    "id": "route:POST /graph/compare",
+    "implemented": true,
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED",
+    "pytest_nodeid": "tests/test_residual58_focal_cases.py::test_residual58_concrete_api_case[comparison-route::route:POST /graph/compare]",
+    "evidence": "openspec/changes/resolve-didactic-stack-c1-residuals/evidence/residual58-comparison-resources.log",
+    "test_correction": false
+  }
+]

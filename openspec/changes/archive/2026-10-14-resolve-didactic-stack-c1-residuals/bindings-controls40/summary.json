@@ -1,0 +1,16 @@
+{
+  "target_controls": 40,
+  "behavior_linked": 15,
+  "public_widgets": 13,
+  "internal_mirrors": 2,
+  "distinct_E2E_cases_passed": 11,
+  "unavailable_current_flow_pending": 25,
+  "before_links": 238,
+  "after_links": 253,
+  "before_pending": 137,
+  "after_pending": 122,
+  "new_acceptances": 0,
+  "requirements_removed": 0,
+  "gate_errors": 0,
+  "textual_regression_cases_passed": 3
+}

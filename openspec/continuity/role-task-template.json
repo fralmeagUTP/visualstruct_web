@@ -1,0 +1,33 @@
+{
+  "objective": "SET_BOUNDED_OBJECTIVE",
+  "role": "documentation",
+  "owner": "SET_ACTUAL_OWNER",
+  "requirements": [
+    "SET_REQUIREMENT_ARTIFACT"
+  ],
+  "base": [
+    "SET_BASE_ARTIFACT"
+  ],
+  "allowed_paths": [
+    "SET_OWNED_PATH"
+  ],
+  "dependencies": [],
+  "deliverables": [
+    "SET_DELIVERABLE"
+  ],
+  "documentation": [
+    "SET_DOCUMENTATION"
+  ],
+  "evidence": [],
+  "checks": [
+    "documentation-coherence"
+  ],
+  "next_step": "SET_ACTUAL_NEXT_STEP",
+  "state": "pending",
+  "approval": "SET_APPROVAL_JSON",
+  "decisions": [],
+  "reasoning": {
+    "default": "LOW",
+    "current": "LOW"
+  }
+}

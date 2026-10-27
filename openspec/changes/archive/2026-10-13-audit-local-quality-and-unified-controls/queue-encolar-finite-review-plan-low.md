@@ -1,0 +1,7 @@
+# Encolar: consolidación finita LOW autorizada
+
+Instrucción nueva coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: consolidar36pass/33IDsbase,140eventosC reutilizados35condiciones40observaciones,2vistas4reload/Siguiente sinredispatch/callerDOMHTTPownership/errors/docs; recheckhashvigente y límites2.17MB157.7KB. Si válida cerrar sóloEncolar; mapearrestoPrioridadencolar/desencolar/helperreadonly y proponer siguientebaselineLOW sin arrancarlo. C/H/RN/Hash/Sorting/cierresprevios protegidos; noSDDblockedwrites/Graphcontract/publish.
+
+Operación nueva de revisión documental/hash: queue.encolar-finite-consolidation-low. No reabre implementación queue.encolar.instructions ya checkpointada. Verificar 64SHAde evidenciaMEDIUM/226producto+133baseline; reconocer queSHAde tests/harness actuales no formabanfinalmanifestproducto. Capturar fuentesQA ahora y revalidar sólo36IDs finitos para fechar evidencia conSHA contemporáneo; no repetir baseline nativo/UI/resource/C17Dox. Los36IDs son mismos, no72. Comparar de nuevo14/140/35 proyecciones desdeartefactos guardados;hashproductos permiteusar evidenciatraza/browser/caller vigente. Cierre condicionado a resultados sin divergencias.
+
+Fuentes: queue-encolar-instructions-checkpoint-medium.md y readyplan, evidenciaMEDIUM/baseline; mapa históricoafterqueueenqueue/afterstackpush; decisionesfiniteclosed previas yRN. Después decidircierre finito, mapaactual y propuestaPriorityencolarLOW(tipos/cantidad/prioridad/alias/reload/errores), sin asignar implementación. After y reporte claro, sin contador agregado ni archivo.

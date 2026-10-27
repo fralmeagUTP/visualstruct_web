@@ -1,0 +1,7 @@
+# Bounded DFS instruction review request
+
+Operation graph.dfs remains OPEN. LOW contract fixes and caller/doc evidence are in evidence/visible-graph-dfs-contract-low. Next harder case requires bounded MEDIUM: derive actual grafo_dfs, grafo_dfs_recursivo, grafo_agregar_recorrido and called vertex/mark/successor helpers from downloaded source. Instrument native instruction/condition/call/return observations without double evaluation, reading uninitialized fields or freed pointers. Preserve result-head storage identity across recursive frames, each suspended parent's successor cursor/list, allocated output partial field publication, marks and retirement. Reconcile before/after state, actual helper lines, just-executed highlighting, no printf until caller, and existing representations forward/back without operation POSTs.
+
+Use registered10fixtures/11runs as finite seed matrix and extend only for a demonstrated branch gap. Current finalstate baseline is not instruction evidence. Current window has only2definitions and0instruction_event entries in the branch trace; omitted helpers/publication are demonstrated coverage gaps, not completed conformance. Allocation failures remain disclosed separately. Preserve actual C algorithm and validation order; no new feature/redesign.
+
+End higher reasoning at this semantic case checkpoint; return LOW immediately for routine evidence/docs/final collection. Do not reopen closed BFS or trees/lists, and do not resolve Hash/RNValidar decisions implicitly.

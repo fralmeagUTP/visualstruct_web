@@ -1,0 +1,3 @@
+# Independent four later Sorting oracle review
+
+Assignment coordination-sorting-four-later-oracles-independent-qa-low-20261007; operation qa.sorting-four-later-oracles; task sorting-four-later-oracles-independent-qa. Read review-scope.md, evidence/initial-input-sha-binding.json and final-input-sha-binding.json, author report ../audit-local-quality-and-unified-controls/evidence/visible-sorting-four-later-oracles-low/report.md, before/final XML and original/current C/test bytes. Verify exact4functions only, no product changes and strict causal/partial-state assertions. FiveuniquePASS ownQA, independent acceptance pending, no second push authorized by this handoff. No algorithms/broad/native/browser suite.

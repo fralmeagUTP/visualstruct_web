@@ -1,0 +1,1230 @@
+[
+  {
+    "id": "control:templates/graph/structure.html:button:graph-reset-button:13",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_graph_reset_changes_private_graph",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/graph/structure.html:button:graph-sim-step:10",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_public_mode_changes_internal_state",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/graph/structure.html:input:graph-hide-comments:16",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_comments_hide_and_restore_real_source",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/graph/structure.html:input:graph-step-toggle:9",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "INTERNAL_MODE_MIRROR",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_public_mode_changes_internal_state",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/hash/structure.html:button:hash-sim-step:5",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_public_mode_changes_internal_state",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/hash/structure.html:input:hash-hide-comments:13",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_comments_hide_and_restore_real_source",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-compare-run:30",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-hint:8",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-load-example:5",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-prepare:15",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-reset-progress:11",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-restart-execution:23",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-end:21",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-home:18",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-pause:17",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-sim-repeat:22",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:hier-skip-prediction:9",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-compare-progress:31",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-compare-values:29",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-hide-comments:14",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_comments_hide_and_restore_real_source",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-practice-mode:10",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-progress:27",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:input:hier-step-toggle:25",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "INTERNAL_MODE_MIRROR",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_public_mode_changes_internal_state",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-compare-kind:28",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-guided-example:4",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-learning-level:3",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:select:hier-prediction:6",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_BY_CURRENT_FIVE_STAGE_UI",
+    "source": "static/js/hierarchical.js",
+    "source_sha256": "7838e6110585b0018cea31e1ebd694b2866b75b43561f88754f7fd73a015c4f3",
+    "source_refs": [
+      {
+        "line": 2331,
+        "text": "hById(\"hier-predict-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2332,
+        "text": "hById(\"hier-compare-title\")?.closest(\"section\")?.remove();"
+      },
+      {
+        "line": 2333,
+        "text": "[\"hier-learning-level\", \"hier-guided-example\"].forEach((id) => {"
+      },
+      {
+        "line": 2336,
+        "text": "hById(\"hier-load-example\")?.remove();"
+      },
+      {
+        "line": 2352,
+        "text": "[\"hier-prepare\", \"hier-sim-pause\", \"hier-sim-home\", \"hier-sim-end\", \"hier-sim-repeat\", \"hier-restart-execution\"].forEach((id) => hById(id)?.remove());"
+      },
+      {
+        "line": 2382,
+        "text": "technical?.remove();"
+      },
+      {
+        "line": 2383,
+        "text": "controlStage.remove();"
+      },
+      {
+        "line": 2442,
+        "text": "const learningLevel = hById(\"hier-learning-level\");"
+      },
+      {
+        "line": 2444,
+        "text": "const loadExampleButton = hById(\"hier-load-example\");"
+      },
+      {
+        "line": 2450,
+        "text": "const compareSection=hById(\"hier-compare-title\")?.closest(\"section\"), compareKind=hById(\"hier-compare-kind\"), compareValues=hById(\"hier-compare-values\"), compareRun=hById(\"hier-compare-run\"), compareProgress=hById(\"hier-compare-progress\"), compareInput=hById(\"hier-compare-input\"), compareGrid=hById("
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:a:stack-main-download:32",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_stack_main_download_contains_real_C_history",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-compare-run:28",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_optional_comparison_changes_results",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-reset-learning:26",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_prediction_practice_and_progress_reset",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-end:15",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "LEGACY_BUTTON_HIDDEN_BY_CURRENT_UI",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3343,
+        "text": "technicalControls?.remove();"
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-pause:11",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "LEGACY_BUTTON_HIDDEN_BY_CURRENT_UI",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3343,
+        "text": "technicalControls?.remove();"
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-prepare:9",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "LEGACY_BUTTON_HIDDEN_BY_CURRENT_UI",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3343,
+        "text": "technicalControls?.remove();"
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-repeat:16",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "LEGACY_BUTTON_HIDDEN_BY_CURRENT_UI",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3343,
+        "text": "technicalControls?.remove();"
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:seq-sim-start:12",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "LEGACY_BUTTON_HIDDEN_BY_CURRENT_UI",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3343,
+        "text": "technicalControls?.remove();"
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-compare-progress:29",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_optional_comparison_changes_results",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-practice-mode:23",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_prediction_practice_and_progress_reset",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/sequential/structure.html:input:seq-progress-slider:21",
+    "status": "NO_CURRENT_PUBLIC_FLOW_REQUIRES_CONTRACT_RECONCILIATION",
+    "cause": "REMOVED_TECHNICAL_SLIDER",
+    "source": "static/js/sequential.js",
+    "source_sha256": "f39d331646fa8d6cefb26850894b181767cbea8e3aa2877508afea189a5e89ab",
+    "source_refs": [
+      {
+        "line": 3317,
+        "text": "[\"seq-sim-prepare\", \"seq-sim-play\", \"seq-sim-pause\", \"seq-sim-start\", \"seq-sim-end\", \"seq-sim-repeat\", \"seq-restart-execution\"].forEach((id) => { const button = byId(id); if (button) button.hidden = true; });"
+      },
+      {
+        "line": 3343,
+        "text": "technicalControls?.remove();"
+      }
+    ],
+    "execution": "NO_BEHAVIOR_CASE_AVAILABLE_IN_ACTIVE_UI",
+    "acceptance": "NOT_ADMITTED",
+    "next_action": "Determine mapping to current controls or explicit inventory/spec retirement with reviewed justification. Keep requirement pending; do not forceclick/unhide/revive old stages."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:select:seq-compare-kind:27",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_optional_comparison_changes_results",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  },
+  {
+    "id": "control:templates/sorting/structure.html:button:sorting-sim-step:11",
+    "status": "BEHAVIOR_EXECUTED_LINKED",
+    "control_kind": "PUBLIC_WIDGET",
+    "test_node": "tests/test_controls40_real_flows.py::test_controls40_public_mode_changes_internal_state",
+    "execution": "PASS",
+    "acceptance": "NOT_ADMITTED"
+  }
+]

@@ -1,0 +1,132 @@
+[
+  {
+    "id": "algorithm:graph/camino-minimo/run_bellman_ford",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_bellman_ford",
+    "backend_case": "tests/test_execution_trace_contract.py::test_bellman_ford_negative_cycle_trace_includes_detection_stage",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/camino-minimo/run_dijkstra",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_dijkstra",
+    "backend_case": "tests/test_graph_python_json_boundary.py::test_real_HTTP_transport_decodes_to_complete_JSON_state",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bellman_ford",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_bellman_ford",
+    "backend_case": "tests/test_execution_trace_contract.py::test_bellman_ford_negative_cycle_trace_includes_detection_stage",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_bfs",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_bfs",
+    "backend_case": "tests/test_execution_trace_contract.py::test_graph_algorithm_trace_includes_semantic_debug_steps",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dfs",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_dfs",
+    "backend_case": "tests/test_execution_trace_contract.py::test_graph_dfs_trace_includes_recursive_subroutine_source_and_calls",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_dijkstra",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_dijkstra",
+    "backend_case": "tests/test_graph_python_json_boundary.py::test_real_HTTP_transport_decodes_to_complete_JSON_state",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_kruskal",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_kruskal",
+    "backend_case": "tests/test_graph_routes.py::test_queries_and_algorithms_via_route",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/construccion/run_prim",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_prim",
+    "backend_case": "tests/test_comprehensive_graph_qa.py::test_graph_algorithms_return_expected_traversal_shortest_path_and_mst",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_kruskal",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_kruskal",
+    "backend_case": "tests/test_graph_routes.py::test_queries_and_algorithms_via_route",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/expansion-minima/run_prim",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_prim",
+    "backend_case": "tests/test_comprehensive_graph_qa.py::test_graph_algorithms_return_expected_traversal_shortest_path_and_mst",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_bfs",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_bfs",
+    "backend_case": "tests/test_execution_trace_contract.py::test_graph_algorithm_trace_includes_semantic_debug_steps",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "algorithm:graph/recorridos/run_dfs",
+    "review": "RETAIN_DISTINCT_PHASE_REQUIREMENT",
+    "shared_backend_binding": "operation:graph/graph/run_dfs",
+    "backend_case": "tests/test_execution_trace_contract.py::test_graph_dfs_trace_includes_recursive_subroutine_source_and_calls",
+    "phase_case": "tests/test_comprehensive_graph_qa.py::test_every_graph_learning_phase_renders",
+    "scope_limit": "Backend result + rendered phase identifier do not jointly prove algorithm gestures/results in this phase. No new algorithm-phase link or acceptance.",
+    "next_action": "Resolve existing browser setup, selected algorithm and result oracle for this exact phase, reusing underlying backend case without counting it twice."
+  },
+  {
+    "id": "control:templates/hierarchical/structure.html:button:reset-button:24",
+    "review": "RETAIN_DISTINCT_PAGE_REQUIREMENT",
+    "shared_selector": "#reset-button",
+    "contexts": [
+      "sequential/structure.html",
+      "hierarchical/structure.html"
+    ],
+    "scope_limit": "Same id in separate pages is not an HTML duplicate or interchangeable reset-case proof. No complete gesture+expected context recovered.",
+    "next_action": "Resolve actual handler and structure-specific reset scenario/evidence; do not exclude by missing selector search."
+  },
+  {
+    "id": "control:templates/sequential/structure.html:button:reset-button:18",
+    "review": "RETAIN_DISTINCT_PAGE_REQUIREMENT",
+    "shared_selector": "#reset-button",
+    "contexts": [
+      "sequential/structure.html",
+      "hierarchical/structure.html"
+    ],
+    "scope_limit": "Same id in separate pages is not an HTML duplicate or interchangeable reset-case proof. No complete gesture+expected context recovered.",
+    "next_action": "Resolve actual handler and structure-specific reset scenario/evidence; do not exclude by missing selector search."
+  }
+]

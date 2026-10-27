@@ -1,0 +1,3 @@
+# Repair1 independent review
+
+Independent review of repaired graph observation oracle and exact four frozen files. Prior rejected variant and verdict preserved. Check exact fabricated/empty-memory counterexample, causal event/source/ledger/storage negatives, phase-specific memory requirements, legitimate transient None and explicit False rejection. Evidence: 23 pure controls pass plus all 1498 frames of five saved real HTTP traces; other 14 matrix cases not run. Postincrement and caller-pointer writes require actual preceding event/scoped storage. No C/runtime/Sorting changes, no publication or broad campaign. Parent selects independent reviewer; author results are not acceptance.

@@ -1,0 +1,7 @@
+- [x] Register actual independent owner and binding (not functional approval).
+- [ ] Verify freeze/delta/C-H preservation.
+- [ ] Review capacity30/boundary31/legacy and final cache equivalence/current DOM.
+- [ ] Review numeric fixture provenance without laundering.
+- [ ] Diagnose BFS42.578s versus5s; retain failure.
+- [ ] Deliver minimum coverage plan with83/85 unchanged; no general campaign.
+- [ ] Issue scoped independent verdict and limitations.

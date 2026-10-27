@@ -1,0 +1,30 @@
+{
+  "new_focal_selectors": [
+    "tests/test_hidden_list_terminal_instruction_regression.py",
+    "tests/test_hidden_list_terminal_instruction_e2e.py"
+  ],
+  "focal_expected_unique_IDs": 13,
+  "DOMcontexts": 4,
+  "native_cases_reuse": 12,
+  "baseline": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-four-hidden-residual-and-final-disposition-low/four-hidden-native-HTTP-baseline.json",
+  "performance_separate_processes_without_coverage": [
+    {
+      "nodeid": "tests/test_checkpoint_reconstruction_performance.py::test_reconstruction_p95_stays_below_200_ms_for_all_families",
+      "timeout_seconds": 120,
+      "budget": "P95<200ms,300operations/replays per sequential/tree/graph/hash/sorting,5iterations"
+    },
+    {
+      "nodeid": "tests/test_comprehensive_quality_qa.py::test_common_views_and_small_trace_complete_within_local_quality_budget",
+      "timeout_seconds": 30,
+      "budget": "actual5views+smalltrace<5s"
+    },
+    {
+      "nodeid": "tests/test_security_and_session_limits.py::test_graph_bfs_performance_smoke",
+      "timeout_seconds": 600,
+      "budget": "100vertices99edges,measuredBFS<5s; setupnotpartof5sbudget"
+    }
+  ],
+  "performance_IDS_not_yet_executed_by_author": 3,
+  "historic1938": "1561callpassed/131failed/242setupfailed/4xfail preserved,not1938passes",
+  "pending2604": "Noacceptancebyomission or SHAalone; worklistdispositionsrequire scenariosources+deps; no4542restart"
+}

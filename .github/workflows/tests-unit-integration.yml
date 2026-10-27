@@ -10,8 +10,35 @@ on:
   workflow_dispatch:
 
 jobs:
+  delivery-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: pip install -r requirements-test.txt
+      - name: Verify delivered graph HTTP contract and CI safety helpers
+        run: python -m pytest -q tests/test_publication_followup_preparation.py qa_convergence/test_book_http.py
+      - name: Verify delivered C reader scroll behavior
+        run: node qa_scroll/test_code_scroll.js
+
   unit-integration:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        shard: [0, 1, 2, 3]
+    env:
+      VISUALSTRUCT_E2E_SHARD_INDEX: ${{ matrix.shard }}
+      VISUALSTRUCT_E2E_SHARD_COUNT: "4"
+      VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: ci-safe-diagnostics
+      VISUALSTRUCT_E2E_DIAGNOSTICS_NAME: probe
     timeout-minutes: 15
 
     steps:
@@ -27,14 +54,134 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest-cov
+          pip install -r requirements-test.txt
+
+      - name: Install and record required Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y doxygen
+          doxygen --version
+
+      - name: Select preinstalled GCC and gcov with condition coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          compiler="$(command -v gcc-14)"
+          coverage_tool="$(command -v gcov-14)"
+          "$compiler" --version
+          "$coverage_tool" --version
+          "$compiler" --help=common > "$RUNNER_TEMP/visualstruct-gcc-options.txt"
+          grep -q -- '-fcondition-coverage' "$RUNNER_TEMP/visualstruct-gcc-options.txt"
+          "$coverage_tool" --help > "$RUNNER_TEMP/visualstruct-gcov-options.txt"
+          grep -q -- '--conditions' "$RUNNER_TEMP/visualstruct-gcov-options.txt"
+          tools_dir="$RUNNER_TEMP/visualstruct-condition-coverage-tools"
+          mkdir -p "$tools_dir"
+          ln -s "$compiler" "$tools_dir/gcc"
+          ln -s "$coverage_tool" "$tools_dir/gcov"
+          echo "$tools_dir" >> "$GITHUB_PATH"
 
       - name: Run unit/integration tests
         run: |
-          python -m pytest -q tests -m "not e2e"
+          python -m pytest -q tests -m "not e2e" -p scripts.pytest_e2e_partition --tb=no --no-summary
+
+      - name: Verify published-option coverage inventory
+        run: |
+          python scripts/build_app_quality_inventory.py --check
+
+      - name: Preserve safe unit diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-shard-${{ matrix.shard }}
+          path: ci-safe-diagnostics/*
+          if-no-files-found: error
+
+  coverage:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        shard: [0, 1, 2, 3]
+    env:
+      VISUALSTRUCT_E2E_SHARD_INDEX: ${{ matrix.shard }}
+      VISUALSTRUCT_E2E_SHARD_COUNT: "4"
+      VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: ci-safe-diagnostics
+      VISUALSTRUCT_E2E_DIAGNOSTICS_NAME: probe
+      COVERAGE_FILE: .coverage.${{ matrix.shard }}
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+
+      - name: Install and record required Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y doxygen
+          doxygen --version
+
+      - name: Select preinstalled GCC and gcov with condition coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          compiler="$(command -v gcc-14)"
+          coverage_tool="$(command -v gcov-14)"
+          "$compiler" --version
+          "$coverage_tool" --version
+          "$compiler" --help=common > "$RUNNER_TEMP/visualstruct-gcc-options.txt"
+          grep -q -- '-fcondition-coverage' "$RUNNER_TEMP/visualstruct-gcc-options.txt"
+          "$coverage_tool" --help > "$RUNNER_TEMP/visualstruct-gcov-options.txt"
+          grep -q -- '--conditions' "$RUNNER_TEMP/visualstruct-gcov-options.txt"
+          tools_dir="$RUNNER_TEMP/visualstruct-condition-coverage-tools"
+          mkdir -p "$tools_dir"
+          ln -s "$compiler" "$tools_dir/gcc"
+          ln -s "$coverage_tool" "$tools_dir/gcov"
+          echo "$tools_dir" >> "$GITHUB_PATH"
 
       - name: Run coverage report
         run: |
-          python -m pytest -m "not e2e and not performance" --cov=app --cov-report=term-missing --cov-report=json:coverage.json
+          python -m pytest -m "not e2e and not performance" -p scripts.pytest_e2e_partition --tb=no --no-summary --cov=app --cov-report=
+
+      - name: Preserve coverage partition and safe diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-shard-${{ matrix.shard }}
+          path: |
+            .coverage.${{ matrix.shard }}
+            ci-safe-diagnostics/*
+          include-hidden-files: true
+          if-no-files-found: error
+
+  coverage-gates:
+    needs: coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: pip install -r requirements-test.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-shard-*
+          path: coverage-data
+      - name: Verify all partitions, combine coverage and retain gates
+        run: |
+          python scripts/verify_test_partition_results.py coverage-data --partitions 4
+          python -m coverage combine coverage-data/coverage-shard-*
+          python -m coverage report
+          python -m coverage json -o coverage.json
           python scripts/check_coverage_gates.py --report coverage.json

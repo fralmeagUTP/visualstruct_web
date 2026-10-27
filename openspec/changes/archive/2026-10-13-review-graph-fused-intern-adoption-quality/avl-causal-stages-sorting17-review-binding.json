@@ -1,0 +1,48 @@
+{
+  "activation": "V2_REGISTERED_REVIEWER_OWN_FRESH_BEFORE_REQUIRED",
+  "UTC": "2026-10-05T10:26:49.574683+00:00",
+  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-graph-fused-intern-adoption-quality",
+  "operation": "audit.avl-causal-stages-sorting17-quality",
+  "task": "AVL-causal-stages-and-Sorting17-independent-review",
+  "assignment_id": "coordination-avl-causal-stages-sorting17-independent-qa-low-20261005",
+  "assignment_source": "openspec/continuity/assignments/coordination-avl-causal-stages-sorting17-independent-qa-low-20261005.json",
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "writer_thread_id": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "quality_role": "quality LOW independent",
+  "scope_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/avl-causal-stages-sorting17-review-scope.md",
+  "tasks_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/tasks.md",
+  "tracker_ref": "openspec/changes/review-graph-fused-intern-adoption-quality/avl-causal-stages-sorting17-review-tasks.md",
+  "evidence_binding": "openspec/changes/review-graph-fused-intern-adoption-quality/avl-causal-stages-sorting17-evidence-binding.json",
+  "allowed_paths": [
+    "openspec/changes/review-graph-fused-intern-adoption-quality/evidence/avl-causal-stages-sorting17-independent-qa-low/review-v2-sorting-portability",
+    "openspec/changes/review-graph-fused-intern-adoption-quality/avl-causal-stages-sorting17-review-tasks.md"
+  ],
+  "protected": [
+    "app",
+    "tests",
+    "docs",
+    "static",
+    "templates",
+    "scripts",
+    "openspec/changes/audit-local-quality-and-unified-controls",
+    "prior QA evidence/tasks",
+    "openspec/changes/review-graph-fused-intern-adoption-quality/tasks.md"
+  ],
+  "review_only": true,
+  "product_integration_authorized": false,
+  "tests_native_browser_coverage_benchmark_authorized": false,
+  "package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting17-portable-optional-v2-low/AVL-Sorting17-portable-optional-QA-v2.zip",
+  "package_sha256": "d850aaa70b3e931cd916534be430140170eb9c09f42d25016b0c7b88a4b748da",
+  "recommendation_only": true,
+  "artifact_version": "sorting17-portable-optional-v2",
+  "product_version": "avl-causal-stages-metadata-20261005",
+  "updated_UTC": "2026-10-05T11:02:09.977866+00:00",
+  "prior_binding_SHA256": "5d181fb85ac1542d7566b815f3be5a89f1c2e716fa27cf995c17606dac0044c4",
+  "prior_binding_copy": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-sorting17-portable-optional-v2-low/prior-avl-causal-stages-sorting17-review-binding.json",
+  "prior_package": {
+    "package": "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-avl-causal-stages-sorting17-group-low/AVL-causal-stages-Sorting17-QA.zip",
+    "SHA256": "9429b057f8e19728e47352d2601f7cc04c198f335baf9a146cb837ec07db6198"
+  },
+  "review_focus_v2": "Sorting17 portability/optionalcoverage repair only; priorAVL observed acceptance preserved, no broadening.17units two modes, productunchanged; tests+fixtures prospective exactadoption remains QA recommendation."
+}

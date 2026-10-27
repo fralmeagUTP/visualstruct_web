@@ -1,0 +1,17 @@
+# Cola Frente/Final — checkpoint MEDIUM verificado; LOW pendiente
+
+Proyecto canónico `D:\MisProyectos\Web_VisualEstruct`. Asignación vigente coordination-queue-front-final-instructions-medium-20261003, operación queue.frente-final-instructions-medium, coordinación01a0fe61-3104-743a-b032-bcc289ad80cd. Plan queue-front-final-instructions-plan-medium-proposed.md aplicado dentro de su alcance. Fecha UTC 2026-10-03T23:13:32.493171+00:00.
+
+164 IDs pasan en7.13s: los160originales más4nuevos privados para raíces front-only/rear-only (2por método). Unión exacta80Frente+80Final+4shared, overlap0; ningún ID original eliminado, sin skip/xfail. Baseline160/59pass101fail yprimerMEDIUM160pass conservados; las4shared originales ya estaban incluidas en160. No nuevas funciones públicas auditadas por añadir IDs.
+
+Raw cola_final transcrito exactamente desde C; todos los defs raw anteriores AST idénticos, incluido cola_frente. Wrappers sólo Frente/Final nonempty delegan; excepción vacía actual preservada. Motor privado por método: structCola q copiado porvalor, identidad distinta callercola, ambos campos initialized, aliases a nodos vivos nro/sgte mask3, guardas propias comparan valor no dirección de celda. Rama seleccionada/intreturn/scopesended/callstackvacío; caller_result independiente sin escritura permanece pendiente. Raíces/heap/links/valores/estado readonly,0alloc/free/console. Overrideprivado inicializado permite raíces parciales sin normalizarlas y sin NULLq inexistente.
+
+Oráculo C conservado con C/H byteexactos:44consultas132eventos44condiciones;22/66/22 por método. Comparación actual de los132eventos sin divergencias, rawscalar yreadonly coinciden. No nueva ejecución C ni UB. API36rechazos400 yPOST/GETspy0target; validación steps[] execution_startedfalse y0journal, mismos error/state/history. Browseractual4contextos16rechazos8por método,5secciones/ambas vistas/historial intactos/0extraPOST0JSerror, sin selector/player nuevo.
+
+3mains DOM actuales con includesonly yC/H son5inputs byteexactos aLOW: se reutilizan3C17strictpass,8alloc8free0live/8NULLcontrolados yDoxygen5inputs3mains0warnings, sin contarlos como nuevas ejecuciones. MainHTTP404 yvacío sinmainDOM;0queriesFront/Final enmain/records. Reuseprovenance en caller-input-reuse.json.
+
+377archivos producto anteriores:373SHA intactos y4modificados autorizados (tad_cola.py,tad_wrappers.py,execution_trace_service.py,structure_service.py), más1motor nuevo queue_query_instruction.py. C/H, frontend/routes/metadata/mainrenderer yPilaCima/otros métodos cerrados protegidos. Scoped diff yASTproof conservados. Preview propio8776/19256verificado antesreinicio únicamente para backend actual; nuevo launcher17652, identidad final enevidencia.
+
+Recursos finitos separados por método/scope en verification-summary.json yresources.json:9fixturescoherentesx2private trace+Cextract+JSONsinHTTPsession y9batchesdosPOSTrejected conreplay/session/serialization por método. Raíces parciales tienen comparación tipada aparte. No SLA/RSS/browser memory/unboundedhistory/OOM/sanitizer ni éxitoAPIconsulta inferidos.
+
+Implementación MEDIUM verificada, NO cierre funcional; mapa9pendientes conservado. Próxima instrucción LOW debe verificar manifest/inputs actuales y consolidar cada core privado independientemente. No ampliar bloque ni Graphdecisions/SDDblocked/publicación/commit/push/merge/despliegue/archive/globalclosure. Guarda before exit0; after fresco se adjunta al finalizar.

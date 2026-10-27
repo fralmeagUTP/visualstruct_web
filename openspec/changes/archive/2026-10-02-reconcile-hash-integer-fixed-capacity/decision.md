@@ -1,0 +1,7 @@
+# Decisión H1 aprobada
+La coordinación del hilo 01a0f0a7-80d9-722c-85ae-b3a1660740fc delegó esta reconciliación documental el 2026-10-02.
+Propuesta textual del asistente: «Mi propuesta es dejar como contrato vigente enteros y capacidad fija, que es lo que estamos auditando, y corregir la especificación contradictoria conservando el historial de la decisión. Luego verificamos código y pruebas contra ese único contrato. ¿Te parece bien?»
+Respuesta textual del usuario: «Sí, con... con lo de enteros que me estás diciendo me parece bien».
+Se adopta H1: claves y valores enteros del TAD C y capacidad fija durante operaciones de una tabla creada; recrear explícitamente puede elegir otra capacidad. No implica límite de cantidad de nodos: el encadenamiento permite factor de carga mayor que uno.
+La aprobación se recibe por delegación con evidencia textual; no se afirma autenticación independiente de la conversación. No autoriza decisiones RN/Grafos, migración de sesiones antiguas, código ni cierre funcional. Retirar expectativas de texto libre y resize automático del contrato actual; no prometer compatibilidad de sesiones legacy sin verificación técnica.
+El original canónico queda íntegro en evidence/hash-table-before.md; el delta 2026-08-23-enhance-hash-table-pedagogy permanece sin editar. Sólo se reconcilia el contrato tipos/capacidad; otros requisitos históricos pedagógicos no se consolidan por existencia del archivo.

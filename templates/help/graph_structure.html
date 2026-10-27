@@ -1,31 +1,35 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}Ayuda | {{ help_data.title }}{% endblock %}
 {% block content %}
 <section>
   <h2>{{ help_data.title }}</h2>
-  <h3>Descripcion del TAD</h3>
-  <p>{{ help_data.tad_description }}</p>
+  {% include "help/_student_start.html" %}
+  <p><a class="btn" href="{{ url_for('graph.structure_page', structure_id=structure_id) }}">Ir a la visualización e ingresar estos datos</a></p>
+  {% include "help/_execution_guide.html" %}
 
-  <h3>Controles de ejecucion paso a paso</h3>
-  <ul>
-    <li>Checkbox <strong>Interpretar codigo paso a paso</strong>: activado muestra toda la traza; desactivado aplica solo el resultado final.</li>
-    <li>En construccion puedes usar <strong>Aplicar tipo y reiniciar</strong> para recrear el grafo base (dirigido/no dirigido).</li>
-    <li>Ejecucion por traza: <strong>Reproducir</strong>, <strong>Anterior paso</strong> y <strong>Siguiente paso</strong>.</li>
-    <li><strong>Velocidad de simulacion</strong>: slider de <strong>-2x</strong> a <strong>+2x</strong> (0.00x = 1.00x real).</li>
-    <li>El campo <strong>Accion actual</strong> indica si el interprete evalua condiciones/ciclos o aplica cambios en el estado.</li>
-    <li>Con checkbox desactivado, <strong>Reproducir</strong> aplica directamente el resultado final del algoritmo y debe mostrar el mismo estado visual final que el ultimo paso del modo interpretado.</li>
-    <li>En modo rapido (checkbox desactivado) se ocultan <strong>Anterior paso</strong>, <strong>Siguiente paso</strong>, velocidad, contador y <strong>Accion actual</strong>.</li>
-    <li>Al llegar al ultimo paso, <strong>Siguiente paso</strong> se bloquea hasta cambiar entradas/algoritmo; <strong>Anterior paso</strong> se habilita solo tras avanzar.</li>
-  </ul>
+  <p><strong>Empieza con un grafo pequeño:</strong> distingue visitar vértices (BFS/DFS), minimizar un camino (Dijkstra/Bellman-Ford) y conectar toda la red (Prim/Kruskal). <code>GrafoEstado</code> indica éxito o la causa del error; no hace falta memorizar sus códigos para empezar.</p>
+  <details><summary>Referencia avanzada: contrato del código del libro</summary>
+  <ul>{% for item in help_data.book_contract %}<li>{{ item }}</li>{% endfor %}</ul></details>
+  <p>La interfaz ofrece 10 acciones de construcción y consulta, y 6 algoritmos en sus fases. La API y el TAD incluyen además consultas auxiliares de existencia y limpieza; documentarlas no implica un botón independiente.</p>
+  {% if help_data.learning_guide %}
+  <details><summary>Profundizar: reglas, memoria y costo</summary>
+    <h3>Cómo razonar sobre el algoritmo</h3>
+    <p>{{ help_data.learning_guide.objective }}</p><p>{{ help_data.learning_guide.strategy }}</p>
+    <h4>Reglas que comprobar al terminar (invariantes)</h4><ul>{% for item in help_data.learning_guide.invariants %}<li>{{ item }}</li>{% endfor %}</ul>
+    <h4>Memoria y propiedad de los datos</h4><p>{{ help_data.learning_guide.memory }}</p>
+    <h4>Costo y tamaño de entrada</h4>
+    <p>El costo describe cómo crece el trabajo al aumentar los datos, no cuántos segundos tardará la animación. {% if structure_id == 'graph' %}V es el número de vértices y E el de arcos.{% else %}n es el número de entradas y α es cantidad/capacidad.{% endif %}</p>
+    <ul>{% for name, cost in help_data.learning_guide.complexity.items() %}<li><strong>{{ name }}:</strong> {{ cost }}{% if structure_id == 'hash_table' %} para una clave; listar, estadísticas y vaciar recorren buckets y cadenas.{% endif %}</li>{% endfor %}</ul>
+    <h4>Errores que conviene evitar</h4><ul>{% for item in help_data.learning_guide.common_errors %}<li>{{ item }}</li>{% endfor %}</ul>
+    <h4>¿Dónde se utiliza?</h4><ul>{% for item in help_data.learning_guide.applications %}<li>{{ item }}</li>{% endfor %}</ul>
+  </details>
+  {% endif %}
+  {% if help_data.glossary %}<details><summary>Glosario: palabras de esta guía</summary><dl>{% for term, meaning in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ meaning }}</dd>{% endfor %}</dl></details>{% endif %}
+  
+  {% if help_data.keyboard %}<h3>Teclado</h3><ul>{% for item in help_data.keyboard %}<li>{% if item == "Alt+→ siguiente" %}Alt+→ avanza al siguiente paso de la traza preparada.{% else %}{{ item }}{% endif %}</li>{% endfor %}</ul>{% endif %}
 
-  <h3>Operaciones soportadas</h3>
-  <ul>
-    {% for op in (help_data.supported_operations_display if help_data.supported_operations_display else help_data.supported_operations) %}
-    <li>{{ op }}</li>
-    {% endfor %}
-  </ul>
-
-  <h3>Operaciones pendientes / restricciones</h3>
+  <h3>Alcance de esta pantalla</h3>
+  <p>La función C grafo_eliminar_vertice elimina dentro de su propia ejecución el vértice y todos sus arcos incidentes. Las trazas y el main usan esta versión del libro; no se aplican los resultados históricos del contrato web anterior.</p>
   {% if help_data.pending_operations %}
   <ul>
     {% for item in help_data.pending_operations %}
@@ -33,18 +37,33 @@
     {% endfor %}
   </ul>
   {% else %}
-  <p>No hay operaciones pendientes para esta estructura en esta fase.</p>
+  <p>Usa las operaciones disponibles en el selector. Los auxiliares C pueden no tener un botón propio.</p>
   {% endif %}
 
-  <h3>Estructura del TAD en C</h3>
-  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre>
+  {% include "help/_operation_contracts.html" %}
+  {% include "help/_source_download.html" %}
 
-  <h3>Metodos del TAD en C</h3>
+  <details><summary>Referencia: estructura del TAD en C</summary>
+  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre></details>
+
+  <h3>Código C y llamadores equivalentes</h3>
   {% if help_data.c_methods %}
+    <details id="graph-canonical-source">
+      <summary>Ver código C completo del libro (una única copia)</summary>
+      <pre id="graph-canonical-code" class="didactic-code didactic-code-scroll" style="max-height:60vh;overflow:auto">{{ help_data.c_methods[0].code }}</pre>
+    </details>
     {% for method in help_data.c_methods %}
-    <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
-    <p>{{ method.explanation }}</p>
+    <details><summary>{% include "help/_method_title.html" %}</summary>
+    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>El cuerpo canónico mostrado retira y libera primero los arcos incidentes y después el vértice. No requiere una limpieza adicional del llamador.</p>
+    {% elif structure_id == "graph" and method.operation == "generate_random_graph" %}<p>La generación aleatoria pertenece a la aplicación; no existe una función C descargable equivalente de generación. Los vértices y arcos materializados se reproducen mediante llamadas reales del main.</p>
+    {% elif structure_id == "hash_table" and method.operation == "create_table" %}<p>Inicializa los buckets con capacidad fija. Recrear en la aplicación destruye antes la tabla anterior; th_inicializar por sí solo no la libera.</p>
+    {% elif method.operation == "extraer_raiz" %}<p>Copia el mínimo a la salida, reduce la cantidad y repara el orden bajando el nuevo valor de la raíz. Distingue el valor extraído del indicador de éxito.</p>
+    {% elif method.operation == "validar" %}<p>Consulta las reglas indicadas en la referencia avanzada de este TAD. No modifica ni repara la estructura; observa las condiciones que hacen devolver verdadero o falso.</p>
+    {% else %}{% include "help/_method_explanation.html" %}{% endif %}
+    {% if method.code != help_data.c_methods[0].code %}
     <pre class="didactic-code">{{ method.code }}</pre>
+    {% endif %}
+    <p><a href="#graph-canonical-source" data-book-function="{{ method.c_symbol }}">Ir a <code>{{ method.c_symbol }}</code> en la fuente canónica</a></p></details>
     {% endfor %}
   {% else %}
   <p>No hay metodos C documentados para esta estructura.</p>
@@ -52,8 +71,33 @@
 
   <p>
     <a class="btn" href="{{ url_for('graph.structure_page', structure_id=structure_id) }}">
-      Ir a la visualizacion
+      Ir a la visualización
     </a>
   </p>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const source = document.getElementById('graph-canonical-source');
+  const code = document.getElementById('graph-canonical-code');
+  if (!source || !code) return;
+  document.querySelectorAll('[data-book-function]').forEach(link => {
+    link.addEventListener('click', event => {
+      const name = link.dataset.bookFunction;
+      if (!/^[A-Za-z_]\w*$/.test(name)) return;
+      const pattern = new RegExp('^\\s*(?:static\\s+)?(?:Grafo|ListaVertice|ListaArco|int|void)\\s+\\*?\\s*' + name + '\\s*\\(');
+      const line = [...code.querySelectorAll('.code-line')].find(row => pattern.test(row.textContent));
+      if (!line) return;
+      event.preventDefault();
+      source.open = true;
+      source.scrollIntoView({block:'start'}); // Explicit guide navigation, not playback.
+      window.CCodeNavigation?.revealLine(code, line);
+      line.tabIndex = -1;
+      line.focus({preventScroll:true});
+    });
+  });
+});
+</script>
 {% endblock %}

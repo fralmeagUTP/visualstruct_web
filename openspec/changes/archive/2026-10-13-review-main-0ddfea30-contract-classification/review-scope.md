@@ -1,0 +1,5 @@
+# Exact40independent QA scope
+
+Parent01a0fe61 authorizes distinct independent read-only QA of exactly40evidence-based contract/first-assertion conflicts for main0ddfea30. Dedicatedreviewchange separates pointer from currenttechnical63/E2Ediagnosis and preserves allpreviousindexentries. Review full exactCIsections/source/tests/contracts and limitations, no test/product/Sortingcontract changes or publication/VPS/large/native/browser runs bydefault. Sortinguserdecisionpending;13source-policy and63unknown outside40review verdict. OwnQAevidenceonly, reviewerdistincttechnicalauthor.
+
+Counts:19rawcodeccomparisons,11universalCframeassertions,3diagnosticaccentregex,2Pythonintkeyexpectations,2Cstdoutformat,1BFguard/cyclecurrentCexpectation,1legacydetectorprefixfalsepositive,1additivemetadataexactkeyset. Review everyID, notonlycount; firstassertionreviewdoesnotcloseallremainingexpectations. No reclassify13pendingSorting or63unknown here.

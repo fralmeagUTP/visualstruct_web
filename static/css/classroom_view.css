@@ -1,0 +1,136 @@
+/* Classroom v1. Presentation only; never hide source data or structure nodes. */
+body:has(.classroom-workspace) .site-header { padding: .3rem 0; }
+body:has(.classroom-workspace) .site-header-content { gap: .65rem; }
+body:has(.classroom-workspace) .site-header-logo { max-height: 34px; width: auto; }
+body:has(.classroom-workspace) .site-header h1 { font-size: 1.15rem; margin: 0; }
+body:has(.classroom-workspace) .site-header p { margin: .1rem 0; font-size: .85rem; }
+body:has(.classroom-workspace) .site-nav { padding: .2rem 0; }
+body:has(.classroom-workspace) .nav-row { gap: .25rem; }
+body:has(.classroom-workspace) .nav-links { gap: .25rem .65rem; }
+body:has(.classroom-workspace) .nav-links a { padding: .2rem .25rem; font-size: .9rem; }
+body:has(.classroom-workspace) main.container { width: min(1600px,98%); max-width: none; padding-top: .35rem; }
+.classroom-workspace { display: grid !important; grid-template-columns: minmax(0,1.55fr) minmax(310px,1fr) !important; gap: .6rem !important; height: max(390px,calc(100vh - 300px)) !important; min-height: 390px !important; overflow-anchor: none; align-items: stretch !important; }
+.classroom-workspace > * { min-width: 0; min-height: 0; }
+.classroom-visual { order: 0; display: flex !important; flex-direction: column !important; min-width: 0; min-height: 0; overflow: hidden; }
+.classroom-code { order: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.classroom-source { min-height: 0 !important; flex: 1 1 auto; overflow: auto !important; font-size: 14px !important; white-space: pre !important; overflow-wrap: normal; }
+.classroom-source .code-line { white-space: pre !important; width: max-content !important; min-width: 100% !important; overflow-wrap: normal; }
+.classroom-stage { flex: 1 1 auto !important; min-height: 300px !important; overflow: auto !important; overscroll-behavior: contain; overflow-anchor: none; position: relative; }
+.classroom-stage .viz-stage, .classroom-stage .viz-stage-center, .classroom-stage .viz-canvas { height: auto !important; min-height: 100%; overflow: visible !important; flex: 0 0 auto !important; width: max-content; min-width: 100%; }
+.classroom-stage svg { max-width: none !important; flex: 0 0 auto !important; }
+.classroom-stage svg text { font-size: 14px; }
+.classroom-view-tools, .classroom-code-actions { display:flex; flex:0 0 auto; align-items:center; flex-wrap:wrap; gap:.3rem; padding:.2rem; }
+.classroom-view-tools .btn,.classroom-code-actions .btn,.classroom-result-tabs .btn { padding:.2rem .5rem; min-height:28px; font-size:14px; }
+.classroom-view-tools output { min-width:3rem; text-align:center; font-size:14px; }
+.classroom-memory { flex:0 0 auto; border-top:1px solid #bccbd8; margin-top:.25rem; }
+.classroom-memory > summary { cursor:pointer; padding:.35rem; font-size:14px; font-weight:600; }
+.classroom-memory[open] { max-height:42%; overflow:auto; }
+.classroom-memory > :not(summary) { max-height:none !important; height:auto !important; overflow:visible !important; }
+.classroom-results { margin:.6rem 0; min-width:0; }
+.classroom-result-tabs { display:flex; gap:.35rem; flex-wrap:wrap; border-bottom:1px solid #bbcbd8; padding:.3rem; }
+.classroom-result-tabs [aria-selected=true] { background:#123b59; color:white; }
+.classroom-result-panel { height:300px; box-sizing:border-box; max-height:350px; overflow:auto; padding:.5rem; }
+.classroom-result-panel[hidden] { display:none !important; }
+.classroom-dialog { width:92vw; max-width:1500px; height:88vh; max-height:88vh; box-sizing:border-box; padding:1rem; }
+.classroom-dialog::backdrop { background:#142338aa; }
+.classroom-dialog > pre { height:calc(100% - 6rem) !important; max-height:none !important; overflow:auto !important; font-size:14px !important; }
+@media(max-width:760px) { .classroom-workspace { grid-template-columns:minmax(0,1fr) !important; height:auto !important; } .classroom-visual { min-height:390px; } .classroom-code { height:400px; } }
+/* Keep identity and every operation field, but avoid three oversized toolbars. */
+body:has(.classroom-workspace) :is(.hier-learning-header,.graph-learning-header,.sequential-learning-header,.sorting-learning-header) { padding:.25rem 0; margin:.15rem 0; gap:.5rem; }
+body:has(.classroom-workspace) :is(.hier-learning-header,.graph-learning-header,.sequential-learning-header,.sorting-learning-header) :is(h2,p) { margin:.1rem 0; }
+body:has(.classroom-workspace) :is(.hier-learning-header,.graph-learning-header,.sequential-learning-header,.sorting-learning-header) h2 { font-size:1.25rem; }
+body:has(.classroom-workspace) :is(.sorting-eyebrow,.hash-stage-intro,.sorting-stage-intro) { font-size:.85rem; margin:.15rem 0; }
+body:has(.classroom-workspace) :is(.hier-stage,.graph-stage,.hash-stage,.sequential-stage,.sorting-learning-stage) { padding:.45rem .6rem; margin:.35rem 0; }
+body:has(.classroom-workspace) :is(.hier-stage,.graph-stage,.hash-stage,.sequential-stage,.sorting-learning-stage) h3 { font-size:1rem; margin:.15rem 0 .35rem; }
+body:has(.classroom-workspace) :is(.hier-classroom-controls,.graph-classroom-controls,.hash-classroom-controls) { padding:.25rem .4rem; position:static; }
+body:has(.classroom-workspace) :is(.hier-prepare-grid,.seq-prepare-grid,.sorting-control-grid,.graph-control-grid,.hash-control-grid) { gap:.35rem .5rem; }
+body:has(.classroom-workspace) :is(input,select,button) { font-size:14px; }
+.classroom-dialog > .classroom-expanded-content { height:calc(100% - 6rem) !important; max-height:none !important; overflow:auto !important; font-size:14px !important; }
+.classroom-stage svg { max-height:none !important; }
+.classroom-stage .hier-structure-panel { height:auto !important; max-height:none !important; min-height:300px !important; flex:0 0 auto !important; overflow:visible !important; }
+/* The original reflection grids had three columns; the tabbed group spans all. */
+.classroom-results { grid-column:1 / -1; width:100%; box-sizing:border-box; }
+/* Reserve the sidebar for C, not a multi-row function index. */
+.classroom-workspace :is(.hier-code-layout,.graph-code-layout,.hash-code-layout,.seq-code-layout,.sorting-code-layout) { display:flex !important; flex-direction:column; flex:1 1 auto; min-height:0; gap:.25rem; }
+.classroom-workspace :is(.hier-function-index,.graph-function-index,.hash-function-index,.seq-function-index,.sorting-function-index) { display:flex; flex:0 0 auto; max-height:44px !important; overflow:auto !important; padding:.15rem .25rem; gap:.3rem; border-width:1px; }
+.classroom-workspace :is(.hier-function-index,.graph-function-index,.hash-function-index,.seq-function-index,.sorting-function-index) ol { display:flex; flex-wrap:nowrap; gap:.2rem; margin:0; padding:0; list-style:none; }
+.classroom-workspace :is(.hier-function-index,.graph-function-index,.hash-function-index,.seq-function-index,.sorting-function-index) button { white-space:nowrap; padding:.15rem .3rem; }
+.classroom-workspace :is(.hier-code-toolbar,.graph-code-toolbar,.hash-code-toolbar,.seq-code-toolbar,.sorting-code-toolbar) { flex:0 0 auto; gap:.2rem .4rem; margin:0; }
+.classroom-workspace :is(.hier-code-toolbar,.graph-code-toolbar,.hash-code-toolbar,.seq-code-toolbar,.sorting-code-toolbar) :is(h3,label) { margin:0; font-size:14px; }
+.classroom-workspace :is(.hier-code-layout,.graph-code-layout,.hash-code-layout,.seq-code-layout,.sorting-code-layout) > .classroom-code { flex:1 1 auto; }
+.classroom-code h4 { margin:.1rem 0 !important; font-size:14px; }
+body:has(.classroom-workspace) :is(.hier-classroom-controls,.graph-classroom-controls,.hash-classroom-controls) { position:sticky; top:0; z-index:20; }
+/* Expanded history contains a nested PRE: use one full-height local scroller. */
+.classroom-dialog { overflow:hidden; }
+.classroom-dialog > .classroom-expanded-content { margin:.5rem 0 0; box-sizing:border-box; }
+.classroom-dialog > .classroom-expanded-content:not(pre) pre { height:auto !important; min-height:0 !important; max-height:none !important; overflow:visible !important; }
+.classroom-dialog > .classroom-expanded-content:not(pre) :is(li,.didactic-history-entry,.didactic-history-code) { max-height:none !important; overflow:visible !important; }
+/* Each function keeps its intrinsic width; the index scrolls rather than overlaps. */
+.classroom-workspace :is(.hier-function-index,.graph-function-index,.hash-function-index,.seq-function-index,.sorting-function-index) ol { flex:0 0 auto; width:max-content; }
+.classroom-workspace :is(.hier-function-index,.graph-function-index,.hash-function-index,.seq-function-index,.sorting-function-index) :is(li,button,strong) { flex:0 0 auto; width:max-content; min-width:max-content; }
+.classroom-workspace :is(.hier-function-index,.graph-function-index,.hash-function-index,.seq-function-index,.sorting-function-index) { flex-wrap:nowrap !important; align-items:center; overflow-x:auto !important; overflow-y:hidden !important; box-sizing:border-box; padding:.1rem .2rem; }
+.classroom-workspace :is(.hier-function-index,.graph-function-index,.hash-function-index,.seq-function-index,.sorting-function-index) strong { margin:0; font-size:14px; }
+.classroom-workspace :is(.hier-function-index,.graph-function-index,.hash-function-index,.seq-function-index,.sorting-function-index) button { line-height:18px; min-height:22px; padding:1px 4px; }
+/* Opening auxiliary evidence temporarily shares the fixed workspace; closing
+   restores the >=300px drawing. Never clip the expanded memory below the panel. */
+.classroom-visual:has(> .classroom-memory[open]) > .classroom-stage { min-height:140px !important; }
+.classroom-visual > .classroom-memory[open] { flex:0 1 42%; min-height:70px; overflow:auto; }
+body:has(.classroom-workspace) .classroom-execution-controls { position:sticky; top:0; z-index:20; background:#fffdf8; padding:.25rem .4rem; margin:.25rem 0; border:1px solid #bccbd8; border-radius:.4rem; }
+.classroom-execution-controls .actions { display:flex; flex-wrap:wrap; gap:.25rem; }
+.classroom-execution-controls .btn { min-height:28px; padding:.2rem .4rem; font-size:14px; }
+.classroom-execution-controls > h3 { font-size:14px; margin:.1rem 0; }
+.classroom-execution-controls > p { margin:.1rem 0; }
+/* Instruction-memory renderers list complete cells without separate arrow rows.
+   Preserve the vertical arrow-chain renderer's original adjacency layout. */
+.classroom-stage .stack-linked-chain:not(:has(> .stack-linked-arrow)) { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:.5rem; align-items:start; }
+.classroom-stage .stack-linked-chain:not(:has(> .stack-linked-arrow)) > .stack-linked-node { min-width:0; width:100%; box-sizing:border-box; }
+/* Explicit result-tab choice supersedes the old learning-level visibility rules. */
+.classroom-result-panel:not([hidden]) { display:block !important; }
+.classroom-result-panel #sorting-tad-record { display:block !important; }
+.classroom-visual .hash-view-toolbar { gap:.2rem .5rem; margin:0; flex:0 0 auto; align-items:center; }
+.classroom-visual .hash-view-toolbar label { font-size:14px; margin:0; }
+.classroom-visual .hash-view-toolbar select { width:auto; min-height:26px; padding:.1rem .25rem; }
+.classroom-visual .hash-minimap { margin:.2rem 0; min-height:12px; max-height:14px; flex:0 0 auto; }
+.classroom-stage :is(.hash-entry,.hash-bucket-head,.hash-bucket-size,.hash-bucket-index,.hash-empty,.hash-collision-badge,.hash-head-pointer,.hash-entry-field,.hash-entry-key,.hash-entry-value) { font-size:14px !important; }
+.classroom-visual > .hash-view-options { flex:0 0 auto; margin:0; padding:0; }
+.classroom-visual > .hash-view-options > summary { cursor:pointer; padding:.15rem 0; font-size:14px; }
+.classroom-visual > .hash-view-options[open] { max-height:100px; overflow:auto; }
+.classroom-visual:has(> .hash-view-options[open]) > .classroom-stage { min-height:140px !important; }
+/* Occupancy indices need a full text line, not a clipped 14px swatch. */
+.classroom-visual .hash-minimap { min-height:20px; max-height:20px; margin:0; }
+.classroom-visual .hash-minimap-cell { min-height:18px; line-height:18px; box-sizing:border-box; }
+/* Opting into memory gives it a usable reading area, not just its heading. */
+.classroom-visual:has(> .classroom-memory[open]) > .classroom-stage { flex:1 1 140px !important; }
+.classroom-visual > .classroom-memory[open] { flex:1 1 180px; }
+
+/* Multiple-value convenience, contained within Preparar. */
+.multiple-input { margin-block: .6rem; padding: .55rem .7rem; border: 1px solid var(--border-color, #b8c6d8); border-radius: .5rem; }
+.multiple-input summary { cursor: pointer; font-weight: 700; }
+.multiple-input input[type="text"] { width: 100%; box-sizing: border-box; font: inherit; margin-block: .35rem; padding: .5rem; }
+.multiple-input p { margin-block: .45rem; overflow-wrap: anywhere; }
+.multiple-input small { display: block; margin-top: .4rem; }
+.multiple-input [hidden] { display: none !important; }
+
+/* C readers share a bounded local viewport in all five families. Do not apply
+   this to printf output, diagrams, or exported source text. */
+.classroom-code-scroll {
+  min-width: 0 !important; max-width: 100% !important; box-sizing: border-box;
+  overflow-x: auto !important; overflow-y: auto !important;
+  white-space: pre !important; overflow-wrap: normal !important; word-break: normal !important;
+  overscroll-behavior: contain; overflow-anchor: none;
+  scrollbar-width: auto; scrollbar-color: #60758a #e5ebf1;
+}
+.classroom-code-scroll::-webkit-scrollbar { width: 14px; height: 14px; }
+.classroom-code-scroll::-webkit-scrollbar-thumb { background: #60758a; border: 2px solid #e5ebf1; border-radius: 7px; }
+.classroom-code-scroll::-webkit-scrollbar-track { background: #e5ebf1; }
+.classroom-code-scroll pre,
+.classroom-code-scroll .code-line {
+  white-space: pre !important; overflow-wrap: normal !important; word-break: normal !important;
+}
+.classroom-code-scroll .code-line {
+  width: max-content !important; min-width: 100% !important; max-width: none !important; box-sizing: border-box;
+}
+.classroom-workspace :is(.hier-code-layout,.graph-code-layout,.hash-code-layout,.seq-code-layout,.sorting-code-layout),
+.classroom-result-panel { min-width: 0; max-width: 100%; }
+/* History is a wrapper around PRE: one viewport, not nested competing bars. */
+.classroom-code-scroll:not(pre) pre { max-width: none !important; overflow: visible !important; }

@@ -1,0 +1,13 @@
+{
+  "schema": "visualstruct-assignment/v1",
+  "assignment_id": "coordination-audit-partial-delivery-current-results-low-20261006",
+  "issued_at_utc": "2026-10-06T16:20:41.148447+00:00",
+  "source_thread_id": "01a0fe61-3104-743a-b032-bcc289ad80cd",
+  "owner": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "writer_thread_id": "01a0fad1-4046-71ae-990c-a53383e81006",
+  "change": "reconcile-remaining-historical-contracts",
+  "operation": "c1.remaining-documentary",
+  "task": "c1-documentary",
+  "instruction": "Delegación vigente coordinación01a0fe61-3104-743a-b032-bcc289ad80cd: actualizar únicamente documento entrega-parcial-visualstruct-20261006.md con DFS canónico/QA,83.235427%coverage,Dijkstra30privado122.546s/22430stepsQA/UI,BF20privado1861.922s/60239steps/176.67MiB/121.57MiBPrivate/sesión40→41QA. BFUIguardada aún sin resultado final;Prim/Kruskal/integraciónglobalpendientes20/22. Usuario dice «No, es que optimizarlo no vamos a poder más» tras proponer detener optimización/dejar demora declarada: registrar decisión de cesar nuevas optimizaciones,no imposibilidad técnica demostrada. Documento para revisión inmediata,no ya entregado,cierre,cancelación,nuevas pruebas/código/auditor/paquetes congelados. Preservar algoritmos y pasos,SLAnoSorting,separarC/preparación/replay.",
+  "scope_ref": "openspec/changes/reconcile-remaining-historical-contracts/instruction-delivery-current-results-20261006.md"
+}

@@ -1,0 +1,26 @@
+✔ JPG download uses attached blob anchor, exact JPEG bytes/MIME and delayed cleanup (6.793677ms)
+✔ download failure releases blob and anchor immediately (1.482335ms)
+✔ invalid image output is not downloaded (0.93068ms)
+✔ image onload resolves and clears timer/listeners (1.299107ms)
+✔ image onerror rejects and releases source/timer (1.135018ms)
+✔ image with no event has finite timeout and releases resources (0.962057ms)
+✔ raster prefers self-contained data SVG and revokes blob after fallback (1.476096ms)
+✔ raster failure always releases intermediate URL (1.006524ms)
+✔ panel/global graph target promotes to region including sibling current memory (2.618606ms)
+✔ other families and detached graph target keep their existing export target (1.640244ms)
+✔ graph uses measured detached expansion; region excludes controls/C/Comprender (0.434468ms)
+✔ panel/global hash target promotes to region including sibling current memory (2.479304ms)
+✔ other families and detached hash target keep their existing export target (1.120166ms)
+✔ hash uses measured detached expansion; region excludes controls/C/Comprender (0.386896ms)
+✔ expands only detached descendants and measures content beyond original viewport (3.424325ms)
+✔ temporary measurement DOM always removed on layout failure (2.505995ms)
+✔ hierarchical expansion is scoped to region and descendant target, not other families (0.293664ms)
+✔ nonzero SVG viewBox origin stays intact while width/height are restored (1.170783ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 183.799243

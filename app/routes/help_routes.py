@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from io import BytesIO
 import re
 
-from flask import Blueprint, render_template
+from flask import Blueprint, abort, render_template, send_file
 
 from app.services.hash_help_service import HashHelpService
 from app.services.hash_structure_service import HashStructureService
@@ -18,6 +19,7 @@ from app.services.sorting_help_service import SortingHelpService
 from app.services.sorting_structure_service import SortingStructureService
 from app.services.c_code_service import CCodeService
 from app.services.structure_service import StructureService
+from app.services.session_service import SessionService
 
 help_bp = Blueprint("help", __name__, url_prefix="/help")
 
@@ -32,8 +34,8 @@ _TAD_INTRODUCTIONS: dict[str, str] = {
         "y cada operacion debe preservar consistencia cuando la estructura pasa de vacia a no vacia y viceversa."
     ),
     "priority_queue": (
-        "La Cola de Prioridad atiende primero el elemento con mayor prioridad logica (segun contrato del TAD). "
-        "La interpretacion muestra comparaciones para ubicar el nuevo nodo en la posicion correcta."
+        "La Cola de Prioridad conserva físicamente el orden de llegada. Para atender, recorre esa cadena y "
+        "selecciona la mayor prioridad lógica (menor número); los empates se resuelven por llegada anterior."
     ),
     "linked_list": (
         "La Lista Enlazada representa una secuencia dinamica de nodos conectados por punteros. "
@@ -69,7 +71,7 @@ _TAD_INTRODUCTIONS: dict[str, str] = {
     ),
     "hash_table": (
         "La Tabla Hash mapea claves a buckets mediante una funcion hash. "
-        "La simulacion muestra colisiones, encadenamiento y eventos de rehash al crecer la carga."
+        "La simulacion muestra colisiones y encadenamiento; la capacidad es fija y no hay rehash automático."
     ),
     "sorting_array": (
         "El modulo de ordenamiento opera sobre arreglos de enteros y compara metodos clasicos del TAD C. "
@@ -87,19 +89,19 @@ _METHOD_EXPLANATIONS: dict[str, str] = {
     "insertar_inicio": "Inserta nodo al inicio: enlaza el nuevo nodo antes del actual primero y actualiza la cabecera.",
     "insertar_final": "Recorre hasta el ultimo nodo y conecta el nuevo elemento al final de la secuencia.",
     "lista_insertar_elemento": "Inserta por posicion base segun contrato del TAD, ajustando enlaces previo/siguiente en el punto objetivo.",
-    "buscar_elemento": "Recorre secuencialmente comparando valores hasta encontrar coincidencia o agotar la lista.",
+    "buscar_elemento": "Recorre toda la lista e imprime las posiciones de todas las coincidencias; si no encuentra ninguna, informa que el número no fue encontrado.",
     "mostrar": "Recorre la estructura para construir una salida ordenada sin alterar enlaces internos.",
     "eliminar_elemento": "Busca la primera ocurrencia, reconecta vecinos para excluir el nodo y libera su memoria.",
-    "eliminar_repetidos": "Detecta duplicados durante el recorrido, elimina ocurrencias adicionales y conserva solo una por valor.",
+    "eliminar_repetidos": "Elimina todas las ocurrencias del valor solicitado, reconecta la lista y libera cada nodo coincidente.",
     "eliminar_inicio": "Remueve la cabecera, mueve el inicio al siguiente nodo y libera el nodo anterior.",
     "eliminar_primero": "Elimina la primera coincidencia de un valor y recompone enlaces para mantener continuidad.",
     "buscar_posiciones": "Recorre toda la lista y registra todas las posiciones donde aparece el valor buscado.",
     "invertir": "Reasigna enlaces nodo a nodo para invertir la direccion completa de la lista.",
     "insertar_padre": "Crea nodo padre en la lista principal de sublistas manteniendo su cadena independiente.",
     "insertar_hijo": "Localiza el padre objetivo y agrega el hijo en su sublista, sin afectar otros padres.",
-    "eliminar_padre": "Elimina un padre y libera recursivamente/iterativamente su sublista de hijos asociada.",
+    "eliminar_padre": "Elimina el primer padre coincidente: libera sus hijos uno a uno y luego ese padre, conservando las demás ramas.",
     "eliminar_hijo": "Dentro del padre indicado, busca el hijo por valor y lo elimina ajustando enlaces locales.",
-    "hijos_de": "Devuelve la coleccion de hijos del padre solicitado sin modificar la estructura.",
+    "hijos_de": "Devuelve los hijos del primer padre coincidente sin modificar la estructura. El C copia como máximo la capacidad del arreglo destino y retorna la cantidad copiada.",
     "insertar": "Inserta respetando reglas de orden/balance del TAD y actualiza punteros estructurales necesarios.",
     "eliminar": "Localiza el objetivo y aplica el caso de borrado correspondiente (hoja, un hijo, dos hijos o rebalanceo).",
     "buscar": "Navega por comparaciones hasta encontrar el valor o concluir que no existe.",
@@ -201,6 +203,13 @@ def _build_tad_description(summary: str, introduction: str) -> str:
 def _resolve_method_explanation(operation_label: str, structure_title: str) -> str:
     """Build a method explanation shown before each C snippet."""
     key = _normalize_operation_name(operation_label)
+    if structure_title == "Cola de Prioridad":
+        if key == "desencolar":
+            return "Selecciona el nodo con menor número de prioridad; los empates respetan la llegada. Desconecta y libera el candidato, ajustando los extremos cuando corresponda."
+        if key == "frente":
+            return "Consulta el candidato de menor número de prioridad, con desempate por llegada; puede no ser el primer nodo físico de la cadena."
+    if structure_title == "Monticulo Binario" and key == "limpiar":
+        return "Libera el arreglo interno del montículo y lo reinicializa para volver a operar; este TAD no utiliza nodos enlazados."
     text = _METHOD_EXPLANATIONS.get(key, "").strip()
     if text:
         return text
@@ -276,7 +285,7 @@ def _enrich_help_with_c_code(help_data: dict, structure_id: str) -> dict:
         key = _normalize_operation_name(operation_label)
         covered_keys.add(key)
         snippet = operation_map.get(key, c_data.get("default_operation", ""))
-        c_symbol = _extract_c_symbol_from_snippet(snippet)
+        c_symbol = c_data.get("operation_functions", {}).get(key) or _extract_c_symbol_from_snippet(snippet)
         c_methods.append(
             {
                 "operation": operation_label,
@@ -291,7 +300,7 @@ def _enrich_help_with_c_code(help_data: dict, structure_id: str) -> dict:
     for key, snippet in operation_map.items():
         if key in covered_keys:
             continue
-        c_symbol = _extract_c_symbol_from_snippet(snippet)
+        c_symbol = c_data.get("operation_functions", {}).get(key) or _extract_c_symbol_from_snippet(snippet)
         c_methods.append(
             {
                 "operation": key,
@@ -307,11 +316,57 @@ def _enrich_help_with_c_code(help_data: dict, structure_id: str) -> dict:
     enriched["c_code_title"] = c_data.get("code_title", "Codigo C")
     enriched["c_structure_code"] = c_data.get("record", "/* Estructura C no encontrada. */")
     enriched["c_methods"] = c_methods
+    enriched["source_download"] = CCodeService.get_downloadable_tad(structure_id)
     enriched["supported_operations_display"] = _build_supported_operations_display(
         list(supported_operations),
         methods_by_operation,
     )
     return enriched
+
+
+@help_bp.get("/source/<structure_id>/<file_kind>")
+def download_tad_source(structure_id: str, file_kind: str):
+    """Download an allowlisted complete C TAD source or its public header."""
+    if structure_id == "graph" and file_kind == "main":
+        from app.services.graph_session_history import read_graph_history
+        model = GraphStructureService.get_view_model("graph", read_graph_history())
+        if model.get("main_unavailable_reason"):
+            return {"success": False, "message": model["main_unavailable_reason"]}, 409
+        response = send_file(BytesIO(model["main_c"].encode("utf-8")), mimetype="text/x-c", as_attachment=True, download_name="main.c")
+        response.headers["Cache-Control"] = "private, no-store"
+        return response
+    if structure_id == "stack" and file_kind == "main":
+        from app.services.stack_main_service import build_stack_main
+        from app.services.structure_service import StructureService
+        model = StructureService.get_view_model("stack", SessionService.get_history("stack"))
+        try:
+            main_c = build_stack_main(model["history"])
+        except ValueError as error:
+            return {"success": False, "message": str(error)}, 400
+        response = send_file(BytesIO(main_c.encode("utf-8")), mimetype="text/x-c",
+            as_attachment=True, download_name="main.c")
+        response.headers["Cache-Control"] = "private, no-store"
+        return response
+    if structure_id == "hash_table" and file_kind == "main":
+        from app.services.hash_journal_service import get_main
+        model = HashStructureService.get_view_model(structure_id, SessionService.get_history("hash::hash_table"))
+        model["main_c"] = get_main("hash::hash_table", SessionService.get_history("hash::hash_table"))
+        response = send_file(BytesIO(model["main_c"].encode("utf-8")), mimetype="text/x-c", as_attachment=True, download_name="main.c")
+        response.headers["Cache-Control"] = "private, no-store"
+        return response
+    if structure_id == "sorting_array" and file_kind == "main":
+        history = SessionService.get_history("sorting::sorting_array")
+        model = SortingStructureService.get_view_model(structure_id, history)
+        if model["history"] != history:
+            SessionService.save_history("sorting::sorting_array", model["history"])
+        response = send_file(BytesIO(model["main_c"].encode("utf-8")), mimetype="text/x-c", as_attachment=True, download_name="main.c")
+        response.headers["Cache-Control"] = "private, no-store"
+        return response
+    source_file = CCodeService.get_downloadable_tad_file(structure_id, file_kind)
+    if source_file is None:
+        abort(404)
+    mimetype = "text/x-c" if file_kind == "source" else "text/x-csrc"
+    return send_file(source_file, mimetype=mimetype, as_attachment=True, download_name=source_file.name)
 
 
 @help_bp.get("/sequential")
@@ -325,6 +380,8 @@ def sequential_help() -> str:
 @help_bp.get("/sequential/<structure_id>")
 def structure_help(structure_id: str) -> str:
     """Render a specific structure help page."""
+    if not any(item["id"] == structure_id for item in StructureService.list_structures()):
+        abort(404)
     data = HelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template("help/structure.html", help_data=data, structure_id=structure_id)
@@ -341,6 +398,8 @@ def hierarchical_help() -> str:
 @help_bp.get("/hierarchical/<structure_id>")
 def hierarchical_structure_help(structure_id: str) -> str:
     """Render one hierarchical structure help page."""
+    if not any(item["id"] == structure_id for item in HierarchicalStructureService.list_structures()):
+        abort(404)
     data = HierarchicalHelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(
@@ -361,6 +420,8 @@ def graph_help() -> str:
 @help_bp.get("/graph/<structure_id>")
 def graph_structure_help(structure_id: str) -> str:
     """Render one graph structure help page."""
+    if not any(item["id"] == structure_id for item in GraphStructureService.list_structures()):
+        abort(404)
     data = GraphHelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(
@@ -381,6 +442,8 @@ def hash_help() -> str:
 @help_bp.get("/hash/<structure_id>")
 def hash_structure_help(structure_id: str) -> str:
     """Render one hash structure help page."""
+    if not any(item["id"] == structure_id for item in HashStructureService.list_structures()):
+        abort(404)
     data = HashHelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(
@@ -401,6 +464,8 @@ def sorting_help() -> str:
 @help_bp.get("/sorting/<structure_id>")
 def sorting_structure_help(structure_id: str) -> str:
     """Render one sorting structure help page."""
+    if not any(item["id"] == structure_id for item in SortingStructureService.list_structures()):
+        abort(404)
     data = SortingHelpService.get_structure_help(structure_id)
     data = _enrich_help_with_c_code(data, structure_id)
     return render_template(

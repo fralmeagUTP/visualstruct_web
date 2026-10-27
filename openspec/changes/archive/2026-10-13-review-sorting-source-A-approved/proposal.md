@@ -1,0 +1,3 @@
+# Sorting source A review
+
+Independent focal QA userapprovedSortingA: explicitfullsupportedCrequired; rejectmissing/blank/incompletebody beforeinterpreter/events/mutation/fakesuccessfulhistory, nofallback; legitimateconsumersfullC withallasserts preserved,14identifiedfirstsourcecases andsmallnegativecontrols. Verify sourcepreflightdoesnotoptimize/runalgorithms ordefaultsource; contractdelta andproviderfailureHTTP400. No E2Ejobchange/SLA/broadsuite/publication/VPS. Initialbinding precedesimplementation; finalmanifestwillfreeze afterownQA. Noauthorverdict.

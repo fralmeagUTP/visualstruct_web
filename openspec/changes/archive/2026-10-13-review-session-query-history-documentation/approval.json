@@ -1,0 +1,9 @@
+{
+  "approved": true,
+  "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+  "allowed_paths": [
+    "openspec/changes/reconcile-remaining-historical-contracts/evidence/independent-review-20261004"
+  ],
+  "provenance": "Delegación coordinación01a0fe61-3104-743a-b032-bcc289ad80cd con IDs exactos devueltos por QA,20261004",
+  "meaning": "Sólo QA documental independiente y evidencia propia; sin adopción ni ejecución suplantada"
+}

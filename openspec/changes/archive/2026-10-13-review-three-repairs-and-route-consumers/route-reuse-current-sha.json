@@ -1,0 +1,1738 @@
+{
+  "rows": [
+    {
+      "route": "route:GET /",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_app_routes.py::test_homepage_loads",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 41,
+          "actual_call": {
+            "nodeid": "tests/test_app_routes.py::test_homepage_loads",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.04569810000248253,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_app_routes.py",
+          "registered_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "current_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_bfs_negative_vertices.py::test_downloaded_bfs_negative_vertices_and_empty_queue",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 1377,
+          "actual_call": {
+            "nodeid": "tests/test_audit_bfs_negative_vertices.py::test_downloaded_bfs_negative_vertices_and_empty_queue",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 13.544261000002734,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_bfs_negative_vertices.py",
+          "registered_SHA": "6632b44d20a7783c97049bcb0dfb6229be333378a576bb055b25dd47259d9be7",
+          "current_SHA": "6632b44d20a7783c97049bcb0dfb6229be333378a576bb055b25dd47259d9be7",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_repeated_main_operations_e2e.py::test_consecutive_insertions_main_native_state_and_pending_click_guard[linked_list]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3164,
+          "actual_call": {
+            "nodeid": "tests/test_audit_repeated_main_operations_e2e.py::test_consecutive_insertions_main_native_state_and_pending_click_guard[linked_list]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 13.41860970002017,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_repeated_main_operations_e2e.py",
+          "registered_SHA": "9c2f0828f30f1614ad6353ce07cc6e033ac382c0870a1caa016c16b54c1ee506",
+          "current_SHA": "9c2f0828f30f1614ad6353ce07cc6e033ac382c0870a1caa016c16b54c1ee506",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_repeated_main_operations_e2e.py::test_consecutive_insertions_main_native_state_and_pending_click_guard[circular_list]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3167,
+          "actual_call": {
+            "nodeid": "tests/test_audit_repeated_main_operations_e2e.py::test_consecutive_insertions_main_native_state_and_pending_click_guard[circular_list]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 14.005120999994688,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_repeated_main_operations_e2e.py",
+          "registered_SHA": "9c2f0828f30f1614ad6353ce07cc6e033ac382c0870a1caa016c16b54c1ee506",
+          "current_SHA": "9c2f0828f30f1614ad6353ce07cc6e033ac382c0870a1caa016c16b54c1ee506",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_search_history_e2e.py::test_search_reload_main_native_results_and_failure_history[linked_list-buscar_elemento]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3182,
+          "actual_call": {
+            "nodeid": "tests/test_audit_search_history_e2e.py::test_search_reload_main_native_results_and_failure_history[linked_list-buscar_elemento]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 15.35948750001262,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_search_history_e2e.py",
+          "registered_SHA": "0d0caab157a34a785d32214849e9985f1eb1ab1283b99701e77b48cf71a8e6a6",
+          "current_SHA": "0d0caab157a34a785d32214849e9985f1eb1ab1283b99701e77b48cf71a8e6a6",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_search_history_e2e.py::test_search_reload_main_native_results_and_failure_history[circular_list-buscar_posiciones]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3185,
+          "actual_call": {
+            "nodeid": "tests/test_audit_search_history_e2e.py::test_search_reload_main_native_results_and_failure_history[circular_list-buscar_posiciones]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 24.199787899997318,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_search_history_e2e.py",
+          "registered_SHA": "0d0caab157a34a785d32214849e9985f1eb1ab1283b99701e77b48cf71a8e6a6",
+          "current_SHA": "0d0caab157a34a785d32214849e9985f1eb1ab1283b99701e77b48cf71a8e6a6",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4298,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.049760399997467175,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4301,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0013070999993942678,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4304,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.03398040001047775,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4307,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.029868000012356788,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4310,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.031026899989228696,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4313,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.027361200016457587,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4316,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02427460000035353,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4319,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02405059998272918,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_coverage_gates.py::test_coverage_gates_reject_critical_component_regression",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4532,
+          "actual_call": {
+            "nodeid": "tests/test_coverage_gates.py::test_coverage_gates_reject_critical_component_regression",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00032500000088475645,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_coverage_gates.py",
+          "registered_SHA": "33829d40baed7c91030d92ab81d3272ce24c6f316ee6ed148fc2a26ef969d3a8",
+          "current_SHA": "33829d40baed7c91030d92ab81d3272ce24c6f316ee6ed148fc2a26ef969d3a8",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_coverage_gates.py::test_coverage_gates_reject_missing_component_and_malformed_report",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4535,
+          "actual_call": {
+            "nodeid": "tests/test_coverage_gates.py::test_coverage_gates_reject_missing_component_and_malformed_report",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00047679999261163175,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_coverage_gates.py",
+          "registered_SHA": "33829d40baed7c91030d92ab81d3272ce24c6f316ee6ed148fc2a26ef969d3a8",
+          "current_SHA": "33829d40baed7c91030d92ab81d3272ce24c6f316ee6ed148fc2a26ef969d3a8",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_documentation.py::test_bfs_fresh_download_contracts_and_manual",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5073,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_documentation.py::test_bfs_fresh_download_contracts_and_manual",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.3163790000253357,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_documentation.py",
+          "registered_SHA": "9c1c4315c17aaee4b318e3c5304b1634b52b8a08e4241c59119557a753cf4651",
+          "current_SHA": "9c1c4315c17aaee4b318e3c5304b1634b52b8a08e4241c59119557a753cf4651",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[1]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5166,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[1]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 9.860193000000436,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_instruction_e2e.py",
+          "registered_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "current_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[3]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5169,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[3]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 34.25860790000297,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_instruction_e2e.py",
+          "registered_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "current_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[4]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5172,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[4]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 20.200261399993906,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_instruction_e2e.py",
+          "registered_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "current_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[5]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5175,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[5]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 26.665919099992607,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_instruction_e2e.py",
+          "registered_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "current_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[6]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5178,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[6]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 37.46169889997691,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_instruction_e2e.py",
+          "registered_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "current_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[7]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5181,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[7]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 30.144139799987897,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_instruction_e2e.py",
+          "registered_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "current_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[8]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5184,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[8]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 24.259243200009223,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_instruction_e2e.py",
+          "registered_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "current_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[9]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5187,
+          "actual_call": {
+            "nodeid": "tests/test_graph_bfs_instruction_e2e.py::test_bfs_actual_browser_views_and_caller[9]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 33.562635100010084,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_bfs_instruction_e2e.py",
+          "registered_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "current_SHA": "fc0c437c74e1ed3af5999c3ee0e2e5b0e8716a02dcbdcf3453e17ff153593d41",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_caller_e2e.py::test_dfs_actual_history_caller[1]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5232,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_caller_e2e.py::test_dfs_actual_history_caller[1]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 9.013130999985151,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_caller_e2e.py",
+          "registered_SHA": "e19136a632f3af1116a6a0a4dff1b26eafe9e503f9d1056176572118eee9d3db",
+          "current_SHA": "e19136a632f3af1116a6a0a4dff1b26eafe9e503f9d1056176572118eee9d3db",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_caller_e2e.py::test_dfs_actual_history_caller[6]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5235,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_caller_e2e.py::test_dfs_actual_history_caller[6]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 32.99006630000076,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_caller_e2e.py",
+          "registered_SHA": "e19136a632f3af1116a6a0a4dff1b26eafe9e503f9d1056176572118eee9d3db",
+          "current_SHA": "e19136a632f3af1116a6a0a4dff1b26eafe9e503f9d1056176572118eee9d3db",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_caller_e2e.py::test_dfs_actual_history_caller[7]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5238,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_caller_e2e.py::test_dfs_actual_history_caller[7]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 25.077512599993497,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_caller_e2e.py",
+          "registered_SHA": "e19136a632f3af1116a6a0a4dff1b26eafe9e503f9d1056176572118eee9d3db",
+          "current_SHA": "e19136a632f3af1116a6a0a4dff1b26eafe9e503f9d1056176572118eee9d3db",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_documentation.py::test_dfs_fresh_download_contracts_and_manual",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5247,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_documentation.py::test_dfs_fresh_download_contracts_and_manual",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.3112914999946952,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_documentation.py",
+          "registered_SHA": "ade2bd53b8dc5ae687257a61cbea5f050009cbb400a89c4e41d5ba93065f33d9",
+          "current_SHA": "ade2bd53b8dc5ae687257a61cbea5f050009cbb400a89c4e41d5ba93065f33d9",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[1]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5307,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[1]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 9.33629390000715,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_instruction_e2e.py",
+          "registered_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "current_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[3]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5310,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[3]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 31.589171200001147,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_instruction_e2e.py",
+          "registered_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "current_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[4]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5313,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[4]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 19.74837819999084,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_instruction_e2e.py",
+          "registered_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "current_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[5]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5316,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[5]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 24.920343100005994,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_instruction_e2e.py",
+          "registered_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "current_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[6]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5319,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[6]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 37.88394450000487,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_instruction_e2e.py",
+          "registered_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "current_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[7]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5322,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[7]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 31.00780449999729,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_instruction_e2e.py",
+          "registered_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "current_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[8]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5325,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[8]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 27.522311000007903,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_instruction_e2e.py",
+          "registered_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "current_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[9]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5328,
+          "actual_call": {
+            "nodeid": "tests/test_graph_dfs_instruction_e2e.py::test_dfs_actual_browser_views_and_caller[9]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 31.780955499998527,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_dfs_instruction_e2e.py",
+          "registered_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "current_SHA": "b5c002aa38ca9d87ba2a3986f3e24290ade8d84c91abdfcf7ae87b5e00a16374",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_four_instruction_e2e.py::test_numeric_actual_browser_player_history_downloaded_caller[bellman_ford]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5463,
+          "actual_call": {
+            "nodeid": "tests/test_graph_four_instruction_e2e.py::test_numeric_actual_browser_player_history_downloaded_caller[bellman_ford]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 52.726656299986644,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_four_instruction_e2e.py",
+          "registered_SHA": "b28e827a6b164c10fb2ebc010b2b5835e6783cd39b34262d5462340a35a018d4",
+          "current_SHA": "b28e827a6b164c10fb2ebc010b2b5835e6783cd39b34262d5462340a35a018d4",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_four_instruction_e2e.py::test_numeric_actual_browser_player_history_downloaded_caller[prim]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5466,
+          "actual_call": {
+            "nodeid": "tests/test_graph_four_instruction_e2e.py::test_numeric_actual_browser_player_history_downloaded_caller[prim]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 41.70322130000568,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_four_instruction_e2e.py",
+          "registered_SHA": "b28e827a6b164c10fb2ebc010b2b5835e6783cd39b34262d5462340a35a018d4",
+          "current_SHA": "b28e827a6b164c10fb2ebc010b2b5835e6783cd39b34262d5462340a35a018d4",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_four_instruction_e2e.py::test_numeric_actual_browser_player_history_downloaded_caller[dijkstra]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5469,
+          "actual_call": {
+            "nodeid": "tests/test_graph_four_instruction_e2e.py::test_numeric_actual_browser_player_history_downloaded_caller[dijkstra]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 31.0653922999918,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_four_instruction_e2e.py",
+          "registered_SHA": "b28e827a6b164c10fb2ebc010b2b5835e6783cd39b34262d5462340a35a018d4",
+          "current_SHA": "b28e827a6b164c10fb2ebc010b2b5835e6783cd39b34262d5462340a35a018d4",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_graph_four_instruction_e2e.py::test_numeric_actual_browser_player_history_downloaded_caller[kruskal]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 5472,
+          "actual_call": {
+            "nodeid": "tests/test_graph_four_instruction_e2e.py::test_numeric_actual_browser_player_history_downloaded_caller[kruskal]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 34.618357400002424,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_graph_four_instruction_e2e.py",
+          "registered_SHA": "b28e827a6b164c10fb2ebc010b2b5835e6783cd39b34262d5462340a35a018d4",
+          "current_SHA": "b28e827a6b164c10fb2ebc010b2b5835e6783cd39b34262d5462340a35a018d4",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /api/ordenamiento/state",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_comprehensive_sorting_qa.py::test_every_sorting_endpoint_option_manual_random_step_state_compare_and_reset",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4277,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_sorting_qa.py::test_every_sorting_endpoint_option_manual_random_step_state_compare_and_reset",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 1.655515699996613,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_sorting_qa.py",
+          "registered_SHA": "45fdab52cd2a28a53cf464aad6abb8ff4af13519c3fdf0c46e604b4a07172cc3",
+          "current_SHA": "45fdab52cd2a28a53cf464aad6abb8ff4af13519c3fdf0c46e604b4a07172cc3",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /graph/",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4298,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.049760399997467175,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4301,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0013070999993942678,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4304,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.03398040001047775,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4307,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.029868000012356788,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4310,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.031026899989228696,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4313,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.027361200016457587,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4316,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02427460000035353,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4319,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02405059998272918,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /hash/",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4298,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.049760399997467175,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4301,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0013070999993942678,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4304,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.03398040001047775,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4307,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.029868000012356788,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4310,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.031026899989228696,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4313,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.027361200016457587,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4316,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02427460000035353,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4319,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02405059998272918,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /help/graph",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 101,
+          "actual_call": {
+            "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.06384950000210665,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_app_routes.py",
+          "registered_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "current_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /help/hash",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 101,
+          "actual_call": {
+            "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.06384950000210665,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_app_routes.py",
+          "registered_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "current_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /help/hierarchical",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 101,
+          "actual_call": {
+            "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.06384950000210665,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_app_routes.py",
+          "registered_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "current_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /help/sequential",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 101,
+          "actual_call": {
+            "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.06384950000210665,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_app_routes.py",
+          "registered_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "current_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /help/sorting",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 101,
+          "actual_call": {
+            "nodeid": "tests/test_app_routes.py::test_help_module_pages_reference_user_manual",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.06384950000210665,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_app_routes.py",
+          "registered_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "current_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /hierarchical/",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4298,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.049760399997467175,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4301,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0013070999993942678,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4304,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.03398040001047775,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4307,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.029868000012356788,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4310,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.031026899989228696,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4313,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.027361200016457587,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4316,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02427460000035353,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4319,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02405059998272918,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /sequential/",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_app_routes.py::test_sequential_index_loads",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 53,
+          "actual_call": {
+            "nodeid": "tests/test_app_routes.py::test_sequential_index_loads",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.028270499999052845,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_app_routes.py",
+          "registered_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "current_SHA": "8b1a64b27295003f7539fc6f4296a87b9689f29069cd99885ed30fa18099810e",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_repeated_main_operations_e2e.py::test_consecutive_insertions_main_native_state_and_pending_click_guard[linked_list]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3164,
+          "actual_call": {
+            "nodeid": "tests/test_audit_repeated_main_operations_e2e.py::test_consecutive_insertions_main_native_state_and_pending_click_guard[linked_list]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 13.41860970002017,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_repeated_main_operations_e2e.py",
+          "registered_SHA": "9c2f0828f30f1614ad6353ce07cc6e033ac382c0870a1caa016c16b54c1ee506",
+          "current_SHA": "9c2f0828f30f1614ad6353ce07cc6e033ac382c0870a1caa016c16b54c1ee506",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_repeated_main_operations_e2e.py::test_consecutive_insertions_main_native_state_and_pending_click_guard[circular_list]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3167,
+          "actual_call": {
+            "nodeid": "tests/test_audit_repeated_main_operations_e2e.py::test_consecutive_insertions_main_native_state_and_pending_click_guard[circular_list]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 14.005120999994688,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_repeated_main_operations_e2e.py",
+          "registered_SHA": "9c2f0828f30f1614ad6353ce07cc6e033ac382c0870a1caa016c16b54c1ee506",
+          "current_SHA": "9c2f0828f30f1614ad6353ce07cc6e033ac382c0870a1caa016c16b54c1ee506",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_search_history_e2e.py::test_search_reload_main_native_results_and_failure_history[linked_list-buscar_elemento]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3182,
+          "actual_call": {
+            "nodeid": "tests/test_audit_search_history_e2e.py::test_search_reload_main_native_results_and_failure_history[linked_list-buscar_elemento]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 15.35948750001262,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_search_history_e2e.py",
+          "registered_SHA": "0d0caab157a34a785d32214849e9985f1eb1ab1283b99701e77b48cf71a8e6a6",
+          "current_SHA": "0d0caab157a34a785d32214849e9985f1eb1ab1283b99701e77b48cf71a8e6a6",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_audit_search_history_e2e.py::test_search_reload_main_native_results_and_failure_history[circular_list-buscar_posiciones]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3185,
+          "actual_call": {
+            "nodeid": "tests/test_audit_search_history_e2e.py::test_search_reload_main_native_results_and_failure_history[circular_list-buscar_posiciones]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 24.199787899997318,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_audit_search_history_e2e.py",
+          "registered_SHA": "0d0caab157a34a785d32214849e9985f1eb1ab1283b99701e77b48cf71a8e6a6",
+          "current_SHA": "0d0caab157a34a785d32214849e9985f1eb1ab1283b99701e77b48cf71a8e6a6",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4298,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.049760399997467175,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4301,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0013070999993942678,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4304,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.03398040001047775,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4307,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.029868000012356788,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4310,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.031026899989228696,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4313,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.027361200016457587,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4316,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02427460000035353,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4319,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02405059998272918,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /sorting/",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4298,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/-Visualizador Web de Estructuras de Datos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.049760399997467175,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4301,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/healthz-\"status\":\"ok\"]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0013070999993942678,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4304,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sequential/-Estructuras Secuenciales]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.03398040001047775,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4307,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hierarchical/-Estructuras Jerarquicas]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.029868000012356788,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4310,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/graph/-Grafos]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.031026899989228696,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4313,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/hash/-Hash]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.027361200016457587,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4316,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/sorting/-Ordenamiento]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02427460000035353,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        },
+        {
+          "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4319,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_transversal_qa.py::test_public_module_entries_and_health_contract[/help/manual-Manual de uso]",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.02405059998272918,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_transversal_qa.py",
+          "registered_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "current_SHA": "3bd67b7dccdec8fe6dc1496c4f4f4ec1cd589b9ef74b19a459a398778d8bce57",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:GET /sorting/sorting_array",
+      "passed_call_candidates": [
+        {
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/route-alias-result.json",
+          "sha256": "d3d15fc67414bc44cbfb3aec2c5594b03a4bc99486e7e9ce031d2ea1c8b9ee9c",
+          "observer": "openspec/changes/review-global-application-quality/evidence/independent-review/route-alias.py",
+          "observer_SHA": "7cb2379b7e57a5a300f117cb761283365ceda487a26fa5b6f7d65c54902aa86e",
+          "actual_result": {
+            "root": "GET /sorting/sorting_array",
+            "alias_status": 200,
+            "canonical_status": 200,
+            "bytes_equal": true,
+            "state_status": [
+              200,
+              200
+            ],
+            "state_equal": true,
+            "executed": true
+          },
+          "source": "app/routes/sorting_routes.py",
+          "registered_SHA": "2cc6f075ec8f03d2edc5f09707474d6c55768a6277b1a98555676c9f93327be2",
+          "current_SHA": "2cc6f075ec8f03d2edc5f09707474d6c55768a6277b1a98555676c9f93327be2",
+          "test_source_unchanged": true,
+          "scope": "ActualHTTP200alias/canonicalbytesEqual/stateunchanged; separate executedobserver, notmainpytestpass"
+        }
+      ],
+      "status": "actual_separate_observer_binding"
+    },
+    {
+      "route": "route:POST /api/ordenamiento/compare",
+      "passed_call_candidates": [],
+      "status": "no_completed_passed_call_binding"
+    },
+    {
+      "route": "route:POST /api/ordenamiento/step",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_comprehensive_sorting_qa.py::test_every_sorting_endpoint_option_manual_random_step_state_compare_and_reset",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 4277,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_sorting_qa.py::test_every_sorting_endpoint_option_manual_random_step_state_compare_and_reset",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 1.655515699996613,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_sorting_qa.py",
+          "registered_SHA": "45fdab52cd2a28a53cf464aad6abb8ff4af13519c3fdf0c46e604b4a07172cc3",
+          "current_SHA": "45fdab52cd2a28a53cf464aad6abb8ff4af13519c3fdf0c46e604b4a07172cc3",
+          "test_source_unchanged": true,
+          "source_span": [
+            57,
+            73
+          ],
+          "scope": "Actualstepnext/prev200,cursor0 via_postconstructedURL; not every state"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:POST /graph/compare",
+      "passed_call_candidates": [],
+      "status": "no_completed_passed_call_binding"
+    },
+    {
+      "route": "route:POST /hash/compare-capacities",
+      "passed_call_candidates": [
+        {
+          "nodeid": "tests/test_comprehensive_hash_qa.py::test_hash_capacity_comparison_is_isolated_and_validates_payload",
+          "outcome_evidence": "openspec/changes/review-global-application-quality/evidence/independent-review/integration-events.jsonl",
+          "line": 3761,
+          "actual_call": {
+            "nodeid": "tests/test_comprehensive_hash_qa.py::test_hash_capacity_comparison_is_isolated_and_validates_payload",
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.006875799997942522,
+            "wasxfail": null
+          },
+          "test_file": "tests/test_comprehensive_hash_qa.py",
+          "registered_SHA": "a4b77aa7588551572bcfaacc783de871fe4aa69c53892898d2901a7a38502355",
+          "current_SHA": "a4b77aa7588551572bcfaacc783de871fe4aa69c53892898d2901a7a38502355",
+          "test_source_unchanged": true,
+          "limit": "Exact scenario and route handler dependencies must be checked, not all-state proof"
+        }
+      ],
+      "status": "passed_call_binding_candidate"
+    },
+    {
+      "route": "route:POST /hierarchical/compare",
+      "passed_call_candidates": [],
+      "status": "no_completed_passed_call_binding"
+    }
+  ],
+  "count_with_passed_calls": 14,
+  "source_events_SHA": "7c37b0ab12d5a91561469353d5b0ec1b34a44fa691c044e4acdb80e07589135c",
+  "global_reuse_approved": false,
+  "count_with_passed_calls_or_executed_observer": 15
+}

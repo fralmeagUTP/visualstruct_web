@@ -1,0 +1,3 @@
+# Implementación y ejecución focal de58casos
+
+Parent01a0fe61-3104-743a-b032-bcc289ad80cd autoriza pasar58borradores a pruebas concretas,cotejando contratos yreutilización antes. Ejecutar sólobloquesfocales120s2GiB,detenerallímite sin repetir campañasconsumidas. Priorizarrutas/ops bajo coste;sincontainers/proveedores externos/publicación/despliegue. No alterarCdidáctico/sesiones. Tests nuevos conprivateConfig/tmpcache yclients/browserpropios. Algoritmos3vértices,pesos1/2 sinempates,encontextosfase nuevos;no reimplementar motorescerrados. Fuente,ejecución yaceptación separadas;noadmisiónC1automática. Registrarfallos/bloqueos,sin inventar expecteds. Fuente de58IDs:bindings-resolve71/proposed-tests.json. Bloques separados porfamilia.

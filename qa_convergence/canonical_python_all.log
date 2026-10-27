@@ -1,0 +1,62 @@
+test_all_operations_match_c_and_storage_order (test_book_adapter.BookAdapterTests.test_all_operations_match_c_and_storage_order) ... ok
+test_error_states_and_every_bfs_allocation (test_book_adapter.BookAdapterTests.test_error_states_and_every_bfs_allocation) ... ok
+test_failure_policy_atomic_first_and_partial_inverse (test_book_adapter.BookAdapterTests.test_failure_policy_atomic_first_and_partial_inverse) ... ok
+test_invalid_input_precedes_execution (test_book_adapter.BookAdapterTests.test_invalid_input_precedes_execution) ... ok
+test_no_old_semantic_calls_and_replay_seed (test_book_adapter.BookAdapterTests.test_no_old_semantic_calls_and_replay_seed) ... ok
+test_owned_cleanup_and_streaming_no_raw_accumulation (test_book_adapter.BookAdapterTests.test_owned_cleanup_and_streaming_no_raw_accumulation) ... ok
+test_zero_absent_self_longlong_and_disconnected (test_book_adapter.BookAdapterTests.test_zero_absent_self_longlong_and_disconnected) ... ok
+test_exact_boundary_and_normal_fallback (test_book_capture_budget.CaptureBudgetTests.test_exact_boundary_and_normal_fallback) ... ok
+test_random_seed_preflight_exact_replay (test_book_capture_budget.CaptureBudgetTests.test_random_seed_preflight_exact_replay) ... ok
+test_algorithm_failure_cleanup_and_atomic_marks (test_book_engine.BookEngineTests.test_algorithm_failure_cleanup_and_atomic_marks) ... ok
+test_all_functions_parse_and_source_fail_closed (test_book_engine.BookEngineTests.test_all_functions_parse_and_source_fail_closed) ... ok
+test_atomic_insert_failures (test_book_engine.BookEngineTests.test_atomic_insert_failures) ... ok
+test_construction_order_and_out_parameters (test_book_engine.BookEngineTests.test_construction_order_and_out_parameters) ... ok
+test_long_long_and_safe_sum (test_book_engine.BookEngineTests.test_long_long_and_safe_sum) ... ok
+test_optional_status_and_print (test_book_engine.BookEngineTests.test_optional_status_and_print) ... ok
+test_result_ownership_and_explicit_free (test_book_engine.BookEngineTests.test_result_ownership_and_explicit_free) ... ok
+test_status_distinguishes_null_empty_and_errors (test_book_engine.BookEngineTests.test_status_distinguishes_null_empty_and_errors) ... ok
+test_trace_and_normal_identical_semantics (test_book_engine.BookEngineTests.test_trace_and_normal_identical_semantics) ... ok
+test_abi_profile_matches_native_compiler (test_book_engine.BookSafetyTests.test_abi_profile_matches_native_compiler) ... ok
+test_dead_heap_and_stack_references_are_rejected (test_book_engine.BookSafetyTests.test_dead_heap_and_stack_references_are_rejected) ... ok
+test_real_scope_lifetime_and_external_state_snapshot (test_book_engine.BookSafetyTests.test_real_scope_lifetime_and_external_state_snapshot) ... ok
+test_seed_validation_and_wide_integer_encoding (test_book_engine.BookSafetyTests.test_seed_validation_and_wide_integer_encoding) ... ok
+test_each_snapshot_and_multicall_boundary_is_explicit (test_book_engine.BookTraceContinuityTests.test_each_snapshot_and_multicall_boundary_is_explicit) ... ok
+test_budget_includes_multicall_boundaries (test_book_engine_budget.BudgetTests.test_budget_includes_multicall_boundaries) ... ok
+test_dense_disposable_preflight_aborts_without_retaining_trace (test_book_engine_budget.BudgetTests.test_dense_disposable_preflight_aborts_without_retaining_trace) ... ok
+test_limit_is_inclusive_and_next_event_never_commits (test_book_engine_budget.BudgetTests.test_limit_is_inclusive_and_next_event_never_commits) ... ok
+test_no_snapshot_preflight_counts_all_events_and_preserves_result (test_book_engine_budget.BudgetTests.test_no_snapshot_preflight_counts_all_events_and_preserves_result) ... ok
+test_live_alias_after_free_is_historical_without_changing_raw_memory (test_book_engine_retired.RetiredProjectionTests.test_live_alias_after_free_is_historical_without_changing_raw_memory) ... ok
+test_actual_trabajo_and_long_long_projection (test_book_engine_trace.BookTraceTests.test_actual_trabajo_and_long_long_projection) ... ok
+test_asymmetric_undirected_caller_does_not_invent_reverse_arc (test_book_engine_trace.BookTraceTests.test_asymmetric_undirected_caller_does_not_invent_reverse_arc) ... ok
+test_caller_ownership_and_cost_output_are_not_conflated (test_book_engine_trace.BookTraceTests.test_caller_ownership_and_cost_output_are_not_conflated) ... ok
+test_multicall_and_error_keep_real_c_execution (test_book_engine_trace.BookTraceTests.test_multicall_and_error_keep_real_c_execution) ... ok
+test_rejection_has_no_fabricated_c (test_book_engine_trace.BookTraceTests.test_rejection_has_no_fabricated_c) ... ok
+test_streaming_and_replay_equal_no_missing_or_future_events (test_book_engine_trace.BookTraceTests.test_streaming_and_replay_equal_no_missing_or_future_events) ... ok
+test_failure_trace_and_source_downloads (test_book_http.BookHttpTests.test_failure_trace_and_source_downloads) ... [2026-10-27 05:27:33,065] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+ok
+test_legacy_get_export_post_no_write_and_reset (test_book_http.BookHttpTests.test_legacy_get_export_post_no_write_and_reset) ... [2026-10-27 05:27:33,267] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+ok
+test_book_contract_content (test_book_main_help.BookGuide.test_book_contract_content) ... ok
+test_non_graph_enrichment_unchanged (test_book_main_help.BookGuide.test_non_graph_enrichment_unchanged) ... ok
+test_other_shared_template_blocks_unchanged (test_book_main_help.BookGuide.test_other_shared_template_blocks_unchanged) ... ok
+test_rendered_guide (test_book_main_help.BookGuide.test_rendered_guide) ... [2026-10-27 05:27:34,009] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+ok
+test_cases (test_book_main_native.BookMain.test_cases) ... ok
+test_memory_failure_is_actual_state (test_book_main_native.BookMain.test_memory_failure_is_actual_state) ... ok
+test_recorded_random_only (test_book_main_native.BookMain.test_recorded_random_only) ... ok
+test_reverse_failure_does_not_invent_rollback (test_book_main_native.BookMain.test_reverse_failure_does_not_invent_rollback) ... ok
+test_undirected_second_call_only_after_ok (test_book_main_native.BookMain.test_undirected_second_call_only_after_ok) ... ok
+test_weight_input_contract (test_book_main_native.BookMain.test_weight_input_contract) ... ok
+test_failed_c_is_history_and_trace_not_preflight (test_book_service.BookServiceTests.test_failed_c_is_history_and_trace_not_preflight) ... ok
+test_generic_old_graph_planner_is_not_a_fallback (test_book_service.BookServiceTests.test_generic_old_graph_planner_is_not_a_fallback) ... ok
+test_history_legacy_never_replayed (test_book_service.BookServiceTests.test_history_legacy_never_replayed) ... ok
+test_invalid_marked_history_is_not_truncated_or_regenerated (test_book_service.BookServiceTests.test_invalid_marked_history_is_not_truncated_or_regenerated) ... ok
+test_pre_c_range_reject_preserves_history (test_book_service.BookServiceTests.test_pre_c_range_reject_preserves_history) ... ok
+test_reverse_failure_replays_actual_partial_graph (test_book_service.BookServiceTests.test_reverse_failure_replays_actual_partial_graph) ... ok
+test_existing_generator_sequence_matches_without_tad_dependency (test_random_commands.RandomCommandsTests.test_existing_generator_sequence_matches_without_tad_dependency) ... ok
+test_export_without_seed_is_rejected (test_random_commands.RandomCommandsTests.test_export_without_seed_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 54 tests in 82.135s
+
+OK

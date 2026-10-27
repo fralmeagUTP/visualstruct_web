@@ -1,0 +1,17 @@
+[
+  "app/adapters/graph_adapter.py",
+  "app/routes/graph_routes.py",
+  "app/routes/help_routes.py",
+  "app/services/c_code_service.py",
+  "app/services/execution_trace_service.py",
+  "app/services/graph_help_service.py",
+  "app/services/graph_main_service.py",
+  "app/services/graph_structure_service.py",
+  "docs/tads_C/tad_grafo.c",
+  "docs/tads_C/tad_grafo.h",
+  "openspec/continuity/index.json",
+  "static/js/graph.js",
+  "templates/graph/structure.html",
+  "templates/help/_operation_contracts.html",
+  "templates/help/graph_structure.html"
+]

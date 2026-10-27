@@ -1,0 +1,7 @@
+# Next Rojo-negro semantic scope
+
+LOW: instrument only visible Inorden/Altura/Validar canonical main helpers and public Buscar using an independent native observer, recorded empty/singleton/three-node/extreme/missing and explicit malformed validator contract cases. Observe before/after highlighted C boundaries, recursive frame parameters/local returns, ordered printf, optional bounds and short circuit; both available views forward/back, no future result or replay POST. Public query output remains distinct from generated main labels. No allocation/free or mutation invented. Application rejection differs from raw C no-op. RootBlack/order/red-red validator limits preserved.
+
+After that query boundary, prepare insertion-only native instrumentation for empty root, LL/RR/LR/RL, red-uncle recursive propagation and interior rotations, duplicate/raw no-op versus application rejection, malloc failure where independently observable. Stable reservations, uninitialized fields and partial links/recolors must follow actual downloaded C. Request bounded harder reasoning only after concrete observer evidence shows a difficult identity/recolor/call-scope mismatch. Deletion physically transplants successor and frees found reservation; do not reuse AVL value-swap semantics. It is a later separate bounded family.
+
+Current endpoint baseline84scenarios/478prefixes is not per-instruction evidence. No global/family instruction closure claimed. Maintain preview5051 and final coherent regression gate; no push/merge/deploy.

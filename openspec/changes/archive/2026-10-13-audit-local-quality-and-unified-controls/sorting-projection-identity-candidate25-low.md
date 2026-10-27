@@ -1,0 +1,3 @@
+# Candidato aislado de identidad de proyección Sorting
+
+Coordinador01a0fe61-3104-743a-b032-bcc289ad80cd autoriza preparar correcciónmínima aislada: eliminar copia/proyecciónredundante sólo proyector/convertidororiginales/JSONnativo, fallbackintacto/todasvalidaciones,25minincluidoinforme. Equivalencia/error/callback/alias/ciclos/retornoindependiente antesde una única peticiónplainrepresentativaBurbuja80/timeout60s/2GiB. Preservarcanónico/coberturaaceptada,contrato/codec/respuesta/límites. No16/noadopciónantesQA/nodebilitarasserts. Diagnóstico previo19.823validación/proyección8.889s instrumentados; no pronósticoPASS15.

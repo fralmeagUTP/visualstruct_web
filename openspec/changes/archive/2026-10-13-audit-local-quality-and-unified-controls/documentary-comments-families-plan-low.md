@@ -1,0 +1,5 @@
+# Comentarios documentales por familia — LOW
+
+Aprobación explícita transmitida por coordinación: Mary pregunta autorización de comentarios C/H exclusivamente (entradas, retornos, memoria, límites); usuario «Si lo apruebo». Asignación coordination-documentary-comments-families-low-20261004 / documentation.symbols.
+
+Actualizar sólo comentarios de símbolos de las 67 lecturas SDD, por familias: 14 Pila/Cola/auxiliares Prioridad; 15 Hash; 38 Heap/Sorting/Lista/otros Prioridad. Conservar instrucciones ejecutables, firmas, structs, macros y semántica. No ampliar índices/aliases/corrupción. Guardar fuentes antes y hashes; lexer que conserva literales y preprocesado GCC -E -P por unidad antes/después; compilación C17 estricta y Doxygen con XML concreto. No suites funcionales históricas redundantes: sólo equivalencia/documentación/compilación. Signoff de documentación y ejecución nativa distinguidos; original ledger intacto, inventario materializado nuevo con evidencia exacta sin contador paralelo. Preview y sesiones intactos, no instalar/Git/publicar/archivar. Hitos por familia y 13/22 conservado.

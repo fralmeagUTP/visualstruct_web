@@ -1,0 +1,103 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "D:\\MisProyectos\\Web_VisualEstruct",
+  "change": "review-graph-three-approved-adjustments",
+  "operation": "graph.three-adjustments-independent-qa",
+  "roles": {
+    "specifications": {
+      "enabled": false,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "code": {
+      "enabled": false,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": false,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    },
+    "documentation": {
+      "enabled": false,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ],
+      "disabled_reason": "Only independent quality checks authorized; no implementation/documentation ownership transferred."
+    }
+  },
+  "protected_paths": [
+    "app",
+    "static",
+    "templates",
+    "docs",
+    "tests",
+    "openspec/specs",
+    "openspec/changes/archive",
+    "openspec/changes/review-graph-three-approved-adjustments",
+    "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-four-instruction-traces-medium"
+  ],
+  "tasks": {
+    "graph-three-adjustments-independent-qa": {
+      "objective": "Independent finite QA of three user-approved Graph residual corrections at announced frozen milestones",
+      "role": "quality",
+      "owner": "01a0ff54-79d7-7520-8e9f-224ef5ed700f",
+      "requirements": [
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-three-approved-adjustments-plan-medium.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-three-adjustments-user-approval.json"
+      ],
+      "base": [
+        "openspec/changes/review-graph-three-approved-adjustments/design.md",
+        "openspec/changes/review-graph-three-approved-adjustments/approval.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/graph-four-instruction-traces-checkpoint-medium.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-three-approved-adjustments-medium/freeze1-inputs.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-three-approved-adjustments-medium/freeze2-inputs.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-three-approved-adjustments-medium/freeze2r1-inputs.json",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/visible-graph-three-approved-adjustments-medium/freeze3-inputs.json"
+      ],
+      "allowed_paths": [
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-graph-three-approved-adjustments"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-graph-three-approved-adjustments/review.md",
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-graph-three-approved-adjustments/checks-report.json"
+      ],
+      "documentation": [
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-graph-three-approved-adjustments/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/audit-local-quality-and-unified-controls/evidence/independent-review-graph-three-approved-adjustments/review-evidence.json"
+      ],
+      "checks": [
+        "independent-review"
+      ],
+      "next_step": "All3 technical milestones published. Review immutable freeze1, freeze2r1 (not original freeze2 optional test) and freeze3 archives matching respective inputs, extract short private paths and verify SHA. Actual reviewer own before/checks/verify/after; never source changing D or mutate preview. Author reports no QA result or closure.",
+      "state": "pending",
+      "approval": "openspec/changes/review-graph-three-approved-adjustments/approval.json",
+      "decisions": [],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}
