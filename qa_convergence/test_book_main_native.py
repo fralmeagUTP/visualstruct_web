@@ -10,12 +10,11 @@ TRACK=r'''
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
-void *__real_malloc(size_t);void *__real_calloc(size_t,size_t);void __real_free(void *);
 static long live=0, calls=0;
 static int fail(void){const char *s=getenv("FAIL_AT");return s && ++calls==strtol(s,NULL,10);}
-void *__wrap_malloc(size_t n){if(fail())return NULL;void *p=__real_malloc(n);if(p)live++;return p;}
-void *__wrap_calloc(size_t n,size_t s){if(fail())return NULL;void *p=__real_calloc(n,s);if(p)live++;return p;}
-void __wrap_free(void *p){if(p)live--;__real_free(p);}
+void *book_test_malloc(size_t n){if(fail())return NULL;void *p=malloc(n);if(p)live++;return p;}
+void *book_test_calloc(size_t n,size_t s){if(fail())return NULL;void *p=calloc(n,s);if(p)live++;return p;}
+void book_test_free(void *p){if(p)live--;free(p);}
 __attribute__((destructor)) static void check(void){if(live!=0){fprintf(stderr,"live=%ld\n",live);_Exit(86);}}
 '''
 class BookMain(unittest.TestCase):
@@ -24,7 +23,12 @@ class BookMain(unittest.TestCase):
   self.assertNotIn('tad_cola',code);self.assertNotIn('incident_caller',code)
   with tempfile.TemporaryDirectory() as d:
    d=Path(d);(d/'main.c').write_text(code);(d/'track.c').write_text(TRACK)
-   cmd=['gcc','-std=c17','-Wall','-Wextra','-Werror','-I',str(CANON),str(d/'main.c'),str(CANON/'tad_grafo.c'),str(d/'track.c'),'-Wl,--wrap=malloc,--wrap=calloc,--wrap=free','-o',str(d/'main')]
+   # Instrument only the unchanged TAD translation unit, not CRT startup or
+   # stdio internals (the linker-wide wrapper is not portable to Windows).
+   common=['gcc','-std=c17','-Wall','-Wextra','-Werror','-I',str(CANON)]
+   compiled=subprocess.run(common+['-Dmalloc=book_test_malloc','-Dcalloc=book_test_calloc','-Dfree=book_test_free','-c',str(CANON/'tad_grafo.c'),'-o',str(d/'graph.o')],text=True,capture_output=True)
+   self.assertEqual(compiled.returncode,0,compiled.stderr)
+   cmd=common+[str(d/'main.c'),str(d/'graph.o'),str(d/'track.c'),'-o',str(d/'main')]
    r=subprocess.run(cmd,text=True,capture_output=True);self.assertEqual(r.returncode,0,r.stderr+'\n'+code)
    env=dict(os.environ);env.pop('FAIL_AT',None)
    if fail_at is not None:env['FAIL_AT']=str(fail_at)

@@ -33,19 +33,35 @@ def run(c):return c.post('/api/ordenamiento/run',json={'algorithm_id':'radixsort
 from scripts.published_test_inputs import audit_input_path
 def oracle(case):return json.loads((audit_input_path(E/'native'/(case+'.json'))).read_text(encoding='utf-8'))
 
+@pytest.fixture(scope='module')
+def radix_observation():
+ """One real HTTP execution per fixed input, shared by read-only assertions.
+
+ Lazy lookup keeps each CI shard limited to the cases it actually selected.
+ Result, exact native events and metrics still have separate failing tests.
+ """
+ cache={}
+ def observed(case):
+  if case not in cache:
+   _,client=prepare(CASES[case]);response=run(client)
+   assert response.status_code==200
+   cache[case]=(response.get_json(),oracle(case))
+  return cache[case]
+ return observed
+
 @pytest.mark.parametrize('case',list(CASES))
 
-def test_radix_native_result(case):
+def test_radix_native_result(case,radix_observation):
 
- _,c=prepare(CASES[case]);d=run(c).get_json();expected=oracle(case)['outcome']
+ d,native=radix_observation(case);expected=native['outcome']
 
  assert d['success'] and d['result']['array']==expected['array'] and expected['status']==1
 
 @pytest.mark.parametrize('case',list(CASES))
 
-def test_radix_native_controls_and_helper_events_not_aggregated(case):
+def test_radix_native_controls_and_helper_events_not_aggregated(case,radix_observation):
 
- _,c=prepare(CASES[case]);t=run(c).get_json()['execution_trace'];d=oracle(case)
+ body,d=radix_observation(case);t=body['execution_trace']
 
  # Approved conditional-scope repair removes only historical unentered block markers.
  values=CASES[case];inactive=set()
@@ -61,9 +77,9 @@ def test_radix_native_controls_and_helper_events_not_aggregated(case):
 
 @pytest.mark.parametrize('case',list(CASES))
 
-def test_radix_executed_value_max_comparisons_not_discarded(case):
+def test_radix_executed_value_max_comparisons_not_discarded(case,radix_observation):
 
- _,c=prepare(CASES[case]);metrics=run(c).get_json()['result']['metrics'];d=oracle(case)
+ body,d=radix_observation(case);metrics=body['result']['metrics']
 
  # Regardless of counting sign/loop tests, executed C value comparisons cannot be omitted.
 

@@ -44,6 +44,22 @@ def pytest_collection_modifyitems(config, items):
     _path().write_text(json.dumps({"index":index,"count":count,"eligible":sorted(identity(i.nodeid) for i in complete),"selected":sorted(identity(i.nodeid) for i in selected)},indent=2),encoding="utf-8")
 
 _reports = []
+
+def pytest_collectreport(report):
+    """Keep collection failures observable without exception/input text."""
+    if not report.failed:
+        return
+    candidate = str(report.nodeid).split('::', 1)[0].replace('\\', '/')
+    safe = candidate if re.fullmatch(r'(?:tests|qa(?:_[A-Za-z0-9_]+)?|scripts/tests)/[A-Za-z0-9_/.-]+\.py', candidate) else 'unknown'
+    row = {'id': identity(report.nodeid), 'file': safe, 'function': 'unknown',
+           'phase': 'collection', 'outcome': 'failed'}
+    _reports.append(row)
+    print('TEST_EVENT ' + json.dumps(row), flush=True)
+    path = _path().with_name(_path().name.replace('selection-result.json', 'events.jsonl'))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('a', encoding='utf-8') as output:
+        output.write(json.dumps(row) + '\n')
+
 _SAFE_EXCEPTIONS = {"AssertionError", "FileNotFoundError", "ModuleNotFoundError", "ImportError", "KeyError", "ValueError", "TypeError", "RuntimeError", "TimeoutError", "TimeoutExpired", "CalledProcessError", "MemoryError", "ZeroDivisionError"}
 
 @pytest.hookimpl(hookwrapper=True)

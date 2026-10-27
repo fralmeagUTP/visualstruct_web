@@ -1,4 +1,5 @@
 """Independent downloaded-C observation of six visible parent-removal cases."""
+from _instruction_context_contract import context_stack
 import re
 import pytest
 from test_audit_sublist_child_source_native import sublist_native_review,sublist_identity_map
@@ -54,12 +55,12 @@ def test_parent_removal_native_heap_all_scopes_types_return_and_source(sublist_n
    else:
     assert not any(n['id'].startswith('H'+freed_id[1:]+'.') for n in memory['heap_nodes'])
   if event['condition']==-6:
-   assert ped['concept']=='return';assert ped['call_stack'][-1]['function']=='destruir_hijos'
-   assert ped['call_stack'][-1]['return'] is None
+   assert ped['concept']=='return';assert context_stack(ped)[-1]['function']=='destruir_hijos'
+   assert context_stack(ped)[-1]['return'] is None
    assert [f['function'] for f in ped['call_stack_after']]==['sublista_eliminar_padre_primero']
   if event['function']=='sublista_eliminar_padre_primero' and event['line'].startswith('return '):
    assert event['return_value'] in (0,1)
    assert memory['returned']==bool(event['return_value'])
-   assert ped['call_stack'][-1]['return']==bool(event['return_value'])
+   assert context_stack(ped)[-1]['return']==bool(event['return_value'])
    assert not ped['call_stack_after'] and not memory['sublist_frames'];seen_returns.append(event['return_value'])
  assert seen_returns==([0] if case in [7,19] else [1])

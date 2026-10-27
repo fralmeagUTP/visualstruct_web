@@ -1,4 +1,5 @@
 """Independent current-C search observer, borrowed identities and validated seeds."""
+from _instruction_context_contract import context_stack
 import json,subprocess,shutil
 from pathlib import Path
 import pytest
@@ -69,7 +70,7 @@ def test_avl_search_native_guard_comparisons_borrowed_alias_and_scopes(avl_searc
   assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['return_propagation']['reconnects_subtree'] and state['console_stdout']==''
   if e['phase']=='condition':assert ped['condition']['result']==bool(e['result'])
   if e['phase']=='enter':assert ped['instruction_event']['frame_id']==state['tree_frames'][-1]['id']
-  if e['phase']=='return':assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and ped['call_stack'][-1]['return']==identity(e['result']) and ped['memory_state']['returned']==identity(e['result']) and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
+  if e['phase']=='return':assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and context_stack(ped)[-1]['return']==identity(e['result']) and ped['memory_state']['returned']==identity(e['result']) and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
   if e['phase']=='caller':assert state['wrapper_result']==int(e['result']!=0) and state['returned']==identity(e['result']) and state['caller_frame'] is None
  assert initial['wrapper_result'] is None and not initial['tree_frames'] and not initial['caller_frame']
  for a,b in zip(trace['steps'],trace['steps'][1:]):assert a['state_after']==b['state_snapshot']

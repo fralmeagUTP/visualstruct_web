@@ -85,6 +85,9 @@ def _stored_value(before, after, event):
 
 
 def assert_observed_graph_frame(step, trace, index):
+    if trace.get('book_instruction_model'):
+        from _book_frame_oracle import assert_book_frame
+        return assert_book_frame(step, trace, index)
     frame = step["pedagogy"]; invariant = frame["invariant"]
     assert frame["state_before"] == step["state_snapshot"] and frame["state_after"] == step["state_after"]
     if invariant["holds"] is True:

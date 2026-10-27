@@ -33,7 +33,7 @@ def test_exact_existing_variant_and_native_guards(observed):
 
 def test_c_h_doxygen_and_closed_modules_preserved(observed):
  out,_=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
- for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
+ for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')
  closed=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-insercion-instructions/implementation-hashes.json'
  import hashlib
  hashes=json.loads(audit_input_path(closed).read_text(encoding='utf-8'))['files']

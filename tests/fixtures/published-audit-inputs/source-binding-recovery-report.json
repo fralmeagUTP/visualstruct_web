@@ -1,0 +1,19 @@
+{
+  "added": [
+    "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/dfs-transport-jpg-canonical-integration30-low.md",
+    "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/documentary-c-h-criterion13-acceptance-decision-low.md",
+    "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-dfs-transport-jpg-canonical-integration30-low/canonical-after.json",
+    "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-documentary-nonfunction-global-criteria-low/received-C-H/downloads.json",
+    "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-jpeg-hidden-list-traces-low/criterion16-own-delta-register.json",
+    "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/jpeg-hidden-list-traces-plan-low.md"
+  ],
+  "rejected": [
+    {
+      "path": "openspec/changes/archive/2026-10-13-review-sorting-projection-diff-coverage-quality/evidence/dfs-transport-jpg-canonical-integration-independent-review/review.md",
+      "reason": "original does not match declared raw or LF binding",
+      "expected": "575ce6e9c64cadb19e1e141b1ca8a52f1eea6421e0de9bd1cf1a91a25ff64077",
+      "original_sha256": "00628db47833cec4f43a25d3f47176e63c0945bf02eae4ca71545d6ce3d2889b",
+      "lf_sha256": "3c1d3bdda458d61d1a96df4d406cb894f4834d6fce9b4f2ce8602ec7896e448f"
+    }
+  ]
+}

@@ -11,7 +11,9 @@ app=create_app();client=app.test_client();hashes={}
 for kind,ext in [('source','c'),('header','h')]:
  r=client.get('/help/source/sorting_array/'+kind);assert r.status_code==200;p=OUT/('tad_ordenamiento.'+ext);p.write_bytes(r.data);hashes[p.name]=hashlib.sha256(r.data).hexdigest()
 source='#include "tad_ordenamiento.h"\n#include <stdio.h>\nint main(void){\n';fixtures=[]
-for alg in SORTING_ALGORITHMS:
+selected=SORTING_ALGORITHMS if len(sys.argv)<3 else [a for a in SORTING_ALGORITHMS if a['id']==sys.argv[2]]
+assert selected,'Unknown sorting algorithm'
+for alg in selected:
  for name,arr in CASES.items():
   idx=len(fixtures);fixtures.append((alg,name,arr));source+='{int a[]={' + (','.join(map(str,arr)) if arr else '42') + '};'
   call=f'{alg["c_function"]}(a,{len(arr)})'

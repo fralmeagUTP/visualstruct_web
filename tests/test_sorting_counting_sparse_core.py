@@ -1,12 +1,13 @@
 """Counting isolated compact core: frozen real C events, deltas/spans and budgets."""
 from pathlib import Path
+from scripts.published_test_inputs import audit_input_path
 import json,pytest
 from app.domain.sorting.counting_sparse_instructions import run_counting_sparse_trace
 from app.domain.sorting.counting_sparse_tape import expand_small,sparse_window
 ROOT=Path(__file__).resolve().parents[1];B=ROOT/'openspec/changes/audit-local-quality-and-unified-controls';OLD=B/'evidence/visible-sorting-counting-baseline-low/native-final';E=B/'evidence/visible-sorting-counting-expanded-fidelity'
 @pytest.mark.parametrize('case',['single','ordered','reverse','duplicates','negative','extremes'])
 def test_frozen_real_C_events_equal_without_reexecuting_closed_oracle(case):
-    d=json.loads((OLD/(case+'.json')).read_text(encoding='utf-8'));r=run_counting_sparse_trace(d['input']);t=r['steps'];assert len(t)==len(d['native'])
+    d=json.loads((audit_input_path(OLD/(case+'.json'))).read_text(encoding='utf-8'));r=run_counting_sparse_trace(d['input']);t=r['steps'];assert len(t)==len(d['native'])
     for i,c in enumerate(d['native']):
         event=t[i]['instruction_event'];event['conteo']=expand_small(event['conteo']);assert event=={k:v for k,v in c.items() if k!='case'}
 @pytest.mark.parametrize('values',[[5,4,3,2,1],[0,5],[0,16,8,0,16,4,12,8],[2]*80,list(range(79,-1,-1)),[-2147483643,-2147483648],[2147483647,2147483642],[0,1000]])
@@ -27,8 +28,8 @@ def test_compact_core_outside_four_controls_scopes_zeroing_and_memory(values):
     assert {'minmax_entry','min_compare','max_compare','count_init','rebuild_test','bucket_test','array_write','count_write','count_free','sort_return'}<=tokens and pending==len(values)
 
 def test_cap_million_native_C_samples_and_logical_event_count():
-    t=run_counting_sparse_trace([999999,0])['steps'];r=json.loads((E/'native-cap-scalar/report.json').read_text());assert r['actual_C_bodies'] and r['size_t64'] and r['logical_events']==len(t)==3000051 and r['allocations']==r['frees']==1 and r['live']==0
-    for line in (E/'native-cap-scalar/stdout.jsonl').read_text().splitlines():
+    t=run_counting_sparse_trace([999999,0])['steps'];r=json.loads((audit_input_path(E/'native-cap-scalar/report.json')).read_text());assert r['actual_C_bodies'] and r['size_t64'] and r['logical_events']==len(t)==3000051 and r['allocations']==r['frees']==1 and r['live']==0
+    for line in (audit_input_path(E/'native-cap-scalar/stdout.jsonl')).read_text().splitlines():
         c=json.loads(line);e=t[c['index']]['instruction_event']
         for key,value in c.items():
             if key not in ['index','selected_counts']:assert e[key]==value

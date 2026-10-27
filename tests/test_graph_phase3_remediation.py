@@ -56,8 +56,9 @@ def test_dijkstra_rejects_any_negative_edge_before_relaxation():
     adapter.execute("create_graph", {"directed": True})
     adapter.execute("insert_edge", {"origin": 1, "target": 2, "weight": 1})
     adapter.execute("insert_edge", {"origin": 9, "target": 10, "weight": -1})
-    with pytest.raises(PesoNegativoError):
-        adapter.execute("run_dijkstra", {"start": 1, "end": 2})
+    result=adapter.execute("run_dijkstra", {"start": 1, "end": 2})
+    assert not result["success"] and result["c_status"]==3
+    assert result["result"]["path"]==[]
 
 
 def test_prim_and_kruskal_report_forest_for_disconnected_graph():
@@ -68,10 +69,10 @@ def test_prim_and_kruskal_report_forest_for_disconnected_graph():
     for operation, payload in (("run_prim", {"start": 1}), ("run_kruskal", {})):
         result = adapter.execute(operation, payload)["result"]
         assert result["connected"] is False
-        assert result["components_count"] == 3
-        assert result["kind"] == "minimum_spanning_forest"
-        assert len(result["mst_edges"]) == 2
-        assert result["total_weight"] == 6.0
+        assert result["kind"] == "error"
+        assert result["mst_edges"] == []
+        assert result["total_weight"] is None
+        assert adapter.to_visual_state()["last_result"]["c_status"]==5
 
 
 def test_prim_and_kruskal_report_mst_for_connected_graph():
@@ -81,7 +82,6 @@ def test_prim_and_kruskal_report_mst_for_connected_graph():
     for operation, payload in (("run_prim", {"start": 1}), ("run_kruskal", {})):
         result = adapter.execute(operation, payload)["result"]
         assert result["connected"] is True
-        assert result["components_count"] == 1
         assert result["kind"] == "mst"
         assert result["total_weight"] == 4.0
 
@@ -90,7 +90,7 @@ def test_mst_algorithms_reject_directed_graphs():
     adapter = GraphAdapter()
     adapter.execute("create_graph", {"directed": True})
     adapter.execute("insert_edge", {"origin": 1, "target": 2, "weight": 1})
-    with pytest.raises(ValueError, match="no dirigido"):
-        adapter.execute("run_prim", {"start": 1})
-    with pytest.raises(ValueError, match="no dirigido"):
-        adapter.execute("run_kruskal", {})
+    for operation,payload in [("run_prim",{"start":1}),("run_kruskal",{})]:
+        result=adapter.execute(operation,payload)
+        assert not result["success"] and result["c_status"]==6
+        assert result["result"]["mst_edges"]==[]

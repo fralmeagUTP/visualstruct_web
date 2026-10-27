@@ -7,11 +7,16 @@ def test_prim_download_docs(client,tmp_path):
  for tad,stem in [('graph','tad_grafo'),('queue','tad_cola')]:
   for kind,ext in [('source','c'),('header','h')]:
    r=client.get('/help/source/'+tad+'/'+kind);assert r.status_code==200;p=tmp_path/(stem+'.'+ext);p.write_bytes(r.data);files.append(p)
- for ext in ['c','h']:
-  s=(tmp_path/('tad_grafo.'+ext)).read_text(encoding='utf-8-sig')
-  assert 'Admite todos los costos int, incluidos INT_MIN e INT_MAX' in s
-  assert 'presencia de candidato separada' in s and 'bandera de direccion' in s
- for name in ['docs/USER_GUIDE.md','docs/qa/graph-teacher-guide.md']:
-  s=(Path(__file__).resolve().parents[1]/name).read_text(encoding='utf-8')
-  assert '## Prim: bosque y límites del C descargado' in s and 'arcos simétricos' in s
+ root=Path(__file__).resolve().parents[1]
+ for p in files:
+  assert p.read_bytes()==(root/'docs'/'tads_C'/p.name).read_bytes()
+ source=(tmp_path/'tad_grafo.c').read_text(encoding='utf-8-sig')
+ header=(tmp_path/'tad_grafo.h').read_text(encoding='utf-8-sig')
+ assert 'grafo_prim(' in source and 'grafo_prim(' in header
+ assert 'GrafoEstado *estado' in header
+ assert 'GRAFO_RANGO' in header and 'GRAFO_DESCONECTADO' in header
+ assert 'sumar_seguro' in source and 'long long' in source
+ assert 'grafo_liberar_arcos' in header and 'grafo_destruir' in header
+ guide=(root/'docs/USER_GUIDE.md').read_text(encoding='utf-8')
+ assert 'GrafoEstado' in guide and 'Prim' in guide
  run_doxygen(tmp_path,files)

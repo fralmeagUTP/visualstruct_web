@@ -1,4 +1,4 @@
-"""Cross-call native graph marks without historical query redispatch."""
+"""Cross-call native marks and explicit replay of canonical graph commands."""
 import copy,json,re,shutil,subprocess
 from pathlib import Path
 import pytest
@@ -25,14 +25,13 @@ def marks(state):return {int(n['id']):n['marked'] for n in state['nodes']}
 
 def c_statement(op,p):
  if op=='create_graph':return 'g=grafo_crear();'
- if op=='insert_vertex':return f'g=grafo_insertar_vertice(g,{p["vertex"]});'
- if op=='insert_edge':return f'g=grafo_insertar_arco(g,{p["origin"]},{p["target"]},{p["weight"]});'
+ if op=='insert_vertex':return f'g=grafo_insertar_vertice(g,{p["vertex"]},&status);'
+ if op=='insert_edge':return f'g=grafo_insertar_arco(g,{p["origin"]},{p["target"]},{p["weight"]},&status);'
  if op=='remove_edge':return f'g=grafo_eliminar_arco(g,{p["origin"]},{p["target"]});'
  if op=='remove_vertex':return f'g=grafo_eliminar_vertice(g,{p["vertex"]});'
  if op=='clear_graph':return 'release_graph(g);g=grafo_crear();'
  if op in ['run_dfs','run_bfs']:
-  if p['start']==999:return '/* Application rejects missing start; no C query invocation. */'
-  return f'{{ListaVertice r=grafo_{op[4:]}(g,{p["start"]});while(r){{ListaVertice n=r;r=r->sig;free(n);}}}}'
+  return f'{{ListaVertice r=grafo_{op[4:]}(g,{p["start"]},&status);grafo_liberar_vertices(&r);}}'
  raise AssertionError(op)
 
 @pytest.fixture(scope='module')
@@ -44,7 +43,7 @@ def native_mark_sequences(tmp_path_factory):
    response=client.get('/help/source/'+tad+'/'+part);assert response.status_code==200;(out/(stem+'.'+ext)).write_bytes(response.data)
  source='#include "tad_grafo.h"\n#include <stdio.h>\n#include <stdlib.h>\nstatic void release_graph(Grafo g){while(g.a){ListaArco n=g.a;g.a=n->sig;free(n);}while(g.v){ListaVertice n=g.v;g.v=n->sig;free(n);}}\nstatic void emit(Grafo g,int c,int s,const char*phase){printf("\\nMARKS %d %d %s [",c,s,phase);int first=1;for(ListaVertice v=g.v;v;v=v->sig){printf("%s[%d,%d]",first?"":",",v->dato,v->marcado);first=0;}puts("]");}\nint main(void){\n'
  for case,(_,tail) in enumerate(CASES):
-  source+='{Grafo g=grafo_crear();'+''.join(c_statement(op,p) for op,p in BASE)
+  source+='{Grafo g=grafo_crear();GrafoEstado status;'+''.join(c_statement(op,p) for op,p in BASE)
   for step,(op,p) in enumerate(tail):source+=f'emit(g,{case},{step},"before");'+c_statement(op,p)+f'emit(g,{case},{step},"after");'
   source+='release_graph(g);}\n'
  source+='return 0;}';(out/'main.c').write_text(source)
@@ -56,7 +55,7 @@ def native_mark_sequences(tmp_path_factory):
 @pytest.mark.parametrize('case',range(len(CASES)),ids=[c[0] for c in CASES])
 def test_query_mark_context_matches_downloaded_c(case,native_mark_sequences,monkeypatch):
  h=[]
- for op,p in BASE:h=S.execute_operation('graph',op,copy.deepcopy(p),h)['history']
+ for op,p in BASE:h=S.execute_operation('graph',op,copy.deepcopy(p),h,execution_mode='normal')['history']
  actual_calls=[];old=GraphAdapter.execute
  def spy(self,op,p):
   if op in ['run_bfs','run_dfs']:actual_calls.append(op)
@@ -64,21 +63,29 @@ def test_query_mark_context_matches_downloaded_c(case,native_mark_sequences,monk
  monkeypatch.setattr(GraphAdapter,'execute',spy)
  for step,(op,p) in enumerate(CASES[case][1]):
   original=copy.deepcopy(h)
-  for _ in range(2):assert marks(S.get_view_model('graph',h)['visual_state'])==native_mark_sequences[case,step,'before']
+  for _ in range(2):
+   start=len(actual_calls)
+   assert marks(S.get_view_model('graph',h)['visual_state'])==native_mark_sequences[case,step,'before']
+   assert actual_calls[start:]==[row['operation'] for row in h if row['operation'] in ['run_bfs','run_dfs']]
   data=S.execute_operation('graph',op,copy.deepcopy(p),h)
   assert marks(data['execution_trace']['steps'][0]['state_snapshot'])==native_mark_sequences[case,step,'before']
   assert marks(data['visual_state'])==native_mark_sequences[case,step,'after']
-  if not data['success']:assert data['history']==original
+  if not data['success']:
+   assert data['c_status']==2 and data['history'][:-1]==original
+   assert data['history'][-1]['source_contract']=='graph-book/v1'
   h=data['history']
   for _ in range(2):assert marks(S.get_view_model('graph',h)['visual_state'])==native_mark_sequences[case,step,'after']
- expected=[op for op,_ in CASES[case][1] if op in ['run_bfs','run_dfs']]
- assert actual_calls==expected
+ assert all(row['source_contract']=='graph-book/v1' for row in h)
 
 @pytest.mark.parametrize('fault',['missing','not_dict','schema','mark_bool','mark_out_of_range','vertex_bool','duplicate','unknown_vertex','operation','start','topology','prefix','signature','extra_field','tampered_valid_mark'])
-def test_invalid_effect_is_discarded_without_query_execution(fault,monkeypatch):
+def test_legacy_effect_metadata_cannot_override_canonical_replay(fault,monkeypatch):
  h=[]
- for op,p in BASE:h=S.execute_operation('graph',op,copy.deepcopy(p),h)['history']
- data=S.execute_operation('graph','run_dfs',{'start':1},h);bad=copy.deepcopy(data['history']);effect=bad[-1]['mark_effect']
+ for op,p in BASE:h=S.execute_operation('graph',op,copy.deepcopy(p),h,execution_mode='normal')['history']
+ data=S.execute_operation('graph','run_dfs',{'start':1},h,execution_mode='normal');bad=copy.deepcopy(data['history'])
+ # graph-book/v1 persists commands, not signed mark snapshots. Historical
+ # metadata is inert; replay must compute marks from the unchanged canonical C.
+ effect={'schema_version':1,'marks':[[1,1],[2,1],[3,1],[4,1]],'operation':'run_dfs','start':1,'topology':'old','prefix':'old','signature':'old'}
+ bad[-1]['mark_effect']=effect
  if fault=='missing':bad[-1].pop('mark_effect')
  elif fault=='not_dict':bad[-1]['mark_effect']=[]
  elif fault=='schema':effect['schema_version']=True
@@ -98,39 +105,43 @@ def test_invalid_effect_is_discarded_without_query_execution(fault,monkeypatch):
  def spy(self,op,p):calls.append(op);return old(self,op,p)
  monkeypatch.setattr(GraphAdapter,'execute',spy)
  view=S.get_view_model('graph',bad)
- assert all(v==0 for v in marks(view['visual_state']).values())
- assert view['history'][-1]=={'operation':'run_dfs','payload':{'start':1}}
- assert 'run_dfs' not in calls and 'run_bfs' not in calls
+ assert marks(view['visual_state'])=={1:1,2:1,3:1,4:1}
+ assert view['history']==bad
+ assert calls.count('run_dfs')==1 and 'run_bfs' not in calls
 
 
 def test_snapshot_copy_after_mutation_rejected(monkeypatch):
  h=[]
- for op,p in BASE:h=S.execute_operation('graph',op,copy.deepcopy(p),h)['history']
- good=S.execute_operation('graph','run_dfs',{'start':1},h)['history'][-1]
- mutated=S.execute_operation('graph','insert_vertex',{'vertex':99},h)['history'];forged=mutated+[copy.deepcopy(good)]
+ for op,p in BASE:h=S.execute_operation('graph',op,copy.deepcopy(p),h,execution_mode='normal')['history']
+ good=S.execute_operation('graph','run_dfs',{'start':1},h,execution_mode='normal')['history'][-1]
+ mutated=S.execute_operation('graph','insert_vertex',{'vertex':99},h,execution_mode='normal')['history'];forged=mutated+[copy.deepcopy(good)]
  view=S.get_view_model('graph',forged)
- assert marks(view['visual_state'])=={1:0,2:0,3:0,4:0,99:0}
+ assert marks(view['visual_state'])=={1:1,2:1,3:1,4:1,99:0}
  assert 'mark_effect' not in view['history'][-1]
 
 
-def test_session_isolation_and_foreign_effect_rejected(app):
+def test_session_isolation_and_portable_canonical_history_replay(app):
  a=app.test_client();b=app.test_client()
  def post(client,op,p):return client.post('/graph/graph/operate',json={'operation':op,'payload':p}).get_json()
  for client in [a,b]:
   for op,p in BASE:assert post(client,op,p)['success']
  one=post(a,'run_dfs',{'start':1});assert marks(one['visual_state'])=={1:1,2:1,3:1,4:1}
  assert b.get('/graph/graph/recorridos').status_code==200
+ assert marks(post(b,'exists_vertex',{'vertex':1})['visual_state'])=={1:0,2:0,3:0,4:0}
  with b.session_transaction() as session:
   records=session[SESSION_KEY];records['graph::graph']['history']=copy.deepcopy(one['history']);session[SESSION_KEY]=records
- # Inspect through a real request context by asking a nonmutating query. The
- # foreign snapshot must be rejected; this operation itself does not mark.
- other=post(b,'exists_vertex',{'vertex':1});assert marks(other['visual_state'])=={1:0,2:0,3:0,4:0}
+ # Commands are explicitly portable; a real request replays them rather than
+ # accepting an unverified mark snapshot from another session.
+ other=post(b,'exists_vertex',{'vertex':1});assert marks(other['visual_state'])=={1:1,2:1,3:1,4:1}
  again=post(a,'run_dfs',{'start':2});assert marks(decode_graph_http_trace(again['execution_trace'])['steps'][0]['state_snapshot'])=={1:1,2:1,3:1,4:1}
  assert sum(x['operation']=='run_dfs' for x in again['history'])==2
  assert sum(x['operation']=='run_dfs' for x in other['history'])==1
 
 
-def test_malformed_history_rows_are_ignored():
+def test_malformed_history_is_suspended_and_preserved_without_reinterpretation():
  history=[None,1,[],{'operation':[], 'payload':{}},{'operation':'run_dfs','payload':[]},{'operation':'insert_vertex','payload':{'vertex':1}},{'operation':'run_dfs','payload':{'start':999}},{'operation':'run_dfs','payload':{'start':True}}]
- view=S.get_view_model('graph',history);assert view['history']==[{'operation':'insert_vertex','payload':{'vertex':1}}]
- assert S.get_view_model('graph',None)['history']==[]
+ view=S.get_view_model('graph',history)
+ assert view['suspended'] and view['history']==history and 'nodes' not in view['visual_state']
+ absent=S.get_view_model('graph',None)
+ assert absent['suspended'] and absent['history'] is None
+ assert not S.get_view_model('graph',[])['suspended']

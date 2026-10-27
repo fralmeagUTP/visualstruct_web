@@ -1,4 +1,5 @@
 """Independent height observer on current downloaded C, validated AVL seeds."""
+from _instruction_context_contract import context_stack
 import json,subprocess,shutil,re
 from pathlib import Path
 import pytest
@@ -68,7 +69,7 @@ def test_avl_height_native_scopes_locals_returns_and_immutable_fields(avl_height
   assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['return_propagation']['reconnects_subtree'] and state['console_stdout']==''
   if e['phase']=='condition':assert ped['condition']['result']==bool(e['result'])
   if e['phase']=='enter':assert ped['instruction_event']['frame_id']==state['tree_frames'][-1]['id']
-  if e['phase']=='return':assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and ped['call_stack'][-1]['return']==e['result'] and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
+  if e['phase']=='return':assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and context_stack(ped)[-1]['return']==e['result'] and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
   if e['phase']=='caller':assert state['wrapper_result']==e['result'] and state['caller_frame'] is None
  for a,b in zip(trace['steps'],trace['steps'][1:]):assert a['state_after']==b['state_snapshot']
 

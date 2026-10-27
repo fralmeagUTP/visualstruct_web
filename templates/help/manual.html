@@ -89,6 +89,11 @@
   </section>
 
   <section id="referencia"><h3>Para profundizar cuando lo necesites</h3>
+    <details><summary>Contratos de los archivos C descargados</summary>
+      <p>Los archivos del TAD no incluyen un programa principal: guarda tu programa en <code>main.c</code> y compílalo junto con el C descargado. Usa el encabezado correspondiente para comprobar las firmas y los tipos de retorno.</p>
+      <p>Counting y Binsort limitan el rango inclusivo con <code>ORDENAMIENTO_RANGO_MAX</code>, cuyo valor es 1.000.000. Binsort delega en Counting Sort; hereda sus límites de rango y reservas. Un método con retorno de estado distingue <code>ORDENAMIENTO_OK</code> de <code>ORDENAMIENTO_ERROR</code>; no sustituyas esa comprobación por asumir que el arreglo ya está ordenado.</p>
+      <p>Los valores del árbol Rojo-Negro deben estar entre <code>-2147483648</code> y <code>2147483647</code>, sin truncar. Al terminar el programa, el llamador libera su árbol con <code>rbt_liberar(arbol); arbol = NULL;</code>; la consulta o la copia de un puntero no transfieren esa propiedad.</p>
+    </details>
     <details><summary>Atajos reales de teclado</summary>
       <p>Usa los atajos fuera de los campos de entrada y con una traza preparada. Durante Agregar varios, utiliza sus propios botones.</p>
       <ul><li><strong>Secuenciales, Hash, Grafos y Ordenamiento:</strong> <kbd>Alt</kbd> + <kbd>→</kbd> siguiente; <kbd>Alt</kbd> + <kbd>←</kbd> anterior; <kbd>Alt</kbd> + <kbd>Inicio</kbd> comienzo; <kbd>Alt</kbd> + <kbd>Fin</kbd> final; <kbd>Alt</kbd> + <kbd>P</kbd> pausa.</li><li><strong>Secuenciales:</strong> <kbd>Alt</kbd> + <kbd>R</kbd> reproduce desde el comienzo. <strong>Ordenamiento:</strong> reproduce o vuelve a empezar si llegó al final.</li><li><strong>Jerárquicas:</strong> <kbd>→</kbd>, <kbd>←</kbd>, <kbd>Inicio</kbd> y <kbd>Fin</kbd> navegan sin Alt; <kbd>Espacio</kbd> pausa.</li><li><strong>Pestañas de Resultados:</strong> con foco en una pestaña, <kbd>←</kbd> y <kbd>→</kbd> cambian de panel. <kbd>Tab</kbd> permite recorrer controles.</li></ul>

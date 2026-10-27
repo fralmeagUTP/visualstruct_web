@@ -1,4 +1,5 @@
 """Height instruction scopes observed independently in copies of HTTP C/H."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,sys,json,shutil,subprocess
 import pytest
@@ -41,7 +42,7 @@ def test_height_every_native_instruction_heap_scope_local_and_return(abb_height_
   assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['memory']['dangling_references'] and not ped['return_propagation']['reconnects_subtree']
   if e['phase']=='condition':assert ped['condition']['result']==bool(e['result'])
   if e['phase']=='return':
-   assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and ped['call_stack'][-1]['return']==e['result']
+   assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and context_stack(ped)[-1]['return']==e['result']
    assert len(ped['memory_state']['tree_frames'])==len(e['frames'])-1 and ped['memory_state']['returned']==e['result']
   if e['phase']=='call':assert state['tree_frames'][-1]['locals'][('altIzq' if 'altIzq' in e['source_line'] else 'altDer')]=='sin inicializar'
   if e['phase']=='caller':assert state['wrapper_result']==e['result'] and not state['caller_frame']

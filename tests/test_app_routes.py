@@ -15,7 +15,9 @@ def test_user_manual_route_loads(client) -> None:
     response = client.get("/help/manual")
     assert response.status_code == 200
     assert "Manual de uso".encode("utf-8") in response.data
-    assert "VisualStruct permite estudiar estructuras de datos".encode("utf-8") in response.data
+    assert "Aprende con VisualStruct".encode("utf-8") in response.data
+    assert b'10, 20, 30' in response.data
+    assert b'href="#varios"' in response.data
 
 
 def test_global_didactic_switch_is_rendered_in_layout(client) -> None:

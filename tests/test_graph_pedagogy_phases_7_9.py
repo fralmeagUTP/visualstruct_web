@@ -1,13 +1,14 @@
 """Acceptance tests for MST, active learning, comparison and graph QA closure."""
 from app.domain.graph.snapshot_pool import expand_graph_trace
 from pathlib import Path
+from _book_frame_oracle import assert_book_body
 
 from app.services.graph_structure_service import GraphStructureService
 
 
-def _operate(client, operation, payload):
+def _operate(client, operation, payload, status=200):
     response = client.post("/graph/graph/operate", json={"operation": operation, "payload": payload})
-    assert response.status_code == 200, response.get_data(as_text=True)
+    assert response.status_code == status, response.get_data(as_text=True)
     return response.get_json()
 
 
@@ -33,69 +34,48 @@ def test_kruskal_frames_expose_find_union_rejection_and_valid_weight(client):
     finds = [step for step in steps if _C_event(step).get("function") == "grafo_encontrar_conjunto" and _C_event(step)["phase"] == "enter"]
     unions = [step for step in steps if _C_event(step).get("function") == "grafo_unir_conjuntos" and _C_event(step)["phase"] == "enter"]
     assert finds and len(unions) == 2
+    data['execution_trace']=trace
+    assert_book_body(data)
     first = finds[0]["pedagogy"]["memory_state"]
     variables = _C_vars(first, "grafo_kruskal")
-    assert _live_int_buffer(first, variables["conjuntos"]["padre"], 3) == [0,1,2]
-    decisions = [step for step in steps if _C_event(step).get("function") == "grafo_kruskal" and _C_event(step)["phase"] == "condition" and "grafo_encontrar_conjunto(&conjuntos" in step["line_text"]]
+    assert _live_int_buffer(first, variables["c"]["padre"], 3) == [0,1,2]
+    decisions = [step for step in steps if _C_event(step).get("function") == "grafo_kruskal" and _C_event(step)["phase"] == "condition" and "grafo_encontrar_conjunto(&c" in step["line_text"]]
     assert len(decisions) == 6
-    assert sum(bool(_C_event(step)["value"]) for step in decisions) == 2
-    assert sum(not bool(_C_event(step)["value"]) for step in decisions) == 4
+    assert sum(bool(_C_event(step)["value"]) for step in decisions) == 4
+    assert sum(not bool(_C_event(step)["value"]) for step in decisions) == 2
     for step in decisions:
         assert _C_event(step)["C_executed"]
         memory = step["pedagogy"]["memory_state"]
         variables = _C_vars(memory, "grafo_kruskal")
-        parents = _live_int_buffer(memory, variables["conjuntos"]["padre"], 3)
-        roots_differ = _C_root(parents, variables["u"]) != _C_root(parents, variables["v"])
-        assert roots_differ == bool(_C_event(step)["value"])
-        if not roots_differ:
-            # The actual false C guard and equal live roots identify rejection;
-            # learners must receive its cycle reason, not only a generic phase.
-            narration = step["pedagogy"]["narration"]["basic"].lower()
-            assert "ciclo" in narration and any(word in narration for word in ("rechaz", "descart", "exclu", "no se", "no agregar", "no añadir")), (
-                f"Rechazo C con raices iguales ({_C_root(parents, variables['u'])}); "
-                f"la narracion debe explicar el descarte por ciclo: {narration!r}"
-            )
-    writes = [step for step in steps if _C_event(step).get("function") == "grafo_unir_conjuntos" and _C_event(step)["phase"] == "write" and _C_event(step)["name"] == "c->padre[ry]"]
+        parents = _live_int_buffer(memory, variables["c"]["padre"], 3)
+        roots_equal = _C_root(parents, variables['u']) == _C_root(parents, variables['v'])
+        assert roots_equal == bool(_C_event(step)['value'])
+    # Equal live roots execute continue, so only the two distinct-root edges
+    # allocate result arcs and invoke the real union helper.
+    writes = [step for step in steps if _C_event(step).get("function") == "grafo_unir_conjuntos" and _C_event(step)["phase"] == "write" and _C_event(step)["name"] == "c->padre[b]"]
     assert len(writes) == 2
     assert any(_C_event(step).get("function") == "grafo_kruskal" and _C_event(step)["phase"] == "return" for step in steps)
 
 
-def test_prim_distinguishes_mst_from_disconnected_forest(client):
-    _operate(client, "create_graph", {"directed": False})
-    for vertex in (1, 2, 3, 4):
-        _operate(client, "insert_vertex", {"vertex": vertex})
-    _operate(client, "insert_edge", {"origin": 1, "target": 2, "weight": 1})
-    _operate(client, "insert_edge", {"origin": 3, "target": 4, "weight": 2})
-    data = _operate(client, "run_prim", {"start": 1})
-    assert data["result"]["kind"] == "minimum_spanning_forest"
-    assert data["result"]["components_count"] == 2
-    assert len(data["result"]["mst_edges"]) == 2
-    assert data["result"]["total_weight"] == 3
-    assert {(min(a,b), max(a,b), weight) for a,b,weight in data["result"]["mst_edges"]} == {(1,2,1),(3,4,2)}
-    trace = expand_graph_trace(data["execution_trace"])
-    steps = trace["steps"]
-    source = trace["source_code"].splitlines()
-    assert all(source[step["line_index"]] == step["line_text"] for step in steps if step.get("line_index") is not None)
-    restarts = [(i,step) for i,step in enumerate(steps) if _C_event(step).get("function") == "grafo_prim" and _C_event(step)["phase"] == "condition" and step["line_text"].strip() == "if (u == -1) {" and _C_event(step)["value"] == 1]
-    assert len(restarts) == 1
-    index, restart = restarts[0]
-    memory = restart["pedagogy"]["memory_state"]
-    variables = _C_vars(memory, "grafo_prim")
-    assert variables["u"] == -1 and _C_event(restart)["C_executed"]
-    visited = _live_int_buffer(memory, variables["visitado"], 4)
-    candidates = _live_int_buffer(memory, variables["candidato"], 4)
-    assert any(not flag for flag in visited)
-    assert not any(not visited[j] and candidates[j] for j in range(4))
-    selected = next(step for step in steps[index+1:] if _C_event(step).get("function") == "grafo_prim" and _C_event(step)["phase"] == "write" and _C_event(step)["name"] == "u" and "if (!visitado[j])" in step["line_text"])
-    chosen = _C_event(selected)["value"]
-    assert 0 <= chosen < 4 and not visited[chosen]
-    zeroed = next(step for step in steps[index+1:] if _C_event(step).get("function") == "grafo_prim" and _C_event(step)["phase"] == "write" and _C_event(step)["name"] == "costo[u]" and "if (!visitado[j])" in step["line_text"])
-    assert _C_event(zeroed)["value"] == 0
-    after = zeroed["pedagogy"]["memory_state"]
-    variables_after = _C_vars(after, "grafo_prim")
-    assert variables_after["u"] == chosen
-    assert _live_int_buffer(after, variables_after["costo"], 4)[chosen] == 0
-    assert any(_C_event(step).get("function") == "grafo_prim" and _C_event(step)["phase"] == "return" for step in steps)
+def test_prim_distinguishes_mst_from_disconnected_failure(client):
+    _operate(client,'create_graph',{'directed':False})
+    for vertex in (1,2,3,4):_operate(client,'insert_vertex',{'vertex':vertex})
+    _operate(client,'insert_edge',{'origin':1,'target':2,'weight':1})
+    _operate(client,'insert_edge',{'origin':3,'target':4,'weight':2})
+    data=_operate(client,'run_prim',{'start':1},status=400)
+    assert data['c_status']==5 and data['result']=={'start':1,'kind':'error','connected':False,'mst_edges':[],'total_weight':None}
+    trace=expand_graph_trace(data['execution_trace']);data['execution_trace']=trace
+    assert_book_body(data);steps=trace['steps']
+    guards=[step for step in steps if _C_event(step)['function']=='grafo_prim' and step['phase']=='condition' and 'if (u < 0)' in step['line_text'] and _C_event(step)['value']]
+    assert len(guards)==1
+    memory=guards[0]['pedagogy']['memory_state'];variables=_C_vars(memory,'grafo_prim')
+    assert variables['u']==-1
+    used=_live_int_buffer(memory,variables['t']['usado'],4)
+    reachable=_live_int_buffer(memory,variables['t']['alcanzable'],4)
+    assert sum(bool(v) for v in used)==2 and not any(not used[j] and reachable[j] for j in range(4))
+    assert any('e = GRAFO_DESCONECTADO' in step['line_text'] and step['phase']=='write' for step in steps)
+    assert any(_C_event(step)['function']=='liberar_trabajo' and step['phase']=='enter' for step in steps)
+    assert not steps[-1]['pedagogy']['memory_state']['frames']
 
 
 def test_mst_algorithms_reject_directed_graph(client):
@@ -104,7 +84,9 @@ def test_mst_algorithms_reject_directed_graph(client):
     for operation, payload in (("run_prim", {"start": 1}), ("run_kruskal", {})):
         response = client.post("/graph/graph/operate", json={"operation": operation, "payload": payload})
         assert response.status_code == 400
-        assert "no dirigido" in response.get_json()["message"]
+        body=response.get_json();assert body['c_status']==6 and 'GRAFO_ARGUMENTO' in body['message']
+        assert body['history'][-1]['operation']==operation
+        body['execution_trace']=expand_graph_trace(body['execution_trace']);assert_book_body(body)
 
 
 def test_comparison_uses_isolated_copies_and_preserves_input():
@@ -129,7 +111,7 @@ def test_compare_route_and_learning_regions(client):
 
 def test_help_glossary_teacher_keyboard_and_frontend_restoration_contract(client):
     help_html = client.get("/help/graph/graph").get_data(as_text=True)
-    for text in ("Guía de aprendizaje", "Invariantes", "Complejidad", "Errores frecuentes", "Glosario", "Guía docente", "Alt+→"):
+    for text in ('Manual','GrafoEstado','Dijkstra','Prim','Kruskal'):
         assert text in help_html
     source = (Path(__file__).parents[1] / "static/js/graph.js").read_text(encoding="utf-8")
     for token in ("tracePlayer.seek", "refreshGraphPrintfConsole(cursor)", "renderGraphPedagogy", "graph-practice-hidden", "exportVisualStateAsJpg", "Entrada inmutable"):

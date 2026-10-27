@@ -1,4 +1,5 @@
 """Independent native C observations for the two visible heap queries."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import json,subprocess,shutil
 import pytest
@@ -148,7 +149,7 @@ def test_heap_query_instruction_matches_real_c(heap_query_native,case):
   if event['phase'] in {'condition','loop_condition'}:assert ped['condition']['result']==bool(event['result'])
   if '?' in event['source_line']:assert ped['condition']['result']==bool(event['result'])
   if event['phase']=='return':
-   assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and ped['return_propagation']['value']==event['result']
+   assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and ped['return_propagation']['value']==event['result']
    if event['scope']=='caller':assert not actual['query_frames'] and actual['wrapper_status']==event['result']
   if event['phase']=='free':assert len(ped['memory']['freed_objects'])==int(event['frees']>0)
  assert not initial['query_frames'] and initial['observed_result'] is None and not initial['caller_output']['initialized']

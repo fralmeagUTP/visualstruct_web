@@ -2,6 +2,7 @@
 import hashlib,json
 from pathlib import Path
 import pytest
+from scripts.published_test_inputs import audit_input_path
 from app.domain.hierarchical import tad_monticulo_binario as heap
 ROOT=Path(__file__).resolve().parents[1]
 ORACLE=json.loads((ROOT/'tests/fixtures/heap_utility_C_oracle.json').read_text(encoding='utf-8'))
@@ -9,7 +10,10 @@ ORACLE=json.loads((ROOT/'tests/fixtures/heap_utility_C_oracle.json').read_text(e
 def test_raw_heap_utilities_match_valid_native_case(case):
     for name,digest in ORACLE['source_inputs'].items():
         if name.endswith(('.c','.h')):
-            assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest
+            path=ROOT/name.replace('\\','/')
+            historical=audit_input_path(path).read_bytes()
+            assert hashlib.sha256(historical.replace(b'\r\n',b'\n')).hexdigest()==digest
+            assert path.read_bytes().replace(b'\r\n',b'\n')==historical.replace(b'\r\n',b'\n')
     c=case['fixture'];m=heap.MonticuloBinario()
     heap.monticulo_inicializar(m,c.get('type',0),16)
     for value in c.get('seed',[6,5,4]):heap.monticulo_insertar(m,value)

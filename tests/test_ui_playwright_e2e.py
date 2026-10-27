@@ -105,7 +105,12 @@ def _finish_manual_trace(page, prefix: str, observe=None) -> None:
     page.wait_for_function("s => Number((document.querySelector(s)?.textContent || '0/0').split('/').pop()) > 0", arg=counter)
     selector = f"#{prefix}-sim-" + ("step" if prefix in {"seq", "hier"} else "next")
     checkpoint("manual_finish_start", module=prefix)
-    for navigation_index in range(2000):
+    initial = __import__("re").search(r"Paso:\s*(\d+)\s*/\s*(\d+)", page.text_content(counter) or "")
+    assert initial is not None and int(initial[2]) > 0
+    # The canonical book emits every real helper/allocator instruction. Traverse
+    # the declared finite trace, rather than the old observer's 2,000-frame cap.
+    total = int(initial[2])
+    for navigation_index in range(total + 1):
         text = page.text_content(counter) or ""
         match = __import__("re").search(r"Paso:\s*(\d+)\s*/\s*(\d+)", text)
         assert match is not None, text
@@ -120,7 +125,7 @@ def _finish_manual_trace(page, prefix: str, observe=None) -> None:
         before = text
         page.click(selector)
         page.wait_for_function("a => document.querySelector(a.s).textContent !== a.before", arg={"s":counter,"before":before})
-    raise AssertionError("Trace did not finish within 2000 explicit manual steps")
+    raise AssertionError(f"Trace did not finish within its {total} declared manual steps")
 
 
 def _wait_graph_mutation_final(page, expected: str) -> None:
@@ -128,7 +133,10 @@ def _wait_graph_mutation_final(page, expected: str) -> None:
     _wait_status_contains(page, "#graph-message-box", "Operación preparada")
     assert "resultado pendiente" in (page.text_content("#graph-message-box") or "")
     _finish_manual_trace(page, "graph")
-    _wait_status_contains(page, "#graph-message-box", expected)
+    # The book contract reports the executed C function, rather than the
+    # superseded presentation message ("arista insertada").
+    symbol = {"vertice": "grafo_insertar_vertice", "arista": "grafo_insertar_arco"}.get(expected, expected)
+    _wait_status_contains(page, "#graph-message-box", symbol)
 
 
 def _assert_stack_push_final(page, expected_value: int, expected_count: int = 1) -> None:
@@ -215,7 +223,8 @@ def test_playwright_graph_code_panel_scroll_and_history_sync() -> None:
             _wait_graph_mutation_final(page, "vertice")
 
             code_title = page.text_content("#op-pseudocode-title") or ""
-            assert "Codigo C" in code_title
+            assert "Código C canónico del libro" in code_title
+            assert "tad_grafo.c" in code_title
 
             code_text = page.text_content("#op-pseudocode") or ""
             assert "grafo_insertar_vertice" in code_text
@@ -489,8 +498,14 @@ def test_playwright_hash_interpreter_controls_workflow() -> None:
             page.click("#hash-sim-play")
             _finish_manual_trace(page, "hash")
 
-            page.click("#hash-reset-button")
-            _wait_status_contains(page, "#hash-sim-status", "Usa Reproducir o Siguiente paso para ejecutar.")
+            page.once("dialog", lambda dialog: dialog.accept())
+            with page.expect_response(lambda response: response.request.method == "POST"
+                                      and response.url.split("?", 1)[0].endswith("/hash/hash_table/reset")) as reset:
+                page.click("#hash-reset-button")
+            assert reset.value.status == 200
+            reset_body = reset.value.json()
+            assert reset_body["success"] is True and reset_body["history"] == []
+            _wait_status_contains(page, "#hash-sim-status", "Tabla restablecida. Prepara una operación.")
 
             _advance_once(page, "hash")
             _wait_status_contains(page, "#hash-sim-counter", "Paso: 1/")
@@ -596,7 +611,10 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
 
             def record_ui_operation(request):
                 if request.method == "POST" and request.url.split("?", 1)[0].endswith("/graph/graph/operate"):
-                    ui_requests.append(request.post_data_json)
+                    body = request.post_data_json
+                    assert set(body) == {"operation", "payload", "execution_mode"}
+                    assert body["execution_mode"] == "step"
+                    ui_requests.append({key: body[key] for key in ("operation", "payload")})
 
             page.on("request", record_ui_operation)
 
@@ -618,7 +636,7 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
                                   vertices, edges, expected_history)
             _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
                                   result_data["history"], vertices, edges, expected_history)
-            _wait_status_contains(page, "#graph-message-box", "BFS")
+            _wait_status_contains(page, "#graph-message-box", "grafo_bfs")
             result_text = page.text_content("#graph-visual-state") or ""
             assert ("Recorrido" in result_text) or ("BFS" in result_text)
 
@@ -641,7 +659,7 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
                                   vertices, edges, expected_history)
             _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
                                   result_data["history"], vertices, edges, expected_history)
-            _wait_status_contains(page, "#graph-message-box", "Dijkstra")
+            _wait_status_contains(page, "#graph-message-box", "grafo_dijkstra")
 
             # 4) MST phase (Prim).
             page.goto(f"{base_url}/graph/graph/expansion-minima", wait_until="networkidle")
@@ -661,7 +679,7 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
                                   vertices, edges, expected_history)
             _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
                                   result_data["history"], vertices, edges, expected_history)
-            _wait_status_contains(page, "#graph-message-box", "Prim")
+            _wait_status_contains(page, "#graph-message-box", "grafo_prim")
 
             assert len(expected_history) == 11
             page.remove_listener("request", record_ui_operation)
@@ -701,7 +719,10 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
 
             def record_ui_operation(request):
                 if request.method == "POST" and request.url.split("?", 1)[0].endswith("/graph/graph/operate"):
-                    ui_requests.append(request.post_data_json)
+                    body = request.post_data_json
+                    assert set(body) == {"operation", "payload", "execution_mode"}
+                    assert body["execution_mode"] == "step"
+                    ui_requests.append({key: body[key] for key in ("operation", "payload")})
 
             page.on("request", record_ui_operation)
             origin, target, weight = edges[-1]
@@ -732,6 +753,21 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
             assert "Vértices" in result_text
             assert "Aristas" in result_text
 
+            # Classroom mode initially fits the graph. On a narrow viewport,
+            # retain native 100% glyph size and verify export includes overflow.
+            # Export deliberately normalizes live zoom; do not compare an image
+            # at native scale with zoom-enlarged display pixels.
+            page.set_viewport_size({"width": 390, "height": 900})
+            page.locator(".graph-primary-workspace .classroom-view-tools").get_by_role("button", name="100%", exact=True).click()
+            graph_target = page.locator("#graph-visual-state")
+            page.wait_for_function("() => {const el=document.querySelector('#graph-visual-state');return el.scrollWidth > el.clientWidth;}")
+            assert graph_target.evaluate("el => el.scrollWidth > el.clientWidth"), graph_target.evaluate("""el => ({
+                width:el.clientWidth, scroll:el.scrollWidth,
+                svg:[...el.querySelectorAll('svg')].map(n=>({viewBox:n.getAttribute('viewBox'),width:n.getBoundingClientRect().width,style:n.getAttribute('style')})),
+                wrappers:[...el.querySelectorAll('.viz-canvas,.viz-stage,.viz-stage-center')].map(n=>({class:n.className,client:n.clientWidth,scroll:n.scrollWidth,overflow:getComputedStyle(n).overflow})),
+                zoom:document.querySelector('.graph-primary-workspace .classroom-view-tools output')?.textContent
+            })""")
+
             export_meta = page.evaluate(
                 """
                 async () => {
@@ -741,11 +777,30 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
                     clientHeight: target.clientHeight,
                     scrollWidth: target.scrollWidth,
                     scrollHeight: target.scrollHeight,
+                    nativeWidth: Math.max(...Array.from(target.querySelectorAll('svg'), svg => svg.viewBox.baseVal.width)),
+                    nativeHeight: Math.max(...Array.from(target.querySelectorAll('svg'), svg => svg.viewBox.baseVal.height)),
+                    resultText: target.querySelector('.graph-current-result').textContent,
                   };
-                  const result = await window.InterpreterRuntime.exportVisualStateAsJpg({
-                    target,
-                    quality: 0.92,
-                    scale: 1,
+                  // Observe the actual scene passed to the rasterizer, not an
+                  // independently rebuilt expected graph or zoomed pixel size.
+                  let serialized = '';
+                  const originalSerialize = XMLSerializer.prototype.serializeToString;
+                  let result;
+                  try {
+                    XMLSerializer.prototype.serializeToString = function(node) {
+                      serialized = originalSerialize.call(this, node);
+                      return serialized;
+                    };
+                    result = await window.InterpreterRuntime.exportVisualStateAsJpg({target, quality: 0.92, scale: 1});
+                  } finally {
+                    XMLSerializer.prototype.serializeToString = originalSerialize;
+                  }
+                  const scene = new DOMParser().parseFromString(serialized, 'application/xml');
+                  const decoded = new Image();
+                  await new Promise((resolve, reject) => {
+                    decoded.onload = resolve;
+                    decoded.onerror = reject;
+                    decoded.src = result.dataUrl;
                   });
                   return {
                     before,
@@ -756,6 +811,11 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
                       quality: result.quality,
                       dataPrefix: String(result.dataUrl || '').slice(0, 32),
                       dataLength: String(result.dataUrl || '').length,
+                      sceneNodes: scene.querySelectorAll('circle.viz-graph-node').length,
+                      resultText: scene.querySelector('.graph-current-result')?.textContent,
+                      sceneText: scene.documentElement.textContent,
+                      decodedWidth: decoded.naturalWidth,
+                      decodedHeight: decoded.naturalHeight,
                     },
                   };
                 }
@@ -763,8 +823,13 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
             )
 
             assert int(export_meta["before"]["scrollWidth"]) > int(export_meta["before"]["clientWidth"])
-            assert int(export_meta["exported"]["width"]) >= int(export_meta["before"]["scrollWidth"])
-            assert int(export_meta["exported"]["height"]) >= int(export_meta["before"]["scrollHeight"])
+            assert int(export_meta["exported"]["width"]) >= int(export_meta["before"]["nativeWidth"]) > 0
+            assert int(export_meta["exported"]["height"]) >= int(export_meta["before"]["nativeHeight"]) > 0
+            assert export_meta["exported"]["sceneNodes"] == len(vertices)
+            assert export_meta["exported"]["resultText"] == export_meta["before"]["resultText"]
+            assert "Vértices" in export_meta["exported"]["sceneText"] and "Aristas" in export_meta["exported"]["sceneText"]
+            assert export_meta["exported"]["decodedWidth"] == export_meta["exported"]["width"]
+            assert export_meta["exported"]["decodedHeight"] == export_meta["exported"]["height"]
             assert str(export_meta["exported"]["dataPrefix"]).startswith("data:image/jpeg;base64,")
             assert int(export_meta["exported"]["dataLength"]) > 5000
 
@@ -858,12 +923,17 @@ def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
             assert page.locator("#hier-compare-kind").count() == 1
             page.fill("#h-field-value", "30")
             page.click("#hier-step-mode")
-            page.click("#hier-sim-step")
+            with page.expect_response(lambda response: response.request.method == "POST"
+                                      and response.url.split("?", 1)[0].endswith("/hierarchical/avl/operate")) as prepared:
+                page.click("#hier-sim-step")
+            assert prepared.value.status == 200
+            first_frame = prepared.value.json()["execution_trace"]["steps"][0]["pedagogy"]
+            assert first_frame["instruction_event"]["phase"] == "caller_enter"
             _wait_status_contains(page, "#hier-sim-counter", "Paso: 1/")
             cursor = page.text_content("#hier-sim-counter")
             assert page.text_content("#hier-sim-counter") == cursor
             summary = (page.text_content("#hier-pedagogy-summary") or "").lower()
-            assert "caller_enter" in summary and "no hay resultado futuro" in summary
+            assert "llamador equivalente" in summary and "no hay resultado futuro" in summary
             page.set_viewport_size({"width": 390, "height": 844})
             page.click('[data-hier-tab="code"]')
             assert page.is_visible("#hier-code-region") is True
@@ -982,7 +1052,7 @@ def test_playwright_stack_compact_pilot_keeps_primary_workspace_visible() -> Non
             assert page.locator(".seq-understand details > .seq-compare").count() == 1
             assert page.locator(".seq-compare").evaluate("el => !el.closest('details').open")
             assert page.locator(".seq-understand").count() == 1
-            assert page.locator(".seq-execute").evaluate("el => el.parentElement.classList.contains('seq-prepare')")
+            assert page.locator(".seq-execute").evaluate("el => el.classList.contains('classroom-execution-controls') && el.nextElementSibling.classList.contains('sequential-primary-workspace')")
             assert page.locator(".seq-reflect").count() == 1
 
             page.goto(f"{base_url}/sequential/queue", wait_until="networkidle")
@@ -1253,7 +1323,10 @@ def test_playwright_sorting_accessibility_keyboard_responsive_and_export() -> No
                     assert page.locator("#sorting-visual-region").is_visible()
                     page.click('[data-sorting-tab="code"]')
                     assert page.locator("#sorting-code-region").is_visible()
-            page.locator(".sorting-collapsible").nth(1).locator("summary").click()
+            results = page.locator("#sorting-export-summary").locator("xpath=ancestor::details")
+            for panel in results.all():
+                if panel.get_attribute("open") is None:
+                    panel.locator(":scope > summary").click()
             with page.expect_download() as download_info:
                 page.click("#sorting-export-summary")
             assert download_info.value.suggested_filename.endswith(".json")
@@ -1290,7 +1363,10 @@ def test_playwright_hash_step_navigation_and_export() -> None:
                 assert page.locator("#hash-visual-region").is_visible()
                 page.click('[data-hash-tab="code"]')
                 assert page.locator("#hash-code-region").is_visible()
-            page.locator(".hash-collapsible").nth(1).locator("summary").click()
+            results = page.locator("#hash-export-summary").locator("xpath=ancestor::details")
+            for panel in results.all():
+                if panel.get_attribute("open") is None:
+                    panel.locator(":scope > summary").click()
             with page.expect_download() as download_info:
                 page.click("#hash-export-summary")
             assert download_info.value.suggested_filename.endswith(".json")

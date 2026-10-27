@@ -22,13 +22,12 @@ int main(void){
  cola_encolar(&q,-1);assert(q.delante!=NULL);assert(cola_desencolar(&q)==-1);assert(q.delante==NULL&&q.atras==NULL);
  int starts[]={-1,1,1,-1},targets[]={2,-1,2,-1};
  for(int c=0;c<4;c++){
-  Grafo g=grafo_crear();assert(grafo_bfs(g,99)==NULL);g=grafo_insertar_vertice(g,starts[c]);
-  if(targets[c]!=starts[c])g=grafo_insertar_vertice(g,targets[c]);
-  g=grafo_insertar_arco(g,starts[c],targets[c],1);
-  assert(grafo_bfs(g,99)==NULL);ListaVertice result=grafo_bfs(g,starts[c]);printf("[");int comma=0;
+  GrafoEstado status;Grafo g=grafo_crear();assert(grafo_bfs(g,99,&status)==NULL&&status==GRAFO_NO_EXISTE);g=grafo_insertar_vertice(g,starts[c],&status);assert(status==GRAFO_OK);
+  if(targets[c]!=starts[c])g=grafo_insertar_vertice(g,targets[c],&status);
+  g=grafo_insertar_arco(g,starts[c],targets[c],1,&status);assert(status==GRAFO_OK);
+  assert(grafo_bfs(g,99,&status)==NULL&&status==GRAFO_NO_EXISTE);ListaVertice result=grafo_bfs(g,starts[c],&status);assert(status==GRAFO_OK);printf("[");int comma=0;
   for(ListaVertice n=result;n;n=n->sig){if(comma)printf(",");printf("%d",n->dato);comma=1;}puts("]");
-  while(result){ListaVertice n=result->sig;free(result);result=n;}
-  while(g.a){ListaArco n=g.a->sig;free(g.a);g.a=n;}while(g.v){ListaVertice n=g.v->sig;free(g.v);g.v=n;}
+  grafo_liberar_vertices(&result);assert(result==NULL);grafo_destruir(&g);assert(g.v==NULL&&g.a==NULL);
  }
  return 0;
 }

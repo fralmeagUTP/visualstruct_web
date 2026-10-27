@@ -260,15 +260,16 @@ def test_rbt_002_delete_trace_follows_real_branch_and_delays_final_state() -> No
 
 
 def test_graph_001_c_and_python_share_auto_create_and_update_contract() -> None:
-    graph = Grafo(dirigido=True)
-    graph.insertar_arista(1, 2, 5)
-    graph.insertar_arista(1, 2, 7)
-    assert graph.vertices() == [1, 2]
-    assert graph.aristas() == [(1, 2, 7.0)]
+    adapter = GraphAdapter()
+    adapter.execute('create_graph', {'directed': True})
+    assert adapter.execute('insert_edge', {'origin': 1, 'target': 2, 'weight': 5})['c_status'] == 0
+    assert adapter.execute('insert_edge', {'origin': 1, 'target': 2, 'weight': 7})['c_status'] == 0
+    assert adapter.to_visual_state()['metadata']['vertices_count'] == 2
+    assert adapter.execute('list_edges', {})['result'] == [[1, 2, 7]]
 
     source = (ROOT / "docs/tads_C/tad_grafo.c").read_text(encoding="utf-8")
     body = source[source.index("Grafo grafo_insertar_arco"):source.index("void grafo_imprimir_vertices")]
-    assert "grafo_insertar_vertice" in body
+    assert "free(vx)" in body and "free(vy)" in body
     assert "existente->costo = z" in body
     assert "malloc" in body
     finding = json.loads((ROOT / "docs/qa/findings/GRAPH-001.json").read_text(encoding="utf-8"))
@@ -287,8 +288,8 @@ def test_graph_002_rejects_fractional_weight_without_mutation() -> None:
     assert state["directed"] is False
     assert state["edges"] == []
     header = (ROOT / "docs/tads_C/tad_grafo.h").read_text(encoding="utf-8")
-    assert "grafo dirigido ponderado" in header.lower()
-    assert "int costo" in header
+    assert "int origen, destino, costo;" in header
+    assert "GrafoEstado *estado" in header and "int *salida" in header
     finding = json.loads((ROOT / "docs/qa/findings/GRAPH-002.json").read_text(encoding="utf-8"))
     assert finding["severity"] == "high"
 
@@ -301,8 +302,8 @@ def test_graph_003_c_and_backend_return_direct_visit_order() -> None:
     assert adapter.execute("run_bfs", {"start": 1})["result"] == [1, 2, 3]
     assert adapter.execute("run_dfs", {"start": 1})["result"] == [1, 2, 3]
     source = (ROOT / "docs/tads_C/tad_grafo.c").read_text(encoding="utf-8")
-    assert "else ultimo->sig = tmp;" in source
-    assert "grafo_agregar_recorrido(recorrido, tmp);" in source
+    assert "agregar_visita(&lista, &ultimo, t.vertices[u])" in source
+    assert "publicar_marcas(g, lista)" in source
     finding = json.loads((ROOT / "docs/qa/findings/GRAPH-003.json").read_text(encoding="utf-8"))
     assert finding["severity"] == "high"
 
@@ -313,13 +314,12 @@ def test_graph_004_c_and_backend_reject_negative_dijkstra_graph() -> None:
     adapter.execute("insert_edge", {"origin": 1, "target": 2, "weight": 1})
     adapter.execute("insert_edge", {"origin": 2, "target": 3, "weight": 2})
     adapter.execute("insert_edge", {"origin": 1, "target": 3, "weight": -5})
-    try:
-        adapter.execute("run_dijkstra", {"start": 1, "end": 3})
-        assert False, "El backend debe bloquear cualquier peso negativo."
-    except Exception as error:  # noqa: BLE001
-        assert "negativo" in str(error).lower()
+    result = adapter.execute("run_dijkstra", {"start": 1, "end": 3})
+    assert result['success'] is False and result['c_status'] == 3
+    assert result['c_status_name'] == 'GRAFO_PESO_NEGATIVO'
+    assert result['result']['path'] == []
     source = (ROOT / "docs/tads_C/tad_grafo.c").read_text(encoding="utf-8")
-    assert "if (grafo_tiene_peso_negativo(g)) {" in source
+    assert "GRAFO_PESO_NEGATIVO" in source
     finding = json.loads((ROOT / "docs/qa/findings/GRAPH-004.json").read_text(encoding="utf-8"))
     assert finding["severity"] == "high"
 
@@ -347,27 +347,24 @@ def test_graph_005_reproduces_missing_shortest_path_temporary_tables() -> None:
     assert finding["severity"] == "high"
 
 
-def test_graph_006_reports_minimum_spanning_forest_and_connectivity() -> None:
+def test_graph_006_reports_disconnection_without_publishing_partial_mst() -> None:
     adapter = GraphAdapter()
     for vertex in (1, 2, 3, 4):
         adapter.execute("insert_vertex", {"vertex": vertex})
     adapter.execute("insert_edge", {"origin": 1, "target": 2, "weight": 1})
     adapter.execute("insert_edge", {"origin": 2, "target": 3, "weight": 2})
-    prim = adapter.execute("run_prim", {"start": 1})["result"]
-    kruskal = adapter.execute("run_kruskal", {})["result"]
-    assert len(prim["mst_edges"]) == 2 and prim["connected"] is False
-    assert len(kruskal["mst_edges"]) == 2 and kruskal["connected"] is False
-    assert prim["kind"] == kruskal["kind"] == "minimum_spanning_forest"
-    assert prim["components_count"] == kruskal["components_count"] == 2
+    prim_call = adapter.execute("run_prim", {"start": 1})
+    kruskal_call = adapter.execute("run_kruskal", {})
+    for result in [prim_call, kruskal_call]:
+        assert result['success'] is False and result['c_status'] == 5
+        assert result['result']['mst_edges'] == [] and result['result']['connected'] is False
+        assert result['result']['total_weight'] is None and result['result']['kind'] == 'error'
     adapter.execute("create_graph", {"directed": True})
-    try:
-        adapter.execute("run_prim", {"start": 1})
-        assert False, "El frontend debe bloquear Prim dirigido."
-    except ValueError:
-        pass
+    adapter.execute('insert_edge', {'origin': 1, 'target': 2, 'weight': 1})
+    asymmetric = adapter.execute("run_prim", {"start": 1})
+    assert asymmetric['success'] is False and asymmetric['c_status'] == 6
     source = (ROOT / "docs/tads_C/tad_grafo.c").read_text(encoding="utf-8")
-    assert "ListaArco grafo_prim(Grafo g, int inicio)" in source
-    assert "dirigido" not in source[source.index("ListaArco grafo_prim"):source.index("typedef struct Conjunto")].lower()
+    assert "ListaArco grafo_prim(Grafo g, int inicio, GrafoEstado *estado)" in source
     finding = json.loads((ROOT / "docs/qa/findings/GRAPH-006.json").read_text(encoding="utf-8"))
     assert finding["severity"] == "high"
 

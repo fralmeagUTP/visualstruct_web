@@ -1,4 +1,5 @@
 """Visible insertion: independently observed allocation masks, identities and call scopes."""
+from _instruction_context_contract import context_stack
 import pytest
 from test_audit_sublist_child_source_native import sublist_native_review,sublist_identity_map
 CASES=[0,17,1,2,3,18]
@@ -49,7 +50,7 @@ def test_visible_insertions_native_heap_initialization_scopes_and_returns(sublis
    if key[1]=='nuevo':assert v['type']==('Sublista *' if key[0] in {'crear_hijo','sublista_insertar_hijo_final'} else 'Nodo *')
   if e['line']=='return nuevo;':
    assert memory['returned']==mapping[e['return_pointer']]
-   assert ped['call_stack'][-1]['return']==mapping[e['return_pointer']]
+   assert context_stack(ped)[-1]['return']==mapping[e['return_pointer']]
   if e['condition']==-4 or e['line'] in {'return true;','return false;'}:
    assert memory['returned']==bool(e['return_value'])
   if 'malloc(sizeof(' in e['line']:

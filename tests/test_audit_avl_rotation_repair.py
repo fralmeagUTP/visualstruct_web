@@ -55,7 +55,10 @@ from scripts.published_test_inputs import audit_input_path
 def build_probe(out):
  out.mkdir(exist_ok=True);client=create_app().test_client()
  for kind,suffix in [('source','c'),('header','h')]:
-  raw=client.get('/help/source/avl/'+kind).data;assert raw==(audit_input_path(Path(__file__).resolve().parents[1]/'docs/tads_C'/('tad_avl.'+suffix))).read_bytes();(out/('tad_avl.'+suffix)).write_bytes(raw)
+  raw=client.get('/help/source/avl/'+kind).data
+  recorded=(audit_input_path(Path(__file__).resolve().parents[1]/'docs/tads_C'/('tad_avl.'+suffix))).read_bytes()
+  assert raw.replace(b'\r\n',b'\n')==recorded.replace(b'\r\n',b'\n')
+  (out/('tad_avl.'+suffix)).write_bytes(raw)
  ops=CCodeService.get_structure_data('avl')['operations'];helper=SOURCE+'\n#define printf audit_printf\n'+''.join(ops[op]+'\n' for op in ['maximo','inorden','validar'])+'\n#undef printf\n'+TAIL
  (out/'oracle.c').write_text(helper,encoding='utf-8');gcc=shutil.which('gcc');assert gcc;flags=['-std=c17','-Wall','-Wextra','-Wpedantic','-Werror']
  for cmd in [[gcc,*flags,'-Dmalloc=audit_malloc','-Dfree=audit_free','-Dprintf=audit_printf','-c',str(out/'tad_avl.c'),'-o',str(out/'tad.o')],[gcc,*flags,str(out/'oracle.c'),str(out/'tad.o'),'-o',str(out/'oracle.exe')]]:

@@ -139,6 +139,12 @@ Los identificadores de memoria del dibujo son **simbólicos**, no direcciones re
 
 ## Un primer programa C
 
+### Referencia de rangos y propiedad
+
+Los archivos C/H descargados no incluyen un programa principal; el programa que los usa conserva la responsabilidad de liberar sus reservas. En Rojo-Negro se aceptan enteros entre `-2147483648` y `2147483647`, sin truncar. Al terminar el programa usa `rbt_liberar(arbol); arbol = NULL;` para liberar los nodos propios y retirar el alias de la raíz.
+
+Counting y Binsort usan `ORDENAMIENTO_RANGO_MAX=1000000` para el rango inclusivo máximo-mínimo+1. Binsort delega en Counting Sort y conserva sus límites y su retorno de éxito/error; el número de elementos no sustituye el cálculo del rango.
+
 Descarga `tad_pila.c` y `tad_pila.h` desde Ayuda de Pila. Guarda al lado este `main.c`:
 
 ```c

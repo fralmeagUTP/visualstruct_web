@@ -1,4 +1,5 @@
 """Clear and readonly query: independently observed heap/scopes/buffer per C line."""
+from _instruction_context_contract import context_stack
 import pytest
 from test_audit_sublist_child_source_native import sublist_native_review,sublist_identity_map
 CASES=[13,14,15,21,16,22]
@@ -46,12 +47,12 @@ def test_clear_query_native_intermediate_heap_scopes_output_and_returns(sublist_
    if e['function']=='sublista_copiar_hijos' and e['line']=='return usados;':
     assert memory['returned']==e['return_value']==len(state['buffer_values'])
    if e['function']=='sublista_obtener_hijos' and (e['condition']==-4 or e['line']=='return -1;'):
-    assert type(memory['returned']) is int and type(ped['call_stack'][-1]['return']) is int
-    assert memory['returned']==e['return_value'];assert ped['call_stack'][-1]['return']==e['return_value'];assert not memory['sublist_frames'];returns.append(e['return_value'])
+    assert type(memory['returned']) is int and type(context_stack(ped)[-1]['return']) is int
+    assert memory['returned']==e['return_value'];assert context_stack(ped)[-1]['return']==e['return_value'];assert not memory['sublist_frames'];returns.append(e['return_value'])
   else:
    freed=ped['heap_transition']['freed'];assert [n['id'] for n in freed]==([mapping[e['freed']]] if e['line']=='free(actual);' else [])
    if e['function']=='destruir_hijos':assert state['owner_parent']==mapping[e['owner']] and state['sub_head']==mapping[e['child_root']]
    if e['condition']==-6:
-    assert ped['concept']=='return';assert ped['call_stack'][-1]['function']==e['function'];assert ped['call_stack'][-1]['return'] is None
+    assert ped['concept']=='return';assert context_stack(ped)[-1]['function']==e['function'];assert context_stack(ped)[-1]['return'] is None
  if query:assert returns==[3 if case==13 else 0 if case==14 else -1]
  else:assert not rows[-1]['step']['pedagogy']['memory_state']['heap_nodes'] and not rows[-1]['step']['pedagogy']['memory_state']['sublist_frames']

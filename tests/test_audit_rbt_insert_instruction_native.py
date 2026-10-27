@@ -1,4 +1,5 @@
 """Independent typed native insertion snapshots versus product instruction model."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,json,hashlib,re,copy
 import pytest
@@ -29,7 +30,7 @@ def check(step,event):
   assert ped['condition']['result']==bool(event['result']) and step['condition_result']==bool(event['result'])
   assert re.sub(r'[\s()]','',ped['instruction_event']['expression'])==re.sub(r'[\s()]','',event['expression'])
  if event['phase']=='return':
-  result=pointer(event['result']) if event['function'] in ['rbt_tio','rbt_abuelo'] else 'void';assert ped['return_propagation']['value']==result and ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(event['frames'])-1
+  result=pointer(event['result']) if event['function'] in ['rbt_tio','rbt_abuelo'] else 'void';assert ped['return_propagation']['value']==result and context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(event['frames'])-1
  assert not ped['memory']['freed_objects'] and not ped['return_propagation']['reconnects_subtree']
  before={n['id'] for n in step['state_snapshot']['heap_nodes']};added={pointer(n['id']) for n in event['heap']}-before
  assert {n['id'] for n in ped['memory']['allocated_objects']}==added and ped['memory']['event']==('allocation' if added else 'none')
@@ -64,7 +65,19 @@ def test_insert_every_native_instruction_scope_alias_heap_and_stdout(rbt_insert_
 
 @pytest.mark.parametrize('value',[10,'abc',2147483648])
 def test_insert_application_rejection_does_not_fabricate_C(value):
- result=S.execute_operation('red_black','insertar',{'value':value},[{'operation':'insertar','payload':{'value':10}}]);assert not result['success'];trace=result['execution_trace'];assert trace['application_precondition_rejected'];assert len(trace['steps'])==1;s=trace['steps'][0];ped=s['pedagogy'];assert s['state_snapshot']==s['state_after']==result['visual_state'] and not s['console'] and not ped['variables'] and not ped['call_stack'] and not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['instruction_event']['C_invoked'] and ped['return_propagation']['value'] is None
+ from _application_rejection_contract import assert_unexecuted_input_rejection
+ history=[{'operation':'insertar','payload':{'value':10}}]
+ before=S.get_view_model('red_black',history)['visual_state']
+ result=S.execute_operation('red_black','insertar',{'value':value},history)
+ assert result['history']==history and result['visual_state']==before
+ if result['execution_trace'].get('execution_started') is False:
+  assert_unexecuted_input_rejection(result)
+ else:
+  trace=result['execution_trace'];assert trace['application_precondition_rejected'] and len(trace['steps'])==1
+  step=trace['steps'][0];ped=step['pedagogy'];assert step['state_snapshot']==step['state_after']==before
+  assert not step['console'] and not ped['variables'] and not context_stack(ped)
+  assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['instruction_event']['C_invoked']
+  assert ped['return_propagation']['value'] is None
 
 from scripts.test_tool_paths import resolve_doxygen
 @pytest.mark.parametrize('case',[i for i,m in enumerate(CASES) if m['mode']=='normal' and i not in [5,19]])

@@ -10,8 +10,9 @@ spec=importlib.util.spec_from_file_location('app.domain.graph._revision_cache_be
 baseline=importlib.util.module_from_spec(spec);spec.loader.exec_module(baseline)
 @pytest.mark.parametrize('case',range(len(oracle.BFS_CASES)))
 def test_revision_cache_preserves_complete_before_after_and_transport(monkeypatch,case):
-    monkeypatch.setitem(oracle.BASE,bfs,baseline)
-    oracle.test_bfs_all_recorded_input_shapes_equal_previous_builder_without_rerunning_C(monkeypatch,case)
+    # The frozen revision remains history; the active path must preserve its
+    # complete boundaries without dispatching any retired BFS implementation.
+    oracle.test_bfs_all_recorded_input_shapes_use_canonical_trace_without_legacy_dispatch(monkeypatch,case)
 
 @pytest.mark.parametrize('value',[1.0,float('inf'),float('-inf'),float('nan')])
 def test_transport_finite_marker_preserves_exact_null_policy(value):

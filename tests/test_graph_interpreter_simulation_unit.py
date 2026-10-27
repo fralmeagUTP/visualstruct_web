@@ -5,12 +5,13 @@ from __future__ import annotations
 from app.services.graph_structure_service import GraphStructureService
 
 
-def _run_graph_op(history: list[dict], operation: str, payload: dict) -> dict:
+def _run_graph_op(history: list[dict], operation: str, payload: dict, *, trace=False) -> dict:
     return GraphStructureService.execute_operation(
         structure_id="graph",
         operation_name=operation,
         payload=payload,
         history=history,
+        execution_mode='step' if trace or operation.startswith('run_') else 'normal',
     )
 
 
@@ -22,6 +23,31 @@ def _trace_lines(result: dict) -> list[str]:
     return [_norm(step.get("line_text", "")) for step in result["execution_trace"]["steps"]]
 
 
+def _dense_budget_and_sparse_trace(history, operation, payload):
+    """Keep the dense seven-vertex fixture as a real budget regression, then
+    inspect complete control flow on a seven-vertex sparse connected graph.
+    """
+    rejected = _run_graph_op(history, operation, payload)
+    assert rejected['success'] is False and rejected['trace_available'] is False
+    assert rejected['preserve_session'] is True and rejected['execution_trace'] is None
+    assert rejected['history'] == history and rejected['trace_event_limit'] == 4000
+    normal = GraphStructureService.execute_operation('graph',operation,payload,history,execution_mode='normal')
+    assert normal['success'] is True and normal['execution_trace'] is None
+    assert normal['visual_state']['metadata']['vertices_count'] == 7
+    assert normal['history'][:-1] == history
+    # Bellman-Ford needs a directed chain to keep the complete seven-vertex
+    # control-flow trace inside the same public event budget.
+    sparse = _run_graph_op([], 'create_graph', {'directed':operation == 'run_bellman_ford'})['history']
+    for vertex in range(1,8):
+        sparse = _run_graph_op(sparse, 'insert_vertex', {'vertex':vertex})['history']
+    for vertex in range(1,7):
+        sparse = _run_graph_op(sparse, 'insert_edge', {'origin':vertex,'target':vertex+1,'weight':1})['history']
+    result = _run_graph_op(sparse, operation, payload)
+    assert result['success'] is True and result['trace_available'] is True
+    assert result['visual_state']['metadata']['vertices_count'] == 7
+    return result
+
+
 def test_graph_trace_contract_for_mutating_operation_insert_edge() -> None:
     """Trace for a mutating graph op must expose state transitions and final consistency."""
     history: list[dict] = []
@@ -29,7 +55,7 @@ def test_graph_trace_contract_for_mutating_operation_insert_edge() -> None:
     create = _run_graph_op(history, "create_graph", {"directed": "false"})
     history = create["history"]
 
-    result = _run_graph_op(history, "insert_edge", {"origin": "1", "target": "2", "weight": "7"})
+    result = _run_graph_op(history, "insert_edge", {"origin": "1", "target": "2", "weight": "7"}, trace=True)
 
     assert result["success"] is True
     trace = result["execution_trace"]
@@ -55,14 +81,14 @@ def test_graph_trace_bfs_keeps_statement_order_before_condition_checks() -> None
 
     lines = _trace_lines(bfs)
     steps = bfs["execution_trace"]["steps"]
-    actual = next(i for i,step in enumerate(steps) if step["pedagogy"]["instruction_event"]["function"]=="grafo_bfs" and step["pedagogy"]["instruction_event"]["phase"]=="statement" and _norm(step["line_text"])==_norm("int actual = cola_desencolar(&cola);"))
-    idx_decl_tmp = next(i for i,step in enumerate(steps) if step["pedagogy"]["instruction_event"]["phase"]=="allocate" and "ListaVertice tmp =" in step["line_text"])
-    idx_if_tmp = lines.index(_norm("if (tmp == NULL) continue;"))
-    idx_queue_guard = lines.index(_norm("while (cola.delante != NULL) {"))
+    actual = lines.index(_norm('int u = t.prev[frente++];'))
+    idx_decl_tmp = lines.index(_norm('correcto = agregar_visita(&lista, &ultimo, t.vertices[u]);'))
+    idx_if_tmp = lines.index(_norm('if (!correcto) break;'))
+    idx_queue_guard = lines.index(_norm('while (frente < final && correcto) {'))
     assert idx_queue_guard < actual < idx_decl_tmp < idx_if_tmp
     assert _norm("if (actual == -1) {") not in lines
-    assert steps[actual]["pedagogy"]["memory_state"]["frames"][-1]["locals"]["actual"] == 1
-    assert steps[idx_if_tmp]["pedagogy"]["condition"]["result"] is False
+    condition=next(step for step in steps if _norm(step['line_text'])==_norm('if (!correcto) break;') and step['pedagogy']['instruction_event']['phase']=='condition')
+    assert condition['pedagogy']['condition']['result'] is False
 
 
 def test_graph_trace_bfs_repeats_loop_blocks_for_multiple_visits() -> None:
@@ -77,13 +103,13 @@ def test_graph_trace_bfs_repeats_loop_blocks_for_multiple_visits() -> None:
     assert bfs["success"] is True
     lines = _trace_lines(bfs)
 
-    assert lines.count(_norm("while (cola.delante != NULL) {")) > 1
-    assert lines.count(_norm("while (suces != NULL) {")) > 1
-    assert lines.count(_norm("if (!grafo_marcado_vertice(g, suces->dato)) {")) > 1
+    assert lines.count(_norm('while (frente < final && correcto) {')) > 1
+    assert lines.count(_norm('for (ListaVertice p = suces; p != NULL; p = p->sig) {')) > 1
+    assert lines.count(_norm('if (v >= 0 && !t.usado[v]) {')) > 1
 
 
 def test_graph_trace_bfs_stops_after_return_when_start_vertex_does_not_exist() -> None:
-    """An app guard rejects absent starts before calling the independently tested C BFS."""
+    """Absent starts execute C and report status without traversing fictitious nodes."""
     history: list[dict] = []
     history = _run_graph_op(history, "create_graph", {"directed": "false"})["history"]
 
@@ -91,11 +117,10 @@ def test_graph_trace_bfs_stops_after_return_when_start_vertex_does_not_exist() -
     assert bfs["success"] is False
 
     lines = _trace_lines(bfs)
-    assert bfs["execution_trace"]["bfs_application_rejection"] is True
-    assert len(lines) == 1 and "no se invoco grafo_bfs" in lines[0]
-    assert bfs["history"] == history
-    assert bfs["execution_trace"]["steps"][0]["pedagogy"]["call_stack"] == []
-    assert bfs["execution_trace"]["steps"][0]["console"] == []
+    assert bfs['c_status']==2 and bfs['execution_trace']['execution_started'] is True
+    assert bfs['history'][:-1]==history and bfs['history'][-1]['source_contract']=='graph-book/v1'
+    assert any(step['pedagogy']['instruction_event']['function']=='grafo_bfs' for step in bfs['execution_trace']['steps'])
+    assert bfs['execution_trace']['steps'][-1]['pedagogy']['memory_state']['frames']==[]
     assert not any(_norm("cola_encolar(&cola, inicio);")==line for line in lines)
     assert _norm("while (cola.delante != NULL) {") not in lines
 
@@ -108,15 +133,14 @@ def test_graph_trace_dijkstra_unreachable_stops_before_path_reconstruction() -> 
     history = _run_graph_op(history, "insert_vertex", {"vertex": "2"})["history"]
 
     dij = _run_graph_op(history, "run_dijkstra", {"start": "1", "end": "2"})
-    assert dij["success"] is True
-    assert "no existe ruta" in str(dij["message"]).lower()
+    assert dij["success"] is False and dij['c_status']==2
 
     lines = _trace_lines(dij)
-    assert _norm("return NULL;") in lines
+    assert any('grafo_no_existe' in line for line in lines)
 
     # This block belongs to successful path reconstruction and must not run on unreachable cases.
-    assert _norm("while (prev[destino] != -1) {") not in lines
-    assert _norm("nuevo->origen = vertices[prev[destino]];") not in lines
+    assert _norm('while (d != s) {') not in lines
+    assert not any(step['pedagogy']['instruction_event']['function']=='reconstruir' and step['pedagogy']['instruction_event']['phase']=='allocate' for step in dij['execution_trace']['steps'])
 
 
 def test_graph_trace_dijkstra_keeps_for_loop_order_before_j_condition() -> None:
@@ -129,8 +153,8 @@ def test_graph_trace_dijkstra_keeps_for_loop_order_before_j_condition() -> None:
     assert dij["success"] is True
 
     lines = _trace_lines(dij)
-    idx_for_j = lines.index(_norm("for (j = 0; j < n; j++) {"))
-    idx_if_j = lines.index(_norm("if (!visitado[j] && dist[j] < min) {"))
+    idx_for_j = lines.index(_norm('for (int j = 0; j < t.n; j++)'))
+    idx_if_j = next(i for i,line in enumerate(lines) if line.startswith('if (!t.usado[j] && t.alcanzable[j] &&'))
 
     assert idx_for_j < idx_if_j, "La condicion de j aparece antes del for(j) en la traza."
 
@@ -148,9 +172,9 @@ def test_graph_trace_dfs_expands_recursive_subroutine_and_uses_real_edges() -> N
 
     trace = dfs["execution_trace"]
     lines = _trace_lines(dfs)
-    assert "void grafo_dfs_recursivo(grafo g, int actual, listavertice *recorrido) {" in lines
-    assert lines.count(_norm("grafo_dfs_recursivo(g, suces->dato, recorrido);")) >= 2
-    assert "grafo_dfs_recursivo(g, inicio, &recorrido);" in lines
+    assert any(step['pedagogy']['instruction_event']['function']=='grafo_dfs_recursivo' and step['pedagogy']['instruction_event']['phase']=='enter' for step in trace['steps'])
+    assert lines.count(_norm('correcto = grafo_dfs_recursivo(g, t, v, lista, ultimo);')) >= 2
+    assert _norm('int correcto = grafo_dfs_recursivo(g, &t, s, &lista, &ultimo);') in lines
 
     state_edges = dfs["visual_state"]["edges"]
     valid_edges: set[tuple[str, str]] = set()
@@ -180,7 +204,7 @@ def test_graph_trace_bfs_uses_existing_edges_in_progress() -> None:
     history = _run_graph_op(history, "create_graph", {"directed": "false"})["history"]
     history = _run_graph_op(history, "generate_random_graph", {"vertices_count": "7", "seed": "484589473"})["history"]
 
-    bfs = _run_graph_op(history, "run_bfs", {"start": "1"})
+    bfs = _dense_budget_and_sparse_trace(history, "run_bfs", {"start": "1"})
     assert bfs["success"] is True
 
     valid_edges: set[tuple[str, str]] = set()
@@ -210,17 +234,17 @@ def test_graph_trace_kruskal_respects_loops_conditions_and_taken_branches() -> N
     history = _run_graph_op(history, "create_graph", {"directed": "false"})["history"]
     history = _run_graph_op(history, "generate_random_graph", {"vertices_count": "7", "seed": "484589473"})["history"]
 
-    kr = _run_graph_op(history, "run_kruskal", {})
+    kr = _dense_budget_and_sparse_trace(history, "run_kruskal", {})
     assert kr["success"] is True
 
     lines = _trace_lines(kr)
     mst_edges = kr["result"].get("mst_edges", [])
     mst_count = len(mst_edges) if isinstance(mst_edges, list) else 0
 
-    assert lines.count(_norm("for (int j = 0; j < i; j++) {")) > 1
-    assert lines.count(_norm("if (u != -1 && v != -1 && grafo_encontrar_conjunto(&conjuntos, u) != grafo_encontrar_conjunto(&conjuntos, v)) {")) >= 1
-    assert lines.count(_norm("grafo_unir_conjuntos(&conjuntos, u, v);")) >= max(1, mst_count // 2)
-    assert _norm("return mst;") in lines
+    assert lines.count(_norm('for (int j = 0; j < cantidad - i - 1; j++)')) > 1
+    assert lines.count(_norm('if (grafo_encontrar_conjunto(&c, u) ==')) >= 1
+    assert lines.count(_norm('grafo_unir_conjuntos(&c, u, v);')) >= mst_count
+    assert _norm('return arbol;') in lines
 
 
 def test_graph_trace_dijkstra_respects_main_loops_and_returns() -> None:
@@ -233,29 +257,29 @@ def test_graph_trace_dijkstra_respects_main_loops_and_returns() -> None:
     assert dij["success"] is True
 
     lines = _trace_lines(dij)
-    assert lines.count(_norm("for (i = 0; i < n; i++) {")) >= 2
-    assert lines.count(_norm("for (j = 0; j < n; j++) {")) >= 2
-    assert lines.count(_norm("if (!visitado[j] && dist[j] < min) {")) >= 2
-    assert lines.count(_norm("while (suces != NULL) {")) >= 2
-    assert lines.count(_norm("if (v != -1 && !visitado[v]) {")) >= 2
+    assert lines.count(_norm('for (int k = 0; k < t.n && e == GRAFO_OK; k++) {')) >= 2
+    assert lines.count(_norm('for (int j = 0; j < t.n; j++)')) >= 2
+    assert lines.count(_norm('if (!t.usado[j] && t.alcanzable[j] &&')) >= 2
+    assert lines.count(_norm('for (ListaArco a = g.a; a != NULL; a = a->sig) {')) >= 2
+    assert lines.count(_norm('if (t.usado[v]) continue;')) >= 2
     assert _norm("return camino;") in lines
 
 
 def test_graph_trace_bellman_ford_respects_relax_passes_and_cycle_detection_branch() -> None:
     """Bellman-Ford trace must reflect pass loops and negative-cycle return branch."""
-    from _bellman_reachability_consumer_oracle import assert_bellman_consumer
+    from _book_frame_oracle import assert_book_body
     history: list[dict] = []
     history = _run_graph_op(history, "create_graph", {"directed": "false"})["history"]
     history = _run_graph_op(history, "generate_random_graph", {"vertices_count": "7", "seed": "484589473"})["history"]
 
-    bf = _run_graph_op(history, "run_bellman_ford", {"start": "1", "end": "4"})
+    bf = _dense_budget_and_sparse_trace(history, "run_bellman_ford", {"start": "1", "end": "4"})
     assert bf["success"] is True
     lines = _trace_lines(bf)
-    assert lines.count(_norm("for (i = 0; i < n - 1; i++) {")) >= 2
-    assert lines.count(_norm("while (a != NULL) {")) >= 2
-    assert lines.count(_norm("if (u != -1 && v != -1 && alcanzable[u]) {")) >= 2
+    assert lines.count(_norm('for (int k = 0; k < t.n && e == GRAFO_OK; k++) {')) >= 2
+    assert lines.count(_norm('for (ListaArco a = g.a; a != NULL; a = a->sig) {')) >= 2
+    assert lines.count(_norm('if (!t.alcanzable[u]) continue;')) >= 2
     assert _norm("return camino;") in lines
-    assert_bellman_consumer(bf)
+    assert_book_body(bf)
 
     # Caso dirigido con ciclo negativo para validar rama de retorno temprano.
     history = []
@@ -271,8 +295,8 @@ def test_graph_trace_bellman_ford_respects_relax_passes_and_cycle_detection_bran
 
     bf_neg = _run_graph_op(history, "run_bellman_ford", {"start": "1", "end": "3"})
     assert bf_neg["success"] is False
-    assert bf_neg["history"] == history
+    assert bf_neg['c_status']==4 and bf_neg["history"][:-1] == history
     neg_lines = _trace_lines(bf_neg)
-    assert _norm("printf(\"Se detecto un ciclo negativo.\\n\");") in neg_lines
-    assert _norm("return NULL;") in neg_lines
-    assert_bellman_consumer(bf_neg)
+    assert any('e = grafo_ciclo_negativo' in line for line in neg_lines)
+    assert not any(step['pedagogy']['instruction_event']['function']=='reconstruir' for step in bf_neg['execution_trace']['steps'])
+    assert_book_body(bf_neg)

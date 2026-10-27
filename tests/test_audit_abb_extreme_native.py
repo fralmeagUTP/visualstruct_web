@@ -1,4 +1,5 @@
 """ABB minimum/maximum: actual single iterative scope and borrowed return."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,sys,json,shutil,subprocess
 import pytest
@@ -39,7 +40,7 @@ def test_extreme_native_one_scope_local_alias_and_borrowed_return(abb_extreme_na
   if e['frames']:assert state['tree_frames'][0]=={'id':'F1','function':e['frames'][0]['function'],'depth':0,'parameters':{'nodo':mapping[e['frames'][0]['nodo']]},'locals':{}}
   assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['memory']['dangling_references']
   if e['phase']=='condition':assert ped['condition']['result']==bool(e['result'])
-  if e['phase']=='return':assert ped['call_stack'][0]['return']==mapping[e['result']];assert ped['memory_state']['returned']==mapping[e['result']];assert not ped['memory_state']['tree_frames'];assert not ped['return_propagation']['reconnects_subtree']
+  if e['phase']=='return':assert context_stack(ped)[0]['return']==mapping[e['result']];assert ped['memory_state']['returned']==mapping[e['result']];assert not ped['memory_state']['tree_frames'];assert not ped['return_propagation']['reconnects_subtree']
   if e['phase']=='after':assert len(ped['memory_state']['tree_frames'])==1 and ped['memory_state']['tree_frames'][0]['id']=='F1'
  assert trace['steps'][-1]['state_after']==trace['final_state'];assert not trace['steps'][0]['state_snapshot']['tree_frames']
  for a,b in zip(trace['steps'],trace['steps'][1:]):assert a['state_after']==b['state_snapshot']

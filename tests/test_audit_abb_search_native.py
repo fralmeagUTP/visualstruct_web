@@ -1,4 +1,5 @@
 """Search: independent native invocations, short circuit and borrowed return."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,sys,json,shutil,subprocess
 import pytest
@@ -35,8 +36,8 @@ def test_search_native_each_scope_short_circuit_return_and_caller(abb_search_nat
   if e['phase']=='condition':
    assert ped['condition']['result']==bool(e['result'])
    if e['frames'][-1]['nodo']==0:assert 'segundo operando no evaluado' in ped['condition']['substituted']
-  if e['phase']=='call':assert ped['memory_state']==step['state_snapshot'] and ped['call_stack'][-1]['return'] is None
-  if e['phase']=='return':assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)';assert ped['call_stack'][-1]['return']==mapping[e['result']];assert ped['memory_state']['returned']==mapping[e['result']];assert len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
+  if e['phase']=='call':assert ped['memory_state']==step['state_snapshot'] and context_stack(ped)[-1]['return'] is None
+  if e['phase']=='return':assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)';assert context_stack(ped)[-1]['return']==mapping[e['result']];assert ped['memory_state']['returned']==mapping[e['result']];assert len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
   if e['phase']=='caller':assert state['returned']==mapping[e['result']] and state['wrapper_result']==int(e['result']!=0) and not state['caller_frame']
  assert trace['steps'][-1]['state_after']==trace['final_state'];assert not trace['steps'][0]['state_snapshot']['tree_frames'] and not trace['steps'][0]['state_snapshot']['caller_frame'] and trace['steps'][0]['state_snapshot']['wrapper_result'] is None
  for a,b in zip(trace['steps'],trace['steps'][1:]):assert a['state_after']==b['state_snapshot']

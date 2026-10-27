@@ -2,6 +2,7 @@
 from pathlib import Path
 import json,hashlib,os,subprocess,shutil,re
 import pytest
+from _application_rejection_contract import assert_unexecuted_input_rejection
 from app import create_app
 from app.services.hierarchical_structure_service import HierarchicalStructureService as S
 from _audit_rbt_delete_native_observer import observe,CASES,FUNCTIONS
@@ -29,7 +30,11 @@ def test_delete_lifetime_identity_and_native_endpoint(rbt_delete_baseline,case):
 @pytest.mark.parametrize('seed,value',[([],99),([10],99),([10,5,15],99),([10],'abc'),([],None),([-2147483648],2147483648)])
 def test_application_rejection_is_not_a_native_delete_invocation(seed,value):
  history=[{'operation':'insertar','payload':{'value':v}} for v in seed];a,_=S._rebuild_adapter('red_black',history);before=a.to_visual_state();r=S.execute_operation('red_black','eliminar',{'value':value},history);assert not r['success'] and r['visual_state']==before and r['history']==history
- t=r['execution_trace'];assert t['application_precondition_rejected'] and len(t['steps'])==1 and 'rbt_eliminar NO fue invocado' in t['source_code'];p=t['steps'][0]['pedagogy'];assert not p['instruction_event']['C_invoked'] and not p['variables'] and not p['call_stack'] and not p['memory']['allocated_objects'] and not p['memory']['freed_objects'] and p['return_propagation']['value'] is None and t['steps'][0]['console']==[]
+ t=r['execution_trace']
+ if t.get('execution_started') is False:
+  assert_unexecuted_input_rejection(r)
+ else:
+  assert t['application_precondition_rejected'] and len(t['steps'])==1 and 'rbt_eliminar NO fue invocado' in t['source_code'];p=t['steps'][0]['pedagogy'];assert not p['instruction_event']['C_invoked'] and not p['variables'] and not p['call_stack'] and not p['memory']['allocated_objects'] and not p['memory']['freed_objects'] and p['return_propagation']['value'] is None and t['steps'][0]['console']==[]
 
 from scripts.test_tool_paths import resolve_doxygen
 def test_original_downloaded_helpers_contract_and_doxygen(tmp_path,rbt_delete_baseline):

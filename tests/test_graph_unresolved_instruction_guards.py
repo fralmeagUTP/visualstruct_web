@@ -3,6 +3,7 @@ import pytest
 from app.services.graph_structure_service import GraphStructureService
 
 EDGE=[{"operation":"create_graph","payload":{"directed":True}},{"operation":"insert_edge","payload":{"origin":1,"target":2,"weight":3}}]
+EDGE=[dict(record,source_contract="graph-book/v1") for record in EDGE]
 
 @pytest.mark.parametrize("operation,payload,history,forbidden",[
  ("exists_vertex",{"vertex":1},[],["k=k->sig;","return 1;"]),
@@ -23,7 +24,10 @@ def test_borrowed_list_return_has_explicit_pointer_memory(operation):
     assert data["success"]
     frames=[s.get("pedagogy",{}).get("memory_state",{}) for s in data["execution_trace"]["steps"]]
     # These C methods return borrowed heads, not independently allocated result nodes.
-    assert any("returned" in f and "heap_nodes" in f for f in frames),frames
+    result=data["visual_state"]["last_result"]
+    assert result["ownership"]=="borrowed" and result["c_return"]!="NULL"
+    assert any(result["c_return"] in {node["id"] for node in frame.get("heap_nodes",[])} for frame in frames)
+    assert all(frame.get("allocations",0)==0 and frame.get("frees",0)==0 for frame in frames)
 
 @pytest.mark.parametrize("operation,payload",[("create_graph",{"directed":True}),("clear_graph",{})])
 def test_replacing_nonempty_graph_explains_owning_caller_cleanup(operation,payload):

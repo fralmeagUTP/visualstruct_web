@@ -1,4 +1,5 @@
 """Independent actual AVL minimum, displayed maximum and guarded value caller."""
+from _instruction_context_contract import context_stack
 import json,subprocess,shutil
 from pathlib import Path
 import pytest
@@ -100,8 +101,8 @@ def test_avl_extreme_native_aliases_guarded_caller_and_output(avl_extreme_native
   assert state['caller_output']['initialized']==bool(e['output_initialized']) and state['caller_output']['value']==(e['output'] if e['output_initialized'] else None)
   assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['return_propagation']['reconnects_subtree'] and state['console_stdout']==''
   if e['phase'] in {'condition','caller_condition'}:assert ped['condition']['result']==bool(e['result'])
-  if e['phase']=='return':assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and ped['call_stack'][-1]['return']==identity(e['result']) and ped['memory_state']['returned']==identity(e['result']) and not ped['memory_state']['tree_frames']
-  if e['phase']=='caller_result':assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and ped['memory_state']['wrapper_result']==e['result'] and not ped['memory_state']['caller_frame']
+  if e['phase']=='return':assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and context_stack(ped)[-1]['return']==identity(e['result']) and ped['memory_state']['returned']==identity(e['result']) and not ped['memory_state']['tree_frames']
+  if e['phase']=='caller_result':assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and ped['memory_state']['wrapper_result']==e['result'] and not ped['memory_state']['caller_frame']
  assert not initial['tree_frames'] and not initial['caller_frame'] and initial['wrapper_result'] is None and initial['caller_output']['value'] is None
  for a,b in zip(trace['steps'],trace['steps'][1:]):assert a['state_after']==b['state_snapshot']
 

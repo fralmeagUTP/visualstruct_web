@@ -1,0 +1,82 @@
+/**
+ * \page graph_book_api Contrato del grafo canónico del libro
+ *
+ * Esta documentación acompaña los C/H del libro sin modificar sus bytes.
+ * GrafoEstado distingue éxito, falta de memoria, ausencia, pesos/ciclos
+ * negativos, desconexión, argumentos no válidos y rango. Un resultado NULL
+ * con GRAFO_OK puede representar una lista vacía válida. Las listas de
+ * grafo_vertices/grafo_arcos son prestadas; los resultados de recorridos,
+ * vecinos, caminos y MST son propios y se liberan mediante
+ * grafo_liberar_vertices o grafo_liberar_arcos. El llamador destruye Grafo.
+ */
+
+/** \struct NodoV
+ * \brief Nodo de la lista canónica de vértices o de un resultado propio.
+ */
+/** \var int NodoV::dato
+ * \brief Identificador entero del vértice; -1 es un dato válido.
+ */
+/** \var struct NodoV *NodoV::sig
+ * \brief Enlace al siguiente nodo, o NULL al terminar la lista.
+ */
+/** \var int NodoV::marcado
+ * \brief Marca del vértice; el recorrido la publica sólo tras éxito.
+ */
+
+/** \struct NodoA
+ * \brief Arco dirigido con costo entero y enlace de lista.
+ */
+/** \var int NodoA::origen
+ * \brief Identificador del vértice de origen.
+ */
+/** \var int NodoA::destino
+ * \brief Identificador del vértice de destino.
+ */
+/** \var int NodoA::costo
+ * \brief Costo int32 del arco, independiente de su existencia.
+ */
+/** \var struct NodoA *NodoA::sig
+ * \brief Siguiente arco de la lista, o NULL.
+ */
+
+/** \struct nodoGrafo
+ * \brief Cabezas por valor de las listas de vértices y arcos del grafo.
+ */
+/** \var ListaVertice nodoGrafo::v
+ * \brief Cabeza de la lista prestada de vértices.
+ */
+/** \var ListaArco nodoGrafo::a
+ * \brief Cabeza de la lista prestada de arcos dirigidos.
+ */
+
+/** \struct Trabajo
+ * \brief Reservas temporales de una invocación de algoritmo, sin ser un TAD nuevo.
+ */
+/** \var int Trabajo::n
+ * \brief Número de vértices y capacidad de los arreglos de trabajo.
+ */
+/** \var int *Trabajo::vertices
+ * \brief Correspondencia entre índice de trabajo e identificador de vértice.
+ */
+/** \var int *Trabajo::prev
+ * \brief Predecesores; BFS reutiliza este arreglo como cola de índices.
+ */
+/** \var int *Trabajo::usado
+ * \brief Indicadores de vértices procesados durante esta invocación.
+ */
+/** \var int *Trabajo::alcanzable
+ * \brief Alcanzabilidad separada del valor numérico de una distancia.
+ */
+/** \var long long *Trabajo::dist
+ * \brief Costos acumulados amplios; INT_MAX no funciona como infinito.
+ */
+
+/** \struct Conjunto
+ * \brief Bosque de representantes utilizado por Kruskal.
+ */
+/** \var int *Conjunto::padre
+ * \brief Arreglo propio de representantes; se libera al terminar el algoritmo.
+ */
+/** \var int Conjunto::n
+ * \brief Cantidad de elementos del bosque de representantes.
+ */

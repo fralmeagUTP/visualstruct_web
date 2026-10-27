@@ -1,4 +1,4 @@
-import unittest,json,time,resource
+import unittest,json,time
 from app.domain.graph.book_c_subset import BookSession
 from app.domain.graph.book_source import canonical_source
 from app.domain.graph.book_trace import BookTraceCollector,build_book_trace

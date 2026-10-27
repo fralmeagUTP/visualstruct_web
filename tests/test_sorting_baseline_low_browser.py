@@ -1,11 +1,11 @@
 """Actual UI repetitions, reload and saved sorted state; no actual main claimed."""
 from pathlib import Path
-import subprocess,sys,json
+import subprocess,sys,json,os
 import pytest
 @pytest.fixture(scope='module')
 def browser_report(tmp_path_factory):
  out=tmp_path_factory.mktemp('sorting-browser');root=Path(__file__).resolve().parents[1]
- p=subprocess.run([sys.executable,'-u',str(Path(__file__).with_name('_audit_sorting_browser_low.py')),str(out)],cwd=root,capture_output=True,text=True,encoding='utf-8',timeout=120)
+ p=subprocess.run([sys.executable,'-u',str(Path(__file__).with_name('_audit_sorting_browser_low.py')),str(out)],cwd=root,capture_output=True,text=True,encoding='utf-8',timeout=120,env={**os.environ,'PYTHONIOENCODING':'utf-8'})
  (out/'runner.log').write_text(p.stdout+p.stderr,encoding='utf-8');assert p.returncode==0,p.stdout+p.stderr
  return json.loads((out/'report.json').read_text(encoding='utf-8'))
 @pytest.mark.parametrize('algorithm',['burbuja','mergesort','radixsort'])

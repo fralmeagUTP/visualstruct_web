@@ -1,15 +1,21 @@
 """Bounded checks of publication preparation; no algorithm/browser campaigns."""
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 from types import SimpleNamespace
 import pytest
 from scripts import test_tool_paths as tools
-from scripts import pytest_e2e_partition as diagnostics
+from scripts import pytest_e2e_partition as _diagnostics_source
 from scripts.published_test_inputs import audit_input_path
 from scripts.verify_test_partition_results import verify
 
 ROOT=Path(__file__).resolve().parents[1]
+# Do not mutate the active CI plugin's report ledger while testing its hooks.
+# The coverage union gate must retain these very tests' real call reports too.
+_diagnostics_spec=importlib.util.spec_from_file_location('partition_contract_under_test',_diagnostics_source.__file__)
+diagnostics=importlib.util.module_from_spec(_diagnostics_spec)
+_diagnostics_spec.loader.exec_module(diagnostics)
 
 def test_original_abb_root_one_input_is_present_and_hash_bound():
     relative="openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-abb-delete-baseline-low/abb-delete-root-one-native-low/review.json"
@@ -41,6 +47,19 @@ def test_safe_failure_and_live_record_never_use_private_details(monkeypatch,tmp_
     public=capsys.readouterr().out+(tmp_path/"probe-events.jsonl").read_text()
     assert sentinel not in public
     assert "FileNotFoundError" in public and '"line": 11' in public
+
+def test_collection_failure_is_reported_without_reading_private_error(monkeypatch,tmp_path,capsys):
+    sentinel='SYNTHETIC_PRIVATE_COLLECTION_VALUE'
+    class PrivateError:
+        def __str__(self):raise AssertionError('collection traceback must stay private')
+    monkeypatch.setenv('VISUALSTRUCT_E2E_DIAGNOSTICS_DIR',str(tmp_path))
+    monkeypatch.setenv('VISUALSTRUCT_E2E_DIAGNOSTICS_NAME','probe')
+    monkeypatch.setattr(diagnostics,'_reports',[])
+    diagnostics.pytest_collectreport(SimpleNamespace(failed=True,nodeid='tests/test_collection.py::case['+sentinel+']',longrepr=PrivateError()))
+    row=diagnostics._reports[0]
+    assert row['phase']=='collection' and row['outcome']=='failed' and row['file']=='tests/test_collection.py'
+    text=capsys.readouterr().out+(tmp_path/'probe-events.jsonl').read_text()
+    assert sentinel not in text
 
 def write_partition(root,index,selected,eligible,*,exit=0,executed=True):
     folder=root/f"coverage-shard-{index}";folder.mkdir(exist_ok=True)

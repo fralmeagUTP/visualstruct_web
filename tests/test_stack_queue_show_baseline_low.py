@@ -62,11 +62,12 @@ def test_actual_browser_rejection_reload_existing_five_sections_views_no_new_con
 
 def test_shared_actual_callers_reused_only_eleven_byte_exact_inputs_no_mostrar_calls():
  d=read('caller-input-reuse.json');assert d['count']==len(d['inputs'])==11
+ project_root=Path(__file__).resolve().parents[1]
  for x in d['inputs']:
-  a=E.parents[4]/x['current'];b=E.parents[4]/x['baseline']
+  a=project_root/x['current'];b=project_root/x['baseline']
   assert hashlib.sha256(audit_input_path(b).read_bytes()).hexdigest()==x['SHA256']
   if x['current'].replace(chr(92),'/').startswith('docs/tads_C/'):
-   assert_historical_protected_hash(E.parents[4],x['current'],x['SHA256'])
+   assert_historical_protected_hash(project_root,x['current'],x['SHA256'])
   else:assert audit_input_path(a).read_bytes()==audit_input_path(b).read_bytes() and hashlib.sha256(audit_input_path(a).read_bytes()).hexdigest()==x['SHA256']
   if a.name=='main.c':assert b'_mostrar(' not in audit_input_path(a).read_bytes()
 def test_shared_native_observers_separate_safe_readonly_void_functions():

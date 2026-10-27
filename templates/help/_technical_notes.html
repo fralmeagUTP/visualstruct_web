@@ -31,6 +31,11 @@
 </ul></details>
 {% endif %}
 {% if structure_id == 'circular_list' %}
+<details><summary>Contratos C y resultados</summary>
+<p>Las operaciones con retorno booleano distinguen éxito y rechazo mediante true/false. En una lista circular no vacía se conserva cola-&gt;sgte == cabeza al terminar; los enlaces transitorios se estudian dentro de la operación.</p>
+<p>Buscar posiciones devuelve el total de coincidencias aunque el arreglo de salida sea menor. NULL y capacidad 0 permiten contar sin escribir posiciones; copiar valores, en cambio, devuelve cuántos valores se copiaron dentro de la capacidad disponible.</p>
+<p>Una reserva fallida no enlaza un nodo parcial ni cambia cantidad o extremos. Destruir libera los nodos propios y deja los extremos en NULL. No confundas un registro histórico de memoria con un nodo vivo.</p>
+</details>
 <details><summary>Representación, enlaces y consultas</summary>
 <ul>
 <li>Lista enlazada circular donde el ultimo nodo apunta nuevamente al primero.</li>

@@ -76,7 +76,12 @@ def test_actual_browser_all_frames_controls_neighbors_flag_and_C_callers(case):
  assert report['empty_UI_rejected'] and report['empty_caller']['successful_native_runs']==0
 
 def test_original_seven_causal_regressions_closed_modules_and_C_H_unchanged():
- assert (audit_input_path(ROOT/'tests/test_sorting_burbuja_baseline_low.py')).read_bytes()==(audit_input_path(EVIDENCE/'before/tests/test_sorting_burbuja_baseline_low.py')).read_bytes()
+ from tests._sorting_published_test_contract import assert_published_test_successor, _FixturePathAdapter
+ import ast
+ receipt=json.loads((ROOT/'tests/fixtures/sorting-history/burbuja-test-migration.json').read_text())
+ assert_published_test_successor(ROOT,dict(path=receipt['source']['path'],sha256=receipt['original_declared_sha256']),'burbuja')
+ normalize=lambda raw:ast.dump(_FixturePathAdapter().visit(ast.parse(raw)),include_attributes=False)
+ assert normalize((audit_input_path(ROOT/'tests/test_sorting_burbuja_baseline_low.py')).read_text(encoding='utf-8-sig'))==normalize((audit_input_path(EVIDENCE/'before/tests/test_sorting_burbuja_baseline_low.py')).read_text(encoding='utf-8-sig'))
  previous=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-insercion-instructions/before'
  for relative in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py']:
   assert (audit_input_path(ROOT/relative)).read_bytes()==(audit_input_path(previous/relative)).read_bytes()

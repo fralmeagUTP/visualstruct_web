@@ -1,6 +1,6 @@
 """Regression of actual sorting main downloads, not instruction fidelity signoff."""
 from pathlib import Path
-import json,subprocess,sys
+import json,subprocess,sys,os
 import pytest
 from app.adapters.sorting_adapter import SortingAdapter
 from app.domain.sorting import SORTING_ALGORITHMS
@@ -13,7 +13,7 @@ def execute(op,p,h):
 @pytest.fixture
 def actual_callers(tmp_path_factory,request):
  selected=request.node.callspec.params['method'] if hasattr(request.node,'callspec') else 'empty'
- out=tmp_path_factory.mktemp('sorting-main-actual');r=subprocess.run([sys.executable,'-B',str(Path(__file__).with_name('_audit_sorting_main_browser_low.py')),str(out),selected],cwd=ROOT,capture_output=True,text=True,encoding='utf-8',timeout=120);(out/'runner.log').write_text(r.stdout+r.stderr,encoding='utf-8');assert r.returncode==0,r.stdout+r.stderr;return json.loads((out/'report.json').read_text(encoding='utf-8'))
+ out=tmp_path_factory.mktemp('sorting-main-actual');env={**os.environ,'PYTHONIOENCODING':'utf-8'};r=subprocess.run([sys.executable,'-B',str(Path(__file__).with_name('_audit_sorting_main_browser_low.py')),str(out),selected],cwd=ROOT,env=env,capture_output=True,text=True,encoding='utf-8',timeout=120);(out/'runner.log').write_text(r.stdout+r.stderr,encoding='utf-8');assert r.returncode==0,r.stdout+r.stderr;return json.loads((out/'report.json').read_text(encoding='utf-8'))
 
 @pytest.mark.parametrize('method',[a['id'] for a in SORTING_ALGORITHMS])
 def test_actual_ui_main_download_c17_history_ownership(method,actual_callers):

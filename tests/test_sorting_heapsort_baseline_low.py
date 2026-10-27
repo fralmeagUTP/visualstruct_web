@@ -1,5 +1,6 @@
 """Heap sort LOW, strong causal fidelity regressions remain failing until scoped MEDIUM."""
 from pathlib import Path
+from scripts.published_test_inputs import audit_input_path
 import json,hashlib
 import pytest
 from _audit_heapsort_baseline import audit,CASES,UI_CASES
@@ -34,20 +35,20 @@ def test_real_helper_NULL_guards_or_shortcircuit_without_array_mutation(observed
  assert all(c['array']==[42] and c['event']['moves']==c['event']['swaps']==0 for c in rows);assert not any(c['event']['token']=='swap_b_null' for c in rows if c['case']==8)
 def test_real_download_Doxygen_and_seven_closed_modules_untouched(observed):
  out,_=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
- h=json.loads((B/'evidence/visible-sorting-mergesort-instructions/implementation-hashes.json').read_text(encoding='utf-8'))['files']
+ h=json.loads((audit_input_path(B/'evidence/visible-sorting-mergesort-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
  for name in ['intercambio','seleccion','insercion','burbuja','shell','quicksort','mergesort']:
-  rel=f'app/domain/sorting/{name}_instructions.py';assert hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()==h[rel]
- for ext in ['c','h']:assert (out/('tad_ordenamiento.'+ext)).read_bytes()==(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext)).read_bytes()
+  rel=f'app/domain/sorting/{name}_instructions.py';assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==h[rel]
+ for ext in ['c','h']:assert (out/('tad_ordenamiento.'+ext)).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
 def test_repeated_heapsort_history_GET_no_sort_again(monkeypatch):
  from app.adapters.sorting_adapter import SortingAdapter
  c=create_app().test_client();c.post('/api/ordenamiento/create-array',json={'values':[4,3,2,1]});a=c.post('/api/ordenamiento/run',json={'algorithm_id':'heapsort','mode':'fast'}).get_json();b=c.post('/api/ordenamiento/run',json={'algorithm_id':'heapsort','mode':'fast'}).get_json();assert a['success'] and b['success'] and sum(e['operation']=='run' for e in b['history'])==2
  monkeypatch.setattr(SortingAdapter,'run',lambda *a,**k:pytest.fail('GET sorted again'));d=c.get('/api/ordenamiento/state').get_json();assert d['main_c']==b['main_c'] and d['history']==b['history'] and d['main_c'].count('ordenar_heapsort(arreglo, n);')==2
 def test_shared_swap_default_preserved_and_heap_optin_no_fake_TAD_console():
- p=SortingInterpreter([2,1],'heapsort');p._swap(0,1);old=json.loads((E/'default-helper-before.json').read_text(encoding='utf-8'));assert old=={'values':p.values,'steps':p._steps,'metrics':vars(p.metrics)}
+ p=SortingInterpreter([2,1],'heapsort');p._swap(0,1);old=json.loads((audit_input_path(E/'default-helper-before.json')).read_text(encoding='utf-8'));assert old=={'values':p.values,'steps':p._steps,'metrics':vars(p.metrics)}
  p=SortingInterpreter([4,3,2,1],'heapsort');d=p.run();assert not any(s['console_output'] for s in d['steps'])
 @pytest.mark.parametrize('case',list(UI_CASES))
 def test_actual_browser_coarse_replay_and_C17_downloaded_callers(case):
- r=json.loads((E/'browser-final/report.json').read_text(encoding='utf-8'));row=next(x for x in r['rows'] if x['case']==case)
+ r=json.loads((audit_input_path(E/'browser-final/report.json')).read_text(encoding='utf-8'));row=next(x for x in r['rows'] if x['case']==case)
  assert row['coarse_restorations']==2*row['coarse_steps'] and row['replay_extra_POSTs']==0 and row['page_errors']==[] and row['main_preserved_after_reload'] and row['five_stages'] and row['projected_moves_match_C'] and row['printf_frames']==[]
  assert len(row['DOM_heapsort_variants'])==1 and row['DOM_heapsort_variants'][0]['id']=='heapsort'
  c=row['caller'];assert c['arrays']==[UI_CASES[case],sorted(UI_CASES[case])] and c['strict_C17'] and c['doxygen_warnings']==0 and c['allocations']==c['frees']==c['live']==0 and c['successful_native_runs']==1
