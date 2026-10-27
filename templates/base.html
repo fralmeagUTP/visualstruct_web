@@ -22,7 +22,7 @@
   <title>{% block title %}Visualizador Web de Estructuras{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css', v='20260930q') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/contextual_help.css', v='20261027') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/classroom_view.css', v='20261027scroll1') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/classroom_view.css', v='20261027layout') }}">
 </head>
 <body>
   {% include '_header.html' %}
@@ -38,7 +38,8 @@
   <script src="{{ url_for('static', filename='js/multiple_input.js', v='20261027batch1') }}" defer></script>
   <script src="{{ url_for('static', filename='js/sequential.js', v='20261027batch1') }}" defer></script>
   <script src="{{ url_for('static', filename='js/hierarchical.js', v='20261027batch1') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/graph.js', v='20260930q') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/graph_layout.js', v='20261027a') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/graph.js', v='20261027layout') }}" defer></script>
   <script src="{{ url_for('static', filename='js/hash.js', v='20261003-hash-clear-destroy-medium1') }}" defer></script>
   <script src="{{ url_for('static', filename='js/counting_runtime.js', v='20261002-radix-medium1') }}" defer></script>
   <script src="{{ url_for('static', filename='js/sorting.js', v='20261002-radix-medium1') }}" defer></script>
