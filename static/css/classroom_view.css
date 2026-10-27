@@ -134,3 +134,11 @@ body:has(.classroom-workspace) .classroom-execution-controls { position:sticky; 
 .classroom-result-panel { min-width: 0; max-width: 100%; }
 /* History is a wrapper around PRE: one viewport, not nested competing bars. */
 .classroom-code-scroll:not(pre) pre { max-width: none !important; overflow: visible !important; }
+
+/* Adaptive graph: room for topology, readable weights, safe top origin when panning. */
+.graph-primary-workspace.classroom-workspace { height: max(620px,calc(100vh - 210px)) !important; min-height: 620px !important; }
+#graph-visual-state.classroom-stage { min-height: 460px !important; }
+#graph-visual-state.classroom-stage .viz-stage-center { display: block; align-items: start; }
+#graph-visual-state.classroom-stage svg text { font-size: 18px; }
+#graph-visual-state.classroom-stage .viz-graph-weight { font-weight: 600; }
+@media(max-width:900px) { .graph-primary-workspace.classroom-workspace { height: auto !important; } #graph-visual-state.classroom-stage { height: 520px; flex: none !important; } }

@@ -745,26 +745,63 @@ function getSimulationHighlights(simulation) {
   return highlights;
 }
 
-function gPlaceGraphWeightLabels(positions, edges, nodeRadius=26) {
+// Geometry is presentation-only. Reciprocal arcs get separate lanes; loops stay visible.
+function gGraphRoutes(positions, edges, nodeRadius=26) {
+  const center=[...positions.values()].reduce((s,p)=>s+p.x,0)/(positions.size||1);
+  const groups=new Map();
+  edges.forEach((e,i)=>{const key=JSON.stringify([String(e.source),String(e.target)].sort());if(!groups.has(key))groups.set(key,[]);groups.get(key).push(i);});
+  return edges.map((edge,index)=>{
+    const a=positions.get(String(edge.source)),b=positions.get(String(edge.target));if(!a||!b)return null;
+    const peers=groups.get(JSON.stringify([String(edge.source),String(edge.target)].sort()));
+    if(String(edge.source)===String(edge.target)){
+      const side=a.x>=center?1:-1,reach=82+peers.indexOf(index)*26;
+      const p0={x:a.x+side*nodeRadius*.8,y:a.y-nodeRadius*.6},p3={x:a.x+side*nodeRadius*.8,y:a.y+nodeRadius*.6};
+      const p1={x:a.x+side*reach,y:a.y-55},p2={x:a.x+side*reach,y:a.y+55};
+      const point=t=>({x:(1-t)**3*p0.x+3*(1-t)**2*t*p1.x+3*(1-t)*t*t*p2.x+t**3*p3.x,y:(1-t)**3*p0.y+3*(1-t)**2*t*p1.y+3*(1-t)*t*t*p2.y+t**3*p3.y});
+      return {edge,loop:true,point,control:[p0,p1,p2,p3],d:`M ${p0.x} ${p0.y} C ${p1.x} ${p1.y}, ${p2.x} ${p2.y}, ${p3.x} ${p3.y}`};
+    }
+    const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
+    // Canonical normal ensures both directions occupy distinct sides.
+    const canonical=String(edge.source)<String(edge.target)?1:-1;
+    const lane=peers.length>1?(peers.indexOf(index)-(peers.length-1)/2)*50:0;
+    const c={x:(a.x+b.x)/2-dy/len*lane*canonical,y:(a.y+b.y)/2+dx/len*lane*canonical};
+    const al=Math.hypot(c.x-a.x,c.y-a.y)||1,bl=Math.hypot(c.x-b.x,c.y-b.y)||1;
+    const p0={x:a.x+(c.x-a.x)/al*nodeRadius,y:a.y+(c.y-a.y)/al*nodeRadius};
+    const p2={x:b.x+(c.x-b.x)/bl*(nodeRadius+3),y:b.y+(c.y-b.y)/bl*(nodeRadius+3)};
+    const point=t=>({x:(1-t)**2*p0.x+2*(1-t)*t*c.x+t*t*p2.x,y:(1-t)**2*p0.y+2*(1-t)*t*c.y+t*t*p2.y});
+    return {edge,loop:false,point,control:[p0,c,p2],d:`M ${p0.x} ${p0.y} Q ${c.x} ${c.y} ${p2.x} ${p2.y}`};
+  });
+}
+function gPlaceGraphWeightLabels(positions, edges, nodeRadius=26, routes=gGraphRoutes(positions,edges,nodeRadius)) {
   const nodes=[...positions.values()],placed=[];
   const overlaps=(a,b)=>a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
-  const center=nodes.reduce((sum,n)=>sum+n.x,0)/(nodes.length||1);
-  edges.forEach((edge,index)=>{
-    const from=positions.get(String(edge.source)),to=positions.get(String(edge.target));if(!from||!to)return;
-    const loop=String(edge.source)===String(edge.target),side=from.x>=center?1:-1;
-    const midpoint={x:loop?from.x+side*72:(from.x+to.x)/2,y:(from.y+to.y)/2};
-    const width=Math.max(18,String(edge.weight).length*8+8),height=18,y=midpoint.y-((index%2)*8+8);
-    const box=x=>({left:x-width/2,right:x+width/2,top:y-14,bottom:y+4});
-    const collides=b=>nodes.some(n=>overlaps(b,{left:n.x-nodeRadius-3,right:n.x+nodeRadius+3,top:n.y-nodeRadius-3,bottom:n.y+nodeRadius+3})) || placed.some(p=>overlaps(b,p.box));
-    let x=loop?from.x+side*110:midpoint.x,b=box(x),column=0;
-    const direction=midpoint.x===center?(index%2?-1:1):Math.sign(midpoint.x-center);
-    while(collides(b)){
-      const side=column%2===0?direction:-direction;
-      const distance=width/2+nodeRadius+15+Math.floor(column/2)*(width+12);
-      x=midpoint.x+side*distance;b=box(x);column++;
-      // Each next column moves outward; a finite set of boxes always has room.
+  const inside=(p,b)=>p.x>b.left&&p.x<b.right&&p.y>b.top&&p.y<b.bottom;
+  const nodeBoxes=nodes.map(n=>({left:n.x-nodeRadius-8,right:n.x+nodeRadius+8,top:n.y-nodeRadius-8,bottom:n.y+nodeRadius+8}));
+  routes.forEach((route,index)=>{
+    if(!route)return;const edge=route.edge,width=Math.max(24,String(edge.weight).length*10+12),height=26;
+    let best=null;
+    for(const t of [.5,.38,.62,.26,.74,.17,.83]){
+      const anchor=route.point(t),before=route.point(Math.max(0,t-.01)),after=route.point(Math.min(1,t+.01)),dx=after.x-before.x,dy=after.y-before.y,len=Math.hypot(dx,dy)||1;
+      for(const offset of [0,18,-18,30,-30,44,-44,62,-62]){
+        const x=anchor.x-dy/len*offset,y=anchor.y+dx/len*offset;
+        const box={left:x-width/2,right:x+width/2,top:y-height/2,bottom:y+height/2};
+        const conflicts=nodeBoxes.filter(b=>overlaps(box,b)).length+placed.filter(p=>overlaps(box,p.box)).length;
+        let crossings=0;
+        routes.forEach((other,j)=>{if(!other||j===index)return;for(let k=1;k<30;k++)if(inside(other.point(k/30),box)){crossings++;break;}});
+        const score=conflicts*100000+crossings*600+Math.abs(offset)*2+Math.abs(t-.5)*30;
+        if(!best||score<best.score)best={edge,x,y:y+5,box,midpoint:anchor,shifted:Math.abs(offset)>12,score};
+      }
     }
-    placed.push({edge,x,y,box:b,midpoint,shifted:x!==midpoint.x});
+    // Dense graphs can need an outer label; never knowingly overlap a node/label.
+    if(best.score>=100000){
+      const anchor=route.point(.5);
+      search:for(let ring=1;ring<100;ring++)for(let k=0;k<16;k++){
+        const x=anchor.x+ring*24*Math.cos(k*Math.PI/8),y=anchor.y+ring*24*Math.sin(k*Math.PI/8);
+        const box={left:x-width/2,right:x+width/2,top:y-height/2,bottom:y+height/2};
+        if(!nodeBoxes.some(b=>overlaps(box,b))&&!placed.some(p=>overlaps(box,p.box))){best={edge,x,y:y+5,box,midpoint:anchor,shifted:true,score:0};break search;}
+      }
+    }
+    placed.push(best);
   });
   return placed;
 }
@@ -778,29 +815,12 @@ function renderGraphSvg(state, simulation, traceDebug) {
   }
 
   const nodeRadius = 26;
-  const n = nodes.length;
-  const width = Math.max(720, n * 140);
-  const height = Math.max(360, n * 84);
-  const cx = width / 2;
-  const cy = height / 2;
-  // Compact circular placement: enough separation up to the educational 15-vertex limit.
-  const radius = n === 3 ? 50 : n === 4 ? 54 : Math.max(90, n * 10);
-  const padding = Math.max(38, ...nodes.map(node=>String(node.label).length*4+8));
-
-  const positions = new Map();
-  nodes.forEach((node, index) => {
-    const angle = (2 * Math.PI * index) / n - (n === 2 ? 0 : Math.PI / 2);
-    const x = cx + radius * Math.cos(angle);
-    const y = cy + radius * Math.sin(angle);
-    positions.set(String(node.id), { x, y, label: node.label });
-  });
-
-  const weightLabels=gPlaceGraphWeightLabels(positions,edges,nodeRadius);
-  const minX=Math.min(...[...positions.values()].map(p=>p.x))-padding;
-  const maxX=Math.max(...[...positions.values()].map(p=>p.x))+padding;
-  const loops=edges.filter(e=>String(e.source)===String(e.target)).map(e=>positions.get(String(e.source))).filter(Boolean);
-  const left=Math.min(minX,...weightLabels.map(p=>p.box.left-4),...loops.map(p=>p.x+(p.x>=cx?0:-98)));
-  const right=Math.max(maxX,...weightLabels.map(p=>p.box.right+4),...loops.map(p=>p.x+(p.x>=cx?98:0)));
+  const positions = gAdaptiveGraphPositions(nodes, edges);
+  const routes=gGraphRoutes(positions,edges,nodeRadius);
+  const weightLabels=gPlaceGraphWeightLabels(positions,edges,nodeRadius,routes);
+  const geometry=[...[...positions.values()].flatMap(p=>[{x:p.x-nodeRadius-20,y:p.y-nodeRadius-24},{x:p.x+nodeRadius+20,y:p.y+nodeRadius+20}]),...routes.filter(Boolean).flatMap(r=>r.control),...weightLabels.flatMap(p=>[{x:p.box.left,y:p.box.top},{x:p.box.right,y:p.box.bottom}])];
+  const left=Math.min(...geometry.map(p=>p.x))-16,top=Math.min(...geometry.map(p=>p.y))-16;
+  const width=Math.max(...geometry.map(p=>p.x))-left+16,height=Math.max(...geometry.map(p=>p.y))-top+16;
   const opName = state.last_operation && state.last_operation.name ? state.last_operation.name : "";
   const useSimulation = simulation && simulation.sourceOperation === opName;
   const highlights = traceDebug
@@ -810,7 +830,7 @@ function renderGraphSvg(state, simulation, traceDebug) {
       : getDefaultHighlights(state);
 
   let svg = "";
-  svg += `<svg class=\"viz-graph-svg\" width=\"${width}\" height=\"${height}\" viewBox=\"${left} ${Math.min(...[...positions.values()].map(p=>p.y))-padding} ${right-left} ${Math.max(...[...positions.values()].map(p=>p.y))-Math.min(...[...positions.values()].map(p=>p.y))+2*padding}\" xmlns=\"http://www.w3.org/2000/svg\">`;
+  svg += `<svg class="viz-graph-svg" data-layout="adaptive" width="${width}" height="${height}" viewBox="${left} ${top} ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
   svg += "<defs>";
   svg += "<marker id=\"arrow-head\" markerWidth=\"10\" markerHeight=\"10\" refX=\"8\" refY=\"3\" orient=\"auto\" markerUnits=\"strokeWidth\">";
   svg += "<path d=\"M0,0 L0,6 L9,3 z\" class=\"viz-graph-arrowhead\" />";
@@ -824,17 +844,6 @@ function renderGraphSvg(state, simulation, traceDebug) {
       return;
     }
 
-    const dx = target.x - source.x;
-    const dy = target.y - source.y;
-    const length = Math.hypot(dx, dy) || 1;
-    const ux = dx / length;
-    const uy = dy / length;
-
-    const startX = source.x + ux * nodeRadius;
-    const startY = source.y + uy * nodeRadius;
-    const endX = target.x - ux * nodeRadius;
-    const endY = target.y - uy * nodeRadius;
-
     const edgeKey = `${String(edge.source)}->${String(edge.target)}`;
     const isTraversalEdge = highlights.traversalEdges.has(edgeKey);
     const isMstEdge = highlights.mstEdges.has(edgeKey);
@@ -844,12 +853,8 @@ function renderGraphSvg(state, simulation, traceDebug) {
       : isTraversalEdge
         ? "viz-graph-edge traversal"
         : "viz-graph-edge";
-    if(String(edge.source)===String(edge.target)){
-      const side=source.x>=cx?1:-1;
-      svg+=`<path data-graph-self-loop="${gEscape(edge.source)}" d="M ${source.x+side*nodeRadius*.8} ${source.y-nodeRadius*.6} C ${source.x+side*90} ${source.y-25}, ${source.x+side*90} ${source.y+25}, ${source.x+side*nodeRadius*.8} ${source.y+nodeRadius*.6}" fill="none" class="${edgeClass}" ${markerAttr} />`;
-    }else{
-    svg += `<line x1=\"${startX}\" y1=\"${startY}\" x2=\"${endX}\" y2=\"${endY}\" class=\"${edgeClass}\" ${markerAttr} />`;
-    }
+    const route=routes[index];
+    svg+=`<path data-graph-source="${gEscape(edge.source)}" data-graph-target="${gEscape(edge.target)}" ${route.loop?`data-graph-self-loop="${gEscape(edge.source)}"`:""} d="${route.d}" fill="none" class="${edgeClass}" ${markerAttr}><title>${gEscape(`${edge.source} → ${edge.target}: ${edge.weight}`)}</title></path>`;
 
 
   });
@@ -868,7 +873,7 @@ function renderGraphSvg(state, simulation, traceDebug) {
       : highlights.traversalNodes.has(nodeId)
         ? "viz-graph-node traversal"
         : "viz-graph-node";
-    svg += `<circle cx=\"${pos.x}\" cy=\"${pos.y}\" r=\"${nodeRadius}\" class=\"${nodeClass}\" />`;
+    svg += `<circle data-node-id=\"${gEscape(nodeId)}\" cx=\"${pos.x}\" cy=\"${pos.y}\" r=\"${nodeRadius}\" class=\"${nodeClass}\" />`;
     svg += `<text x=\"${pos.x}\" y=\"${pos.y + 5}\" text-anchor=\"middle\" class=\"viz-graph-label\">${gEscape(node.label)}</text>`;
     if (highlights.traversalOrder.has(nodeId)) {
       svg += `<text x=\"${pos.x + 19}\" y=\"${pos.y - 18}\" text-anchor=\"middle\" class=\"viz-graph-order\">${gEscape(highlights.traversalOrder.get(nodeId))}</text>`;
@@ -877,7 +882,7 @@ function renderGraphSvg(state, simulation, traceDebug) {
 
   for(const label of weightLabels){
     const title=`Costo del arco ${label.edge.source} → ${label.edge.target}: ${label.edge.weight}`;
-    svg+=`<g data-weight-source="${gEscape(label.edge.source)}" data-weight-target="${gEscape(label.edge.target)}"><title>${gEscape(title)}</title><rect x="${label.box.left}" y="${label.box.top}" width="${label.box.right-label.box.left}" height="18" rx="3" fill="white" fill-opacity=".94" /><text x="${label.x}" y="${label.y}" text-anchor="middle" class="viz-graph-weight">${gEscape(label.edge.weight)}</text></g>`;
+    svg+=`<g data-weight-source="${gEscape(label.edge.source)}" data-weight-target="${gEscape(label.edge.target)}"><title>${gEscape(title)}</title><rect x="${label.box.left}" y="${label.box.top}" width="${label.box.right-label.box.left}" height="${label.box.bottom-label.box.top}" rx="4" fill="white" fill-opacity=".94" /><text x="${label.x}" y="${label.y}" text-anchor="middle" class="viz-graph-weight">${gEscape(label.edge.weight)}</text></g>`;
   }
 
   svg += "</svg>";
@@ -2320,7 +2325,33 @@ function graphMountClassroomView() {
       if(node.tagName==="DETAILS") node.open=true;
     }
   });
-  window.ClassroomView.mount({root,visual:"#graph-visual-region",stage:"#graph-visual-state",code:"#op-pseudocode",memory:[".graph-live-memory-panel"],results,key:"graph"});
+  const view=window.ClassroomView.mount({root,visual:"#graph-visual-region",stage:"#graph-visual-state",code:"#op-pseudocode",memory:[".graph-live-memory-panel"],results,key:"graph"});
+  // Graph-only auto framing. Any deliberate zoom/pan hands control to the reader.
+  const stage=document.getElementById('graph-visual-state');
+  let automatic=true,lastTopology='',scheduled=false;
+  function fitGraph(force=false){
+    scheduled=false;if(!automatic)return;
+    const svg=stage.querySelector('svg');if(!svg)return;
+    const key=JSON.stringify([...svg.querySelectorAll('circle')].map(n=>n.getAttribute('data-node-id')).concat([...svg.querySelectorAll('[data-graph-source]')].map(e=>e.getAttribute('data-graph-source')+'>'+e.getAttribute('data-graph-target'))).sort());
+    if(!force&&key===lastTopology)return;lastTopology=key;
+    const box=svg.getAttribute('viewBox').split(/\s+/).map(Number);
+    const availableWidth=Math.max(1,stage.clientWidth-24),availableHeight=Math.max(1,stage.clientHeight-45);
+    const readable=14/18;
+    view.setZoom(Math.max(readable,Math.min(1,availableWidth/box[2],availableHeight/box[3])));
+  }
+  const queueFit=()=>{if(!scheduled){scheduled=true;requestAnimationFrame(()=>fitGraph());}};
+  new MutationObserver(queueFit).observe(stage,{childList:true,subtree:true});
+  window.addEventListener('resize',()=>{if(automatic)requestAnimationFrame(()=>fitGraph(true));});
+  stage.addEventListener('wheel',()=>{automatic=false;},{passive:true});
+  stage.addEventListener('pointerdown',()=>{automatic=false;},{passive:true});
+  stage.addEventListener('keydown',()=>{automatic=false;});
+  root.querySelector('.classroom-view-tools')?.addEventListener('click',event=>{
+    const button=event.target.closest('button');if(!button)return;
+    automatic=button.textContent==='Encajar vista';
+    if(automatic)requestAnimationFrame(()=>fitGraph(true));
+  });
+  queueFit();
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
