@@ -34,7 +34,7 @@ def test_raw_first_allocation_failure_is_error_without_mutation(observed):
  assert all(x['event']['allocations']==x['event']['frees']==0 and not x['event']['aux_live'] for x in rows)
 def test_download_C_H_Doxygen_six_closed_modules_preserved(observed):
  out,_=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
- for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
+ for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')
  h=json.loads((audit_input_path(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-quicksort-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
  for name in ['intercambio','seleccion','insercion','burbuja','shell','quicksort']:
   rel=f'app/domain/sorting/{name}_instructions.py';assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==h[rel]

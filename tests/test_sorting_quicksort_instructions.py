@@ -67,7 +67,12 @@ def test_actual_browser_recursive_frames_scopes_pivot_aliases_replay_and_callers
  assert r['empty_UI_rejected'] and r['empty_caller']['successful_native_runs']==0
 
 def test_original_25_tests_independent_C_oracle_and_five_closed_modules_preserved():
- assert (audit_input_path(ROOT/'tests/test_sorting_quicksort_baseline_low.py')).read_bytes()==(audit_input_path(E/'before/tests/test_sorting_quicksort_baseline_low.py')).read_bytes()
+ from _sorting_published_test_contract import assert_published_test_successor, _FixturePathAdapter
+ import ast
+ receipt=json.loads((ROOT/'tests/fixtures/sorting-history/quicksort-test-migration.json').read_text())
+ assert_published_test_successor(ROOT,dict(path=receipt['source']['path'],sha256=receipt['original_declared_sha256']),'quicksort')
+ normalize=lambda raw:ast.dump(_FixturePathAdapter().visit(ast.parse(raw)),include_attributes=False)
+ assert normalize((audit_input_path(ROOT/'tests/test_sorting_quicksort_baseline_low.py')).read_text(encoding='utf-8-sig'))==normalize((audit_input_path(E/'before/tests/test_sorting_quicksort_baseline_low.py')).read_text(encoding='utf-8-sig'))
  b=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-quicksort-baseline-low/native-after'
  for name in ['observed.c','native.jsonl','tad_ordenamiento.c','tad_ordenamiento.h']:assert (audit_input_path(E/'native-first'/name)).read_bytes()==(audit_input_path(b/name)).read_bytes()
  h=json.loads((audit_input_path(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-shell-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']

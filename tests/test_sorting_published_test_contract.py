@@ -8,7 +8,7 @@ from _sorting_published_test_contract import assert_published_test_successor
 
 ROOT=Path(__file__).resolve().parents[1]
 
-@pytest.fixture(params=['mergesort','counting','burbuja'])
+@pytest.fixture(params=['mergesort','counting','burbuja','heapsort','quicksort','shell'])
 def successor(tmp_path,request):
     source=ROOT/'tests/fixtures/sorting-history'
     shutil.copytree(source,tmp_path/'tests/fixtures/sorting-history')

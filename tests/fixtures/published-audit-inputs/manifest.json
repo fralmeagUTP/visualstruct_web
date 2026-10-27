@@ -8516,6 +8516,12 @@
       "provenance": "Exact copy of canonical recorded test input; no new execution."
     },
     {
+      "path": "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-heapsort-baseline-low/native-final-second/native.jsonl",
+      "sha256": "8f6e3871ce0d2511673c79c1885518889da7d0305cc239455b5a8fc11bab5921",
+      "bytes": 198774,
+      "provenance": "Exact original input consumed by test_sorting_heapsort_instructions.py observer preservation guard; no new execution."
+    },
+    {
       "path": "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-heapsort-baseline-low/native-final-second/observed.c",
       "sha256": "79e3bca072411598b30b87c9e680d5643440fddba39e9c89471d568bbaeb054b",
       "bytes": 6539,
@@ -13966,5 +13972,5 @@
       "provenance": "Exact copy of canonical recorded test input; no new execution."
     }
   ],
-  "archive_sha256": "a1ca1f28ff860c442a8677019fa75f22b9fc8f1f7cf28c954db5f3b392df1649"
+  "archive_sha256": "7c50fb63fffd751569734b091098161ce9362132f94a486022f16f7be45ef635"
 }

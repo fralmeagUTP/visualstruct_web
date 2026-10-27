@@ -1,0 +1,12 @@
+{
+  "added": [
+    {
+      "path": "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-heapsort-baseline-low/native-final-second/native.jsonl",
+      "sha256": "8f6e3871ce0d2511673c79c1885518889da7d0305cc239455b5a8fc11bab5921",
+      "bytes": 198774,
+      "provenance": "Exact original input consumed by test_sorting_heapsort_instructions.py observer preservation guard; no new execution."
+    }
+  ],
+  "records": 2326,
+  "validation": "UTF-8 JSONL, credential signature scan; exact original bytes"
+}
