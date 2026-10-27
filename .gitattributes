@@ -1,0 +1,5 @@
+# Preserve the delivered C/H and byte-bound audit artifacts on every host.
+docs/tads_C/*.c -text
+docs/tads_C/*.h -text
+docs/qa/delivered-runtime-source-20261027.json -text
+tests/fixtures/sorting-history/*.snapshot -text

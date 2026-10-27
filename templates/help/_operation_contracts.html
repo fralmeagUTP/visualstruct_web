@@ -1,4 +1,4 @@
-{# Documentary snapshot of current operation metadata; provenance: visible-eight-criteria-matrix-manual-low/current-option-source-inventory.json. #}
+<details><summary>Referencia de operaciones y datos de entrada</summary>
 <section aria-labelledby="help-operation-contracts"><h3 id="help-operation-contracts">Operaciones de la aplicación y datos</h3>
 {% if structure_id == 'abb' %}
 <dl>
@@ -85,15 +85,15 @@
 {% if structure_id == 'graph' %}
 <dl>
 <dt><strong>Limpiar grafo</strong> <code>clear_graph</code></dt>
-<dd>Sin datos adicionales.</dd>
+<dd>Sin datos adicionales. Operación disponible en la API; no aparece como opción independiente del selector.</dd>
 <dt><strong>Crear grafo</strong> <code>create_graph</code></dt>
 <dd>Tipo (No dirigido, Dirigido)</dd>
 <dt><strong>Consultar peso</strong> <code>edge_weight</code></dt>
 <dd>Origen (entero); Destino (entero)</dd>
 <dt><strong>Existe arista</strong> <code>exists_edge</code></dt>
-<dd>Origen (entero); Destino (entero)</dd>
+<dd>Origen (entero); Destino (entero). Consulta auxiliar disponible en la API, sin control independiente en el selector.</dd>
 <dt><strong>Existe vertice</strong> <code>exists_vertex</code></dt>
-<dd>Vertice (entero)</dd>
+<dd>Vértice (entero). Consulta auxiliar disponible en la API, sin control independiente en el selector.</dd>
 <dt><strong>Generar grafo aleatorio</strong> <code>generate_random_graph</code></dt>
 <dd>Cantidad de vertices (entero)</dd>
 <dt><strong>Insertar arista</strong> <code>insert_edge</code></dt>
@@ -137,7 +137,7 @@
 <dt><strong>Buscar clave</strong> <code>get</code></dt>
 <dd>Clave (entero)</dd>
 <dt><strong>Insertar/Actualizar clave-valor</strong> <code>insert</code></dt>
-<dd>Clave (entero); Valor entero (entero); Simular fallo de malloc (texto)</dd>
+<dd>Clave (entero); Valor entero (entero)</dd>
 <dt><strong>Listar items</strong> <code>items</code></dt>
 <dd>Sin datos adicionales.</dd>
 <dt><strong>Listar claves</strong> <code>keys</code></dt>
@@ -251,9 +251,9 @@
 </dl>
 {% endif %}
 <p>Los métodos C siguientes pueden incluir helpers, utilidades sin botón propio y llamadores equivalentes. Un bloque con varias funciones no cambia el nombre de la operación de la aplicación. Las vistas de memoria usan identidades simbólicas; tras <code>free</code>, sus registros históricos no son punteros utilizables.</p>
-{% if structure_id == "graph" %}<p>El C almacena listas enlazadas separadas de vértices y arcos. La aplicación distingue grafos dirigidos y no dirigidos; en estos últimos crea arcos inversos. Los vértices y pesos son enteros int32: un número integral como 2.0 se normaliza; fracciones, no finitos y valores fuera de rango se rechazan. El límite es 200 vértices. Dijkstra rechaza pesos negativos incluso desconectados y usa INT_MAX como infinito. Bellman-Ford distingue un destino inalcanzable de un ciclo negativo alcanzable, que produce error. Prim y Kruskal se ofrecen para grafos no dirigidos y pueden devolver un bosque.</p>{% endif %}
-{% if structure_id == "hash_table" %}<p>Claves y valores son enteros int32. Crear tabla recibe sólo capacidad positiva, como máximo INT_MAX, que permanece fija durante su vida; la carga se calcula como estadística, no configura un rehash. Vaciar conserva los buckets; destruir termina su vida. La aplicación diferencia esas operaciones.</p>{% endif %}
+{% if structure_id == "graph" %}<h4>Grafo: entradas, estados y algoritmos</h4><ul><li>El C almacena listas enlazadas separadas de vértices y arcos.</li><li>La aplicación distingue grafos dirigidos y no dirigidos; en estos últimos crea arcos inversos.</li><li>Los vértices y pesos son enteros int32: un número integral como 2.0 se normaliza; fracciones, no finitos y valores fuera de rango se rechazan.</li><li>El límite educativo de la aplicación es {{ help_data.max_vertices }} vértices; no es un límite del TAD C descargable.</li><li>El C del libro distingue el estado GrafoEstado del puntero retornado.</li><li>Dijkstra rechaza pesos negativos incluso desconectados; las distancias long long y la marca alcanzable son independientes, sin usar INT_MAX como infinito.</li><li>Bellman-Ford informa un ciclo negativo alcanzable.</li><li>Prim y Kruskal exigen arcos simétricos y conectividad: GRAFO_DESCONECTADO libera el parcial, no devuelve un bosque exitoso.</li></ul>{% endif %}
+{% if structure_id == "hash_table" %}<p>Claves y valores son enteros int32. La aplicación acepta de 1 a 128 buckets. El TAD C recibe una capacidad int positiva, limitada por INT_MAX y la memoria disponible; permanece fija durante su vida; la carga se calcula como estadística, no configura un rehash. Vaciar conserva los buckets; destruir termina su vida. La aplicación diferencia esas operaciones.</p>{% endif %}
 {% if structure_id == "sorting_array" %}<p>La interfaz admite entre 1 y 80 enteros int32, separados por comas. El catálogo ofrece once algoritmos. Counting y Binsort admiten rango inclusivo máximo−mínimo+1 hasta 1000000; las entradas grandes conservan eventos completos mediante representación dispersa y páginas. Radix separa negativos y no negativos. Las funciones imprimir/copiar/probar del C son utilidades, no algoritmos adicionales del selector.</p>{% endif %}
 {% if structure_id == "linked_list" %}<p>Las posiciones de la API empiezan en 1. Insertar posición coloca el valor antes de esa posición; Insertar elemento permite antes/después según relative. Eliminar posición convierte la posición API a índice interno base 0. Buscar posiciones devuelve posiciones base 1. El alias eliminar_primero retira la primera coincidencia por valor, no la cabeza sin comparar. Los llamadores deben conservar estas conversiones.</p>{% endif %}
-{% if structure_id == "sublist" %}<p>Listar hijos consulta el primer padre coincidente y copia como máximo 1024 hijos en la aplicación; el C respeta la capacidad del destino. El main mostrado es un fragmento para copiar con stdio.h y tad_sublista.h.</p>{% endif %}
-<p>Ejecutar operación crea una llamada; Anterior/Siguiente recorren la misma traza. Cerrar y reactivar Paso a paso no vuelven a ejecutar. Las consultas completadas pueden conservarse en el historial o journal aunque no muten la estructura; los rechazos no agregan llamadas exitosas. Reiniciar borra el estado del módulo.</p></section>
+{% if structure_id == "sublist" %}<p>Listar hijos consulta el primer padre coincidente y copia como máximo 1024 hijos en la aplicación; el C respeta la capacidad del destino. El programa principal mostrado está completo e incluye stdio.h y tad_sublista.h. Cópialo en main.c y compílalo junto a tad_sublista.c, con el encabezado en el mismo directorio.</p>{% endif %}
+<p>Ejecutar operación crea una llamada; Anterior/Siguiente recorren la misma traza. Cerrar y reactivar Paso a paso no vuelven a ejecutar. Las consultas completadas pueden conservarse en el historial o journal aunque no muten la estructura; los rechazos no agregan llamadas exitosas. Restablecer TAD (o Reiniciar, según el módulo) borra la estructura y su historial.</p></section></details>

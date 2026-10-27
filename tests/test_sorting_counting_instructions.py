@@ -74,7 +74,7 @@ def test_native_zeroing_partial_write_decrement_ties_retirement_and_oracle_reuse
     assert all(counts.values())
     for name in ['observed.c','native.jsonl']:assert (audit_input_path(full/name)).read_bytes()==(audit_input_path(LOW/'native-final'/name)).read_bytes()
     for name in ['tad_ordenamiento.c','tad_ordenamiento.h']:
-        assert (audit_input_path(full/name)).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/name)).read_bytes()
+        assert (audit_input_path(full/name)).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/name)).read_bytes().replace(b'\r\n',b'\n')
         assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,hashlib.sha256((audit_input_path(LOW/'native-final'/name)).read_bytes()).hexdigest())
 @pytest.mark.parametrize('case',list(CASES))
 def test_actual_full_browser_and_callers_with_native_calloc_fault(case):
@@ -85,7 +85,9 @@ def test_actual_full_browser_and_callers_with_native_calloc_fault(case):
     assert r['empty_UI_rejected'] and r['empty_caller']['successful_native_runs']==0
 
 def test_original_IDs_and_eight_closed_modules_preserved_and_64bit_limit():
-    original=json.loads((audit_input_path(E/'original-regressions.json')).read_text());assert hashlib.sha256((audit_input_path(ROOT/original['path'])).read_bytes()).hexdigest()==original['sha256']
+    original=json.loads((audit_input_path(E/'original-regressions.json')).read_text())
+    from tests._sorting_published_test_contract import assert_published_test_successor
+    assert_published_test_successor(ROOT,original,'counting')
     protected=json.loads((audit_input_path(LOW/'protected-closed-modules.json')).read_text());assert len(protected)==8
     for rel,sha in protected.items():assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==sha
     assert '_Static_assert(sizeof(size_t)==8' in (audit_input_path(ROOT/'tests/_audit_counting_limits.py')).read_text(encoding='utf-8-sig')

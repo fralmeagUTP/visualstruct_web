@@ -1,4 +1,5 @@
 """Clear: native live allocations, historical identities, scopes and real caller."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,sys,json,shutil,subprocess
 import pytest
@@ -63,8 +64,8 @@ def test_clear_every_native_instruction_live_heap_scopes_void_return_and_root(ab
   assert state['console_stdout']==bytes.fromhex(e['console_hex']).decode()=='' and not step['console']
   assert not ped['memory']['allocated_objects'] and not ped['return_propagation']['reconnects_subtree']
   assert ped['invariant']['name']=='Vida de reservas y referencias'
-  assert ped['call_stack'][0]['function']=='main' and ped['call_stack'][0]['local_root_address']==ped['memory_state']['head']
-  assert ped['call_stack'][0]['locals']=={'arbol':ped['memory_state']['head']}
+  assert context_stack(ped)[0]['function']=='main' and context_stack(ped)[0]['local_root_address']==ped['memory_state']['head']
+  assert context_stack(ped)[0]['locals']=={'arbol':ped['memory_state']['head']}
 
   assert all(x['usable'] is False and x['historical_identity'] for x in ped['memory']['unusable_reference_records'])
   expected_records=[]
@@ -84,7 +85,7 @@ def test_clear_every_native_instruction_live_heap_scopes_void_return_and_root(ab
    freed.update(newly);freed_order+=list(newly);assert [n['id'] for n in ped['memory']['freed_objects']]==list(newly)
    assert ped['memory']['event']=='free' and SUFFIX in state['tree_frames'][-1]['parameters']['nodo']
   else:assert ped['memory']['freed_objects']==[]
-  if e['phase']=='return':assert ped['call_stack'][-1]['return']=='void' and ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
+  if e['phase']=='return':assert context_stack(ped)[-1]['return']=='void' and context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
   if e['phase']=='clear_caller_resume':
    assert not state['tree_frames'] and not state['heap_nodes'] and not state['caller_root_cleared']
    assert state['head']==('NULL' if not meta['seed'] else mapping[1]+SUFFIX)

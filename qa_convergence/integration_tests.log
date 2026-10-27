@@ -1,0 +1,17 @@
+test_failed_c_is_history_and_trace_not_preflight (qa_convergence.test_book_service.BookServiceTests.test_failed_c_is_history_and_trace_not_preflight) ... ok
+test_generic_old_graph_planner_is_not_a_fallback (qa_convergence.test_book_service.BookServiceTests.test_generic_old_graph_planner_is_not_a_fallback) ... ok
+test_history_legacy_never_replayed (qa_convergence.test_book_service.BookServiceTests.test_history_legacy_never_replayed) ... ok
+test_invalid_marked_history_is_not_truncated_or_regenerated (qa_convergence.test_book_service.BookServiceTests.test_invalid_marked_history_is_not_truncated_or_regenerated) ... ok
+test_pre_c_range_reject_preserves_history (qa_convergence.test_book_service.BookServiceTests.test_pre_c_range_reject_preserves_history) ... ok
+test_reverse_failure_replays_actual_partial_graph (qa_convergence.test_book_service.BookServiceTests.test_reverse_failure_replays_actual_partial_graph) ... ok
+test_failure_trace_and_source_downloads (qa_convergence.test_book_http.BookHttpTests.test_failure_trace_and_source_downloads) ... [2026-10-27 05:21:05,042] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+ok
+test_legacy_get_export_post_no_write_and_reset (qa_convergence.test_book_http.BookHttpTests.test_legacy_get_export_post_no_write_and_reset) ... [2026-10-27 05:21:05,255] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+ok
+test_exact_boundary_and_normal_fallback (qa_convergence.test_book_capture_budget.CaptureBudgetTests.test_exact_boundary_and_normal_fallback) ... ok
+test_random_seed_preflight_exact_replay (qa_convergence.test_book_capture_budget.CaptureBudgetTests.test_random_seed_preflight_exact_replay) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 2.973s
+
+OK

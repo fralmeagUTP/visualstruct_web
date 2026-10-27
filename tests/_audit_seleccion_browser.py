@@ -62,6 +62,8 @@ try:
    page.reload(wait_until='networkidle');page.locator('#didactic-mode-switch').check();page.evaluate('document.querySelectorAll("details").forEach(e=>e.open=true)')
    assert page.locator('.didactic-history-main').text_content()==main and len(posts)==count
    target=OUT/name;target.mkdir()
+   page.get_by_role('tab',name='main.c del historial',exact=True).click()
+   assert page.locator('#sorting-action-history').is_visible()
    for kind,filename in [('main','main.c'),('source','tad_ordenamiento.c'),('header','tad_ordenamiento.h')]:
     with page.expect_download() as got:page.locator(f'#sorting-action-history a[href="/help/source/sorting_array/{kind}"]').click()
     got.value.save_as(str(target/filename))
@@ -77,6 +79,8 @@ try:
   with page.expect_response(lambda r:r.url.endswith('/run')) as resp:page.click('#sorting-sim-play')
   empty=resp.value.json();assert not empty['success'];assert all(e['operation']!='run' for e in empty['history']);(OUT/'empty.json').write_text(json.dumps(empty,ensure_ascii=False,indent=2),encoding='utf-8')
   target=OUT/'empty';target.mkdir();page.locator('#didactic-mode-switch').check();page.evaluate('document.querySelectorAll("details").forEach(e=>e.open=true)')
+  page.get_by_role('tab',name='main.c del historial',exact=True).click()
+  assert page.locator('#sorting-action-history').is_visible()
   for kind,filename in [('main','main.c'),('source','tad_ordenamiento.c'),('header','tad_ordenamiento.h')]:
    with page.expect_download() as got:page.locator(f'#sorting-action-history a[href="/help/source/sorting_array/{kind}"]').click()
    got.value.save_as(str(target/filename))

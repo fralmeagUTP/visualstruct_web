@@ -1,4 +1,5 @@
 """Compare native events, occurrence/phase/physical line, aliases and live heap."""
+from _instruction_context_contract import context_stack
 import json,os,re,sys
 from pathlib import Path
 import pytest
@@ -70,7 +71,7 @@ def test_delete_native_instructions_heap_frames_and_caller(delete_baselines,fami
    if b['temp']!=-2:assert a['locals']['temp']==ref(b['temp'])
    else:assert a['locals'].get('temp','sin inicializar')=='sin inicializar'
   if phase=='condition':assert s['condition_result']==bool(e['result']) and ped['condition']['result']==bool(e['result'])
-  if phase=='return':assert ped['instruction_event']['return']==ref(e['result']) and ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)'
+  if phase=='return':assert ped['instruction_event']['return']==ref(e['result']) and context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)'
   if phase in ['enter','return']:assert ped['instruction_event']['frame_id']==(state['tree_frames'][-1]['id'])
   if e['line']:
    fn=e['frames'][-1]['function'];original_start=next(i for i,l in enumerate(raw) if l.strip().startswith('ABBNodo* '+fn+'('));display_start=next(i for i,l in enumerate(trace['source_code'].splitlines()) if l.strip().startswith('ABBNodo* '+fn+'('));assert s['line_index']==display_start+e['line']-1-original_start

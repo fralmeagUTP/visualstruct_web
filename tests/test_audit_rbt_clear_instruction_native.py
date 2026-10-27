@@ -1,4 +1,5 @@
 """Rojo-Negro clear: fresh native C lifetimes, historical aliases and caller NULL boundary."""
+from _instruction_context_contract import context_stack
 import os,sys,json,subprocess
 from pathlib import Path
 import pytest
@@ -80,7 +81,7 @@ def test_rbt_clear_native_each_lifetime_scope_and_real_NULL_assignment(rbt_clear
    freed_order.append('N'+str(e['result']));assert [n['id'] for n in ped['memory']['freed_objects']]==[freed_order[-1]] and ped['memory']['event']=='free' and SUFFIX in state['tree_frames'][-1]['parameters']['arbol']
   else:assert not ped['memory']['freed_objects']
   if e['phase']=='condition':assert ped['condition']['result']==bool(e['result'])
-  if e['phase']=='return':assert ped['call_stack'][-1]['return']=='void' and ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
+  if e['phase']=='return':assert context_stack(ped)[-1]['return']=='void' and context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
   if e['phase']=='caller_resume':assert not state['heap_nodes'] and not state['tree_frames'] and not state['caller_root_cleared'] and state['head']==('N1'+SUFFIX if meta['seed'] else 'NULL')
   if e['phase']=='caller_assign':assert state['head']=='NULL' and state['caller_root_cleared'] and state['caller_frame']['locals']=={'arbol':'NULL'}
  assert [n['id'] for n in trace['steps'][-1]['pedagogy']['memory_state']['freed_nodes']]==freed_order and len(freed_order)==len(meta['seed'])

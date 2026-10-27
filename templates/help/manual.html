@@ -1,58 +1,127 @@
 {% extends "base.html" %}
-{% block title %}Manual de uso{% endblock %}
+{% block title %}Manual de uso · Empieza aquí{% endblock %}
 {% block content %}
 <section class="help-manual">
-  <h2>Manual de uso</h2>
-  <p>VisualStruct permite estudiar estructuras de datos y algoritmos mediante una representación visual sincronizada con código C y con el resultado de cada operación.</p>
+  <h2>Aprende con VisualStruct</h2>
+  <p>Prueba una operación, observa qué cambia y relaciona el dibujo con el código C. No necesitas entender todos los paneles desde el primer día.</p>
+  <nav aria-label="Contenido del manual"><p><a href="#empieza">Empieza aquí</a> · <a href="#vista">Acomoda la vista</a> · <a href="#ejecucion">Normal o paso a paso</a> · <a href="#varios">Agregar varios</a> · <a href="#resultados">Resultados y descargas</a> · <a href="#familias">Guías por familia</a> · <a href="#problemas">Dudas y errores</a> · <a href="#referencia">Referencia</a></p></nav>
 
-  <section class="help-source-download" aria-labelledby="manual-flow-title">
-    <h3 id="manual-flow-title">Flujo de aprendizaje</h3>
+  <section class="help-source-download" id="empieza">
+    <h3>Empieza aquí · tu primera práctica en 5 minutos</h3>
+    <p><strong>Reto:</strong> descubrir por qué una pila se llama «último en entrar, primero en salir».</p>
     <ol>
-      <li><strong>Elige un módulo</strong> y la estructura o algoritmo que quieres estudiar.</li>
-      <li><strong>Prepara los datos</strong>: escribe valores, define la operación o construye el grafo según la pantalla.</li>
-      <li><strong>Ejecuta</strong> para llegar al resultado, o usa el modo <strong>Paso a paso</strong> para avanzar y retroceder por la traza.</li>
-      <li><strong>Observa</strong> la representación visual, la línea C activa y la salida/resultados de la operación.</li>
-      <li><strong>Consulta Ayuda</strong> para la explicación del TAD y descarga su código C completo cuando quieras revisarlo fuera de la aplicación.</li>
+      <li>Abre <a href="{{ url_for('sequential.structure_page', structure_id='stack') }}">Pila</a>. Si ya tienes datos, guárdalos antes de usar <strong>Restablecer TAD</strong>; para este ejemplo parte de una pila vacía.</li>
+      <li>En Preparar, abre <strong>Agregar varios</strong>, escribe <code>10, 20, 30</code> y revisa el orden. Pulsa <strong>Cargar valores</strong>.</li>
+      <li>Busca el tope: debe ser <strong>30</strong>. Predice qué valor saldrá primero.</li>
+      <li>Selecciona <strong>Desapilar</strong>, activa <strong>Paso a paso</strong> y ejecuta la operación. Avanza con <strong>Siguiente paso</strong>: observa cuándo cambia el tope y cuándo se libera el nodo.</li>
+      <li>Al terminar quedan 20 y 10. Mira <strong>main.c del historial</strong> en Resultados: agregar los tres valores equivale a tres llamadas normales, no a un TAD nuevo.</li>
     </ol>
+    <p><strong>Comprueba lo aprendido:</strong> ¿qué cambiaría si usaras una Cola? Allí saldría primero 10. <a href="{{ url_for('help.sequential_help') }}">Continúa con secuenciales</a>.</p>
   </section>
 
-  <h3>Las cinco etapas de cada módulo</h3>
-  <ol>
-    <li><strong>Preparar y controlar ejecución</strong>: selecciona el método, completa sus entradas y elige ejecución rápida o paso a paso.</li>
-    <li><strong>Visualizar y ejecutar</strong>: observa el estado correspondiente al evento actual, en la vista individual o de nodos enlazados cuando exista.</li>
-    <li><strong>Relacionar con código</strong>: consulta el código C y el evento resaltado. Una declaración o condición puede no alterar la estructura.</li>
-    <li><strong>Comprender</strong>: revisa la explicación y las actividades disponibles.</li>
-    <li><strong>Resultados de ejecución</strong>: consulta la salida, la consola y el resultado cuando el módulo los ofrece.</li>
-  </ol>
-  <p>Los controles adicionales dependen del TAD y la operación. Paso anterior y Siguiente paso aparecen al activar el modo y se deshabilitan en los límites o cuando no hay traza. Cerrar paso a paso muestra el final de esa misma operación; activar de nuevo permite revisar desde el inicio una traza conservada. Para estudiar una operación ejecutada en modo rápido, activa Paso a paso antes de iniciar la siguiente operación; no se reconstruye una traza ausente ejecutando de nuevo sin aviso.</p>
-  <h3>Cómo leer una ejecución</h3>
-  <div class="seq-c-semantics">
-    <section><h4>Visualización</h4><p>Representa el estado actual del TAD o del algoritmo; no es una ilustración independiente del código.</p></section>
-    <section><h4>Código C</h4><p>En un paso detenido, el resaltado identifica el evento C que acaba de ejecutarse y la visualización muestra su estado posterior. Paso 0 muestra el estado anterior al primer evento. Al finalizar, la última línea permanece identificada como actual o completada. Una condición, declaración o retorno puede dejar intacta la estructura.</p></section>
-    <section><h4>Resultados</h4><p>Reúnen mensajes, consola C, historial y la estructura final cuando el módulo los ofrece.</p></section>
-    <section><h4>Paso a paso</h4><p>Permite revisar una traza con Paso anterior y Siguiente paso. Ejecutar operación inicia una nueva operación; navegar o cerrar el modo no vuelve a ejecutarla.</p></section>
-  </div>
+  <section id="vista"><h3>Acomoda la vista para estudiar</h3>
+    <p>La cabecera compacta deja más espacio para la práctica. En la vista de clase, el gráfico y el C aparecen juntos; en pantallas estrechas se reorganizan. Cada panel puede tener su propio desplazamiento.</p>
+    <ul>
+      <li><strong>− / +:</strong> aleja o acerca el dibujo. <strong>100%:</strong> recupera la escala inicial.</li>
+      <li><strong>Encajar vista:</strong> intenta ajustar el contenido sin volver el texto demasiado pequeño. Si no cabe, usa las barras del dibujo para desplazarte.</li>
+      <li><strong>Centrar inicio:</strong> vuelve al comienzo del área desplazable; no cambia los datos ni el zoom.</li>
+      <li>El zoom y el desplazamiento elegidos se conservan al avanzar y retroceder por los pasos de esa vista. No hace falta encajar en cada paso.</li>
+      <li><strong>Memoria y reservas · abrir / cerrar:</strong> muestra detalles auxiliares cuando están disponibles. Empieza cerrado para priorizar el gráfico; abrirlo no ejecuta nada.</li>
+    </ul>
+    <p>En <strong>Comprender</strong>, empieza por las tres pistas del paso: qué ocurre, qué cambia y qué debes comprobar. Abre la referencia completa o los detalles avanzados sólo cuando necesites profundizar.</p>
+  </section>
 
-  <h3>Módulos disponibles</h3>
-  <div class="cards">
-    <article class="card"><h4>Estructuras secuenciales</h4><p>Pila, Cola, Cola de prioridad, listas y sublistas.</p><a class="link" href="{{ url_for('help.sequential_help') }}">Abrir ayuda secuencial</a></article>
-    <article class="card"><h4>Estructuras jerárquicas</h4><p>ABB, AVL, Rojo-Negro y Montículo binario.</p><a class="link" href="{{ url_for('help.hierarchical_help') }}">Abrir ayuda jerárquica</a></article>
-    <article class="card"><h4>Grafos</h4><p>Construcción, recorridos, caminos mínimos y expansión mínima.</p><a class="link" href="{{ url_for('help.graph_help') }}">Abrir ayuda de grafos</a></article>
-    <article class="card"><h4>Tablas hash</h4><p>Claves, buckets, colisiones y consultas.</p><a class="link" href="{{ url_for('help.hash_help') }}">Abrir ayuda hash</a></article>
-    <article class="card"><h4>Ordenamiento</h4><p>Once métodos sobre arreglos de enteros.</p><a class="link" href="{{ url_for('help.sorting_help') }}">Abrir ayuda de ordenamiento</a></article>
-  </div>
+  <section id="ejecucion"><h3>¿Quiero el resultado o entender cada paso?</h3>
+    <div class="seq-c-semantics">
+      <section><h4>Normal</h4><p>Prepara datos y ejecuta sin Paso a paso. Obtienes el resultado final; es útil para construir ejemplos y comprobar una respuesta.</p></section>
+      <section><h4>Paso a paso</h4><p>Actívalo <strong>antes de ejecutar</strong>. Paso 0 es el estado inicial. Usa <strong>Paso anterior</strong> y <strong>Siguiente paso</strong>, o los controles de reproducción y pausa disponibles.</p></section>
+    </div>
+    <p>La línea C resaltada acaba de ejecutarse y el dibujo muestra su efecto. Una condición o un retorno pueden no cambiar ningún nodo: eso también es un paso válido.</p>
+    <ul>
+      <li><strong>Ejecutar operación</strong> inicia una llamada nueva. Navegar por una traza sólo revisa esa llamada.</li>
+      <li><strong>Pausar</strong> detiene la reproducción, no deshace la operación.</li>
+      <li><strong>Cerrar paso a paso</strong> muestra el final de la misma operación, sin repetirla. Reactivar permite revisar una traza conservada; no crea una que no se guardó en modo normal.</li>
+      <li><strong>Restablecer TAD</strong> (o <strong>Reiniciar</strong>, según el módulo) borra la estructura y el historial de esa sesión; no es lo mismo que volver al primer paso. Exporta antes lo que quieras conservar y lee la confirmación si aparece.</li>
+    </ul>
+  </section>
 
-  <details>
-    <summary>Sobre el código C descargable</summary>
-    <p>La ayuda específica de cada TAD ofrece el archivo fuente principal <code>.c</code> y su encabezado <code>.h</code>. Son fuentes completas del módulo, no fragmentos del panel de ejecución. Cada método interpretado, como <code>lista_limpiar</code>, aparece tanto en pantalla como en la descarga. Lee la nota de dependencias antes de compilarlos; por ejemplo, los recorridos del Grafo usan el TAD Cola. Los fuentes descargados son bibliotecas del TAD y no incluyen un programa principal <code>main</code>. Puedes verificar su compilación a objeto con <code>gcc -std=c17 -Wall -Wextra -c archivo.c</code>; conserva los encabezados y dependencias en el mismo directorio y enlaza un programa principal para ejecutarlos.</p>
-  </details>
-  <p>En las estructuras secuenciales, el bloque Programa principal (main) ofrece el ejemplo que muestra la pantalla: Pila dispone también de descarga main.c; Cola y Prioridad mantienen el main mostrado para copiar. Los archivos descargados siguen siendo la biblioteca del TAD y su encabezado. Para compilar ese main, añade <code>#include &lt;stdio.h&gt;</code> y el <code>#include</code> del encabezado correspondiente; enlaza también el archivo C del TAD. Los valores numéricos se emiten en decimal. Los <code>printf</code> de resumen son narración adicional de la aplicación, junto con la salida que produzcan los métodos C. Tras recargar, las consultas explícitas que conserva cada módulo, incluidas las búsquedas exitosas de Lista y Circular y las de AVL/Rojo-Negro/Grafos, permanecen en el main sin volver a despacharlas como operaciones del historial. Validar Rojo-Negro con resultado falso es una consulta completada, no un error de entrada. Las acciones fallidas no se añaden al historial y revisar una traza no ejecuta otra operación.</p>
-  <p>En Ordenamiento, los métodos que devuelven estado usan <code>ORDENAMIENTO_OK</code> (1) y <code>ORDENAMIENTO_ERROR</code> (0). Rechazan un arreglo nulo o vacío; Counting Sort y Binsort también rechazan un intervalo inclusivo <code>max-min+1</code> mayor que <code>ORDENAMIENTO_RANGO_MAX</code> (1.000.000). La interfaz admite de 1 a 80 enteros int32. Binsort delega en Counting Sort en este TAD. Un fallo de memoria es otra causa de error.</p>
-  <h3>Formatos y límites</h3>
-  <p>Hash usa claves y valores enteros y capacidad fija de buckets, sin rehash automático. Grafos usa identificadores y pesos enteros int32: 2.0 se normaliza a 2; las fracciones, infinitos y valores fuera de rango se rechazan. Dijkstra rechaza arcos negativos y usa INT_MAX como infinito; Bellman-Ford detecta ciclos negativos alcanzables y conserva su diagnóstico de ejecución al devolver error. Prim y Kruskal requieren un grafo no dirigido y pueden devolver un bosque.</p>
-  <details>
-    <summary>Accesibilidad y evidencias</summary>
-    <p>El interruptor global permite mostrar más código y detalles técnicos. Cuando el módulo lo habilita, puedes exportar la visualización actual en JPG desde la barra superior.</p>
-  </details>
+  <section id="varios"><h3>Agregar varios valores sin escribir uno por uno</h3>
+    {% include "help/_multiple_input_guide.html" %}
+  </section>
+
+  <section id="resultados"><h3>Resultados: elige lo que necesitas ver</h3>
+    <ul>
+      <li><strong>Consola C (printf):</strong> salida realmente impresa por el C ejecutado. Puede estar vacía aunque la operación sea correcta. Los avisos de la aplicación y los diagnósticos de error no se convierten en salida <code>printf</code>.</li>
+      <li><strong>main.c del historial:</strong> programa principal construido con las llamadas registradas. Es distinto de la consola y del cuerpo de la función que estás estudiando.</li>
+      <li><strong>Estructura del TAD:</strong> tipos y campos de C: explica cómo se representan los datos.</li>
+    </ul>
+    <p>El código actual, el <code>main</code> del historial y la estructura del TAD conservan sus líneas e indentación. Si una línea no cabe, usa la <strong>barra horizontal del propio panel</strong>; el desplazamiento vertical es independiente. También funciona en Ampliar. Avanzar pasos no centra el código horizontalmente ni cambia el texto de Copiar C.</p>
+    <p><strong>Copiar C</strong> copia el texto fuente sin los números visuales de línea; <strong>Copiar salida</strong> copia la consola. <strong>Ampliar</strong> abre el contenido para leerlo con más espacio; <strong>Cerrar ampliación</strong> vuelve a la vista sin ejecutar otra operación.</p>
+    <details><summary>¿JPG, JSON o código C?</summary>
+      <ul>
+        <li><strong>Exportar JPG:</strong> guarda una imagen para un informe. Calidad y escala cambian la imagen, no el TAD. La exportación completa no se limita al recorte que estabas viendo con zoom.</li>
+        <li><strong>Exportar JSON / resumen:</strong> conserva los datos o el resumen que indica ese control. No es un programa C ni promete poder importarse de nuevo.</li>
+        <li><strong>Descargar fuente C y encabezado:</strong> en la ayuda de cada TAD obtienes los archivos <code>.c</code> y <code>.h</code> completos. No son un programa principal.</li>
+        <li><strong>main.c:</strong> cópialo desde Resultados; usa la descarga directa en las pantallas que la ofrecen. Compílalo con el C/H del TAD, no por sí solo.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section id="familias"><h3>Elige qué quieres aprender</h3><div class="cards">
+    <article class="card"><h4>Secuenciales</h4><p>Pila y Cola: orden de salida. Listas: enlaces y posiciones. Prioridad: menor número primero; Sublista: padres e hijos.</p><a class="link" href="{{ url_for('help.sequential_help') }}">Guía de secuenciales</a></article>
+    <article class="card"><h4>Jerárquicas</h4><p>Compara un ABB con AVL y Rojo-Negro. Observa cómo las rotaciones mantienen el orden. El Montículo mínimo prioriza la raíz, no ordena todo el arreglo.</p><a class="link" href="{{ url_for('help.hierarchical_help') }}">Guía de árboles y montículo</a></article>
+    <article class="card"><h4>Grafos</h4><p>Construye vértices y aristas; después elige recorridos, caminos mínimos o expansión mínima. Comienza con 3 o 4 vértices.</p><a class="link" href="{{ url_for('help.graph_help') }}">Guía de grafos</a></article>
+    <article class="card"><h4>Hash</h4><p>Relaciona clave, índice y colisión. La tabla encadena las colisiones y mantiene su capacidad; actualizar una clave no agrega otra entrada.</p><a class="link" href="{{ url_for('help.hash_help') }}">Guía de hash</a></article>
+    <article class="card"><h4>Ordenamiento</h4><p>Prueba <code>4, 1, 3, 2</code> y compara dos de los once métodos con la misma entrada. No confundas comparación con intercambio.</p><a class="link" href="{{ url_for('help.sorting_help') }}">Guía de ordenamiento</a></article>
+  </div></section>
+
+  <section id="problemas"><h3>Dudas frecuentes y cómo resolverlas</h3>
+    <details><summary>No veo todos los nodos / el dibujo está muy pequeño</summary><p>Prueba 100%, luego + o −. Desplázate dentro del dibujo. Encajar vista conserva legibilidad y puede dejar contenido fuera del área visible; no elimina nodos. Cierra los detalles de memoria para recuperar espacio.</p></details>
+    <details><summary>Siguiente paso está deshabilitado / no hay traza</summary><p>Puede que estés al final o hayas ejecutado en modo normal. Para una operación nueva, activa Paso a paso antes de ejecutarla. En un lote, al final de la traza usa Siguiente valor; no esperes que Reproducir agregue todos los pendientes.</p></details>
+    <details><summary>La lista de valores no se acepta</summary><p>Usa enteros separados por comas, por ejemplo <code>-2, 0, 7</code>. Quita comas dobles o finales, letras y decimales. Revisa la posición indicada y no superes 50 valores. En ABB, AVL y Rojo-Negro elimina los duplicados del lote o ya presentes en el árbol. No se envía ningún valor hasta validar toda la lista.</p></details>
+    <details><summary>Detuve un lote, pero algunos valores siguen en la estructura</summary><p>Es lo esperado: Detener lote no deshace operaciones aceptadas. Conserva la actual y las anteriores; descarta las pendientes. Si una petición tiene resultado incierto, usa Recargar estado e historial antes de seguir: reenviar a ciegas podría duplicar una inserción.</p></details>
+    <details><summary>La consola está vacía / el resultado dice error</summary><p>Muchas funciones C no imprimen. Revisa el resultado de la operación, no sólo la consola. Corrige el dato indicado; un error de entrada no equivale a una ejecución exitosa. Un error detectado dentro del algoritmo puede tener pasos que expliquen su causa.</p></details>
+    <details><summary>Grafo: traza demasiado extensa</summary><p>La vista admite hasta 15 vértices. La traza tiene un presupuesto de 4.000 eventos C y del llamador, más la publicación final: si lo supera se rechaza la preparación, no se entrega una traza cortada. Reduce el ejemplo o usa modo normal para obtener el resultado completo sin guardar esa traza extensa.</p></details>
+    <details><summary>Grafo: pesos negativos, destino inalcanzable o grafo desconectado</summary><p>Dijkstra requiere pesos no negativos, incluso en componentes desconectadas. Bellman-Ford permite negativos pero informa ciclos negativos alcanzables. Prim y Kruskal necesitan grafo no dirigido, conexiones simétricas y conectividad: un grafo desconectado no produce un bosque exitoso. Revisa aristas y vértice inicial antes de repetir.</p></details>
+    <details><summary>Mis datos anteriores aparecen suspendidos</summary><p>No significa que estén vacíos. Los historiales de grafos de una versión anterior se conservan sin reinterpretarse; expórtalos antes de confirmar Restablecer datos. En Hash ocurre también con sesiones que superan el límite visual de 128 buckets. No se recortan silenciosamente.</p></details>
+    <details><summary>Counting o Binsort rechazan mi arreglo</summary><p>Ordenamiento admite entre 1 y 80 enteros de 32 bits. Counting y Binsort requieren además que <code>máximo − mínimo + 1</code> sea como máximo 1.000.000. Es el rango de valores, no la cantidad de elementos. Reduce el rango o elige otro método.</p></details>
+    <details><summary>No funciona Copiar C</summary><p>El navegador puede limitar el portapapeles. Selecciona el texto y cópialo manualmente, o usa la descarga de fuente en Ayuda. Para compilar, no copies los números de línea de la presentación.</p></details>
+  </section>
+
+  <section id="referencia"><h3>Para profundizar cuando lo necesites</h3>
+    <details><summary>Contratos de los archivos C descargados</summary>
+      <p>Los archivos del TAD no incluyen un programa principal: guarda tu programa en <code>main.c</code> y compílalo junto con el C descargado. Usa el encabezado correspondiente para comprobar las firmas y los tipos de retorno.</p>
+      <p>Counting y Binsort limitan el rango inclusivo con <code>ORDENAMIENTO_RANGO_MAX</code>, cuyo valor es 1.000.000. Binsort delega en Counting Sort; hereda sus límites de rango y reservas. Un método con retorno de estado distingue <code>ORDENAMIENTO_OK</code> de <code>ORDENAMIENTO_ERROR</code>; no sustituyas esa comprobación por asumir que el arreglo ya está ordenado.</p>
+      <p>Los valores del árbol Rojo-Negro deben estar entre <code>-2147483648</code> y <code>2147483647</code>, sin truncar. Al terminar el programa, el llamador libera su árbol con <code>rbt_liberar(arbol); arbol = NULL;</code>; la consulta o la copia de un puntero no transfieren esa propiedad.</p>
+    </details>
+    <details><summary>Atajos reales de teclado</summary>
+      <p>Usa los atajos fuera de los campos de entrada y con una traza preparada. Durante Agregar varios, utiliza sus propios botones.</p>
+      <ul><li><strong>Secuenciales, Hash, Grafos y Ordenamiento:</strong> <kbd>Alt</kbd> + <kbd>→</kbd> siguiente; <kbd>Alt</kbd> + <kbd>←</kbd> anterior; <kbd>Alt</kbd> + <kbd>Inicio</kbd> comienzo; <kbd>Alt</kbd> + <kbd>Fin</kbd> final; <kbd>Alt</kbd> + <kbd>P</kbd> pausa.</li><li><strong>Secuenciales:</strong> <kbd>Alt</kbd> + <kbd>R</kbd> reproduce desde el comienzo. <strong>Ordenamiento:</strong> reproduce o vuelve a empezar si llegó al final.</li><li><strong>Jerárquicas:</strong> <kbd>→</kbd>, <kbd>←</kbd>, <kbd>Inicio</kbd> y <kbd>Fin</kbd> navegan sin Alt; <kbd>Espacio</kbd> pausa.</li><li><strong>Pestañas de Resultados:</strong> con foco en una pestaña, <kbd>←</kbd> y <kbd>→</kbd> cambian de panel. <kbd>Tab</kbd> permite recorrer controles.</li></ul>
+    </details>
+    <details><summary>Memoria, punteros e invariantes sin confusiones</summary>
+      <p>Un TAD es un tipo de dato con sus operaciones; una invariante es una regla que debe conservar al terminar correctamente. Durante una inserción o rotación puedes ver enlaces transitorios: no juzgues el resultado antes de terminar.</p><p>Los identificadores de memoria del dibujo son simbólicos, no direcciones reales. Un campo indeterminado no es lo mismo que NULL. Tras <code>free</code>, el registro histórico ayuda a explicar lo ocurrido, pero no convierte el puntero liberado en uno utilizable. Copiar un puntero tampoco crea una copia independiente del objeto.</p>
+    </details>
+    <details><summary>Grafo: cómo leer GrafoEstado y el C del libro</summary>
+      <p>El C de grafos de esta versión sigue el código del libro. <code>GrafoEstado</code> explica si una operación terminó bien o por qué falló: OK, MEMORIA, NO_EXISTE, PESO_NEGATIVO, CICLO_NEGATIVO, DESCONECTADO, ARGUMENTO o RANGO.</p><p>No decidas el éxito sólo por un puntero NULL: un camino de un vértice a sí mismo puede no tener arcos y ser correcto. Las distancias usan <code>long long</code> y una marca de alcanzable; INT_MAX no significa infinito. Identificadores y pesos son enteros de 32 bits; 2.0 se normaliza a 2, pero 2.5 no se acepta. Eliminar un vértice libera sus arcos incidentes dentro del propio C.</p><p><a href="{{ url_for('help.graph_structure_help', structure_id='graph') }}">Consulta contratos, memoria y fuente completa de Grafo</a>.</p>
+    </details>
+    <details><summary>Mi primer programa C fuera de la aplicación</summary>
+      <p>Descarga <code>tad_pila.c</code> y <code>tad_pila.h</code> desde <a href="{{ url_for('help.structure_help', structure_id='stack') }}">Ayuda de Pila</a>. Guarda este ejemplo como <code>main.c</code> en la misma carpeta:</p>
+      <pre class="didactic-code">#include &lt;stdio.h&gt;
+#include "tad_pila.h"
+
+int main(void) {
+    ptrPila pila = NULL;
+    pila_apilar(&amp;pila, 10);
+    pila_apilar(&amp;pila, 20);
+    pila_apilar(&amp;pila, 30);
+    if (pila != NULL) {
+        printf("Sale: %d\n", pila_desapilar(&amp;pila));
+    }
+    pila_destruir(&amp;pila);
+    return 0;
+}</pre>
+      <p>Con un compilador GCC disponible: <code>gcc -std=c17 -Wall -Wextra main.c tad_pila.c -o ejemplo</code>. Ejecuta <code>./ejemplo</code> (o <code>.\ejemplo.exe</code> en Windows). Con reservas correctas imprime <code>Sale: 30</code>. El <code>printf</code> pertenece a este main; no es una impresión inventada de <code>pila_desapilar</code>.</p><p>El main de tu historial permite reproducir tu propia práctica. Cada TAD tiene sus firmas y reglas de memoria: usa sus encabezados, no cambies nombres para hacerlos parecer iguales.</p>
+    </details>
+  </section>
 </section>
 {% endblock %}

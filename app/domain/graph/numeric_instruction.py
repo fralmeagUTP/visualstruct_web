@@ -243,7 +243,7 @@ def build_graph_numeric_trace(*, operation_name: str, payload: dict[str,Any], so
     last_return=next(event for event in reversed(machine.events) if event['phase']=='return' and event['function']==fn)
     index=last_return['line_index'];last.update(line_index=index,line_text=lines[index],state_snapshot=deepcopy(pending),state_after=deepcopy(after_state),console=[])
     final_progress=graph_progress(final_memory,operation_name);final_progress['result_arcs']=observed;final_progress['edges']=[[str(o),str(d)] for o,d,_ in observed];final_progress['tree_edges']=final_progress['edges'];final_progress['nodes']=list(dict.fromkeys(v for edge in final_progress['edges'] for v in edge))
-    last['debug']=dict(stage='caller_receipt',note='El caller recibe la lista propia devuelta. No se ejecuta otra instrucción C ni otra consulta.',graph_memory=final_memory,graph_progress=final_progress)
+    last['debug']=dict(stage='caller_receipt',note=('El caller recibe NULL: no hay una lista devuelta que poseer o liberar. No se ejecuta otra instrucción C ni otra consulta.' if returned==NULL else 'El caller recibe la lista propia devuelta. No se ejecuta otra instrucción C ni otra consulta.'),graph_memory=final_memory,graph_progress=final_progress)
     last['pedagogy']=deepcopy(last['pedagogy']);frame=last['pedagogy'];frame.update(concept='caller_receipt',variables=[],call_stack=[],condition=None,relaxation=None,
         source={'line_index':index,'line_text':lines[index]},state_before=deepcopy(pending),state_after=deepcopy(after_state),
         instruction_state_before=deepcopy(steps[-1]['pedagogy']['instruction_state_after']),instruction_state_after=final_memory,memory_state=final_memory,

@@ -39,7 +39,7 @@ def build_hidden_positional_trace(*, operation_name: str, payload: dict[str, Any
     source=CALLER+'\n\n'+body('lista_eliminar_posicion' if delete else 'lista_insertar_elemento')
     if not delete: source+='\n\n'+body('CrearNodoLista')
     lines=source.split('\n');steps=[]
-    trace={'structure_id':'linked_list','operation_name':operation_name,'payload':deepcopy(payload),
+    trace={'console_mode':'snapshot','structure_id':'linked_list','operation_name':operation_name,'payload':deepcopy(payload),
         'success':success,'mutates':True,'message':message,'source_code':source,'code_title':code_title,
         'steps':steps,'final_state':deepcopy(after_state),'hidden_positional_instruction_model':True,
         'pedagogy_schema_version':SEQUENTIAL_FRAME_SCHEMA_VERSION,'pedagogy_schema':sequential_frame_schema(),
@@ -47,7 +47,9 @@ def build_hidden_positional_trace(*, operation_name: str, payload: dict[str, Any
     if not success:
         trace.update(execution_started=False,validation={'stage':'API','accepted':False,'message':message})
         return trace
-    position=int(payload['position']);value=int(payload.get('value',0));relative=-1 if operation_name=='insertar_posicion' else int(payload.get('relative') or 0)
+    position=int(payload['position']);value=int(payload.get('value',0))
+    raw_relative=payload.get('relative',0)
+    relative=-1 if operation_name=='insertar_posicion' else (0 if raw_relative is None or str(raw_relative).strip()=='' else int(raw_relative))
     nodes=[{'id':f'N{i+1}','value':n['value'],'next':f'N{i+2}' if i+1<len(before_state['items']) else 'NULL'} for i,n in enumerate(before_state['items'])]
     head=nodes[0]['id'] if nodes else 'NULL';variables={};freed=[];root_owner='&lista';output=None;console=[];calls=[]
     def get(n):return next(x for x in nodes if x['id']==n)

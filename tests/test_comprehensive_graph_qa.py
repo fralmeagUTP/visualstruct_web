@@ -99,7 +99,8 @@ def test_graph_invalid_input_and_dijkstra_negative_weight_are_controlled(client:
         assert _post(client, operation, payload).status_code == 200
     negative = _post(client, "run_dijkstra", {"start": "1", "end": "2"})
     assert negative.status_code == 400
-    assert "Bellman-Ford" in negative.get_json()["message"]
+    assert negative.get_json()["c_status"] == 3
+    assert negative.get_json()["c_status_name"] == "GRAFO_PESO_NEGATIVO"
 
 
 @pytest.mark.parametrize("phase", ["construccion", "recorridos", "camino-minimo", "expansion-minima"])

@@ -7,6 +7,7 @@ from app.services.c_code_service import CCodeService
 from werkzeug.serving import make_server
 pytestmark=pytest.mark.e2e
 
+from scripts.test_tool_paths import resolve_doxygen
 def test_actual_leaf_main_canonical_helper_native_results_repeats_reload_and_failure(tmp_path):
  sync=pytest.importorskip('playwright.sync_api').sync_playwright;gcc=shutil.which('gcc')
  if not gcc:pytest.skip('GCC unavailable: actual main unverified')
@@ -26,7 +27,7 @@ def test_actual_leaf_main_canonical_helper_native_results_repeats_reload_and_fai
   build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(target/'tad_abb.c'),str(target/'main.c'),'-o',str(target/'main.exe')],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr
   run=subprocess.run([str(target/'main.exe')],capture_output=True,text=True,timeout=5);assert run.returncode==0,run.stderr
   calculated=[int(v) for v in re.findall(r'^Hojas actuales: (\d+)\s*$',run.stdout,re.M)];assert calculated==expected
-  doxygen=Path(r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe');assert doxygen.exists()
+  doxygen=Path(resolve_doxygen());assert doxygen.exists()
   warning_file=target/'doxygen-warnings.log';cfg=target/'Doxyfile'
   cfg.write_text('\n'.join(['PROJECT_NAME = "Actual generated ABB main"','INPUT = "'+(target/'main.c').as_posix()+'"','OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warning_file.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
   docs=subprocess.run([str(doxygen),str(cfg)],capture_output=True,text=True,timeout=60);assert docs.returncode==0,docs.stderr;assert warning_file.read_text(encoding='utf-8')==''

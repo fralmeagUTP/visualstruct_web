@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.domain.hash.educational_capacity import MAX_VISUAL_CAPACITY
+
 
 class HashHelpService:
     """Serve educational texts for hash-table module."""
@@ -24,6 +26,7 @@ class HashHelpService:
     _STRUCTURE_HELP: dict[str, dict[str, Any]] = {
         "hash_table": {
             "title": "Tabla Hash",
+            "max_visual_capacity": MAX_VISUAL_CAPACITY,
             "summary": (
                 "Tabla hash de capacidad fija con claves y valores enteros, usando encadenamiento separado. "
                 "La animacion sigue el indice hash, la normalizacion de negativos, las colisiones y la memoria."

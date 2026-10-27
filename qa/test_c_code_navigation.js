@@ -1,0 +1,11 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const window={};vm.runInNewContext(fs.readFileSync('static/js/c_code_navigation.js','utf8'),{window});
+const rows=['/** Documentation',' * details',' */','*a = *b;','*b = temporal;','/* nota */ *p = 1;','/* starts',' */ *p = 2;','printf("/* not comment */");','printf("// text"); // comment','char c = \'*\';','// comment','x = 1; /* starts',' * continuation',' */','/* a */ /* b */',''];
+assert.deepEqual(Array.from(window.CCodeNavigation.commentOnlyLines(rows.join('\n'))),[true,true,true,false,false,false,true,false,false,false,false,true,false,true,true,true,false]);
+for(const f of ['sequential','hierarchical','graph','hash','sorting']) assert.match(fs.readFileSync(`static/js/${f}.js`,'utf8'),/CCodeNavigation\?\.markComments/);
+console.log('PASS 17 C lexical lines and all five module integrations');
+let pageScroll=435;
+const panel={clientTop:1,clientHeight:100,scrollTop:200,getBoundingClientRect:()=>({top:100,bottom:202})};
+window.CCodeNavigation.revealLine(panel,{getBoundingClientRect:()=>({top:240,bottom:260})});assert.equal(panel.scrollTop,259);assert.equal(pageScroll,435);
+window.CCodeNavigation.revealLine(panel,{getBoundingClientRect:()=>({top:90,bottom:108})});assert.equal(panel.scrollTop,248);assert.equal(pageScroll,435);
+console.log('PASS local code scrolling changes panel only, not document');

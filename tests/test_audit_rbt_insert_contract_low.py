@@ -1,6 +1,7 @@
 """Signed int insertion rejection and final caller ownership are actual product contracts."""
 from pathlib import Path
 import pytest
+from _application_rejection_contract import assert_unexecuted_input_rejection
 from app.adapters.red_black_adapter import RedBlackAdapter
 from app.services.hierarchical_structure_service import HierarchicalStructureService as S
 from app.services.hierarchical_help_service import HierarchicalHelpService as H
@@ -12,8 +13,7 @@ def test_insert_outside_C_int_rejects_before_mutation_history_or_C(value):
  assert a.to_visual_state()==before
  history=[{'operation':'insertar','payload':{'value':10}}];r=S.execute_operation('red_black','insertar',{'value':value},history)
  assert not r['success'] and r['history']==history and r['visual_state']==before
- t=r['execution_trace'];assert t['application_precondition_rejected'];assert len(t['steps'])==1
- p=t['steps'][0]['pedagogy'];assert not p['instruction_event']['C_invoked'] and not p['variables'] and not p['call_stack'] and not p['memory']['allocated_objects'] and not p['memory']['freed_objects'] and not t['steps'][0]['console']
+ assert_unexecuted_input_rejection(r)
 
 @pytest.mark.parametrize('value',[-2147483648,2147483647,'-2147483648','+2147483647'])
 def test_signed_C_int_bounds_are_preserved_exactly(value):

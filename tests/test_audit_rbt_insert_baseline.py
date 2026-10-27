@@ -44,6 +44,7 @@ def test_insert_creation_publication_repair_baseline(rbt_insert_baseline,case):
    assert len(a['heap'])==len(b['heap']) and [n['color'] for n in a['heap']]==[n['color'] for n in b['heap']]
  assert meta['backend_endpoint_checked']==(meta['mode']=='normal')
 
+from scripts.test_tool_paths import resolve_doxygen
 def test_original_downloaded_contracts_helpers_and_manual(tmp_path,rbt_insert_baseline):
  client=create_app().test_client();root=Path(__file__).resolve().parents[1];raw=client.get('/help/source/red_black/source').data;header=client.get('/help/source/red_black/header').data
  for suffix,data in [('c',raw),('h',header)]:assert data==(root/'docs/tads_C'/('tad_rojo_negro.'+suffix)).read_bytes();(tmp_path/('tad_rojo_negro.'+suffix)).write_bytes(data)
@@ -75,7 +76,7 @@ int main(void){RBT root=NULL;
  for blob in [raw,header]:
   text=blob.decode('utf-8-sig');assert 'Retorna void. Duplicado, arbol NULL o fallo de malloc' in text and 'nuevo_n es otro local' in text and 'rotacion aislada no garantiza' in text and 'no comprueba globalmente orden' in text
  manual=client.get('/help/hierarchical/red_black');assert manual.status_code==200;body=manual.data.decode('utf-8');assert 'la aplicacion rechaza duplicados' in body and 'altura negra uniforme' in body and 'no certifica' in body
- doxygen=Path(r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe');warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile'
+ doxygen=Path(resolve_doxygen());warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile'
  cfg.write_text('\n'.join(['PROJECT_NAME = "RBT insertion public C H documentation"','INPUT = "'+(tmp_path/'tad_rojo_negro.c').as_posix()+'" "'+(tmp_path/'tad_rojo_negro.h').as_posix()+'"','OUTPUT_DIRECTORY = "'+(tmp_path/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
  docs=subprocess.run([str(doxygen),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',(docs.stderr,warn.read_text(encoding='utf-8'))
  (tmp_path/'contract-review.json').write_text(json.dumps({'raw_original_cases':24,'helper_contracts_verified':True,'strictC17':True,'C_H_Doxygen_warnings':0,'manual_consistency':True,'no_instruction_UI_claim':True},indent=2),encoding='utf-8')

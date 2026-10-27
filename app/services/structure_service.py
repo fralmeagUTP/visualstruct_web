@@ -5,7 +5,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
-from app.adapters.base_adapter import BaseAdapter
+from app.adapters.base_adapter import AdapterInputError, BaseAdapter
 from app.adapters.circular_list_adapter import CircularListAdapter
 from app.adapters.linked_list_adapter import LinkedListAdapter
 from app.adapters.priority_queue_adapter import PriorityQueueAdapter
@@ -173,7 +173,14 @@ class StructureService:
         """Build the data needed to render one structure page."""
         structure = StructureService.get_structure(structure_id)
         adapter, valid_history = StructureService._rebuild_adapter(structure_id, history)
+        history_warning = ""
+        try:
+            BaseAdapter._validate_c_history(valid_history, adapter.get_supported_operations())
+        except AdapterInputError as error:
+            history_warning = str(error)
         return {
+            "history_compatible": not history_warning,
+            "history_warning": history_warning,
             "id": structure_id,
             "name": structure["name"],
             "description": structure["description"],
@@ -246,6 +253,8 @@ class StructureService:
             }
 
         try:
+            BaseAdapter._validate_c_history(valid_history, operations)
+            BaseAdapter._validate_c_inputs(operation_meta, payload)
             result = adapter.execute(operation_name, payload)
         except MemoryError as error:
             from app.domain.sequential.allocation_failure_instruction import (
@@ -260,6 +269,19 @@ class StructureService:
             return {"success": False, "message": MESSAGE, "error": deepcopy(ERROR),
                     "visual_state": before_state, "history": valid_history,
                     "execution_trace": trace}
+        except AdapterInputError as error:
+            # Host-side input validation is not a C branch or allocation failure.
+            # Do not fabricate instruction events for a function never invoked.
+            message = str(error)
+            source_code, code_title = ExecutionTraceService._get_operation_source(
+                didactic_data=didactic_data, operation_name=operation_name)
+            trace = {"structure_id": structure_id, "operation_name": operation_name,
+                "payload": deepcopy(payload), "success": False, "mutates": False,
+                "message": message, "source_code": source_code, "code_title": code_title,
+                "steps": [], "final_state": deepcopy(before_state), "execution_started": False,
+                "validation": {"stage": "API", "accepted": False, "message": message}}
+            return {"success": False, "message": message, "visual_state": before_state,
+                "history": valid_history, "execution_trace": trace}
         except (TADError, ValueError, TypeError) as error:
             message = StructureService._didactic_error(error)
             after_state = adapter.to_visual_state()

@@ -1,0 +1,7 @@
+{
+  "source_zip_sha256": "906786bf36b0cddb4eb6b55394736283ee97d9d6f4ecdc82b61b382f4a7a18ba",
+  "files": {
+    "app/routes/help_routes.py": "bd5c8bb006a0109b68ae83f2e75e225ae4a37861f6b16109e615db50cd13c333",
+    "templates/help/_operation_contracts.html": "b585fb019011e22eedaeffc6d5588637761c978b11f20b1b52fcd1406f88d859"
+  }
+}

@@ -127,6 +127,23 @@ def _qa_events(stderr: str) -> list[dict[str, object]]:
     return events
 
 
+def _graph_book_regressions(compiler, flags, output_dir, environment):
+    """Fail every TAD allocation without wrapping CRT/stdio allocations."""
+    graph_object = output_dir / "graph-book.o"
+    executable = output_dir / "graph-book-regressions"
+    common = [compiler, *flags, "-I", str(TAD_DIR)]
+    commands = [
+        [*common, "-Dmalloc=book_qa_malloc", "-Dcalloc=book_qa_calloc", "-Dfree=book_qa_free", "-c", str(TAD_DIR / "tad_grafo.c"), "-o", str(graph_object)],
+        [*common, str(HARNESS_DIR / "graph_book_contract.c"), str(graph_object), "-o", str(executable)],
+        [str(executable)],
+    ]
+    for command in commands:
+        result = subprocess.run(command, capture_output=True, text=True, env=environment, timeout=60)
+        if result.returncode:
+            raise RuntimeError(f"graph-book regression failed\n{result.stdout}\n{result.stderr}")
+    print(result.stdout.strip())
+
+
 def run_checks(
     *, compiler: str, sanitizers: bool, only: set[str] | None = None,
     qa_events: bool = False,
@@ -198,6 +215,8 @@ def run_checks(
             state = _canonical_output(executed_stdout)
             if state.get("structure_id") != structure_id:
                 raise RuntimeError(f"{structure_id}: identificador canónico incorrecto")
+            if structure_id == "graph":
+                _graph_book_regressions(compiler, flags, output_dir, environment)
             if qa_events:
                 events = _qa_events(executed_stderr)
                 if not events or events[0].get("phase") != "begin" or events[-1].get("phase") != "end":
@@ -266,12 +285,22 @@ def run_checks(
                         raise RuntimeError(f"red_black: incorrect rotation/recolor roots {roots}")
                 if structure_id == "graph":
                     returns = [detail for event, detail in zip(events, details) if event.get("event") == "return"]
+                    statuses = [detail for detail in returns if "_status=" in detail]
+                    construction = [detail for detail in statuses if detail.startswith(("add_vertex_", "add_edge_"))]
+                    if construction.count("add_vertex_status=0") != check.arguments.count("add_vertex") or construction.count("add_edge_status=0") != check.arguments.count("add_edge"):
+                        raise RuntimeError(f"graph: insertion status is missing or failed {construction}")
+                    algorithms = [detail for detail in statuses if detail not in construction]
+                    if algorithms != ["bfs_status=0", "dfs_status=0", "dijkstra_status=0", "bellman_status=0", "prim_status=5", "kruskal_status=5", "dijkstra_status=3"]:
+                        raise RuntimeError(f"graph: incorrect book algorithm status {algorithms}")
+                    if returns.count("weight_found=1") != 1:
+                        raise RuntimeError("graph: cost query did not report a written output")
+                    returns = [detail for detail in returns if "_status=" not in detail and not detail.startswith("weight_found=")]
                     expected = [
                         "empty=1", "exists_edge=1", "weight=5", "order=2", "size=1",
                         "order=2", "size=1", "exists_edge=0", "order=3", "size=1",
                         "bfs=1,2,3", "dfs=1,2,3", "dijkstra_edges=2,cost=3",
-                        "bellman_edges=2,cost=3", "prim_edges=2,cost=3",
-                        "kruskal_edges=2,cost=3", "dijkstra_edges=0,cost=0",
+                        "bellman_edges=2,cost=3", "prim_edges=0,cost=0",
+                        "kruskal_edges=0,cost=0", "dijkstra_edges=0,cost=0",
                     ]
                     if returns != expected:
                         raise RuntimeError(f"graph: incorrect construction/query observations {returns}")

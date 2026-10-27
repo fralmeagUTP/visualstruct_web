@@ -43,8 +43,10 @@ def test_extreme_cycle_is_executed_error_preserving_prior_query(client, monkeypa
     assert not data["success"] and data["result"]["has_negative_cycle"]
     assert data["result"]["path"] == [] and data["result"]["distance_to_destination"] is None
     assert data["visual_state"]["last_operation"]["status"] == "error"
-    assert sum(x["operation"] == "run_bellman_ford" for x in data["history"]) == 1
-    assert any("Se detecto un ciclo negativo." in step.get("console", []) for step in data["execution_trace"]["steps"])
+    assert sum(x["operation"] == "run_bellman_ford" for x in data["history"]) == 2
+    assert all(x["source_contract"]=="graph-book/v1" for x in data["history"])
+    assert data["execution_trace"]["execution_started"]
+    assert data["execution_trace"]["C_instruction_events"]
     for _ in range(2):
         assert client.get("/graph/graph").status_code == 200
-    assert calls == [{"start": 1, "end": 2}]
+    assert calls == [{"start": 1, "end": 2}]*7

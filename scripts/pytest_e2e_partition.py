@@ -24,6 +24,9 @@ def _path():
     suite = os.environ.get("VISUALSTRUCT_E2E_DIAGNOSTICS_NAME", "probe")
     return directory / (suite + "-selection-result.json")
 
+def pytest_configure(config):
+    _path().parent.mkdir(parents=True, exist_ok=True)
+
 @pytest.hookimpl(trylast=True)
 def pytest_collection_modifyitems(config, items):
     index = int(os.environ.get("VISUALSTRUCT_E2E_SHARD_INDEX", "0"))
@@ -41,13 +44,57 @@ def pytest_collection_modifyitems(config, items):
     _path().write_text(json.dumps({"index":index,"count":count,"eligible":sorted(identity(i.nodeid) for i in complete),"selected":sorted(identity(i.nodeid) for i in selected)},indent=2),encoding="utf-8")
 
 _reports = []
+
+def pytest_collectreport(report):
+    """Keep collection failures observable without exception/input text."""
+    if not report.failed:
+        return
+    candidate = str(report.nodeid).split('::', 1)[0].replace('\\', '/')
+    safe = candidate if re.fullmatch(r'(?:tests|qa(?:_[A-Za-z0-9_]+)?|scripts/tests)/[A-Za-z0-9_/.-]+\.py', candidate) else 'unknown'
+    row = {'id': identity(report.nodeid), 'file': safe, 'function': 'unknown',
+           'phase': 'collection', 'outcome': 'failed'}
+    _reports.append(row)
+    print('TEST_EVENT ' + json.dumps(row), flush=True)
+    path = _path().with_name(_path().name.replace('selection-result.json', 'events.jsonl'))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('a', encoding='utf-8') as output:
+        output.write(json.dumps(row) + '\n')
+
+_SAFE_EXCEPTIONS = {"AssertionError", "FileNotFoundError", "ModuleNotFoundError", "ImportError", "KeyError", "ValueError", "TypeError", "RuntimeError", "TimeoutError", "TimeoutExpired", "CalledProcessError", "MemoryError", "ZeroDivisionError"}
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    result = yield
+    report = result.get_result()
+    failure = {}
+    if call.excinfo is not None:
+        kind = call.excinfo.type.__name__
+        failure["exception_kind"] = kind if kind in _SAFE_EXCEPTIONS else "other"
+        locations = []
+        for entry in call.excinfo.traceback:
+            try:
+                relative = Path(entry.path).resolve().relative_to(ROOT).as_posix()
+            except (ValueError, TypeError):
+                continue
+            if re.fullmatch(r"(?:tests|scripts|app)/[A-Za-z0-9_/.-]+\.py", relative):
+                locations.append({"file":relative,"line":int(entry.lineno)+1})
+        failure["repo_locations"] = locations[-8:]
+    report.publication_failure = failure
+
 def pytest_runtest_logreport(report):
     descriptor = _descriptors.get(identity(report.nodeid), {})
     file = descriptor.get("file", "unknown")
     function = descriptor.get("function", "unknown")
     if not re.fullmatch(r"test_[A-Za-z0-9_]+\.py", file): file = "unknown"
     if not re.fullmatch(r"test_[A-Za-z0-9_]+", function): function = "unknown"
-    _reports.append({"id":identity(report.nodeid),"file":file,"function":function,"phase":report.when,"outcome":report.outcome})
+    row = {"id":identity(report.nodeid),"file":file,"function":function,"phase":report.when,"outcome":report.outcome}
+    row.update(getattr(report, "publication_failure", {}))
+    _reports.append(row)
+    print("TEST_EVENT " + json.dumps(row), flush=True)
+    path = _path().with_name(_path().name.replace("selection-result.json", "events.jsonl"))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a",encoding="utf-8") as output:
+        output.write(json.dumps(row)+"\n")
 
 def pytest_sessionfinish(session, exitstatus):
     path = _path().with_name(_path().name.replace("selection", "execution"))

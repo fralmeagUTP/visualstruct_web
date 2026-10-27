@@ -33,7 +33,11 @@ def prepared_push(history: list[dict[str, Any]]) -> dict[str, Any] | None:
     trace = record.get('trace')
     if not isinstance(trace, dict) or trace.get('structure_id') != 'stack' or trace.get('operation_name') != 'apilar':
         return None
-    return deepcopy(trace)
+    restored = deepcopy(trace)
+    # This restoration endpoint owns a cumulative-console producer.
+    # Annotate only the returned legacy copy; never rewrite stored sessions.
+    restored.setdefault("console_mode", "snapshot")
+    return restored
 
 
 def forget_push() -> None:

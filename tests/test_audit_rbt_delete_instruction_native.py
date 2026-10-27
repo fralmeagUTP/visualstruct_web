@@ -1,4 +1,5 @@
 """Independent typed native insertion snapshots versus product instruction model."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,json,hashlib,re,copy
 import pytest
@@ -35,7 +36,7 @@ def check(step,event):
   if event['phase']=='condition' and 'colorOf' in event['expression']:assert 'colorOf(' not in ped['condition']['substituted'].split('(omitido')[0]
   if event['expression']=='y_color_original == NEGRO':assert ped['condition']['substituted'] in ["'n' == 'n'","'r' == 'n'"]
  if event['phase']=='return':
-  result=pointer(event['result']) if event['function']=='minimo' else chr(event['result']) if event['function']=='colorOf' else 'void';assert ped['return_propagation']['value']==result and ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(event['frames'])-1
+  result=pointer(event['result']) if event['function']=='minimo' else chr(event['result']) if event['function']=='colorOf' else 'void';assert ped['return_propagation']['value']==result and context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(event['frames'])-1
  assert not ped['return_propagation']['reconnects_subtree'] and not ped['memory']['allocated_objects']
  before={n['id'] for n in step['state_snapshot']['heap_nodes']};remaining={pointer(n['id']) for n in event['heap']};freed=before-remaining
  assert {n['id'] for n in ped['memory']['freed_objects']}==freed and ped['memory']['event']==('free' if freed else 'none')
@@ -78,8 +79,17 @@ def test_delete_every_native_instruction_scope_alias_heap_and_lifetime(rbt_delet
  assert sum(len(s['pedagogy']['memory']['freed_objects']) for s in trace['steps'])==int(meta['present'])
 @pytest.mark.parametrize('value',[99,'abc'])
 def test_delete_application_rejection_does_not_fabricate_C(value):
- result=S.execute_operation('red_black','eliminar',{'value':value},[{'operation':'insertar','payload':{'value':10}}]);assert not result['success'];trace=result['execution_trace'];assert trace['application_precondition_rejected'];ped=trace['steps'][0]['pedagogy'];assert not ped['instruction_event']['C_invoked'] and not ped['call_stack'] and not ped['variables'] and not ped['memory']['freed_objects']
+ from _application_rejection_contract import assert_unexecuted_input_rejection
+ history=[{'operation':'insertar','payload':{'value':10}}]
+ before=S.get_view_model('red_black',history)['visual_state']
+ result=S.execute_operation('red_black','eliminar',{'value':value},history)
+ assert result['history']==history and result['visual_state']==before
+ if result['execution_trace'].get('execution_started') is False:
+  assert_unexecuted_input_rejection(result)
+ else:
+  trace=result['execution_trace'];assert trace['application_precondition_rejected'];ped=trace['steps'][0]['pedagogy'];assert not ped['instruction_event']['C_invoked'] and not context_stack(ped) and not ped['variables'] and not ped['memory']['freed_objects']
 
+from scripts.test_tool_paths import resolve_doxygen
 @pytest.mark.parametrize('case',[70,24,49,32,1,25,0,3,4,9,13,21,6,79,80,81,73])
 def test_delete_shown_caller_native_endpoint_and_stdout(tmp_path,rbt_delete_instruction_native,case):
  import subprocess,shutil
@@ -97,7 +107,7 @@ def test_delete_shown_caller_native_endpoint_and_stdout(tmp_path,rbt_delete_inst
  build=subprocess.run([shutil.which('gcc'),'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'main.c'),str(tmp_path/'tad_rojo_negro.c'),'-o',str(tmp_path/'main.exe')],capture_output=True,text=True,timeout=30);assert build.returncode==0 and not build.stderr,build.stderr
  run=subprocess.run([str(tmp_path/'main.exe')],capture_output=True,text=True,timeout=5);assert run.returncode==0 and not run.stderr,run.stderr
  assert run.stdout=='\tEl numero ha sido insertado\n'*len(meta['seed'])
- doxygen=Path(r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe');warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile'
+ doxygen=Path(resolve_doxygen());warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile'
  cfg.write_text('\n'.join(['INPUT = "'+(tmp_path/'main.c').as_posix()+'"','OUTPUT_DIRECTORY = "'+(tmp_path/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
  docs=subprocess.run([str(doxygen),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',(docs.stderr,warn.read_text(encoding='utf-8'))
  (tmp_path/'caller-review.json').write_text(json.dumps({'case':case,'strict_c17':True,'exact_shown_wrapper':True,'stdout':run.stdout,'all_final_fields_checked':True,'doxygen_warnings':0,'cleanup':'test fixture outside shown operation; actual main ownership reviewed separately; cleanup outside operation'}),encoding='utf-8')

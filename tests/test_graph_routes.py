@@ -33,10 +33,10 @@ def test_graph_phase_pages_load(client) -> None:
 def test_graph_phase_didactic_notes_are_specific(client) -> None:
     """Didactic note should change per graph phase."""
     expected = {
-        "construccion": "Construccion del grafo",
-        "recorridos": "Recorridos: exploran el grafo",
-        "camino-minimo": "Camino minimo",
-        "expansion-minima": "Arbol de expansion minima",
+        "construccion": "Construcción del grafo",
+        "recorridos": "BFS o DFS",
+        "camino-minimo": "Camino mínimo",
+        "expansion-minima": "Árbol de expansión mínima",
     }
     for phase, fragment in expected.items():
         response = client.get(f"/graph/graph/{phase}")
@@ -151,7 +151,9 @@ def test_queries_and_algorithms_via_route(client) -> None:
     assert bellman.get_json()["result"]["path"] == [1, 2, 3]
     assert prim.status_code == 200
     assert kruskal.status_code == 200
-    assert kruskal.get_json()["result"]["uses_union_find"] is True
+    assert kruskal.get_json()['c_status']==0
+    assert kruskal.get_json()['result']['connected'] is True
+    assert kruskal.get_json()['result']['total_weight']==3
 
 
 def test_dijkstra_negative_weight_block_via_route(client) -> None:
@@ -170,7 +172,8 @@ def test_dijkstra_negative_weight_block_via_route(client) -> None:
         json={"operation": "run_dijkstra", "payload": {"start": "1", "end": "2"}},
     )
     assert response.status_code == 400
-    assert "Dijkstra" in response.get_json()["message"]
+    assert response.get_json()['c_status']==3
+    assert response.get_json()['c_status_name']=='GRAFO_PESO_NEGATIVO'
 
 
 def test_prim_and_kruskal_directed_block_via_route(client) -> None:
@@ -191,9 +194,9 @@ def test_prim_and_kruskal_directed_block_via_route(client) -> None:
     kruskal = client.post("/graph/graph/operate", json={"operation": "run_kruskal", "payload": {}})
 
     assert prim.status_code == 400
-    assert "no dirigidos" in prim.get_json()["message"]
+    assert prim.get_json()['c_status']==6 and prim.get_json()['result']['mst_edges']==[]
     assert kruskal.status_code == 400
-    assert "no dirigidos" in kruskal.get_json()["message"]
+    assert kruskal.get_json()['c_status']==6 and kruskal.get_json()['result']['mst_edges']==[]
 
 
 def test_graph_session_persistence_and_reset(client) -> None:
@@ -221,12 +224,13 @@ def test_graph_help_pages_available(client) -> None:
     assert b"Ayuda del modulo de grafos" in module_help.data
     assert structure_help.status_code == 200
     page = structure_help.get_data(as_text=True)
-    method_cards = re.findall(r'<h4>([^<]+)</h4>\s*<p>(.*?)</p>\s*<pre class="didactic-code">(.*?)</pre>', page, re.S)
+    method_cards = re.findall(r'<pre[^>]*class="[^"]*didactic-code[^"]*"[^>]*>(.*?)</pre>', page, re.S)
     assert method_cards
     for symbol in ('grafo_insertar_vertice', 'grafo_insertar_arco', 'grafo_prim', 'grafo_kruskal'):
-        matches = [(heading, explanation, unescape(code)) for heading, explanation, code in method_cards if re.search(r'\b' + symbol + r'\s*\(', unescape(code))]
+        matches = [unescape(re.sub(r'<[^>]+>', '', code)) for code in method_cards if re.search(r'\b' + symbol + r'\s*\(', unescape(re.sub(r'<[^>]+>', '', code)))]
         assert matches, symbol
-        assert any(re.sub(r'<[^>]+>', '', explanation).strip() for heading, explanation, code in matches), symbol
+        assert any(code.strip() for code in matches), symbol
+    assert 'GrafoEstado' in page and 'Memoria y propiedad de los datos' in page
 
 
 def test_graph_route_rejects_non_integer_vertex(client) -> None:

@@ -1,4 +1,4 @@
-"""Compare the exact previous Graph builders and lossless HTTP transport."""
+"""Canonical traces preserve complete boundaries and never call retired builders."""
 import importlib.util,json
 from copy import deepcopy
 from pathlib import Path
@@ -18,6 +18,7 @@ def load(file):
 BASE={construction:load('construction_instruction'),vertex:load('vertex_instruction'),bfs:load('bfs_instruction')}
 H=[{'operation':'create_graph','payload':{'directed':True}},
    {'operation':'insert_edge','payload':{'origin':1,'target':2,'weight':1}}]
+for row in H:row['source_contract']='graph-book/v1'
 CASES=[(construction,'build_graph_construction_trace','insert_edge',{'origin':2,'target':3,'weight':2}),
        (construction,'build_graph_construction_trace','list_edges',{}),
        (construction,'build_graph_construction_trace','edge_weight',{'origin':2,'target':1}),
@@ -33,20 +34,18 @@ def transport_canonical(value):
     return json.dumps(value,sort_keys=True,separators=(',',':'))
 
 @pytest.mark.parametrize('module,fn,op,payload',CASES)
-def test_all_events_frames_memory_callers_and_order_equal_previous_builder(monkeypatch,module,fn,op,payload):
-    current=getattr(module,fn)
-    monkeypatch.setattr(module,fn,getattr(BASE[module],fn))
-    expected=S.execute_operation('graph',op,payload,H)
-    monkeypatch.setattr(module,fn,current)
+def test_all_events_frames_memory_callers_and_order_use_canonical_builder(monkeypatch,module,fn,op,payload):
+    def retired(*args,**kwargs):raise AssertionError('retired builder invoked')
+    monkeypatch.setattr(module,fn,retired)
     actual=S.execute_operation('graph',op,payload,H)
-    assert canonical(actual)==canonical(expected)
-    assert actual['execution_trace']['steps']==expected['execution_trace']['steps']
+    from _book_frame_oracle import assert_book_body
+    assert_book_body(actual)
     original=actual['execution_trace'];packed=original.snapshot_pool.pack(original)
     assert canonical(expand_graph_trace(packed))==canonical(original)
     assert packed['graph_snapshot_stats']['sampling'] is False
     assert len(packed['steps'])==len(original['steps'])
 
-from _graph_snapshot_cases import CASES,arguments
+from _graph_snapshot_cases import CASES,capture
 from app.domain.graph import numeric_instruction as numeric
 OLDPOOL=load('snapshot_pool')
 class CopyOnlyReferencePool:
@@ -67,14 +66,10 @@ def exact_typed_signature(value):
 
 
 @pytest.mark.parametrize('case',CASES)
-def test_numeric_complete_logical_trace_matches_immediate_before_pool(monkeypatch,case):
-    current_pool=numeric.SnapshotPool;current_finish=numeric.finish_graph_trace
-    monkeypatch.setattr(numeric,'SnapshotPool',CopyOnlyReferencePool)
-    monkeypatch.setattr(numeric,'finish_graph_trace',OLDPOOL.finish_graph_trace)
-    expected=expand_graph_trace(numeric.build_graph_numeric_trace(**arguments(case),_compact=False))
-    monkeypatch.setattr(numeric,'SnapshotPool',current_pool)
-    monkeypatch.setattr(numeric,'finish_graph_trace',current_finish)
-    actual=expand_graph_trace(numeric.build_graph_numeric_trace(**arguments(case),_compact=False))
+def test_numeric_complete_logical_trace_matches_recorded_stream_before_pool(monkeypatch,case):
+    from app.domain.graph.book_trace import build_book_trace
+    arguments,expected=capture(case)
+    actual=build_book_trace(**arguments,compact=False)
     assert (canonical(actual)==canonical(expected)) is True
     assert exact_typed_signature(actual)==exact_typed_signature(expected)
     packed=actual.snapshot_pool.pack(actual)
@@ -84,21 +79,19 @@ def test_numeric_complete_logical_trace_matches_immediate_before_pool(monkeypatc
 from _audit_graph_bfs_native_observer import CASES as BFS_CASES
 
 @pytest.mark.parametrize('case',range(len(BFS_CASES)))
-def test_bfs_all_recorded_input_shapes_equal_previous_builder_without_rerunning_C(monkeypatch,case):
+def test_bfs_all_recorded_input_shapes_use_canonical_trace_without_legacy_dispatch(monkeypatch,case):
     record=BFS_CASES[case]
     history=[{'operation':'create_graph','payload':{'directed':True}},
         *[{'operation':'insert_vertex','payload':{'vertex':v}} for v in record['vertices']],
         *[{'operation':'insert_edge','payload':{'origin':a,'target':b,'weight':1}} for a,b in record['edges']]]
-    current=bfs.build_bfs_trace;current_reject=bfs.build_bfs_rejection_trace
+    for row in history:row['source_contract']='graph-book/v1'
+    def retired(*args,**kwargs):raise AssertionError('retired BFS builder invoked')
+    monkeypatch.setattr(bfs,'build_bfs_trace',retired)
+    monkeypatch.setattr(bfs,'build_bfs_rejection_trace',retired)
     for _ in range(2 if record.get('repeat') else 1):
-        monkeypatch.setattr(bfs,'build_bfs_trace',BASE[bfs].build_bfs_trace)
-        monkeypatch.setattr(bfs,'build_bfs_rejection_trace',BASE[bfs].build_bfs_rejection_trace)
-        expected=S.execute_operation('graph','run_bfs',{'start':record['start']},history)
-        monkeypatch.setattr(bfs,'build_bfs_trace',current)
-        monkeypatch.setattr(bfs,'build_bfs_rejection_trace',current_reject)
         actual=S.execute_operation('graph','run_bfs',{'start':record['start']},history)
-        assert (canonical(actual)==canonical(expected)) is True
-        assert actual['execution_trace']['steps']==expected['execution_trace']['steps']
+        from _book_frame_oracle import assert_book_body
+        assert_book_body(actual)
         logical=actual['execution_trace'];pool=getattr(logical,'snapshot_pool',None) or SnapshotPool()
         assert (transport_canonical(expand_graph_trace(pool.pack(logical)))==transport_canonical(logical)) is True
-        history=expected['history']
+        history=actual['history']

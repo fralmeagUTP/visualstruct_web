@@ -1,0 +1,261 @@
+<section class="help-technical-reference">
+<h3>Referencia avanzada por operación</h3>
+<p>Abre sólo el tema que estás estudiando. Estos detalles distinguen el contrato C, su representación visual y las funciones auxiliares de la aplicación.</p>
+{% if structure_id == 'stack' %}
+<details><summary>Representación, enlaces y consultas</summary>
+<ul>
+<li>Estructura LIFO (Last In, First Out): el ultimo nodo en entrar queda en el TOPE y es el primero en salir.</li>
+<li>En la simulacion observa como se crea el nodo auxiliar, se enlaza al tope actual y luego se reasigna el puntero principal de la pila.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'queue' %}
+<details><summary>Representación, enlaces y consultas</summary>
+<ul>
+<li>Estructura FIFO (First In, First Out): el primer nodo en entrar queda al frente y sale primero.</li>
+<li>En la animacion revisa las reasignaciones de frente/atras y verifica que al quedar vacia ambos extremos vuelvan al estado nulo.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'priority_queue' %}
+<details><summary>Representación, enlaces y consultas</summary>
+<ul>
+<li>Estructura FIFO por nivel de prioridad: se atiende primero el elemento con menor valor numerico de prioridad y, en empate, se conserva el orden de llegada.</li>
+<li>La inserción conserva el orden de llegada; la selección recorre la cadena y compara prioridades.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'linked_list' %}
+<details><summary>Representación, enlaces y consultas</summary>
+<ul>
+<li>Secuencia lineal de nodos enlazados por referencias al siguiente.</li>
+<li>En el simulador debes seguir el avance de punteros auxiliares para inserciones/eliminaciones por posicion, verificando que *lista (HEAD) siempre conserve la conectividad.</li>
+<li>Para limpiar, lista_limpiar desconecta la cabeza con q y la libera en cada vuelta.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'circular_list' %}
+<details><summary>Contratos C y resultados</summary>
+<p>Las operaciones con retorno booleano distinguen éxito y rechazo mediante true/false. En una lista circular no vacía se conserva cola-&gt;sgte == cabeza al terminar; los enlaces transitorios se estudian dentro de la operación.</p>
+<p>Buscar posiciones devuelve el total de coincidencias aunque el arreglo de salida sea menor. NULL y capacidad 0 permiten contar sin escribir posiciones; copiar valores, en cambio, devuelve cuántos valores se copiaron dentro de la capacidad disponible.</p>
+<p>Una reserva fallida no enlaza un nodo parcial ni cambia cantidad o extremos. Destruir libera los nodos propios y deja los extremos en NULL. No confundas un registro histórico de memoria con un nodo vivo.</p>
+</details>
+<details><summary>Representación, enlaces y consultas</summary>
+<ul>
+<li>Lista enlazada circular donde el ultimo nodo apunta nuevamente al primero.</li>
+<li>La interpretacion paso a paso muestra cada escritura; el cierre del ciclo se restablece al terminar cada alta/baja de nodos para evitar rupturas o ciclos invalidos.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'sublist' %}
+<details><summary>Representación, enlaces y consultas</summary>
+<ul>
+<li>Estructura jerarquica secuencial: cada nodo padre mantiene su propia sublista de hijos.</li>
+<li>En la animacion observa dos niveles de punteros (padres e hijos) y valida que cada operacion afecte solo la rama correspondiente sin corromper otras sublistas.</li>
+<li>Listar hijos conserva la consulta exitosa en el historial tras recargar, sin volver a ejecutarla.</li>
+<li>El programa principal mostrado está completo: cópialo en main.c; ya incluye stdio.h y tad_sublista.h, y compila junto con el archivo C descargado.</li>
+<li>La aplicación copia como máximo 1024 hijos por consulta.</li>
+<li>El arreglo de consulta tiene capacidad suficiente según las inserciones previas; su contenido se obtiene ejecutando el C.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'abb' %}
+<details><summary>Orden del árbol</summary>
+<ul>
+<li>Arbol binario de busqueda sin duplicados: todo valor menor va al subarbol izquierdo y todo valor mayor al derecho.</li>
+<li>En la simulacion revisa la ruta de comparaciones y confirma que la propiedad de orden se preserve despues de cada insercion o eliminacion.</li>
+</ul></details>
+<details><summary>Buscar</summary>
+<ul>
+<li>Buscar retorna un puntero prestado o NULL en C; la interfaz expone encontrado o no encontrado como booleano, sin error por ausencia.</li>
+<li>El llamador equivalente mostrado contextualiza esa conversion y no agrega otro metodo al C/H descargado.</li>
+</ul></details>
+<details><summary>Mínimo y máximo</summary>
+<ul>
+<li>Minimo y maximo recorren enlaces con while, sin recursion ni mutacion; retornan un alias prestado.</li>
+<li>En C, arbol vacio retorna NULL; el wrapper consulta el TAD y convierte ese retorno en un error de interfaz.</li>
+</ul></details>
+<details><summary>Altura y llamadas recursivas</summary>
+<ul>
+<li>En ABB, altura cuenta niveles: vacio 0 y hoja 1.</li>
+<li>altIzq y altDer son locales int de cada invocacion; durante su inicializador recursivo estan en ambito, sin inicializar.</li>
+<li>El padre conserva sus locales mientras espera al hijo.</li>
+<li>La altura visita todo el arbol en O(n), con O(h) marcos recursivos, sin cambiar enlaces ni imprimir.</li>
+</ul></details>
+<details><summary>Insertar: retornos y entradas</summary>
+<ul>
+<li>La interfaz rechaza duplicados y eliminaciones ausentes; el TAD C conserva el arbol en esos casos.</li>
+<li>Asigna a la raiz el retorno de insertar/eliminar.</li>
+</ul></details>
+<details><summary>Limpiar y liberar memoria</summary>
+<ul>
+<li>liberarArbol recibe la raiz por valor: despues de liberar, el llamador debe ponerla a NULL.</li>
+<li>Durante Limpiar, free termina primero las vidas de hijos y despues del padre; sus alias se muestran como identidades historicas con valor indeterminado, nunca como direcciones utilizables.</li>
+<li>El SVG representa reservas vivas y no afirma que el C haya puesto sus enlaces a NULL.</li>
+<li>El retorno es void y la asignacion NULL del main es una instruccion posterior.</li>
+</ul></details>
+<details><summary>Eliminar y sucesor</summary>
+<ul>
+<li>Durante Eliminar, la llamada recursiva no publica enlaces futuros: el retorno se asigna despues.</li>
+<li>Con dos hijos se conserva la reserva encontrada y se copia el valor del sucesor; ambas reservas existen temporalmente con ese valor.</li>
+<li>El helper minimo tiene su propio ambito; temp se inicializa al retornar.</li>
+<li>free termina solo la reserva retirada; sus alias son historicos inutilizables.</li>
+</ul></details>
+<details><summary>Recorridos y funciones auxiliares</summary>
+<ul>
+<li>Los recorridos C imprimen cada entero seguido de un espacio, sin salto final.</li>
+<li>Contar hojas y Validar usan auxiliares mostrados en la aplicacion que no estan declarados en el C/H descargado.</li>
+</ul></details>
+<details><summary>Contar hojas</summary>
+<ul>
+<li>Contar hojas retorna 0 para NULL y 1 para un nodo sin hijos; en otro caso suma los conteos de ambos subarboles sin mutacion ni printf.</li>
+<li>C no fija cual llamada de esa suma se evalua primero: un orden mostrado u observado es una opcion permitida, no una garantia del lenguaje.</li>
+<li>Los resultados parciales son operandos de la expresion, no variables locales declaradas.</li>
+<li>El main mostrado con Contar hojas incluye stdio.h, tad_abb.h y el auxiliar canonico una sola vez; compilalo junto a tad_abb.c.</li>
+<li>Imprime el conteo calculado, conserva consultas repetidas y las recupera al recargar sin volver a ejecutarlas para reconstruir el arbol.</li>
+</ul></details>
+<details><summary>Validar y límites</summary>
+<ul>
+<li>Validar ABB usa limites estrictos opcionales con indicadores enteros: la llamada inicial omite ambos limites y admite INT_MIN/INT_MAX.</li>
+<li>No usa sentinelas ni +/-1.</li>
+<li>Cada hijo hereda los limites de sus ancestros; igualdad o duplicado devuelve 0.</li>
+<li>NULL devuelve 1.</li>
+<li>El cortocircuito omite limites ausentes y no visita el subarbol derecho si el izquierdo falla.</li>
+<li>Es consulta sin mutacion ni printf; cada marco conserva sus parametros.</li>
+<li>El main incluye el auxiliar una sola vez y calcula cada validacion, sin imprimir una respuesta almacenada de la interfaz.</li>
+<li>Consultas repetidas sobreviven a recarga sin volver a ejecutar esas operaciones del historial al reconstruir.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'avl' %}
+<details><summary>Equilibrio y rotaciones</summary>
+<ul>
+<li>Arbol AVL auto-balanceado: mantiene factor de equilibrio por nodo en el rango [-1, 1].</li>
+<li>La animacion debe mostrar deteccion del nodo desbalanceado y aplicacion de rotaciones (LL, RR, LR, RL) sincronizadas con la linea C que se interpreta.</li>
+<li>Las rotaciones C conservan valores y reservas, reenlazan padres/raiz y actualizan FE como altura(derecho)-altura(izquierdo), sin poner ambos a cero.</li>
+<li>Las simples calculan primero A y luego B con formulas O(1); las dobles componen dos simples sin preasignar FE.</li>
+<li>Tambien contemplan hijo equilibrado al eliminar y nieto FE-1/0/1.</li>
+<li>El llamador mantiene factores de ancestros; durante la reconexion y antes de actualizar FE no se debe afirmar un AVL terminado.</li>
+</ul></details>
+<details><summary>Eliminar y liberar</summary>
+<ul>
+<li>Eliminar retorna void y no imprime.</li>
+<li>Con dos hijos intercambia el valor con el sucesor y libera su reserva; la reserva encontrada inicialmente puede seguir viva con otro valor.</li>
+<li>Sin hijos o con uno, publica el enlace y el padre del hijo antes de free.</li>
+<li>Los alias de la reserva retirada dejan de ser utilizables.</li>
+<li>Vacio/ausencia son rechazos web; el C deja el arbol intacto.</li>
+<li>El reequilibrio recalcula alturas y puede visitar la nueva raiz del subarbol despues de rotar.</li>
+</ul></details>
+<details><summary>Validar por alturas</summary>
+<ul>
+<li>Validar muestra un auxiliar de equilibrio por alturas: no revisa orden ABB ni FE almacenado.</li>
+<li>El backend revisa orden y equilibrio por separado.</li>
+<li>NULL retorna 1 en el auxiliar; la primera diferencia fuera de -1..1 corta la recursion.</li>
+<li>Su traza elige altura derecha y despues izquierda, aunque C permite otro orden de operandos de la resta.</li>
+</ul></details>
+<details><summary>Historial, main y auxiliares</summary>
+<ul>
+<li>El main del historial reproduce consultas exitosas, incluidas repeticiones; recargar conserva esas consultas sin ejecutarlas otra vez.</li>
+<li>Maximo, Inorden y equilibrio por alturas usan los auxiliares mostrados, incluidos una vez en ese programa; no son exportaciones del C/H descargable.</li>
+<li>Inorden imprime valores ascendentes, no avl_verArbol.</li>
+<li>La comprobacion de equilibrio por alturas no certifica el FE almacenado.</li>
+<li>Compile el main junto a tad_avl.c; los rechazos se anotan sin ejecutar la llamada fallida.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'red_black' %}
+<details><summary>Reglas y validación</summary>
+<ul>
+<li>Arbol balanceado por reglas de color (rojo/negro) que limitan la altura.</li>
+<li>Durante la simulacion observa recoloreos y rotaciones para mantener raiz negra, sin rojos consecutivos y con altura negra consistente entre caminos.</li>
+<li>La consulta Validar publica del TAD comprueba las cinco reglas RN y orden estricto; comprueba altura negra uniforme, colores y enlaces al padre sobre objetos vivos.</li>
+</ul></details>
+<details><summary>Inorden, Altura y main</summary>
+<ul>
+<li>Inorden y Altura usan auxiliares documentados de la aplicacion/main, no exportados por el C/H.</li>
+<li>Inorden imprime valores ascendentes con espacio final, sin salto; Altura cuenta niveles (nodos del camino más largo): NULL vale 0 y una hoja vale 1.</li>
+<li>El main calcula las consultas exitosas, incluidas repeticiones, sin imprimir resultados web prefabricados.</li>
+</ul></details>
+<details><summary>Hojas conceptuales</summary>
+<ul>
+<li>El C usa NULL como hoja negra; el backend presenta vistas NIL.</li>
+</ul></details>
+<details><summary>Eliminar y reparar</summary>
+<ul>
+<li>Eliminar busca el entero, trasplanta el hijo o la reserva del sucesor y libera la reserva original z, sin copiar su valor sobre ella ni reservar o imprimir.</li>
+<li>El color original guardado determina la reparacion con x y x_parent; tras free los alias a z son indeterminados, aunque su direccion se reutilice.</li>
+<li>Su referencia arbol debe ser escribible y no NULL; un arbol vacio si se admite.</li>
+<li>Eliminar ausente es no-op nativo pero rechazo de aplicacion; Liberar no actualiza la raiz por valor, el caller debe asignar NULL sin leer el alias antiguo.</li>
+</ul></details>
+<details><summary>Limpiar y vida de memoria</summary>
+<ul>
+<li>Limpiar libera izq, der y nodo en postorden: O(n) tiempo, O(h) pila; no imprime ni reserva y no crea/libera reservas NIL.</li>
+<li>Los alias a nodos liberados son inutilizables.</li>
+<li>Repetir solo es seguro despues de asignar NULL a la raiz; las consultas o comparaciones de punteros antiguos no son una comprobacion segura.</li>
+</ul></details>
+<details><summary>Insertar: rango y caller</summary>
+<ul>
+<li>Insertar acepta enteros entre -2147483648 y 2147483647, el int de C de 32 bits; fuera de rango se rechaza antes de modificar el arbol o guardar historial, sin truncar.</li>
+<li>El main conserva las operaciones exitosas y libera al final las reservas restantes; despues asigna NULL a la raiz.</li>
+<li>Esa limpieza del caller no agrega operaciones ni printf.</li>
+</ul></details>
+<details><summary>Insertar: reserva y reparación</summary>
+<ul>
+<li>Insertar busca sin reservar y solo crea un nodo si el entero no existe; escribe nro, hijos NULL, padre y ROJO antes de publicar el enlace.</li>
+<li>Los cinco casos reparan por recoloreos/rotaciones; raiz negra al terminar, sin reservas NIL.</li>
+<li>El C retorna void: referencia raiz NULL, duplicado o fallo de malloc son no-op sin confirmacion impresa; la aplicacion rechaza duplicados antes de llamar.</li>
+<li>Los auxiliares de reparacion requieren su contexto y no son metodos del menu.</li>
+<li>La rotacion no cambia enteros ni colores por si sola y no certifica cada estado parcial como rojo-negro valido.</li>
+</ul></details>
+{% endif %}
+{% if structure_id == 'binary_heap' %}
+<details><summary>Representación y Ver arreglo</summary>
+<ul>
+<li>Min-heap representado en arreglo y visualizado tambien como arbol casi completo.</li>
+<li>Ver arreglo copia todos los valores en su orden interno, no en orden total.</li>
+<li>El main reproducible reserva la copia segun la cantidad actual y libera esa memoria; si la reserva falla, termina sin mostrar una copia parcial.</li>
+<li>Las consultas exitosas repetidas se conservan al recargar; restaurarlas no vuelve a ejecutarlas.</li>
+</ul></details>
+<details><summary>Consultas: Ver raíz y Ver arreglo</summary>
+<ul>
+<li>En Insertar y Extraer raiz identifica los intercambios que restauran la prioridad padre-hijos.</li>
+<li>Ver raiz y Ver arreglo son consultas: no intercambian ni modifican el arreglo del monticulo.</li>
+<li>En estas dos consultas, el resaltado corresponde a la instruccion ya ejecutada; retroceder cambia la observacion, no vuelve a ejecutar una operacion.</li>
+<li>Ver raiz separa el bool de exito del int de salida, que permanece sin inicializar si falla la guarda.</li>
+<li>Ver arreglo muestra cada celda del buffer independiente al inicializarse y conserva registros anteriores a free; estos registros no son memoria viva ni punteros utilizables.</li>
+<li>Los llamadores equivalentes mostrados son auxiliares didacticos, no nuevas funciones del C/H.</li>
+</ul></details>
+<details><summary>Cantidad y capacidad</summary>
+<ul>
+<li>La capacidad es distinta de cantidad: solicitar 16 reserva 20 segun el C (base 10 y duplicacion); el elemento 21 hace crecer a 40 y extraer elementos no reduce esa capacidad.</li>
+<li>La vista muestra los valores logicos hasta cantidad; no afirma que el espacio restante sea cero.</li>
+</ul></details>
+<details><summary>Limpiar y nueva reserva</summary>
+<ul>
+<li>Limpiar destruye el buffer previo aunque cantidad sea cero, asigna datos NULL y luego cantidad y capacidad 0.</li>
+<li>A continuacion inicializa otro buffer: pedir 16 reserva 20 si la reserva tiene exito; si falla, conserva datos NULL, cantidad 0 y capacidad 0.</li>
+<li>El retorno void no anuncia el resultado de la reserva.</li>
+<li>La nueva vida A2 es distinta de A1 aunque el asignador reutilice una direccion.</li>
+<li>A2 nace sin enteros inicializados; las celdas fuera de cantidad en A1 se muestran como no observadas, no como ceros.</li>
+<li>Retroceder observa registros anteriores, sin ejecutar free ni reservar otra vez.</li>
+</ul></details>
+<details><summary>Insertar y ascenso</summary>
+<ul>
+<li>En Insertar, datos[cantidad] se escribe antes del ascenso y cantidad++ ocurre despues.</li>
+<li>Los dibujos siguen las celdas escritas, incluyendo esa celda pendiente fuera de cantidad; no confunden cantidad con celdas escritas.</li>
+<li>Comparar recibe enteros por valor; intercambiar recibe alias int * y ejecuta temp=*a, *a=*b y *b=temp por separado: hay duplicacion transitoria.</li>
+<li>Division entera C trunca hacia cero: (-1)/2 da 0.</li>
+<li>El cortocircuito evita comparar si indice es 0.</li>
+</ul></details>
+<details><summary>Crecer con realloc</summary>
+<ul>
+<li>Si realloc crece, el buffer previo termina su vida; el nuevo conserva el prefijo y se publica antes de asignar capacidad.</li>
+<li>Entre esas instrucciones datos es indeterminado y los dibujos se suspenden.</li>
+<li>Si realloc falla, la insercion devuelve false y conserva contenido/cantidad/capacidad.</li>
+<li>El bool se muestra al retornar; avanzar o retroceder nunca vuelve a insertar.</li>
+</ul></details>
+<details><summary>Extraer raíz y descenso</summary>
+<ul>
+<li>En Extraer raiz, el entero externo se escribe primero; despues disminuye cantidad.</li>
+<li>Si aun hay elementos, la antigua cola se copia en la raiz antes del descenso.</li>
+<li>Las dos vistas siguen el prefijo logico; la tarjeta de memoria conserva la cola inicializada fuera de cantidad, sin dibujarla como otro elemento.</li>
+<li>No se libera A1 ni se reduce capacidad.</li>
+<li>Cada hijo se compara solo si esta dentro de cantidad; el empate no selecciona ese hijo.</li>
+<li>El descenso muestra tres escrituras por intercambio.</li>
+<li>Si el heap esta vacio, devuelve false sin escribir salida; no hay descenso.</li>
+<li>El entero de salida es distinto del bool; retroceder no extrae de nuevo.</li>
+</ul></details>
+{% endif %}
+</section>

@@ -1,0 +1,162 @@
+=== qa/test_c_code_navigation.js
+PASS 17 C lexical lines and all five module integrations
+PASS local code scrolling changes panel only, not document
+=== qa/test_console_modes.js
+✔ sequential snapshot at exact cursor, reverse/reset reproducible (1.896264ms)
+✔ sequential event fragments never deduplicate or trim Unicode/blank lines (0.243015ms)
+✔ hierarchical snapshot at exact cursor, reverse/reset reproducible (0.250146ms)
+✔ hierarchical event fragments never deduplicate or trim Unicode/blank lines (0.141469ms)
+✔ graph snapshot at exact cursor, reverse/reset reproducible (0.237536ms)
+✔ graph event fragments never deduplicate or trim Unicode/blank lines (0.127446ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17.940801
+=== qa/test_contextual_help.js
+PASS ABB insertion concise and operation-specific
+PASS Changing operation replaces explanation, not appends
+PASS Frame uses current changes and retains complete explanation
+PASS Reset drops stale step and returns selected operation
+PASS All five modules receive scoped notes
+PASS Untrusted labels, variables and explanation escaped
+PASS Priority queue scans minimum priority and preserves FIFO ties
+PASS Min-heap insertion and extraction use array and sift directions
+PASS Every inventoried operation and algorithm has explicit help
+9 contextual help tests passed
+PASS scalar store distinguished from all canonical tree link field names
+=== qa/test_contextual_metadata.js
+PASS 400 real frames across sequential, hierarchical, graph and hash; intermediate/final views; genuine C names retained; raw diagnostics and source data preserved
+PASS dictionary and array scope schemas preserve declared identifiers without modifying frames
+=== qa/test_export_jpg.js
+✔ JPG download uses attached blob anchor, exact JPEG bytes/MIME and delayed cleanup (3.997896ms)
+✔ download failure releases blob and anchor immediately (2.196338ms)
+✔ invalid image output is not downloaded (0.806734ms)
+✔ image onload resolves and clears timer/listeners (0.985209ms)
+✔ image onerror rejects and releases source/timer (0.824692ms)
+✔ image with no event has finite timeout and releases resources (0.846625ms)
+✔ raster prefers self-contained data SVG and revokes blob after fallback (1.072334ms)
+✔ raster failure always releases intermediate URL (0.732009ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19.070453
+=== qa/test_export_jpg_hash.js
+✔ panel/global hash target promotes to region including sibling current memory (1.7836ms)
+✔ other families and detached hash target keep their existing export target (0.788606ms)
+✔ hash uses measured detached expansion; region excludes controls/C/Comprender (0.256475ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7.977914
+=== qa/test_export_jpg_hierarchical.js
+✔ expands only detached descendants and measures content beyond original viewport (3.100282ms)
+✔ temporary measurement DOM always removed on layout failure (1.489928ms)
+✔ hierarchical expansion is scoped to region and descendant target, not other families (0.25265ms)
+✔ nonzero SVG viewBox origin stays intact while width/height are restored (0.895431ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13.17493
+=== qa/test_hash_classroom.js
+PASS 143 real Hash frames immutable, every live/retired ID retained, masks interpreted, no invented final local NULL; suspended legacy never fake empty
+PASS 171 real partial-buffer frames: initialized prefix distinct from indeterminate tail, no false wholly-uninitialized label
+PASS failed get caption derives from actual false return, preserves any caller value, no premature no-write claim
+PASS real free(actual) distinguishes invalid retired pointer from never-initialized storage, retaining historical identity only
+PASS permanent symbolic-identity note inside exported memory region, independent of removed toolbar
+PASS destroy states distinguish guarded factor0 from division0/0, and known NULL from indeterminate freed pointer
+PASS capacity preflight and server preserve_session reject without clearing trace/state; no fetch for129
+=== qa/test_hash_failed_execution.js
+PASS real HTTP400 get-absent and simulated malloc failure load their C traces, retain failure message, and unlock controls
+=== qa/test_hash_reset_export.js
+PASS exact suspended history/main JSON export; reset cancellation/failure preserve, success publishes server history/main and unlocks
+=== qa/test_hier_classroom.js
+PASS 11 real ABB insertion frames preserve reserves, aliases and scope details, with reserves preceding optional call stack; CSS stable/wrap/sticky contracts
+PASS 36 real five-node deletion frames: every live/retired node preserved; nearest live frame alias prioritized without state reordering
+PASS final live stack empty, completed frames explicitly historical without pending continuation, raw proof optional
+PASS classroom viewBox uses real diagram bounds; traversal lists remain optional rather than squeezing SVG
+PASS real RN state keeps every node/color enum and full caution, with compact visible warning and Spanish color labels
+PASS hierarchical index respects complete return types, excludes call/prototype duplicates, retains pointer-return signatures
+PASS ID-based final tree layout, detached forest, and honest cycle/shared/uninitialized/retired-reference fallbacks preserve all raw edges
+PASS 45 real heap copy frames: SVG retained, memory outside canvas, destination cells retained before optional frames
+PASS 176 real AVL/RN graph snapshots preserve all identities and observed edges during transient layout
+=== qa/test_hier_comparison.js
+PASS 30 real comparison snapshots, four variants, actual distinct roots/shapes/heights/colors and immutable payloads
+=== qa/test_hier_prediction.js
+PASS 79 real decisions in ABB/AVL/RN/heap; future-only targets, two options, immutable traces, hints reset, one score, backward/manual/omit no farming; actual grade/omit handlers advance
+PASS actual Next handler: normal one instruction, practice intercepts only before pending decision
+=== qa/test_hierarchical_validation.js
+✔ abb pre-C execution_started rejection, finalOnly=false (3.096064ms)
+✔ abb pre-C validation rejection, finalOnly=false (0.631526ms)
+✔ abb pre-C execution_started rejection, finalOnly=true (0.688532ms)
+✔ abb pre-C validation rejection, finalOnly=true (0.635472ms)
+✔ avl pre-C execution_started rejection, finalOnly=false (0.731397ms)
+✔ avl pre-C validation rejection, finalOnly=false (0.619608ms)
+✔ avl pre-C execution_started rejection, finalOnly=true (0.491744ms)
+✔ avl pre-C validation rejection, finalOnly=true (0.579286ms)
+✔ red_black pre-C execution_started rejection, finalOnly=false (1.663006ms)
+✔ red_black pre-C validation rejection, finalOnly=false (0.832489ms)
+✔ red_black pre-C execution_started rejection, finalOnly=true (0.820041ms)
+✔ red_black pre-C validation rejection, finalOnly=true (0.637485ms)
+✔ binary_heap pre-C execution_started rejection, finalOnly=false (0.778607ms)
+✔ binary_heap pre-C validation rejection, finalOnly=false (0.467547ms)
+✔ binary_heap pre-C execution_started rejection, finalOnly=true (0.632827ms)
+✔ binary_heap pre-C validation rejection, finalOnly=true (0.598666ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20.867208
+=== qa/test_real_stdout.js
+✔ hierarchical: host feedback never assigned as C console fallback (1.962359ms)
+✔ graph: host feedback never assigned as C console fallback (0.511373ms)
+✔ hierarchical fast path retains executed trace and uses final cursor (2.515996ms)
+✔ hierarchical: non-printing executed path stays empty, query stdout retained exactly (1.316822ms)
+✔ graph: non-printing executed path stays empty, query stdout retained exactly (1.212214ms)
+✖ graph create normal path retains actual trace and final cursor (2.041268ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18.62759
+
+✖ failing tests:
+
+test at qa/test_real_stdout.js:32:1
+✖ graph create normal path retains actual trace and final cursor (2.041268ms)
+  evalmachine.<anonymous>:4
+        }
+        ^
+  
+  SyntaxError: Unexpected token '}'
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInContext (node:vm:300:10)
+      at TestContext.<anonymous> (/workspace/scratch/644977913e22/visualstruct_convergencia_libro_20261027/app/qa/test_real_stdout.js:35:125)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

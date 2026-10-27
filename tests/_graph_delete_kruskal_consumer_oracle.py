@@ -160,6 +160,11 @@ def assert_graphdk_projection(p):
         assert set(owned)=={"M4","M5"} and owned["M5"]["fields"]=={"origen":3,"destino":2,"costo":2,"sig":"M4"}
         assert owned["M4"]["fields"]=={"origen":2,"destino":1,"costo":1,"sig":"NULL"}
 def assert_graphdk_consumer(body,operation):
+    if body['execution_trace'].get('book_instruction_model'):
+        from _book_frame_oracle import assert_book_body
+        assert_book_body(body)
+        assert_final_graph(body['visual_state'])
+        return
     project=project_graphdk(body,operation)
     if operation=="run_kruskal":
         trace=body["execution_trace"]

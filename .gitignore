@@ -13,3 +13,14 @@ tmp_server_err.log
 openspec/changes/**/evidence/
 openspec/changes/**/_preserved-original-remnant*/
 openspec/continuity/live-artifacts/
+
+# Private runtime settings and generated diagnostics.
+.env
+.env.*
+!.env.example
+ci-safe-diagnostics/
+e2e-safe-diagnostics/
+
+# Historical machine assignments remain local.
+openspec/continuity/assignments/*
+!openspec/continuity/assignments/cloud-*.json

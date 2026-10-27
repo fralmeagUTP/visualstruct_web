@@ -33,7 +33,11 @@ def prepared_enqueue(history: list[dict[str, Any]]) -> dict[str, Any] | None:
     trace = record.get('trace')
     if not isinstance(trace, dict) or trace.get('structure_id') != 'queue' or trace.get('operation_name') != 'encolar':
         return None
-    return deepcopy(trace)
+    restored = deepcopy(trace)
+    # This restoration endpoint owns a cumulative-console producer.
+    # Annotate only the returned legacy copy; never rewrite stored sessions.
+    restored.setdefault("console_mode", "snapshot")
+    return restored
 
 
 def forget_enqueue() -> None:

@@ -1,0 +1,14 @@
+F
+======================================================================
+FAIL: test_live_alias_after_free_is_historical_without_changing_raw_memory (qa_convergence.test_book_engine_retired.RetiredProjectionTests.test_live_alias_after_free_is_historical_without_changing_raw_memory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/644977913e22/visualstruct_convergencia_libro_20261027/app/qa_convergence/test_book_engine_retired.py", line 11, in test_live_alias_after_free_is_historical_without_changing_raw_memory
+    self.assertEqual(alias['scope_status'],'vivo');self.assertEqual(alias['value'],{'historical_identity':'E2','usable':False,'value_status':'indeterminate_after_free'});self.assertFalse(alias['usable']);self.assertEqual(alias['change_reason'],'lifetime_ended_not_pointer_write')
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'E2' != {'historical_identity': 'E2', 'usable': F[44 chars]ree'}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.093s
+
+FAILED (failures=1)

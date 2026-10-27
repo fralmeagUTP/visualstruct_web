@@ -17,7 +17,7 @@ from app.services.c_code_service import CCodeService
 
 OPERATIONS = frozenset({'create_graph','clear_graph','insert_edge','remove_edge','exists_vertex','exists_edge','edge_weight','list_vertices','list_edges','generate_random_graph'})
 QUERY_FUNCTIONS = {'exists_vertex':'grafo_existe_vertice','exists_edge':'grafo_existe_arco','edge_weight':'grafo_costo_arco','list_vertices':'grafo_vertices','list_edges':'grafo_arcos'}
-SUPPORTED_BODIES = {'grafo_crear': 'af096fd86a848127a188d85c303c6500416f419170beddf8333830383ee47008', 'grafo_insertar_vertice': '20661fb4e1c1e2be9e1f36625657e57328895b693f0b390daf22f5ee82458b6f', 'grafo_insertar_arco': 'ceda32c53ecc0611fd0fba33fafc10c9afe5dc70ab1a53ddcaa9febb1fa5d2d6', 'grafo_eliminar_arco': 'f569ecd8e97f8bcf59de3e7618cb9660e691950bb83d4eb2b4603fb2dea0dad2', 'grafo_existe_vertice': '9351929b8e22ac886588d13b08ce0f0645dacafc06fec73954ff6b9b49ced43d', 'grafo_existe_arco': 'd64a2e0588b04c39633515ca5afe4682c6dad69f9b8f21022abb27f0a8539a1d', 'grafo_costo_arco': '3141356721d6cb111bc5a0b0d32178f0e8178dc60cdb8692e091f2b59dab1ba0', 'grafo_vertices': 'c06b7fda1eb765ecd6c3cab2c962cebd86d06ed7026690f2fa3838c607ede251', 'grafo_arcos': '70ead96ca6f818475fd10ae13e48e1426057ac30363839567dc5853b1d9f6e41'}
+SUPPORTED_BODIES = {'grafo_crear': 'af096fd86a848127a188d85c303c6500416f419170beddf8333830383ee47008', 'grafo_insertar_vertice': '20661fb4e1c1e2be9e1f36625657e57328895b693f0b390daf22f5ee82458b6f', 'grafo_insertar_arco': 'a9d21f03f50a9392b676806f9130db7dcaca612357e9e7307de4e9c5e2640405', 'grafo_eliminar_arco': 'f569ecd8e97f8bcf59de3e7618cb9660e691950bb83d4eb2b4603fb2dea0dad2', 'grafo_existe_vertice': '9351929b8e22ac886588d13b08ce0f0645dacafc06fec73954ff6b9b49ced43d', 'grafo_existe_arco': 'd64a2e0588b04c39633515ca5afe4682c6dad69f9b8f21022abb27f0a8539a1d', 'grafo_costo_arco': '3141356721d6cb111bc5a0b0d32178f0e8178dc60cdb8692e091f2b59dab1ba0', 'grafo_vertices': 'c06b7fda1eb765ecd6c3cab2c962cebd86d06ed7026690f2fa3838c607ede251', 'grafo_arcos': '70ead96ca6f818475fd10ae13e48e1426057ac30363839567dc5853b1d9f6e41'}
 CONSTRUCTION_FUNCTIONS = frozenset(SUPPORTED_BODIES) | {"audit_graph_operation"}
 
 class ConstructionProgram(Program):
@@ -161,7 +161,7 @@ def build_graph_construction_trace(*, operation_name: str, payload: dict[str,Any
         names=[QUERY_FUNCTIONS[operation_name]]
     elif operation_name=='remove_edge':names=['grafo_eliminar_arco']
     elif operation_name in {'insert_edge','generate_random_graph'}:
-        names=['grafo_insertar_vertice','grafo_insertar_arco']
+        names=['grafo_insertar_vertice','grafo_existe_vertice','grafo_insertar_arco']
         if operation_name=='generate_random_graph':names.insert(0,'grafo_crear')
     else:names=['grafo_crear']
     bodies=[]
@@ -267,11 +267,20 @@ def build_graph_construction_trace(*, operation_name: str, payload: dict[str,Any
     index=len(lines)-1;phase='api_publication' if success else 'input_validation'
     step=dict(step_index=len(steps),line_index=index,line_text=lines[index],event_type='line',phase=phase,
         state_snapshot=steps[-1]['state_after'] if steps else before_state,state_after=deepcopy(after_state),console=[],debug={'stage':phase,'note':message})
+    publication_note = message
+    if query and success:
+        publication_note = {
+            'exists_vertex':'La API publica el resultado booleano de existencia del vertice; C retorna un entero 0 o 1. Esta publicacion no ejecuta otra instruccion C.',
+            'exists_edge':'La API publica el resultado booleano de existencia del arco; C retorna un entero 0 o 1. Esta publicacion no ejecuta otra instruccion C.',
+            'edge_weight':'La API publica el costo entero retornado por C para el arco consultado. Esta publicacion no ejecuta otra instruccion C.',
+            'list_vertices':'La API publica los vertices en su orden logico; la lista retornada por C es prestada, no una copia ni una reserva nueva.',
+            'list_edges':'La API publica los arcos en su orden logico; la lista retornada por C es prestada, no una copia ni una reserva nueva.',
+        }[operation_name]
     frame=build_graph_frame(operation_name=operation_name,payload=payload,step=step,source_lines=lines,success=success)
     frame.update(query_operation=query,construction_operation=not query,concept=phase,variables=[],call_stack=[],condition=None,
         memory_state=memory,instruction_state_before=memory,instruction_state_after=memory,
         instruction_event={'C_executed':False,'function':None,'phase':phase},
-        narration={level:('La API publica su orden logico; listas retornadas por C son prestadas, no copias.' if query and success else message) for level in ['basic','intermediate','advanced']})
+        narration={level:publication_note for level in ['basic','intermediate','advanced']})
     if not steps:
         initial=deepcopy(frame);initial.update(concept='initial',state_before=deepcopy(before_state),state_after=deepcopy(before_state))
         frame['initial_frame']=initial

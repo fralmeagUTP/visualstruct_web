@@ -119,11 +119,13 @@ def test_graph_c_code_data_loaded() -> None:
     """Graph should expose structure and mapped operations from C files."""
     data = CCodeService.get_structure_data("graph")
     assert data is not None
-    assert data["code_title"] == "Codigo C"
+    assert "tad_grafo.c" in data["code_title"]
     assert "typedef struct NodoV" in data["record"]
     assert "typedef struct NodoA" in data["record"]
     assert "typedef struct nodoGrafo" in data["record"]
-    assert "typedef struct Conjunto" in data["record"]
+    assert "typedef enum" in data["record"] and "GrafoEstado *estado" in data["record"]
+    from app.domain.graph.book_source import canonical_source
+    assert "Conjunto" in canonical_source()  # private algorithm helper stays in C
     assert "insert_vertex" in data["operations"]
     assert "grafo_insertar_vertice" in data["operations"]["insert_vertex"]
     assert data["record"].count("} *ListaVertice;") == 1

@@ -1,5 +1,5 @@
 """Acceptance coverage for graph pedagogy phases 4 through 6."""
-from _dijkstra_legacy_consumer_oracle import assert_dijkstra_legacy_consumer
+from _book_frame_oracle import assert_book_body
 from pathlib import Path
 from _graph_trace_contract import decode_graph_http_trace
 
@@ -7,12 +7,12 @@ from app.domain.graph.pedagogy import build_graph_frame, validate_graph_frame
 from app.adapters.graph_adapter import GraphAdapter
 
 
-def _operate(client, operation, payload):
+def _operate(client, operation, payload, status=200):
     response = client.post(
         "/graph/graph/operate",
         json={"operation": operation, "payload": payload},
     )
-    assert response.status_code == 200
+    assert response.status_code == status
     body = response.get_json()
     body["execution_trace"] = decode_graph_http_trace(body["execution_trace"])
     return body
@@ -77,52 +77,58 @@ def test_random_graph_seed_reproduces_a_stable_prepared_input():
 
 
 def test_bfs_and_dfs_frames_expose_real_auxiliary_and_tree(client):
-    from _bfs_dfs_auxiliary_consumer_oracle import assert_traversal_consumer
     _prepare_weighted_graph(client, directed=False)
-    bfs_body = _operate(client, "run_bfs", {"start": "1"})
-    bfs = bfs_body["execution_trace"]
-    bfs_frames = [step["pedagogy"] for step in bfs["steps"]]
-    assert all(frame["auxiliary"]["kind"] == "queue" for frame in bfs_frames)
-    assert any(frame["traversal"]["tree_edges"] for frame in bfs_frames)
-    assert all(len(frame["traversal"]["discovery_order"]) == len(set(frame["traversal"]["discovery_order"])) for frame in bfs_frames)
-    assert any(frame["table"]["previous"] for frame in bfs_frames)
+    for operation in ('run_bfs','run_dfs'):
+        body=_operate(client,operation,{'start':1})
+        assert body['success'] and body['c_status']==0
+        assert sorted(body['result'])==[1,2,3] and len(body['result'])==3
+        assert {n['id']:n['marked'] for n in body['visual_state']['nodes']}=={'1':1,'2':1,'3':1,'4':0}
+        assert_book_body(body)
+        steps=body['execution_trace']['steps']
+        events=[step['pedagogy']['instruction_event'] for step in steps]
+        assert any(e['function']=='preparar' and e['phase']=='enter' for e in events)
+        assert any(e['function']=='publicar_marcas' and e['phase']=='enter' for e in events)
+        assert any(e['function']=='grafo_liberar_vertices' and e['phase']=='enter' for e in events)
+        assert any(e['phase']=='allocate' for e in events) and any(e['phase']=='free' for e in events)
+        assert not steps[-1]['pedagogy']['memory_state']['frames']
+        if operation=='run_bfs':
+            assert sum(e['function']=='grafo_bfs' and e['phase']=='write' and e.get('name','').startswith('t.prev[') for e in events)==3
+            assert any('t.prev[' in step['line_text'] and '++' in step['line_text'] for step in steps)
+            assert not any((e['function'] or '').startswith('cola_') for e in events)
+        else:
+            assert any(e['function']=='grafo_dfs_recursivo' and e['phase']=='enter' for e in events)
+            assert any(sum(f['function']=='grafo_dfs_recursivo' for f in step['pedagogy']['memory_state']['frames'])>=2 for step in steps)
 
-    dfs_body = _operate(client, "run_dfs", {"start": "1"})
-    dfs = dfs_body["execution_trace"]
-    dfs_frames = [step["pedagogy"] for step in dfs["steps"]]
-    assert all(frame["auxiliary"]["kind"] == "recursi\u00f3n C" for frame in dfs_frames)
-    assert any(frame["auxiliary"]["items"] for frame in dfs_frames)
-    assert any(frame["traversal"]["tree_edges"] for frame in dfs_frames)
 
-    assert_traversal_consumer(bfs_body, "run_bfs")
-    assert_traversal_consumer(dfs_body, "run_dfs")
-
-
-def test_dijkstra_frames_show_priority_queue_relaxation_and_path(client):
+def test_dijkstra_frames_show_index_selection_relaxation_and_path(client):
     _prepare_weighted_graph(client)
-    data = _operate(client, "run_dijkstra", {"start": "1", "end": "3"})
-    assert data["result"]["path"] == [1, 2, 3]
-    assert data["result"]["distance_to_destination"] == 3.0
-    assert_dijkstra_legacy_consumer(data, "weighted")
+    data=_operate(client,'run_dijkstra',{'start':1,'end':3})
+    assert data['result']['path']==[1,2,3] and data['result']['path_arcs']==[[1,2,2],[2,3,1]]
+    assert data['result']['distance_to_destination']==3 and type(data['result']['distance_to_destination']) is int
+    assert_book_body(data)
+    steps=data['execution_trace']['steps'];events=[step['pedagogy']['instruction_event'] for step in steps]
+    for function in ('preparar','sumar_seguro','reconstruir','liberar_trabajo','grafo_liberar_arcos'):
+        assert any(e['function']==function and e['phase']=='enter' for e in events)
+    assert any('t.alcanzable[j]' in step['line_text'] and step['phase']=='condition' for step in steps)
+    assert not steps[-1]['pedagogy']['memory_state']['frames']
 
 
 def test_bellman_ford_distinguishes_unreachable_and_reachable_negative_cycle(client):
     _prepare_weighted_graph(client)
-    unreachable = _operate(client, "run_bellman_ford", {"start": "1", "end": "4"})
-    assert unreachable["result"]["reachable"] is False
-    from _bellman_http_consumer_oracle import assert_bellman_http
-    assert_bellman_http(unreachable, "unreachable4", 200)
-
-    _operate(client, "create_graph", {"directed": True})
-    for origin, target, weight in (("1", "2", 1), ("2", "3", -3), ("3", "2", 1)):
-        prepared = _operate(client, "insert_edge", {"origin": origin, "target": target, "weight": weight})
-    response = client.post("/graph/graph/operate", json={"operation": "run_bellman_ford", "payload": {"start": "1", "end": "3"}})
-    assert response.status_code == 400
-    negative = response.get_json()
-    negative["execution_trace"] = decode_graph_http_trace(negative["execution_trace"])
-    assert negative["result"]["has_negative_cycle"] is True
-    assert negative["history"] == prepared["history"]
-    assert_bellman_http(negative, "cycle23", response.status_code)
+    unreachable=_operate(client,'run_bellman_ford',{'start':1,'end':4},status=400)
+    assert unreachable['c_status']==2 and unreachable['result']['reachable'] is False
+    assert unreachable['result']['path']==[] and unreachable['result']['distance_to_destination'] is None
+    assert_book_body(unreachable)
+    assert unreachable['history'][-1]['operation']=='run_bellman_ford'
+    _operate(client,'create_graph',{'directed':True})
+    for origin,target,weight in ((1,2,1),(2,3,-3),(3,2,1)):
+        prepared=_operate(client,'insert_edge',{'origin':origin,'target':target,'weight':weight})
+    negative=_operate(client,'run_bellman_ford',{'start':1,'end':3},status=400)
+    assert negative['c_status']==4 and negative['result']['has_negative_cycle'] is True
+    assert negative['history'][:-1]==prepared['history']
+    assert negative['result']['path_arcs']==[] and negative['result']['distance_to_destination'] is None
+    assert_book_body(negative)
+    assert any('e = GRAFO_CICLO_NEGATIVO' in step['line_text'] and step['phase']=='write' for step in negative['execution_trace']['steps'])
 
 
 def test_ui_exposes_representation_traversal_relaxation_and_immutable_replay(client):

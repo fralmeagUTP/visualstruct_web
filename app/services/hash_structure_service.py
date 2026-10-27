@@ -5,6 +5,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
+from app.domain.hash.educational_capacity import MAX_VISUAL_CAPACITY, CAPACITY_MESSAGE, oversized_history_capacity
 from app.adapters.base_adapter import BaseAdapter
 from app.adapters.hash_table_adapter import HashTableAdapter
 from app.services.observability import observe_replay
@@ -93,16 +94,56 @@ class HashStructureService:
         return "Ocurrio un error inesperado durante la operacion."
 
     @staticmethod
+    def _operations(adapter):
+        operations = deepcopy(adapter.get_supported_operations())
+        for operation in operations:
+            if operation["name"] == "create_table":
+                for field in operation.get("inputs", []):
+                    if field["name"] == "capacity":
+                        field.update(min=1, max=MAX_VISUAL_CAPACITY, step=1)
+        return operations
+
+    @staticmethod
+    def _suspended_state(capacity):
+        message = (f"Visualización suspendida: el historial contiene una tabla de capacidad {capacity}. "
+                   + CAPACITY_MESSAGE + " El historial y el main se conservan; esto no significa que la tabla esté vacía. "
+                   "Puedes exportarlos o restablecer los datos mediante confirmación.")
+        return {"structure": "hash_table", "title": "Tabla Hash — visualización suspendida",
+                "suspended": True, "suspension_reason": message,
+                "metadata": {"capacity": capacity, "capacity_policy": "fixed"}}
+
+    @staticmethod
+    def _policy_rejection(structure_id, operation_name, payload, history, state, message):
+        didactic = HashStructureService._didactic_content(structure_id)
+        source, title = ExecutionTraceService._get_operation_source(
+            didactic_data=didactic, operation_name=operation_name)
+        trace = {"structure_id": structure_id, "operation_name": operation_name,
+                 "payload": deepcopy(payload), "success": False, "mutates": False,
+                 "message": message, "source_code": source, "code_title": title,
+                 "steps": [], "final_state": deepcopy(state), "execution_started": False,
+                 "validation": {"stage": "API", "accepted": False, "message": message}}
+        return {"success": False, "message": message, "result": None,
+                "visual_state": state, "history": deepcopy(history), "main_c": build_hash_main(history),
+                "execution_trace": trace, "preserve_session": True}
+
+    @staticmethod
     def get_view_model(structure_id: str, history: list[dict[str, Any]]) -> dict[str, Any]:
         """Build data needed to render hash structure page."""
         structure = HashStructureService.get_structure(structure_id)
-        adapter, valid_history = HashStructureService._rebuild_adapter(structure_id, history)
+        capacity = oversized_history_capacity(history)
+        if capacity is not None:
+            adapter = HashStructureService._new_adapter(structure_id)
+            valid_history = deepcopy(history)
+            state = HashStructureService._suspended_state(capacity)
+        else:
+            adapter, valid_history = HashStructureService._rebuild_adapter(structure_id, history)
+            state = adapter.to_visual_state()
         return {
             "id": structure_id,
             "name": structure["name"],
             "description": structure["description"],
-            "operations": adapter.get_supported_operations(),
-            "visual_state": adapter.to_visual_state(),
+            "operations": HashStructureService._operations(adapter),
+            "visual_state": state,
             "didactic": HashStructureService._didactic_content(structure_id),
             "history": valid_history,
             "main_c": build_hash_main(valid_history),
@@ -118,7 +159,21 @@ class HashStructureService:
         history: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Execute one operation over rebuilt hash-table state."""
+        HashStructureService.get_structure(structure_id)
+        capacity = oversized_history_capacity(history)
+        if capacity is not None:
+            state = HashStructureService._suspended_state(capacity)
+            return HashStructureService._policy_rejection(structure_id, operation_name, payload, history,
+                                                         state, state["suspension_reason"])
         adapter, valid_history = HashStructureService._rebuild_adapter(structure_id, history)
+        if operation_name == "create_table":
+            try:
+                capacity = BaseAdapter._require_int(payload, "capacity", "capacidad")
+            except (ValueError, TypeError):
+                capacity = None
+            if capacity is not None and capacity > MAX_VISUAL_CAPACITY:
+                return HashStructureService._policy_rejection(structure_id, operation_name, payload, history,
+                                                             adapter.to_visual_state(), CAPACITY_MESSAGE)
         didactic_data = HashStructureService._didactic_content(structure_id)
         before_state = adapter.to_visual_state()
         operations = adapter.get_supported_operations()

@@ -1,0 +1,96 @@
+=== qa/test_sequential_classroom.js
+PASS 23 real sequential frames; Spanish phases/heap; diagnostic disclosure; normal stdout equals final-step stdout; local active node and stable CSS contracts
+PASS real push nro store distinguished from sgte link store
+PASS function index deduplicates declarations/call sites; quantity decrement is not mislabeled invariant checking
+=== qa/test_sequential_results.js
+✔ circular buscar_posiciones: host result visible despite separate empty printf panel (6.211169ms)
+✔ circular buscar_posiciones: prepared result hidden until final cursor and hidden again on rewind (2.041515ms)
+✔ sublist hijos_de: host result visible despite separate empty printf panel (1.403196ms)
+✔ sublist hijos_de: prepared result hidden until final cursor and hidden again on rewind (2.025961ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21.201867
+=== qa/test_sorting_code_wrap.js
+PASS scoped C soft wrap, unmodified font/height, fixed classroom workspace
+=== qa/test_sorting_compact_memory.js
+PASS compact memory: Shell j/i/temporal, whole identifiers, active pointers, scope boundaries and six-item bound
+=== qa/test_sorting_memory_format.js
+PASS real Radix allocate/free/alias fixtures and 1065 real frames across all 11 algorithms
+STEP 9 negativos → bloque negativos: reservado, capacidad 4 | n = 4 | cant_negativos = 0 | cant_positivos = 0 | i = sin inicializar | indice = sin inicializar
+STEP 10 positivos → bloque positivos: reservado, capacidad 4 | n = 4 | cant_negativos = 0 | cant_positivos = 0 | i = sin inicializar | indice = sin inicializar
+STEP 50 salida → bloque salida: reservado, capacidad 4 | n (counting_por_digito) = 4 | n (ordenar_radixsort) = 4 | exp = 1 | conteo = 10 celdas [0, 0, 0, 0, 0, 0, …] | i = sin inicializar
+STEP 135 salida → bloque salida: liberado; no acceder (capacidad previa 4) | n = 4 | exp = 1 | conteo = 10 celdas [0, 0, 2, 3, 4, 4, …] | i = 4 | arreglo → alias de bloque positivos
+STEP 158 negativos → bloque negativos: liberado; no acceder (capacidad previa 4) | positivos → bloque positivos: reservado, capacidad 4 | n = 4 | cant_negativos = 0 | cant_positivos = 4 | i = 4
+STEP 159 negativos → bloque negativos: liberado; no acceder (capacidad previa 4) | positivos → bloque positivos: liberado; no acceder (capacidad previa 4) | n = 4 | cant_negativos = 0 | cant_positivos = 4 | i = 4
+PASS actual full Comprender variable/pointer renderer on six real Radix fixtures
+PASS pointer alias without invented dereference; Spanish Radix buffer labels and lifetimes
+=== qa/test_sorting_mutations.js
+✔ deferred run blocks reset and create until mutation finishes (3.393198ms)
+✔ reset restores one coherent algorithm, input, model and code selection (2.066624ms)
+✔ network failure restores controls and reports a recoverable message (1.283137ms)
+✔ controls are disabled during a request, cancel reset makes no request (1.117642ms)
+✔ algorithm selection uses returned visual state and serializes with run (0.969764ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15.545749
+=== qa/test_stdout_raw_renderer.js
+✔ private queue helper raw DOM text equals native bytes, not five block lines (6.670897ms)
+✔ raw step/previous/start reflects exact current producer stdout, including duplicate values (3.717878ms)
+✔ normal mode retains raw stdout after clearing player, line mode remains separate (2.147298ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18.169108
+=== qa/test_sublist_classroom.js
+PASS 26 real Sublist query frames: all nodes/copied cells retained before optional call stack; no data mutation
+=== qa/test_trace_player.js
+✔ step, previous, seek, reset and repeat recover identical frames (4.773684ms)
+✔ pause during automatic delay preserves the same executed code and state (0.779451ms)
+✔ invalid load removes prior cursor, highlighted code and observer frame (0.73999ms)
+✔ clear cancels pending automatic updates (0.836909ms)
+✔ reset cancels pending automatic updates (0.695241ms)
+✔ seek cancels pending automatic updates (0.719338ms)
+✔ load cancels pending automatic updates (1.738849ms)
+✔ manual step cancels autoplay without duplicate advancement (0.833104ms)
+✔ second play invalidates first loop and emits every frame once (0.858522ms)
+✔ retained completed lines stay synchronized while playback is paused (0.827635ms)
+✔ a player without a code panel still loads initial state and navigates (0.623099ms)
+✔ empty replacement trace cancels old playback and removes old line selection (0.731847ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20.988333
+=== qa/test_trace_player_paged.js
+✔ paged clear removes highlighted code, counts and cached exposed trace (4.080165ms)
+✔ reset blocks delayed old page from painting (1.71405ms)
+✔ clear blocks delayed old page from painting (0.957405ms)
+✔ load-paged blocks delayed old page from painting (0.958146ms)
+✔ load-legacy blocks delayed old page from painting (3.120888ms)
+✔ paged to invalid trace notifies empty observers and cancels fetch (1.240842ms)
+✔ paged navigation follows latest seek, resets, and steps from initial state (1.124282ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19.392544

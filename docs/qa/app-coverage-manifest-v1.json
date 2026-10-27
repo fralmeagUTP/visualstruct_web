@@ -3,13 +3,13 @@
   "generated_by": "scripts/build_app_quality_inventory.py",
   "coverage_policy": "Cada elemento publicado debe tener case_id, capa y oráculo no vacíos.",
   "summary": {
-    "total": 306,
+    "total": 308,
     "by_category": {
       "algorithm": 23,
-      "control": 109,
+      "control": 110,
       "operation": 109,
       "phase": 4,
-      "route": 48,
+      "route": 49,
       "structure": 13
     }
   },
@@ -444,6 +444,26 @@
       },
       "coverage": {
         "case_id": "QA-CONTROL-TEMPLATES-NAVBAR-HTML-SELECT-EXPORT-JPG-SCALE-10",
+        "layer": "e2e",
+        "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
+      }
+    },
+    {
+      "id": "control:templates/graph/structure.html:a:graph-download-main:19",
+      "category": "control",
+      "module": "graph",
+      "source": "templates/graph/structure.html",
+      "metadata": {
+        "tag": "a",
+        "identifier": "graph-download-main",
+        "attributes": {
+          "id": "graph-download-main",
+          "class": "link",
+          "href": "{{ url_for('help.download_tad_source', structure_id='graph', file_kind='main') }}"
+        }
+      },
+      "coverage": {
+        "case_id": "QA-CONTROL-TEMPLATES-GRAPH-STRUCTURE-HTML-A-GRAPH-DOWNLOAD-MAIN-19",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -1001,7 +1021,7 @@
       }
     },
     {
-      "id": "control:templates/hierarchical/structure.html:button:hier-export-image:32",
+      "id": "control:templates/hierarchical/structure.html:button:hier-export-image:33",
       "category": "control",
       "module": "hierarchical",
       "source": "templates/hierarchical/structure.html",
@@ -1016,13 +1036,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HIERARCHICAL-STRUCTURE-HTML-BUTTON-HIER-EXPORT-IMAGE-32",
+        "case_id": "QA-CONTROL-TEMPLATES-HIERARCHICAL-STRUCTURE-HTML-BUTTON-HIER-EXPORT-IMAGE-33",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/hierarchical/structure.html:button:hier-export-summary:33",
+      "id": "control:templates/hierarchical/structure.html:button:hier-export-summary:34",
       "category": "control",
       "module": "hierarchical",
       "source": "templates/hierarchical/structure.html",
@@ -1037,7 +1057,7 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-HIERARCHICAL-STRUCTURE-HTML-BUTTON-HIER-EXPORT-SUMMARY-33",
+        "case_id": "QA-CONTROL-TEMPLATES-HIERARCHICAL-STRUCTURE-HTML-BUTTON-HIER-EXPORT-SUMMARY-34",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -1558,7 +1578,7 @@
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:a:stack-main-download:32",
+      "id": "control:templates/sequential/structure.html:a:stack-main-download:33",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -1573,7 +1593,7 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-A-STACK-MAIN-DOWNLOAD-32",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-A-STACK-MAIN-DOWNLOAD-33",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -1619,7 +1639,7 @@
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-export-image:30",
+      "id": "control:templates/sequential/structure.html:button:seq-export-image:31",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -1634,13 +1654,13 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-EXPORT-IMAGE-30",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-EXPORT-IMAGE-31",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
     },
     {
-      "id": "control:templates/sequential/structure.html:button:seq-export-summary:31",
+      "id": "control:templates/sequential/structure.html:button:seq-export-summary:32",
       "category": "control",
       "module": "sequential",
       "source": "templates/sequential/structure.html",
@@ -1655,7 +1675,7 @@
         }
       },
       "coverage": {
-        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-EXPORT-SUMMARY-31",
+        "case_id": "QA-CONTROL-TEMPLATES-SEQUENTIAL-STRUCTURE-HTML-BUTTON-SEQ-EXPORT-SUMMARY-32",
         "layer": "e2e",
         "oracle": "El control es operable, conserva el foco y produce el cambio de interfaz o API esperado."
       }
@@ -5461,6 +5481,24 @@
       },
       "coverage": {
         "case_id": "QA-ROUTE-GET-GRAPH-STRUCTURE-ID-PHASE",
+        "layer": "api",
+        "oracle": "La ruta responde con el contrato HTTP esperado para datos válidos e inválidos."
+      }
+    },
+    {
+      "id": "route:GET /graph/<structure_id>/history",
+      "category": "route",
+      "module": "graph",
+      "source": "Flask:graph.export_graph_history",
+      "metadata": {
+        "endpoint": "graph.export_graph_history",
+        "methods": [
+          "GET"
+        ],
+        "rule": "/graph/<structure_id>/history"
+      },
+      "coverage": {
+        "case_id": "QA-ROUTE-GET-GRAPH-STRUCTURE-ID-HISTORY",
         "layer": "api",
         "oracle": "La ruta responde con el contrato HTTP esperado para datos válidos e inválidos."
       }

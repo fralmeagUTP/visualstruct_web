@@ -1,0 +1,12 @@
+# Requisitos VC01–VC11
+- VC01: cinco familias, visual grande izquierda y C legible derecha; objetivo imagen≥300px con memoria cerrada en viewport1165×757, controles alcanzables.
+- VC02: valores≥14px al100%, sin autoencoger por paso; ABB9 equilibrado/degenerado y casos grandes de cada renderer.
+- VC03: zoom/pan explícitos persisten en20next/back, reset/ejemplo/navegación según política documentada; scroll documento estable durante pasos.
+- VC04: memoria opcional cerrada inicialmente, abrir/cerrar sin ejecutar ni perder estado; toda evidencia completa accesible, sin ocultar nodos esenciales. Al abrir memoria se comparte el alto fijo del panel y se permite reducir temporalmente la imagen; cerrar recupera el área principal sin desplazar la página.
+- VC05: resultados consola/main/TAD claramente separados, tabs/paneles acotados y responsive; resultado operativo relevante visible.
+- VC06: copiar C conserva texto fuente compilable, sin NBSP ni números de línea; ampliar/cerrar restaura foco/vista sin recarga ni acción de backend.
+- VC07: stdout snapshot/events/raw y orden de frames intactos; estructuraTAD/código no se reescriben.
+- VC08: JPG panel/global completo sin recortar contenido por zoom/pan/memoria cerrada y sin mutar vista viva; exportación explicita qué contiene.
+- VC09: C/H26 y código backend idénticos v0; regresiones relevantes y revisión independiente, no nuevas afirmaciones de suite histórica.
+- VC10: v0/primeras copias/libros intactos; nueva entrega v1 reversible con extracción fresca y SHA. IA externa fuera de alcance.
+- VC11: compactar espacio superior en toda la aplicación: conservar identidad institucional accesible, navegación y campos críticos de preparación; evitar barras redundantes para priorizar el alto de gráfico y código. Verificar sin pérdida de controles en 1165×757. El segundo viewport 1366×768 es opcional cuando existe una superficie independiente; no se redimensiona la pantalla activa del usuario y se declara NOT_RUN si no se prueba.

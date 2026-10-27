@@ -1,0 +1,235 @@
+=== qa/test_c_code_navigation.js
+PASS 17 C lexical lines and all five module integrations
+PASS local code scrolling changes panel only, not document
+=== qa/test_console_modes.js
+✔ sequential snapshot at exact cursor, reverse/reset reproducible (2.175211ms)
+✔ sequential event fragments never deduplicate or trim Unicode/blank lines (0.198039ms)
+✔ hierarchical snapshot at exact cursor, reverse/reset reproducible (0.276939ms)
+✔ hierarchical event fragments never deduplicate or trim Unicode/blank lines (0.129877ms)
+✔ graph snapshot at exact cursor, reverse/reset reproducible (0.233112ms)
+✔ graph event fragments never deduplicate or trim Unicode/blank lines (0.124578ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17.91108
+=== qa/test_contextual_help.js
+PASS ABB insertion concise and operation-specific
+PASS Changing operation replaces explanation, not appends
+PASS Frame uses current changes and retains complete explanation
+PASS Reset drops stale step and returns selected operation
+PASS All five modules receive scoped notes
+PASS Untrusted labels, variables and explanation escaped
+PASS Priority queue scans minimum priority and preserves FIFO ties
+PASS Min-heap insertion and extraction use array and sift directions
+PASS Every inventoried operation and algorithm has explicit help
+9 contextual help tests passed
+PASS scalar store distinguished from all canonical tree link field names
+=== qa/test_contextual_metadata.js
+PASS 400 real frames across sequential, hierarchical, graph and hash; intermediate/final views; genuine C names retained; raw diagnostics and source data preserved
+PASS dictionary and array scope schemas preserve declared identifiers without modifying frames
+=== qa/test_export_jpg.js
+✔ JPG download uses attached blob anchor, exact JPEG bytes/MIME and delayed cleanup (4.501612ms)
+✔ download failure releases blob and anchor immediately (1.160255ms)
+✔ invalid image output is not downloaded (0.740671ms)
+✔ image onload resolves and clears timer/listeners (0.898099ms)
+✔ image onerror rejects and releases source/timer (0.77984ms)
+✔ image with no event has finite timeout and releases resources (0.871288ms)
+✔ raster prefers self-contained data SVG and revokes blob after fallback (1.336873ms)
+✔ raster failure always releases intermediate URL (0.843767ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22.250548
+=== qa/test_export_jpg_hash.js
+✔ panel/global hash target promotes to region including sibling current memory (2.135181ms)
+✔ other families and detached hash target keep their existing export target (0.708592ms)
+✔ hash uses measured detached expansion; region excludes controls/C/Comprender (0.278191ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8.779735
+=== qa/test_export_jpg_hierarchical.js
+✔ expands only detached descendants and measures content beyond original viewport (2.529077ms)
+✔ temporary measurement DOM always removed on layout failure (1.303723ms)
+✔ hierarchical expansion is scoped to region and descendant target, not other families (0.242146ms)
+✔ nonzero SVG viewBox origin stays intact while width/height are restored (1.525838ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14.582646
+=== qa/test_hash_classroom.js
+PASS 143 real Hash frames immutable, every live/retired ID retained, masks interpreted, no invented final local NULL; suspended legacy never fake empty
+PASS 171 real partial-buffer frames: initialized prefix distinct from indeterminate tail, no false wholly-uninitialized label
+PASS failed get caption derives from actual false return, preserves any caller value, no premature no-write claim
+PASS real free(actual) distinguishes invalid retired pointer from never-initialized storage, retaining historical identity only
+PASS permanent symbolic-identity note inside exported memory region, independent of removed toolbar
+PASS destroy states distinguish guarded factor0 from division0/0, and known NULL from indeterminate freed pointer
+PASS capacity preflight and server preserve_session reject without clearing trace/state; no fetch for129
+=== qa/test_hash_failed_execution.js
+PASS real HTTP400 get-absent and simulated malloc failure load their C traces, retain failure message, and unlock controls
+=== qa/test_hash_reset_export.js
+PASS exact suspended history/main JSON export; reset cancellation/failure preserve, success publishes server history/main and unlocks
+=== qa/test_hier_classroom.js
+PASS 11 real ABB insertion frames preserve reserves, aliases and scope details, with reserves preceding optional call stack; CSS stable/wrap/sticky contracts
+PASS 36 real five-node deletion frames: every live/retired node preserved; nearest live frame alias prioritized without state reordering
+PASS final live stack empty, completed frames explicitly historical without pending continuation, raw proof optional
+PASS classroom viewBox uses real diagram bounds; traversal lists remain optional rather than squeezing SVG
+PASS real RN state keeps every node/color enum and full caution, with compact visible warning and Spanish color labels
+PASS hierarchical index respects complete return types, excludes call/prototype duplicates, retains pointer-return signatures
+PASS ID-based final tree layout, detached forest, and honest cycle/shared/uninitialized/retired-reference fallbacks preserve all raw edges
+PASS 45 real heap copy frames: SVG retained, memory outside canvas, destination cells retained before optional frames
+PASS 176 real AVL/RN graph snapshots preserve all identities and observed edges during transient layout
+=== qa/test_hier_comparison.js
+PASS 30 real comparison snapshots, four variants, actual distinct roots/shapes/heights/colors and immutable payloads
+=== qa/test_hier_prediction.js
+PASS 79 real decisions in ABB/AVL/RN/heap; future-only targets, two options, immutable traces, hints reset, one score, backward/manual/omit no farming; actual grade/omit handlers advance
+PASS actual Next handler: normal one instruction, practice intercepts only before pending decision
+=== qa/test_hierarchical_validation.js
+✔ abb pre-C execution_started rejection, finalOnly=false (3.83371ms)
+✔ abb pre-C validation rejection, finalOnly=false (0.773ms)
+✔ abb pre-C execution_started rejection, finalOnly=true (0.888455ms)
+✔ abb pre-C validation rejection, finalOnly=true (0.8124ms)
+✔ avl pre-C execution_started rejection, finalOnly=false (1.792437ms)
+✔ avl pre-C validation rejection, finalOnly=false (1.230937ms)
+✔ avl pre-C execution_started rejection, finalOnly=true (0.881874ms)
+✔ avl pre-C validation rejection, finalOnly=true (0.844859ms)
+✔ red_black pre-C execution_started rejection, finalOnly=false (2.149993ms)
+✔ red_black pre-C validation rejection, finalOnly=false (0.933412ms)
+✔ red_black pre-C execution_started rejection, finalOnly=true (0.684846ms)
+✔ red_black pre-C validation rejection, finalOnly=true (0.719609ms)
+✔ binary_heap pre-C execution_started rejection, finalOnly=false (0.653308ms)
+✔ binary_heap pre-C validation rejection, finalOnly=false (0.66093ms)
+✔ binary_heap pre-C execution_started rejection, finalOnly=true (1.050745ms)
+✔ binary_heap pre-C validation rejection, finalOnly=true (1.247878ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28.076757
+=== qa/test_real_stdout.js
+✔ hierarchical: host feedback never assigned as C console fallback (1.776297ms)
+✔ hierarchical fast path retains executed trace and uses final cursor (2.975502ms)
+✔ hierarchical: non-printing executed path stays empty, query stdout retained exactly (3.961234ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 113.734538
+=== qa/test_sequential_classroom.js
+PASS 23 real sequential frames; Spanish phases/heap; diagnostic disclosure; normal stdout equals final-step stdout; local active node and stable CSS contracts
+PASS real push nro store distinguished from sgte link store
+PASS function index deduplicates declarations/call sites; quantity decrement is not mislabeled invariant checking
+=== qa/test_sequential_results.js
+✔ circular buscar_posiciones: host result visible despite separate empty printf panel (5.483067ms)
+✔ circular buscar_posiciones: prepared result hidden until final cursor and hidden again on rewind (1.564367ms)
+✔ sublist hijos_de: host result visible despite separate empty printf panel (0.880182ms)
+✔ sublist hijos_de: prepared result hidden until final cursor and hidden again on rewind (0.972612ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17.170461
+=== qa/test_sorting_code_wrap.js
+PASS scoped C soft wrap, unmodified font/height, fixed classroom workspace
+=== qa/test_sorting_compact_memory.js
+PASS compact memory: Shell j/i/temporal, whole identifiers, active pointers, scope boundaries and six-item bound
+=== qa/test_sorting_memory_format.js
+PASS real Radix allocate/free/alias fixtures and 1065 real frames across all 11 algorithms
+STEP 9 negativos → bloque negativos: reservado, capacidad 4 | n = 4 | cant_negativos = 0 | cant_positivos = 0 | i = sin inicializar | indice = sin inicializar
+STEP 10 positivos → bloque positivos: reservado, capacidad 4 | n = 4 | cant_negativos = 0 | cant_positivos = 0 | i = sin inicializar | indice = sin inicializar
+STEP 50 salida → bloque salida: reservado, capacidad 4 | n (counting_por_digito) = 4 | n (ordenar_radixsort) = 4 | exp = 1 | conteo = 10 celdas [0, 0, 0, 0, 0, 0, …] | i = sin inicializar
+STEP 135 salida → bloque salida: liberado; no acceder (capacidad previa 4) | n = 4 | exp = 1 | conteo = 10 celdas [0, 0, 2, 3, 4, 4, …] | i = 4 | arreglo → alias de bloque positivos
+STEP 158 negativos → bloque negativos: liberado; no acceder (capacidad previa 4) | positivos → bloque positivos: reservado, capacidad 4 | n = 4 | cant_negativos = 0 | cant_positivos = 4 | i = 4
+STEP 159 negativos → bloque negativos: liberado; no acceder (capacidad previa 4) | positivos → bloque positivos: liberado; no acceder (capacidad previa 4) | n = 4 | cant_negativos = 0 | cant_positivos = 4 | i = 4
+PASS actual full Comprender variable/pointer renderer on six real Radix fixtures
+PASS pointer alias without invented dereference; Spanish Radix buffer labels and lifetimes
+=== qa/test_sorting_mutations.js
+✔ deferred run blocks reset and create until mutation finishes (3.442779ms)
+✔ reset restores one coherent algorithm, input, model and code selection (1.707865ms)
+✔ network failure restores controls and reports a recoverable message (1.115809ms)
+✔ controls are disabled during a request, cancel reset makes no request (0.879541ms)
+✔ algorithm selection uses returned visual state and serializes with run (1.117601ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15.881842
+=== qa/test_stdout_raw_renderer.js
+✔ private queue helper raw DOM text equals native bytes, not five block lines (6.170597ms)
+✔ raw step/previous/start reflects exact current producer stdout, including duplicate values (5.14156ms)
+✔ normal mode retains raw stdout after clearing player, line mode remains separate (1.102127ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17.964522
+=== qa/test_sublist_classroom.js
+PASS 26 real Sublist query frames: all nodes/copied cells retained before optional call stack; no data mutation
+=== qa/test_trace_player.js
+✔ step, previous, seek, reset and repeat recover identical frames (5.915661ms)
+✔ pause during automatic delay preserves the same executed code and state (1.119584ms)
+✔ invalid load removes prior cursor, highlighted code and observer frame (0.978561ms)
+✔ clear cancels pending automatic updates (1.294979ms)
+✔ reset cancels pending automatic updates (0.948986ms)
+✔ seek cancels pending automatic updates (1.14981ms)
+✔ load cancels pending automatic updates (2.691403ms)
+✔ manual step cancels autoplay without duplicate advancement (1.027105ms)
+✔ second play invalidates first loop and emits every frame once (1.332466ms)
+✔ retained completed lines stay synchronized while playback is paused (1.072022ms)
+✔ a player without a code panel still loads initial state and navigates (0.826049ms)
+✔ empty replacement trace cancels old playback and removes old line selection (1.421691ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29.611356
+=== qa/test_trace_player_paged.js
+✔ paged clear removes highlighted code, counts and cached exposed trace (5.237826ms)
+✔ reset blocks delayed old page from painting (1.904251ms)
+✔ clear blocks delayed old page from painting (1.183ms)
+✔ load-paged blocks delayed old page from painting (1.322121ms)
+✔ load-legacy blocks delayed old page from painting (2.777673ms)
+✔ paged to invalid trace notifies empty observers and cancels fetch (1.281209ms)
+✔ paged navigation follows latest seek, resets, and steps from initial state (1.38159ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22.414676

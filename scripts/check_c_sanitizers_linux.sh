@@ -55,5 +55,17 @@ run_case avl avl_harness.c tad_avl.c -- insert 30 insert 20 insert 10
 run_case red_black red_black_harness.c tad_rojo_negro.c -- insert 10 insert 20 insert 30
 run_case binary_heap binary_heap_harness.c tad_monticulo_binario.c -- insert 3 insert 1 extract
 run_case graph graph_harness.c tad_grafo.c tad_cola.c -- add_vertex 1 add_vertex 2 add_edge 1 2 5
+if [[ "$requested" == "all" || "$requested" == "graph" ]]; then
+    for sanitizer in address undefined; do
+        graph_object="$tmp_dir/graph_book_$sanitizer.o"
+        executable="$tmp_dir/graph_book_$sanitizer"
+        gcc "${strict_flags[@]}" "-fsanitize=$sanitizer" -I "$tad_dir" \
+            -Dmalloc=book_qa_malloc -Dcalloc=book_qa_calloc -Dfree=book_qa_free \
+            -c "$tad_dir/tad_grafo.c" -o "$graph_object"
+        gcc "${strict_flags[@]}" "-fsanitize=$sanitizer" -I "$tad_dir" \
+            "$harness_dir/graph_book_contract.c" "$graph_object" -o "$executable"
+        "$executable"
+    done
+fi
 run_case hash_table hash_table_harness.c tad_tabla_hash.c -- put 1 10 put 2 20
 run_case sorting sorting_harness.c tad_ordenamiento.c -- radix -2147483648 2147483647 -1 0 7 -2147483648 7

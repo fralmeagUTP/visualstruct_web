@@ -9,6 +9,7 @@ from werkzeug.serving import make_server
 from test_audit_abb_validate_native import abb_validate_native,CASES,fixture
 pytestmark=pytest.mark.e2e
 
+from scripts.test_tool_paths import resolve_doxygen
 def compile_main(main,context,base,target):
  target.mkdir();(target/'main.c').write_text(main,encoding='utf-8')
  for kind,suffix in [('source','c'),('header','h')]:
@@ -16,7 +17,7 @@ def compile_main(main,context,base,target):
  gcc=shutil.which('gcc');assert gcc;run=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(target/'main.c'),str(target/'tad_abb.c'),'-o',str(target/'main.exe')],capture_output=True,text=True,timeout=30);assert run.returncode==0,run.stderr
  run=subprocess.run([str(target/'main.exe')],capture_output=True,text=True,timeout=10);assert run.returncode==0,run.stderr
  warning=target/'warnings.log';cfg=target/'Doxyfile';cfg.write_text('\n'.join(['INPUT = "'+target.as_posix()+'"','FILE_PATTERNS = *.c *.h','OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warning.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
- docs=subprocess.run([r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe',str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warning.read_text(encoding='utf-8')=='',(docs.stderr,warning.read_text(encoding='utf-8'));return run.stdout
+ docs=subprocess.run([resolve_doxygen(),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warning.read_text(encoding='utf-8')=='',(docs.stderr,warning.read_text(encoding='utf-8'));return run.stdout
 
 @pytest.mark.parametrize('case',range(16))
 def test_abb_validar_native_views_frames_replay_and_calculated_main(tmp_path,abb_validate_native,monkeypatch,case):

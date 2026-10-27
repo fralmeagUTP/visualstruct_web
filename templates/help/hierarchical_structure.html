@@ -3,48 +3,46 @@
 {% block content %}
 <section>
   <h2>{{ help_data.title }}</h2>
-  <h3>Descripcion del TAD</h3>
-  <p>{{ help_data.summary }}</p>
-  {% include "help/_source_download.html" %}
+  {% include "help/_student_start.html" %}
+  <p><a class="btn" href="{{ url_for('hierarchical.structure_page', structure_id=structure_id) }}">Ir a la visualización e ingresar estos datos</a></p>
   {% include "help/_execution_guide.html" %}
-  {% include "help/_operation_contracts.html" %}
 
-  {% if help_data.pedagogy %}<section aria-labelledby="hier-help-learning"><h3 id="hier-help-learning">Guía de aprendizaje</h3><p><strong>Objetivo:</strong> {{ help_data.pedagogy.objective }}</p><p><strong>Estrategia:</strong> {{ help_data.pedagogy.strategy }}</p><p><strong>Invariante:</strong> {{ help_data.pedagogy.invariant }}</p><p><strong>Memoria C:</strong> {{ help_data.pedagogy.memory }}</p><p><strong>Complejidad:</strong> {% if structure_id == "abb" %}Buscar, insertar y eliminar dependen de altura h; h puede ser n. Recorridos, altura, contar hojas, validar y liberar visitan los nodos aplicables.{% elif structure_id == "avl" %}La altura equilibrada limita la búsqueda a O(log n). La implementación de eliminación recalcula alturas mediante recorridos; no se atribuye a ese trabajo el coste de una variante que guarda alturas.{% elif structure_id == "binary_heap" %}Raíz O(1), reparar insertar/extraer O(log n); crecer con realloc puede copiar O(n). Ver arreglo copia O(n), y limpiar destruye/reinicializa el buffer.{% else %}{{ help_data.pedagogy.complexity }}{% endif %}</p><h4>Errores frecuentes</h4><ul>{% for error in help_data.pedagogy.errors %}<li>{{ error }}</li>{% endfor %}</ul></section>{% endif %}
+  {% if help_data.pedagogy %}<details><summary>Profundizar: invariantes, memoria y complejidad</summary><section aria-labelledby="hier-help-learning"><h3 id="hier-help-learning">Guía de aprendizaje</h3><p><strong>Objetivo:</strong> {{ help_data.pedagogy.objective }}</p><p><strong>Estrategia:</strong> {{ help_data.pedagogy.strategy }}</p><p><strong>Invariante:</strong> {{ help_data.pedagogy.invariant }}</p><p><strong>Memoria C:</strong> {{ help_data.pedagogy.memory }}</p><p>Para leer el costo: n es la cantidad de nodos y h la altura. O(...) describe crecimiento del trabajo, no tiempo de reproducción.</p><p><strong>Complejidad:</strong> {% if structure_id == "abb" %}Buscar, insertar y eliminar dependen de altura h; h puede ser n. Recorridos, altura, contar hojas, validar y liberar visitan los nodos aplicables.{% elif structure_id == "avl" %}La altura equilibrada limita la búsqueda a O(log n). La implementación de eliminación recalcula alturas mediante recorridos; no se atribuye a ese trabajo el coste de una variante que guarda alturas.{% elif structure_id == "binary_heap" %}Raíz O(1), reparar insertar/extraer O(log n); crecer con realloc puede copiar O(n). Ver arreglo copia O(n), y limpiar destruye/reinicializa el buffer.{% else %}{{ help_data.pedagogy.complexity }}{% endif %}</p><h4>Errores frecuentes</h4><ul>{% for error in help_data.pedagogy.errors %}<li>{{ error }}</li>{% endfor %}</ul></section></details>{% endif %}
 
-  {% if help_data.glossary %}<details><summary>Glosario jerárquico</summary><dl>{% for term, definition in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ definition }}</dd>{% endfor %}</dl></details>{% endif %}
+  {% if help_data.glossary %}<details><summary>Glosario jerárquico</summary><dl>{% for term, definition in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{% if term|lower == "altura" %}En ABB, AVL y el auxiliar de Rojo-Negro se cuentan niveles: árbol vacío 0, hoja 1. Revisa la convención de la función que estudias.{% elif term|lower in ["factor de equilibrio", "fe"] %}Altura del subárbol derecho menos altura del izquierdo.{% else %}{{ definition }}{% endif %}</dd>{% endfor %}</dl></details>{% endif %}
 
   <section aria-labelledby="hier-help-keyboard"><h3 id="hier-help-keyboard">Teclado y accesibilidad</h3><p>En la visualización, usa <kbd>→</kbd> para avanzar un paso, <kbd>←</kbd> para retroceder, <kbd>Inicio</kbd> para volver al comienzo, <kbd>Fin</kbd> para ir al último paso y <kbd>Espacio</kbd> para pausar la reproducción. Los estados y explicaciones también se presentan con texto, no solo con color.</p></section>
 
-  <h3>Operaciones y utilidades explicadas</h3>
-  <ul>
-    {% for op in help_data.supported_operations %}
-    <li>{{ op }}</li>
-    {% endfor %}
-  </ul>
 
-  <h3>Operaciones pendientes / restricciones</h3>
+  <h3>Alcance de esta pantalla</h3>
   {% if help_data.pending_operations %}
   <ul>
     {% for item in help_data.pending_operations %}
-    <li>{{ item }}</li>
+    <li>{% if structure_id == "red_black" and "recoloreos" in item %}Las funciones C no producen un reporte textual propio de recoloreos y rotaciones. La aplicación muestra sus instrucciones en la traza; no son operaciones independientes del menú.{% else %}{{ item }}{% endif %}</li>
     {% endfor %}
   </ul>
   {% else %}
-  <p>No hay operaciones pendientes para esta estructura en esta fase.</p>
+  <p>Usa las operaciones disponibles en el selector. Los auxiliares C pueden no tener un botón propio.</p>
   {% endif %}
 
-  <h3>Estructura del TAD en C</h3>
-  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre>
+  {% include "help/_operation_contracts.html" %}
+  {% include "help/_technical_notes.html" %}
+  {% include "help/_source_download.html" %}
+
+  <details><summary>Referencia: estructura del TAD en C</summary>
+  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre></details>
 
   <h3>Código C y llamadores equivalentes</h3>
   {% if help_data.c_methods %}
     {% for method in help_data.c_methods %}
-    <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
-    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>La aplicación retira también los arcos incidentes. El cuerpo grafo_eliminar_vertice mostrado sólo retira el vértice; el llamador debe gestionar esos arcos.</p>
+    <details><summary>{% include "help/_method_title.html" %}</summary>
+    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>El C del libro elimina el vértice y sus arcos incidentes dentro de la misma operación.</p>
     {% elif structure_id == "graph" and method.operation == "generate_random_graph" %}<p>La generación aleatoria pertenece a la aplicación; no existe una función C descargable equivalente de generación. Los vértices y arcos materializados se reproducen mediante llamadas reales del main.</p>
     {% elif structure_id == "hash_table" and method.operation == "create_table" %}<p>Inicializa los buckets con capacidad fija. Recrear en la aplicación destruye antes la tabla anterior; th_inicializar por sí solo no la libera.</p>
-    {% else %}<p>{{ method.explanation }}</p>{% endif %}
-    <pre class="didactic-code">{{ method.code }}</pre>
+    {% elif method.operation == "extraer_raiz" %}<p>Copia el mínimo a la salida, reduce la cantidad y repara el orden bajando el nuevo valor de la raíz. Distingue el valor extraído del indicador de éxito.</p>
+    {% elif method.operation == "validar" %}<p>Consulta las reglas indicadas en la referencia avanzada de este TAD. No modifica ni repara la estructura; observa las condiciones que hacen devolver verdadero o falso.</p>
+    {% else %}{% include "help/_method_explanation.html" %}{% endif %}
+    <pre class="didactic-code">{{ method.code }}</pre></details>
     {% endfor %}
   {% else %}
   <p>No hay metodos C documentados para esta estructura.</p>
@@ -52,7 +50,7 @@
 
   <p>
     <a class="btn" href="{{ url_for('hierarchical.structure_page', structure_id=structure_id) }}">
-      Ir a la visualizacion
+      Ir a la visualización
     </a>
   </p>
 </section>

@@ -1,4 +1,5 @@
 """ABB insertion: native intermediate identities, masks, invocations and returns."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,sys,json,shutil,subprocess
 import pytest
@@ -64,7 +65,7 @@ def test_abb_insert_native_each_live_node_scope_return_and_publication(abb_inser
   assert not ped['memory']['freed_objects'] and not ped['memory']['dangling_references']
   if e['phase']=='condition':assert ped['condition']['result']==bool(e['result'])
   if e['phase']=='return':
-   assert ped['call_stack'][-1]['return']==mapping[e['result']]
+   assert context_stack(ped)[-1]['return']==mapping[e['result']]
    assert ped['memory_state']['returned']==mapping[e['result']]
    assert len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
   if 'malloc' in e.get('source_line',''):

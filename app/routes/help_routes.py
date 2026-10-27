@@ -285,7 +285,7 @@ def _enrich_help_with_c_code(help_data: dict, structure_id: str) -> dict:
         key = _normalize_operation_name(operation_label)
         covered_keys.add(key)
         snippet = operation_map.get(key, c_data.get("default_operation", ""))
-        c_symbol = _extract_c_symbol_from_snippet(snippet)
+        c_symbol = c_data.get("operation_functions", {}).get(key) or _extract_c_symbol_from_snippet(snippet)
         c_methods.append(
             {
                 "operation": operation_label,
@@ -300,7 +300,7 @@ def _enrich_help_with_c_code(help_data: dict, structure_id: str) -> dict:
     for key, snippet in operation_map.items():
         if key in covered_keys:
             continue
-        c_symbol = _extract_c_symbol_from_snippet(snippet)
+        c_symbol = c_data.get("operation_functions", {}).get(key) or _extract_c_symbol_from_snippet(snippet)
         c_methods.append(
             {
                 "operation": key,
@@ -328,7 +328,10 @@ def _enrich_help_with_c_code(help_data: dict, structure_id: str) -> dict:
 def download_tad_source(structure_id: str, file_kind: str):
     """Download an allowlisted complete C TAD source or its public header."""
     if structure_id == "graph" and file_kind == "main":
-        model = GraphStructureService.get_view_model("graph", SessionService.get_history("graph::graph"))
+        from app.services.graph_session_history import read_graph_history
+        model = GraphStructureService.get_view_model("graph", read_graph_history())
+        if model.get("main_unavailable_reason"):
+            return {"success": False, "message": model["main_unavailable_reason"]}, 409
         response = send_file(BytesIO(model["main_c"].encode("utf-8")), mimetype="text/x-c", as_attachment=True, download_name="main.c")
         response.headers["Cache-Control"] = "private, no-store"
         return response

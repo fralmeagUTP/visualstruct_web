@@ -1,0 +1,12 @@
+{
+  "status": "resolved",
+  "approved": true,
+  "kind": "successor",
+  "predecessor_change": "cloud-pedagogical-repair-20261027",
+  "predecessor_operation": "pedagogical-repair",
+  "also_preserves": "cloud-graph-invariant-20261027",
+  "reason": "Petición original de igualdad con libro canónico reafirmada por coordinación09:45; nueva copia, no reapertura de checkpoint",
+  "new_scope": "Adoptar implementación canónica de grafos del libro y adaptar simulador/integración/UX con pruebas nuevas",
+  "owner": "repair-lead",
+  "authority": "scope.md"
+}

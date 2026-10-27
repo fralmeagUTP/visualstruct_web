@@ -6,6 +6,10 @@ from abc import ABC, abstractmethod
 from typing import Any, ClassVar
 
 
+class AdapterInputError(ValueError):
+    """Input rejected before invoking a C-backed operation."""
+
+
 class AdapterStateError(ValueError):
     """Base error raised when an adapter state cannot be imported."""
 
@@ -80,8 +84,51 @@ class BaseAdapter(ABC):
     @staticmethod
     def _require_int(payload: dict[str, Any], key: str, label: str) -> int:
         """Return a required integer field."""
-        text = BaseAdapter._require_text(payload=payload, key=key, label=label)
+        try:
+            text = BaseAdapter._require_text(payload=payload, key=key, label=label)
+        except ValueError as error:
+            raise AdapterInputError(str(error)) from error
         try:
             return int(text)
         except ValueError as error:
-            raise ValueError(f"El campo '{label}' debe ser un número entero.") from error
+            raise AdapterInputError(f"El campo '{label}' debe ser un número entero.") from error
+
+    @staticmethod
+    def _require_c_int(payload: dict[str, Any], key: str, label: str) -> int:
+        """Read a data field representable by the application's 32-bit C int."""
+        value = BaseAdapter._require_int(payload, key, label)
+        if not -(2**31) <= value <= 2**31 - 1:
+            raise AdapterInputError(
+                f"El campo '{label}' debe estar entre -2147483648 y 2147483647 (int de C de 32 bits)."
+            )
+        return value
+
+    @staticmethod
+    def _validate_c_inputs(operation: dict[str, Any], payload: dict[str, Any]) -> None:
+        """Validate new C int arguments without restricting replay or RNG seeds."""
+        for field in operation.get("inputs", []):
+            key = field.get("name")
+            if key in {"value", "parent", "child", "priority", "position"}:
+                BaseAdapter._require_c_int(payload, key, field.get("label", key))
+
+    @staticmethod
+    def _validate_c_history(history: list[dict[str, Any]], operations: list[dict[str, Any]]) -> None:
+        """Reject new C simulation over legacy out-of-range data, preserving history."""
+        catalog = {operation["name"]: operation for operation in operations}
+        for entry in history:
+            operation = catalog.get(entry.get("operation"), {})
+            payload = entry.get("payload", {})
+            for field in operation.get("inputs", []):
+                key = field.get("name")
+                if key not in {"value", "parent", "child", "priority", "position"}:
+                    continue
+                try:
+                    value = BaseAdapter._require_int(payload, key, key)
+                except (ValueError, TypeError):
+                    continue
+                if not -(2**31) <= value <= 2**31 - 1:
+                    raise AdapterInputError(
+                        "El historial contiene datos incompatibles con int de C de 32 bits. "
+                        "Se conservaron el historial y el estado; restablece la estructura "
+                        "para iniciar una simulacion nueva con valores representables."
+                    )

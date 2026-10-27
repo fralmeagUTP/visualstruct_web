@@ -1,4 +1,5 @@
 """Height instruction scopes observed independently in copies of HTTP C/H."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,sys,json,shutil,subprocess
 import pytest
@@ -42,12 +43,12 @@ def test_leaves_every_native_instruction_heap_scope_local_and_return(abb_leaves_
   assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['memory']['dangling_references'] and not ped['return_propagation']['reconnects_subtree']
   if e['phase']=='condition':assert ped['condition']['result']==bool(e['result'])
   if e['phase']=='return':
-   assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and ped['call_stack'][-1]['return']==e['result']
+   assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and context_stack(ped)[-1]['return']==e['result']
    assert len(ped['memory_state']['tree_frames'])==len(e['frames'])-1 and ped['memory_state']['returned']==e['result']
   if e['phase'].startswith('call_'):assert state['tree_frames'][-1]['expression'][e['phase'][5:]]=='en evaluacion'
   if e['phase'].startswith('operand_'):assert state['tree_frames'][-1]['expression'][e['phase'][8:]]==e['result']
   assert all(v['name'] in {'raiz','nodo'} for v in ped['variables'])
-  assert all(f['locals']=={} for f in ped['call_stack'])
+  assert all(f['locals']=={} for f in context_stack(ped))
   if e['phase']=='caller':assert state['wrapper_result']==e['result'] and not state['caller_frame']
  assert trace['steps'][-1]['state_after']==trace['final_state']
  assert not trace['steps'][0]['state_snapshot']['tree_frames'] and trace['steps'][0]['state_snapshot']['wrapper_result'] is None
@@ -64,7 +65,7 @@ def test_leaves_permitted_right_first_model_matches_independent_native_subtree_r
   model=build_abb_leaves_trace(base,meta['trace']['steps'][0]['state_snapshot'],meta['trace']['final_state'],evaluation_order='right-first')
   assert model['steps'][-1]['pedagogy']['memory_state']['wrapper_result']==meta['native_endpoint']['result']
   for step in model['steps']:
-   ped=step['pedagogy'];assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'];assert all(f['locals']=={} for f in ped['call_stack'])
+   ped=step['pedagogy'];assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'];assert all(f['locals']=={} for f in context_stack(ped))
    assert ped['memory_state']['root']==meta['trace']['final_state']['root'] and ped['memory_state']['console_stdout']==''
    if ped['instruction_event']['phase']=='return':assert ped['return_propagation']['value']==returns[step['state_snapshot']['tree_frames'][-1]['parameters']['nodo']]
   calls=[x for x in model['steps'] if x['pedagogy']['instruction_event']['phase'].startswith('call_')]

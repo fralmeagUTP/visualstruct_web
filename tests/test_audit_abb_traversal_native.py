@@ -1,4 +1,5 @@
 """ABB traversals: independent native scopes and exact printf prefixes."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,sys,json,shutil,subprocess
 import pytest
@@ -41,7 +42,7 @@ def test_traversal_native_scopes_heap_and_each_printf(abb_traversal_native_revie
   assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['memory']['dangling_references']
   if event['phase']=='condition':assert ped['condition']['result']==bool(event['result'])
   if event['phase']=='return':
-   assert ped['call_stack'][-1]['return']=='void';assert len(ped['memory_state']['tree_frames'])==len(event['frames'])-1;assert not ped['return_propagation']['reconnects_subtree']
+   assert context_stack(ped)[-1]['return']=='void';assert len(ped['memory_state']['tree_frames'])==len(event['frames'])-1;assert not ped['return_propagation']['reconnects_subtree']
   if ped['instruction_event']['phase']=='printf':assert step['console']==[str(event['nodes'][next(i for i,n in enumerate(event['nodes']) if n['id']==event['frames'][-1]['nodo'])]['value'])+' ']
   else:assert step['console']==[]
  assert trace['steps'][-1]['state_after']==trace['final_state'];assert not trace['steps'][0]['state_snapshot']['tree_frames'];assert trace['steps'][0]['state_snapshot']['console_stdout']==''

@@ -54,9 +54,19 @@ def build_abb_insert_trace(trace,before_state,after_state):
    variables.insert(0,{'name':'arbol','scope':'ejecutar_insercion','frame_id':'caller','type':'ABBNodo **','previous':'&raiz' if old['caller_frame'] else 'fuera de ámbito','value':'&raiz' if new['caller_frame'] else 'fuera de ámbito','changed':bool(old['caller_frame'])!=bool(new['caller_frame']),'meaning':'Direccion de la raiz del llamador; *arbol='+new['head']})
   frame['variables']=variables
   shown=old['tree_frames'] if phase=='return' else new['tree_frames'];frame['call_stack']=[]
-  if old['caller_frame'] or new['caller_frame']:frame['call_stack'].append({'function':'ejecutar_insercion','frame_id':'caller','depth':-1,'parameters':{'arbol':'&raiz'},'local_root':new['head'],'local_root_address':new['head'],'return':None,'continuation':'asignar la raiz solo al completar abb_insertar'})
+  if old['caller_frame'] or new['caller_frame']:frame['call_stack'].append({'function':'ejecutar_insercion','frame_id':'caller','depth':-1,'parameters':{'arbol':'&raiz'},'local_root':new['head'],'local_root_address':new['head'],'return':'void' if phase=='caller_exit' else None,'continuation':'Ambito terminado: retorno void; la raiz permanece publicada.' if phase=='caller_exit' else 'Raiz publicada; resta terminar el ambito void del llamador.' if phase=='caller' else 'asignar la raiz solo al completar abb_insertar'})
   for f in shown:
    frame['call_stack'].append({'function':f['function'],'frame_id':f['id'],'depth':f['depth'],'parameters':deepcopy(f['parameters']),'locals':deepcopy(f['locals']),'local_root':f['parameters']['nodo'],'local_root_address':f['parameters']['nodo'],'return':event.get('return') if phase=='return' and f['id']==event['frame_id'] else None,'continuation':'el retorno aun no escribe el enlace del llamador' if phase=='return' else 'la invocacion conserva su propio nodo/valor/nuevo'})
+  for entry in frame['call_stack']:
+   ended=(phase=='return' and entry['frame_id']==event['frame_id']) or (phase=='caller_exit' and entry['frame_id']=='caller')
+   entry['scope_status']='terminado (contexto del retorno)' if ended else 'activo' if entry['frame_id']==(new['tree_frames'][-1]['id'] if new['tree_frames'] else 'caller') else 'suspendido'
+   if ended and entry['frame_id']!='caller':entry['continuation']='Retorno completado: ambito terminado. El puntero retornado se conserva como contexto; el llamador retoma su propia instruccion.'
+  # Current stack is post-instruction; returned scopes are historical context only.
+  live_ids=[f['id'] for f in new['tree_frames']]
+  if new['caller_frame']:live_ids.insert(0,'caller')
+  frame['completed_call_stack']=[entry for entry in frame['call_stack'] if entry['frame_id'] not in live_ids]
+  frame['call_stack']=[entry for entry in frame['call_stack'] if entry['frame_id'] in live_ids]
+  for entry in frame['call_stack']:entry['scope_status']='activo' if entry['frame_id']==live_ids[-1] else 'suspendido'
   oldobj=objects(old);newobj=objects(new);oldids={n['id'] for n in oldobj};frame['memory']={'event':concept if concept in {'allocation','link'} else 'none','objects_before':oldobj,'objects_after':newobj,'allocated_objects':[n for n in newobj if n['id'] not in oldids],'freed_objects':[],'dangling_references':[],'stable_addresses':True,'symbolic_identities':True}
   if phase=='condition':
    expr=step['line_text'];active=old['tree_frames'][-1];pointer=active['parameters']['nodo'];expr=re.sub(r'\bvalor\b(?!\s*;)',str(value),expr) if 'nodo->valor' not in expr else expr.replace('valor <',str(value)+' <').replace('valor >',str(value)+' >').replace('nodo->valor',str(byid(pointer)['value']))
@@ -111,6 +121,6 @@ def build_abb_insert_trace(trace,before_state,after_state):
   caller=None
  # There are other closing braces in C; use the caller's physical closing line.
  old=snapshot();leave_caller();new=snapshot();last={'step_index':len(steps),'line_index':len(lines)-1,'line_text':lines[-1],'event_type':'line','delay_ms':170,'console':[],'state_snapshot':old,'state_after':deepcopy(after_state),'debug':{'stage':'caller_exit'}}
- last['pedagogy']=annotate(last,old,new,{'phase':'caller_exit','frame_id':'caller','condition':None,'return':result});last['pedagogy']['state_after']=deepcopy(after_state);steps.append(last)
+ last['pedagogy']=annotate(last,old,new,{'phase':'caller_exit','frame_id':'caller','condition':None,'return':'void'});last['pedagogy']['state_after']=deepcopy(after_state);steps.append(last)
  initial=deepcopy(steps[0]['pedagogy']);initial['variables']=[];initial['call_stack']=[];initial['condition']=None;initial['memory_state']=deepcopy(steps[0]['state_snapshot']);initial['state_after']=deepcopy(steps[0]['state_snapshot']);initial['memory']['allocated_objects']=[];initial['phase']['label']='Estado inicial';initial['narration']={level:'Ninguna instruccion ejecutada; raiz y reservas iniciales, sin ambitos futuros.' for level in ['basic','intermediate','advanced']};steps[0]['pedagogy']['initial_frame']=initial
  trace.update(source_code=source,steps=steps);return trace

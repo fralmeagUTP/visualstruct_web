@@ -18,8 +18,8 @@ def test_dijkstra_service_preserves_typed_complete_logical_trace():
     assert trace['final_state']==state
     assert trace['steps'][-1]['state_after']==state
     assert isinstance(trace,GraphLogicalTrace) and 'graph_snapshot_codec' not in trace
-    assert all(type(k) is int for k in state['last_result']['result']['distances'])
-    assert state['last_result']['result']['distances']=={1:0,2:3,3:float('inf')}
+    assert type(state['last_result']['result']['distance_to_destination']) is int
+    assert state['last_result']['c_status']==0
     assert state['last_result']['result']['path']==[1,2]
     assert state['last_result']['result']['distance_to_destination']==3
     assert len(TraceEngine.validate_legacy_trace(trace))==len(trace['steps'])
@@ -33,7 +33,8 @@ def test_real_HTTP_transport_decodes_to_complete_JSON_state(client):
     body=response.get_json();wire=body['execution_trace'];assert wire['graph_snapshot_codec']=='graph-snapshot-pool/v1'
     trace=expand_graph_trace(wire)
     assert trace['final_state']==trace['steps'][-1]['state_after']==body['visual_state']
-    assert body['visual_state']['last_result']['result']['distances']=={'1':0,'2':3,'3':None}
+    assert type(body['visual_state']['last_result']['result']['distance_to_destination']) is int
+    assert body['visual_state']['last_result']['c_status']==0
     assert body['visual_state']['last_result']['result']['path']==[1,2]
     assert wire['graph_snapshot_stats']['sampling'] is False
     assert len(wire['C_instruction_events'])==wire['graph_snapshot_stats']['C_events']
@@ -61,7 +62,9 @@ def test_dijkstra_rejection_keeps_logical_boundary_without_executing_C():
     trace=rejected['execution_trace']
     assert rejected['success'] is False
     assert isinstance(trace,GraphLogicalTrace) and 'graph_snapshot_codec' not in trace
-    assert trace['application_rejection'] is True and trace['execution_started'] is False
-    assert trace['C_instruction_events']==[]
+    assert trace.get('application_rejection',False) is False and trace['execution_started'] is True
+    assert trace['C_instruction_events']
+    assert rejected['visual_state']['last_result']['c_status']==2
+    assert rejected['history'][:-1]==previous['history']
     assert trace['final_state']==trace['steps'][-1]['state_after']==rejected['visual_state']
     assert TraceEngine.validate_legacy_trace(trace)

@@ -12,6 +12,7 @@ app=create_app();server=make_server('127.0.0.1',0,app);thread=threading.Thread(t
 assert selected is None or selected in {a["id"] for a in SORTING_ALGORITHMS}|{"empty"}
 PRIMARY_BUTTONS={"sorting-create-array","sorting-random-array","sorting-sim-play","sorting-sim-step","sorting-sim-prev","sorting-sim-next","sorting-reset"}
 COUNTING_BUTTONS={"sorting-counting-go","sorting-counting-replay","sorting-counting-pause"}
+CONTROL_SELECTOR='#sorting-controls button, .sorting-execution-controls button'
 try:
  with sync_playwright() as pw:
   browser=pw.chromium.launch()
@@ -19,7 +20,7 @@ try:
    if selected is not None and alg["id"]!=selected:continue
    name=alg['id'];target=OUT/name;target.mkdir(exist_ok=True);context=browser.new_context(accept_downloads=True);page=context.new_page();posts=[];errors=[];expected=[];downloads=[]
    page.on('request',lambda r:posts.append(r.url) if r.method=='POST' else None);page.on('pageerror',lambda e:errors.append(str(e)))
-   page.goto(f'http://127.0.0.1:{server.server_port}/sorting/visualizador',wait_until='networkidle');page.locator('#didactic-mode-switch').check();page.evaluate('document.querySelectorAll("details").forEach(e=>e.open=true)');button_ids=set(page.locator('#sorting-controls button').evaluate_all('(buttons)=>buttons.map(b=>b.id)'));assert button_ids==PRIMARY_BUTTONS|COUNTING_BUTTONS;button_count=len(button_ids)
+   page.goto(f'http://127.0.0.1:{server.server_port}/sorting/visualizador',wait_until='networkidle');page.locator('#didactic-mode-switch').check();page.evaluate('document.querySelectorAll("details").forEach(e=>e.open=true)');button_ids=set(page.locator(CONTROL_SELECTOR).evaluate_all('(buttons)=>buttons.map(b=>b.id)'));assert button_ids==PRIMARY_BUTTONS|COUNTING_BUTTONS,page.locator(CONTROL_SELECTOR).evaluate_all('(buttons)=>buttons.map(b=>({id:b.id,text:b.textContent.trim(),type:b.type}))');button_count=len(button_ids)
    def action(selector,route,accepted=True,duplicate=False):
     with page.expect_response(lambda r:r.url.endswith('/'+route)) as resp:
      if duplicate:page.evaluate('selector=>{const e=document.querySelector(selector);e.click();e.click();}',selector)
@@ -44,6 +45,8 @@ try:
    main=page.locator('.didactic-history-main').text_content();count=len(posts)
    page.click('#sorting-sim-step');page.click('#sorting-sim-step');assert len(posts)==count and page.locator('.didactic-history-main').text_content()==main
    page.reload(wait_until='networkidle');page.locator('#didactic-mode-switch').check();page.evaluate('document.querySelectorAll("details").forEach(e=>e.open=true)');assert page.locator('.didactic-history-main').text_content()==main and len(posts)==count
+   page.get_by_role('tab',name='main.c del historial',exact=True).click()
+   assert page.locator('#sorting-action-history').is_visible()
    for kind,filename in [('main','main.c'),('source','tad_ordenamiento.c'),('header','tad_ordenamiento.h')]:
     link=page.locator(f'#sorting-action-history a[href="/help/source/sorting_array/{kind}"]')
     with page.expect_download() as got:link.click()
@@ -52,11 +55,13 @@ try:
    with page.expect_download() as got:page.click('#sorting-export-summary')
    got.value.save_as(str(target/'summary-export.json'));assert json.loads((target/'summary-export.json').read_text(encoding='utf-8'))['main_c']==main
    state=context.request.get(f'http://127.0.0.1:{server.server_port}/api/ordenamiento/state').json();assert state['main_c']==main and state['visual_state']['items']==expected[-1]
-   assert set(page.locator('#sorting-controls button').evaluate_all('(buttons)=>buttons.map(b=>b.id)'))==button_ids;assert button_count==10;assert page.locator('.sorting-learning-stage').count()==5;assert not errors
+   assert set(page.locator(CONTROL_SELECTOR).evaluate_all('(buttons)=>buttons.map(b=>b.id)'))==button_ids;assert button_count==10;assert page.locator('.sorting-learning-stage').count()==5;assert not errors
    native=audit_program(target,expected);row={'algorithm':name,'original_data':[3,1,3,-2,0],'random_values':random['visual_state']['items'],'runs':sum(e['operation']=='run' for e in state['history']),'duplicate_pending_extra_run_POSTs':0,'reload_replay_extra_POSTs':len(posts)-count,'same_main_after_reload':True,'control_button_elements':button_count,'primary_execution_control_elements':len(PRIMARY_BUTTONS),'counting_navigation_control_elements':len(COUNTING_BUTTONS),'new_execution_buttons':0,'five_stages':True,'page_errors':errors,'downloads':downloads,'native':native};rows.append(row);(target/'browser-report.json').write_text(json.dumps(row,ensure_ascii=False,indent=2),encoding='utf-8');(target/'history.json').write_text(json.dumps(state,ensure_ascii=False,indent=2),encoding='utf-8');page.screenshot(path=str(target/'final.png'),full_page=True);print(json.dumps({'algorithm':name,'runs':row['runs'],'allocations':native['allocations'],'frees':native['frees'],'strictC17':True}),flush=True);context.close()
   if selected is None or selected=="empty":
    # Download the actual initial/reset empty main with no invented sorting call.
    context=browser.new_context(accept_downloads=True);page=context.new_page();page.goto(f'http://127.0.0.1:{server.server_port}/sorting/visualizador',wait_until='networkidle');page.locator('#didactic-mode-switch').check();page.evaluate('document.querySelectorAll("details").forEach(e=>e.open=true)');target=OUT/'empty';target.mkdir(exist_ok=True)
+   page.get_by_role('tab',name='main.c del historial',exact=True).click()
+   assert page.locator('#sorting-action-history').is_visible()
    for kind,filename in [('main','main.c'),('source','tad_ordenamiento.c'),('header','tad_ordenamiento.h')]:
     with page.expect_download() as got:page.locator(f'#sorting-action-history a[href="/help/source/sorting_array/{kind}"]').click()
     got.value.save_as(str(target/filename))

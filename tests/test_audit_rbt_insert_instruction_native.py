@@ -1,4 +1,5 @@
 """Independent typed native insertion snapshots versus product instruction model."""
+from _instruction_context_contract import context_stack
 from pathlib import Path
 import os,json,hashlib,re,copy
 import pytest
@@ -29,7 +30,7 @@ def check(step,event):
   assert ped['condition']['result']==bool(event['result']) and step['condition_result']==bool(event['result'])
   assert re.sub(r'[\s()]','',ped['instruction_event']['expression'])==re.sub(r'[\s()]','',event['expression'])
  if event['phase']=='return':
-  result=pointer(event['result']) if event['function'] in ['rbt_tio','rbt_abuelo'] else 'void';assert ped['return_propagation']['value']==result and ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(event['frames'])-1
+  result=pointer(event['result']) if event['function'] in ['rbt_tio','rbt_abuelo'] else 'void';assert ped['return_propagation']['value']==result and context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and len(ped['memory_state']['tree_frames'])==len(event['frames'])-1
  assert not ped['memory']['freed_objects'] and not ped['return_propagation']['reconnects_subtree']
  before={n['id'] for n in step['state_snapshot']['heap_nodes']};added={pointer(n['id']) for n in event['heap']}-before
  assert {n['id'] for n in ped['memory']['allocated_objects']}==added and ped['memory']['event']==('allocation' if added else 'none')
@@ -64,8 +65,21 @@ def test_insert_every_native_instruction_scope_alias_heap_and_stdout(rbt_insert_
 
 @pytest.mark.parametrize('value',[10,'abc',2147483648])
 def test_insert_application_rejection_does_not_fabricate_C(value):
- result=S.execute_operation('red_black','insertar',{'value':value},[{'operation':'insertar','payload':{'value':10}}]);assert not result['success'];trace=result['execution_trace'];assert trace['application_precondition_rejected'];assert len(trace['steps'])==1;s=trace['steps'][0];ped=s['pedagogy'];assert s['state_snapshot']==s['state_after']==result['visual_state'] and not s['console'] and not ped['variables'] and not ped['call_stack'] and not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['instruction_event']['C_invoked'] and ped['return_propagation']['value'] is None
+ from _application_rejection_contract import assert_unexecuted_input_rejection
+ history=[{'operation':'insertar','payload':{'value':10}}]
+ before=S.get_view_model('red_black',history)['visual_state']
+ result=S.execute_operation('red_black','insertar',{'value':value},history)
+ assert result['history']==history and result['visual_state']==before
+ if result['execution_trace'].get('execution_started') is False:
+  assert_unexecuted_input_rejection(result)
+ else:
+  trace=result['execution_trace'];assert trace['application_precondition_rejected'] and len(trace['steps'])==1
+  step=trace['steps'][0];ped=step['pedagogy'];assert step['state_snapshot']==step['state_after']==before
+  assert not step['console'] and not ped['variables'] and not context_stack(ped)
+  assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['instruction_event']['C_invoked']
+  assert ped['return_propagation']['value'] is None
 
+from scripts.test_tool_paths import resolve_doxygen
 @pytest.mark.parametrize('case',[i for i,m in enumerate(CASES) if m['mode']=='normal' and i not in [5,19]])
 def test_insert_shown_caller_native_endpoint_and_stdout(tmp_path,rbt_insert_instruction_native,case):
  import subprocess,shutil
@@ -83,7 +97,7 @@ def test_insert_shown_caller_native_endpoint_and_stdout(tmp_path,rbt_insert_inst
  build=subprocess.run([shutil.which('gcc'),'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'main.c'),str(tmp_path/'tad_rojo_negro.c'),'-o',str(tmp_path/'main.exe')],capture_output=True,text=True,timeout=30);assert build.returncode==0 and not build.stderr,build.stderr
  run=subprocess.run([str(tmp_path/'main.exe')],capture_output=True,text=True,timeout=5);assert run.returncode==0 and not run.stderr,run.stderr
  assert run.stdout=='\tEl numero ha sido insertado\n'*(len(meta['seed'])+1)
- doxygen=Path(r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe');warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile'
+ doxygen=Path(resolve_doxygen());warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile'
  cfg.write_text('\n'.join(['INPUT = "'+(tmp_path/'main.c').as_posix()+'"','OUTPUT_DIRECTORY = "'+(tmp_path/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
  docs=subprocess.run([str(doxygen),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',(docs.stderr,warn.read_text(encoding='utf-8'))
  (tmp_path/'caller-review.json').write_text(json.dumps({'case':case,'strict_c17':True,'exact_shown_wrapper':True,'stdout':run.stdout,'all_final_fields_checked':True,'doxygen_warnings':0,'cleanup':'test fixture outside shown operation; actual main finding remains OPEN'}),encoding='utf-8')

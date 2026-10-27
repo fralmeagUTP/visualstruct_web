@@ -1,0 +1,1 @@
+Ayuda y manual estudiantil, autorización nueva comunicada por parent 2026-10-27 12:33 UTC. Propiedad actualizar_manual_estudiantes. Sin TAD/C/backend. Ver alcance compartido ../cloud-multiple-input-20261027/scope.md.

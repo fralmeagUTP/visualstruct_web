@@ -42,7 +42,7 @@ def test_actual_download_Doxygen_and_eight_modules_preserved(observed):
     prior=json.loads((audit_input_path(E.parent/'visible-sorting-mergesort-instructions/implementation-hashes.json')).read_text())['files']
     for method in ['intercambio','seleccion','insercion','burbuja','shell','quicksort','mergesort','heapsort']:
         rel=f'app/domain/sorting/{method}_instructions.py';assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==(h if rel in h else prior)[rel]
-    for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
+    for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')
 
 def test_API_input_bounds_and_rejected_range_no_run():
     for values in [[],[1.5],[True],[2147483648],[-2147483649],list(range(81))]:

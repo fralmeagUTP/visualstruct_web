@@ -3,32 +3,33 @@
 {% block content %}
 <section>
   <h2>{{ help_data.title }}</h2>
-  <h3>Descripcion del TAD</h3>
-  <p>El grafo representa vértices y conexiones con pesos enteros. El TAD C conserva listas separadas de vértices y arcos; la aplicación permite vistas dirigidas y no dirigidas.</p>
-  {% include "help/_source_download.html" %}
+  {% include "help/_student_start.html" %}
+  <p><a class="btn" href="{{ url_for('graph.structure_page', structure_id=structure_id) }}">Ir a la visualización e ingresar estos datos</a></p>
   {% include "help/_execution_guide.html" %}
-  {% include "help/_operation_contracts.html" %}
 
-  <h3>Operaciones y utilidades explicadas</h3>
+  <p><strong>Empieza con un grafo pequeño:</strong> distingue visitar vértices (BFS/DFS), minimizar un camino (Dijkstra/Bellman-Ford) y conectar toda la red (Prim/Kruskal). <code>GrafoEstado</code> indica éxito o la causa del error; no hace falta memorizar sus códigos para empezar.</p>
+  <details><summary>Referencia avanzada: contrato del código del libro</summary>
+  <ul>{% for item in help_data.book_contract %}<li>{{ item }}</li>{% endfor %}</ul></details>
+  <p>La interfaz ofrece 10 acciones de construcción y consulta, y 6 algoritmos en sus fases. La API y el TAD incluyen además consultas auxiliares de existencia y limpieza; documentarlas no implica un botón independiente.</p>
   {% if help_data.learning_guide %}
-  <h3>Guía de aprendizaje</h3>
-  <p><strong>Objetivo:</strong> {{ help_data.learning_guide.objective }}</p><p><strong>Estrategia:</strong> {{ help_data.learning_guide.strategy }}</p><p><strong>Memoria C:</strong> {{ help_data.learning_guide.memory }}</p>
-  <h4>Invariantes</h4><ul>{% for item in help_data.learning_guide.invariants %}<li>{{ item }}</li>{% endfor %}</ul>
-  <h4>Complejidad</h4><ul>{% for name, cost in help_data.learning_guide.complexity.items() %}<li><strong>{{ name }}:</strong> {% if name == "Dijkstra" %}El modelo ideal de selección lineal es O(V²+E); el C añade barridos de listas y búsquedas lineales de índices.{% elif name == "Bellman-Ford" %}El modelo ideal es O(VE); el C busca índices linealmente durante los barridos de arcos.{% elif name == "Prim" %}El C barre listas de sucesores y busca sus índices linealmente.{% else %}{{ cost }}{% endif %}</li>{% endfor %}</ul>
-  <h4>Aplicaciones</h4><ul>{% for item in help_data.learning_guide.applications %}<li>{{ item }}</li>{% endfor %}</ul>
-  <h4>Errores frecuentes</h4><ul>{% for item in help_data.learning_guide.common_errors %}<li>{{ item }}</li>{% endfor %}</ul>
+  <details><summary>Profundizar: reglas, memoria y costo</summary>
+    <h3>Cómo razonar sobre el algoritmo</h3>
+    <p>{{ help_data.learning_guide.objective }}</p><p>{{ help_data.learning_guide.strategy }}</p>
+    <h4>Reglas que comprobar al terminar (invariantes)</h4><ul>{% for item in help_data.learning_guide.invariants %}<li>{{ item }}</li>{% endfor %}</ul>
+    <h4>Memoria y propiedad de los datos</h4><p>{{ help_data.learning_guide.memory }}</p>
+    <h4>Costo y tamaño de entrada</h4>
+    <p>El costo describe cómo crece el trabajo al aumentar los datos, no cuántos segundos tardará la animación. {% if structure_id == 'graph' %}V es el número de vértices y E el de arcos.{% else %}n es el número de entradas y α es cantidad/capacidad.{% endif %}</p>
+    <ul>{% for name, cost in help_data.learning_guide.complexity.items() %}<li><strong>{{ name }}:</strong> {{ cost }}{% if structure_id == 'hash_table' %} para una clave; listar, estadísticas y vaciar recorren buckets y cadenas.{% endif %}</li>{% endfor %}</ul>
+    <h4>Errores que conviene evitar</h4><ul>{% for item in help_data.learning_guide.common_errors %}<li>{{ item }}</li>{% endfor %}</ul>
+    <h4>¿Dónde se utiliza?</h4><ul>{% for item in help_data.learning_guide.applications %}<li>{{ item }}</li>{% endfor %}</ul>
+  </details>
   {% endif %}
-  {% if help_data.glossary %}<h3>Glosario</h3><dl>{% for term, meaning in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ meaning }}</dd>{% endfor %}</dl>{% endif %}
-  {% if help_data.teacher_guide %}<h3>Guía docente</h3><ul>{% for item in help_data.teacher_guide %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}
-  {% if help_data.keyboard %}<h3>Teclado</h3><ul>{% for item in help_data.keyboard %}<li>{% if item == "Alt+→ siguiente" %}Alt+→ activa/cierra Paso a paso; Siguiente paso avanza la traza.{% else %}{{ item }}{% endif %}</li>{% endfor %}</ul>{% endif %}
-  <ul>
-    {% for op in help_data.supported_operations %}
-    <li>{{ op }}</li>
-    {% endfor %}
-  </ul>
+  {% if help_data.glossary %}<details><summary>Glosario: palabras de esta guía</summary><dl>{% for term, meaning in help_data.glossary.items() %}<dt><strong>{{ term }}</strong></dt><dd>{{ meaning }}</dd>{% endfor %}</dl></details>{% endif %}
+  
+  {% if help_data.keyboard %}<h3>Teclado</h3><ul>{% for item in help_data.keyboard %}<li>{% if item == "Alt+→ siguiente" %}Alt+→ avanza al siguiente paso de la traza preparada.{% else %}{{ item }}{% endif %}</li>{% endfor %}</ul>{% endif %}
 
-  <h3>Operaciones pendientes / restricciones</h3>
-  <p>La función C grafo_eliminar_vertice conserva los arcos al retornar. El caller equivalente del historial retira los incidentes después del retorno mediante desenlace y liberación; la traza distingue ambos ámbitos. La verificación registrada cubre casos finitos, no todas las operaciones de construcción o consulta.</p>
+  <h3>Alcance de esta pantalla</h3>
+  <p>La función C grafo_eliminar_vertice elimina dentro de su propia ejecución el vértice y todos sus arcos incidentes. Las trazas y el main usan esta versión del libro; no se aplican los resultados históricos del contrato web anterior.</p>
   {% if help_data.pending_operations %}
   <ul>
     {% for item in help_data.pending_operations %}
@@ -36,21 +37,33 @@
     {% endfor %}
   </ul>
   {% else %}
-  <p>No hay operaciones pendientes para esta estructura en esta fase.</p>
+  <p>Usa las operaciones disponibles en el selector. Los auxiliares C pueden no tener un botón propio.</p>
   {% endif %}
 
-  <h3>Estructura del TAD en C</h3>
-  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre>
+  {% include "help/_operation_contracts.html" %}
+  {% include "help/_source_download.html" %}
+
+  <details><summary>Referencia: estructura del TAD en C</summary>
+  <pre class="didactic-code">{{ help_data.c_structure_code }}</pre></details>
 
   <h3>Código C y llamadores equivalentes</h3>
   {% if help_data.c_methods %}
+    <details id="graph-canonical-source">
+      <summary>Ver código C completo del libro (una única copia)</summary>
+      <pre id="graph-canonical-code" class="didactic-code didactic-code-scroll" style="max-height:60vh;overflow:auto">{{ help_data.c_methods[0].code }}</pre>
+    </details>
     {% for method in help_data.c_methods %}
-    <h4>{{ help_data.c_code_title }}: {{ method.operation }}</h4>
-    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>La aplicación retira también los arcos incidentes. El cuerpo grafo_eliminar_vertice mostrado sólo retira el vértice; el llamador debe gestionar esos arcos.</p>
+    <details><summary>{% include "help/_method_title.html" %}</summary>
+    {% if structure_id == "graph" and method.operation == "remove_vertex" %}<p>El cuerpo canónico mostrado retira y libera primero los arcos incidentes y después el vértice. No requiere una limpieza adicional del llamador.</p>
     {% elif structure_id == "graph" and method.operation == "generate_random_graph" %}<p>La generación aleatoria pertenece a la aplicación; no existe una función C descargable equivalente de generación. Los vértices y arcos materializados se reproducen mediante llamadas reales del main.</p>
     {% elif structure_id == "hash_table" and method.operation == "create_table" %}<p>Inicializa los buckets con capacidad fija. Recrear en la aplicación destruye antes la tabla anterior; th_inicializar por sí solo no la libera.</p>
-    {% else %}<p>{{ method.explanation }}</p>{% endif %}
+    {% elif method.operation == "extraer_raiz" %}<p>Copia el mínimo a la salida, reduce la cantidad y repara el orden bajando el nuevo valor de la raíz. Distingue el valor extraído del indicador de éxito.</p>
+    {% elif method.operation == "validar" %}<p>Consulta las reglas indicadas en la referencia avanzada de este TAD. No modifica ni repara la estructura; observa las condiciones que hacen devolver verdadero o falso.</p>
+    {% else %}{% include "help/_method_explanation.html" %}{% endif %}
+    {% if method.code != help_data.c_methods[0].code %}
     <pre class="didactic-code">{{ method.code }}</pre>
+    {% endif %}
+    <p><a href="#graph-canonical-source" data-book-function="{{ method.c_symbol }}">Ir a <code>{{ method.c_symbol }}</code> en la fuente canónica</a></p></details>
     {% endfor %}
   {% else %}
   <p>No hay metodos C documentados para esta estructura.</p>
@@ -58,8 +71,33 @@
 
   <p>
     <a class="btn" href="{{ url_for('graph.structure_page', structure_id=structure_id) }}">
-      Ir a la visualizacion
+      Ir a la visualización
     </a>
   </p>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const source = document.getElementById('graph-canonical-source');
+  const code = document.getElementById('graph-canonical-code');
+  if (!source || !code) return;
+  document.querySelectorAll('[data-book-function]').forEach(link => {
+    link.addEventListener('click', event => {
+      const name = link.dataset.bookFunction;
+      if (!/^[A-Za-z_]\w*$/.test(name)) return;
+      const pattern = new RegExp('^\\s*(?:static\\s+)?(?:Grafo|ListaVertice|ListaArco|int|void)\\s+\\*?\\s*' + name + '\\s*\\(');
+      const line = [...code.querySelectorAll('.code-line')].find(row => pattern.test(row.textContent));
+      if (!line) return;
+      event.preventDefault();
+      source.open = true;
+      source.scrollIntoView({block:'start'}); // Explicit guide navigation, not playback.
+      window.CCodeNavigation?.revealLine(code, line);
+      line.tabIndex = -1;
+      line.focus({preventScroll:true});
+    });
+  });
+});
+</script>
 {% endblock %}

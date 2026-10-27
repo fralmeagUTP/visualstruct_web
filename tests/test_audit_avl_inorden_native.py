@@ -1,4 +1,5 @@
 """Existing main-local Inorden helper observed independently against downloaded AVL C/H."""
+from _instruction_context_contract import context_stack
 import json,subprocess,shutil
 from pathlib import Path
 import pytest
@@ -68,7 +69,7 @@ def test_avl_inorden_native_scopes_heap_and_each_printf(avl_inorden_native,case)
   assert state['console_stdout']==e['console_stdout'] and not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['return_propagation']['reconnects_subtree']
   if e['phase']=='condition':assert ped['condition']['result']==bool(e['result'])
   if e['phase']=='enter':assert ped['instruction_event']['frame_id']==state['tree_frames'][-1]['id']
-  if e['phase']=='return':assert ped['call_stack'][-1]['scope_status']=='terminado (contexto del retorno)' and ped['call_stack'][-1]['return']=='void' and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
+  if e['phase']=='return':assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and context_stack(ped)[-1]['return']=='void' and len(ped['memory_state']['tree_frames'])==len(e['frames'])-1
   assert s['console']==([str(e['nodes'][e['frames'][-1]['nodo']-1]['value'])+' '] if e['phase']=='printf' else [])
  assert trace['steps'][-1]['pedagogy']['memory_state']['console_stdout']==events[-1]['console_stdout'] and not initial['tree_frames'] and initial['console_stdout']==''
  for a,b in zip(trace['steps'],trace['steps'][1:]):assert a['state_after']==b['state_snapshot']

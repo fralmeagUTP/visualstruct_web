@@ -1,5 +1,5 @@
 """Finite Intercambio instruction signoff; other methods remain outside this block."""
-import json,subprocess,sys,hashlib
+import json,subprocess,sys,hashlib,os
 from pathlib import Path
 from _audit_approved_source_supersessions import assert_historical_protected_hash
 import pytest
@@ -49,7 +49,7 @@ def test_actual_http_source_still_has_doxygen_contract(observed):
  baseline=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-baseline-low/documentation-ownership'
  for ext in ['c','h']:
   name='tad_ordenamiento.'+ext
-  assert (audit_input_path(out/name)).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/name)).read_bytes()
+  assert (audit_input_path(out/name)).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/name)).read_bytes().replace(b'\r\n',b'\n')
   assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,hashlib.sha256((audit_input_path(baseline/name)).read_bytes()).hexdigest())
 
 def test_interpreter_keeps_existing_final_state_contract():
@@ -64,7 +64,7 @@ def test_original_run_step_history_and_get_remain_chronological(monkeypatch):
 
 @pytest.fixture(scope='module')
 def browser_observed(observed,tmp_path_factory):
- native,_=observed;out=tmp_path_factory.mktemp('intercambio-browser');r=subprocess.run([sys.executable,'-B',str(Path(__file__).with_name('_audit_intercambio_browser.py')),str(out),str(native)],cwd=ROOT,capture_output=True,text=True,encoding='utf-8',timeout=120);(out/'runner.log').write_text(r.stdout+r.stderr,encoding='utf-8');assert r.returncode==0,r.stdout+r.stderr;return json.loads((audit_input_path(out/'report.json')).read_text(encoding='utf-8'))
+ native,_=observed;out=tmp_path_factory.mktemp('intercambio-browser');env={**os.environ,'PYTHONIOENCODING':'utf-8'};r=subprocess.run([sys.executable,'-B',str(Path(__file__).with_name('_audit_intercambio_browser.py')),str(out),str(native)],cwd=ROOT,env=env,capture_output=True,text=True,encoding='utf-8',timeout=120);(out/'runner.log').write_text(r.stdout+r.stderr,encoding='utf-8');assert r.returncode==0,r.stdout+r.stderr;return json.loads((audit_input_path(out/'report.json')).read_text(encoding='utf-8'))
 @pytest.mark.parametrize('case',list(CASES))
 def test_actual_browser_reversible_states_and_mode(case,browser_observed):
  row=next(r for r in browser_observed['rows'] if r['case']==case);assert row['forward_reverse_restorations']==2*row['instructions'];assert row['replay_extra_POSTs']==0 and row['page_errors']==[] and row['fast_to_step_preserved'] and row['technical_views_visible'];assert row['actual_main_elements']==1;assert browser_observed['empty_UI_rejected']
@@ -72,7 +72,7 @@ def test_actual_browser_reversible_states_and_mode(case,browser_observed):
 
 @pytest.fixture(scope='module')
 def main_prototype(tmp_path_factory):
- out=tmp_path_factory.mktemp('intercambio-main-prototype');r=subprocess.run([sys.executable,'-B',str(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/sorting-main-minimal-prototype.py'),str(out)],cwd=ROOT,capture_output=True,text=True,encoding='utf-8',timeout=60);(out/'runner.log').write_text(r.stdout+r.stderr,encoding='utf-8');assert r.returncode==0,r.stdout+r.stderr;return json.loads((audit_input_path(out/'report.json')).read_text(encoding='utf-8'))
+ out=tmp_path_factory.mktemp('intercambio-main-prototype');env={**os.environ,'PYTHONIOENCODING':'utf-8','PYTHONPATH':os.pathsep.join([str(ROOT),str(ROOT/'tests'),os.environ.get('PYTHONPATH','')])};r=subprocess.run([sys.executable,'-B',str(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/sorting-main-minimal-prototype.py'),str(out)],cwd=ROOT,env=env,capture_output=True,text=True,encoding='utf-8',timeout=60);(out/'runner.log').write_text(r.stdout+r.stderr,encoding='utf-8');assert r.returncode==0,r.stdout+r.stderr;return json.loads((audit_input_path(out/'report.json')).read_text(encoding='utf-8'))
 @pytest.mark.parametrize('case',['manual_repeated','recreate_negative','random_materialized'])
 def test_offline_main_proposal_compiles_and_replays_history(case,main_prototype):
  row=next(r for r in main_prototype['rows'] if r['case']==case);assert row['strict_C17'] and row['doxygen_warnings']==0 and row['matches_saved_chronology'];assert row['actually_displayed_UI_main'] is False

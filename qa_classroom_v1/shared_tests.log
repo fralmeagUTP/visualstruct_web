@@ -1,0 +1,20 @@
+✔ mount starts natural size; zoom and local pan survive twenty redraw/back notifications (4.474689ms)
+✔ zoom is explicit bounded and never fitted to viewport (0.801974ms)
+✔ copy preserves exact raw C bytes including empty lines and Unicode comments (1.106854ms)
+✔ HTML visual zoom scales only diagram content, not auxiliary memory (1.166786ms)
+✔ export clone opens memory and resets zoom without touching live state (0.997245ms)
+✔ enlarge and close preserve same code node, raw text, focus and document position (0.840504ms)
+✔ rendered code lines retain blank lines; rawCode wins byte-exact including CRLF (0.56533ms)
+✔ explicit fit bounds scale by measured font, never inventing readability (1.772779ms)
+✔ fit is a user button, absent from mount refresh and redraw auto paths (0.790066ms)
+✔ auxiliary memory lives outside panned stage, replaces fresh frames and clears absent memory (1.392925ms)
+✔ expanded export preserves data bar sizes and overrides important viewport constraints only in clone (2.228631ms)
+✔ export materializes closed auxiliary details as a static block retaining all evidence (0.956132ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119.566516

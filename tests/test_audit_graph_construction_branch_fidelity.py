@@ -12,7 +12,7 @@ def test_insert_first_vertex_does_not_highlight_unexecuted_duplicate_scan():
 
 def test_remove_single_vertex_does_not_highlight_else_branch():
     # The head contains x=7, so C unlinks/frees it in the true branch.
-    history = [{"operation": "insert_vertex", "payload": {"vertex": 7}}]
+    history = [{"operation": "insert_vertex", "payload": {"vertex": 7}, "source_contract": "graph-book/v1"}]
     result = GraphStructureService.execute_operation("graph", "remove_vertex", {"vertex": 7}, history)
     assert result["success"] is True
     assert result["visual_state"]["nodes"] == []

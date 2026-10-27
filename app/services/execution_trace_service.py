@@ -75,7 +75,7 @@ class ExecutionTraceService:
         if not match:
             return None
         # Do not use ``unicode_escape`` here: it corrupts UTF-8 literals such
-        # as "vacÃ­a".  The visualizer only needs the standard C escapes used
+        # as "vacía".  The visualizer only needs the standard C escapes used
         # in its diagnostic messages.
         literal = match.group(1)
         literal = literal.replace("\\\\", "\x00")
@@ -134,7 +134,7 @@ class ExecutionTraceService:
                 return selected([
                     "int cola_desencolar(",
                     "if (q == null || q->delante == null)",
-                    "printf(\"cola vacÃ­a",
+                    "printf(\"cola vacía",
                     "return -1",
                 ])
             tokens = [
@@ -1228,12 +1228,12 @@ class ExecutionTraceService:
         if state_kind == "heap":
             strategy = TraceStrategyRegistry.resolve(structure_id)
             if not isinstance(strategy, TreeTraceStrategy):
-                raise TypeError(f"La estrategia de '{structure_id}' no es de Ã¡rbol.")
+                raise TypeError(f"La estrategia de '{structure_id}' no es de árbol.")
             return strategy.build_heap_boundaries(before_state, after_state, total_steps, step_lines)
         if state_kind == "binary_tree":
             strategy = TraceStrategyRegistry.resolve(structure_id)
             if not isinstance(strategy, TreeTraceStrategy):
-                raise TypeError(f"La estrategia de '{structure_id}' no es de Ã¡rbol.")
+                raise TypeError(f"La estrategia de '{structure_id}' no es de árbol.")
             return strategy.build_boundaries(
                 before_state,
                 after_state,
@@ -1276,6 +1276,9 @@ class ExecutionTraceService:
         console_events: list[str] | None = None,
     ) -> dict[str, Any]:
         """Build one execution trace consumable by frontend animation runtimes."""
+        if structure_id == "graph":
+            raise ValueError("El grafo canónico requiere eventos registrados por BookTraceCollector; "
+                             "no se reconstruye una traza a partir de dos estados finales.")
         source_code, code_title = ExecutionTraceService._get_operation_source(
             didactic_data=didactic_data,
             operation_name=operation_name.removeprefix("cp_") if structure_id == "priority_queue" else operation_name,
@@ -1546,7 +1549,7 @@ class ExecutionTraceService:
         if state_kind == "binary_tree":
             strategy = TraceStrategyRegistry.resolve(structure_id)
             if not isinstance(strategy, TreeTraceStrategy):
-                raise TypeError(f"La estrategia de '{structure_id}' no es de Ã¡rbol.")
+                raise TypeError(f"La estrategia de '{structure_id}' no es de árbol.")
             debug_steps = strategy.build_debug_steps(
                 operation_name=operation_name,
                 payload=payload,
@@ -1603,10 +1606,7 @@ class ExecutionTraceService:
                 step["debug"] = debug_steps[step_index]
             literal_output = ExecutionTraceService._printf_literal(
                 line_text,
-                preserve_trailing_newlines=(
-                    structure_id == "linked_list"
-                    and operation_name in {"buscar_elemento", "eliminar_repetidos", "eliminar_elemento"}
-                ),
+                preserve_trailing_newlines=True,
             )
             if (
                 structure_id == "linked_list"
@@ -1622,7 +1622,9 @@ class ExecutionTraceService:
                 step["console"] = (
                     [literal_output]
                     if literal_output is not None
-                    else list(console_events or []) if is_last else []
+                    # Adapter console is a whole-operation fallback, not a new
+                    # final printf. Never append it after instruction stdout.
+                    else list(console_events or []) if is_last and not any(previous.get("console") for previous in steps) else []
                 )
             steps.append(step)
 
@@ -1735,6 +1737,7 @@ class ExecutionTraceService:
                 step["pedagogy"] = frame
 
         trace = {
+            "console_mode": "events",
             "structure_id": structure_id,
             "operation_name": operation_name,
             "payload": deepcopy(payload),

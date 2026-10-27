@@ -14,6 +14,7 @@ def heap_server():
  yield f'http://127.0.0.1:{server.server_port}'
  server.shutdown();thread.join(timeout=5)
 
+from scripts.test_tool_paths import resolve_doxygen
 def compile_download(main,context,base,target):
  target.mkdir(); (target/'main.c').write_text(main,encoding='utf-8')
  for kind,suffix in [('source','c'),('header','h')]:
@@ -25,7 +26,7 @@ def compile_download(main,context,base,target):
  run=subprocess.run([str(target/'main.exe')],capture_output=True,text=True,timeout=10);assert run.returncode==0,run.stderr
  cfg=target/'Doxyfile';warn=target/'warnings.log'
  cfg.write_text('\n'.join(['PROJECT_NAME = "Heap actual main and downloads"','INPUT = "'+target.as_posix()+'"','FILE_PATTERNS = *.c *.h','OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
- docs=subprocess.run([r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe',str(cfg)],capture_output=True,text=True,timeout=30)
+ docs=subprocess.run([resolve_doxygen(),str(cfg)],capture_output=True,text=True,timeout=30)
  assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',(docs.stderr,warn.read_text(encoding='utf-8'))
  return run.stdout
 

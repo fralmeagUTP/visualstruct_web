@@ -219,42 +219,157 @@
   function loadImageFromSource(src) {
     return new Promise((resolve, reject) => {
       const image = new Image();
-      image.onload = () => resolve(image);
-      image.onerror = () => reject(new Error("No se pudo cargar la imagen SVG intermedia."));
+      let settled = false;
+      const finish = (error) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        image.onload = null;
+        image.onerror = null;
+        if (error) { image.src = ""; reject(error); }
+        else resolve(image);
+      };
+      const timer = window.setTimeout(() => finish(new Error("La imagen SVG no termino de cargar en 5 segundos.")), 5000);
+      image.onload = () => finish();
+      image.onerror = () => finish(new Error("No se pudo cargar la imagen SVG intermedia."));
       image.src = src;
+      // Decode is also observable when an engine does not deliver a load event.
+      if (typeof image.decode === "function") image.decode().then(() => finish(), () => {});
     });
   }
 
-  async function renderSvgMarkupToJpegDataUrl(svgMarkup, width, height, quality, scale) {
+  async function renderSvgMarkupToJpegDataUrl(svgMarkup, width, height, quality, scale, onProgress) {
     const blob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
     const objectUrl = URL.createObjectURL(blob);
     const dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgMarkup)}`;
-    const sources = [objectUrl, dataUrl];
+    // Chromium can taint a canvas for a blob SVG containing foreignObject.
+    // A self-contained data URL preserves its origin-clean rasterization path.
+    const sources = [dataUrl, objectUrl];
     let lastError = null;
+    try {
+      for (let index = 0; index < sources.length; index += 1) {
+        try {
+          onProgress?.(`Cargando imagen ${index + 1}/2...`);
+          const image = await loadImageFromSource(sources[index]);
+          onProgress?.("Creando JPG...");
+          return drawImageToJpegDataUrl(image, width, height, quality, scale);
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      throw lastError || new Error("No se pudo rasterizar la visualizacion.");
+    } finally {
+      URL.revokeObjectURL(objectUrl);
+    }
+  }
 
-    for (let index = 0; index < sources.length; index += 1) {
-      const source = sources[index];
-      try {
-        const image = await loadImageFromSource(source);
-        const jpegDataUrl = drawImageToJpegDataUrl(image, width, height, quality, scale);
-        URL.revokeObjectURL(objectUrl);
-        return jpegDataUrl;
-      } catch (error) {
-        lastError = error;
+  function prepareClassroomExportClone(cloned) {
+    // Full evidence export is independent of the live zoom, pan and folded memory.
+    cloned.querySelectorAll(".classroom-view-tools, .classroom-code-actions, .hash-view-options").forEach(node => node.remove());
+    Array.from(cloned.querySelectorAll("details.classroom-memory, details.classroom-memory details")).reverse().forEach(node => {
+      node.open = true;
+      // Chromium can defer a formerly closed details content box. Export a static
+      // expanded block, rather than measuring/serializing a disclosure widget.
+      if (node.replaceWith && node.attributes) {
+        const block = document.createElement("div");
+        for (const attr of Array.from(node.attributes)) if (attr.name !== "open") block.setAttribute(attr.name, attr.value);
+        while (node.firstChild) block.appendChild(node.firstChild);
+        node.replaceWith(block);
+      }
+    });
+    [cloned, ...Array.from(cloned.querySelectorAll("*"))].forEach(node => {
+      if (node.style) node.style.zoom = "1";
+    });
+  }
+
+  function expandHierarchicalExportClone(cloned, originalWidth) {
+    // Only the detached export copy loses the classroom's scroll/flex budget.
+    const nodes = [cloned, ...Array.from(cloned.querySelectorAll("*"))];
+    let contentWidth = originalWidth;
+    for (const node of nodes) {
+      if (node instanceof HTMLElement) {
+        // Data-bearing bar dimensions are not viewport constraints.
+        if (node.matches?.(".sorting-item-bar, .sorting-zero-track, .sorting-zero-axis, .sorting-state-symbol")) continue;
+        node.style.height = "auto";
+        node.style.maxHeight = "none";
+        node.style.maxWidth = "none";
+        node.style.width = "auto";
+        node.style.flex = "0 0 auto";
+        node.style.overflow = "visible";
+        node.style.overflowX = "visible";
+        node.style.overflowY = "visible";
+        node.style.gridTemplateRows = "none";
+        if (node.style.setProperty) {
+          for (const [property,value] of Object.entries({height:"auto","max-height":"none","max-width":"none",width:"auto",flex:"0 0 auto",overflow:"visible","overflow-x":"visible","overflow-y":"visible"})) node.style.setProperty(property,value,"important");
+        }
+      } else if (node.tagName?.toLowerCase() === "svg") {
+        const box = String(node.getAttribute("viewBox") || "").trim().split(/[ ,]+/).map(Number);
+        if (box.length === 4 && box.every(Number.isFinite) && box[2] > 0 && box[3] > 0) {
+          // Preserve coordinates and aspect ratio, not the compact viewport crop.
+          node.style.width = `${box[2]}px`;
+          node.style.height = `${box[3]}px`;
+          node.style.minWidth = "0";
+          node.style.maxWidth = "none";
+          node.style.maxHeight = "none";
+          node.style.flex = "0 0 auto";
+          node.style.overflow = "visible";
+          contentWidth = Math.max(contentWidth, box[2] + 48);
+        }
       }
     }
+    cloned.style.display = "block";
+    cloned.style.margin = "0";
+    cloned.style.width = `${Math.ceil(contentWidth)}px`;
+    const stage = document.createElement("div");
+    stage.style.cssText = "position:fixed;left:0;top:0;transform:translateX(-200%);visibility:hidden;pointer-events:none;z-index:-1;";
+    stage.style.width = cloned.style.width;
+    stage.setAttribute("aria-hidden", "true");
+    stage.appendChild(cloned);
+    try {
+      document.body.appendChild(stage);
+      const origin = cloned.getBoundingClientRect();
+      let width = Math.max(contentWidth, cloned.scrollWidth, origin.width);
+      let height = Math.max(cloned.scrollHeight, origin.height);
+      for (const node of nodes) {
+        const bounds = node.getBoundingClientRect();
+        if (bounds.width === 0 && bounds.height === 0) continue; // Closed details/hidden rows.
+        width = Math.max(width, bounds.right - origin.left);
+        height = Math.max(height, bounds.bottom - origin.top);
+      }
+      return { width: Math.max(1, Math.ceil(width)), height: Math.max(1, Math.ceil(height)) };
+    } finally {
+      cloned.remove();
+      stage.remove();
+    }
+  }
 
-    URL.revokeObjectURL(objectUrl);
-    throw lastError || new Error("No se pudo rasterizar la visualizacion.");
+  function resolveCompleteVisualExportTarget(target) {
+    // Graph/Hash current memory is a sibling of the drawing/result, not inside it.
+    // Both the panel action and the global export must capture the same region.
+    if (target?.id === "visual-state" && target.closest?.(".classroom-workspace")) {
+      return target.closest?.("#hier-visual-region, #seq-visual-region") || target;
+    }
+    if (target?.id === "sorting-visual-state" && target.closest?.(".classroom-workspace")) {
+      return target.closest?.("#sorting-visual-region") || target;
+    }
+    if (target?.id === "graph-visual-state") {
+      return target.closest?.("#graph-visual-region") || target;
+    }
+    if (target?.id === "hash-visual-state") {
+      return target.closest?.("#hash-visual-region") || target;
+    }
+    return target;
   }
 
   async function exportVisualStateAsJpg(options) {
-    const target = options && options.target ? options.target : resolveVisualExportTarget();
+    const target = resolveCompleteVisualExportTarget(options && options.target ? options.target : resolveVisualExportTarget());
     if (!target) {
       throw new Error("No hay un panel visual disponible para exportar.");
     }
 
-    const { width, height } = resolveExportDimensions(target);
+    const onProgress = typeof options?.onProgress === "function" ? options.onProgress : null;
+    onProgress?.("Preparando captura...");
+    let { width, height } = resolveExportDimensions(target);
 
     const cloned = target.cloneNode(true);
     if (!(cloned instanceof HTMLElement)) {
@@ -269,6 +384,11 @@
       cloned.firstElementChild.style.marginTop = "0px";
     }
     replaceClonedCanvasWithImages(target, cloned);
+    prepareClassroomExportClone(cloned);
+    if (target.id === "hash-visual-region") cloned.querySelector?.(".hash-view-toolbar")?.remove();
+    if (target.id === "hier-visual-region" || target.closest?.("#hier-visual-region") || target.id === "graph-visual-region" || target.id === "hash-visual-region" || target.closest?.(".classroom-workspace")) {
+      ({ width, height } = expandHierarchicalExportClone(cloned, width));
+    }
 
     // Importante: anular clipping del contenedor original (scroll/max-height)
     // para capturar el contenido completo de la visualizacion.
@@ -294,7 +414,7 @@
     const markup = toSvgForeignObjectMarkup(new XMLSerializer().serializeToString(wrapper), width, height);
     const quality = normalizeExportQuality(options && options.quality);
     const scale = normalizeExportScale(options && options.scale);
-    const dataUrl = await renderSvgMarkupToJpegDataUrl(markup, width, height, quality, scale);
+    const dataUrl = await renderSvgMarkupToJpegDataUrl(markup, width, height, quality, scale, onProgress);
     return {
       dataUrl,
       width,
@@ -306,12 +426,25 @@
   }
 
   function triggerDataUrlDownload(dataUrl, fileName) {
+    const match = /^data:image\/jpeg;base64,(.+)$/.exec(String(dataUrl));
+    if (!match) throw new Error("La captura no produjo un JPG valido.");
+    const binary = window.atob(match[1]);
+    const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+    const objectUrl = URL.createObjectURL(new Blob([bytes], { type: "image/jpeg" }));
     const link = document.createElement("a");
-    link.href = dataUrl;
+    link.href = objectUrl;
     link.download = fileName || "visualizacion.jpg";
     document.body.appendChild(link);
-    link.click();
-    link.remove();
+    try {
+      link.click();
+      // Keep the URL alive while the browser accepts the asynchronous download.
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+    } catch (error) {
+      URL.revokeObjectURL(objectUrl);
+      throw error;
+    } finally {
+      link.remove();
+    }
   }
 
   function initExportJpgButton() {
@@ -367,12 +500,13 @@
           target,
           quality: selectedQuality,
           scale: selectedScale,
+          onProgress: (message) => { exportButton.textContent = message; },
         });
         triggerDataUrlDownload(result.dataUrl, result.suggestedName);
       } catch (error) {
         // Exponer detalle en consola para facilitar depuracion del navegador/entorno.
         console.error("Export JPG error:", error);
-        window.alert("No fue posible exportar la visualizacion en JPG.");
+        window.alert(error.message || "No fue posible exportar la visualizacion en JPG.");
       } finally {
         exportButton.disabled = false;
         if (qualitySelect instanceof HTMLSelectElement) {
@@ -425,7 +559,7 @@
     const raw = codeElement.dataset.rawCode || codeElement.textContent || "";
     const rows = String(raw).replaceAll("\r\n", "\n").split("\n");
     codeElement.innerHTML = rows
-      .map((line, index) => `<span class="code-line" data-line="${index}">${escapeHtml(line) || "&nbsp;"}</span>`)
+      .map((line, index) => `<span class="code-line" data-line="${index}">${escapeHtml(line) || ""}</span>`)
       .join("");
     lines = Array.from(codeElement.querySelectorAll(".code-line"));
     return lines;
@@ -587,13 +721,13 @@
         .map((line, index) => {
           const highlighted = highlightCLine(line, state);
           state = highlighted.state;
-          return `<span class="code-line" data-line="${index}">${highlighted.html || "&nbsp;"}</span>`;
+          return `<span class="code-line" data-line="${index}">${highlighted.html || ""}</span>`;
         })
         .join("");
       return;
     }
     codeElement.innerHTML = rows
-      .map((line, index) => `<span class="code-line" data-line="${index}">${escapeHtml(line) || "&nbsp;"}</span>`)
+      .map((line, index) => `<span class="code-line" data-line="${index}">${escapeHtml(line) || ""}</span>`)
       .join("");
   }
 
@@ -717,7 +851,7 @@
         return;
       }
       currentLine.classList.add("sim-active");
-      currentLine.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      window.CCodeNavigation?.revealLine(codeElement, currentLine);
     }
 
     function finalizeLastLineIfNeeded() {
@@ -759,9 +893,6 @@
       const previousIndex = cursor;
       const nextIndex = cursor + 1;
       const step = trace.steps[nextIndex] || {};
-      markPreviousAsDone(previousIndex);
-      activateCurrentLine(step);
-
       if (withDelay) {
         const delay = Number.isFinite(step.delay_ms) ? Number(step.delay_ms) : defaultDelayMs;
         const scaledDelay = Math.round(delay / speedMultiplier);
@@ -770,6 +901,10 @@
           return false;
         }
       }
+      // Commit the code highlight and executed state together. A pause/reset
+      // during the delay must not leave the next instruction highlighted.
+      markPreviousAsDone(previousIndex);
+      activateCurrentLine(step);
       applyStateAfter(step);
       cursor = nextIndex;
       setCounter(cursor + 1, trace.steps.length);
@@ -816,9 +951,12 @@
       playing = false;
       playToken += 1;
 
-      if (!trace || !codeElement) {
+      cursor = -1;
+      if (!trace) {
+        resetVisualLines();
         setCounter(0, 0);
         setStatus(statusElement, "No hay traza cargada.");
+        emitCursorChange("load", null);
         return;
       }
       if (trace.source_code) {
@@ -1020,5 +1158,6 @@
     createTracePlayer,
     playExecutionTrace,
     exportVisualStateAsJpg,
+    downloadJpg: triggerDataUrlDownload,
   };
 }(window));

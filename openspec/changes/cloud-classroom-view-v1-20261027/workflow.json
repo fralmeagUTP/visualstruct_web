@@ -1,0 +1,313 @@
+{
+  "schema": "continuity-role-workflow/v1",
+  "project_root": "/workspace/scratch/644977913e22/visualstruct_vista_clase_v1_20261027/app",
+  "change": "cloud-classroom-view-v1-20261027",
+  "operation": "classroom-view-v1",
+  "roles": {
+    "specifications": {
+      "enabled": true,
+      "contract": "Requisitos/escenarios/decisiones y trazabilidad; no implementar contrato pendiente",
+      "required_checks": [
+        "specification-validation"
+      ]
+    },
+    "code": {
+      "enabled": true,
+      "contract": "Implementar sólo alcance aprobado y entregar pruebas/evidencia vinculadas a fuentes",
+      "required_checks": [
+        "isolated-harness-tests"
+      ]
+    },
+    "quality": {
+      "enabled": true,
+      "contract": "Revisión distinta del autor; reproducir comprobaciones y declarar límites; no autocertificar",
+      "required_checks": [
+        "independent-review"
+      ]
+    },
+    "visual": {
+      "enabled": true,
+      "contract": "Verificar diseño visual, accesibilidad, responsive y artefactos renderizados cuando aplican",
+      "required_checks": [
+        "visual-accessibility-responsive"
+      ]
+    },
+    "documentation": {
+      "enabled": true,
+      "contract": "Manuales, ayuda y ejemplos coherentes con contrato vigente; revisar enlaces y límites",
+      "required_checks": [
+        "documentation-coherence"
+      ]
+    }
+  },
+  "protected_paths": [
+    "openspec/changes/archive",
+    "scripts/role_workflow.py",
+    "scripts/check_session_continuity.py"
+  ],
+  "tasks": {
+    "specifications": {
+      "objective": "Vista de clase v1: specifications",
+      "role": "specifications",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/specs/classroom-view/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/proposal.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-classroom-view-v1-20261027"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/specifications/final-check.json",
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/specifications/final-independent.json"
+      ],
+      "checks": [
+        "specification-validation"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-classroom-view-v1-20261027/evidence/specifications/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/decisions/ui-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "code": {
+      "objective": "Vista de clase v1: code",
+      "role": "code",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/specs/classroom-view/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/proposal.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "static/js",
+        "static/css",
+        "templates",
+        "qa_classroom_v1",
+        "qa_convergence/test_book_frontend_stdout.js",
+        "qa/test_real_stdout.js",
+        "qa/test_stdout_raw_renderer.js"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "qa/test_real_stdout.js",
+        "qa/test_stdout_raw_renderer.js",
+        "qa_classroom_v1/FAMILY_INTEGRATION.md",
+        "qa_classroom_v1/LEAD_FINAL_REVIEW.md",
+        "qa_classroom_v1/README.md",
+        "qa_classroom_v1/SHARED_REVIEW.md",
+        "qa_classroom_v1/before_shared/base.html",
+        "qa_classroom_v1/before_shared/interpreter_runtime.js",
+        "qa_classroom_v1/combined_shared_export.log",
+        "qa_classroom_v1/combined_shared_export_final.log",
+        "qa_classroom_v1/export_regression.log",
+        "qa_classroom_v1/family_gate_after.json",
+        "qa_classroom_v1/main_compile.log",
+        "qa_classroom_v1/non_graph_node.log",
+        "qa_classroom_v1/raw_main/abb.c",
+        "qa_classroom_v1/raw_main/avl.c",
+        "qa_classroom_v1/raw_main/binary_heap.c",
+        "qa_classroom_v1/raw_main/circular_list.c",
+        "qa_classroom_v1/raw_main/linked_list.c",
+        "qa_classroom_v1/raw_main/priority_queue.c",
+        "qa_classroom_v1/raw_main/queue.c",
+        "qa_classroom_v1/raw_main/red_black.c",
+        "qa_classroom_v1/raw_main/sublist.c",
+        "qa_classroom_v1/shared_final_manifest.json",
+        "qa_classroom_v1/shared_gate_after.json",
+        "qa_classroom_v1/shared_gate_after_final.json",
+        "qa_classroom_v1/shared_gate_before.json",
+        "qa_classroom_v1/shared_tests.log",
+        "qa_classroom_v1/test_book_frontend_stdout.js.diff",
+        "qa_classroom_v1/test_book_stdout_copy.js",
+        "qa_classroom_v1/test_console_copy.js",
+        "qa_classroom_v1/test_family_hooks.js",
+        "qa_classroom_v1/test_raw_main_compile.py",
+        "qa_classroom_v1/test_raw_main_copy.js",
+        "qa_classroom_v1/test_real_stdout.js.diff",
+        "qa_classroom_v1/test_shared_controller.js",
+        "qa_classroom_v1/test_stdout_raw_renderer.js.diff",
+        "qa_classroom_v1/test_templates.py",
+        "qa_convergence/test_book_frontend_stdout.js",
+        "static/css/classroom_view.css",
+        "static/js/classroom_view.js",
+        "static/js/graph.js",
+        "static/js/hash.js",
+        "static/js/hierarchical.js",
+        "static/js/interpreter_runtime.js",
+        "static/js/sequential.js",
+        "static/js/sorting.js",
+        "templates/base.html",
+        "templates/graph/structure.html",
+        "templates/hash/structure.html",
+        "templates/hierarchical/structure.html",
+        "templates/sequential/structure.html",
+        "templates/sorting/structure.html"
+      ],
+      "documentation": [
+        "qa_classroom_v1/README.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/code/final-check.json",
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/code/final-independent.json"
+      ],
+      "checks": [
+        "isolated-harness-tests"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-classroom-view-v1-20261027/evidence/code/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/decisions/ui-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "quality": {
+      "objective": "Vista de clase v1: quality",
+      "role": "quality",
+      "owner": "auditar_trazas_visualstruct",
+      "requirements": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/specs/classroom-view/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/proposal.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/quality"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/quality/review.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/quality/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/quality/final-check.json",
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/quality/final-independent.json"
+      ],
+      "checks": [
+        "independent-review"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-classroom-view-v1-20261027/evidence/quality/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/decisions/ui-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "visual": {
+      "objective": "Vista de clase v1: visual",
+      "role": "visual",
+      "owner": "auditar_visualstruct_interfaz",
+      "requirements": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/specs/classroom-view/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/proposal.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/visual"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/visual/review.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/visual/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/visual/final-check.json",
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/visual/final-independent.json"
+      ],
+      "checks": [
+        "visual-accessibility-responsive"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-classroom-view-v1-20261027/evidence/visual/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/decisions/ui-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    },
+    "documentation": {
+      "objective": "Vista de clase v1: documentation",
+      "role": "documentation",
+      "owner": "repair-lead",
+      "requirements": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/specs/classroom-view/spec.md"
+      ],
+      "base": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/proposal.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/design.md"
+      ],
+      "allowed_paths": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/documentation"
+      ],
+      "dependencies": [],
+      "deliverables": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/documentation/review.md"
+      ],
+      "documentation": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/documentation/review.md"
+      ],
+      "evidence": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/documentation/final-check.json",
+        "openspec/changes/cloud-classroom-view-v1-20261027/evidence/documentation/final-independent.json"
+      ],
+      "checks": [
+        "documentation-coherence"
+      ],
+      "next_step": "Alcance finito verificado; cambios posteriores requieren nueva instrucción y revisión proporcional. IA autónoma permanece fuera de este cierre.",
+      "state": "closed",
+      "approval": "openspec/changes/cloud-classroom-view-v1-20261027/evidence/documentation/approval.json",
+      "decisions": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/decisions/ui-successor.json"
+      ],
+      "reasoning": {
+        "default": "LOW",
+        "current": "LOW"
+      }
+    }
+  }
+}

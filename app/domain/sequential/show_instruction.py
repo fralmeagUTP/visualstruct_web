@@ -9,7 +9,7 @@ from .pedagogy import (SEQUENTIAL_FRAME_SCHEMA_VERSION, SEQUENTIAL_LEARNING_CATA
 def build_show_rejection_trace(*, structure_id: str, payload: dict[str, Any],
         source_code: str, code_title: str, before_state: dict[str, Any], message: str) -> dict[str, Any]:
     """Unsupported validation has no C invocation or printf events."""
-    return {"structure_id": structure_id, "operation_name": "mostrar", "payload": deepcopy(payload),
+    return {"console_mode": "snapshot", "structure_id": structure_id, "operation_name": "mostrar", "payload": deepcopy(payload),
         "success": False, "message": message, "mutates": False, "source_code": source_code,
         "code_title": code_title, "steps": [], "final_state": deepcopy(before_state),
         "execution_started": False, "validation": {"stage": "supported_operations", "accepted": False, "message": message},
@@ -103,7 +103,7 @@ def build_show_trace(*, structure_id: str, payload: dict[str, Any], source_code:
         step = {"step_index": len(steps), "line_index": line_index, "line_text": lines[line_index],
             "event_type": event, "function_name": function, "phase": "start" if event == "entry" else "end" if ended else "progress",
             "delay_ms": 100, "condition_result": condition, "state_snapshot": deepcopy(before_state),
-            "state_after": deepcopy(before_state), "console": list(console)}
+            "state_after": deepcopy(before_state), "console": list(console), "console_stdout": "".join(console)}
         frame = build_sequential_frame(structure_id=structure_id, operation_name="mostrar", payload=payload, step=step, success=success)
         frame.update(concept="call" if event == "entry" else "return" if ended else "condition" if condition is not None else "console" if event == "printf" else "assignment",
             variables=[caller, *deepcopy(local)], pointers=pointers, heap_objects=deepcopy(heap),
@@ -161,7 +161,7 @@ def build_show_trace(*, structure_id: str, payload: dict[str, Any], source_code:
             console.append("\n")
             emit("printf", index('printf("\\n");'))
         emit("end", end_index, ended=True)
-    return {"structure_id": structure_id, "operation_name": "mostrar", "payload": deepcopy(payload),
+    return {"console_mode": "snapshot", "structure_id": structure_id, "operation_name": "mostrar", "payload": deepcopy(payload),
         "success": success, "message": message, "mutates": False, "source_code": source_code, "code_title": code_title,
         "steps": steps, "final_state": deepcopy(before_state), "pedagogy_schema_version": SEQUENTIAL_FRAME_SCHEMA_VERSION,
         "pedagogy_schema": sequential_frame_schema(), "learning_profile": deepcopy(SEQUENTIAL_LEARNING_CATALOG[structure_id]),

@@ -3,6 +3,9 @@ from pathlib import Path
 import hashlib,json,re
 from app.services.execution_trace_service import ExecutionTraceService
 from tests._audit_stack_limpiar_compare_medium import collect
+from tests import _audit_stack_limpiar_compare_medium as original_comparator
+from scripts.published_test_inputs import audit_input_path
+original_comparator.L=audit_input_path(original_comparator.L)
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-stack-limpiar-instructions-medium'
 
 def execute(client,operation,**payload):
@@ -10,7 +13,9 @@ def execute(client,operation,**payload):
 def prepared(client):
  with client.session_transaction() as record:return record.get('stack_cleanup_prepared_v1')
 
-def test_all_nine_finite_calls_match_original_C_events_roots_and_heap_lifetimes():
+def test_all_nine_finite_calls_match_original_C_events_roots_and_heap_lifetimes(tmp_path,monkeypatch):
+ # Fresh caller output belongs to this execution, not to the preserved oracle.
+ monkeypatch.setattr(original_comparator,'E',tmp_path)
  rows,comparisons=collect();assert len(rows)==len(comparisons)==9 and sum(r['frames'] for r in comparisons)==76 and sum(r['conditions'] for r in comparisons)==25
 
 def test_saved_cleanup_reloads_without_trace_dispatch_and_invalidates_only_on_mutation_or_reset(client,monkeypatch):

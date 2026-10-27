@@ -11,7 +11,7 @@ def build_hidden_terminal_trace(*,operation_name,payload,source_code,code_title,
     if hashlib.sha256(' '.join(re.sub(r'/\*.*?\*/|//[^\n]*','',body,flags=re.S).split()).encode()).hexdigest()!=EXPECTED_BODIES[fn]:
         raise ValueError('List terminal C body changed: instruction model requires review')
     lines=source_code.splitlines();steps=[];deleting=operation_name.startswith('eliminar')
-    trace=dict(structure_id='linked_list',operation_name=operation_name,payload=deepcopy(payload),success=success,
+    trace=dict(console_mode="snapshot",structure_id='linked_list',operation_name=operation_name,payload=deepcopy(payload),success=success,
         mutates=deleting,message=message,source_code=source_code,code_title=code_title,steps=steps,
         final_state=deepcopy(after_state),hidden_terminal_instruction_model=True,
         pedagogy_schema_version=SEQUENTIAL_FRAME_SCHEMA_VERSION,pedagogy_schema=sequential_frame_schema())

@@ -33,11 +33,57 @@ function hashNormalizePrediction(value) {
   return String(value || "").trim().toLowerCase().replaceAll("sí", "si");
 }
 
-function renderHashPedagogy(frame,level){if(!frame)return;const summary=hashById("hash-pedagogy-summary"),formula=hashById("hash-formula-view"),chain=hashById("hash-chain-view"),pointers=hashById("hash-pointers-view"),cost=hashById("hash-cost-view"),memory=hashById("hash-memory-view"),invariant=hashById("hash-invariant-view");if(summary)summary.innerHTML=`<strong>${hashEscape(frame.phase?.label||frame.concept)}</strong>: ${hashEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;if(formula)formula.innerHTML=`Clave <strong>${hashEscape(frame.hash?.key??"—")}</strong> · capacidad <strong>${hashEscape(frame.hash?.capacity??"—")}</strong><br><code>${hashEscape(frame.hash?.expression||"sin cálculo")}</code><br>Residuo C: <strong>${hashEscape(frame.hash?.raw_remainder??"—")}</strong><br>${hashEscape(frame.hash?.normalization_expression||"")}<br>Bucket final: <strong>${hashEscape(frame.hash?.normalized_index??"—")}</strong>`;if(chain)chain.innerHTML=`Bucket ${hashEscape(frame.chain?.bucket??"—")} · caso: <strong>${hashEscape(frame.chain?.position_kind||"—")}</strong><br>Antes: <code>${hashEscape(JSON.stringify(frame.chain?.before||[]))}</code><br>Después: <code>${hashEscape(JSON.stringify(frame.chain?.after||[]))}</code><br>Comparaciones ejecutadas: ${hashEscape(JSON.stringify(frame.chain?.examined||[]))}`;if(pointers)pointers.innerHTML=Object.entries(frame.pointers||{}).map(([name,value])=>`<code>${hashEscape(name)}</code> = ${hashEscape(value)}`).join("<br>");if(cost)cost.innerHTML=`Hash: ${frame.cost?.hash_evaluations||0} · comparaciones: ${frame.cost?.comparisons||0} · nodos visitados: ${frame.cost?.nodes_visited||0}<br><small>${hashEscape(frame.cost?.unit||"")}</small><details><summary>Complejidad</summary>${hashEscape(frame.cost?.best_case||"")}<br>${hashEscape(frame.cost?.average_case||"")}<br>${hashEscape(frame.cost?.worst_case||"")}<br>${hashEscape(frame.cost?.depends_on||"")}</details>`;if(memory)memory.innerHTML=`Intento de malloc: ${frame.memory?.allocation_attempted?"sí":"no"} · comprobó NULL: ${frame.memory?.null_checked?"sí":"no"}<br>Fallo simulado: <strong>${frame.memory?.allocation_failed?"sí; estado intacto":"no"}</strong><br>Reservados: <code>${hashEscape(JSON.stringify(frame.memory?.allocated||[]))}</code><br>Campos inicializados: ${hashEscape((frame.memory?.initialized_fields||[]).join(", ")||"ninguno")}<br>Liberados: <code>${hashEscape(JSON.stringify(frame.memory?.freed||[]))}</code><br>Arreglo buckets liberado: ${frame.memory?.bucket_array_freed?"sí":"no"} · buckets = NULL: ${frame.memory?.bucket_array_is_null?"sí":"no"}<br>Enlaces cambiados: ${frame.memory?.links_changed?"sí":"no"}`;if(pointers && frame.memory?.variables)pointers.innerHTML += `<hr><strong>Variables tipadas / alcance</strong><pre>${hashEscape(JSON.stringify(frame.memory.variables,null,2))}</pre><p>Pila: ${hashEscape(JSON.stringify(frame.memory.call_stack||[]))}</p>`;if(memory && frame.memory?.heap)memory.innerHTML += `<hr><strong>Heap y máscaras de inicialización</strong><pre>${hashEscape(JSON.stringify(frame.memory.heap,null,2))}</pre><p>Buckets inicializados: ${hashEscape(JSON.stringify(frame.memory.bucket_initialization||[]))}</p>`;if(memory && frame.operation==="remove" && frame.memory?.bucket_array)memory.innerHTML += `<hr><strong>Arreglo de punteros THNodo *</strong><pre>${hashEscape(JSON.stringify(frame.memory.bucket_array,null,2))}</pre><p>Cantidad pendiente: ${frame.memory.count_write_pending?"sí; cantidad-- aún no ejecutado":"no"}</p><p>Puntero retirado: ${hashEscape(frame.memory.retired_pointer||"ninguno")}. Tras free no se inspecciona ni utiliza su valor; las referencias históricas son simbólicas.</p>`;if(memory && frame.memory?.output)memory.innerHTML += `<hr><strong>Almacenamiento de salida int</strong><pre>${hashEscape(JSON.stringify(frame.memory.output,null,2))}</pre><small>Valor indeterminado se muestra null; no se lee antes de escritura. alive=false indica alcance terminado.</small>`;if(memory && frame.memory?.buffer)memory.innerHTML += `<hr><strong>Buffer C char[] / bytes inicializados</strong><pre>${hashEscape(JSON.stringify(frame.memory.buffer,null,2))}</pre><small>La zona indeterminada no se lee. ${frame.operation === "stats" ? "Este texto C representa estadisticas con float y dos decimales; la API conserva su cociente y formato propios." : "Este texto C representa la tabla completa; el resultado API es una proyeccion independiente."}</small>`;if(memory && frame.stats_representation)memory.innerHTML += `<hr><strong>Representaciones C / API</strong><pre>${hashEscape(JSON.stringify(frame.stats_representation,null,2))}</pre><small>Las copias THEstadisticas y sus scopes son propios de cada llamada; padding y ABI no se inspeccionan.</small>`;if(memory && frame.lifecycle)memory.innerHTML += `<hr><strong>Vida de buckets / raiz C</strong><pre>${hashEscape(JSON.stringify(frame.memory.bucket_array,null,2))}</pre><p>Pointer raiz valido: ${frame.memory.root_bucket_pointer_valid?"si":"no; indeterminado"}. Cantidad pendiente: ${frame.memory.count_write_pending?"si":"no"}. Root TablaHash sigue vivo: ${frame.memory.root_stack_object_alive?"si":"no"}.</p>`;if(invariant)invariant.innerHTML=`<strong>${hashEscape(frame.invariant?.symbol||"")} ${hashEscape(frame.invariant?.name||"")}</strong><br>${hashEscape(frame.invariant?.evidence||"")}`;}
+function hashTeachingValue(value) {
+  if(value===undefined)return 'no registrado';
+  if(value===null)return 'NULL';
+  if(Array.isArray(value))return value.length?value.map(hashTeachingValue).join(', '):'vacío';
+  if(typeof value==='object')return Object.entries(value).map(([k,v])=>`${k}: ${hashTeachingValue(v)}`).join(' · ');
+  return String(value);
+}
+function hashVariableValue(variable) {
+  if(variable.alive===false)return 'ámbito terminado; no leer almacenamiento';
+  if(variable.valid===false && variable.historical_identity)return `puntero no utilizable; identidad histórica ${variable.historical_identity}`;
+  if(variable.valid===false)return 'valor indeterminado; no utilizable';
+  if(Number.isInteger(variable.initialized_prefix) && Number.isInteger(variable.capacity)){
+    const prefix=variable.initialized_prefix;
+    if(prefix===0)return `0 de ${variable.capacity} bytes inicializados`;
+    const terminated=Array.isArray(variable.bytes) && variable.bytes.slice(0,prefix).includes(0);
+    return `${prefix} de ${variable.capacity} bytes inicializados${terminated?'; texto terminado en \\0':''}${prefix<variable.capacity?'; resto indeterminado':''}`;
+  }
+  return variable.initialized===false?'sin inicializar':hashTeachingValue(variable.value);
+}
+function hashOutputCaption(frame) {
+  const returnedFalse=frame.operation==='get' && frame.variables?.retorno===false && /return\s+false\s*;/.test(frame.source?.line_text||'');
+  return returnedFalse?'Salida int (valor previo del llamador; th_buscar no lo escribió)':'Salida int';
+}
+function hashLiveMemoryMarkup(frame) {
+  const mem=frame.memory||{}, vars=Object.entries(mem.variables||{});
+  const tokens=new Set(String(frame.source?.line_text||'').match(/[A-Za-z_]\w*/g)||[]);
+  const isReferenced=name=>tokens.has(name)||tokens.has(name.split('.').at(-1));
+  const sorted=[...vars].sort(([a],[b])=>Number(isReferenced(b))-Number(isReferenced(a)));
+  const active=new Set(sorted.filter(([name])=>isReferenced(name)).map(([,v])=>String(v.value)));
+  const heap=[...(mem.heap||[])].sort((a,b)=>Number(active.has(String(b.id)))-Number(active.has(String(a.id))));
+  const nodeHtml=n=>{const dead=n.alive===false, mask=Number(n.initialized_mask||0);return `<div class="hash-memory-card" data-hash-live-node="${hashEscape(n.id)}"><strong>${hashEscape(n.id)}</strong> · ${dead?'reserva liberada; no leer campos':n.fields_valid===false?'campos no legibles en este paso':`clave: ${mask&1?hashEscape(n.key):'sin inicializar'} · valor: ${mask&2?hashEscape(n.value):'sin inicializar'} · siguiente: ${mask&4?hashEscape(n.next??'NULL'):'sin inicializar'}`}</div>`;};
+  return `<div class="hash-live-variables">${sorted.length?sorted.slice(0,6).map(([name,v])=>`<span><code>${hashEscape(name)}</code> = ${hashEscape(hashVariableValue(v))}</span>`).join(' · '):'Sin variables locales activas. Las reservas tienen su propia vida.'}</div><div class="hash-live-cards">${heap.filter(n=>n.alive!==false).map(nodeHtml).join('')||'Sin nodos vivos registrados.'}</div>${heap.some(n=>n.alive===false)?`<details><summary>Reservas liberadas: ${heap.filter(n=>n.alive===false).length}</summary>${heap.filter(n=>n.alive===false).map(nodeHtml).join('')}</details>`:''}${mem.output?`<p>${hashOutputCaption(frame)}: ${mem.output.alive===false?'ámbito terminado':mem.output.initialized?hashEscape(mem.output.value):'sin inicializar'}</p>`:''}`;
+}
+function decorateHashPedagogy(frame) {
+  const live=hashById('hash-live-memory');if(live)live.innerHTML=hashLiveMemoryMarkup(frame);
+  const pointers=hashById('hash-pointers-view'), memory=hashById('hash-memory-view'), chain=hashById('hash-chain-view');
+  if(pointers){const raw=pointers.innerHTML;const vars=Object.entries(frame.memory?.variables||{});pointers.innerHTML=(vars.length?vars.map(([name,v])=>`<div><code>${hashEscape(name)}</code> = ${hashEscape(hashVariableValue(v))}</div>`).join(''):'<p>Sin variables locales activas; no significa que los nodos publicados sean NULL.</p>')+`<details><summary>Registro técnico de punteros y ámbitos</summary>${raw}</details>`;}
+  if(memory)memory.innerHTML=hashLiveMemoryMarkup(frame)+`<details><summary>Registro técnico completo de memoria</summary>${memory.innerHTML}</details>`;
+  if(chain){const raw=chain.innerHTML;chain.innerHTML=`<p>Bucket ${hashEscape(frame.chain?.bucket??'—')}. Comparaciones realizadas: ${(frame.chain?.examined||[]).length}.</p><p>Cadena actual: ${hashEscape(hashTeachingValue(frame.chain?.after||[]))}</p><details><summary>Cadena antes/después y evidencia</summary>${raw}</details>`;}
+}
+function initHashClassroom() {
+  const workspace=document.querySelector('.hash-primary-workspace'),controls=document.querySelector('.hash-execution-controls');if(!workspace||!controls)return;
+  const toolbar=document.createElement('section');toolbar.className='hash-classroom-controls';toolbar.setAttribute('aria-label','Controlar ejecución');toolbar.appendChild(controls);
+  ['hash-sim-counter','hash-sim-detail','hash-sim-status'].forEach(id=>{const el=hashById(id);if(el)toolbar.appendChild(el);});workspace.before(toolbar);
+}
+
+function renderHashPedagogy(frame,level){if(!frame)return;const summary=hashById("hash-pedagogy-summary"),formula=hashById("hash-formula-view"),chain=hashById("hash-chain-view"),pointers=hashById("hash-pointers-view"),cost=hashById("hash-cost-view"),memory=hashById("hash-memory-view"),invariant=hashById("hash-invariant-view");if(summary)summary.innerHTML=`<strong>${hashEscape(frame.phase?.label||frame.concept)}</strong>: ${hashEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;window.ContextualHelp?.frame("hash",frame,level);if(formula)formula.innerHTML=`Clave <strong>${hashEscape(frame.hash?.key??"—")}</strong> · capacidad <strong>${hashEscape(frame.hash?.capacity??"—")}</strong><br><code>${hashEscape(frame.hash?.expression||"sin cálculo")}</code><br>Residuo C: <strong>${hashEscape(frame.hash?.raw_remainder??"—")}</strong><br>${hashEscape(frame.hash?.normalization_expression||"")}<br>Bucket final: <strong>${hashEscape(frame.hash?.normalized_index??"—")}</strong>`;if(chain)chain.innerHTML=`Bucket ${hashEscape(frame.chain?.bucket??"—")} · caso: <strong>${hashEscape(frame.chain?.position_kind||"—")}</strong><br>Antes: <code>${hashEscape(JSON.stringify(frame.chain?.before||[]))}</code><br>Después: <code>${hashEscape(JSON.stringify(frame.chain?.after||[]))}</code><br>Comparaciones ejecutadas: ${hashEscape(JSON.stringify(frame.chain?.examined||[]))}`;if(pointers)pointers.innerHTML=Object.entries(frame.pointers||{}).map(([name,value])=>`<code>${hashEscape(name)}</code> = ${hashEscape(value)}`).join("<br>");if(cost)cost.innerHTML=`Hash: ${frame.cost?.hash_evaluations||0} · comparaciones: ${frame.cost?.comparisons||0} · nodos visitados: ${frame.cost?.nodes_visited||0}<br><small>${hashEscape(frame.cost?.unit||"")}</small><details><summary>Complejidad</summary>${hashEscape(frame.cost?.best_case||"")}<br>${hashEscape(frame.cost?.average_case||"")}<br>${hashEscape(frame.cost?.worst_case||"")}<br>${hashEscape(frame.cost?.depends_on||"")}</details>`;if(memory)memory.innerHTML=`Intento de malloc: ${frame.memory?.allocation_attempted?"sí":"no"} · comprobó NULL: ${frame.memory?.null_checked?"sí":"no"}<br>Fallo simulado: <strong>${frame.memory?.allocation_failed?"sí; estado intacto":"no"}</strong><br>Reservados: <code>${hashEscape(JSON.stringify(frame.memory?.allocated||[]))}</code><br>Campos inicializados: ${hashEscape((frame.memory?.initialized_fields||[]).join(", ")||"ninguno")}<br>Liberados: <code>${hashEscape(JSON.stringify(frame.memory?.freed||[]))}</code><br>Arreglo buckets liberado: ${frame.memory?.bucket_array_freed?"sí":"no"} · buckets = NULL: ${frame.memory?.bucket_array_is_null?"sí":"no"}<br>Enlaces cambiados: ${frame.memory?.links_changed?"sí":"no"}`;if(pointers && frame.memory?.variables)pointers.innerHTML += `<hr><strong>Variables tipadas / alcance</strong><pre>${hashEscape(JSON.stringify(frame.memory.variables,null,2))}</pre><p>Pila: ${hashEscape(JSON.stringify(frame.memory.call_stack||[]))}</p>`;if(memory && frame.memory?.heap)memory.innerHTML += `<hr><strong>Heap y máscaras de inicialización</strong><pre>${hashEscape(JSON.stringify(frame.memory.heap,null,2))}</pre><p>Buckets inicializados: ${hashEscape(JSON.stringify(frame.memory.bucket_initialization||[]))}</p>`;if(memory && frame.operation==="remove" && frame.memory?.bucket_array)memory.innerHTML += `<hr><strong>Arreglo de punteros THNodo *</strong><pre>${hashEscape(JSON.stringify(frame.memory.bucket_array,null,2))}</pre><p>Cantidad pendiente: ${frame.memory.count_write_pending?"sí; cantidad-- aún no ejecutado":"no"}</p><p>Puntero retirado: ${hashEscape(frame.memory.retired_pointer||"ninguno")}. Tras free no se inspecciona ni utiliza su valor; las referencias históricas son simbólicas.</p>`;if(memory && frame.memory?.output)memory.innerHTML += `<hr><strong>Almacenamiento de salida int</strong><pre>${hashEscape(JSON.stringify(frame.memory.output,null,2))}</pre><small>Valor indeterminado se muestra null; no se lee antes de escritura. alive=false indica alcance terminado.</small>`;if(memory && frame.memory?.buffer)memory.innerHTML += `<hr><strong>Buffer C char[] / bytes inicializados</strong><pre>${hashEscape(JSON.stringify(frame.memory.buffer,null,2))}</pre><small>La zona indeterminada no se lee. ${frame.operation === "stats" ? "Este texto C representa estadisticas con float y dos decimales; la API conserva su cociente y formato propios." : "Este texto C representa la tabla completa; el resultado API es una proyeccion independiente."}</small>`;if(memory && frame.stats_representation)memory.innerHTML += `<hr><strong>Representaciones C / API</strong><pre>${hashEscape(JSON.stringify(frame.stats_representation,null,2))}</pre><small>Las copias THEstadisticas y sus scopes son propios de cada llamada; padding y ABI no se inspeccionan.</small>`;if(memory && frame.lifecycle)memory.innerHTML += `<hr><strong>Vida de buckets / raiz C</strong><pre>${hashEscape(JSON.stringify(frame.memory.bucket_array,null,2))}</pre><p>Pointer raiz valido: ${frame.memory.root_bucket_pointer_valid?"si":"no; indeterminado"}. Cantidad pendiente: ${frame.memory.count_write_pending?"si":"no"}. Root TablaHash sigue vivo: ${frame.memory.root_stack_object_alive?"si":"no"}.</p>`;if(invariant)invariant.innerHTML=`<strong>${hashEscape(frame.invariant?.symbol||"")} ${hashEscape(frame.invariant?.name||"")}</strong><br>${hashEscape(frame.invariant?.evidence||"")}`;decorateHashPedagogy(frame);}
 
 function initHashResponsiveWorkspace(){const workspace=document.querySelector(".hash-primary-workspace"),tabs=[...document.querySelectorAll("[data-hash-tab]")];if(!workspace||!tabs.length)return;let saved="visual";try{saved=sessionStorage.getItem("hash-active-tab")||"visual";}catch(_error){}const activate=(name)=>{const value=name==="code"?"code":"visual";workspace.dataset.activeTab=value;tabs.forEach((tab)=>{const active=tab.dataset.hashTab===value;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));});try{sessionStorage.setItem("hash-active-tab",value);}catch(_error){}};tabs.forEach((tab)=>tab.addEventListener("click",()=>activate(tab.dataset.hashTab)));activate(saved);}
 
-function enhanceHashCodeNavigation(activeLine){const code=hashById("op-pseudocode"),list=hashById("hash-function-list"),hide=hashById("hash-hide-comments");if(!code||!list)return;const source=code.textContent||"";const functions=[];source.split("\n").forEach((line,index)=>{const match=line.match(/\b(th_[A-Za-z_]\w*)\s*\([^;]*\)\s*\{/);if(match)functions.push({name:match[1],line:index});});list.innerHTML=functions.map((item)=>`<li><button type="button" data-line="${item.line}">${hashEscape(item.name)}</button></li>`).join("");list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>{const lines=code.querySelectorAll(".code-line");lines[Number(button.dataset.line)]?.scrollIntoView({block:"center"});}));code.classList.toggle("hide-code-comments",Boolean(hide?.checked));if(Number.isInteger(activeLine))code.dataset.activeLine=String(activeLine);}
+function enhanceHashCodeNavigation(activeLine){const code=hashById("op-pseudocode"),list=hashById("hash-function-list"),hide=hashById("hash-hide-comments");if(!code||!list)return;const source=code.dataset.rawCode||code.textContent||"";window.CCodeNavigation?.markComments(code,source);const functions=[];source.split("\n").forEach((line,index)=>{const match=line.match(/\b(th_[A-Za-z_]\w*)\s*\([^;]*\)\s*\{/);if(match)functions.push({name:match[1],line:index});});list.innerHTML=functions.map((item)=>`<li><button type="button" data-line="${item.line}">${hashEscape(item.name)}</button></li>`).join("");list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>{const lines=code.querySelectorAll(".code-line");window.CCodeNavigation?.revealLine(code,lines[Number(button.dataset.line)]);}));code.classList.toggle("hide-code-comments",Boolean(hide?.checked));if(Number.isInteger(activeLine))code.dataset.activeLine=String(activeLine);}
 
 function hashToCStringLiteral(text) {
   return String(text || "")
@@ -115,6 +161,7 @@ function renderHashPrintfConsole(consoleEl, lines, fallbackText) {
     return;
   }
   const safeLines = Array.isArray(lines) ? lines : [];
+  consoleEl.dataset.consoleCopy = safeLines.join("\n");
   const html = safeLines.length
     ? safeLines.map((line) => `<div class="console-line">${hashEscape(line)}</div>`).join("")
     : `<div class="console-line muted">${hashEscape(fallbackText || "(sin salida printf en esta ruta)")}</div>`;
@@ -139,6 +186,7 @@ function buildHashOperationInputs(operation, container) {
     input.name = field.name;
     input.type = field.type === "number" ? "number" : field.type === "checkbox" ? "checkbox" : "text";
     input.required = field.required !== false;
+    for (const bound of ["min", "max", "step"]) if (field[bound] !== undefined) input[bound] = String(field[bound]);
 
     wrap.appendChild(label);
     wrap.appendChild(input);
@@ -156,11 +204,26 @@ function renderHashEntries(entries, showAddresses, examinedKeys) {
     .join("<span class=\"hash-sep\"> -> </span>");
 }
 
+function hashLoadFactorFormula(metadata) {
+  if(Number(metadata.capacity)===0)return 'Capacidad 0: factor 0 por convención del TAD, sin dividir.';
+  return `α = cantidad / capacidad = ${metadata.size??0} / ${metadata.capacity??'—'} = ${metadata.load_factor??'—'}`;
+}
+function hashBucketPointerLabel(lifecycle) {
+  if(!lifecycle.root_bucket_pointer_valid)return 'Puntero buckets indeterminado tras free; no se lee.';
+  if(lifecycle.root_bucket_pointer===null && lifecycle.bucket_array_alive===false)return 'buckets = NULL (sin arreglo).';
+  return lifecycle.bucket_array_alive ? 'Puntero buckets al arreglo vivo.' : 'Puntero buckets registrado.';
+}
 function renderHashState(state, container, frame) {
   if (!state || !container) {
     return;
   }
 
+  if(state.suspended){
+    container.innerHTML=`<div class="hash-suspended" role="status"><h4>Estado histórico suspendido</h4><p>${hashEscape(state.suspension_reason || "Capacidad histórica superior al límite educativo de la aplicación.")}</p><p>Capacidad histórica: ${hashEscape(state.capacity ?? state.metadata?.capacity ?? "registrada en el historial")}. La tabla no se reconstruye ni se representa como vacía.</p><p>Conserva el historial y descarga main.c o el resumen antes de restablecer la tabla, si lo necesitas.</p></div>`;
+    const minimap=hashById('hash-minimap');if(minimap)minimap.innerHTML='';
+    const live=hashById('hash-live-memory');if(live)live.textContent='Memoria no reconstruida: estado histórico suspendido.';
+    return;
+  }
   const metadata = state.metadata || {};
   const allBuckets = Array.isArray(state.buckets) ? state.buckets : [];
   const filter = hashById("hash-bucket-filter")?.value || "all";
@@ -184,9 +247,9 @@ function renderHashState(state, container, frame) {
     `Colisiones Σ max(0, longitud−1): ${hashEscape(state.lifecycle && !state.lifecycle.chain_statistics_available ? "indeterminado" : metadata.collisions || 0)} | ` +
     `Cadena máxima: ${hashEscape(state.lifecycle && !state.lifecycle.chain_statistics_available ? "indeterminado" : metadata.max_chain_length || 0)}</div>`
   );
-  html += `<div class="viz-meta hash-formulas"><code>α = cantidad / capacidad = ${hashEscape(metadata.size||0)} / ${hashEscape(metadata.capacity||0)} = ${hashEscape(metadata.load_factor??0)}</code></div>`;
+  html += `<div class="viz-meta hash-formulas"><code>${hashEscape(hashLoadFactorFormula(metadata))}</code></div>`;
 
-  if(state.lifecycle)html += `<p class="viz-meta">${state.lifecycle.root_bucket_pointer_valid ? "Pointer buckets valido." : "Pointer buckets indeterminado tras free; no se lee."} ${state.lifecycle.count_write_pending ? "Cantidad C pendiente de su store final." : ""}</p>`;
+  if(state.lifecycle)html += `<p class="viz-meta">${hashEscape(hashBucketPointerLabel(state.lifecycle))} ${state.lifecycle.count_write_pending ? "Cantidad C pendiente de su store final." : ""}</p>`;
   html += "<p class=\"hash-capacity-note\">Política de capacidad: fija; esta versión no ejecuta resize ni rehash.</p>";
 
   if (!buckets.length) {
@@ -217,6 +280,9 @@ function renderHashState(state, container, frame) {
 
   html += "</div></div>";
   container.innerHTML = html;
+  const active=container.querySelector?.('.is-active-bucket');
+  if(active && container.getBoundingClientRect){const bounds=container.getBoundingClientRect(),rect=active.getBoundingClientRect();if(rect.top<bounds.top||rect.bottom>bounds.bottom)container.scrollTop+=rect.top-bounds.top;}
+
 }
 
 function showHashMessage(text, success) {
@@ -229,6 +295,7 @@ function showHashMessage(text, success) {
 }
 
 function updateHashDidacticPanel(model, operationName) {
+  window.ContextualHelp?.operation("hash", model, operationName);
   const recordBox = hashById("tad-record");
   const pseudoTitle = hashById("op-pseudocode-title");
   const pseudoBox = hashById("op-pseudocode");
@@ -368,6 +435,7 @@ function renderHashHistory(history, container, didactic, mainCode) {
   if (!container) {
     return;
   }
+  container.dataset.rawCode = "";
   if (!history.length && !mainCode) {
     container.innerHTML = "<li class=\"didactic-history-item empty\">Sin acciones ejecutadas.</li>";
     return;
@@ -375,6 +443,7 @@ function renderHashHistory(history, container, didactic, mainCode) {
   const codeTitle = didactic && didactic.code_title ? String(didactic.code_title) : "";
   if (codeTitle.toLowerCase().includes("codigo c")) {
     const code = mainCode || buildHashMainCode(history);
+    container.dataset.rawCode = code;
     const tmp = document.createElement("pre");
     if (window.InterpreterRuntime) {
       window.InterpreterRuntime.renderCode(tmp, code, codeTitle);
@@ -479,15 +548,18 @@ function initHashPage(model) {
       counterElement: hashById("hash-sim-counter"),
       renderState: (stateSnapshot,stepMeta) => {
         visualState = stateSnapshot;
-        renderHashState(visualState, visualContainer, stepMeta?.pedagogy);
-        if(stateSnapshot === stepMeta?.state_snapshot){currentPedagogyFrame=null;["hash-formula-view","hash-chain-view","hash-pointers-view","hash-cost-view","hash-memory-view","hash-invariant-view"].forEach(id=>{const el=hashById(id);if(el)el.textContent="Antes de ejecutar: ninguna instrucción resaltada.";});}else if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderHashPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
+        renderHashState(visualState, visualContainer, stateSnapshot === stepMeta?.state_snapshot ? null : stepMeta?.pedagogy);
+        if(stateSnapshot === stepMeta?.state_snapshot){currentPedagogyFrame=null;["hash-live-memory","hash-formula-view","hash-chain-view","hash-pointers-view","hash-cost-view","hash-memory-view","hash-invariant-view"].forEach(id=>{const el=hashById(id);if(el)el.textContent="Antes de ejecutar: ninguna instrucción resaltada.";});}else if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderHashPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
         refreshHashPrintfConsole(cursor);
-        const step=event?.step;enhanceHashCodeNavigation(Number.isInteger(step?.line_index)?step.line_index:null);try{sessionStorage.setItem(presentationKey,JSON.stringify({level:learningLevel?.value||"intermediate",cursor}));}catch(_error){}
+        const step=event?.step;
+        if(step?.pedagogy && step.debug?.stage && simStatus && window.ContextualHelp)simStatus.textContent=simStatus.textContent.replace(` - ${step.debug.stage}`,` - ${window.ContextualHelp.phaseLabel(step.pedagogy)}`);
+        enhanceHashCodeNavigation(Number.isInteger(step?.line_index)?step.line_index:null);try{sessionStorage.setItem(presentationKey,JSON.stringify({level:learningLevel?.value||"intermediate",cursor}));}catch(_error){}
         if(simProgress){const total=tracePlayer?.getTotalSteps?.()||0;simProgress.max=String(total);simProgress.value=String(Math.max(0,cursor+1));simProgress.disabled=!total;}
-        if(simDetail){const frame=step?.pedagogy;simDetail.textContent=frame?`Función: ${frame.source?.function||"—"} · fase: ${frame.phase?.label||"—"} · concepto: ${frame.concept||"—"} · bucket: ${frame.chain?.bucket??"—"} · nodo: ${frame.pointers?.actual||"NULL"} · transición: ${frame.memory?.transition||"estable"}`:"Sin traza cargada.";}
+        if(simDetail){const frame=step?.pedagogy;simDetail.textContent=frame?`Función: ${frame.source?.function||"—"} · fase: ${window.ContextualHelp?.phaseLabel(frame)||frame.phase?.label||"—"} · bucket: ${frame.chain?.bucket??"—"} · nodo: ${frame.memory?.variables?.actual ? hashTeachingValue(frame.memory.variables.actual.value) : "sin local activo"}`:"Sin traza cargada.";}
+        if (cursor < 0) window.ContextualHelp?.frame("hash", null);
         setSimulationButtonsEnabled();
       },
     })
@@ -517,13 +589,13 @@ function initHashPage(model) {
   });
   renderHashHistory(actionHistory, historyBox, model.didactic, model.main_c);
   renderHashState(visualState, visualContainer);
-  initHashResponsiveWorkspace();enhanceHashCodeNavigation(null);
+  initHashResponsiveWorkspace();initHashClassroom();enhanceHashCodeNavigation(null);
   updatePredictionPrompt();
   refreshHashPrintfConsole(-1);
 
   function isCurrentSelectionValid() {
     const current = operations.find((item) => item.name === operationSelect.value);
-    if (!current) {
+    if (visualState?.suspended || !current) {
       return false;
     }
     return current.inputs.every((field) => {
@@ -568,11 +640,13 @@ function initHashPage(model) {
       simNextButton.disabled = busy || !stepMode || !hasTrace || cursor >= total - 1;
     }
     if (simStepButton) {
-      simStepButton.disabled = false;
+      simStepButton.disabled = busy || Boolean(visualState?.suspended);
     }
   }
 
   function invalidateTrace(message) {
+    currentPedagogyFrame=null;
+    const memoryPanel=hashById("hash-live-memory");if(memoryPanel)memoryPanel.textContent=visualState?.suspended?"Memoria no reconstruida: estado histórico suspendido.":"Prepara una traza para observar la memoria C.";
     traceSelectionKey = "";
     consoleState.trace = null;
     consoleState.fallbackMessage = "";
@@ -601,6 +675,11 @@ function initHashPage(model) {
   }
 
   async function executeOperationAndLoadTrace(current, payload, selectionKey, options) {
+    if(pendingExecution)return null;
+    if(visualState?.suspended){showHashMessage("Estado histórico suspendido: conserva el historial y restablece la tabla para continuar.",false);return null;}
+    const capacityField=current.inputs?.find(field=>field.name==='capacity');
+    if(current.name==='create_table' && capacityField && (!Number.isInteger(Number(payload.capacity)) || Number(payload.capacity)<Number(capacityField.min ?? 1) || Number(payload.capacity)>Number(capacityField.max ?? 128))){showHashMessage(`La capacidad educativa debe estar entre ${capacityField.min ?? 1} y ${capacityField.max ?? 128}; se conserva el estado anterior.`,false);return null;}
+
     if((current.name==="clear"||current.name==="destroy_table")&&!window.confirm(current.name==="clear"?"¿Vaciar todos los nodos conservando capacidad?":"¿Destruir nodos y arreglo de buckets?"))return null;
     pendingExecution = true;
     setSimulationButtonsEnabled();
@@ -616,6 +695,8 @@ function initHashPage(model) {
       });
       const data = await response.json();
       showHashMessage(data.message, Boolean(data.success));
+      const recordedSteps = Array.isArray(data.execution_trace?.steps) && data.execution_trace.steps.length > 0;
+      if(data.preserve_session || ((!response.ok || !data.success) && !recordedSteps))return null;
       updateHashDidacticPanel(model, current.name);
 
       const finalOnly = Boolean(options && options.finalOnly);
@@ -680,7 +761,7 @@ function initHashPage(model) {
   }
 
   invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
-  if (model.execution_trace && tracePlayer) {
+  if (!visualState?.suspended && model.execution_trace && tracePlayer) {
     const restored = model.execution_trace;
     selected = operations.find(item => item.name === restored.operation_name) || selected;
     operationSelect.value = selected.name;
@@ -724,12 +805,31 @@ function initHashPage(model) {
   function renderCapacityComparison(){if(!capacityComparison||!compareGrid)return;const cursor=Math.max(0,Number(compareProgress?.value||0));compareGrid.innerHTML=capacityComparison.variants.map((variant)=>{const state=variant.snapshots[Math.min(cursor,variant.snapshots.length-1)],meta=state.metadata||{},active=variant.snapshots[Math.min(cursor,variant.snapshots.length-1)];const occupied=(active.buckets||[]).filter((bucket)=>bucket.size>0).map((bucket)=>`[${hashEscape(bucket.index)}] ${hashEscape(bucket.entries.map((entry)=>entry.key).join(" → ")||"∅")}`).join(" · ")||"sin buckets ocupados";return `<article class="hash-compare-card"><h4>Capacidad ${hashEscape(variant.capacity)}</h4><p><strong>Distribución:</strong> ${occupied}</p><p>Ocupados ${hashEscape(meta.occupied_buckets||0)} · colisiones ${hashEscape(meta.collisions||0)} · α=${hashEscape(meta.load_factor??0)} · cadena máx. ${hashEscape(meta.max_chain_length||0)}</p><p><strong>Exitosa:</strong> bucket ${hashEscape(variant.successful_lookup.bucket)}, ${hashEscape(variant.successful_lookup.comparisons)} comparaciones.</p><p><strong>Ausente:</strong> bucket ${hashEscape(variant.absent_lookup.bucket)}, ${hashEscape(variant.absent_lookup.comparisons)} comparaciones.</p></article>`;}).join("");if(compareInput)compareInput.textContent=`Entrada inmutable: ${capacityComparison.input.entries.map((pair)=>`${pair[0]}:${pair[1]}`).join(", ")} · inserción ${cursor}/${capacityComparison.input.entries.length}.`;if(compareConclusion)compareConclusion.textContent=capacityComparison.conclusion;}
   compareRun?.addEventListener("click",async()=>{try{const entries=parseComparisonEntries(compareEntries?.value);const response=await fetch(compareControls?.dataset.compareUrl||"",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({entries,success_key:compareSuccessKey?.value,absent_key:compareAbsentKey?.value})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"No fue posible comparar.");capacityComparison=data;if(compareProgress){compareProgress.min="0";compareProgress.max=String(data.input.entries.length);compareProgress.value="0";compareProgress.disabled=false;}renderCapacityComparison();if(announcer)announcer.textContent="Comparación de capacidades preparada sobre copias aisladas.";}catch(error){if(compareConclusion)compareConclusion.textContent=error.message||"No fue posible comparar.";}});
   compareProgress?.addEventListener("input",renderCapacityComparison);
-  exportImage?.addEventListener("click",async()=>{try{const result=await window.InterpreterRuntime.exportVisualStateAsJpg({target:visualContainer,quality:.92,scale:2});const link=document.createElement("a");link.href=result.dataUrl;link.download=result.suggestedName;link.click();if(announcer)announcer.textContent="Captura JPG exportada.";}catch(error){if(announcer)announcer.textContent=error.message||"No fue posible exportar la captura.";}});
-  exportSummary?.addEventListener("click",()=>{const summary={schema:"hash-learning-summary/v1",structure:model.id,operation:operationSelect.value,payload:(operations.find((item)=>item.name===operationSelect.value)?collectPayload(operations.find((item)=>item.name===operationSelect.value)):{}),level:learningLevel?.value,cursor:tracePlayer?.getCursor()??-1,total_steps:tracePlayer?.getTotalSteps()??0,frame:currentPedagogyFrame,state:visualState,progress:conceptualProgress,comparison:capacityComparison};const url=URL.createObjectURL(new Blob([JSON.stringify(summary,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download="tabla-hash-resumen.json";link.click();URL.revokeObjectURL(url);if(announcer)announcer.textContent="Resumen de aprendizaje exportado.";});
+  exportImage?.addEventListener("click", async () => {
+    if (exportImage.disabled) return;
+    const originalText = exportImage.textContent;
+    exportImage.disabled = true;
+    exportImage.setAttribute("aria-busy", "true");
+    try {
+      const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({
+        target: visualContainer, quality: .92, scale: 2,
+        onProgress: (text) => { exportImage.textContent = text; },
+      });
+      window.InterpreterRuntime.downloadJpg(exported.dataUrl, exported.suggestedName);
+      showHashMessage("Captura JPG preparada; revisa las descargas del navegador.", true);
+    } catch (error) { showHashMessage(error.message || "No se pudo exportar la captura.", false); }
+    finally {
+      exportImage.disabled = false;
+      exportImage.removeAttribute("aria-busy");
+      exportImage.textContent = originalText;
+    }
+  });
+  exportSummary?.addEventListener("click",()=>{const summary={schema:"hash-learning-summary/v1",structure:model.id,operation:operationSelect.value,payload:(operations.find((item)=>item.name===operationSelect.value)?collectPayload(operations.find((item)=>item.name===operationSelect.value)):{}),level:learningLevel?.value,cursor:tracePlayer?.getCursor()??-1,total_steps:tracePlayer?.getTotalSteps()??0,frame:currentPedagogyFrame,state:visualState,history:model.history||[],main_c:model.main_c||"",progress:conceptualProgress,comparison:capacityComparison};const url=URL.createObjectURL(new Blob([JSON.stringify(summary,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download="tabla-hash-resumen.json";link.click();URL.revokeObjectURL(url);if(announcer)announcer.textContent="Resumen de aprendizaje exportado.";});
   document.addEventListener("keydown",(event)=>{if(!event.altKey||["INPUT","TEXTAREA","SELECT"].includes(document.activeElement?.tagName))return;const actions={ArrowRight:()=>simStepButton?.click(),ArrowLeft:()=>simPrevButton?.click(),Home:()=>simStartButton?.click(),End:()=>simEndButton?.click(),p:()=>simPauseButton?.click(),P:()=>simPauseButton?.click()};const action=actions[event.key];if(action){event.preventDefault();action();}});
   loadExample?.addEventListener("click",async()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample?.value);if(!example){showHashMessage("Selecciona un ejemplo guiado.",false);return;}loadExample.disabled=true;try{let response=await fetch(form.dataset.operateUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({operation:"create_table",payload:{capacity:example.capacity}})});let data=await response.json();for(const [key,value] of example.entries||[]){response=await fetch(form.dataset.operateUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({operation:"insert",payload:{key,value}})});data=await response.json();}if(data.visual_state){visualState=data.visual_state;model.visual_state=data.visual_state;renderHashState(visualState,visualContainer);}selected=operations.find((item)=>item.name===example.operation)||selected;operationSelect.value=selected.name;buildHashOperationInputs(selected,inputsContainer);Object.entries(example.payload||{}).forEach(([name,value])=>{const input=hashById(`hash-field-${name}`);if(input){if(input.type==="checkbox")input.checked=Boolean(value);else input.value=value;}});updateHashDidacticPanel(model,selected.name);enhanceHashCodeNavigation(null);invalidateTrace("Ejemplo preparado; reproduce la operación objetivo.");updatePredictionPrompt();if(exampleLesson)exampleLesson.textContent=example.lesson;showHashMessage(`Ejemplo preparado: ${example.lesson}`,true);}finally{loadExample.disabled=false;}});
 
   inputsContainer.addEventListener("input", () => {
+    if(!isCurrentSelectionValid())return;
     invalidateTrace("Entradas cambiadas. Ejecuta nuevamente.");
     updatePredictionPrompt();
   });
@@ -755,27 +855,26 @@ function initHashPage(model) {
   });
 
   resetButton?.addEventListener("click", async () => {
-    const response = await fetch(form.dataset.resetUrl, { method: "POST" });
-    const data = await response.json();
-    showHashMessage(data.message, Boolean(data.success));
-    updateHashDidacticPanel(model, selected ? selected.name : "");
-    actionHistory.length = 0;
-    model.main_c = "";
-    renderHashHistory(actionHistory, historyBox, model.didactic, model.main_c);
-    if (data.visual_state) {
-      visualState = data.visual_state;
-      model.visual_state = data.visual_state;
-      renderHashState(visualState, visualContainer);
-    }
-    invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+    if(pendingExecution || !window.confirm("¿Restablecer la tabla y borrar el historial de esta sesión? Descarga main.c o el resumen antes si deseas conservarlo."))return;
+    pendingExecution=true;resetButton.disabled=true;setSimulationButtonsEnabled();
+    try {
+      const response=await fetch(form.dataset.resetUrl,{method:"POST"});const data=await response.json();
+      showHashMessage(data.message,Boolean(data.success));if(!response.ok||!data.success)return;
+      updateHashDidacticPanel(model,selected?selected.name:"");
+      model.history=data.history||[];model.main_c=data.main_c||"";
+      actionHistory.length=0;renderHashHistory(actionHistory,historyBox,model.didactic,model.main_c);
+      if(data.visual_state){visualState=data.visual_state;model.visual_state=data.visual_state;renderHashState(visualState,visualContainer);}
+      invalidateTrace("Tabla restablecida. Prepara una operación.");
+    }catch(error){showHashMessage("No se pudo confirmar el restablecimiento. Recarga para comprobar el estado de la sesión.",false);}
+    finally{pendingExecution=false;resetButton.disabled=false;setSimulationButtonsEnabled();}
   });
 
   simPlayButton?.addEventListener("click", async () => {
     const current = operations.find((item) => item.name === operationSelect.value);
     if (!current || !isCurrentSelectionValid()) { form.reportValidity?.(); return; }
     const payload = collectPayload(current);
-    await executeOperationAndLoadTrace(current, payload, buildSelectionKey(current, payload), { finalOnly: !isStepByStepEnabled() });
-    if (isStepByStepEnabled() && tracePlayer?.hasTrace()) tracePlayer.reset();
+    const executed = await executeOperationAndLoadTrace(current, payload, buildSelectionKey(current, payload), { finalOnly: !isStepByStepEnabled() });
+    if (executed && isStepByStepEnabled() && tracePlayer?.hasTrace() && !visualState?.suspended && isCurrentSelectionValid()) tracePlayer.reset();
   });
 
   simPrevButton?.addEventListener("click", () => {
@@ -815,8 +914,46 @@ function initHashPage(model) {
 
 }
 
+
+// Presentation-only classroom v1; existing render targets retain their identity.
+function hashMountClassroomView() {
+  if (!window.ClassroomView) return;
+  const root = document.querySelector(".hash-primary-workspace");
+  if (!root) return;
+  // Also upgrade an already cached server template without replacing control nodes.
+  const viewToolbar = root.querySelector(".hash-view-toolbar");
+  if (viewToolbar && !viewToolbar.closest(".hash-view-options")) {
+    const options = document.createElement("details"), summary = document.createElement("summary");
+    options.className = "hash-view-options"; summary.textContent = "Opciones de representación";
+    viewToolbar.before(options); options.append(summary, viewToolbar);
+  }
+  root.querySelectorAll("#hash-visual-region > h4").forEach(heading => {
+    if (heading.textContent.trim() === "Estado visual") heading.remove();
+  });
+  document.getElementById("hash-code-region")?.classList.add("classroom-code");
+  document.getElementById("hash-code-region")?.classList.remove("didactic-technical");
+  const history = document.getElementById("action-history");
+  const consoleNode = document.getElementById("hash-printf-console");
+  const record = document.getElementById("tad-record");
+  const results = [
+    {label:"Consola C (printf)",panel:consoleNode?.closest("section"),code:consoleNode,getText:()=>consoleNode?.dataset.consoleCopy || ""},
+    {label:"main.c del historial",panel:history?.parentElement,code:history,getText:()=>history?.dataset.rawCode || ""},
+    {label:"Estructura del TAD",panel:record?.parentElement,code:record,getText:()=>record?.dataset.rawCode ?? record?.textContent ?? ""}
+  ];
+  results.forEach(entry=>{
+    entry.panel?.classList.remove("didactic-technical");
+    for(let node=entry.panel?.parentElement;node && node.tagName!=="ARTICLE";node=node.parentElement) {
+      node.classList.remove("didactic-technical", "seq-pilot-collapsed");
+      node.hidden = false;
+      if(node.tagName==="DETAILS") node.open=true;
+    }
+  });
+  window.ClassroomView.mount({root,visual:"#hash-visual-region",stage:"#hash-visual-state",code:"#op-pseudocode",memory:[".hash-live-memory-panel"],results,key:"hash"});
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   if (window.HASH_VIEW_MODEL) {
     initHashPage(window.HASH_VIEW_MODEL);
+    hashMountClassroomView();
   }
 });

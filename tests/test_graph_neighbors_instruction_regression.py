@@ -6,9 +6,10 @@ CASES=[('existing-no-arcs',[{'operation':'insert_vertex','payload':{'vertex':7}}
 @pytest.mark.parametrize('case_id,mutations,vertex,expected',CASES,ids=[c[0] for c in CASES])
 def test_neighbors_executes_real_guards_and_caller_owns_result(case_id,mutations,vertex,expected):
     history=[{'operation':'create_graph','payload':{'directed':True}}]+mutations
+    history=[{**row,'source_contract':'graph-book/v1'} for row in history]
     r=GraphStructureService.execute_operation('graph','neighbors',{'vertex':vertex},history)
     assert r['success'] and r['result']==expected
-    trace=r['execution_trace'];assert trace.get('neighbor_instruction_model')
+    trace=r['execution_trace'];assert trace.get('book_instruction_model')
     events=trace['C_instruction_events']
     assert sum(e['phase']=='allocate' for e in events)==len(expected)
     assert sum(e['phase']=='free' for e in events)==len(expected)
@@ -18,16 +19,17 @@ def test_neighbors_executes_real_guards_and_caller_owns_result(case_id,mutations
     for s in trace['steps']:
         state=s['pedagogy']['memory_state']
         assert state['graph']==first['graph']
-        assert {n['id']:n for n in state['heap_nodes'] if n['borrowed']}==borrowed
+        assert {n['id']:n for n in state['heap_nodes'] if n['id'] in borrowed}==borrowed
     final=trace['steps'][-1]['pedagogy']['memory_state']
     assert final['heap_nodes']==first['heap_nodes'] and not final['frames']
     assert len(final['retired_objects'])==len(expected)
     assert trace['steps'][-1]['state_after']==r['visual_state']
-    assert r['history']==history
+    assert r['history'][:-1]==history and r['history'][-1]['source_contract']=='graph-book/v1'
 
-def test_rejected_neighbor_query_has_no_C_events_or_frames():
+def test_absent_neighbor_query_is_valid_empty_C_result():
     r=GraphStructureService.execute_operation('graph','neighbors',{'vertex':99},[])
-    assert not r['success']
-    t=r['execution_trace'];assert t.get('neighbor_instruction_model')
-    assert not t['execution_started'] and not t['C_instruction_events']
-    assert len(t['steps'])==1 and not t['steps'][0]['pedagogy']['call_stack']
+    assert r['success'] and r['result']==[]
+    t=r['execution_trace'];assert t.get('book_instruction_model')
+    assert t['execution_started'] and t['C_instruction_events'] and r['c_status']==0
+    assert not t['steps'][-1]['pedagogy']['call_stack']
+    assert t['steps'][-1]['pedagogy']['memory_state']['heap_nodes']==[]

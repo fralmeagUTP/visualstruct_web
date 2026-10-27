@@ -3,7 +3,7 @@
 {% block content %}
 <article class="hash-learning-shell hash-workspace" aria-labelledby="hash-page-title">
   <header class="hier-learning-header">
-    <div><p class="sorting-eyebrow">Laboratorio de hashing y memoria en C</p><h2 id="hash-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div>
+    <div><p class="sorting-eyebrow">Laboratorio de hashing y memoria en C</p><h2 id="hash-page-title">{{ model.name }}</h2><details class="classroom-identity-detail"><summary>Acerca de esta estructura</summary><p>{{ model.description }}</p></details></div>
     <a class="link" href="{{ url_for('help.hash_structure_help', structure_id=model.id) }}">Abrir guía del módulo</a>
   </header>
 
@@ -38,14 +38,14 @@
   </nav>
   <div class="hash-primary-workspace" data-active-tab="visual">
     <section id="hash-visual-region" class="hash-stage hash-visual-stage" aria-labelledby="hash-visual-title">
-      <h3 id="hash-visual-title"><span>2</span> Visualizar y ejecutar</h3>
-      <div class="hash-view-toolbar" aria-label="Opciones de representación">
+      <h3 id="hash-visual-title">Tabla hash</h3>
+      <details class="hash-view-options"><summary>Opciones de representación</summary><div class="hash-view-toolbar" aria-label="Opciones de representación">
         <label for="hash-bucket-filter">Buckets<select id="hash-bucket-filter"><option value="all">Vista completa</option><option value="occupied">Solo ocupados</option></select></label>
-        <label><input id="hash-show-addresses" type="checkbox" checked> Direcciones y campos</label>
-      </div>
-      <h4>Estado visual</h4>
+        <label><input id="hash-show-addresses" type="checkbox" checked> Identificadores y campos (simbólicos)</label>
+      </div></details>
       <div id="hash-minimap" class="hash-minimap" aria-label="Minimapa de ocupación"></div>
       <div id="hash-visual-state"></div>
+      <section class="hash-live-memory-panel" aria-label="Memoria C actual"><h4>Memoria C actual <small>Identidades simbólicas; no son direcciones reales.</small></h4><div id="hash-live-memory">Prepara una traza para observar la memoria C.</div></section>
     </section>
     <section id="hash-code-region" class="hash-stage didactic-technical hash-code-stage" aria-labelledby="hash-code-title">
       <div class="hash-code-toolbar"><h3 id="hash-code-title"><span>3</span> Relacionar con código</h3><label><input id="hash-hide-comments" type="checkbox"> Ocultar documentación extensa</label></div>
@@ -59,9 +59,9 @@
   <details class="hash-stage hash-collapsible" open>
     <summary><span>4</span> Comprender <small>Fórmula, cadena, punteros, costo y memoria del paso activo</small></summary>
     <div class="hash-collapsible-content">
-      <p id="hash-pedagogy-summary">Prepara una operación para observar índice, cadena, punteros y memoria.</p>
+      <div id="hash-pedagogy-summary">Prepara una operación para observar índice, cadena, punteros y memoria.</div>
       <div class="hier-frame-grid">
-        <section><h4>Función hash</h4><div id="hash-formula-view">Sin frame.</div></section><section><h4>Cadena activa</h4><div id="hash-chain-view">Sin cadena.</div></section><section><h4>Variables y punteros</h4><div id="hash-pointers-view">Sin punteros.</div></section><section><h4>Costo observado</h4><div id="hash-cost-view">Sin medición.</div></section><section><h4>Memoria</h4><div id="hash-memory-view">Sin transición.</div></section><section><h4>Invariante</h4><div id="hash-invariant-view">Sin verificación.</div></section>
+        <section><h4>Función hash</h4><div id="hash-formula-view">Sin frame.</div></section><section><h4>Cadena activa</h4><div id="hash-chain-view">Sin cadena.</div></section><section><h4>Variables y punteros</h4><div id="hash-pointers-view">Sin punteros.</div></section><section><h4>Costo observado</h4><div id="hash-cost-view">Sin medición.</div></section><section><h4>Memoria</h4><p class="muted">Los identificadores de memoria son simbólicos, no direcciones reales.</p><div id="hash-memory-view">Sin transición.</div></section><section><h4>Invariante</h4><div id="hash-invariant-view">Sin verificación.</div></section>
       </div>
     </div>
   </details>

@@ -1,0 +1,3 @@
+# Reapertura autorizada de student-help
+Usuario Sentinel_7e7c6b4a1d84819191d431f813633b21: «Mira esto en la ayuda, no se entiende!!!». Usuario Sentinel_08d7be622d3081919fe49f2ae502211f: «revisa todos los apartados».
+Fallo real postentrega: introducción ABB de unas600palabras mezcla todos los contratos. QA anterior HTTP/enlaces y muestra visual no detectó legibilidad de todas las secciones; no certifica este criterio. Nueva copia scroll actual autorizada, C/TAD/API inalterados. Se reabre exactamente student-help para revisión editorial completa19páginas, resumen separado y referencia organizada, umbrales DOM y lectura independiente.

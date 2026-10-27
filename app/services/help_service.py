@@ -90,7 +90,7 @@ class HelpService:
             ],
             "contract_notes": [
                 "Buscar posiciones usa índices desde 1 y no modifica nodos. El C retorna el número total de coincidencias; copia solo las posiciones que caben en destino. NULL y capacidad 0 permiten contar sin copiar.",
-                "El main conserva búsquedas exitosas al recargar. En Circular pasa NULL, 0: ejecuta la búsqueda y cuenta coincidencias sin guardar un arreglo de posiciones.",
+                "El main conserva búsquedas exitosas al recargar. En Circular reserva un arreglo de posiciones según las inserciones del historial: ejecuta la búsqueda e imprime las coincidencias calculadas por C.",
                 "Eliminar inicio devuelve el dato retirado en la aplicación; el método C devuelve true/false. Un nodo desconectado sigue reservado hasta free; el alias queda indeterminado después de liberarlo.",
                 "Invertir conserva reservas y cantidad; cambia enlaces y extremos. Limpiar libera todas las reservas de un anillo válido.",
             ],
@@ -106,7 +106,7 @@ class HelpService:
                 "En la animacion observa dos niveles de punteros (padres e hijos) y valida que cada "
                 "operacion afecte solo la rama correspondiente sin corromper otras sublistas. "
                 "Listar hijos conserva la consulta exitosa en el historial tras recargar, sin volver a ejecutarla. "
-                "El main mostrado es un fragmento para copiar: inclúyelo en main.c con stdio.h y tad_sublista.h, "
+                "El programa principal mostrado está completo: cópialo en main.c; ya incluye stdio.h y tad_sublista.h, "
                 "y compila junto con el archivo C descargado. La aplicación copia como máximo 1024 hijos por consulta. El arreglo de consulta tiene capacidad "
                 "suficiente según las inserciones previas; su contenido se obtiene ejecutando el C."
             ),

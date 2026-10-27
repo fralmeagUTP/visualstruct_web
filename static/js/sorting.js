@@ -194,7 +194,7 @@ function renderSortingStrategy(state, container) {
     const radix = state.radix_context;
     html += '<p>Magnitudes uint32_t; máximo: ' + sEscape(radix.maximo ?? 'fuera de alcance') + '; exp: ' + sEscape(radix.exp ?? 'fuera de alcance') + '</p>';
     for (const [name, buffer] of Object.entries(radix.buffers)) {
-      html += '<div class="sorting-radix-buffer" data-radix-buffer="' + name + '" data-live="' + buffer.live + '"><strong>' + sEscape(name) + ': uint32_t[' + buffer.capacity + '] — ' + sEscape(buffer.status) + '</strong><div>';
+      html += '<div class="sorting-radix-buffer" data-radix-buffer="' + name + '" data-live="' + buffer.live + '"><strong>' + sEscape(({negative: 'negativos', positive: 'positivos', output: 'salida'})[name] || name) + ': uint32_t[' + buffer.capacity + '] — ' + sEscape(({undeclared: 'aún no declarado', uninitialized: 'sin inicializar', live: 'reservado', freed: 'liberado; no acceder', failed: 'reserva fallida', allocation_failed: 'reserva fallida', unallocated: 'no reservado'})[buffer.status] || 'estado no identificado') + '</strong><div>';
       if (buffer.live) html += (buffer.cells || []).map((value, index) => '<span data-radix-index="' + index + '" data-initialized="' + (value !== null) + '">[' + index + '] ' + sEscape(value === null ? 'sin inicializar' : value) + '</span>').join(' · ');
       else html += 'Reserva no disponible para lectura.';
       html += '</div></div>';
@@ -229,6 +229,7 @@ function renderSortingHistory(entries, container, mainCode = "") {
   if (!container) {
     return;
   }
+  container.dataset.rawCode = mainCode || "";
   const rows = entries.length
     ? entries.map((entry) => `<li><strong>${sEscape(entry.title)}</strong>: ${sEscape(entry.message)}</li>`).join("")
     : "<li>Sin acciones ejecutadas.</li>";
@@ -240,6 +241,7 @@ function renderSortingConsole(consoleEl, lines) {
   if (!consoleEl) {
     return;
   }
+  consoleEl.dataset.consoleCopy = lines.join("\n");
   if (!lines.length) {
     consoleEl.innerHTML = '<div class="console-line muted">(sin salida printf en esta ruta)</div>';
     return;
@@ -250,6 +252,62 @@ function renderSortingConsole(consoleEl, lines) {
 
 function speedSettingToMultiplier(setting) {
   return Math.pow(2, setting);
+}
+
+function sMemoryValue(value, item = {}) {
+  if (item.initialized === false) return "sin inicializar";
+  if (value === null || value === undefined) return String(item.type || "").includes("*") ? "NULL (sin bloque asociado)" : "sin valor";
+  if (Array.isArray(value)) {
+    const cells = value.slice(0, 6).map(cell => cell === null ? "sin inicializar" : (typeof cell === "number" || typeof cell === "string" || typeof cell === "boolean") ? String(cell) : "valor compuesto");
+    return `${value.length} celdas [${cells.join(", ")}${value.length > 6 ? ", …" : ""}]`;
+  }
+  if (typeof value !== "object") return String(value);
+  if (Object.prototype.hasOwnProperty.call(value, "alias")) {
+    const aliases = { caller: "arreglo original", negative: "bloque negativos", positive: "bloque positivos", output: "bloque salida" };
+    const alias = aliases[value.alias] || `bloque simbólico ${String(value.alias)}`;
+    const capacity = Number.isInteger(value.capacity) && value.capacity >= 0 ? value.capacity : null;
+    if (value.status === "freed") return `${alias}: liberado; no acceder${capacity !== null ? ` (capacidad previa ${capacity})` : ""}`;
+    if (value.status === "live") return `${alias}: reservado${capacity !== null ? `, capacidad ${capacity}` : ""}`;
+    if (["undeclared", "unallocated"].includes(value.status)) return `${alias}: no reservado`;
+    if (["failed", "allocation_failed"].includes(value.status)) return `${alias}: reserva fallida`;
+    return `alias de ${alias}${value.alias === "caller" ? " (prestado)" : ""}`;
+  }
+  return "valor estructurado; consultar el detalle del paso";
+}
+
+window.SortingMemoryFormat = { value: sMemoryValue };
+
+function sCompactMemoryEntries(frame) {
+  const identifiers = new Set(String(frame?.source?.line_text || "").match(/\b[A-Za-z_]\w*\b/g) || []);
+  const outside = new Set(["ended", "out-of-scope", "out_of_scope", "not-entered", "not_entered", "before-declaration", "before_declaration", "not-declared", "not_declared"]);
+  const live = item => item && !outside.has(item.scope_state) && item.declared !== false && item.alive !== false && item.active !== false;
+  const variables = (frame?.variables || []).filter(live);
+  const pointers = (frame?.pointers || []).filter(live).map(pointer => ({...variables.find(variable => variable.name === pointer.name && variable.scope === pointer.scope), ...pointer}));
+  const candidates = [
+    ...variables.filter(variable => !pointers.some(pointer => pointer.name === variable.name && pointer.scope === variable.scope)).map(item => ({ kind: "variable", item })),
+    ...pointers.map(item => ({ kind: "pointer", item }))
+  ];
+  const rank = entry => identifiers.has(entry.item.name) ? 0 : entry.item.changed ? 1 : 2;
+  const currentFunction = frame?.source?.function;
+  const scopeRank = entry => !currentFunction || entry.item.scope === currentFunction || String(entry.item.scope || "").startsWith(currentFunction + "/") || String(entry.item.scope || "").startsWith(currentFunction + ":") ? 0 : 1;
+  candidates.sort((a, b) => rank(a) - rank(b) || scopeRank(a) - scopeRank(b) || (rank(a) === 0 ? Number(a.kind !== "pointer") - Number(b.kind !== "pointer") : 0));
+  const result = []; let pointerCount = 0;
+  for (const entry of candidates) {
+    if (entry.kind === "pointer" && pointerCount >= 2) continue;
+    result.push(entry);
+    if (entry.kind === "pointer") pointerCount++;
+    if (result.length === 6) break;
+  }
+  return result;
+}
+
+function sCompactMemoryRows(frame) {
+  const entries = sCompactMemoryEntries(frame);
+  return entries.map(({kind, item}) => {
+    const sameName = entries.filter(entry => entry.item.name === item.name).length > 1;
+    const name = `${item.name}${sameName && item.scope ? ` (${item.scope})` : ""}`;
+    return `${name} ${kind === "pointer" ? "→" : "="} ${sMemoryValue(kind === "pointer" ? item.target : item.value, item)}`;
+  });
 }
 
 function sEnhanceCodeNavigation(codePanel, functionList, hideComments, activeLine) {
@@ -263,15 +321,7 @@ function sEnhanceCodeNavigation(codePanel, functionList, hideComments, activeLin
     if (match) functions.push({ name: match[1], line: index });
   });
 
-  let inBlockComment = false;
-  Array.from(codePanel.querySelectorAll(".code-line")).forEach((lineEl, index) => {
-    const trimmed = String(rows[index] || "").trim();
-    const startsBlock = trimmed.startsWith("/*");
-    const isComment = inBlockComment || startsBlock || trimmed.startsWith("//") || trimmed.startsWith("*");
-    lineEl.classList.toggle("is-code-comment", isComment);
-    if (startsBlock && !trimmed.includes("*/")) inBlockComment = true;
-    if (inBlockComment && trimmed.includes("*/")) inBlockComment = false;
-  });
+  window.CCodeNavigation?.markComments(codePanel, rows);
   codePanel.classList.toggle("hide-code-comments", Boolean(hideComments && hideComments.checked));
 
   if (!functionList) return;
@@ -283,7 +333,7 @@ function sEnhanceCodeNavigation(codePanel, functionList, hideComments, activeLin
     button.classList.toggle("is-active", Boolean(active && Number(button.dataset.codeLine) === active.line));
     button.addEventListener("click", () => {
       const target = codePanel.querySelector(`.code-line[data-line="${button.dataset.codeLine}"]`);
-      target?.scrollIntoView({ behavior: "smooth", block: "center" });
+      window.CCodeNavigation?.revealLine(codePanel, target);
     });
   });
 }
@@ -438,8 +488,18 @@ function initSortingPage(model) {
     return "intermediate";
   }
 
+  function renderLiveMemory(frame) {
+    const phase = sById("sorting-live-phase"), action = sById("sorting-live-action"), values = sById("sorting-live-values");
+    if (!phase || !action || !values) return;
+    phase.textContent = frame ? (window.ContextualHelp?.phaseLabel(frame) || "Paso actual") : "Antes de comenzar";
+    action.textContent = frame ? (frame.source?.function ? `Función: ${frame.source.function}` : "Observa la instrucción resaltada.") : "Prepara la operación y avanza paso a paso.";
+    const rows = sCompactMemoryRows(frame);
+    values.innerHTML = rows.length ? rows.map(text => `<li>${sEscape(text)}</li>`).join("") : `<li>${frame ? "Sin variables ni punteros activos en este paso." : "Aún no hay instrucciones ejecutadas."}</li>`;
+  }
+
   function renderPedagogy(frame) {
     currentPedagogy = frame && typeof frame === "object" ? frame : null;
+    renderLiveMemory(currentPedagogy);
     if (!currentPedagogy) {
       if (pedagogyPhase) pedagogyPhase.textContent = "Preparación";
       if (pedagogyObjective) pedagogyObjective.textContent = "Selecciona datos y un algoritmo para comenzar.";
@@ -449,15 +509,17 @@ function initSortingPage(model) {
       if (callStack) callStack.innerHTML = "<li>Sin llamadas activas.</li>";
       if (loopView) loopView.textContent = "Sin ciclo activo.";
       if (pointerView) pointerView.textContent = "Sin punteros activos.";
+      window.ContextualHelp?.frame("sorting", null);
       if (invariantText) invariantText.textContent = "Se mostrará al preparar la ejecución.";
       return;
     }
     const level = currentLearningLevel();
     const phase = currentPedagogy.phase || {};
     const narration = currentPedagogy.narration || {};
-    if (pedagogyPhase) pedagogyPhase.textContent = `${phase.label || "Ejecución"} · ${currentPedagogy.concept || "paso"}`;
-    if (pedagogyObjective) pedagogyObjective.textContent = phase.goal || "Comprender el cambio de estado.";
+    if (pedagogyPhase) pedagogyPhase.textContent = (window.ContextualHelp?.phaseLabel(currentPedagogy) || phase.label || "Ejecución");
+    if (pedagogyObjective) pedagogyObjective.textContent = currentPedagogy.source?.function ? `Función: ${currentPedagogy.source.function}` : "Observa la instrucción resaltada y su efecto.";
     if (pedagogyNarration) pedagogyNarration.textContent = narration[level] || narration.intermediate || "";
+    window.ContextualHelp?.frame("sorting", currentPedagogy, level);
     const condition = currentPedagogy.condition;
     if (conditionView) {
       conditionView.className = `sorting-condition-view${condition && condition.result === true ? " is-true" : condition && condition.result === false ? " is-false" : ""}`;
@@ -468,7 +530,7 @@ function initSortingPage(model) {
     const variables = Array.isArray(currentPedagogy.variables) ? currentPedagogy.variables : [];
     if (variableTable) {
       variableTable.innerHTML = variables.length
-        ? variables.map((variable) => `<tr class="${variable.changed ? "is-changed" : ""}"><td>${sEscape(variable.name)}</td><td>${sEscape(variable.type)}</td><td>${sEscape(variable.initialized === false ? "sin inicializar" : variable.value)}</td><td>${sEscape(variable.meaning)}</td></tr>`).join("")
+        ? variables.map((variable) => `<tr class="${variable.changed ? "is-changed" : ""}"><td>${sEscape(variable.name)}</td><td>${sEscape(variable.type)}</td><td>${sEscape(sMemoryValue(variable.value, variable))}</td><td>${sEscape(variable.meaning)}</td></tr>`).join("")
         : '<tr><td colspan="4">Este frame no modifica variables escalares.</td></tr>';
     }
     const stack = Array.isArray(currentPedagogy.call_stack) ? currentPedagogy.call_stack : [];
@@ -486,7 +548,7 @@ function initSortingPage(model) {
     const pointers = Array.isArray(currentPedagogy.pointers) ? currentPedagogy.pointers : [];
     if (pointerView) {
       pointerView.innerHTML = pointers.length
-        ? pointers.map((pointer) => `<div><strong>${sEscape(pointer.name)}</strong> → ${sEscape(pointer.target)} = ${sEscape(pointer.value)}</div>`).join("")
+        ? pointers.map((pointer) => `<div><strong>${sEscape(pointer.name)}</strong> → ${sEscape(sMemoryValue(pointer.target, {...variables.find(variable => variable.name === pointer.name && variable.scope === pointer.scope), ...pointer}))}${Object.prototype.hasOwnProperty.call(pointer, "value") ? ` = ${sEscape(sMemoryValue(pointer.value))}` : ""}</div>`).join("")
         : "Sin punteros activos en este frame.";
     }
     if (invariantText) invariantText.textContent = currentPedagogy.invariant?.text || "Invariante no disponible.";
@@ -577,6 +639,7 @@ function initSortingPage(model) {
   }
 
   function updateCodeByAlgorithm() {
+    window.ContextualHelp?.operation("sorting", model, algorithmSelect?.value || "");
     const algorithmId = algorithmSelect ? algorithmSelect.value : "";
     const current = (model.algorithms || []).find((item) => item.id === algorithmId);
     const label = current ? current.label : algorithmId;
@@ -630,6 +693,7 @@ function initSortingPage(model) {
         if (trace?.trace_id) { try { window.sessionStorage.setItem("counting-cursor-"+trace.trace_id, String(cursor)); } catch (_error) { /* optional */ } }
         sEnhanceCodeNavigation(codePanel, functionList, hideComments, currentStep ? currentStep.line_index : null);
         renderPedagogy(currentStep ? currentStep.pedagogy : null);
+        if (cursor < 0) { window.ContextualHelp?.frame("sorting", null); renderLiveMemory(null); }
         renderAnalysis(currentStep ? currentStep.state_after : model.visual_state);
         if (progress) {
           progress.max = String(window.CountingRuntime.total(trace));
@@ -648,6 +712,7 @@ function initSortingPage(model) {
     : null;
 
   function setButtonsState() {
+    const busy = runPending;
     const stepMode = isStepByStepEnabled();
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const atEnd = Boolean(tracePlayer && tracePlayer.isAtEnd());
@@ -656,19 +721,23 @@ function initSortingPage(model) {
     if (countingJump) countingJump.max = String(tracePlayer?.getTotalSteps() || 0);
     if (stepButton) stepButton.hidden = false;
     if (speedSlider) {
-      speedSlider.disabled = !stepMode;
+      speedSlider.disabled = busy || !stepMode;
     }
     if (prevButton) {
-      prevButton.disabled = !stepMode || !hasTrace || tracePlayer.getCursor() < 0;
+      prevButton.disabled = busy || !stepMode || !hasTrace || tracePlayer.getCursor() < 0;
     }
     if (stepButton) {
-      stepButton.disabled = false;
+      stepButton.disabled = busy;
     }
-    if (nextButton) nextButton.disabled = !stepMode || !hasTrace || atEnd;
-    if (pauseButton) pauseButton.disabled = !stepMode || !tracePlayer || !tracePlayer.hasTrace();
-    if (startButton) startButton.disabled = !stepMode || !tracePlayer || !tracePlayer.hasTrace();
-    if (endButton) endButton.disabled = !stepMode || !tracePlayer || !tracePlayer.hasTrace();
-    if (repeatButton) repeatButton.disabled = !stepMode || !tracePlayer || !tracePlayer.hasTrace();
+    if (nextButton) nextButton.disabled = busy || !stepMode || !hasTrace || atEnd;
+    if (pauseButton) pauseButton.disabled = busy || !stepMode || !tracePlayer || !tracePlayer.hasTrace();
+    if (startButton) startButton.disabled = busy || !stepMode || !tracePlayer || !tracePlayer.hasTrace();
+    if (endButton) endButton.disabled = busy || !stepMode || !tracePlayer || !tracePlayer.hasTrace();
+    if (repeatButton) repeatButton.disabled = busy || !stepMode || !tracePlayer || !tracePlayer.hasTrace();
+    [createButton, randomButton, resetButton, playButton, prepareButton, loadExampleButton, algorithmSelect, manualInput, randomSize, randomMin, randomMax].forEach(control => { if (control) control.disabled = busy; });
+    if (restartExecutionButton) restartExecutionButton.disabled = busy || !hasTrace;
+    if (progress) progress.disabled = busy || !hasTrace;
+    ["sorting-counting-go", "sorting-counting-replay", "sorting-counting-pause"].forEach(id => { const control = sById(id); if (control) control.disabled = busy || !hasTrace; });
   }
 
   function setSpeed(value) {
@@ -694,23 +763,37 @@ function initSortingPage(model) {
     return response.json();
   }
 
+  async function mutateSorting(action) {
+    if (runPending) return null;
+    runPending = true;
+    tracePlayer?.pause(true);
+    setButtonsState();
+    try { return await action(); }
+    catch (_error) { setMessage("No se pudo confirmar la operación. Recarga la página para recuperar el estado antes de repetirla.", false); return null; }
+    finally { runPending = false; setButtonsState(); }
+  }
+
   async function createArray() {
+    return mutateSorting(async () => {
     const data = await postJson(createUrl, { values: manualInput ? manualInput.value : "" });
     setMessage(data.message, Boolean(data.success));
     if (data.success) {
       trace = null;
+      model.execution_trace = null;
       model.visual_state = data.visual_state;
       renderSortingVisualState(model.visual_state, visualContainer);
       history = sHistoryFromSaved(data.history);
       model.main_c = data.main_c;
     renderSortingHistory(history, historyBox, model.main_c);
-      tracePlayer?.clear("Arreglo creado. Ejecuta Reproducir.");
+      tracePlayer?.clear("Arreglo creado. Pulsa Ejecutar operación o Paso a paso.");
       renderSortingConsole(consoleBox, []);
       setButtonsState();
     }
+    });
   }
 
   async function randomArray() {
+    return mutateSorting(async () => {
     const data = await postJson(randomUrl, {
       size: randomSize ? randomSize.value : "",
       min_value: randomMin ? randomMin.value : "",
@@ -719,18 +802,21 @@ function initSortingPage(model) {
     setMessage(data.message, Boolean(data.success));
     if (data.success) {
       trace = null;
+      model.execution_trace = null;
       model.visual_state = data.visual_state;
       renderSortingVisualState(model.visual_state, visualContainer);
       history = sHistoryFromSaved(data.history);
       model.main_c = data.main_c;
     renderSortingHistory(history, historyBox, model.main_c);
-      tracePlayer?.clear("Arreglo generado. Ejecuta Reproducir.");
+      tracePlayer?.clear("Arreglo generado. Pulsa Ejecutar operación o Paso a paso.");
       renderSortingConsole(consoleBox, []);
       setButtonsState();
     }
+    });
   }
 
   async function loadGuidedExample() {
+    if (runPending) return;
     const kind = guidedExample ? guidedExample.value : "normal";
     const algorithmId = algorithmSelect ? algorithmSelect.value : "burbuja";
     const example = sResolveGuidedExample(kind, algorithmId);
@@ -740,22 +826,26 @@ function initSortingPage(model) {
   }
 
   async function selectAlgorithm() {
+    return mutateSorting(async () => {
     const algorithmId = algorithmSelect ? algorithmSelect.value : "";
     const data = await postJson(algorithmUrl, { algorithm_id: algorithmId });
     setMessage(data.message, Boolean(data.success));
+    if (!data.success) { if (algorithmSelect) algorithmSelect.value = model.visual_state.algorithm || "burbuja"; return; }
+    model.visual_state = data.visual_state;
+    model.execution_trace = null;
+    renderSortingVisualState(model.visual_state, visualContainer);
     if (data.success) { history = sHistoryFromSaved(data.history); model.main_c = data.main_c;
       renderSortingHistory(history, historyBox, model.main_c); }
     trace = null;
     updateCodeByAlgorithm();
-    tracePlayer?.clear("Algoritmo cambiado. Ejecuta Reproducir.");
+    tracePlayer?.clear("Algoritmo cambiado. Pulsa Ejecutar operación o Paso a paso.");
     renderSortingConsole(consoleBox, []);
     setButtonsState();
+    });
   }
 
   async function runSorting(finalOnly, autoPlay = true) {
-    if (runPending) return;
-    runPending = true;
-    try {
+    return mutateSorting(async () => {
       const algorithmId = algorithmSelect ? algorithmSelect.value : "";
       const mode = finalOnly ? "fast" : "step_by_step";
       const data = await postJson(runUrl, { mode, algorithm_id: algorithmId });
@@ -804,24 +894,35 @@ function initSortingPage(model) {
       sEnhanceCodeNavigation(codePanel, functionList, hideComments, null);
       if (autoPlay) await tracePlayer.playFromStart();
       setButtonsState();
-    } finally {
-      runPending = false;
-    }
+    });
   }
 
   async function resetSorting() {
+    if (runPending) return;
     if (!window.confirm("¿Restablecer los datos, el algoritmo y el historial de esta sesión?")) return;
-    const data = await postJson(resetUrl, {});
-    setMessage(data.message, Boolean(data.success));
-    model.visual_state = data.visual_state;
-    renderSortingVisualState(model.visual_state, visualContainer);
-    history = [];
-    model.main_c = data.main_c;
-    renderSortingHistory(history, historyBox, model.main_c);
-    trace = null;
-    tracePlayer?.clear("Usa Reproducir para ejecutar.");
-    renderSortingConsole(consoleBox, []);
-    setButtonsState();
+    return mutateSorting(async () => {
+      const data = await postJson(resetUrl, {});
+      setMessage(data.message, Boolean(data.success));
+      if (!data.success) return;
+      trace = null;
+      model.execution_trace = null;
+      model.visual_state = data.visual_state;
+      currentAttemptState = null;
+      pendingPredictionIndex = null;
+      if (predictionCard) predictionCard.hidden = true;
+      if (algorithmSelect) algorithmSelect.value = data.visual_state.algorithm || "burbuja";
+      if (manualInput) manualInput.value = "";
+      history = sHistoryFromSaved(data.history || []);
+      model.main_c = data.main_c;
+      tracePlayer?.clear("Prepara datos y pulsa Ejecutar operación o Paso a paso.");
+      updateCodeByAlgorithm();
+      renderPedagogy(null);
+      renderCountingOutcome();
+      renderSortingVisualState(model.visual_state, visualContainer);
+      renderSortingHistory(history, historyBox, model.main_c);
+      renderSortingConsole(consoleBox, []);
+      setButtonsState();
+    });
   }
 
   function fillAlgorithmSelect() {
@@ -958,10 +1059,23 @@ function initSortingPage(model) {
   compareProgress?.addEventListener("input", renderComparisonCursor);
   compareSync?.addEventListener("change", renderComparisonCursor);
   exportImage?.addEventListener("click", async () => {
+    if (exportImage.disabled) return;
+    const originalText = exportImage.textContent;
+    exportImage.disabled = true;
+    exportImage.setAttribute("aria-busy", "true");
     try {
-      const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({ target: sById("sorting-visual-region"), quality: 0.9, scale: 1 });
-      const link = document.createElement("a"); link.href = exported.dataUrl; link.download = exported.suggestedName; link.click();
+      const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({
+        target: sById("sorting-visual-region"), quality: 0.9, scale: 1,
+        onProgress: (message) => { exportImage.textContent = message; },
+      });
+      window.InterpreterRuntime.downloadJpg(exported.dataUrl, exported.suggestedName);
+      setMessage("Captura JPG preparada; revisa las descargas del navegador.", true);
     } catch (error) { setMessage(error.message || "No se pudo exportar la captura.", false); }
+    finally {
+      exportImage.disabled = false;
+      exportImage.removeAttribute("aria-busy");
+      exportImage.textContent = originalText;
+    }
   });
   exportSummary?.addEventListener("click", async () => {
     const summary = { schema: "sorting-learning-summary/v1", algorithm: algorithmSelect?.value, input: manualInput?.value, cursor: tracePlayer?.getCursor() ?? -1, total_steps: tracePlayer?.getTotalSteps() ?? 0, state: model.visual_state, theory: trace?.theory_profile || null, practice: practiceProgress, main_c: model.main_c };
@@ -978,6 +1092,7 @@ function initSortingPage(model) {
     const link = document.createElement("a"); link.href = url; link.download = `ordenamiento-${summary.algorithm || "resumen"}.json`; link.click(); URL.revokeObjectURL(url);
   });
   document.addEventListener("keydown", async (event) => {
+    if (runPending) return;
     if (!event.altKey || event.ctrlKey || event.metaKey) return;
     const key = event.key.toLowerCase();
     if (key === "arrowright") { event.preventDefault(); await advanceWithPractice(); }
@@ -1030,8 +1145,43 @@ function initSortingPage(model) {
   setButtonsState();
 }
 
+
+// Presentation-only classroom v1; existing render targets retain their identity.
+function sortingMountClassroomView() {
+  if (!window.ClassroomView) return;
+  const root = document.querySelector(".sorting-primary-workspace");
+  if (!root) return;
+  const toolbar = document.querySelector(".sorting-execution-controls");
+  if (toolbar) {
+    toolbar.classList.add("classroom-execution-controls");
+    ["sorting-sim-counter", "sorting-sim-status"].forEach(id => {
+      const node = document.getElementById(id); if (node) toolbar.appendChild(node);
+    });
+  }
+  document.getElementById("sorting-code-region")?.classList.add("classroom-code");
+  document.getElementById("sorting-code-region")?.classList.remove("didactic-technical");
+  const history = document.getElementById("sorting-action-history");
+  const consoleNode = document.getElementById("sorting-printf-console");
+  const record = document.getElementById("sorting-tad-record");
+  const results = [
+    {label:"Consola C (printf)",panel:consoleNode?.closest("section"),code:consoleNode,getText:()=>consoleNode?.dataset.consoleCopy || ""},
+    {label:"main.c del historial",panel:history?.parentElement,code:history,getText:()=>history?.dataset.rawCode || ""},
+    {label:"Estructura del TAD",panel:record?.parentElement,code:record,getText:()=>record?.dataset.rawCode ?? record?.textContent ?? ""}
+  ];
+  results.forEach(entry=>{
+    entry.panel?.classList.remove("didactic-technical");
+    for(let node=entry.panel?.parentElement;node && node.tagName!=="ARTICLE";node=node.parentElement) {
+      node.classList.remove("didactic-technical", "seq-pilot-collapsed");
+      node.hidden = false;
+      if(node.tagName==="DETAILS") node.open=true;
+    }
+  });
+  window.ClassroomView.mount({root,visual:"#sorting-visual-region",stage:"#sorting-visual-state",code:"#sorting-code",memory:["#sorting-live-memory"],results,key:"sorting"});
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   if (window.SORTING_VIEW_MODEL) {
     initSortingPage(window.SORTING_VIEW_MODEL);
+    sortingMountClassroomView();
   }
 });

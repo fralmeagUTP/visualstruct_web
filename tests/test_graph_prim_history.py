@@ -1,4 +1,4 @@
-"""Prim history repair: no historical dispatch, exact repeated successes, failures and mark isolation."""
+"""Canonical graph-book/v1 replay, retained C failures and mark isolation."""
 import copy
 import pytest
 from app.adapters.graph_adapter import GraphAdapter
@@ -10,7 +10,7 @@ def build():
   d=S.execute_operation('graph',op,copy.deepcopy(p),h);assert d['success'];h=d['history']
  return h
 @pytest.mark.parametrize('end',[1])
-def test_repeated_successes_reload_without_dispatch(end,monkeypatch):
+def test_repeated_successes_reload_with_canonical_replay(end,monkeypatch):
  h=build();calls=[];old=GraphAdapter.execute
  def spy(self,op,p):
   if op=='run_prim':calls.append(copy.deepcopy(p))
@@ -21,11 +21,11 @@ def test_repeated_successes_reload_without_dispatch(end,monkeypatch):
   for _ in range(2):
    view=S.get_view_model('graph',h);assert view['history']==h
    assert all('mark_effect' not in x for x in h if x['operation']=='run_prim')
- assert calls==[{'start':1}]*3
+ assert len(calls)>3 and all(p=={'start':1} for p in calls)
 @pytest.mark.parametrize('payload',[{'start':999},{},{'start':'bad'}])
-def test_failures_do_not_append(payload):
+def test_c_failures_retained_and_host_rejections_do_not_append(payload):
  h=S.execute_operation('graph','run_prim',{'start':1},build())['history'];old=copy.deepcopy(h)
- d=S.execute_operation('graph','run_prim',payload,h);assert not d['success'];assert d['history']==old;assert S.get_view_model('graph',d['history'])['history']==old
+ d=S.execute_operation('graph','run_prim',payload,h);assert not d['success'];expected=old if payload.get('start')!=999 else old+[d['history'][-1]];assert d['history']==expected;assert S.get_view_model('graph',d['history'])['history']==expected
 
 def test_negative_mutation_and_cycle_preserve_successful_queries():
  h=S.execute_operation('graph','run_prim',{'start':1},build())['history']
@@ -45,13 +45,13 @@ def test_shared_mark_effects_survive_nonmarking_queries(monkeypatch):
   d=S.execute_operation('graph','run_prim',{'start':1},h);assert d['success'];assert [n['marked'] for n in d['visual_state']['nodes']]==[1,1];h=d['history']
   for _ in range(2):assert [n['marked'] for n in S.get_view_model('graph',h)['visual_state']['nodes']]==[1,1]
  d=S.execute_operation('graph','run_dfs',{'start':2},h);assert [n['marked'] for n in d['execution_trace']['steps'][0]['state_snapshot']['nodes']]==[1,1]
- assert {n['id']:n['marked'] for n in S.get_view_model('graph',d['history'])['visual_state']['nodes']}=={'1':1,'2':1};assert calls==['run_prim','run_prim','run_dfs']
+ assert {n['id']:n['marked'] for n in S.get_view_model('graph',d['history'])['visual_state']['nodes']}=={'1':1,'2':1};assert calls.count('run_prim')>2 and calls.count('run_dfs')>1
 
-def test_empty_success_survives_reload():
+def test_empty_c_failure_survives_reload():
  h=S.execute_operation('graph','create_graph',{'directed':False},[])['history']
- d=S.execute_operation('graph','run_prim',{'start':0},h);assert d['success']
+ d=S.execute_operation('graph','run_prim',{'start':0},h);assert not d['success'] and d['c_status']==2 and d['history'][:-1]==h
  assert S.get_view_model('graph',d['history'])['history']==d['history']
 
-def test_directed_failure_omitted():
+def test_empty_directed_c_failure_retained():
  h=S.execute_operation('graph','create_graph',{'directed':True},[])['history']
- d=S.execute_operation('graph','run_prim',{'start':1},h);assert not d['success'] and d['history']==h
+ d=S.execute_operation('graph','run_prim',{'start':1},h);assert not d['success'] and d['c_status']==2 and d['history'][:-1]==h

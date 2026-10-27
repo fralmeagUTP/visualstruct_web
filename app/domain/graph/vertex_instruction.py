@@ -40,7 +40,9 @@ def build_graph_vertex_trace(*, operation_name, payload, source_code, code_title
         source_code += "\n/* Fragmento del caller main.c, despues del retorno de la funcion C. */\n"
         source_code += f"    g = grafo_eliminar_vertice(g, {incident_vertex_literal(int(payload['vertex']))});\n" + "\n".join(caller_rows)
     comment = "/* Proyeccion API: recibe el retorno; eliminar vertice retira arcos incidentes en Python, no en esta funcion C. */"
-    if translate_incident_arcs and success:
+    if operation_name == "insert_vertex":
+        comment = "/* Publicacion API: recibe el grafo retornado por grafo_insertar_vertice; conserva los arcos existentes. */"
+    elif translate_incident_arcs and success:
         comment = "/* Publicacion API: recibe el grafo del caller equivalente; grafo_eliminar_vertice conserva arcos, el caller retira incidentes. */"
     reject = "/* Validacion API: no se invoca la funcion C. */"
     source_code += "\n" + (comment if success else reject)
@@ -139,7 +141,7 @@ def build_graph_vertex_trace(*, operation_name, payload, source_code, code_title
                 "allocate":"Reserva nueva: los campos siguen sin inicializar.",
                 "free":"Finaliza la vida del nodo; sus aliases son identidades historicas no utilizables.",
                 "return":"Se devuelve la cabeza actual por valor.",
-                "api_projection":"La API recibe el resultado del caller equivalente; la funcion C de vertice conserva arcos y el caller los retira." if translate_incident_arcs else "La API recibe el resultado. La retirada de arcos incidentes pertenece a Python, no a esta funcion C.",
+                "api_projection":"La API recibe el grafo retornado por la insercion y conserva los arcos existentes; esta publicacion no ejecuta otra instruccion C." if operation_name == "insert_vertex" else "La API recibe el resultado del caller equivalente; la funcion C de vertice conserva arcos y el caller los retira." if translate_incident_arcs else "La API recibe el resultado. La retirada de arcos incidentes pertenece a Python, no a esta funcion C.",
                 "input_validation":"La API rechaza la solicitud sin invocar C."}.get(phase, "Se ejecuta esta instruccion C; no se anticipa una escritura futura.")
         if frame_fn == "main" and phase == "free":
             note = "El caller libera este arco ya desenlazado; la funcion de vertice no lo libero. Alias retirado no utilizable."

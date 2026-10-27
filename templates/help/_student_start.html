@@ -1,0 +1,183 @@
+{# Contenido editorial exclusivo de ayuda; no modifica metadata ni contratos del TAD. #}
+{% if structure_id == 'stack' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Una pila guarda los datos como una torre de platos: agregas y retiras por el tope. El último valor que entra es el primero que sale.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">Parte de una Pila vacía. En Agregar varios escribe 10, 20, 30 y pulsa Cargar valores. Luego Desapilar debe devolver 30; quedan 20 y 10.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Ubica el tope antes de ejecutar y predice qué valor saldrá.</li>
+<li>Activa Paso a paso antes de Desapilar y observa cuándo el tope cambia al nodo siguiente.</li>
+<li>Al final, comprueba el valor retirado y que el nodo ya no pertenece a la pila.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'queue' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Una cola atiende como una fila: los datos entran por atrás y salen por el frente. El primero que llega es el primero que sale.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">En una Cola vacía carga 10, 20, 30 con Agregar varios. Ejecuta Desencolar: saldrá 10 y quedarán 20, 30, en ese orden.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Identifica frente y atrás; no son dos colas distintas.</li>
+<li>En paso a paso, sigue el enlace del último nodo al nuevo al encolar.</li>
+<li>Al desencolar, comprueba que sólo avanza el frente; si retiras el último, ambos extremos quedan vacíos.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'priority_queue' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Una cola de prioridad elige a quién atender según su prioridad, no sólo por llegada. Aquí un número de prioridad menor se atiende antes; los empates respetan la llegada.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">Encola uno por uno: valor 10 con prioridad 2, valor 20 con prioridad 1 y valor 30 con prioridad 1. Al desencolar saldrán 20, luego 30 y después 10.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Distingue el valor del dato y su número de prioridad.</li>
+<li>Observa cómo se recorre la cadena para elegir al candidato; el primer nodo físico no siempre sale primero.</li>
+<li>Comprueba el desempate entre 20 y 30. Este TAD no tiene Agregar varios: completa valor y prioridad en cada operación.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'linked_list' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Una lista enlazada es una secuencia de nodos: cada uno guarda un valor y el enlace al siguiente. Puedes recorrerla para buscar, insertar o eliminar sin necesitar posiciones contiguas en memoria.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">En una Lista enlazada vacía carga 10, 20, 10 con Agregar varios. Buscar elemento con valor 10 debe informar las posiciones 1 y 3.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Sigue los enlaces desde la cabeza, que es el primer nodo de la lista.</li>
+<li>Compara Insertar inicio con Insertar final; Agregar varios siempre agrega al final.</li>
+<li>Al eliminar, comprueba qué enlace cambia y qué nodo se libera. Eliminar repetidos retira todas las ocurrencias del valor indicado.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'circular_list' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Una lista circular enlaza el último nodo con el primero, formando un anillo. Para recorrerla hay que reconocer cuándo se vuelve al inicio, en lugar de esperar un enlace nulo.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">En una Lista circular vacía carga 10, 20, 30. El último enlace debe volver a 10. Ejecuta Eliminar inicio: se retira 10 y el anillo queda formado por 20 y 30.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Localiza el inicio y el enlace que cierra el anillo.</li>
+<li>Avanza paso a paso para ver las escrituras de enlaces, que pueden mostrar un estado transitorio.</li>
+<li>Comprueba que el anillo vuelve a cerrar al terminar; no esperes que todas las escrituras intermedias formen ya una lista completa.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'sublist' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Una sublista organiza dos niveles: cada nodo padre tiene su propia lista de hijos. Una operación puede cambiar la lista de padres o sólo los hijos de un padre.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">Inserta los padres 10 y 20. Inserta los hijos 11 y 12 bajo el padre 10. Listar hijos de 10 debe mostrar esos dos valores; el padre 20 no tiene hijos.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Identifica primero si la operación pide padre, hijo o ambos.</li>
+<li>Observa que añadir un hijo al padre 10 no modifica la rama del padre 20.</li>
+<li>Si eliminas el padre 10, comprueba que se liberan sus hijos antes que el padre. No hay Agregar varios en Sublista.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'abb' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Un árbol binario de búsqueda (ABB) organiza valores para encontrarlos mediante comparaciones. Desde cada nodo, los menores quedan a la izquierda y los mayores a la derecha; no admite repetidos.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">En un ABB vacío carga 20, 10, 30 con Agregar varios. La raíz será 20, con 10 a la izquierda y 30 a la derecha. Buscar 10 debe encontrarlo; Inorden debe mostrar 10, 20, 30.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Antes de buscar 10, predice qué rama elegirás al compararlo con 20.</li>
+<li>Avanza un paso y relaciona la comparación C con el nodo visitado.</li>
+<li>Al terminar, confirma el resultado. Una búsqueda consulta el árbol: no lo reorganiza ni elimina nodos.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'avl' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Un AVL es un árbol de búsqueda que se equilibra para evitar ramas demasiado largas. Usa rotaciones: cambia enlaces sin perder el orden de los valores.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">En un AVL vacío carga 30, 20, 10 con Agregar paso a paso. Al completar las tres inserciones, una rotación deja 20 como raíz, 10 a su izquierda y 30 a su derecha.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Antes del tercer valor, observa qué rama está creciendo.</li>
+<li>Usa Siguiente valor sólo cuando termines la traza actual y sigue los enlaces durante la rotación.</li>
+<li>Comprueba el orden y el equilibrio al final, no a mitad de las escrituras. El factor de equilibrio compara las alturas derecha e izquierda.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'red_black' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Un árbol Rojo-Negro mantiene orden de búsqueda y usa reglas de color para limitar su altura. Inserciones y eliminaciones pueden cambiar colores o rotar enlaces para recuperar esas reglas.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">En un árbol vacío carga 10, 20, 30 paso a paso. Al terminar, la raíz debe ser negra y el recorrido Inorden debe mostrar 10, 20, 30. Ejecuta Validar para comprobar las reglas.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Separa el valor almacenado del color del nodo.</li>
+<li>Observa si el paso recolorea o rota: no son la misma acción.</li>
+<li>Comprueba las reglas al finalizar la operación. Validar informa un resultado, pero no repara un árbol incorrecto.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'binary_heap' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Un montículo mínimo permite consultar rápidamente el menor valor en la raíz. Se guarda en un arreglo y también se dibuja como árbol; no exige que todo el arreglo esté ordenado.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">En un Montículo vacío carga 30, 10, 20. Ver raíz debe devolver 10. Extraer raíz retira ese mínimo; después la raíz será 20.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Relaciona cada posición del arreglo con su nodo en el árbol.</li>
+<li>Al insertar o extraer, sigue los intercambios entre padres e hijos.</li>
+<li>Comprueba que cada padre es menor o igual que sus hijos al terminar. Ver arreglo consulta el orden interno, no un ordenamiento completo.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'graph' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Un grafo representa elementos como vértices y sus conexiones como aristas. Los pesos permiten expresar costos, y una conexión puede tener o no dirección.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">Crea un grafo no dirigido con vértices 1, 2 y 3. Agrega aristas 1–2 con peso 4, 2–3 con peso 2 y 1–3 con peso 9. En Camino mínimo elige Dijkstra, inicio 1 y destino 3: la ruta pasa por 2 y cuesta 6.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Construye y revisa el grafo antes de elegir Recorridos, Camino mínimo o Expansión mínima.</li>
+<li>En paso a paso, distingue visitar un vértice de mejorar una distancia.</li>
+<li>Comprueba el resultado y su estado. Un recorrido con menos aristas no siempre es un camino de menor peso.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'hash_table' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Una tabla hash asocia cada clave con un valor y calcula dónde guardarlo. Si dos claves caen en el mismo bucket —casilla de la tabla—, se conservan en una cadena.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">Crea capacidad 5. Inserta (clave 1, valor 10), luego (1, 20) y (6, 30). Buscar clave 1 devuelve 20. Hay dos entradas en el bucket 1: actualizar y colisionar no son lo mismo.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Distingue la clave usada para buscar del valor almacenado.</li>
+<li>Observa el índice calculado y la cadena de ese bucket.</li>
+<li>Comprueba que actualizar una clave conserva la cantidad de entradas. La capacidad queda fija; no hay Agregar varios en este módulo.</li>
+</ol>
+</section>
+{% endif %}
+{% if structure_id == 'sorting_array' %}
+<section class="help-student-start">
+<h3>¿Qué representa este TAD?</h3>
+<p class="help-student-intro">Ordenar un arreglo consiste en reorganizar sus valores de menor a mayor. Los algoritmos llegan al mismo objetivo con distintas comparaciones, movimientos y memoria auxiliar.</p>
+<h3>Prueba este ejemplo</h3>
+<p class="help-student-example">Crea 4, 1, 3, 2 y elige Burbuja. Al terminar debe quedar 1, 2, 3, 4. Para comparar con Inserción, vuelve a crear la misma entrada inicial.</p>
+<h3>Qué observar · tres pasos</h3>
+<ol class="help-student-observe">
+<li>Predice si la siguiente comparación requiere intercambiar valores.</li>
+<li>Observa los índices activos y distingue comparación de escritura.</li>
+<li>Comprueba el arreglo final y compara métodos usando los mismos datos iniciales.</li>
+</ol>
+</section>
+{% endif %}

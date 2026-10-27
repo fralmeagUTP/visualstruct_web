@@ -1,0 +1,20 @@
+{
+  "schema": "sorting-test-portability-migration/v1",
+  "source": {
+    "commit_sha": "dde0d95691482e7c6db1922d0983ef287479dacf",
+    "blob_sha1": "9a5bd8ac30a2a3916d7cddbca3f0a9f048f91e2a",
+    "path": "tests/test_sorting_mergesort_baseline_low.py",
+    "snapshot": "test_sorting_mergesort_baseline_low.published.py.snapshot",
+    "sha256": "dce394e414c7ecaa2432f8fe012a73a086e45e318c8c99356f7a16665d9947b1"
+  },
+  "historical_record": "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-mergesort-instructions/original-regressions.json",
+  "original_declared_sha256": "da963722182e05e9541f31bd2fe690409d5e7f8c907f4be7a134453b1de546b8",
+  "original_preimage_available": false,
+  "allowed_successor_changes": [
+    "CRLF/LF transport",
+    "Import of scripts.published_test_inputs.audit_input_path",
+    "Wrapping existing Path reads in audit_input_path without changing arguments"
+  ],
+  "authorization": "Current VisualStruct integration task explicitly authorizes meaningful migration of historical tests, preserving cases and assertions.",
+  "reason": "The immutable dated record is retained. Its original preimage was not recovered; this authentic published Git snapshot is a distinct authority, not a claimed match for that hash. The current test must preserve the entire AST after only the declared fixture portability adapters are removed."
+}

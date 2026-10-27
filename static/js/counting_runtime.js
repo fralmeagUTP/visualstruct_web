@@ -46,13 +46,17 @@
     const code = options.codeElement, status = options.statusElement, counter = options.counterElement;
     function report(message) { if (status) status.textContent = message; }
     function count() { if (counter) counter.textContent = `Paso: ${Math.max(0,cursor+1)}/${total(trace)}`; }
-    function paint(step, initial, reason) {
+    function clearLines() {
       const lines = scope.InterpreterRuntime.ensureCodeLines(code);
-      lines.forEach((line) => { line.classList.remove("sim-active", "sim-done"); });
+      lines.forEach((line) => { line.classList.remove("sim-active", "sim-done", "sim-skip"); });
+      return lines;
+    }
+    function paint(step, initial, reason) {
+      const lines = clearLines();
       if (options.retainDoneLines && !initial) (step.done_lines || []).forEach((index) => lines[index]?.classList.add("sim-done"));
       if (!initial && Number.isInteger(step.line_index)) {
         lines[step.line_index]?.classList.add("sim-active");
-        lines[step.line_index]?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        scope.CCodeNavigation?.revealLine(code, lines[step.line_index]);
       }
       options.renderState?.(initial ? step.state_snapshot : step.state_after, step);
       count(); report(`Paso ${Math.max(0,cursor+1)}/${total(trace)} - ${step.debug?.note || "Counting"}`);
@@ -66,7 +70,7 @@
     function loadTrace(value) {
       pause(true); navigation++; trace = value; cursor = desired = -1;
       if (trace?.source_code) scope.InterpreterRuntime.renderCode(code, trace.source_code, trace.code_title);
-      const first = trace?.initial_page?.steps?.[0]; if (first) paint(first, true, "load"); else count();
+      const first = trace?.initial_page?.steps?.[0]; if (first) paint(first, true, "load"); else { clearLines(); count(); report("No hay traza cargada."); options.onCursorChange?.({ reason:"load", trace, cursor, step:null }); }
     }
     async function move(target, reason, playbackToken) {
       const version = ++navigation, ownTrace = trace;
@@ -98,15 +102,17 @@
         await new Promise((resolve) => setTimeout(resolve, Math.max(12,160/speed)));
       }
     }
-    function clear(message) { pause(true); navigation++; trace = null; cursor = desired = -1; count(); report(message || "No hay traza cargada."); options.onCursorChange?.({ reason:"clear", trace:null, cursor, step:null }); }
+    function clear(message) { pause(true); navigation++; trace = null; cursor = desired = -1; clearLines(); count(); report(message || "No hay traza cargada."); options.onCursorChange?.({ reason:"clear", trace:null, cursor, step:null }); }
     return { loadTrace, seek, step, prev, reset, clear, pause, play, playFromStart:async()=>{reset();await play();}, hasTrace:()=>Boolean(trace), getCursor:()=>cursor, getTotalSteps:()=>total(trace), isAtEnd:()=>Boolean(trace)&&cursor>=total(trace)-1, setSpeed:(value)=>{speed=Math.min(4,Math.max(0.25,Number(value)||1));}, getSpeed:()=>speed };
   }
   function createCompatiblePlayer(options) {
     const legacy = scope.InterpreterRuntime.createTracePlayer(options);
     const paged = createPagedPlayer(options);
     let active = legacy, trace = null;
-    const api = { loadTrace(value) { active.pause(true); trace=value; active=isPaged(value)?paged:legacy; active.loadTrace(value); }, getStep:(index)=>frame(trace,index) };
-    for (const name of ["seek","step","prev","reset","clear","pause","play","playFromStart","hasTrace","getCursor","getTotalSteps","isAtEnd","setSpeed","getSpeed"]) api[name]=(...args)=>active[name](...args);
+    // Clearing the old player also invalidates any in-flight page navigation.
+    // Pausing alone only cancels autoplay and lets a pending seek repaint it.
+    const api = { loadTrace(value) { active.clear(); trace=value; active=isPaged(value)?paged:legacy; active.loadTrace(value); }, clear(message) { trace=null; return active.clear(message); }, getStep:(index)=>frame(trace,index) };
+    for (const name of ["seek","step","prev","reset","pause","play","playFromStart","hasTrace","getCursor","getTotalSteps","isAtEnd","setSpeed","getSpeed"]) api[name]=(...args)=>active[name](...args);
     return api;
   }
   scope.CountingRuntime = { isPaged, total, frame, locate, createCompatiblePlayer, cachePages:(trace)=>isPaged(trace)?provider(trace).cacheSize():0 };

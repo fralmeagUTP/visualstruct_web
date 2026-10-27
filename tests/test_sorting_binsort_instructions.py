@@ -1,4 +1,5 @@
 """Binsort-specific causal, ownership, and full-domain sparse regression gates."""
+from scripts.published_test_inputs import audit_input_path
 from pathlib import Path
 from dataclasses import replace
 import json, hashlib
@@ -41,7 +42,7 @@ def all_frames(c,t):
 
 @pytest.mark.parametrize('case',['single','normal','negative_duplicates','outside_five','range_six','eighty_equal','near_min','range_thousand'])
 def test_binsort_all_native_events_before_after_and_suspended_wrapper(case):
- d=json.loads((LOW/'native'/(case+'.json')).read_text(encoding='utf-8'))
+ d=json.loads((audit_input_path(LOW/'native'/(case+'.json'))).read_text(encoding='utf-8'))
  app,c,_=prepare(d['case']['input']);response=run(c).get_json();t=response['execution_trace'];frames=all_frames(c,t)
  assert len(frames)==len(d['native']);check_vars(frames)
  for i,(native,f) in enumerate(zip(d['native'],frames)):
@@ -61,10 +62,10 @@ def test_binsort_all_native_events_before_after_and_suspended_wrapper(case):
 
 @pytest.mark.parametrize('case',['range_two','range_eighty','null_two','null_negative_duplicates'])
 def test_binsort_complete_native_delegated_ERROR_and_parent_retirement(case):
- d=json.loads((ERR/(case+'.json')).read_text(encoding='utf-8'));app,c,before=prepare(d['case']['input'],null if d['case']['simulated_calloc'] else None)
+ d=json.loads((audit_input_path(ERR/(case+'.json'))).read_text(encoding='utf-8'));app,c,before=prepare(d['case']['input'],null if d['case']['simulated_calloc'] else None)
  r=run(c);assert r.status_code==400;data=r.get_json();t=data['execution_trace'];frames=all_frames(c,t);native=d['native']
  assert len(frames)==len(native)+3;check_vars(frames)
- observed=json.loads((C/'evidence/visible-sorting-binsort-instructions/native-errors'/(case+'.json')).read_text(encoding='utf-8'))['native']
+ observed=json.loads((audit_input_path(C/'evidence/visible-sorting-binsort-instructions/native-errors'/(case+'.json'))).read_text(encoding='utf-8'))['native']
  assert len(frames)==len(observed)
  for f,n in zip(frames,observed):assert f['debug']['instruction_event']=={k:v for k,v in n.items() if k!='case'}
  for f,n in zip([frames[0],*frames[3:-1]],native):assert f['debug']['instruction_event']=={k:v for k,v in n.items() if k!='case'}
@@ -136,9 +137,9 @@ def test_binsort_no_saved_step_does_not_dispatch(monkeypatch):
 
 def test_binsort_protected_sources_and_original_regressions_unchanged():
  e=C/'evidence/visible-sorting-binsort-instructions'
- for f,h in json.loads((e/'protected-before.json').read_text(encoding='utf-8')).items():assert_historical_protected_hash(ROOT,f,h)
- original=json.loads((e/'original-test-sha.json').read_text(encoding='utf-8'))
- for f,h in original.items():assert hashlib.sha256((ROOT/f).read_bytes()).hexdigest()==h
+ for f,h in json.loads((audit_input_path(e/'protected-before.json')).read_text(encoding='utf-8')).items():assert_historical_protected_hash(ROOT,f,h)
+ original=json.loads((audit_input_path(e/'original-test-sha.json')).read_text(encoding='utf-8'))
+ for f,h in original.items():assert hashlib.sha256((audit_input_path(ROOT/f)).read_bytes()).hexdigest()==h
 
 
 def test_binsort_plain_model_allocation_failure_is_separate_from_native_and_QA():
@@ -151,7 +152,7 @@ def test_binsort_plain_model_allocation_failure_is_separate_from_native_and_QA()
 @pytest.mark.parametrize('case',['cap_two','wide_eighty'])
 def test_binsort_maximum_decorator_preserves_verified_delegate_records(monkeypatch,case):
  import app.domain.sorting.binsort_instructions as module
- report=json.loads((C/'evidence/visible-sorting-counting-native-fault-low'/('stream-'+case+'-binary/report.json')).read_text(encoding='utf-8'))
+ report=json.loads((audit_input_path(C/'evidence/visible-sorting-counting-native-fault-low'/('stream-'+case+'-binary/report.json'))).read_text(encoding='utf-8'))
  capture={};original=module.run_counting_sparse_trace
  def observe(values,**kwargs):
   result=original(values,**kwargs);capture['delegate']=result['steps'];return result
@@ -170,3 +171,4 @@ def test_binsort_maximum_decorator_preserves_verified_delegate_records(monkeypat
    assert wrapped['instruction_stack']==['ordenar_binsort']+raw['instruction_stack']
   begin=end
  assert [(r['start'],r['end']) for r in bin_tape.records if r['kind']=='zero_span']==[(r['start'],r['end']) for r in delegate.records if r['kind']=='zero_span']
+

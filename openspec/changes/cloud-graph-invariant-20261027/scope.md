@@ -1,0 +1,3 @@
+# Autorización vigente de reparación mínima C
+2026-10-27: coordinación/parent confirma que el defecto real malloc que crea arco con extremo ausente entra en la autorización del usuario de reparar errores. Permite parche mínimo manteniendo firmas/contratos normales; no migrar11 APIs ni cambiar Dijkstra/Kruskal. Si excede3 bloques funcionales, informar antes de ampliar.
+Original preservado. Libro de grafos ya tiene garantía superior/contrato distinto; no degradarlo. Su alineación completa requiere decisión separada. Coordinar reflejo del cambio web en copia documental con agente alinear_codigo_libro_estructuras.

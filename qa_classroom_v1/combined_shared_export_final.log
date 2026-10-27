@@ -1,0 +1,38 @@
+✔ JPG download uses attached blob anchor, exact JPEG bytes/MIME and delayed cleanup (4.932092ms)
+✔ download failure releases blob and anchor immediately (1.470695ms)
+✔ invalid image output is not downloaded (0.91889ms)
+✔ image onload resolves and clears timer/listeners (0.980313ms)
+✔ image onerror rejects and releases source/timer (0.980984ms)
+✔ image with no event has finite timeout and releases resources (0.691476ms)
+✔ raster prefers self-contained data SVG and revokes blob after fallback (1.495542ms)
+✔ raster failure always releases intermediate URL (0.926501ms)
+✔ panel/global graph target promotes to region including sibling current memory (1.860484ms)
+✔ other families and detached graph target keep their existing export target (0.685257ms)
+✔ graph uses measured detached expansion; region excludes controls/C/Comprender (0.45594ms)
+✔ panel/global hash target promotes to region including sibling current memory (2.8553ms)
+✔ other families and detached hash target keep their existing export target (1.404214ms)
+✔ hash uses measured detached expansion; region excludes controls/C/Comprender (0.344592ms)
+✔ expands only detached descendants and measures content beyond original viewport (3.289777ms)
+✔ temporary measurement DOM always removed on layout failure (1.272975ms)
+✔ hierarchical expansion is scoped to region and descendant target, not other families (0.254526ms)
+✔ nonzero SVG viewBox origin stays intact while width/height are restored (1.050089ms)
+✔ mount starts natural size; zoom and local pan survive twenty redraw/back notifications (4.420809ms)
+✔ zoom is explicit bounded and never fitted to viewport (0.947804ms)
+✔ copy preserves exact raw C bytes including empty lines and Unicode comments (1.086815ms)
+✔ HTML visual zoom scales only diagram content, not auxiliary memory (1.157892ms)
+✔ export clone opens memory and resets zoom without touching live state (1.19004ms)
+✔ enlarge and close preserve same code node, raw text, focus and document position (1.192474ms)
+✔ rendered code lines retain blank lines; rawCode wins byte-exact including CRLF (0.95835ms)
+✔ explicit fit bounds scale by measured font, never inventing readability (2.424448ms)
+✔ fit is a user button, absent from mount refresh and redraw auto paths (1.186184ms)
+✔ auxiliary memory lives outside panned stage, replaces fresh frames and clears absent memory (1.913925ms)
+✔ expanded export preserves data bar sizes and overrides important viewport constraints only in clone (2.812275ms)
+✔ export materializes closed auxiliary details as a static block retaining all evidence (1.137621ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 159.413451

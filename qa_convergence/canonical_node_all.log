@@ -1,0 +1,12 @@
+=== qa_convergence/test_book_frontend.js
+PASS 8 canonical results, 19 source function targets, 18 immutable memory frames, suspended export/reset and explicit modes
+=== qa_convergence/test_book_frontend_execution.js
+PASS real execution handler: preserve rejection, normal no-trace clears old player, failed C trace plays, concurrent mutation guard
+=== qa_convergence/test_book_frontend_retired.js
+PASS retired reference no-use labeling, no false dangling zero, immutable aggregate summary and application publication
+PASS actual canonical remove-arc frame E2 after free, safe memory_display and immutable raw evidence
+PASS two-node horizontal geometry preserves both vertices; borrowed arcs grouped with origin/target/cost
+=== qa_convergence/test_book_frontend_stdout.js
+PASS normal without trace preserves exact stdout UTF8/repetitions/blank lines; never host message
+=== qa_convergence/test_book_main_guide_navigation.js
+PASS six real guide function links open canonical disclosure, reveal exact definition and preserve source

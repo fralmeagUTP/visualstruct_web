@@ -2,6 +2,7 @@
 from pathlib import Path
 import json,hashlib,os,subprocess,shutil,re
 import pytest
+from _application_rejection_contract import assert_unexecuted_input_rejection
 from app import create_app
 from app.services.hierarchical_structure_service import HierarchicalStructureService as S
 from _audit_rbt_delete_native_observer import observe,CASES,FUNCTIONS
@@ -29,8 +30,13 @@ def test_delete_lifetime_identity_and_native_endpoint(rbt_delete_baseline,case):
 @pytest.mark.parametrize('seed,value',[([],99),([10],99),([10,5,15],99),([10],'abc'),([],None),([-2147483648],2147483648)])
 def test_application_rejection_is_not_a_native_delete_invocation(seed,value):
  history=[{'operation':'insertar','payload':{'value':v}} for v in seed];a,_=S._rebuild_adapter('red_black',history);before=a.to_visual_state();r=S.execute_operation('red_black','eliminar',{'value':value},history);assert not r['success'] and r['visual_state']==before and r['history']==history
- t=r['execution_trace'];assert t['application_precondition_rejected'] and len(t['steps'])==1 and 'rbt_eliminar NO fue invocado' in t['source_code'];p=t['steps'][0]['pedagogy'];assert not p['instruction_event']['C_invoked'] and not p['variables'] and not p['call_stack'] and not p['memory']['allocated_objects'] and not p['memory']['freed_objects'] and p['return_propagation']['value'] is None and t['steps'][0]['console']==[]
+ t=r['execution_trace']
+ if t.get('execution_started') is False:
+  assert_unexecuted_input_rejection(r)
+ else:
+  assert t['application_precondition_rejected'] and len(t['steps'])==1 and 'rbt_eliminar NO fue invocado' in t['source_code'];p=t['steps'][0]['pedagogy'];assert not p['instruction_event']['C_invoked'] and not p['variables'] and not p['call_stack'] and not p['memory']['allocated_objects'] and not p['memory']['freed_objects'] and p['return_propagation']['value'] is None and t['steps'][0]['console']==[]
 
+from scripts.test_tool_paths import resolve_doxygen
 def test_original_downloaded_helpers_contract_and_doxygen(tmp_path,rbt_delete_baseline):
  client=create_app().test_client();root=Path(__file__).resolve().parents[1]
  for kind,suffix in [('source','c'),('header','h')]:
@@ -43,6 +49,6 @@ def test_original_downloaded_helpers_contract_and_doxygen(tmp_path,rbt_delete_ba
  run=subprocess.run([str(tmp_path/'raw.exe')],capture_output=True,text=True,timeout=10);assert run.returncode==0,run.stdout[-1000:]
  for case,m in enumerate(rbt_delete_baseline['cases']):
   assert run.stdout.split(f'RAW_BEGIN {case}\n')[1].split(f'RAW_END {case}\n')[0]=='';tree=re.search(r'^ROOT '+str(case)+r' (.*)$',run.stdout,re.M);assert json.loads(tree.group(1))==m['native_root']
- warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile';cfg.write_text('\n'.join(['INPUT = "'+(tmp_path/'tad_rojo_negro.c').as_posix()+'" "'+(tmp_path/'tad_rojo_negro.h').as_posix()+'"','OUTPUT_DIRECTORY = "'+(tmp_path/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','EXTRACT_STATIC = YES','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8');doxy=Path(r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe');docs=subprocess.run([str(doxy),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',docs.stderr
+ warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile';cfg.write_text('\n'.join(['INPUT = "'+(tmp_path/'tad_rojo_negro.c').as_posix()+'" "'+(tmp_path/'tad_rojo_negro.h').as_posix()+'"','OUTPUT_DIRECTORY = "'+(tmp_path/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','EXTRACT_STATIC = YES','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8');doxy=Path(resolve_doxygen());docs=subprocess.run([str(doxy),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',docs.stderr
  help=client.get('/help/hierarchical/red_black');assert help.status_code==200 and 'reserva original z' in help.text and 'sin copiar su valor' in help.text and 'altura negra uniforme' in help.text
  (tmp_path/'documentation-contract-review.json').write_text(json.dumps({'raw_original_cases':83,'C_H_Doxygen_warnings':0,'five_symbols_reviewed':['rbt_eliminar','colorOf','minimo','transplantar','arreglarEliminacion'],'helper_null_and_borrowed_transplant_contracts':True,'strong_endpoint_invariants':True,'manual_http_consistent':True,'instruction_UI_pending':True}),encoding='utf-8')

@@ -188,21 +188,21 @@ class SortingStructureService:
                 "history": valid_history,
             }
 
-        if operation_name in {"run", "step"}:
-            active_algorithm = payload.get("algorithm_id") or before_state.get("algorithm")
-            if active_algorithm:
-                adapter.select_algorithm(str(active_algorithm))
-            source_algorithm = str(active_algorithm or adapter.to_visual_state().get("algorithm") or "")
-            source_code = str(
-                didactic_data.get("operations", {}).get(
-                    source_algorithm,
-                    "",
-                )
-            )
-            payload = dict(payload)
-            payload["source_code"] = source_code
-
         try:
+            if operation_name in {"run", "step"}:
+                active_algorithm = payload.get("algorithm_id") or before_state.get("algorithm")
+                if active_algorithm:
+                    adapter.select_algorithm(str(active_algorithm))
+                source_algorithm = str(active_algorithm or adapter.to_visual_state().get("algorithm") or "")
+                source_code = str(
+                    didactic_data.get("operations", {}).get(
+                        source_algorithm,
+                        "",
+                    )
+                )
+                payload = dict(payload)
+                payload["source_code"] = source_code
+
             result = adapter.execute(operation_name, payload)
         except (SortingExecutionError, ValueError, TypeError) as error:
             message = SortingStructureService._didactic_error(error)

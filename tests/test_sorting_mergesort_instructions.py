@@ -1,4 +1,5 @@
 """Independent C-observed scopes, partial writes and lifetime/replay gates for six Merge cases."""
+from scripts.published_test_inputs import audit_input_path
 from pathlib import Path
 from _audit_approved_source_supersessions import assert_historical_protected_hash
 import json,hashlib
@@ -10,7 +11,7 @@ def observed(tmp_path_factory):
  out=tmp_path_factory.mktemp('merge-instructions');return out,audit(out)
 @pytest.mark.parametrize('case',list(CASES))
 def test_C_typed_scopes_previous_calls_source_auxiliary_every_frame(case,observed):
- out,report=observed;d=json.loads((out/(case+'.json')).read_text(encoding='utf-8'));steps=d['response']['execution_trace']['steps'];native=d['native'];assert len(native)==len(steps);previous={}
+ out,report=observed;d=json.loads((audit_input_path(out/(case+'.json'))).read_text(encoding='utf-8'));steps=d['response']['execution_trace']['steps'];native=d['native'];assert len(native)==len(steps);previous={}
  for index,(step,c) in enumerate(zip(steps,native)):
   event=c['event'];token=event['token'];p=step['pedagogy'];variables=p['variables'];by={(v['scope'],v['name']):v for v in variables};assert len(by)==len(variables)
   assert step['debug']['instruction_event']==event and step['state_after']['items']==c['array'] and step['state_snapshot']['items']==native[max(0,index-1)]['array']
@@ -53,7 +54,7 @@ def test_C_typed_scopes_previous_calls_source_auxiliary_every_frame(case,observe
 def test_C_atomic_postincrements_ties_partial_copy_shortcircuit_suspend_retire(observed):
  out,_=observed;saw_partial=saw_tie=saw_short=False
  for case in CASES:
-  d=json.loads((out/(case+'.json')).read_text(encoding='utf-8'));native=d['native'];steps=d['response']['execution_trace']['steps']
+  d=json.loads((audit_input_path(out/(case+'.json'))).read_text(encoding='utf-8'));native=d['native'];steps=d['response']['execution_trace']['steps']
   for index,c in enumerate(native):
    e=c['event'];token=e['token'];prev=native[max(0,index-1)];f=e['frames'][-1] if e['frames'] else {};pf=prev['event']['frames'][-1] if prev['event']['frames'] else {}
    if token in ['aux_left_write','aux_right_write','left_tail_write','right_tail_write']:
@@ -73,13 +74,15 @@ def test_C_atomic_postincrements_ties_partial_copy_shortcircuit_suspend_retire(o
 
 @pytest.mark.parametrize('case',list(CASES))
 def test_actual_UI_restores_C_aux_scopes_pointers_calls_without_redispatch(case):
- r=json.loads((E/'browser-final/report.json').read_text(encoding='utf-8'));row=next(x for x in r['rows'] if x['case']==case)
+ r=json.loads((audit_input_path(E/'browser-final/report.json')).read_text(encoding='utf-8'));row=next(x for x in r['rows'] if x['case']==case)
  assert row['forward_reverse_restorations']==2*row['instructions'] and row['replay_extra_POSTs']==0 and row['page_errors']==[] and row['fast_to_step_preserved'] and row['reload_main_preserved'] and row['recursive_scopes_auxiliary_lifetime_match_C'] and row['five_stages']
  c=row['caller'];assert c['strict_C17'] and c['doxygen_warnings']==0 and c['arrays']==[CASES[case],sorted(CASES[case])] and c['successful_native_runs']==1 and c['allocations']==c['frees']==1 and c['live']==0 and c['first_allocation_failure']['no_success_array_after_failure']
  assert r['empty_UI_rejected'] and r['empty_caller']['successful_native_runs']==r['empty_caller']['allocations']==r['empty_caller']['frees']==0
 
 def test_original_regressions_C_H_closed_modules_and_observer_bytes_preserved():
- before=json.loads((E/'original-regressions.json').read_text(encoding='utf-8'));assert hashlib.sha256((ROOT/before['path']).read_bytes()).hexdigest()==before['sha256']
- prior=json.loads((BASE/'evidence/visible-sorting-quicksort-instructions/implementation-hashes.json').read_text(encoding='utf-8'))['files']
+ from _sorting_published_test_contract import assert_published_mergesort_test_successor
+ before=json.loads((audit_input_path(E/'original-regressions.json')).read_text(encoding='utf-8'));assert_published_mergesort_test_successor(ROOT,before)
+ prior=json.loads((audit_input_path(BASE/'evidence/visible-sorting-quicksort-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
  for rel in ['docs/tads_C/tad_ordenamiento.c','docs/tads_C/tad_ordenamiento.h']+[f'app/domain/sorting/{m}_instructions.py' for m in ['intercambio','seleccion','insercion','burbuja','shell','quicksort']]:assert_historical_protected_hash(ROOT,rel,prior[rel])
- for name in ['observed.c','native.jsonl','tad_ordenamiento.c','tad_ordenamiento.h']:assert (E/'native-final'/name).read_bytes()==(BASE/'evidence/visible-sorting-mergesort-baseline-low/native'/name).read_bytes()
+ for name in ['observed.c','native.jsonl','tad_ordenamiento.c','tad_ordenamiento.h']:assert (audit_input_path(E/'native-final'/name)).read_bytes()==(audit_input_path(BASE/'evidence/visible-sorting-mergesort-baseline-low/native'/name)).read_bytes()
+

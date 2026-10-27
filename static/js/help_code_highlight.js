@@ -158,7 +158,7 @@ function highlightHelpCodeBlock(preElement) {
     .map((line, index) => {
       const highlighted = highlightHelpCLine(line, state);
       state = highlighted.state;
-      return `<span class="code-line" data-line="${index}">${highlighted.html || "&nbsp;"}</span>`;
+      return `<span class="code-line" data-line="${index}">${highlighted.html || ""}</span>`;
     })
     .join("");
   preElement.innerHTML = html;

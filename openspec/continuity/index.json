@@ -1,6 +1,141 @@
 {
   "schema": "visualstruct-continuity-index/v1",
-  "canonical_project": "D:\\MisProyectos\\Web_VisualEstruct",
-  "changes": {},
+  "canonical_project": "/workspace/scratch/644977913e22/visualstruct_scroll_codigo_20261027/app",
+  "changes": {
+    "cloud-local-smoke-20261027": {
+      "sources": [
+        "openspec/changes/cloud-local-smoke-20261027/scope.md"
+      ],
+      "tasks": "openspec/changes/cloud-local-smoke-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/cloud-local-smoke-20261027.json",
+      "operations": {
+        "local-smoke": {
+          "source": "openspec/changes/cloud-local-smoke-20261027/scope.md",
+          "scope": "Prueba finita copia cloud aislada",
+          "task_prefix": "local-smoke:"
+        }
+      }
+    },
+    "cloud-pedagogical-repair-20261027": {
+      "sources": [
+        "openspec/changes/cloud-pedagogical-repair-20261027/scope.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/proposal.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/design.md",
+        "openspec/changes/cloud-pedagogical-repair-20261027/specs/visual-playback-ui/spec.md"
+      ],
+      "tasks": "openspec/changes/cloud-pedagogical-repair-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/cloud-pedagogical-repair-20261027.json",
+      "operations": {
+        "pedagogical-repair": {
+          "source": "openspec/changes/cloud-pedagogical-repair-20261027/scope.md",
+          "scope": "Reparación finita local, todas las estructuras y controles pedagógicos",
+          "task_prefix": "pedagogical-repair:"
+        }
+      }
+    },
+    "cloud-graph-invariant-20261027": {
+      "sources": [
+        "openspec/changes/cloud-graph-invariant-20261027/scope.md",
+        "openspec/changes/cloud-graph-invariant-20261027/proposal.md",
+        "openspec/changes/cloud-graph-invariant-20261027/design.md",
+        "openspec/changes/cloud-graph-invariant-20261027/specs/graph-invariants/spec.md"
+      ],
+      "tasks": "openspec/changes/cloud-graph-invariant-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/cloud-graph-invariant-20261027.json",
+      "operations": {
+        "graph-edge-allocation": {
+          "source": "openspec/changes/cloud-graph-invariant-20261027/scope.md",
+          "scope": "Invariante extremo/arco ante malloc; sin cambiar API ni algoritmos",
+          "task_prefix": "graph-edge-allocation:"
+        }
+      }
+    },
+    "cloud-graph-book-convergence-20261027": {
+      "sources": [
+        "openspec/changes/cloud-graph-book-convergence-20261027/scope.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/proposal.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/design.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/requirements.md",
+        "openspec/changes/cloud-graph-book-convergence-20261027/specs/graph-book-contract/spec.md"
+      ],
+      "tasks": "openspec/changes/cloud-graph-book-convergence-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/cloud-graph-book-convergence-20261027.json",
+      "operations": {
+        "graph-book-convergence": {
+          "source": "openspec/changes/cloud-graph-book-convergence-20261027/scope.md",
+          "scope": "Segunda copia: convergencia de grafos al C/H exacto del libro",
+          "task_prefix": "graph-book-convergence:"
+        }
+      }
+    },
+    "cloud-classroom-view-v1-20261027": {
+      "sources": [
+        "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/proposal.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/design.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/requirements.md",
+        "openspec/changes/cloud-classroom-view-v1-20261027/specs/classroom-view/spec.md"
+      ],
+      "tasks": "openspec/changes/cloud-classroom-view-v1-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/cloud-classroom-view-v1-20261027.json",
+      "operations": {
+        "classroom-view-v1": {
+          "source": "openspec/changes/cloud-classroom-view-v1-20261027/scope.md",
+          "scope": "UI transversal de clase/resultados en copia v1; C/H intactos",
+          "task_prefix": "classroom-view-v1:"
+        }
+      }
+    },
+    "cloud-multiple-input-20261027": {
+      "sources": [
+        "openspec/changes/cloud-multiple-input-20261027/scope.md",
+        "openspec/changes/cloud-multiple-input-20261027/proposal.md",
+        "openspec/changes/cloud-multiple-input-20261027/design.md",
+        "openspec/changes/cloud-multiple-input-20261027/specs/multiple-input/spec.md",
+        "openspec/changes/cloud-multiple-input-20261027/decision-reopen.md"
+      ],
+      "tasks": "openspec/changes/cloud-multiple-input-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/cloud-multiple-input-20261027.json",
+      "operations": {
+        "multiple-input": {
+          "source": "openspec/changes/cloud-multiple-input-20261027/scope.md",
+          "scope": "Entrada múltiple frontend; C/H y backend intactos",
+          "task_prefix": "multiple-input:"
+        }
+      }
+    },
+    "cloud-student-help-20261027": {
+      "sources": [
+        "openspec/changes/cloud-student-help-20261027/scope.md",
+        "openspec/changes/cloud-student-help-20261027/decision-reopen-student-readability.md"
+      ],
+      "tasks": "openspec/changes/cloud-student-help-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/cloud-student-help-readability-20261027.json",
+      "operations": {
+        "student-help": {
+          "source": "openspec/changes/cloud-student-help-20261027/scope.md",
+          "scope": "Manual/ayuda estudiantil",
+          "task_prefix": "student-help:"
+        }
+      }
+    },
+    "cloud-code-horizontal-scroll-20261027": {
+      "sources": [
+        "openspec/changes/cloud-code-horizontal-scroll-20261027/scope.md",
+        "openspec/changes/cloud-code-horizontal-scroll-20261027/proposal.md",
+        "openspec/changes/cloud-code-horizontal-scroll-20261027/design.md",
+        "openspec/changes/cloud-code-horizontal-scroll-20261027/specs/code-reading/spec.md"
+      ],
+      "tasks": "openspec/changes/cloud-code-horizontal-scroll-20261027/tasks.md",
+      "assignment_source": "openspec/continuity/assignments/cloud-code-horizontal-scroll-20261027.json",
+      "operations": {
+        "code-horizontal-scroll": {
+          "source": "openspec/changes/cloud-code-horizontal-scroll-20261027/scope.md",
+          "scope": "Scroll local de código; fuentes intactas",
+          "task_prefix": "code-horizontal-scroll:"
+        }
+      }
+    }
+  },
   "latest_archive_map": "openspec/continuity/archive-four-final-20261014.json"
 }

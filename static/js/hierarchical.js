@@ -7,6 +7,60 @@ function hById(id) {
   return document.getElementById(id);
 }
 
+function createHierPredictionController(getTrace, getCursor) {
+  let trace = null, target = null, hintLevel = 0;
+  const scored = new Set();
+  function sync() {
+    const nextTrace = getTrace();
+    if (nextTrace !== trace) { trace = nextTrace; scored.clear(); target = null; hintLevel = 0; }
+    for (let index = 0; index <= getCursor(); index += 1) {
+      const frame = trace?.steps?.[index]?.pedagogy;
+      if (frame && ["compare", "condition", "comparison"].includes(frame.concept) && typeof frame.condition?.result === "boolean") scored.add(index);
+    }
+    let next = null;
+    for (let index = getCursor() + 1; index < (trace?.steps?.length || 0); index += 1) {
+      const frame = trace.steps[index]?.pedagogy;
+      // Only this frame's evaluated C condition is evidence. A branch/case
+      // carried over on assignment frames does not create another decision.
+      if (frame && ["compare", "condition", "comparison"].includes(frame.concept) && typeof frame.condition?.result === "boolean") {
+        next = { index, source: String(frame.condition.source || frame.source?.line_text || "condición C"), answer: String(frame.condition.result) };
+        break;
+      }
+    }
+    if (target?.index !== next?.index) hintLevel = 0;
+    target = next;
+    return target ? { index: target.index, prompt: `Predecir próxima condición C (paso ${target.index + 1}): ¿es verdadera o falsa? ${target.source}`, options: [{value:"true",label:"Verdadero"},{value:"false",label:"Falso"}], scored: scored.has(target.index) } : null;
+  }
+  function answer(choice) {
+    sync();
+    if (!target || !["true","false"].includes(choice)) return null;
+    const counted = !scored.has(target.index); scored.add(target.index);
+    return { index: target.index, correct: choice === target.answer, counted, label: target.answer === "true" ? "Verdadero" : "Falso" };
+  }
+  function skip() { sync(); if (!target) return null; scored.add(target.index); return {index:target.index}; }
+  function hint() {
+    sync(); if (!target) return "No quedan decisiones con condición C registrada.";
+    hintLevel = Math.min(2, hintLevel + 1);
+    return hintLevel === 1 ? "Pista 1: identifica los operandos de la condición; consulta el estado previo, no el resultado futuro." : "Pista 2: evalúa los operadores y respeta el cortocircuito de && y ||; una comparación con NULL comprueba un puntero, no el contenido del nodo.";
+  }
+  return { sync, answer, skip, hint };
+}
+
+function renderHierComparisonShape(state, structure) {
+  const root = structure === "binary_heap" ? heapArrayToTreeNode(state.array || []) : state.root;
+  const levels = node => node ? 1 + Math.max(levels(node.left), levels(node.right)) : 0;
+  const name = state.title || ({abb:"Árbol binario de búsqueda",avl:"Árbol AVL",red_black:"Árbol rojo-negro",binary_heap:"Montículo binario"})[structure] || "Estructura";
+  const svg = drawTreeSvgFromNodes(flattenTree(root), {showBalanceFactor:structure === "avl",showNullLeaves:structure === "red_black"});
+  return { name, height:levels(root), html:`<div class="hier-comparison-shape" role="img" aria-label="Forma de ${hEscape(name)}" data-comparison-root="${hEscape(root?.value ?? "NULL")}">${svg}</div>` };
+}
+function renderHierComparisonState(side, step) {
+  const state = step?.state || side?.final_state || {};
+  const shape = renderHierComparisonShape(state, side?.structure);
+  const isHeap = side?.structure === "binary_heap", traversal = state.traversals?.inorden || [], array = state.array || [];
+  const valid = step?.validation ?? side?.validation;
+  return `<article class="hier-compare-card"><h4>${hEscape(shape.name)}</h4><p><strong>Paso:</strong> ${hEscape(step?.step ?? "final")} · insertado ${hEscape(step?.inserted ?? "—")}</p><p><strong>Altura (niveles):</strong> ${shape.height} · <strong>Tamaño:</strong> ${hEscape(state.size ?? side?.size ?? "—")}</p>${shape.html}<p><strong>${isHeap ? "Arreglo del heap (no orden total)" : "Orden de visita inorden"}:</strong> <code>${hEscape((isHeap ? array : traversal).join(" → ") || "vacío")}</code></p><p><strong>Invariante:</strong> ${valid === true ? "✓ válido" : valid === false ? "✗ inválido" : "sin verificación registrada"}</p></article>`;
+}
+
 function initHierResponsiveWorkspace() {
   const workspace = document.querySelector(".hier-primary-workspace");
   const tabs = Array.from(document.querySelectorAll("[data-hier-tab]"));
@@ -20,22 +74,38 @@ function enhanceHierCodeNavigation(activeLine = null) {
   const code = hById("op-pseudocode"); const list = hById("hier-function-list"); const hide = hById("hier-hide-comments");
   if (!code || !list) return;
   const raw = String(code.dataset.rawCode || code.textContent || ""); const rows = raw.replaceAll("\r\n", "\n").split("\n"); const functions = [];
-  const signature = /^\s*(?:static\s+)?(?:void|bool|char|int|size_t|AVL|RBT|ABBNodo\s*|MonticuloBinario\s*)\**\s*([A-Za-z_]\w*)\s*\(/;
-  rows.forEach((row,index) => { const match=row.match(signature); if(match && !["if","while","for","switch"].includes(match[1])) functions.push({name:match[1],line:index}); });
-  let block=false; code.querySelectorAll(".code-line").forEach((node,index) => { const value=String(rows[index]||"").trim(); const starts=value.startsWith("/*"); node.classList.toggle("is-code-comment",block||starts||value.startsWith("//")||value.startsWith("*")); if(starts&&!value.includes("*/"))block=true; if(block&&value.includes("*/"))block=false; }); code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));
-  const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0]; list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${hEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>'; list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>code.querySelector(`.code-line[data-line="${button.dataset.line}"]`)?.scrollIntoView({block:"center"})));
+  const signature = /^\s*(?:static\s+)?(?:void|bool|char|int|size_t|AVL|RBT|ABBNodo|MonticuloBinario)\b(?:\s*\*+\s*|\s+)([A-Za-z_]\w*)\s*\(/;
+  const comments = window.CCodeNavigation?.commentOnlyLines(raw) || [];
+  rows.forEach((row,index) => {
+    if (comments[index] || /^\s*(?:return|goto)\b/.test(row)) return;
+    const match = row.match(signature);
+    if (match && rows.slice(index).join("\n").match(/[;{}]/)?.[0] === "{" && !functions.some(item => item.name === match[1])) functions.push({name:match[1],line:index});
+  });
+  window.CCodeNavigation?.markComments(code, rows); code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));
+  const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0]; list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${hEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>'; list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>window.CCodeNavigation?.revealLine(code,code.querySelector(`.code-line[data-line="${button.dataset.line}"]`))));
 }
 
 function renderHierPedagogy(frame, level) {
   if (!frame) return;
   const summary=hById("hier-pedagogy-summary"), path=hById("hier-path-view"), stack=hById("hier-stack-view"), invariant=hById("hier-invariant-view"), variables=hById("hier-variables-view"), memory=hById("hier-memory-view"), relations=hById("hier-relations-view");
   if(summary)summary.innerHTML=`<strong>${hEscape(frame.phase?.label||frame.concept)}</strong>: ${hEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;
-  const condition=frame.condition; if(path)path.innerHTML=`Ruta: <code>${hEscape((frame.path?.keys||[]).join(" → ")||"—")}</code><br>Caso: <strong>${hEscape(frame.case||"—")}</strong>${condition?`<br><code>${hEscape(condition.substituted)}</code> ⇒ <strong>${hEscape(condition.result)}</strong> · rama ${hEscape(frame.executed_branch||"registrada")}`:""}${frame.adjustment?`<br>Ajuste: ${hEscape(frame.adjustment.message||frame.adjustment.type)}`:""}`;
-  if(stack)stack.innerHTML=(frame.call_stack||[]).map((call)=>`<div class="hier-stack-frame"><code>${hEscape(call.function)}</code> · profundidad ${hEscape(call.depth)}${call.scope_status?`<br><strong>${hEscape(call.scope_status)}</strong>`:""}<br>raíz local: ${hEscape(call.local_root_address||call.local_root||"NULL")}<br>retorno: ${hEscape(call.return??"pendiente")} · ${hEscape(call.continuation)}</div>`).join("")||"Sin llamadas.";
-  const proof=(frame.invariant?.evidence_by_node_or_path||[]).slice(0,8); if(invariant)invariant.innerHTML=`<strong>${hEscape(frame.invariant?.symbol||"")} ${hEscape(frame.invariant?.name||"")}</strong><br>${hEscape(frame.invariant?.explanation||frame.invariant?.evidence||"")}<ul>${proof.map((item)=>`<li>${hEscape(JSON.stringify(item))}</li>`).join("")}</ul>`;
+  window.ContextualHelp?.frame("hier", frame, level);
+  const condition=frame.condition; if(path)path.innerHTML=`Ruta: <code>${hEscape((frame.path?.keys||[]).join(" → ")||"—")}</code><br>Acción: <strong>${hEscape(window.ContextualHelp?.phaseLabel(frame)||frame.phase?.label||"—")}</strong>${condition?`<br><code>${hEscape(condition.substituted)}</code> ⇒ <strong>${hEscape(condition.result)}</strong> · rama ${hEscape(frame.executed_branch||"registrada")}`:""}${frame.adjustment?`<br>Ajuste: ${hEscape(frame.adjustment.message||frame.adjustment.type)}`:""}`;
+  if (stack) {
+    const live = frame.call_stack || [], completed = frame.completed_call_stack || [];
+    const row = (call, historical) => `<div class="hier-stack-frame"><code>${hEscape(call.function)}</code> · ${historical ? "ámbito terminado (registro histórico)" : `profundidad ${hEscape(call.depth)}`}<br>raíz local registrada: ${hEscape(call.local_root_address||call.local_root||"NULL")}<br>retorno: ${hEscape(call.return ?? (historical ? "sin valor de retorno registrado" : "pendiente"))}${!historical && call.continuation ? ` · ${hEscape(call.continuation)}` : ""}</div>`;
+    stack.innerHTML = live.length ? live.map(call => row(call, false)).join("") : "Sin llamadas activas en este paso.";
+    if (completed.length) stack.innerHTML += `<details><summary>Marcos terminados (histórico): ${completed.length}</summary>${completed.map(call => row(call, true)).join("")}</details>`;
+  }
+  const proof = frame.invariant?.evidence_by_node_or_path || [];
+  if (invariant) {
+    const evidence = frame.invariant?.explanation || frame.invariant?.evidence || "";
+    const brief = typeof evidence === "string" && !/^[\s]*[\[{]/.test(evidence) ? evidence : "La evidencia detallada está disponible en el registro técnico.";
+    invariant.innerHTML = `<strong>${hEscape(frame.invariant?.symbol||"")} ${hEscape(frame.invariant?.name||"")}</strong><br>${hEscape(brief)}<details><summary>Registro técnico de la verificación</summary><pre>${hEscape(JSON.stringify({case:frame.case,evidence,proof},null,2))}</pre></details>`;
+  }
   if(variables){variables.tabIndex=0;variables.setAttribute("role","region");variables.setAttribute("aria-label","Variables C: tabla desplazable horizontalmente con las flechas del teclado");}
   if(variables)variables.innerHTML=`<table><thead><tr><th>Tipo y variable</th><th>Anterior</th><th>Actual</th><th>Significado</th></tr></thead><tbody>${(frame.variables||[]).map((item)=>`<tr class="${item.changed?'is-changed':''}"><td><code>${hEscape(item.type)} ${hEscape(item.name)}</code>${item.scope?`<br><small>${hEscape(item.scope)}</small>`:""}</td><td>${hEscape(item.previous??"NULL")}</td><td>${hEscape(item.value??"NULL")}</td><td>${hEscape(item.meaning)}</td></tr>`).join("")}</tbody></table>`;
-  if(memory){const mem=frame.memory||{};memory.innerHTML=`Evento: <strong>${hEscape(mem.event||"none")}</strong><br>Reservados: ${hEscape((mem.allocated_objects||[]).map((item)=>item.address).join(", ")||"—")}<br>Liberados: ${hEscape((mem.freed_objects||[]).map((item)=>item.address).join(", ")||"—")}<br>Referencias colgantes: <strong>${(mem.dangling_references||[]).length}</strong>`;}
+  if(memory){const mem=frame.memory||{};memory.innerHTML=`Evento: <strong>${hEscape(({none:"sin cambios de memoria",allocate:"reserva de memoria",allocation:"reserva de memoria",free:"liberación de memoria",link:"actualización de enlaces"})[mem.event] || mem.event || "sin cambios de memoria")}</strong><br>Reservados: ${hEscape((mem.allocated_objects||[]).map((item)=>item.address).join(", ")||"—")}<br>Liberados: ${hEscape((mem.freed_objects||[]).map((item)=>item.address).join(", ")||"—")}<br>Referencias colgantes: <strong>${(mem.dangling_references||[]).length}</strong>`;}
   if(memory && frame.memory && frame.memory.unusable_reference_records){
     const mem=frame.memory;memory.innerHTML=`Evento: <strong>${hEscape(mem.event)}</strong><br>Liberados (identidades historicas): ${hEscape((mem.freed_objects||[]).map(x=>x.address).join(', ')||'—')}<br>Referencias inutilizables registradas: <strong data-abb-unusable-count="${mem.unusable_reference_records.length}">${mem.unusable_reference_records.length}</strong><br>Son identidades guardadas; no se leen valores de punteros indeterminados.`;
   }
@@ -152,6 +222,7 @@ function renderHierPrintfConsole(consoleEl, lines, fallbackText) {
     return;
   }
   const safeLines = Array.isArray(lines) ? lines : [];
+  consoleEl.dataset.consoleCopy = safeLines.join("\n");
   const html = safeLines.length
     ? safeLines.map((line) => `<div class="console-line">${hEscape(line)}</div>`).join("")
     : `<div class="console-line muted">${hEscape(fallbackText || "(sin salida printf en esta ruta)")}</div>`;
@@ -302,13 +373,13 @@ function buildHierHighlightedCodeHtml(raw, codeTitle) {
       .map((line, index) => {
         const highlighted = highlightHierCLine(line, state);
         state = highlighted.state;
-        return `<span class="code-line" data-line="${index}">${highlighted.html || "&nbsp;"}</span>`;
+        return `<span class="code-line" data-line="${index}">${highlighted.html || ""}</span>`;
       })
       .join("");
   }
 
   return lines
-    .map((line, index) => `<span class="code-line" data-line="${index}">${hEscape(line) || "&nbsp;"}</span>`)
+    .map((line, index) => `<span class="code-line" data-line="${index}">${hEscape(line) || ""}</span>`)
     .join("");
 }
 
@@ -846,7 +917,7 @@ async function simulateHierDidacticExecution(context) {
       steps[i - 1].classList.remove("sim-active");
       steps[i - 1].classList.add("sim-done");
     }
-    current.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    window.CCodeNavigation?.revealLine(codeBox, current);
     await sleep(stepDelayMs);
   }
 
@@ -1308,7 +1379,9 @@ function drawTreeSvgFromNodes(nodes, options = {}) {
 
   const compare = comparisonHighlight(options.compareState);
 
-  let svg = `<svg class="viz-tree-svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}" xmlns="http://www.w3.org/2000/svg">`;
+  const minY = Math.min(...nodes.map(node => node.y), ...nullLeaves.map(leaf => leaf.y));
+  const viewBox = options.fitBounds ? `${minX + offsetX - 35} ${minY - 35} ${maxX - minX + 70} ${maxY - minY + 80}` : `0 0 ${svgWidth} ${svgHeight}`;
+  let svg = `<svg class="viz-tree-svg" width="${svgWidth}" height="${svgHeight}" viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg">`;
 
   nodes.forEach((node) => {
     if (node.leftKey && nodeMap.has(node.leftKey)) {
@@ -1347,7 +1420,7 @@ function drawTreeSvgFromNodes(nodes, options = {}) {
     svg += `<circle cx="${node.x + offsetX}" cy="${node.y}" r="24" class="${nodeClass}"${options.avlInsertionMemory ? ` data-avl-svg-node="${hEscape(node.id)}" data-avl-svg-status="${node.status}" data-avl-svg-parent="${hEscape(node.parentReference)}" data-avl-svg-fe="${hEscape(node.balanceFactor)}"${node.status==='detached'?' stroke-dasharray="4 3"':''}` : ""}${options.rbtClearMemory ? ` data-rbt-svg-node="${hEscape(node.id)}" data-rbt-svg-parent="${hEscape(node.parentReference)}" data-rbt-svg-color="${hEscape(node.color)}" data-rbt-svg-initialized="${node.initialized ?? 31}"${node.initialized!==undefined&&node.initialized!==31?' stroke-dasharray="4 3"':''}` : ""}${options.queryMemory ? ` data-heap-tree-index="${hEscape(node.key.replace("idx-", ""))}"` : ""}${options.insertMemory ? ` data-heap-tree-owner="${hEscape(options.memoryOwner)}"` : ""} />`;
     svg += `<text x="${node.x + offsetX}" y="${node.y + 6}" text-anchor="middle" class="viz-tree-text">${hEscape(node.value)}</text>`;
 
-    if (options.rbtClearMemory && options.rbtInsertMemory) svg += `<text x="${node.x+offsetX}" y="${node.y+44}" text-anchor="middle" data-rbt-svg-reference="${node.id}">${hEscape(node.id)}; color:${hEscape(node.color)}</text>`;
+    if (options.rbtClearMemory && options.rbtInsertMemory) svg += `<text x="${node.x+offsetX}" y="${node.y+44}" text-anchor="middle" data-rbt-svg-reference="${node.id}">${hEscape(node.id)}; color:${hEscape(({BLACK:"negro",RED:"rojo"})[node.color] || node.color)}</text>`;
     if (options.avlInsertionMemory) svg += `<text x="${node.x+offsetX}" y="${node.y+44}" text-anchor="middle" data-avl-svg-reference="${node.id}">${node.id}; padre:${hEscape(node.parentReference)}</text>`;
     if (options.showBalanceFactor) {
       const feClass = node.balanceFactor >= -1 && node.balanceFactor <= 1 ? "viz-tree-fe ok" : "viz-tree-fe bad";
@@ -1718,6 +1791,38 @@ function formatHierResult(lastExecution) {
   return `<p><strong>Resultado:</strong> ${hEscape(JSON.stringify(result))}</p>`;
 }
 
+function layoutHierMemoryGraph(state) {
+  const heap = state.heap_nodes || [], byId = new Map(heap.map(node => [node.id,node]));
+  const visited = new Set(), active = new Set(); let safe = true;
+  const incoming = new Map();
+  for (const node of heap) for (const child of [node.left,node.right]) if (byId.has(child)) incoming.set(child,(incoming.get(child)||0)+1);
+  if ([...incoming.values()].some(count => count > 1) || (state.head !== "NULL" && incoming.has(state.head))) safe = false;
+  function validate(id) {
+    if (id === "NULL") return;
+    if (!byId.has(id) || active.has(id)) { safe = false; return; }
+    if (visited.has(id)) return;
+    visited.add(id); active.add(id);
+    const node = byId.get(id); validate(node.left); validate(node.right); active.delete(id);
+  }
+  if (state.head !== "NULL") validate(state.head);
+  const reachable = new Set(visited);
+  for (const node of heap) if (!visited.has(node.id)) validate(node.id);
+  const positions = new Map(); let slot = 0, maxDepth = 0;
+  function place(id, depth) {
+    if (id === "NULL") return;
+    const node = byId.get(id); place(node.left,depth+1);
+    positions.set(id,{x:48+(slot++)*88,y:42+depth*64});maxDepth=Math.max(maxDepth,depth);
+    place(node.right,depth+1);
+  }
+  if (safe) {
+    if (state.head !== "NULL") place(state.head,0);
+    const detachedDepth=maxDepth+2;
+    for (const node of heap) if (!positions.has(node.id) && !incoming.has(node.id)) place(node.id,detachedDepth);
+  }
+  const graph=heap.map((node,index)=>({...node,key:node.id,...(safe?positions.get(node.id):{x:48+(index%4)*120,y:42+Math.floor(index/4)*100}),leftKey:node.left,rightKey:node.right,parentReference:node.parent,balanceFactor:node.balance_factor}));
+  return {graph,safe,detached:heap.filter(node=>!reachable.has(node.id)).map(node=>node.id),label:safe?(state.head === "NULL"?"Sin raíz publicada: reservas desconectadas.":"Árbol de enlaces observados; no certifica el invariante."):"Diagrama de memoria; no árbol válido todavía. Enlaces indeterminados o transitorios conservados."};
+}
+
 function renderHierState(
   modelId,
   state,
@@ -1733,7 +1838,9 @@ function renderHierState(
     return;
   }
 
+  const memoryDetailsOpen = Boolean(container.querySelector?.(".hier-memory-call-detail")?.open);
   const treeOptions = {
+    fitBounds: true,
     showBalanceFactor: modelId === "avl",
     showNullLeaves: modelId === "red_black",
     queryMemory: Boolean(state.heap_query_model),
@@ -1743,7 +1850,7 @@ function renderHierState(
     rotationHint: rotationVisualHint,
   };
 
-  let html = `<div class="viz-canvas${(state.abb_traversal_model || state.abb_read_model) ? " abb-traversal-canvas" : ""}"><div class="viz-meta"><strong>${hEscape(state.title)}</strong> | Tamano: ${hEscape(state.size ?? 0)}</div>`;
+  let html = `<div class="viz-canvas${modelId === "binary_heap" ? " heap-classroom-canvas" : ""}${(state.abb_traversal_model || state.abb_read_model) ? " abb-traversal-canvas" : ""}"><div class="viz-meta"><strong>${hEscape(state.title)}</strong> | Tamano: ${hEscape(state.size ?? 0)}</div>`;
 
   if ((state.abb_validate_model || state.avl_validate_model) && state.wrapper_result === null) html += "<p data-abb-validation-pending>Validacion pendiente: aun no retorna el llamador.</p>";
   if (state.rbt_validate_model) html += `<p data-rbt-validator-contract>${hEscape(state.validator_contract)}; resultado: ${state.wrapper_result === null ? "pendiente" : state.wrapper_result ? "correcto" : "incorrecto"}</p>`;
@@ -1763,7 +1870,7 @@ function renderHierState(
     }
   }
   if (modelId === "red_black") {
-    html += "<div class=\"viz-meta\">Reglas RN: raiz negra, sin rojos consecutivos y misma altura negra en todos los caminos.</div>";
+    html += "<div class=\"viz-meta\">RN: raíz negra; rojos separados; altura negra igual.</div>";
     if (compareState && Array.isArray(compareState.rnEvents) && compareState.rnEvents.length) {
       html += "<div class=\"viz-sim-note\"><strong>Cambios por reglas RN:</strong><ul>";
       compareState.rnEvents.forEach((eventText) => {
@@ -1794,8 +1901,8 @@ function renderHierState(
       activeKeys: (heapFrame.activeIndices || []).map((index) => `idx-${index}`),
     } : treeOptions.compareState;
     const insertSuspended = Boolean(state.heap_insert_model && state.heap_data_reference.startsWith("indeterminado"));
-    if (state.heap_extract_model) html += `<p data-heap-extract-views>Ambas vistas siguen el prefijo logico de A1: cantidad C ${state.size}. La memoria conserva ${state.heap_written} celdas observadas, incluida la cola fuera de cantidad. Capacidad ${state.capacity}; extraer no libera ni reduce el buffer.</p>`;
-    if (state.heap_insert_model) html += `<p data-heap-insert-views>Ambas vistas siguen las celdas escritas de ${hEscape(state.heap_data_reference)}, no afirman cantidad futura. Cantidad C: ${state.size}; celdas escritas: ${state.heap_written}. ${state.heap_pending_index!==null?`<span data-heap-insert-pending="${state.heap_pending_index}">datos[${state.heap_pending_index}] escrito, aun fuera de cantidad hasta m-&gt;cantidad++.</span>`:""}</p>`;
+    if (state.heap_extract_model) html += `<details class="hier-diagram-note"><summary>Arreglo y árbol: estado de esta instrucción</summary><p data-heap-extract-views>Ambas vistas siguen el prefijo logico de A1: cantidad C ${state.size}. La memoria conserva ${state.heap_written} celdas observadas, incluida la cola fuera de cantidad. Capacidad ${state.capacity}; extraer no libera ni reduce el buffer.</p></details>`;
+    if (state.heap_insert_model) html += `<details class="hier-diagram-note"><summary>Arreglo y árbol: estado de esta instrucción</summary><p data-heap-insert-views>Ambas vistas siguen las celdas escritas de ${hEscape(state.heap_data_reference)}, no afirman cantidad futura. Cantidad C: ${state.size}; celdas escritas: ${state.heap_written}. ${state.heap_pending_index!==null?`<span data-heap-insert-pending="${state.heap_pending_index}">datos[${state.heap_pending_index}] escrito, aun fuera de cantidad hasta m-&gt;cantidad++.</span>`:""}</p></details>`;
     html += "<h4>Representacion en arreglo</h4>";
     html += insertSuspended ? "<p data-heap-drawing-suspended>Lectura de datos suspendida hasta publicar el nuevo buffer; no es un heap vacio.</p>" : renderHeapArrayFrame(heapArray, heapFrame);
     if (heapFrame && heapFrame.note) {
@@ -1807,67 +1914,75 @@ function renderHierState(
       : drawTreeSvgFromNodes(flattenTree(heapRoot), { ...treeOptions, compareState: heapCompareState });
   } else {
     if (state.rbt_clear_model || state.rbt_insert_model || state.rbt_delete_model || state.rbt_validation_graph) {
-      const graph = (state.heap_nodes || []).map(n=>{const i=Number(n.id.slice(1))-1;return {id:n.id,key:n.id,value:n.value,x:60+(i%4)*160,y:60+Math.floor(i/4)*180,leftKey:n.left,rightKey:n.right,parentReference:n.parent,color:n.color,initialized:n.initialized};});
-      html += state.rbt_insert_model ? '<p data-rbt-insert-graph>Reservas vivas: '+hEscape(state.heap_count)+'; alcanzables en la proyeccion: '+hEscape(state.reachable_count)+'. Identidades y campos C escritos; sin inicializar no significa cero. Las rotaciones pueden tener enlaces/ciclos transitorios. NULL es un enlace realmente NULL, no una reserva NIL. No se certifica aqui un rojo-negro final.</p>' : '<p data-rbt-clear-graph>Reservas vivas y colores registrados. NULL representa solo un enlace realmente NULL; no es una reserva NIL. Los enlaces inutilizables conservan su identidad historica en las tarjetas. La proyeccion parcial no certifica un arbol rojo-negro completo.</p>';
-      html += drawTreeSvgFromNodes(graph,{...treeOptions,rbtClearMemory:true,rbtInsertMemory:!!(state.rbt_insert_model||state.rbt_delete_model)});
+      const memoryGraph = layoutHierMemoryGraph(state); const graph = memoryGraph.graph;
+      html += '<details class="hier-diagram-note"><summary>Reservas y enlaces observados; no certifica RN.</summary>' + (state.rbt_insert_model ? '<p data-rbt-insert-graph>Reservas vivas: '+hEscape(state.heap_count)+'; alcanzables en la proyeccion: '+hEscape(state.reachable_count)+'. Identidades y campos C escritos; sin inicializar no significa cero. Las rotaciones pueden tener enlaces/ciclos transitorios. NULL es un enlace realmente NULL, no una reserva NIL. No se certifica aqui un rojo-negro final.</p>' : '<p data-rbt-clear-graph>Reservas vivas y colores registrados. NULL representa solo un enlace realmente NULL; no es una reserva NIL. Los enlaces inutilizables conservan su identidad historica en las tarjetas. La proyeccion parcial no certifica un arbol rojo-negro completo.</p>') + '</details>';
+      html += `<div class="hier-memory-projection">${hEscape(memoryGraph.label)}${memoryGraph.detached.length ? ` Reservas aparte: ${hEscape(memoryGraph.detached.join(", "))}.` : ""}</div>`;
+      html += drawTreeSvgFromNodes(graph,{...treeOptions,showNullLeaves:false,rbtClearMemory:true,rbtInsertMemory:!!(state.rbt_insert_model||state.rbt_delete_model)});
     } else if (state.avl_insert_model || state.avl_delete_model) {
-      const graph = (state.heap_nodes || []).map((n,i)=>({id:n.id,key:n.id,value:n.value,x:60+(i%6)*110,y:60+Math.floor(i/6)*150,leftKey:n.left,rightKey:n.right,parentKey:null,parentReference:n.parent,balanceFactor:n.balance_factor,status:n.status}));
-      html += '<p data-avl-insert-graph>Reservas vivas e identidades estables, incluso desconectadas. Enlaces y FE observados: la reconexion transitoria no certifica un AVL terminado.</p>';
+      const memoryGraph = layoutHierMemoryGraph(state); const graph = memoryGraph.graph;
+      html += '<details class="hier-diagram-note"><summary>Reservas y enlaces observados; no certifica AVL.</summary>' + ('<p data-avl-insert-graph>Reservas vivas e identidades estables, incluso desconectadas. Enlaces y FE observados: la reconexion transitoria no certifica un AVL terminado.</p>') + '</details>';
+      html += `<div class="hier-memory-projection">${hEscape(memoryGraph.label)}${memoryGraph.detached.length ? ` Reservas aparte: ${hEscape(memoryGraph.detached.join(", "))}.` : ""}</div>`;
       html += drawTreeSvgFromNodes(graph,{...treeOptions,showNullLeaves:false,avlInsertionMemory:true});
     } else html += transitionData
       ? renderTreeTransitionSvg(transitionData, treeOptions)
       : drawTreeSvgFromNodes(flattenTree(state.root), treeOptions);
   }
 
-  html += renderHeapQueryMemory(state);
+  const heapMemory = renderHeapQueryMemory(state);
 
   if (state.traversals) {
-    html += "<div class=\"viz-traversals\">";
+    html += "<details class=\"viz-traversals hier-traversal-summary\"><summary>Recorridos de la estructura</summary>";
     Object.keys(state.traversals).forEach((name) => {
       html += `<p><strong>${hEscape(name)}:</strong> ${hEscape(JSON.stringify(state.traversals[name]))}</p>`;
     });
+    html += "</details>";
     const lastResult = state.rbt_read_model ? "" : state.avl_validate_model ? "" : (state.abb_validate_model || state.avl_validate_model) && state.wrapper_result === null ? "" : formatHierResult(lastExecution);
     if (lastResult) {
       html += lastResult;
     }
-    html += "</div>";
   }
 
-  html += "</div>";
+  html += "</div>" + heapMemory;
   if (state.abb_insert_model || state.abb_traversal_model || state.abb_read_model) {
+    const memoryNodes = state.heap_nodes || [];
+    const liveIds = new Set(memoryNodes.map(node => node.id));
+    const focusId = [...(state.tree_frames || [])].reverse().flatMap(frame => Object.values({...frame.parameters, ...frame.locals})).find(target => liveIds.has(target));
+    const displayNodes = [...memoryNodes].sort((a, b) => Number(b.id === focusId) - Number(a.id === focusId));
     const fields = (node) => `<span>valor: <strong>${hEscape(node.value)}</strong></span> · <span>izquierdo: <code>${hEscape(node.left)}</code></span> · <span>derecho: <code>${hEscape(node.right)}</code></span>`;
-    html += `<section class="abb-instruction-memory"><p data-abb-head="${hEscape(state.head)}"><strong>Raiz del llamador:</strong> ${hEscape(state.head)}</p><p>Identidades simbolicas de reservas; no son direcciones de memoria reales. Un nodo reservado aun puede estar fuera del arbol alcanzable.</p>`;
-    if (state.caller_frame) html += state.caller_frame.description ? `<div data-abb-caller><code>${hEscape(state.caller_frame.function)}</code>: ${hEscape(state.caller_frame.description)}</div>` : `<div data-abb-caller><code>ejecutar_insercion</code>: arbol (ABBNodo **) → &amp;raiz; *arbol → ${hEscape(state.head)}</div>`;
-    html += (state.tree_frames || []).map((f,i,all) => `<div class="hier-stack-frame" data-abb-frame="${hEscape(f.id)}" data-abb-depth="${f.depth}"><strong>${hEscape(f.function)}#${hEscape(f.id)}</strong> · ${i===all.length-1?"activo":"suspendido"}<br>${Object.entries({...f.parameters,...f.locals}).map(([name,target])=>`<span data-abb-alias="${name}" data-abb-alias-frame="${f.id}" data-abb-alias-type="${(state.rbt_delete_model?['key','es_izq']:['valor','x','altIzq','altDer','bhIzq','bhDer','fe','hay_minimo','minimo','hay_maximo','maximo','tmp','feL','feR','dato','key','es_izq','tieneMin','minimo','tieneMax','maximo']).includes(name)?'int':state.rbt_delete_model&&name==='y_color_original'?'char':((state.avl_insert_model && ['raiz','r'].includes(name)) || (state.avl_delete_model && (name==='r' || (name==='raiz' && ['avl_eliminar','rebalancearTrasEliminar'].includes(f.function)))))?'AVL *':(state.rbt_insert_model||state.rbt_delete_model)&&['arbol','r','root'].includes(name)?'RBT *':state.rbt_read_model?'RBT':state.avl_read_model?'AVL':'ABBNodo *'}" data-abb-alias-target="${hEscape(target)}" data-abb-alias-usable="${(state.rbt_clear_model||state.rbt_delete_model) ? !String(target).includes("valor indeterminado") : !state.avl_delete_model || !(state.freed_nodes||[]).some(n=>n.id===target)}">${name} (${(state.rbt_delete_model?['key','es_izq']:['valor','x','altIzq','altDer','bhIzq','bhDer','fe','hay_minimo','minimo','hay_maximo','maximo','tmp','feL','feR','dato','key','es_izq','tieneMin','minimo','tieneMax','maximo']).includes(name)?'int':state.rbt_delete_model&&name==='y_color_original'?'char':((state.avl_insert_model && ['raiz','r'].includes(name)) || (state.avl_delete_model && (name==='r' || (name==='raiz' && ['avl_eliminar','rebalancearTrasEliminar'].includes(f.function)))))?'AVL *':(state.rbt_insert_model||state.rbt_delete_model)&&['arbol','r','root'].includes(name)?'RBT *':state.rbt_read_model?'RBT':state.avl_read_model?'AVL':'ABBNodo *'}) → ${hEscape(target)}${state.avl_delete_model && (state.freed_nodes||[]).some(n=>n.id===target)?" (vida terminada; no desreferenciar)":""}</span>`).join('<br>')}${f.expression?`<p data-abb-expression-frame="${f.id}">Operandos de expresión (no variables C): izquierdo = ${hEscape(f.expression.left)}; derecho = ${hEscape(f.expression.right)}. Orden elegido: ${hEscape(state.operand_evaluation_order)}; C permite otro orden.</p>`:''}</div>`).join('');
-    if(state.abb_clear_model || state.abb_delete_model || state.avl_delete_model || state.rbt_delete_model) html += '<p>El SVG representa reservas vivas. Sus enlaces a reservas terminadas se registran como identidades historicas inutilizables; la vista no asigna NULL en el C.</p>';
+    html += `<section class="abb-instruction-memory"><p data-abb-head="${hEscape(state.head)}"><strong>Raiz del llamador:</strong> ${hEscape(state.head)}</p><p>Identidades simbólicas, no direcciones reales.</p>`;
+    const callerDetail = state.caller_frame ? state.caller_frame.description ? `<div data-abb-caller><code>${hEscape(state.caller_frame.function)}</code>: ${hEscape(state.caller_frame.description)}</div>` : `<div data-abb-caller><code>ejecutar_insercion</code>: arbol (ABBNodo **) → &amp;raiz; *arbol → ${hEscape(state.head)}</div>` : "";
+    const frameDetails = (state.tree_frames || []).map((f,i,all) => `<div class="hier-stack-frame" data-abb-frame="${hEscape(f.id)}" data-abb-depth="${f.depth}"><strong>${hEscape(f.function)}#${hEscape(f.id)}</strong> · ${i===all.length-1?"activo":"suspendido"}<br>${Object.entries({...f.parameters,...f.locals}).map(([name,target])=>`<span data-abb-alias="${name}" data-abb-alias-frame="${f.id}" data-abb-alias-type="${(state.rbt_delete_model?['key','es_izq']:['valor','x','altIzq','altDer','bhIzq','bhDer','fe','hay_minimo','minimo','hay_maximo','maximo','tmp','feL','feR','dato','key','es_izq','tieneMin','minimo','tieneMax','maximo']).includes(name)?'int':state.rbt_delete_model&&name==='y_color_original'?'char':((state.avl_insert_model && ['raiz','r'].includes(name)) || (state.avl_delete_model && (name==='r' || (name==='raiz' && ['avl_eliminar','rebalancearTrasEliminar'].includes(f.function)))))?'AVL *':(state.rbt_insert_model||state.rbt_delete_model)&&['arbol','r','root'].includes(name)?'RBT *':state.rbt_read_model?'RBT':state.avl_read_model?'AVL':'ABBNodo *'}" data-abb-alias-target="${hEscape(target)}" data-abb-alias-usable="${(state.rbt_clear_model||state.rbt_delete_model) ? !String(target).includes("valor indeterminado") : !state.avl_delete_model || !(state.freed_nodes||[]).some(n=>n.id===target)}">${name} (${(state.rbt_delete_model?['key','es_izq']:['valor','x','altIzq','altDer','bhIzq','bhDer','fe','hay_minimo','minimo','hay_maximo','maximo','tmp','feL','feR','dato','key','es_izq','tieneMin','minimo','tieneMax','maximo']).includes(name)?'int':state.rbt_delete_model&&name==='y_color_original'?'char':((state.avl_insert_model && ['raiz','r'].includes(name)) || (state.avl_delete_model && (name==='r' || (name==='raiz' && ['avl_eliminar','rebalancearTrasEliminar'].includes(f.function)))))?'AVL *':(state.rbt_insert_model||state.rbt_delete_model)&&['arbol','r','root'].includes(name)?'RBT *':state.rbt_read_model?'RBT':state.avl_read_model?'AVL':'ABBNodo *'}) → ${hEscape(target)}${state.avl_delete_model && (state.freed_nodes||[]).some(n=>n.id===target)?" (vida terminada; no desreferenciar)":""}</span>`).join('<br>')}${f.expression?`<p data-abb-expression-frame="${f.id}">Operandos de expresión (no variables C): izquierdo = ${hEscape(f.expression.left)}; derecho = ${hEscape(f.expression.right)}. Orden elegido: ${hEscape(state.operand_evaluation_order)}; C permite otro orden.</p>`:''}</div>`).join('');
+    const retiredNote = (state.abb_clear_model || state.abb_delete_model || state.avl_delete_model || state.rbt_delete_model) ? '<p>El SVG representa reservas vivas. Enlaces a reservas terminadas son identidades históricas inutilizables; esto no asigna NULL en C.</p>' : '';
     if (state.avl_extreme_model) html += `<p data-avl-output data-avl-output-initialized="${state.caller_output.initialized}" data-avl-output-value="${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}">salida (int del llamador): ${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}; no es una reserva AVL.</p>`;
-    html += '<h4>Reservas vivas y sus enlaces</h4>' + (state.heap_nodes || []).map(node => `<div class="hier-stack-frame" data-abb-node="${node.id}" data-abb-status="${node.status}" data-abb-value="${hEscape(node.value)}" data-abb-left="${hEscape(node.left)}" data-abb-right="${hEscape(node.right)}"><strong>${node.id}</strong> · ${node.status==='linked'?'alcanzable desde la raiz':'desconectado, aun vivo'}<br>${fields(node)}${state.rbt_read_model?` | padre: <code>${hEscape(node.parent)}</code> | color: ${hEscape(node.color)}`:state.avl_read_model?` · padre: <code>${hEscape(node.parent)}</code> · FE: ${hEscape(node.balance_factor)}`:""}</div>`).join('') + '</section>';
+    html += '<h4>Reservas vivas y sus enlaces</h4>' + displayNodes.map(node => `<div class="hier-stack-frame${node.id === focusId ? " is-current-memory" : ""}" data-abb-node="${node.id}" data-abb-status="${node.status}" data-abb-value="${hEscape(node.value)}" data-abb-left="${hEscape(node.left)}" data-abb-right="${hEscape(node.right)}"><strong>${node.id}</strong> · ${node.status==='linked'?'alcanzable desde la raiz':'desconectado, aun vivo'}<br>${fields(node)}${state.rbt_read_model?` | padre: <code>${hEscape(node.parent)}</code> | color: ${hEscape(({BLACK:"negro",RED:"rojo"})[node.color] || node.color)}`:state.avl_read_model?` · padre: <code>${hEscape(node.parent)}</code> · FE: ${hEscape(node.balance_factor)}`:""}</div>`).join('') + `<details class="hier-memory-call-detail"><summary>Pila de llamadas: ${(state.tree_frames || []).length} marco(s)</summary>${callerDetail}${frameDetails}${retiredNote}</details></section>`;
   }
-  if(state.abb_clear_model || state.abb_delete_model || state.avl_delete_model || state.rbt_delete_model) html += '<h4>Reservas terminadas (datos historicos)</h4>'+(state.freed_nodes||[]).map(n=>`<div data-abb-retired-node="${n.id}" data-abb-retired-value="${n.value}">${hEscape(n.id)}: vida terminada. Valor registrado antes de free: ${hEscape(n.value)}. No es un objeto vivo ni un puntero utilizable.</div>`).join('');
+  if(state.abb_clear_model || state.abb_delete_model || state.avl_delete_model || state.rbt_delete_model) html += `<details class="hier-retired-memory"><summary>Reservas terminadas: ${(state.freed_nodes || []).length} (histórico)</summary>`+(state.freed_nodes||[]).map(n=>`<div data-abb-retired-node="${n.id}" data-abb-retired-value="${n.value}">${hEscape(n.id)}: vida terminada. Valor registrado antes de free: ${hEscape(n.value)}. No es un objeto vivo ni un puntero utilizable.</div>`).join('') + "</details>";
   container.innerHTML = html;
+  const memoryDetails = container.querySelector?.(".hier-memory-call-detail");
+  if (memoryDetails) memoryDetails.open = memoryDetailsOpen;
 }
 
 function renderHeapClearMemory(state) {
-  let html = `<section class="abb-instruction-memory" data-heap-clear-memory${state.heap_insert_model?" data-heap-insert-memory":""}><h4>Vida de memoria durante ${state.heap_insert_model?"Insertar":state.heap_extract_model?"Extraer raiz":"Limpiar"}</h4><p data-heap-clear-storage data-heap-count="${state.size}" data-heap-capacity="${state.capacity}" data-heap-reference="${hEscape(state.heap_data_reference)}">M1: datos ${hEscape(state.heap_data_reference)}; cantidad ${state.size}; capacidad ${state.capacity}. Los contadores cambian en sus propias asignaciones; no se dereferencia un buffer liberado. A1/A2 son vidas simbolicas distintas aunque se reutilice una direccion.</p>`;
+  let html = `<section class="abb-instruction-memory" data-heap-clear-memory${state.heap_insert_model?" data-heap-insert-memory":""}><h4>Vida de memoria durante ${state.heap_insert_model?"Insertar":state.heap_extract_model?"Extraer raiz":"Limpiar"}</h4><p data-heap-clear-storage data-heap-count="${state.size}" data-heap-capacity="${state.capacity}" data-heap-reference="${hEscape(state.heap_data_reference)}">M1: datos ${hEscape(state.heap_data_reference)}; cantidad ${state.size}; capacidad ${state.capacity}. Identidades simbólicas; nunca leer un buffer liberado.</p>`;
   if (state.heap_extract_model) html += `<p data-heap-extract-output data-heap-output-initialized="${state.caller_output.initialized}" data-heap-output-value="${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}">R1 salida int: ${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}; independiente del bool. La memoria A1 permanece viva, incluyendo la cola fuera de cantidad.</p>`;
-  html += (state.query_frames || []).map((f,i,all) => `<div class="hier-stack-frame" data-heap-frame="${f.id}" data-heap-function="${hEscape(f.function)}"><strong>${hEscape(f.function)}</strong>: ${i===all.length-1?'activo':'suspendido'}<br>${Object.entries({...f.parameters,...f.locals}).map(([name,value])=>`<span data-heap-local="${name}" data-heap-local-frame="${f.id}" data-heap-local-value="${hEscape(value)}">${name}: ${hEscape(value)}</span>`).join('<br>')}</div>`).join('');
+  const framesHtml = (state.query_frames || []).map((f,i,all) => `<div class="hier-stack-frame" data-heap-frame="${f.id}" data-heap-function="${hEscape(f.function)}"><strong>${hEscape(f.function)}</strong>: ${i===all.length-1?'activo':'suspendido'}<br>${Object.entries({...f.parameters,...f.locals}).map(([name,value])=>`<span data-heap-local="${name}" data-heap-local-frame="${f.id}" data-heap-local-value="${hEscape(value)}">${name}: ${hEscape(value)}</span>`).join('<br>')}</div>`).join('');
   for (const object of state.heap_allocations || []) {
     if (!object.live) continue;
     html += `<div data-heap-clear-allocation="${object.id}" data-heap-clear-capacity="${object.capacity}"><strong>${object.id}: buffer vivo, capacidad ${object.capacity}</strong><div class="viz-array-wrap">${object.cells.map(cell=>`<span class="viz-array-chip${state.heap_extract_model && (state.heap_active_indices || []).includes(cell.index)?' sim-active':''}" data-heap-clear-cell="${cell.index}" data-heap-clear-owner="${object.id}" data-heap-initialized="${cell.initialized===null?'desconocido':cell.initialized}" data-heap-value="${cell.initialized===true?hEscape(cell.value):cell.initialized===false?'sin inicializar':'no observado'}">[${cell.index}] ${cell.initialized===true?hEscape(cell.value):cell.initialized===false?'sin inicializar':'no observado'}</span>`).join(' ')}</div></div>`;
   }
   for (const object of state.heap_retired || []) html += `<div data-heap-clear-retired="${object.id}"><strong>${object.id}: vida terminada</strong><p>Registro previo a ${state.heap_insert_model?"realloc exitoso":"free"}; no es memoria accesible. No se evalua el puntero indeterminado.</p>${object.cells.filter(cell=>cell.initialized===true).map(cell=>`<span data-heap-clear-retired-index="${cell.index}" data-heap-retired-value="${hEscape(cell.value)}">[${cell.index}] ${hEscape(cell.value)}</span>`).join(' ')}</div>`;
-  return html+'</section>';
+  return html+`<details class="hier-memory-call-detail"><summary>Pila de llamadas: ${(state.query_frames || []).length} marco(s)</summary>${framesHtml}</details></section>`;
 }
 
 function renderHeapQueryMemory(state) {
   if (state.heap_clear_model || state.heap_insert_model || state.heap_extract_model) return renderHeapClearMemory(state);
   if (!state.heap_query_model) return "";
-  let html = `<section class="abb-instruction-memory" data-heap-query-memory><h4>Memoria de la consulta</h4><p data-heap-storage="A1" data-heap-count="${state.size}" data-heap-capacity="${state.capacity}">M1: datos apunta a A1; cantidad ${state.size}; capacidad ${state.capacity}. A1 es el arreglo existente, no el destino de la copia. Identidades simbolicas, no direcciones reales.</p>`;
+  let html = `<section class="abb-instruction-memory" data-heap-query-memory><h4>Memoria de la consulta</h4><p data-heap-storage="A1" data-heap-count="${state.size}" data-heap-capacity="${state.capacity}">M1: datos apunta a A1; cantidad ${state.size}; capacidad ${state.capacity}. A1 es el arreglo original; B1 es destino independiente. IDs simbólicos.</p>`;
   if (state.query_operation === "raiz" && state.caller_output) html += `<p data-heap-output data-heap-output-initialized="${state.caller_output.initialized}" data-heap-output-value="${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}">salida (int externo): ${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}; distinto del bool retornado.</p>`;
-  html += (state.query_frames || []).map((f,i,all) => `<div class="hier-stack-frame" data-heap-frame="${f.id}" data-heap-function="${hEscape(f.function)}"><strong>${hEscape(f.function)}</strong>: ${i===all.length-1?'activo':'suspendido'}<br>${Object.entries({...f.parameters,...f.locals}).map(([name,value])=>`<span data-heap-local="${name}" data-heap-local-frame="${f.id}" data-heap-local-value="${hEscape(value)}">${name}: ${hEscape(value)}</span>`).join('<br>')}</div>`).join('');
+  const framesHtml = (state.query_frames || []).map((f,i,all) => `<div class="hier-stack-frame" data-heap-frame="${f.id}" data-heap-function="${hEscape(f.function)}"><strong>${hEscape(f.function)}</strong>: ${i===all.length-1?'activo':'suspendido'}<br>${Object.entries({...f.parameters,...f.locals}).map(([name,value])=>`<span data-heap-local="${name}" data-heap-local-frame="${f.id}" data-heap-local-value="${hEscape(value)}">${name}: ${hEscape(value)}</span>`).join('<br>')}</div>`).join('');
   if (state.destination) html += `<div data-heap-destination="B1" data-heap-destination-capacity="${state.destination.capacity}"><strong>B1: destino independiente vivo</strong><div class="viz-array-wrap">${state.destination.cells.map(cell=>`<span class="viz-array-chip${state.active_copy_index===cell.index?' sim-active':''}" data-heap-destination-index="${cell.index}" data-heap-initialized="${cell.initialized}" data-heap-value="${cell.initialized?hEscape(cell.value):'sin inicializar'}">[${cell.index}] ${cell.initialized?hEscape(cell.value):'sin inicializar'}</span>`).join(' ')}</div></div>`;
   if (state.retired_destination) html += `<div data-heap-retired="B1"><strong>B1: vida terminada</strong><p>Registros anteriores a free; no es memoria viva ni se leen punteros indeterminados.</p>${state.retired_destination.cells.map(cell=>`<span data-heap-retired-index="${cell.index}" data-heap-retired-value="${hEscape(cell.value)}">[${cell.index}] ${hEscape(cell.value)}</span>`).join(' ')}</div>`;
-  return html+'</section>';
+  return html+`<details class="hier-memory-call-detail"><summary>Pila de llamadas: ${(state.query_frames || []).length} marco(s)</summary>${framesHtml}</details></section>`;
 }
 
 function showHierMessage(text, success) {
@@ -1880,6 +1995,7 @@ function showHierMessage(text, success) {
 }
 
 function updateHierDidacticPanel(model, operationName) {
+  window.ContextualHelp?.operation("hier", model, operationName);
   const recordBox = hById("tad-record");
   const pseudoTitle = hById("op-pseudocode-title");
   const pseudoBox = hById("op-pseudocode");
@@ -1897,6 +2013,7 @@ function updateHierDidacticPanel(model, operationName) {
 
   renderHierDidacticCode(recordBox, didactic.record || "Estructura no documentada.", codeTitle);
   pseudoTitle.textContent = selectedLabel ? `${codeTitle}: ${selectedLabel}` : codeTitle;
+  if (model.id === "avl" && ["maximo", "inorden", "validar"].includes(selectedOp)) pseudoTitle.textContent += " — Auxiliar de la app; incluido en main.c";
   renderHierDidacticCode(pseudoBox, opMap[selectedOp] || fallback, codeTitle);
   enhanceHierCodeNavigation(null);
 }
@@ -2099,9 +2216,9 @@ function binaryHeapMainCallForEntry(entry, index) {
 
 function buildHierMainCode(modelId, history, didactic) {
   const lines = [];
+  if (modelId === "abb") lines.push('#include <stdio.h>', '#include "tad_abb.h"', "");
   if (modelId === "abb" && history.some(entry => entry && entry.success !== false && ["contar_hojas", "validar"].includes(entry.operation))) {
     const source = didactic || window.HIER_VIEW_MODEL?.didactic || {};
-    lines.push('#include <stdio.h>', '#include "tad_abb.h"', "");
     for (const op of ["contar_hojas", "validar"]) {
       if (!history.some(entry => entry && entry.success !== false && entry.operation === op)) continue;
       const helper = source.operations?.[op];
@@ -2196,6 +2313,30 @@ function buildHierMainCode(modelId, history, didactic) {
     }
     if ((modelId === "avl" || modelId === "red_black") && entry.operation === "inorden") lines.push('    printf("INORDEN: ");');
     lines.push(`    ${call}`);
+    if (modelId === "abb") {
+      if (entry.operation === "buscar") {
+        lines.push(`    printf("BUSCAR: %s\\n", encontrado_${index + 1} != NULL ? "encontrado" : "ausente");`);
+        return;
+      }
+      if (["minimo", "maximo"].includes(entry.operation)) {
+        const variable = `${entry.operation}_${index + 1}`;
+        lines.push(`    if (${variable} != NULL) printf("${entry.operation.toUpperCase()}: %d\\n", ${variable}->valor);`);
+        lines.push('    else puts("Arbol vacio.");');
+        return;
+      }
+      if (entry.operation === "altura") {
+        lines.push(`    printf("ALTURA: %d\\n", altura_${index + 1});`);
+        return;
+      }
+      if (["inorden", "preorden", "postorden"].includes(entry.operation)) {
+        lines.push('    printf("\\n");');
+        return;
+      }
+      if (["insertar", "eliminar", "limpiar"].includes(entry.operation)) {
+        lines.push(`    // Llamada registrada: ${entry.operation}; no se imprime un resultado precalculado.`);
+        return;
+      }
+    }
     if (modelId === "abb" && entry.operation === "validar") {
       lines.push(`    printf("VALIDAR ABB: %s\\n", valido_${index + 1} ? "correcto" : "incorrecto");`);
       return;
@@ -2259,10 +2400,10 @@ function buildHierMainCode(modelId, history, didactic) {
 
   if (modelId === "abb") {
     lines.push("    // Al finalizar el programa:");
-    lines.push("    // abb_liberarArbol(arbol);");
+    lines.push("    abb_liberarArbol(arbol); arbol = NULL;");
   } else if (modelId === "avl") {
     lines.push("    // Al finalizar el programa:");
-    lines.push("    // avl_liberarAVL(arbol);");
+    lines.push("    avl_liberarAVL(arbol); arbol = NULL;");
   } else if (modelId === "red_black") {
     lines.push("    // Limpieza final del caller; no es otra operacion del historial.");
     lines.push("    rbt_liberar(arbol); arbol = NULL;");
@@ -2279,6 +2420,7 @@ function renderHierHistory(history, container, modelId, didactic) {
   if (!container) {
     return;
   }
+  container.dataset.rawCode = "";
   if (!history.length) {
     container.innerHTML = "<li class=\"didactic-history-item empty\">Sin acciones ejecutadas.</li>";
     return;
@@ -2287,6 +2429,7 @@ function renderHierHistory(history, container, modelId, didactic) {
   const codeTitle = didactic && didactic.code_title ? String(didactic.code_title) : "";
   if (codeTitle.toLowerCase().includes("codigo c")) {
     const code = buildHierMainCode(modelId, history, didactic);
+    container.dataset.rawCode = code;
     const codeHtml = buildHierHighlightedCodeHtml(code, codeTitle);
     container.innerHTML = (
       "<li class=\"didactic-history-item history-main-wrap\">" +
@@ -2416,7 +2559,14 @@ function initHierSimplifiedWorkspace() {
       stepToggle.setAttribute("aria-hidden", "true");
     }
     const technical = controlStage.querySelector(".didactic-technical");
-    prepareStage.append(actions, stepToggle, counter, status);
+    const classroomControls = document.createElement("div");
+    classroomControls.className = "hier-classroom-controls";
+    classroomControls.setAttribute("role", "group");
+    classroomControls.setAttribute("aria-label", "Controles de ejecución");
+    classroomControls.append(actions, stepToggle, counter, status);
+    const workspace = document.querySelector(".hier-primary-workspace");
+    if (workspace) workspace.before(classroomControls);
+    else prepareStage.append(classroomControls);
     technical?.remove();
     controlStage.remove();
   }
@@ -2459,7 +2609,7 @@ function initHierSimplifiedWorkspace() {
     tadDetails.replaceWith(tadPanel);
   }
   makeCollapsible(understandStage, understandTitle, "hier-understand-content");
-  makeCollapsible(resultsStage, reflectTitle, "hier-results-content");
+  if (!window.ClassroomView) makeCollapsible(resultsStage, reflectTitle, "hier-results-content");
 }
 
 function initHierPage(model) {
@@ -2621,11 +2771,16 @@ function initHierPage(model) {
       return [];
     }
     const limit = Math.min(cursor, trace.steps.length - 1);
+    // Snapshot producers publish the complete console at this cursor. Event
+    // producers publish only new fragments: repeated/blank output is valid C.
+    if (trace.console_mode === "snapshot") {
+      return Array.isArray(trace.steps[limit]?.console) ? trace.steps[limit].console.slice() : [];
+    }
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
       const emitted = Array.isArray(step.console) ? step.console : [];
-      emitted.forEach((line) => hPushUniqueConsoleLine(out, line));
+      out.push(...emitted);
     }
     return out;
   }
@@ -2633,11 +2788,12 @@ function initHierPage(model) {
   function refreshHierPrintfConsole(cursor) {
     if ((consoleState.trace?.steps?.[0]?.pedagogy?.memory_state?.abb_traversal_model || consoleState.trace?.steps?.[0]?.pedagogy?.memory_state?.abb_read_model || consoleState.trace?.steps?.[0]?.pedagogy?.memory_state?.heap_query_model) && printfConsole) {
       const state = cursor < 0 ? consoleState.trace.steps[0].state_snapshot : consoleState.trace.steps[Math.min(cursor,consoleState.trace.steps.length-1)].pedagogy.memory_state;
+      printfConsole.dataset.consoleCopy = state.console_stdout || "";
       printfConsole.textContent = state.console_stdout;
       printfConsole.style.whiteSpace = "pre-wrap";
       return;
     }
-    if (pageState.modelId === "red_black" && consoleState.trace?.application_precondition_rejected && printfConsole) { printfConsole.textContent = ""; return; }
+    if (pageState.modelId === "red_black" && consoleState.trace?.application_precondition_rejected && printfConsole) { printfConsole.dataset.consoleCopy = ""; printfConsole.textContent = ""; return; }
     const lines = collectHierPrintfLines(consoleState.trace, cursor);
     renderHierPrintfConsole(
       printfConsole,
@@ -2680,6 +2836,9 @@ function initHierPage(model) {
     );
   });
   renderHierHistory(actionHistory, historyBox, pageState.modelId, model.didactic);
+  let predictionController = null;
+  let predictionTargetKey = "";
+  let predictionTraceRef = null;
   const tracePlayer = window.InterpreterRuntime
     ? window.InterpreterRuntime.createTracePlayer({
       codeElement: hById("op-pseudocode"),
@@ -2756,8 +2915,10 @@ function initHierPage(model) {
         refreshHierPrintfConsole(cursor);
         const step=event?.step; enhanceHierCodeNavigation(Number.isInteger(step?.line_index)?step.line_index:null); writePresentation({cursor});
         if(progressSlider){progressSlider.max=String(Math.max(0,total-1));progressSlider.value=String(Math.max(0,cursor));progressSlider.disabled=total===0;}
+        if (simStatus && cursor >= 0 && step?.pedagogy) simStatus.textContent = `Paso ${cursor + 1}/${total} · ${window.ContextualHelp?.phaseLabel(step.pedagogy) || "Ejecutar la instrucción"}`;
         const pedagogy=step?.pedagogy; const frameCall=pedagogy?.call_stack?.at(-1); if(stepMetadata)stepMetadata.textContent=`Función: ${frameCall?.function||"—"} · Profundidad: ${frameCall?.depth??"—"} · Fase: ${pedagogy?.phase?.label||"—"} · Concepto: ${pedagogy?.concept||"—"}`;
-        const concealed=Boolean(practiceMode?.checked&&cursor>=0); if(practiceCover)practiceCover.hidden=!concealed; visualContainer.classList.toggle("hier-practice-hidden",concealed);
+        syncPredictionUI();
+        if (cursor < 0) window.ContextualHelp?.frame("hier", null);
         setSimulationButtonsEnabled();
       },
     })
@@ -2834,6 +2995,7 @@ function initHierPage(model) {
   }
 
   function setSimulationButtonsEnabled() {
+    if (window.MultipleInput?.lockActiveControls?.()) return;
     const stepMode = isStepByStepEnabled();
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const busy = pendingExecution;
@@ -3011,7 +3173,7 @@ function initHierPage(model) {
       for(const value of example.seed||[]){const response=await fetch(form.dataset.operateUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({operation:"insertar",payload:{value}})});const data=await response.json();if(!data.success)throw new Error(data.message||"No se pudo preparar el ejemplo.");lastState=data.visual_state;}
       if(lastState){model.visual_state=lastState;pageState.visualState=lastState;repaint();}
       selected=operations.find((op)=>op.name===example.operation)||selected;operationSelect.value=selected.name;buildOperationInputs(selected,inputsContainer);selected.inputs.forEach((field)=>{const input=hById(`h-field-${field.name}`);if(input&&Object.prototype.hasOwnProperty.call(example.payload||{},field.name))input.value=example.payload[field.name];});
-      actionHistory.length=0;(example.seed||[]).forEach((value)=>hPushUniqueHistoryEntry(actionHistory,createHierHistoryEntry(getHierSubroutineName(model,"insertar","Insertar"),`value=${value}`,"Preparación del ejemplo.","insertar",{value}),{allowRepeated:model.id==="binary_heap"}));renderHierHistory(actionHistory,historyBox,pageState.modelId,model.didactic);updateHierDidacticPanel(model,selected.name);invalidateTrace("Ejemplo preparado. Reproduce la operación objetivo.");writePresentation({cursor:-1});showHierMessage(`Ejemplo preparado: ${example.lesson}`,true);
+      actionHistory.length=0;(example.seed||[]).forEach((value)=>hPushUniqueHistoryEntry(actionHistory,createHierHistoryEntry(getHierSubroutineName(model,"insertar","Insertar"),`value=${value}`,"Preparación del ejemplo.","insertar",{value}),{allowRepeated:model.id==="binary_heap"}));renderHierHistory(actionHistory,historyBox,pageState.modelId,model.didactic);updateHierDidacticPanel(model,selected.name);invalidateTrace("Ejemplo preparado. Reproduce la operación objetivo.");writePresentation({cursor:-1});showHierMessage(`Ejemplo preparado: ${example.lesson}`,true);window.MultipleInput?.stateChanged?.();
     }catch(error){showHierMessage(error.message||"No fue posible preparar el ejemplo.",false);}finally{pendingExecution=false;loadExampleButton.disabled=false;setSimulationButtonsEnabled();}
   });
 
@@ -3029,12 +3191,21 @@ function initHierPage(model) {
     let heapFrames = [];
     try {
       showHierMessage("Ejecutando subrutina...", true);
-      const response = await fetch(form.dataset.operateUrl, {
+      const response = await (options?.multiple ? window.MultipleInput.fetchUnit : fetch)(form.dataset.operateUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ operation: current.name, payload }),
       });
       const data = await response.json();
+      if (data.execution_trace?.execution_started === false
+          || data.execution_trace?.validation?.accepted === false) {
+        // Host validation never entered C: keep the previous frame/history and
+        // do not defer an error behind an empty trace or invent fallback steps.
+        tracePlayer?.pause(true);
+        showHierMessage(data.message, false);
+        if (simStatus) simStatus.textContent = "La operacion no se ejecuto; el estado y la traza anterior permanecen sin cambios.";
+        return options?.multiple ? data : null;
+      }
       updateHierDidacticPanel(model, current.name);
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
@@ -3064,9 +3235,13 @@ function initHierPage(model) {
         }
         traceSelectionKey = selectionKey;
       } else {
-        consoleState.trace = null;
-        consoleState.fallbackMessage = data.message || "(sin salida printf en esta ruta)";
-        refreshHierPrintfConsole(-1);
+        // API feedback is not stdout. Fast mode displays only the output
+        // recorded by the executed C path, including an explicitly empty path.
+        consoleState.trace = data.execution_trace || null;
+        consoleState.fallbackMessage = "";
+        const consoleCursor = finalOnly && Array.isArray(data.execution_trace?.steps)
+          ? data.execution_trace.steps.length - 1 : -1;
+        refreshHierPrintfConsole(consoleCursor);
         if (!finalOnly) {
           await simulateHierDidacticExecution({
             modelId: pageState.modelId,
@@ -3135,7 +3310,8 @@ function initHierPage(model) {
           }
         }
         if (!hasExecutionTrace) {
-          applyState(data.visual_state, execution);
+          // A normal batch commits a complete final frame, not an unfinished rotation tween.
+          applyState(data.visual_state, options?.multiple && finalOnly ? null : execution);
           if (simStatus && finalOnly) {
             simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
           }
@@ -3148,6 +3324,7 @@ function initHierPage(model) {
           writeRNValidatorCache();
         } else clearRNValidatorCache();
       }
+      if (!options?.multiple && data.success && current.mutates) window.MultipleInput?.stateChanged?.();
       return data;
     } catch (_error) {
       showHierMessage("No fue posible completar la operacion.", false);
@@ -3214,6 +3391,7 @@ function initHierPage(model) {
       applyState(data.visual_state, null);
     }
     invalidateTrace("Usa Ejecutar operación o activa Paso a paso.");
+    if (data.success) window.MultipleInput?.stateChanged?.();
   });
 
   simPlayButton?.addEventListener("click", async () => {
@@ -3221,8 +3399,8 @@ function initHierPage(model) {
     if (!current || !isCurrentSelectionValid()) { form.reportValidity?.(); return; }
     const payload = collectPayload(current);
     const selectionKey = buildSelectionKey(current, payload);
-    await executeOperationAndLoadTrace(current, payload, selectionKey, { finalOnly: !isStepByStepEnabled() });
-    if (isStepByStepEnabled() && tracePlayer?.hasTrace()) tracePlayer.reset();
+    const data = await executeOperationAndLoadTrace(current, payload, selectionKey, { finalOnly: !isStepByStepEnabled() });
+    if (data && isStepByStepEnabled() && tracePlayer?.hasTrace()) tracePlayer.reset();
   });
 
   simPrevButton?.addEventListener("click", () => {
@@ -3240,6 +3418,13 @@ function initHierPage(model) {
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
+    const pendingDecision = predictionController?.sync();
+    if (practiceMode?.checked && pendingDecision?.index === traceCursor + 1) {
+      syncPredictionUI();
+      if (predictionFeedback) predictionFeedback.textContent = "Antes de ejecutar esta condición, predice o continúa sin responder. El estado visible aún es el anterior.";
+      const panel = predictionSelect?.closest("details"); if (panel) panel.open = true;
+      return;
+    }
     await tracePlayer.step();
   });
 
@@ -3249,14 +3434,43 @@ function initHierPage(model) {
   endButton?.addEventListener("click",()=>tracePlayer?.seek(tracePlayer.getTotalSteps()-1));
   repeatButton?.addEventListener("click",async()=>{tracePlayer?.reset();await tracePlayer?.playFromStart();});
   progressSlider?.addEventListener("input",()=>tracePlayer?.seek(Number(progressSlider.value)));
-  practiceMode?.addEventListener("change",()=>{const concealed=Boolean(practiceMode.checked&&traceCursor>=0);if(practiceCover)practiceCover.hidden=!concealed;visualContainer.classList.toggle("hier-practice-hidden",concealed);});
-  function expectedPrediction(frame){const adjustment=String(frame?.adjustment?.type||"").toUpperCase();if(["LL","RR","LR","RL"].includes(adjustment))return adjustment;if(frame?.concept==="recolor")return "recolor";if(frame?.concept==="swap")return "swap";if(frame?.executed_branch==="izquierda")return "left";if(frame?.executed_branch==="derecha")return "right";const value=String(frame?.case||"").toLowerCase();if(value.includes("hoja")||value.includes("leaf"))return "leaf";if(value.includes("dos")||value.includes("two"))return "two-children";if(value.includes("hijo")||value.includes("one"))return "one-child";return "none";}
-  checkPrediction?.addEventListener("click",()=>{if(!currentPedagogyFrame||!predictionSelect?.value){if(predictionFeedback)predictionFeedback.textContent="Prepara una traza y selecciona una predicción.";return;}const expected=expectedPrediction(currentPedagogyFrame);const correct=predictionSelect.value===expected;conceptualProgress.attempts+=1;if(correct)conceptualProgress.correct+=1;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent=correct?"Correcto: coincide con el frame ejecutado.":`Revisa condición, caso e invariante. La evidencia canónica indica: ${expected}.`;if(practiceCover)practiceCover.hidden=true;visualContainer.classList.remove("hier-practice-hidden");});
-  hintButton?.addEventListener("click",()=>{hintLevel=Math.min(3,hintLevel+1);const frame=currentPedagogyFrame;if(predictionFeedback)predictionFeedback.textContent=hintLevel===1?`Pista 1: observa el concepto «${frame?.concept||"—"}».`:hintLevel===2?`Pista 2: revisa la ruta ${frame?.path?.keys?.join(" → ")||"vacía"}.`:`Pista 3: el caso esperado se relaciona con «${expectedPrediction(frame)}».`;});
-  skipPrediction?.addEventListener("click",()=>{if(practiceCover)practiceCover.hidden=true;visualContainer.classList.remove("hier-practice-hidden");if(predictionFeedback)predictionFeedback.textContent="Continuaste sin responder; el intento no afecta tu progreso.";});
-  resetProgress?.addEventListener("click",()=>{conceptualProgress={attempts:0,correct:0};hintLevel=0;renderConceptualProgress();if(predictionFeedback)predictionFeedback.textContent="Progreso conceptual reiniciado.";});
-  function compareStateSummary(side,step){const state=step?.state||side?.final_state||{};const traversal=state.traversals?.inorden||[];const array=state.array||[];return `<article class="hier-compare-card"><h4>${hEscape(side?.structure||"estructura")}</h4><p><strong>Paso:</strong> ${hEscape(step?.step??"final")} · insertado ${hEscape(step?.inserted??"—")}</p><p><strong>Altura:</strong> ${hEscape(step?.height??side?.height??"—")} · <strong>tamaño:</strong> ${hEscape(state.size??side?.size??"—")}</p><p><strong>Representación:</strong> <code>${hEscape((array.length?array:traversal).join(" → ")||"vacía")}</code></p><p><strong>Invariante:</strong> ${step?.validation??side?.validation?"✓ válido":"✗ inválido"}</p></article>`;}
-  function renderHierComparison(){if(!hierarchicalComparison||!compareGrid)return;if(hierarchicalComparison.kind==="traversals"){compareGrid.innerHTML=hierarchicalComparison.traversals.map((item)=>`<article class="hier-compare-card"><h4>${hEscape(item.name)}</h4><p>${hEscape(item.stack_rule)}</p><code>${hEscape(item.values.join(" → "))}</code></article>`).join("");}else{const cursor=Math.max(0,Number(compareProgress?.value||0));const leftStep=hierarchicalComparison.left.timeline[cursor]||hierarchicalComparison.left.timeline.at(-1);const rightStep=hierarchicalComparison.right.timeline[cursor]||hierarchicalComparison.right.timeline.at(-1);compareGrid.innerHTML=compareStateSummary(hierarchicalComparison.left,leftStep)+compareStateSummary(hierarchicalComparison.right,rightStep);}if(compareConclusion)compareConclusion.textContent=`${hierarchicalComparison.conclusion} Entrada, forma y estados de ambos lados se mantuvieron aislados.`;}
+  predictionController = createHierPredictionController(() => tracePlayer?.hasTrace() ? consoleState.trace : null, () => traceCursor);
+  function syncPredictionUI() {
+    if (!predictionController) return;
+    const pending = predictionController.sync();
+    const key = pending ? String(pending.index) : "none";
+    if (key !== predictionTargetKey || predictionTraceRef !== consoleState.trace) {
+      predictionTargetKey = key; predictionTraceRef = consoleState.trace;
+      if (predictionSelect) predictionSelect.innerHTML = '<option value="">Elige una respuesta</option>' + (pending?.options || []).map(option => `<option value="${option.value}">${hEscape(option.label)}</option>`).join("");
+      if (predictionFeedback) predictionFeedback.textContent = "";
+    }
+    if (predictionSelect) predictionSelect.disabled = !pending;
+    if (checkPrediction) { checkPrediction.disabled = !pending; checkPrediction.textContent = "Comprobar y revelar decisión"; }
+    if (hintButton) hintButton.disabled = !pending;
+    if (skipPrediction) { skipPrediction.disabled = !pending; skipPrediction.textContent = "Revelar decisión sin responder"; }
+    const prompt = hById("hier-prediction-prompt");
+    if (prompt) prompt.textContent = pending?.prompt || "No hay una próxima decisión con condición C registrada. Ejecuta una operación en modo paso a paso o sigue navegando.";
+    if (practiceCover) practiceCover.hidden = true;
+    visualContainer.classList.remove("hier-practice-hidden");
+  }
+  practiceMode?.addEventListener("change", syncPredictionUI);
+  checkPrediction?.addEventListener("click", () => {
+    const result = predictionController.answer(predictionSelect?.value);
+    if (!result) { if (predictionFeedback) predictionFeedback.textContent = "Selecciona una respuesta para la próxima decisión."; return; }
+    if (result.counted) { conceptualProgress.attempts += 1; if (result.correct) conceptualProgress.correct += 1; renderConceptualProgress(); }
+    tracePlayer.seek(result.index);
+    if (predictionFeedback) predictionFeedback.textContent = `${result.correct ? "Correcto" : "No coincide"}: condición del paso ${result.index + 1} = ${result.label}. Decisión revelada.${result.counted ? "" : " Ya se registró este intento; no se puntúa de nuevo."}`;
+  });
+  hintButton?.addEventListener("click", () => { if (predictionFeedback) predictionFeedback.textContent = predictionController.hint(); });
+  skipPrediction?.addEventListener("click", () => {
+    const result = predictionController.skip(); if (!result) return;
+    tracePlayer.seek(result.index);
+    if (predictionFeedback) predictionFeedback.textContent = `Decisión del paso ${result.index + 1} revelada sin responder; no suma intentos.`;
+  });
+  resetProgress?.addEventListener("click", () => { conceptualProgress = {attempts:0,correct:0}; renderConceptualProgress(); if (predictionFeedback) predictionFeedback.textContent = "Progreso conceptual reiniciado."; });
+  syncPredictionUI();
+  function compareStateSummary(side,step){return renderHierComparisonState(side,step);}
+  function renderHierComparison(){if(!hierarchicalComparison||!compareGrid)return;if(hierarchicalComparison.kind==="traversals"){compareGrid.innerHTML=renderHierComparisonShape(hierarchicalComparison.state || {}, "abb").html + hierarchicalComparison.traversals.map((item)=>`<article class="hier-compare-card"><h4>${hEscape(item.name)}</h4><p>${hEscape(item.stack_rule)}</p><p><strong>Orden de visita:</strong> <code>${hEscape(item.values.join(" → "))}</code></p></article>`).join("");}else{const cursor=Math.max(0,Number(compareProgress?.value||0));const leftStep=hierarchicalComparison.left.timeline[cursor]||hierarchicalComparison.left.timeline.at(-1);const rightStep=hierarchicalComparison.right.timeline[cursor]||hierarchicalComparison.right.timeline.at(-1);compareGrid.innerHTML=compareStateSummary(hierarchicalComparison.left,leftStep)+compareStateSummary(hierarchicalComparison.right,rightStep);}if(compareConclusion)compareConclusion.textContent=`${hierarchicalComparison.conclusion} Entrada, forma y estados de ambos lados se mantuvieron aislados.`;}
   compareRun?.addEventListener("click",async()=>{const values=String(compareValues?.value||"").split(/[,\s]+/).filter(Boolean).map(Number);try{const response=await fetch(compareSection?.dataset.compareUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:compareKind?.value,values})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"No se pudo comparar.");hierarchicalComparison=data;if(compareInput)compareInput.textContent=`Entrada inmutable: [${data.input.join(", ")}]`;if(compareProgress){const count=data.left?.timeline?.length||1;compareProgress.max=String(Math.max(0,count-1));compareProgress.value="0";compareProgress.disabled=data.kind==="traversals";}renderHierComparison();syncComparisonNavigation();if(announcer)announcer.textContent="Comparación jerárquica preparada.";}catch(error){if(compareConclusion)compareConclusion.textContent=error.message;}});
   function syncComparisonNavigation() {
     const previous = hById("hier-compare-prev"), next = hById("hier-compare-next");
@@ -3277,10 +3491,40 @@ function initHierPage(model) {
   });
   compareProgress?.addEventListener("input", () => { renderHierComparison(); syncComparisonNavigation(); });
   compareKind?.addEventListener("change",()=>{hierarchicalComparison=null;if(compareProgress)compareProgress.disabled=true;syncComparisonNavigation();});
-  exportImage?.addEventListener("click",async()=>{try{const exported=await window.InterpreterRuntime.exportVisualStateAsJpg({target:hById("hier-visual-region"),quality:.9,scale:1});const link=document.createElement("a");link.href=exported.dataUrl;link.download=exported.suggestedName;link.click();}catch(error){showHierMessage(error.message||"No se pudo exportar la captura.",false);}});
+  exportImage?.addEventListener("click", async () => {
+    if (exportImage.disabled) return;
+    const originalText = exportImage.textContent;
+    exportImage.disabled = true;
+    exportImage.setAttribute("aria-busy", "true");
+    try {
+      const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({
+        target: hById("hier-visual-region"), quality: .9, scale: 1,
+        onProgress: (text) => { exportImage.textContent = text; },
+      });
+      window.InterpreterRuntime.downloadJpg(exported.dataUrl, exported.suggestedName);
+      showHierMessage("Captura JPG preparada; revisa las descargas del navegador.", true);
+    } catch (error) { showHierMessage(error.message || "No se pudo exportar la captura.", false); }
+    finally {
+      exportImage.disabled = false;
+      exportImage.removeAttribute("aria-busy");
+      exportImage.textContent = originalText;
+    }
+  });
   exportSummary?.addEventListener("click",()=>{const current=operations.find((op)=>op.name===operationSelect.value);const summary={schema:"hierarchical-learning-summary/v1",structure:model.id,operation:operationSelect.value,payload:current?collectPayload(current):{},level:learningLevel?.value,cursor:tracePlayer?.getCursor()??-1,total_steps:tracePlayer?.getTotalSteps()??0,frame:currentPedagogyFrame,state:pageState.visualState,practice:conceptualProgress,comparison:hierarchicalComparison};const url=URL.createObjectURL(new Blob([JSON.stringify(summary,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download=`${model.id}-resumen.json`;link.click();URL.revokeObjectURL(url);});
   document.addEventListener("keydown",async(event)=>{if(event.key===" " && event.target instanceof Element && event.target.closest("button, summary, a, [role=button]"))return;if(event.target instanceof Element && event.target.closest("#hier-variables-view"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key==="ArrowLeft"){event.preventDefault();tracePlayer?.prev();}else if(event.key==="ArrowRight"){event.preventDefault();await tracePlayer?.step();}else if(event.key==="Home"){event.preventDefault();tracePlayer?.seek(-1);}else if(event.key==="End"){event.preventDefault();tracePlayer?.seek(tracePlayer.getTotalSteps()-1);}else if(event.key===" "){event.preventDefault();tracePlayer?.pause();}});
   if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches&&speedSlider){speedSlider.value="-2";setPlaybackSpeed(speedSlider.value);}
+
+  window.MultipleInput?.mount({
+    model, form, player: tracePlayer, isBusy: () => pendingExecution,
+    sync: setSimulationButtonsEnabled,
+    select: (operation) => { operationSelect.value=operation; operationSelect.dispatchEvent(new Event("change")); },
+    execute: (value, finalOnly) => {
+      const current=operations.find(op=>op.name===operationSelect.value);
+      const payload={value:String(value)};
+      const field=document.getElementById("h-field-value"); if(field) field.value=String(value);
+      return executeOperationAndLoadTrace(current,payload,buildSelectionKey(current,payload),{finalOnly,multiple:true});
+    },
+  });
 
   stepToggle?.addEventListener("change", () => {
     syncStepModeUi();
@@ -3312,8 +3556,36 @@ function initHierPage(model) {
 
 }
 
+
+// Presentation-only classroom v1; existing render targets retain their identity.
+function hierMountClassroomView() {
+  if (!window.ClassroomView) return;
+  const root = document.querySelector(".hier-primary-workspace");
+  if (!root) return;
+  document.getElementById("hier-code-region")?.classList.add("classroom-code");
+  document.getElementById("hier-code-region")?.classList.remove("didactic-technical");
+  const history = document.getElementById("action-history");
+  const consoleNode = document.getElementById("hier-printf-console");
+  const record = document.getElementById("tad-record");
+  const results = [
+    {label:"Consola C (printf)",panel:consoleNode?.closest("section"),code:consoleNode,getText:()=>consoleNode?.dataset.consoleCopy || ""},
+    {label:"main.c del historial",panel:history?.parentElement,code:history,getText:()=>history?.dataset.rawCode || ""},
+    {label:"Estructura del TAD",panel:record?.parentElement,code:record,getText:()=>record?.dataset.rawCode ?? record?.textContent ?? ""}
+  ];
+  results.forEach(entry=>{
+    entry.panel?.classList.remove("didactic-technical");
+    for(let node=entry.panel?.parentElement;node && node.tagName!=="ARTICLE";node=node.parentElement) {
+      node.classList.remove("didactic-technical", "seq-pilot-collapsed");
+      node.hidden = false;
+      if(node.tagName==="DETAILS") node.open=true;
+    }
+  });
+  window.ClassroomView.mount({root,visual:"#hier-visual-region",stage:"#visual-state",code:"#op-pseudocode",memory:[".abb-instruction-memory", ".hier-retired-memory"],results,key:"hierarchical"});
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   if (window.HIER_VIEW_MODEL) {
     initHierPage(window.HIER_VIEW_MODEL);
+    hierMountClassroomView();
   }
 });

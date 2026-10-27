@@ -13,6 +13,7 @@ def avl_server():
  yield f'http://127.0.0.1:{server.server_port}'
  server.shutdown();thread.join(timeout=5)
 
+from scripts.test_tool_paths import resolve_doxygen
 def compile_main(main,context,base,target):
  target.mkdir();(target/'main.c').write_text(main,encoding='utf-8');hashes={}
  for kind,suffix in [('source','c'),('header','h')]:
@@ -23,7 +24,7 @@ def compile_main(main,context,base,target):
  gcc=shutil.which('gcc');assert gcc
  build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(target/'tad_avl.c'),str(target/'main.c'),'-o',str(target/'main.exe')],capture_output=True,text=True,timeout=30);assert build.returncode==0 and not build.stderr,build.stderr
  run=subprocess.run([str(target/'main.exe')],capture_output=True,text=True,timeout=5);assert run.returncode==0,run.stderr
- doxygen=Path(r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe');assert doxygen.exists();warn=target/'warnings.log';cfg=target/'Doxyfile'
+ doxygen=Path(resolve_doxygen());assert doxygen.exists();warn=target/'warnings.log';cfg=target/'Doxyfile'
  cfg.write_text('\n'.join(['PROJECT_NAME = "Actual AVL history main"','INPUT = "'+(target/'main.c').as_posix()+'"','OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
  docs=subprocess.run([str(doxygen),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',(docs.stderr,warn.read_text(encoding='utf-8'))
  return {'stdout':run.stdout,'download_hashes':hashes,'strict_compile':True,'doxygen_warnings':0}

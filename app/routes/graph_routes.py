@@ -11,6 +11,7 @@ from app.domain.graph.snapshot_pool import GraphSnapshotRecords
 from app.services.graph_help_service import GraphHelpService
 from app.services.graph_structure_service import GraphStructureService
 from app.services.session_service import SessionService
+from app.services.graph_session_history import read_graph_history, save_graph_history
 
 graph_bp = Blueprint("graph", __name__, url_prefix="/graph")
 
@@ -150,15 +151,15 @@ _GRAPH_DIDACTIC_NOTES: dict[str, dict[str, Any]] = {
     },
     "recorridos": {
         "default": (
-            "Recorridos: exploran el grafo desde un origen respetando vertices marcados para no repetir visitas."
+            "Recorridos: usan Trabajo para evitar visitas repetidas y publican las marcas del grafo sólo al terminar correctamente."
         ),
         "algorithms": {
             "run_bfs": (
-                "BFS (anchura): usa una cola FIFO. Visita por niveles: primero los vecinos cercanos, "
+                "BFS (anchura): usa t.prev como cola FIFO de índices, con capacidad n. Visita por niveles: primero los vecinos cercanos, "
                 "luego los de mayor distancia."
             ),
             "run_dfs": (
-                "DFS (profundidad): sigue una rama hasta el fondo (recursion o pila) y luego retrocede "
+                "DFS (profundidad): sigue una rama mediante llamadas recursivas y luego retrocede "
                 "con backtracking."
             ),
         },
@@ -185,10 +186,10 @@ _GRAPH_DIDACTIC_NOTES: dict[str, dict[str, Any]] = {
         "algorithms": {
             "run_prim": (
                 "Prim: crece un arbol desde un vertice inicial, agregando siempre la arista minima que conecta "
-                "un nodo nuevo."
+                "un nodo nuevo. Exige arcos simétricos y conexión completa; informa GrafoEstado al fallar."
             ),
             "run_kruskal": (
-                "Kruskal: ordena aristas por peso y agrega solo las que no formen ciclo, usando Union-Find."
+                "Kruskal: ordena aristas por peso y evita ciclos con conjuntos. Si no conecta todos los vértices, libera el resultado parcial e informa GRAFO_DESCONECTADO."
             ),
         },
     },
@@ -221,7 +222,7 @@ def _render_graph_phase(structure_id: str, phase: str) -> str:
     if phase_data is None:
         abort(404)
     try:
-        history = SessionService.get_history(session_key)
+        history = read_graph_history(session_key)
         model = _json_safe(GraphStructureService.get_view_model(structure_id, history))
     except KeyError:
         abort(404)
@@ -244,7 +245,7 @@ def _render_graph_phase(structure_id: str, phase: str) -> str:
 def operate_structure(structure_id: str) -> Any:
     """Execute one graph operation and return JSON response."""
     session_key = f"graph::{structure_id}"
-    history = SessionService.get_history(session_key)
+    history = read_graph_history(session_key)
     body = request.get_json(silent=True) or {}
     operation_name = str(body.get("operation", "")).strip()
     payload = body.get("payload", {})
@@ -260,11 +261,13 @@ def operate_structure(structure_id: str) -> Any:
             operation_name=operation_name,
             payload=payload,
             history=history,
+            execution_mode="normal" if body.get("execution_mode") == "normal" else "step",
         )
     except KeyError:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
 
-    SessionService.save_history(session_key, result["history"])
+    if not result.get("preserve_session"):
+        save_graph_history(session_key, result["history"])
     trace = result.get("execution_trace")
     if trace and not trace.get("graph_snapshot_codec"):
         from app.domain.graph.snapshot_pool import SnapshotPool
@@ -305,3 +308,20 @@ def compare_algorithms() -> Any:
     except ValueError as error:
         return jsonify({"success": False, "message": str(error)}), 400
     return jsonify(_json_safe({"success": True, **result}))
+
+
+@graph_bp.get("/<structure_id>/history")
+def export_graph_history(structure_id):
+    """Lossless read-only export, including suspended pre-convergence commands."""
+    try:
+        GraphStructureService.get_structure(structure_id)
+    except KeyError:
+        abort(404)
+    history = read_graph_history(f"graph::{structure_id}")
+    response = jsonify({"schema": "graph-history-export/v1", "history": history,
+                        "application_contract": GraphStructureService.SOURCE_CONTRACT,
+                        "history_contract": None if GraphStructureService.history_issue(history) else GraphStructureService.SOURCE_CONTRACT,
+                        "suspended": bool(GraphStructureService.history_issue(history))})
+    response.headers["Cache-Control"] = "private, no-store"
+    response.headers["Content-Disposition"] = 'attachment; filename="graph-history.json"'
+    return response

@@ -27,7 +27,11 @@ def prepared_dequeue(history: list[dict[str, Any]], *, source_code: str) -> dict
     if not isinstance(record,dict) or record.get('history_digest')!=_digest(history):return None
     trace=record.get('trace')
     if not isinstance(trace,dict) or trace.get('structure_id')!='queue' or trace.get('operation_name')!='desencolar' or trace.get('source_code')!=source_code:return None
-    return deepcopy(trace)
+    restored = deepcopy(trace)
+    # This restoration endpoint owns a cumulative-console producer.
+    # Annotate only the returned legacy copy; never rewrite stored sessions.
+    restored.setdefault("console_mode", "snapshot")
+    return restored
 
 def forget_dequeue() -> None:
     """Invalidate only this prepared record, preserving other structure namespaces."""

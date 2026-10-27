@@ -29,19 +29,19 @@ def structure_page(structure_id: str) -> str:
     except KeyError:
         abort(404)
 
-    if structure_id == "stack":
+    if structure_id == "stack" and model["history_compatible"]:
         from app.services.stack_cleanup_session_service import prepared_cleanup
         model["prepared_cleanup_trace"] = prepared_cleanup(model["history"])
         from app.services.stack_push_session_service import prepared_push
         model["prepared_push_trace"] = prepared_push(model["history"])
-    if structure_id == "queue":
+    if structure_id == "queue" and model["history_compatible"]:
         from app.services.queue_cleanup_session_service import prepared_cleanup
         model["prepared_cleanup_trace"] = prepared_cleanup(model["history"])
         from app.services.queue_enqueue_session_service import prepared_enqueue
         model["prepared_enqueue_trace"] = prepared_enqueue(model["history"])
         from app.services.queue_dequeue_session_service import prepared_dequeue
         model["prepared_dequeue_trace"] = prepared_dequeue(model["history"], source_code=model["didactic"]["operations"]["desencolar"])
-    if structure_id == "priority_queue":
+    if structure_id == "priority_queue" and model["history_compatible"]:
         from app.services.priority_queue_cleanup_session_service import prepared_cleanup
         model["prepared_cleanup_trace"] = prepared_cleanup(model["history"])
         from app.services.priority_queue_enqueue_session_service import prepared_enqueue

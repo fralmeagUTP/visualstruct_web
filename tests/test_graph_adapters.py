@@ -60,9 +60,9 @@ def test_queries_vertices_edges_neighbors_and_weight() -> None:
     weight = adapter.execute("edge_weight", {"origin": "1", "target": "2"})["result"]
 
     assert set(vertices) == {1, 2}
-    assert len(edges) == 1
+    assert edges == [[2, 1, 3], [1, 2, 3]]  # actual borrowed C head order
     assert neighbors == [2]
-    assert weight == 3.0
+    assert weight == 3 and type(weight) is int
 
 
 def test_bfs_and_dfs_execution() -> None:
@@ -83,16 +83,15 @@ def test_dijkstra_and_negative_weight_block() -> None:
     adapter = GraphAdapter()
     adapter.execute("insert_edge", {"origin": "1", "target": "2", "weight": "1"})
     result = adapter.execute("run_dijkstra", {"start": "1", "end": "2"})["result"]
-    assert result["distances"][2] == 1.0
+    assert result["path_arcs"] == [[1, 2, 1]]
     assert result["path"] == [1, 2]
     assert result["distance_to_destination"] == 1.0
 
     adapter.execute("insert_edge", {"origin": "2", "target": "3", "weight": "-2"})
-    try:
-        adapter.execute("run_dijkstra", {"start": "1", "end": "3"})
-        assert False, "Dijkstra debio bloquear pesos negativos"
-    except Exception as error:  # noqa: BLE001
-        assert "negativo" in str(error).lower()
+    rejected = adapter.execute("run_dijkstra", {"start": "1", "end": "3"})
+    assert rejected['success'] is False and rejected['c_status'] == 3
+    assert rejected['c_status_name'] == 'GRAFO_PESO_NEGATIVO'
+    assert rejected['result']['path'] == []
 
 
 def test_bellman_ford_execution() -> None:
@@ -103,7 +102,7 @@ def test_bellman_ford_execution() -> None:
     adapter.execute("insert_edge", {"origin": "2", "target": "3", "weight": "-1"})
 
     result = adapter.execute("run_bellman_ford", {"start": "1", "end": "3"})["result"]
-    assert result["distances"][3] == 3.0
+    assert result["path_arcs"] == [[1, 2, 4], [2, 3, -1]]
     assert result["has_negative_cycle"] is False
     assert result["path"] == [1, 2, 3]
     assert result["distance_to_destination"] == 3.0
@@ -127,8 +126,8 @@ def test_bellman_ford_undirected_uses_both_edge_directions() -> None:
     assert result["distance_to_destination"] == 8.0
 
 
-def test_prim_and_kruskal_constraints_and_union_find_flag() -> None:
-    """Prim/Kruskal must run only in undirected graphs and expose UF integration."""
+def test_prim_and_kruskal_constraints_and_canonical_result() -> None:
+    """MST requires symmetric C arcs; results contain actual returned edges."""
     adapter = GraphAdapter()
     adapter.execute("insert_edge", {"origin": "1", "target": "2", "weight": "1"})
     adapter.execute("insert_edge", {"origin": "2", "target": "3", "weight": "2"})
@@ -137,22 +136,17 @@ def test_prim_and_kruskal_constraints_and_union_find_flag() -> None:
     kruskal = adapter.execute("run_kruskal", {})["result"]
 
     assert prim["total_weight"] >= 0
-    assert kruskal["uses_union_find"] is True
+    assert kruskal['total_weight'] == prim['total_weight'] == 3
+    assert len(prim['mst_edges']) == len(kruskal['mst_edges']) == 2
+    assert prim['connected'] is kruskal['connected'] is True
 
     adapter.execute("create_graph", {"directed": "true"})
     adapter.execute("insert_edge", {"origin": "1", "target": "2", "weight": "1"})
 
-    try:
-        adapter.execute("run_prim", {"start": "1"})
-        assert False, "Prim debio bloquearse para dirigido"
-    except ValueError as error:
-        assert "no dirigido" in str(error).lower()
-
-    try:
-        adapter.execute("run_kruskal", {})
-        assert False, "Kruskal debio bloquearse para dirigido"
-    except ValueError as error:
-        assert "no dirigido" in str(error).lower()
+    for operation, payload in [('run_prim', {'start': '1'}), ('run_kruskal', {})]:
+        rejected = adapter.execute(operation, payload)
+        assert rejected['success'] is False and rejected['c_status'] == 6
+        assert rejected['result']['mst_edges'] == []
 
 
 def test_graph_rejects_non_integer_vertex() -> None:

@@ -2,6 +2,7 @@
 import json,shutil,subprocess
 from pathlib import Path
 
+from scripts.test_tool_paths import resolve_doxygen
 def verify_equivalent(trace,review,case,target,header):
  target.mkdir();shutil.copyfile(header,target/'tad_rojo_negro.h')
  source='#include <stdlib.h>\n#include "tad_rojo_negro.h"\n'+trace['source_code']
@@ -32,7 +33,7 @@ static RBT current_ref(int id){return id?refs[id-1]:NULL;}
  run=subprocess.run([str(target/'observed.exe')],capture_output=True,text=True,timeout=5)
  expected=''.join(f'FREE:{i}\n' for i in expected_frees)+f'MEMORY:{len(initial)} {len(initial)}\n';assert run.returncode==0 and run.stdout==expected,(run.returncode,run.stdout,expected)
  (target/'observer-stdout.log').write_text(run.stdout,encoding='utf-8')
- doxygen=Path(r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe');warn=target/'warnings.log';cfg=target/'Doxyfile'
+ doxygen=Path(resolve_doxygen());warn=target/'warnings.log';cfg=target/'Doxyfile'
  cfg.write_text('\n'.join(['PROJECT_NAME = "RBT exact prepared equivalent caller"','INPUT = "'+(target/'equivalent.c').as_posix()+'"','OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
  docs=subprocess.run([str(doxygen),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',(docs.stderr,warn.read_text(encoding='utf-8'))
  return {'strict_compile':True,'stdout':exact.stdout,'prepared_graph_and_color_matches_native':True,'free_order':expected_frees,'allocations':len(initial),'frees':len(initial),'doxygen_warnings':0,'observer_variant_distinct_from_exact_program':True,'preparation_outside_clear_trace':True}

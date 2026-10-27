@@ -1,26 +1,33 @@
-"""Finite DFS contract parity; not instruction-level or all-path proof."""
-import json,os,subprocess,sys
-from pathlib import Path
+"""Finite native DFS status/order/marks and explicit canonical command replay."""
+from _book_traversal_oracle import CASES,native_cases,compare_native
+from app.domain.graph.book_c_subset import BookSession,NULL
 from app.services.graph_structure_service import GraphStructureService as S
 from app.adapters.graph_adapter import GraphAdapter
 
 def test_dfs_downloaded_native_contract(tmp_path):
-    env=dict(os.environ,AUDIT_OUTPUT_DIR=str(tmp_path/'native'),PYTHONIOENCODING='utf-8')
-    run=subprocess.run([sys.executable,'-u',str(Path(__file__).with_name('_audit_graph_dfs_contract_observer.py'))],capture_output=True,text=True,env=env,timeout=90)
-    assert run.returncode==0,run.stdout+run.stderr
-    report=json.loads((tmp_path/'native/report.json').read_text())
-    assert report['native_runs']==11 and report['final_orders_match']
-    assert report['marks_mismatches']==report['output_marks_mismatches']==report['successful_history_missing']==0
+    report=native_cases('dfs',tmp_path/'native',initial_mark=7)
+    assert len(report['rows'])==11
+    for case,record in enumerate(CASES):
+        marks={vertex:7 for vertex in record['vertices']}
+        arcs=[(a,b,1) for a,b in record['edges']]
+        for run in range(record.get('repeat',1)):
+            session=BookSession(record['vertices'],arcs,marks)
+            result=session.call('grafo_dfs',[record['start']])
+            compare_native(result,report['rows'][case,run])
+            marks=result['graph_after']['marks']
+            assert session.free_result(result['returned'],result['return_type'])==NULL
+            assert len(session.machine.heap)==len(record['vertices'])+len(arcs)
 
-def test_dfs_history_rebuild_no_query_redispatch(monkeypatch):
-    h=[{'operation':'insert_vertex','payload':{'vertex':-1}}]
+def test_dfs_history_rebuild_replays_only_explicit_canonical_commands(monkeypatch):
+    history=[{'operation':'insert_vertex','payload':{'vertex':-1},'source_contract':'graph-book/v1'}]
     for _ in range(2):
-        data=S.execute_operation('graph','run_dfs',{'start':-1},h);assert data['success'];h=data['history']
-    failed=S.execute_operation('graph','run_dfs',{'start':999},h)
-    assert not failed['success'] and failed['history']==h
+        data=S.execute_operation('graph','run_dfs',{'start':-1},history,execution_mode='normal')
+        assert data['success'];history=data['history']
+    failed=S.execute_operation('graph','run_dfs',{'start':999},history,execution_mode='normal')
+    assert failed['c_status']==2 and failed['history'][:-1]==history
     calls=[];original=GraphAdapter.execute
-    def spy(self,op,payload):calls.append(op);return original(self,op,payload)
+    def spy(self,operation,payload):calls.append(operation);return original(self,operation,payload)
     monkeypatch.setattr(GraphAdapter,'execute',spy)
-    for _ in range(2):assert S.get_view_model('graph',h)['history']==h
-    assert calls==['insert_vertex','insert_vertex']
-    assert [e['operation'] for e in h]==['insert_vertex','run_dfs','run_dfs']
+    for _ in range(2):assert S.get_view_model('graph',history)['history']==history
+    assert calls==['insert_vertex','run_dfs','run_dfs']*2
+    assert [entry['operation'] for entry in history]==['insert_vertex','run_dfs','run_dfs']

@@ -53,8 +53,7 @@ function initSequentialResponsiveWorkspace() {
     const prepare = shell.querySelector(".seq-prepare");
     const updateLayout = () => {
       shell.style.setProperty("--seq-prepare-height", `${prepare.getBoundingClientRect().height}px`);
-      const top = workspace.getBoundingClientRect().top + window.scrollY;
-      shell.style.setProperty("--seq-workspace-height", `${Math.max(200, window.innerHeight - top - 12)}px`);
+      // Desktop workspace height is viewport-based CSS, independent of document position.
     };
     byId("op-pseudocode").tabIndex = 0;
     window.addEventListener("resize", updateLayout);
@@ -72,24 +71,24 @@ function enhanceSequentialCodeNavigation(activeLine = null) {
   const rows = raw.replaceAll("\r\n", "\n").split("\n");
   const functions = [];
   const signature = /^\s*(?:static\s+)?(?:void|bool|int|size_t|ptr\w+|[A-Za-z_]\w*)\s+\**([A-Za-z_]\w*)\s*\(/;
-  rows.forEach((row, index) => { const match = row.match(signature); if (match && !["if", "while", "for", "switch"].includes(match[1])) functions.push({ name: match[1], line: index }); });
-  let inBlock = false;
-  code.querySelectorAll(".code-line").forEach((line, index) => {
-    const value = String(rows[index] || "").trim();
-    const starts = value.startsWith("/*");
-    line.classList.toggle("is-code-comment", inBlock || starts || value.startsWith("//") || value.startsWith("*"));
-    if (starts && !value.includes("*/")) inBlock = true;
-    if (inBlock && value.includes("*/")) inBlock = false;
+  const commentLines = window.CCodeNavigation?.commentOnlyLines(raw) || [];
+  rows.forEach((row, index) => {
+    if (commentLines[index] || /^\s*(?:return|goto)\b/.test(row)) return;
+    const match = row.match(signature);
+    if (!match || ["if", "while", "for", "switch"].includes(match[1])) return;
+    // A prototype or return f(...) is not a second function definition.
+    const tail = rows.slice(index).join("\n");
+    if (tail.match(/[;{}]/)?.[0] !== "{") return;
+    if (!functions.some(item => item.name === match[1])) functions.push({ name: match[1], line: index });
   });
+  window.CCodeNavigation?.markComments(code, rows);
   code.classList.toggle("hide-code-comments", Boolean(hide?.checked));
   const active = [...functions].reverse().find((item) => Number.isInteger(activeLine) && item.line <= activeLine) || functions[0];
   list.innerHTML = functions.length ? functions.map((item) => `<li><button type="button" class="seq-function-link${active?.line === item.line ? " is-active" : ""}" data-line="${item.line}">${escapeHtml(item.name)}</button></li>`).join("") : '<li class="muted">Sin funciones detectadas</li>';
   const scrollToLine = (lineIndex) => {
     const target = code.querySelector(`.code-line[data-line="${lineIndex}"]`);
     if (!target) return;
-    if (document.querySelector(".is-stack-pilot")) {
-      code.scrollTop += target.getBoundingClientRect().top - code.getBoundingClientRect().top - 6;
-    } else target.scrollIntoView({ block: "center" });
+    window.CCodeNavigation?.revealLine(code, target);
   };
   list.querySelectorAll(".seq-function-link").forEach((button) => button.addEventListener("click", () => scrollToLine(button.dataset.line)));
   if (document.querySelector(".is-stack-pilot") && activeLine === null && active) {
@@ -156,7 +155,14 @@ function renderStackPushState(state, memory, container) {
   const aux = memory.aux;
   const ptr = !aux ? "fuera de alcance" : !aux.initialized ? "indeterminado; no leer" : aux.value || "NULL";
   const nodes = (memory.heap || []).map(n => `<article class="stack-linked-node" data-stack-push-node="${escapeHtml(n.id)}" data-stack-push-status="${n.status}" data-stack-push-mask="${n.initialized_mask}" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-width:0;width:100%"><div class="stack-linked-node-id" style="grid-column:1/-1">${escapeHtml(n.id)}</div><div class="stack-linked-field" data-stack-push-field="nro" data-initialized="${n.field_validity.nro}" style="${linked ? "" : "grid-column:1/-1"}"><span>nro</span><strong>${escapeHtml(n.field_validity.nro ? n.fields.nro : "indeterminado; no leer")}</strong></div>${linked ? `<div class="stack-linked-field" data-stack-push-field="sgte" data-initialized="${n.field_validity.sgte}"><span>sgte</span><strong>${escapeHtml(n.field_validity.sgte ? n.fields.sgte || "NULL" : "indeterminado; no leer")}</strong></div>` : ""}<small style="grid-column:1/-1">${n.status === "temporary" ? "reservado; todavía no publicado" : "alcanzable desde pila"}</small></article>`).join("");
-  container.innerHTML = `<div>Slot caller · ptrPila · ${memory.root.alive ? "vivo" : "sin argumento válido"}</div><div data-stack-push-root="${escapeHtml(memory.root.value || "NULL")}">pila / *p: ${escapeHtml(memory.root.value || "NULL")}</div><div data-stack-push-aux-valid="${aux ? String(aux.valid) : "out-of-scope"}">aux · ptrPila: ${escapeHtml(ptr)}</div><div class="stack-linked-chain">${nodes || "Sin nodos vivos."}</div><small>Identidades de esta llamada; cada campo se lee sólo después de su inicialización.</small>`;
+  container.innerHTML = `<div>Variable del llamador · ptrPila · ${memory.root.alive ? "vivo" : "sin argumento válido"}</div><div data-stack-push-root="${escapeHtml(memory.root.value || "NULL")}">pila / *p: ${escapeHtml(memory.root.value || "NULL")}</div><div data-stack-push-aux-valid="${aux ? String(aux.valid) : "out-of-scope"}">aux · ptrPila: ${escapeHtml(ptr)}</div><div class="stack-linked-chain">${nodes || "Sin nodos vivos."}</div><small>Identidades de esta llamada; cada campo se lee sólo después de su inicialización.</small>`;
+  if (aux?.initialized && aux?.value) {
+    const activeNode = Array.from(container.querySelectorAll("[data-stack-push-node]")).find(node => node.dataset.stackPushNode === aux.value);
+    if (activeNode) {
+      activeNode.classList.add("sim-active");
+      window.CCodeNavigation?.revealLine(container, activeNode);
+    }
+  }
 }
 
 function renderQueueDequeueState(state, memory, container) {
@@ -228,6 +234,13 @@ function renderPriorityQueueCleanupState(state, memory, container) {
   container.innerHTML = `<div>ColaPrioridad del llamador · vivo</div><div data-priority-cleanup-front="${escapeHtml(root.front || "NULL")}">delante · CPNodo *: ${escapeHtml(root.front || "NULL")}</div><div data-priority-cleanup-rear-valid="${String(root.rear_valid)}">atras · CPNodo *: ${escapeHtml(rearText)}</div><div data-priority-cleanup-aux-valid="${aux ? String(aux.valid) : "out-of-scope"}">aux · CPNodo *: ${escapeHtml(auxText)}</div><div>cantidad · int: ${escapeHtml(root.cantidad)}</div><div data-priority-cleanup-next-valid="${next ? String(next.valid) : "out-of-scope"}">next · CPNodo *: ${escapeHtml(nextText)}</div><div class="stack-linked-chain">${live.map(node).join("") || "Sin nodos vivos."}</div><div>${retired.map(dead).join("")}</div><small>IDs simbólicos de esta llamada; historia separada de campos/punteros usables.</small>`;
 }
 
+function sequentialMemoryLabel(value) {
+  return ({linked: "enlazado a la estructura", temporary: "reservado, aún sin enlazar", detached: "separado; aún vivo", freed: "liberado; no acceder", stable: "sin cambios de memoria", allocation: "reserva de memoria", allocate: "reserva de memoria", link: "actualización de enlaces", unlink: "separación de un nodo", free: "liberación de memoria", assignment: "actualización de un campo", active: "activo", returned: "función terminada", "out-of-scope": "fuera de alcance", "before-call": "antes de la llamada"})[value] || value || "sin cambios";
+}
+function sequentialFields(fields) {
+  return Object.entries(fields || {}).map(([name, value]) => `${name} = ${sequentialValue(value)}`).join(" · ");
+}
+
 function renderSequentialPedagogyFrame(frame, level) {
   const summary = byId("seq-pedagogy-summary");
   const conditionView = byId("seq-condition-view");
@@ -237,7 +250,8 @@ function renderSequentialPedagogyFrame(frame, level) {
   const callView = byId("seq-call-view");
   if (!frame) return;
   const narration = frame.narration?.[level] || frame.narration?.intermediate || "";
-  if (summary) summary.innerHTML = `<strong>${escapeHtml(frame.phase?.label || frame.concept)}</strong>: ${escapeHtml(narration)}<br><small>Invariante: ${escapeHtml(frame.invariant?.text || "")}</small>`;
+  if (summary) summary.innerHTML = `<strong>${escapeHtml(window.ContextualHelp?.phaseLabel(frame) || frame.phase?.label || frame.concept)}</strong>: ${escapeHtml(narration)}<br><small>Invariante: ${escapeHtml(frame.invariant?.text || "")}</small>`;
+  window.ContextualHelp?.frame("seq", frame, level);
   if (conditionView) {
     const condition = frame.condition;
     const loop = frame.loop;
@@ -248,22 +262,22 @@ function renderSequentialPedagogyFrame(frame, level) {
   const table = (headers, rows) => `<table class="seq-data-table"><thead><tr>${headers.map((item) => `<th>${escapeHtml(item)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
   if (variableView) {
     const scoped = Boolean(frame.allocation_failure_memory || frame.memory_state?.sublist_delete_model || frame.cleanup_memory || frame.push_memory || frame.enqueue_memory || frame.dequeue_memory);
-    const rows = (frame.variables || []).map((item) => `<tr data-seq-variable="${escapeHtml(item.name)}" data-seq-variable-scope="${escapeHtml(item.scope || "")}" data-seq-variable-type="${escapeHtml(item.type)}"><td><code>${escapeHtml(item.type)}</code></td><td>${escapeHtml(item.name)}</td>${scoped ? `<td>${escapeHtml(item.scope)} · ${escapeHtml(item.scope_state)}</td>` : ""}<td>${escapeHtml(item.meaning)}</td><td>${escapeHtml(sequentialValue(item.previous))}</td><td data-seq-variable-value>${escapeHtml(item.initialized === false ? "indeterminado; no leer" : sequentialValue(item.value))}${item.changed ? " Δ" : ""}</td></tr>`);
+    const rows = (frame.variables || []).map((item) => `<tr data-seq-variable="${escapeHtml(item.name)}" data-seq-variable-scope="${escapeHtml(item.scope || "")}" data-seq-variable-type="${escapeHtml(item.type)}"><td><code>${escapeHtml(item.type)}</code></td><td>${escapeHtml(item.name)}</td>${scoped ? `<td>${escapeHtml(item.scope)} · ${escapeHtml(sequentialMemoryLabel(item.scope_state))}</td>` : ""}<td>${escapeHtml(item.meaning)}</td><td>${escapeHtml(sequentialValue(item.previous))}</td><td data-seq-variable-value>${escapeHtml(item.initialized === false ? "indeterminado; no leer" : sequentialValue(item.value))}${item.changed ? " Δ" : ""}</td></tr>`);
     variableView.innerHTML = rows.length ? table(scoped ? ["Tipo", "Nombre", "Ámbito", "Significado", "Anterior", "Actual"] : ["Tipo", "Nombre", "Significado", "Anterior", "Actual"], rows) : "Sin variables.";
   }
   if (pointerView) {
     const scoped = Boolean(frame.allocation_failure_memory || frame.memory_state?.sublist_delete_model || frame.cleanup_memory || frame.push_memory || frame.enqueue_memory || frame.dequeue_memory);
-    const rows = (frame.pointers || []).map((item) => `<tr><td><code>${escapeHtml(item.name)}</code></td>${scoped ? `<td>${escapeHtml(item.type)}</td><td>${escapeHtml(item.scope)} · ${escapeHtml(item.scope_state)}</td>` : ""}<td>${escapeHtml(sequentialValue(item.previous_target))}</td><td>${escapeHtml(item.valid === false ? (item.dangling ? "nodo liberado; no usar" : "indeterminado; no leer") : sequentialValue(item.target))}</td><td>${item.changed ? "reasignado" : escapeHtml(item.alias || "estable")}</td></tr>`);
+    const rows = (frame.pointers || []).map((item) => `<tr><td><code>${escapeHtml(item.name)}</code></td>${scoped ? `<td>${escapeHtml(item.type)}</td><td>${escapeHtml(item.scope)} · ${escapeHtml(sequentialMemoryLabel(item.scope_state))}</td>` : ""}<td>${escapeHtml(sequentialValue(item.previous_target))}</td><td>${escapeHtml(item.valid === false ? (item.dangling ? "nodo liberado; no usar" : "indeterminado; no leer") : sequentialValue(item.target))}</td><td>${item.changed ? "reasignado" : escapeHtml(item.alias || "estable")}</td></tr>`);
     pointerView.innerHTML = rows.length ? table(scoped ? ["Puntero", "Tipo", "Ámbito", "Destino anterior", "Destino nuevo", "Relación"] : ["Puntero", "Destino anterior", "Destino nuevo", "Relación"], rows) : "Sin punteros activos en esta línea.";
   }
   if (heapView) {
     const transition = frame.heap_transition || {};
-    const live = (transition.after || frame.heap_objects || []).map((item) => `<span class="seq-memory-object"><code>${escapeHtml(item.address || item.id)}</code> ${escapeHtml(sequentialValue(item.fields))} · ${escapeHtml(item.status || "linked")}</span>`);
+    const live = (transition.after || frame.heap_objects || []).map((item) => `<span class="seq-memory-object"><code>${escapeHtml(item.address || item.id)}</code> ${escapeHtml(sequentialFields(item.fields))} · ${escapeHtml(sequentialMemoryLabel(item.status || "linked"))}</span>`);
     const freed = (transition.freed || []).map((item) => `<span class="seq-memory-object is-freed"><code>${escapeHtml(item.address || item.id)}</code> liberado</span>`);
-    heapView.innerHTML = `<strong>Evento: ${escapeHtml(transition.kind || "stable")}</strong><div>${[...live, ...freed].join("") || "No hay objetos alcanzables."}</div>`;
-    if (frame.dequeue_memory) heapView.innerHTML += `<hr><strong>Vida y retorno C</strong><pre>${escapeHtml(JSON.stringify(frame.dequeue_memory, null, 2))}</pre><small>Los campos liberados sólo son copia histórica; no leer aliases inválidos.</small>`;
-    if (frame.enqueue_memory) heapView.innerHTML += `<hr><strong>Vida y máscaras C</strong><pre>${escapeHtml(JSON.stringify(frame.enqueue_memory, null, 2))}</pre><small>Cada campo se lee sólo después de su propia escritura.</small>`;
-    if (frame.cleanup_memory) heapView.innerHTML += `<hr><strong>Vida y máscaras C</strong><pre>${escapeHtml(JSON.stringify(frame.cleanup_memory, null, 2))}</pre><small>Campos retirados sólo en copia histórica; aux indeterminado no es NULL.</small>`;
+    heapView.innerHTML = `<strong>Evento: ${escapeHtml(sequentialMemoryLabel(transition.kind || "stable"))}</strong><div>${[...live, ...freed].join("") || "No hay objetos alcanzables."}</div>`;
+    if (frame.dequeue_memory) heapView.innerHTML += `<details class="contextual-help-reference"><summary>Registro técnico completo de memoria</summary><strong>Vida y retorno C</strong><pre>${escapeHtml(JSON.stringify(frame.dequeue_memory, null, 2))}</pre><small>Los campos liberados sólo son copia histórica; no leer aliases inválidos.</small></details>`;
+    if (frame.enqueue_memory) heapView.innerHTML += `<details class="contextual-help-reference"><summary>Registro técnico completo de memoria</summary><strong>Vida y máscaras C</strong><pre>${escapeHtml(JSON.stringify(frame.enqueue_memory, null, 2))}</pre><small>Cada campo se lee sólo después de su propia escritura.</small></details>`;
+    if (frame.cleanup_memory) heapView.innerHTML += `<details class="contextual-help-reference"><summary>Registro técnico completo de memoria</summary><strong>Vida y máscaras C</strong><pre>${escapeHtml(JSON.stringify(frame.cleanup_memory, null, 2))}</pre><small>Campos retirados sólo en copia histórica; aux indeterminado no es NULL.</small></details>`;
   }
   if (callView) {
     const rows = (frame.call_stack || []).map((item) => `<tr><td><code>${escapeHtml(item.function)}</code></td><td>${escapeHtml(sequentialValue(item.parameters))}</td><td>${escapeHtml(sequentialValue(item.return))}</td><td>${escapeHtml(item.continuation)}</td></tr>`);
@@ -330,11 +344,20 @@ function appendExecutedHistoryEntry(history, entry) {
   return true;
 }
 
-function renderPrintfConsole(consoleEl, lines, fallbackText) {
+function renderPrintfConsole(consoleEl, lines, fallbackText, stdout = null) {
   if (!consoleEl) {
     return;
   }
+  if (typeof stdout === "string") {
+    // A producer-owned byte stream is not a list of independent display lines.
+    consoleEl.dataset.consoleCopy = stdout;
+    consoleEl.textContent = stdout;
+    consoleEl.style.whiteSpace = "pre-wrap";
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+    return;
+  }
   const safeLines = Array.isArray(lines) ? lines : [];
+  consoleEl.dataset.consoleCopy = safeLines.join("\n");
   const hasOutput = safeLines.length > 0;
   const rows = hasOutput
     ? safeLines.map((line) => `<div class="console-line">${escapeHtml(line)}</div>`).join("")
@@ -503,14 +526,14 @@ function renderDidacticCode(preElement, code, codeTitle) {
       .map((line, index) => {
         const highlighted = highlightCLine(line, state);
         state = highlighted.state;
-        return `<span class="code-line" data-line="${index}">${highlighted.html || "&nbsp;"}</span>`;
+        return `<span class="code-line" data-line="${index}">${highlighted.html || ""}</span>`;
       })
       .join("");
     preElement.innerHTML = html;
     return;
   }
   preElement.innerHTML = lines
-    .map((line, index) => `<span class="code-line" data-line="${index}">${escapeHtml(line) || "&nbsp;"}</span>`)
+    .map((line, index) => `<span class="code-line" data-line="${index}">${escapeHtml(line) || ""}</span>`)
     .join("");
 }
 
@@ -801,7 +824,7 @@ async function simulateDidacticExecution(context) {
       steps[i - 1].classList.remove("sim-active");
       steps[i - 1].classList.add("sim-done");
     }
-    current.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    window.CCodeNavigation?.revealLine(codeBox, current);
     await sleep(stepDelayMs);
   }
 
@@ -2431,13 +2454,15 @@ function renderCircularInsertionState(state, linked) {
 }
 
 function renderSublistDeletionState(state, linked) {
+  const activeFrame = (state.sublist_frames || []).at(-1);
+  const activeTarget = activeFrame?.locals?.actual || activeFrame?.locals?.nuevo || activeFrame?.parameters?.padre;
   const heap = state.heap_nodes || [];
   const byId = Object.fromEntries(heap.map(node => [node.id, node]));
   const card = (node, reachable = false) => {
     const role = node.kind === "parent" ? "PADRE" : "HIJO";
     const classes = node.kind === "parent" ? "stack-sublist-parent-node" : (reachable ? "stack-sublist-child" : "");
     const valueClass = reachable && !linked ? "viz-svg-node-text" : "";
-    return `<article class="stack-linked-node ${classes}" data-sublist-node="${escapeHtml(node.id)}" data-sublist-kind="${node.kind}" data-sublist-status="${node.status}" data-sublist-next="${escapeHtml(node.next)}" data-sublist-sub="${escapeHtml(node.sub || "")}" data-sublist-value="${escapeHtml(node.value)}"><div class="stack-linked-node-id">${escapeHtml(node.id)}</div><div class="stack-linked-field"><span>${role}</span><strong class="${valueClass}">${escapeHtml(node.value)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${escapeHtml(node.next)}</strong></div>${node.kind === "parent" ? `<div class="stack-sublist-children-label"><span>sub</span><strong>→ ${escapeHtml(node.sub)}</strong></div>` : ""}</article>`;
+    return `<article class="stack-linked-node ${classes}${node.id === activeTarget ? " sim-active" : ""}" data-sublist-node="${escapeHtml(node.id)}" data-sublist-kind="${node.kind}" data-sublist-status="${node.status}" data-sublist-next="${escapeHtml(node.next)}" data-sublist-sub="${escapeHtml(node.sub || "")}" data-sublist-value="${escapeHtml(node.value)}"><div class="stack-linked-node-id">${escapeHtml(node.id)}</div><div class="stack-linked-field"><span>${role}</span><strong class="${valueClass}">${escapeHtml(node.value)}</strong></div><div class="stack-linked-field stack-linked-next"><span>sgte</span><strong>→ ${escapeHtml(node.next)}</strong></div>${node.kind === "parent" ? `<div class="stack-sublist-children-label"><span>sub</span><strong>→ ${escapeHtml(node.sub)}</strong></div>` : ""}</article>`;
   };
   const groups = (state.node_ids || []).map(id => {
     const parent = byId[id];
@@ -2466,9 +2491,9 @@ function renderSublistDeletionState(state, linked) {
   }).join("");
   detached += heap.filter(node => node.status === "detached" && !grouped.has(node.id)).map(node => card(node)).join("");
   const dereference = state.owner_parent ? `<div class="stack-linked-pointer" data-sublist-owner="${escapeHtml(state.owner_parent)}" data-sublist-child-root="${escapeHtml(state.sub_head)}"><strong>*lista_hijos (${escapeHtml(state.owner_parent)}.sub)</strong><span>→</span><code>${escapeHtml(state.sub_head)}</code></div>` : "";
-  const buffer = Array.isArray(state.buffer_values) ? `<section data-sublist-buffer-capacity="${state.buffer_capacity}"><strong>Arreglo destino (int *, capacidad ${state.buffer_capacity})</strong><p>Solo se muestran posiciones escritas; las demás aún no tienen un resultado copiado.</p>${state.buffer_values.map((value, index) => `<code data-sublist-buffer-index="${index}" data-sublist-buffer-value="${value}">destino[${index}] = ${value}</code>`).join(" · ") || "Sin escrituras"}</section>` : "";
+  const buffer = Array.isArray(state.buffer_values) ? `<section data-sublist-buffer-capacity="${state.buffer_capacity}"><strong>Destino · capacidad ${state.buffer_capacity}</strong> <small>(solo celdas escritas)</small><br>${state.buffer_values.map((value, index) => `<code data-sublist-buffer-index="${index}" data-sublist-buffer-value="${value}">destino[${index}] = ${value}</code>`).join(" · ") || "Sin escrituras"}</section>` : "";
   const freed = state.freed_actual ? `<aside class="stack-linked-aux is-detached" data-sublist-freed="${escapeHtml(state.freed_actual)}">${escapeHtml(state.freed_actual)} liberado; no se lee su memoria. El alias local, si existe, es indeterminado.</aside>` : "";
-  return `<div class="stack-linked-pointer" data-sublist-head="${escapeHtml(state.head)}"><strong>Raíz del llamador</strong><span>→</span><code>${escapeHtml(state.head)}</code></div><ol>${stack}</ol>${aliases}${dereference}${buffer}<div style="display:${linked ? "block" : "flex"};gap:12px;flex-wrap:wrap">${groups || '<p>Raíz → NULL</p>'}</div>${detached ? `<aside class="stack-linked-aux"><p>Reservas desconectadas aún vivas</p>${detached}</aside>` : ""}${freed}`;
+  return `<div class="seq-sublist-classroom"><div class="seq-sublist-aliases"><div class="stack-linked-pointer" data-sublist-head="${escapeHtml(state.head)}"><strong>Raíz del llamador</strong><span>→</span><code>${escapeHtml(state.head)}</code></div>${aliases}${dereference}</div>${buffer}<div style="display:${linked ? "block" : "flex"};gap:12px;flex-wrap:wrap">${groups || '<p>Raíz → NULL</p>'}</div>${detached ? `<aside class="stack-linked-aux"><p>Reservas desconectadas aún vivas</p>${detached}</aside>` : ""}${freed}<details class="seq-sublist-call-detail"><summary>Pila de llamadas: ${frames.length} marco(s)${active ? ` · ${escapeHtml(active.function)}` : ""}</summary><ol>${stack}</ol></details></div>`;
 }
 
 function renderVisualState(structureId, state, container, hint) {
@@ -2481,6 +2506,7 @@ function renderVisualState(structureId, state, container, hint) {
   if (structureId === "sublist" && state.sublist_delete_model) {
     inner += renderSublistDeletionState(state, container.dataset.stackVisualMode === "linked" || container.dataset.structuralVisualMode === "nodes");
     container.innerHTML = inner;
+    window.CCodeNavigation?.revealLine(container, container.querySelector("[data-sublist-node].sim-active"));
     return;
   }
   if (structureId === "circular_list" && state.circular_insert_model) {
@@ -2580,17 +2606,12 @@ function showMessage(text, success) {
   if (!box) {
     return;
   }
-  const hasPrintfConsole = Boolean(byId("seq-printf-console"));
-  if (success && hasPrintfConsole) {
-    box.textContent = "";
-    box.className = "message";
-    return;
-  }
   box.textContent = text || "";
   box.className = success ? "message ok" : "message error";
 }
 
 function updateDidacticPanel(model, operationName) {
+  window.ContextualHelp?.operation("seq", model, operationName);
   const recordBox = byId("tad-record");
   const pseudoTitle = byId("op-pseudocode-title");
   const pseudoBox = byId("op-pseudocode");
@@ -2761,7 +2782,7 @@ function buildMainDeclarationLines(structureId) {
 
 function getMainStructureArgument(structureId, operationName) {
   // Read-only list search takes the head by value, unlike mutators.
-  if (structureId === "linked_list" && operationName === "buscar_elemento") return "lista";
+  if (structureId === "linked_list" && ["buscar_elemento", "buscar_posiciones", "mostrar", "primero", "ultimo"].includes(operationName)) return "lista";
   if (structureId === "sublist" && ["insertar_hijo", "eliminar_hijo", "hijos_de"].includes(operationName)) return "sublista";
   const mappings = {
     stack: "&pila",
@@ -2775,7 +2796,7 @@ function getMainStructureArgument(structureId, operationName) {
 }
 
 function buildQueueMainLines(history, operationCatalog) {
-  const lines = ["/** @file main.c @brief Reproduce el historial FIFO y libera los nodos propios. */",
+  const lines = ['#include <stdio.h>', '#include "tad_cola.h"', "", "/** @file main.c @brief Reproduce el historial FIFO y libera los nodos propios. */",
     "/** @brief Ejecuta operaciones registradas; informa fallo de reserva antes de anunciar éxito. @return 0 en éxito, 1 si una reserva falla o un entero no es representable. */",
     "int main(void) {", "    struct Cola cola = { .delante = NULL, .atras = NULL };",
     "    // Historial de ejecucion del usuario"];
@@ -2804,7 +2825,7 @@ function buildQueueMainLines(history, operationCatalog) {
 }
 
 function buildPriorityQueueMainLines(history, operationCatalog) {
-  const lines = ["/** @file main.c @brief Reproduce el historial de Prioridad y libera su propiedad. */",
+  const lines = ['#include <stdio.h>', '#include "tad_cola_prioridad.h"', "", "/** @file main.c @brief Reproduce el historial de Prioridad y libera su propiedad. */",
     "/** @brief Ejecuta el historial y comprueba cada reserva antes de anunciar éxito. @return 0 en éxito, 1 ante reserva fallida o entero fuera de int C. */",
     "int main(void) {", "    ColaPrioridad cp;", "    cp_inicializar(&cp);", "    // Historial de ejecucion del usuario"];
   history.forEach(item => {
@@ -2874,6 +2895,7 @@ function renderActionHistory(history, container, structureId, operationCatalog) 
   if (!container) {
     return;
   }
+  container.dataset.rawCode = "";
   const mainVersion = Number(container.dataset.stackMainVersion || 0) + 1;
   container.dataset.stackMainVersion = String(mainVersion);
   if (!history.length) {
@@ -2882,7 +2904,9 @@ function renderActionHistory(history, container, structureId, operationCatalog) 
   }
   if (structureId === "queue") {
     let hlState = { inBlockComment: false };
-    const html = buildQueueMainLines(history, operationCatalog).map((line, index) => {
+    const rawLines = buildQueueMainLines(history, operationCatalog);
+    container.dataset.rawCode = rawLines.join("\n");
+    const html = rawLines.map((line, index) => {
       const highlighted = highlightCLine(line, hlState); hlState = highlighted.state;
       return `<span class="code-line" data-line="${index}">${highlighted.html || " "}</span>`;
     }).join("");
@@ -2891,7 +2915,9 @@ function renderActionHistory(history, container, structureId, operationCatalog) 
   }
   if (structureId === "priority_queue") {
     let hlState = { inBlockComment: false };
-    const html = buildPriorityQueueMainLines(history, operationCatalog).map((line, index) => {
+    const rawLines = buildPriorityQueueMainLines(history, operationCatalog);
+    container.dataset.rawCode = rawLines.join("\n");
+    const html = rawLines.map((line, index) => {
       const highlighted = highlightCLine(line, hlState); hlState = highlighted.state;
       return `<span class="code-line" data-line="${index}">${highlighted.html || " "}</span>`;
     }).join("");
@@ -2904,6 +2930,7 @@ function renderActionHistory(history, container, structureId, operationCatalog) 
       if (!response.ok) throw new Error("main-unavailable");
       const source = await response.text();
       if (container.dataset.stackMainVersion !== String(mainVersion)) return;
+      container.dataset.rawCode = source;
       let hlState = { inBlockComment: false };
       const html = source.replace(/\r\n/g, "\n").split("\n").map((line, index) => {
         const highlighted = highlightCLine(line, hlState); hlState = highlighted.state;
@@ -2916,7 +2943,10 @@ function renderActionHistory(history, container, structureId, operationCatalog) 
     return;
   }
   const declarations = buildMainDeclarationLines(structureId);
+  const header = { linked_list: "tad_lista.h", circular_list: "tad_lista_circular.h", sublist: "tad_sublista.h" }[structureId];
   const codeLines = [
+    '#include <stdio.h>', `#include "${header}"`, "",
+    "/** @brief Reproduce las llamadas registradas; las consultas se calculan al ejecutar C. */",
     "int main(void) {",
     "    // Declaracion de la estructura",
     ...declarations.map((line) => `    ${line}`),
@@ -2936,6 +2966,20 @@ function renderActionHistory(history, container, structureId, operationCatalog) 
     const legacyCaller = structureId === "linked_list" ? buildLinkedLegacyCallerLines(item, index) : null;
     if (legacyCaller !== null) {
       codeLines.push(...legacyCaller);
+    } else if (structureId === "linked_list" && ["eliminar_inicio", "eliminar_final", "primero", "ultimo"].includes(item.operation)) {
+      const suffix = index + 1;
+      codeLines.push(`    int valor_${suffix} = 0;`);
+      codeLines.push(`    if (${fn}(${args}, &valor_${suffix})) printf("Valor: %d\\n", valor_${suffix});`);
+      codeLines.push('    else puts("No hay valor disponible para esta operacion.");');
+    } else if (structureId === "circular_list" && item.operation === "buscar_posiciones") {
+      const suffix = index + 1;
+      const capacity = Math.max(1, history.filter(entry => entry && ["insertar_inicio", "insertar_final"].includes(entry.operation)).length);
+      const value = Number(item.payloadMap?.value);
+      codeLines.push(`    int posiciones_${suffix}[${capacity}];`);
+      codeLines.push(`    int cantidad_${suffix} = lcir_buscar_posiciones(&lc, ${value}, posiciones_${suffix}, ${capacity});`);
+      codeLines.push('    printf("Posiciones:");');
+      codeLines.push(`    for (int i_${suffix} = 0; i_${suffix} < cantidad_${suffix} && i_${suffix} < ${capacity}; ++i_${suffix}) printf(" %d", posiciones_${suffix}[i_${suffix}]);`);
+      codeLines.push('    printf("\\n");');
     } else if (structureId === "sublist" && item.operation === "hijos_de") {
       // Prior successful insertions bound the queried branch without predicting its contents.
       const capacity = Math.min(1024, Math.max(1, sublistChildCapacity));
@@ -2949,14 +2993,16 @@ function renderActionHistory(history, container, structureId, operationCatalog) 
       codeLines.push(`    ${call}`);
     }
     if (structureId === "sublist" && item.operation === "insertar_hijo") sublistChildCapacity += 1;
-    codeLines.push(`    printf("${toCStringLiteral(item.result || "Operacion aplicada.")}\\n");`);
-    codeLines.push(`    // ${item.result || "Operacion aplicada."}`);
+    codeLines.push(`    // Fin de la llamada: ${item.operation || "operacion"}.`);
   });
 
+  const cleanup = { linked_list: "lista_limpiar(&lista);", circular_list: "lcir_destruir(&lc);", sublist: "sublista_destruir(&sublista);" }[structureId];
+  if (cleanup) codeLines.push(`    /* Liberar los nodos que aún pertenecen al caller. */ ${cleanup}`);
   codeLines.push("    return 0;");
   codeLines.push("}");
 
   let hlState = { inBlockComment: false };
+  container.dataset.rawCode = codeLines.join("\n");
   const codeHtml = codeLines
     .map((line, index) => {
       const highlighted = highlightCLine(line, hlState);
@@ -3034,6 +3080,8 @@ function initStructurePage(model) {
   const consoleState = {
     trace: null,
     fallbackMessage: "",
+    resultMessage: null,
+    rawStdout: null,
   };
   const visualTraceState = {
     operationName: "",
@@ -3105,18 +3153,30 @@ function initStructurePage(model) {
       return [];
     }
     const limit = Math.min(cursor, trace.steps.length - 1);
+    // Snapshot producers publish the complete console at this cursor. Event
+    // producers publish only new fragments: repeated/blank output is valid C.
+    if (trace.console_mode === "snapshot") {
+      return Array.isArray(trace.steps[limit]?.console) ? trace.steps[limit].console.slice() : [];
+    }
     const out = [];
     for (let i = 0; i <= limit; i += 1) {
       const step = trace.steps[i] || {};
       const emitted = Array.isArray(step.console) ? step.console : [];
-      emitted.forEach((line) => pushUniqueConsoleLine(out, line));
+      out.push(...emitted);
     }
     return out;
+  }
+  function collectPrintfStdout(trace, cursor) {
+    if (!Array.isArray(trace?.steps) || !trace.steps.length) return null;
+    if (cursor < 0) return typeof trace.steps[0].console_stdout === "string" ? "" : null;
+    const step = trace.steps[Math.min(cursor, trace.steps.length - 1)];
+    return typeof step?.console_stdout === "string" ? step.console_stdout : null;
   }
   function refreshPrintfConsole(cursor) {
     const lines = collectPrintfConsoleLines(consoleState.trace, cursor);
     const fallback = consoleState.fallbackMessage || "(sin salida printf en esta ruta)";
-    renderPrintfConsole(printfConsole, lines, fallback);
+    const stdout = consoleState.trace ? collectPrintfStdout(consoleState.trace, cursor) : consoleState.rawStdout;
+    renderPrintfConsole(printfConsole, lines, fallback, stdout);
   }
   const tracePlayer = window.InterpreterRuntime
     ? window.InterpreterRuntime.createTracePlayer({
@@ -3145,6 +3205,11 @@ function initStructurePage(model) {
           ? event.trace.steps.length
           : 0;
         refreshPrintfConsole(cursor);
+        if (consoleState.resultMessage) {
+          const finished = traceTotalSteps > 0 && cursor >= traceTotalSteps - 1;
+          showMessage(finished ? consoleState.resultMessage.text : "Operacion preparada: resultado pendiente hasta completar la traza.",
+            finished ? consoleState.resultMessage.success : true);
+        }
         const step = event && event.step ? event.step : null;
         enhanceSequentialCodeNavigation(step && Number.isInteger(step.line_index) ? step.line_index : null);
         const initialSublist = model.id === "sublist" && cursor < 0 && step?.state_snapshot?.sublist_delete_model;
@@ -3210,8 +3275,9 @@ function initStructurePage(model) {
         }
         const progressFrame = (((model.id === "queue" || model.id === "priority_queue") && cursor < 0 && step?.pedagogy?.dequeue_memory) || (model.id === "priority_queue" && cursor < 0 && step?.pedagogy?.enqueue_memory) || (model.id === "queue" && cursor < 0 && step?.pedagogy?.enqueue_memory) || initialSublist || (model.id === "stack" && cursor < 0 && step?.pedagogy?.push_memory) || ((model.id === "queue" || model.id === "priority_queue") && cursor < 0 && step?.pedagogy?.cleanup_memory)) ? currentPedagogyFrame : step?.pedagogy;
         const progressFunction = (model.id === "queue" || model.id === "priority_queue") && step?.pedagogy?.dequeue_memory ? (cursor < 0 ? "sin función" : step.function_name || "sin función") : model.id === "priority_queue" && cursor < 0 && step?.pedagogy?.enqueue_memory ? "sin función" : model.id === "priority_queue" && step?.pedagogy?.enqueue_memory ? step.function_name || progressFrame?.source?.function || "sin función" : model.id === "queue" && cursor < 0 && step?.pedagogy?.enqueue_memory ? "sin función" : model.id === "stack" && cursor < 0 && step?.pedagogy?.push_memory ? "sin función" : (model.id === "queue" || model.id === "priority_queue") && cursor < 0 && step?.pedagogy?.cleanup_memory ? "sin función" : model.id === "sublist" && progressFrame?.memory_state?.sublist_delete_model ? progressFrame.call_stack?.at(-1)?.function : progressFrame?.call_stack?.[0]?.function;
-        if (progressDetail) progressDetail.textContent = `Paso ${Math.max(0, cursor + 1)} · ${progressFunction || "sin función"} · ${progressFrame?.phase?.label || "sin fase"} · ${progressFrame?.concept || "sin concepto"}`;
+        if (progressDetail) progressDetail.textContent = `Paso ${Math.max(0, cursor + 1)} · ${progressFunction || "sin función"} · ${progressFrame ? window.ContextualHelp?.phaseLabel(progressFrame) || progressFrame.phase?.label || "sin fase" : "sin fase"}`;
         writePresentation({ cursor });
+        if (cursor < 0) window.ContextualHelp?.frame("seq", null);
         setSimulationButtonsEnabled();
       },
     })
@@ -3447,6 +3513,7 @@ function initStructurePage(model) {
   }
 
   function setSimulationButtonsEnabled() {
+    if (window.MultipleInput?.lockActiveControls?.()) return;
     const stepMode = isStepByStepEnabled();
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const busy = pendingExecution;
@@ -3482,6 +3549,9 @@ function initStructurePage(model) {
     lockStepUntilInput = false;
     consoleState.trace = null;
     consoleState.fallbackMessage = "";
+    consoleState.resultMessage = null;
+    consoleState.rawStdout = null;
+    showMessage("", true);
     visualTraceState.operationName = "";
     visualTraceState.payload = {};
     visualTraceState.frames = [];
@@ -3588,13 +3658,12 @@ function initStructurePage(model) {
     try {
       updateDidacticPanel(model, current.name);
       showMessage("Ejecutando subrutina...", true);
-      const response = await fetch(form.dataset.operateUrl, {
+      const response = await (options?.multiple ? window.MultipleInput.fetchUnit : fetch)(form.dataset.operateUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ operation: current.name, payload }),
       });
       const data = await response.json();
-      showMessage(data.message, Boolean(data.success));
       updateDidacticPanel(model, current.name);
 
       const circularGuardTrace = model.id === "circular_list" && current.name === "eliminar_inicio"
@@ -3604,12 +3673,17 @@ function initStructurePage(model) {
         && data.execution_trace?.allocation_failure === true
         && data.execution_trace?.execution_started === true;
       if (!data.success && !circularGuardTrace && !dequeueGuardTrace && !allocationFailureTrace) {
+        showMessage(data.message, false);
         if (simStatus) simStatus.textContent = "La operación no se ejecutó; el TAD y la traza anterior permanecen sin cambios.";
         return data;
       }
 
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean((!finalOnly || allocationFailureTrace) && data.execution_trace && tracePlayer);
+      const deferResult = hasExecutionTrace && Boolean(data.execution_trace.steps?.length);
+      consoleState.resultMessage = deferResult ? { text: data.message, success: Boolean(data.success) } : null;
+      showMessage(deferResult ? "Operacion preparada: resultado pendiente hasta completar la traza." : data.message,
+        deferResult ? true : Boolean(data.success));
       if (hasExecutionTrace) {
         lockStepUntilInput = false;
         visualTraceState.operationName = current.name;
@@ -3624,6 +3698,7 @@ function initStructurePage(model) {
           ? data.execution_trace.steps.length
           : 0;
         consoleState.trace = data.execution_trace;
+        consoleState.rawStdout = null;
         consoleState.fallbackMessage = "";
         tracePlayer.loadTrace(data.execution_trace);
         traceWasNavigated = false;
@@ -3635,7 +3710,8 @@ function initStructurePage(model) {
         visualTraceState.frames = [];
         visualTraceState.totalSteps = 0;
         consoleState.trace = null;
-        consoleState.fallbackMessage = dequeueGuardTrace ? (data.execution_trace.steps.at(-1)?.console || []).join("\n") || "(sin salida printf en esta ruta)" : data.message || "(sin salida printf en esta ruta)";
+        consoleState.rawStdout = collectPrintfStdout(data.execution_trace, (data.execution_trace?.steps?.length || 0) - 1);
+        consoleState.fallbackMessage = collectPrintfConsoleLines(data.execution_trace, (data.execution_trace?.steps?.length || 0) - 1).join("\n") || "(sin salida printf en esta ruta)";
         refreshPrintfConsole(-1);
         if (simStatus && !finalOnly) {
           simStatus.textContent = "No hay traza paso a paso disponible para esta operacion.";
@@ -3679,6 +3755,7 @@ function initStructurePage(model) {
             : "Modo rápido: se aplicó el resultado final de la operación.";
         }
       }
+      if (!options?.multiple && data.success && current.mutates) window.MultipleInput?.stateChanged?.();
       return data;
     } catch (_error) {
       showMessage("No fue posible completar la operacion.", false);
@@ -3779,6 +3856,7 @@ function initStructurePage(model) {
     }
     invalidateTrace("TAD restablecido. Ejecuta una operación para crear una traza.");
     refreshPrintfConsole(-1);
+    if (data.success) window.MultipleInput?.stateChanged?.();
   });
 
   simPrepareButton?.addEventListener("click", () => {
@@ -3806,8 +3884,23 @@ function initStructurePage(model) {
   compareProgress?.addEventListener("input", refreshComparison);
   compareKind?.addEventListener("change", () => { if (compareProgress) compareProgress.value = "0"; refreshComparison(); });
   exportImageButton?.addEventListener("click", async () => {
-    try { const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({ target: visualContainer, quality: 0.9, scale: 1 }); const link = document.createElement("a"); link.href = exported.dataUrl; link.download = exported.suggestedName; link.click(); }
-    catch (error) { showMessage(error.message || "No se pudo exportar la captura.", false); }
+    if (exportImageButton.disabled) return;
+    const originalText = exportImageButton.textContent;
+    exportImageButton.disabled = true;
+    exportImageButton.setAttribute("aria-busy", "true");
+    try {
+      const exported = await window.InterpreterRuntime.exportVisualStateAsJpg({
+        target: visualContainer, quality: .9, scale: 1,
+        onProgress: (text) => { exportImageButton.textContent = text; },
+      });
+      window.InterpreterRuntime.downloadJpg(exported.dataUrl, exported.suggestedName);
+      showMessage("Captura JPG preparada; revisa las descargas del navegador.", true);
+    } catch (error) { showMessage(error.message || "No se pudo exportar la captura.", false); }
+    finally {
+      exportImageButton.disabled = false;
+      exportImageButton.removeAttribute("aria-busy");
+      exportImageButton.textContent = originalText;
+    }
   });
   exportSummaryButton?.addEventListener("click", () => {
     const current = operationCatalog.get(operationSelect.value);
@@ -3855,6 +3948,18 @@ function initStructurePage(model) {
       lockStepUntilInput = true;
       setSimulationButtonsEnabled();
     }
+  });
+
+  window.MultipleInput?.mount({
+    model, form, player: tracePlayer, isBusy: () => pendingExecution,
+    sync: setSimulationButtonsEnabled,
+    select: (operation) => { operationSelect.value=operation; operationSelect.dispatchEvent(new Event("change")); },
+    execute: (value, finalOnly) => {
+      const current=operations.find(op=>op.name===operationSelect.value);
+      const payload={value:String(value)};
+      const field=document.getElementById("field-value"); if(field) field.value=String(value);
+      return executeOperationAndLoadTrace(current,payload,buildSelectionKey(current,payload),{finalOnly,multiple:true});
+    },
   });
 
   stepToggle?.addEventListener("change", () => {
@@ -4022,8 +4127,47 @@ function initStructurePage(model) {
 
 }
 
+
+// Presentation-only classroom v1; existing render targets retain their identity.
+function seqMountClassroomView() {
+  if (!window.ClassroomView) return;
+  const root = document.querySelector(".sequential-primary-workspace");
+  if (!root) return;
+  const controls = document.querySelector(".sequential-learning-shell .seq-execute");
+  if (controls) {
+    controls.classList.add("classroom-execution-controls");
+    root.before(controls);
+    const explanation = controls.querySelector(".seq-control-explanation");
+    if (explanation && explanation.parentElement?.tagName !== "DETAILS") {
+      const detail = document.createElement("details"), summary = document.createElement("summary");
+      detail.className = "classroom-control-help"; summary.textContent = "Ayuda de controles";
+      explanation.before(detail); detail.append(summary, explanation);
+    }
+  }
+  document.getElementById("seq-code-region")?.classList.add("classroom-code");
+  document.getElementById("seq-code-region")?.classList.remove("didactic-technical");
+  const history = document.getElementById("action-history");
+  const consoleNode = document.getElementById("seq-printf-console");
+  const record = document.getElementById("tad-record");
+  const results = [
+    {label:"Consola C (printf)",panel:consoleNode?.closest("section"),code:consoleNode,getText:()=>consoleNode?.dataset.consoleCopy || ""},
+    {label:"main.c del historial",panel:history?.parentElement,code:history,getText:()=>history?.dataset.rawCode || ""},
+    {label:"Estructura del TAD",panel:record?.parentElement,code:record,getText:()=>record?.dataset.rawCode ?? record?.textContent ?? ""}
+  ];
+  results.forEach(entry=>{
+    entry.panel?.classList.remove("didactic-technical");
+    for(let node=entry.panel?.parentElement;node && node.tagName!=="ARTICLE";node=node.parentElement) {
+      node.classList.remove("didactic-technical", "seq-pilot-collapsed");
+      node.hidden = false;
+      if(node.tagName==="DETAILS") node.open=true;
+    }
+  });
+  window.ClassroomView.mount({root,visual:"#seq-visual-region",stage:"#visual-state",code:"#op-pseudocode",memory:[],results,key:"sequential"});
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   if (window.SEQ_VIEW_MODEL) {
     initStructurePage(window.SEQ_VIEW_MODEL);
+    seqMountClassroomView();
   }
 });

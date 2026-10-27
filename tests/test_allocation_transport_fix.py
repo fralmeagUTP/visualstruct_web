@@ -15,8 +15,18 @@ def test_nominal_response_is_unchanged(residual58_client,tmp_path,case):
  target=E/'allocation-nominal-before'/f'{family}.json'
  if os.environ.get('VS_CAPTURE_ALLOCATION_BASELINE')=='1':
   assert not audit_input_path(target).exists();target.parent.mkdir(exist_ok=True);target.write_text(json.dumps(data,indent=2,ensure_ascii=False),encoding='utf-8')
- else:assert data==json.loads(audit_input_path(target).read_text(encoding='utf-8'))
- (tmp_path/'nominal-proof.json').write_text(json.dumps({'family':family,'complete_response_equal_to_before':os.environ.get('VS_CAPTURE_ALLOCATION_BASELINE')!='1','baseline_sha256':hashlib.sha256(audit_input_path(target).read_bytes()).hexdigest()}),encoding='utf-8')
+ else:
+  baseline=json.loads(audit_input_path(target).read_text(encoding='utf-8'))
+  # The approved classroom revision adds console and completed-scope metadata.
+  # Keep exact operation/history/state and instruction-state equivalence.
+  assert {k:v for k,v in data.items() if k!='execution_trace'}=={k:v for k,v in baseline.items() if k!='execution_trace'}
+  current,previous=data['execution_trace'],baseline['execution_trace']
+  assert current['final_state']==previous['final_state']
+  assert len(current['steps'])==len(previous['steps'])
+  for now,old in zip(current['steps'],previous['steps']):
+   for key in ['line_index','line_text','state_snapshot','state_after']:
+    assert now.get(key)==old.get(key),(family,key)
+ (tmp_path/'nominal-proof.json').write_text(json.dumps({'family':family,'operation_and_instruction_states_equal_to_before':os.environ.get('VS_CAPTURE_ALLOCATION_BASELINE')!='1','baseline_sha256':hashlib.sha256(audit_input_path(target).read_bytes()).hexdigest()}),encoding='utf-8')
 
 @pytest.mark.parametrize('fault',FAULTS,ids=lambda x:x[0])
 def test_delivered_failure_trace_is_C_NULL_not_success(tmp_path,fault):

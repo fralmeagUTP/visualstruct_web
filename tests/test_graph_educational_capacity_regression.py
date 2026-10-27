@@ -10,9 +10,10 @@ from app.domain.graph.educational_capacity import MAX_VERTICES,GraphCapacityErro
 from app.domain.graph.snapshot_pool import expand_graph_trace
 
 
-def history(count):
-    return [{'operation':'create_graph','payload':{'directed':False}},
+def history(count, *, legacy=False):
+    records=[{'operation':'create_graph','payload':{'directed':False}},
         *[{'operation':'insert_vertex','payload':{'vertex':v}} for v in range(1,count+1)]]
+    return records if legacy else [dict(record, source_contract='graph-book/v1') for record in records]
 
 @pytest.fixture
 def private_client(tmp_path):
@@ -68,21 +69,27 @@ def test_generator15_admitted_16_rejected_validation_without_generation():
 
 
 def test_legacy16_reloads_reads_and_downloads_without_truncation_then_reduces(private_client):
-    h=history(16);seed(private_client,h);before=S.get_view_model('graph',h)
-    assert len(before['visual_state']['nodes'])==16 and before['history']==h
-    page=private_client.get('/graph/graph/construccion');assert page.status_code==200
-    assert stored(private_client)==h
-    main=private_client.get('/help/source/graph/main');assert main.status_code==200
-    assert main.data.decode('utf-8')==before['main_c']
-    query=private_client.post('/graph/graph/operate',json={'operation':'list_vertices','payload':{}})
-    assert query.status_code==200 and query.get_json()['history']==h
-    old=S.get_view_model('graph',h)['visual_state']
-    denied=private_client.post('/graph/graph/operate',json={'operation':'run_bfs','payload':{'start':1}})
-    assert denied.status_code==400 and denied.get_json()['visual_state']==old and stored(private_client)==h
-    removed=private_client.post('/graph/graph/operate',json={'operation':'remove_vertex','payload':{'vertex':16}})
-    assert removed.status_code==200 and len(removed.get_json()['visual_state']['nodes'])==15
-    now=removed.get_json()['history'];assert now[:len(h)]==h and stored(private_client)==now
-    assert S._rebuild_adapter('graph',now)[0]._enforce_educational_limit is True
+    h=history(16,legacy=True);seed(private_client,h)
+    _assert_legacy_suspended(private_client,h)
+
+
+def _assert_legacy_suspended(client,h):
+    model=S.get_view_model('graph',h)
+    assert model['history']==h
+    assert 'suspendido' in S.history_issue(h)
+    assert not model['visual_state'].get('nodes')
+    assert client.get('/graph/graph/construccion').status_code==200
+    assert stored(client)==h
+    for operation,payload in [('list_vertices',{}),('run_bfs',{'start':1}),('remove_vertex',{'vertex':16})]:
+        response=client.post('/graph/graph/operate',json={'operation':operation,'payload':payload})
+        assert response.status_code==400
+        assert response.get_json()['history']==h and stored(client)==h
+        assert response.get_json()['execution_trace'] is None
+    # No canonical main may silently claim to reconstruct the suspended graph.
+    main=client.get('/help/source/graph/main')
+    assert main.status_code==409
+    assert 'grafo_insertar_vertice(g,' not in main.get_data(as_text=True)
+    assert stored(client)==h
 
 
 def test_comparator16_rejects_before_copying_graph():
@@ -92,12 +99,7 @@ def test_comparator16_rejects_before_copying_graph():
 
 def test_legacy_seeded_generator31_retains_every_node_and_complete_main(private_client):
     h=[{'operation':'generate_random_graph','payload':{'vertices_count':16,'seed':17}}]
-    seed(private_client,h);model=S.get_view_model('graph',h)
-    assert len(model['visual_state']['nodes'])==16 and model['history']==h
-    response=private_client.get('/help/source/graph/main');assert response.status_code==200
-    assert response.data.decode('utf-8')==model['main_c']
-    assert model['main_c'].count('g = grafo_insertar_vertice(g, ')==16
-    assert stored(private_client)==h
+    seed(private_client,h);_assert_legacy_suspended(private_client,h)
 
 
 def test_capacity_metadata_and_help_use_current15():
@@ -107,5 +109,5 @@ def test_capacity_metadata_and_help_use_current15():
     assert model['max_vertices']==15
     generator=next(o for o in model['operations'] if o['name']=='generate_random_graph')
     assert '15' in generator['inputs'][0]['label']
-    assert '15 vertices' in GraphHelpService._MODULE_HELP['tips'][0]
-    assert 'superen15' in GraphHelpService._MODULE_HELP['tips'][0]
+    assert '15 vértices' in GraphHelpService._MODULE_HELP['tips'][0]
+    assert 'históricos de otro contrato' in GraphHelpService._MODULE_HELP['tips'][0]

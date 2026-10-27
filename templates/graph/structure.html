@@ -3,7 +3,7 @@
 {% block content %}
 <article class="graph-learning-shell graph-workspace" aria-labelledby="graph-page-title">
   <header class="graph-learning-header">
-    <div><p class="sorting-eyebrow">Laboratorio de grafos y algoritmos en C</p><h2 id="graph-page-title">{{ model.name }}</h2><p>{{ model.description }}</p></div>
+    <div><p class="sorting-eyebrow">Laboratorio de grafos y algoritmos en C</p><h2 id="graph-page-title">{{ model.name }}</h2><details class="classroom-identity-detail"><summary>Acerca de esta estructura</summary><p>{{ model.description }}</p></details></div>
     <a class="link" href="{{ url_for('help.graph_structure_help', structure_id=model.id) }}">Abrir guía del módulo</a>
   </header>
 
@@ -15,8 +15,8 @@
 
   <section class="graph-stage graph-control-stage" aria-labelledby="graph-prepare-title">
     <div class="graph-panel-heading"><h3 id="graph-prepare-title"><span>1</span> Preparar y controlar ejecución</h3><p class="graph-phase-description">{{ graph_phase_data.description }}</p></div>
-    <div id="graph-controls" data-vertex-limit="{{ model.max_vertices }}" data-operate-url="{{ url_for('graph.operate_structure', structure_id=model.id) }}" data-reset-url="{{ url_for('graph.reset_structure', structure_id=model.id) }}" data-compare-url="{{ url_for('graph.compare_algorithms') }}" data-active-phase="{{ graph_phase }}" data-phase-run-mode="{{ graph_phase_data.run_mode }}" data-default-algorithm="{{ graph_phase_data.default_algorithm }}" data-allowed-operations='{{ graph_phase_data.operations | list | tojson }}' data-allowed-algorithms='{{ graph_phase_data.algorithms | list | tojson }}'>
-      <p id="graph-edge-policy" class="graph-policy">Política: lazos {{ model.edge_policy.self_loops }}, aristas paralelas {{ model.edge_policy.parallel_edges }} y vecinos en {{ model.edge_policy.neighbor_order }}.</p>
+    <div id="graph-controls" data-history-url="{{ url_for('graph.export_graph_history', structure_id=model.id) }}" data-vertex-limit="{{ model.max_vertices }}" data-operate-url="{{ url_for('graph.operate_structure', structure_id=model.id) }}" data-reset-url="{{ url_for('graph.reset_structure', structure_id=model.id) }}" data-compare-url="{{ url_for('graph.compare_algorithms') }}" data-active-phase="{{ graph_phase }}" data-phase-run-mode="{{ graph_phase_data.run_mode }}" data-default-algorithm="{{ graph_phase_data.default_algorithm }}" data-allowed-operations='{{ graph_phase_data.operations | list | tojson }}' data-allowed-algorithms='{{ graph_phase_data.algorithms | list | tojson }}'>
+      <p id="graph-edge-policy" class="graph-policy">Se permiten lazos. Una conexión repetida actualiza su peso; los vecinos siguen el orden de recorrido de las listas C del libro. En modo no dirigido se realizan dos llamadas; un fallo en la segunda no deshace la primera.</p>
       <p id="graph-capacity-policy" class="graph-policy" role="status">Limite educativo: {{ model.max_vertices }} vertices. Las sesiones anteriores conservan todos sus datos.</p>
       <div id="builder" class="graph-prepare-grid {% if graph_phase != 'construccion' %}graph-phase-hidden{% endif %}">
         <label for="graph-mode-select">Tipo<select id="graph-mode-select"><option value="false">No dirigido</option><option value="true">Dirigido</option></select></label>
@@ -56,6 +56,7 @@
       <h3 id="graph-visual-title"><span>2</span> Visualizar y ejecutar</h3>
       <p class="graph-visual-help">El lienzo se actualiza con cada instrucción: vértice, arista, peso, auxiliar y decisión activa.</p>
       <div id="graph-visual-state" role="img" aria-label="Estado visual de {{ model.name }}"></div>
+      <section class="graph-live-memory-panel" aria-label="Memoria actual"><h4>Memoria C actual</h4><div id="graph-live-memory">Prepara una traza para observar las reservas y los campos.</div></section>
       <div class="graph-state-legend" aria-label="Leyenda de estados"><span>○ No descubierto</span><span>◇ Frontera</span><span>▶ Activo</span><span>● Cerrado</span><span>✓ MST</span><span>＋ Aceptado</span><span>× Rechazado</span></div>
     </section>
     <section id="graph-code-region" class="graph-stage graph-code-stage didactic-technical" aria-labelledby="op-pseudocode-title">
@@ -70,7 +71,7 @@
   <details class="graph-stage graph-collapsible" open>
     <summary><span>4</span> Comprender <small>Auxiliares, memoria e invariantes del frame actual</small></summary>
     <div class="graph-panel-content">
-      <p id="graph-pedagogy-summary">Prepara una operación para observar auxiliar, tabla e invariante.</p>
+      <div id="graph-pedagogy-summary">Prepara una operación para observar auxiliar, tabla e invariante.</div>
       <div class="graph-frame-grid">
         <section><h4>Representación y memoria</h4><div id="graph-representation-view">Sin frame.</div></section>
         <section><h4>Estructura auxiliar</h4><div id="graph-auxiliary-view">Sin frame.</div></section>
@@ -88,7 +89,7 @@
   <details class="graph-stage graph-collapsible">
     <summary><span>5</span> Resultados de ejecución <small>Consola C, historial, TAD y exportación</small></summary>
     <div class="graph-panel-content">
-      <div class="actions"><button class="btn secondary" id="graph-export-image" type="button">Exportar captura JPG</button><button class="btn secondary" id="graph-export-summary" type="button">Exportar resumen</button><a class="link" href="{{ url_for('help.download_tad_source', structure_id='graph', file_kind='main') }}">Descargar main.c</a></div>
+      <div class="actions"><button class="btn secondary" id="graph-export-image" type="button">Exportar captura JPG</button><button class="btn secondary" id="graph-export-summary" type="button">Exportar resumen</button><a id="graph-download-main" class="link" href="{{ url_for('help.download_tad_source', structure_id='graph', file_kind='main') }}">Descargar main.c</a></div>
       <p id="graph-accessible-announcer" class="sr-only" aria-live="polite"></p>
       <div class="graph-results-grid">
         <section class="console-panel didactic-technical"><h4>Consola C (printf)</h4><pre id="graph-printf-console" class="console-screen" aria-live="polite"></pre></section>

@@ -25,9 +25,10 @@ def test_actual_displayed_leaf_helper_against_downloaded_c_h_and_api(client,tmp_
  line=''.join(str(v)+' ' for v in sorted(seed))+'\n';assert run.stdout==line+line
  (tmp_path/'contract.json').write_text(json.dumps({'seed':seed,'expected':expected,'api_result':actual['result'],'native_stdout':run.stdout,'helper':helper,'body_unchanged':True,'source_header_have_helper':False,'instruction_signoff':False},indent=2),encoding='utf-8')
 
+from scripts.test_tool_paths import resolve_doxygen
 def test_leaf_helper_doxygen_and_manual(client,tmp_path):
  helper=CCodeService.get_structure_data('abb')['operations']['contar_hojas'];p=tmp_path/'displayed-leaves.c';p.write_text(helper,encoding='utf-8')
- tool=Path(r'C:\Users\fralm\Documents\Codex\2026-09-30\task-2\doxygen-tool\doxygen.exe')
+ tool=Path(resolve_doxygen())
  if not tool.exists():pytest.skip('Doxygen unavailable: generated helper documentation unverified')
  warnings=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile';cfg.write_text('\n'.join(['PROJECT_NAME = "Displayed ABB leaves helper"','INPUT = "'+p.as_posix()+'"','OUTPUT_DIRECTORY = "'+tmp_path.as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warnings.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
  run=subprocess.run([str(tool),str(cfg)],capture_output=True,text=True,timeout=60);assert run.returncode==0,run.stderr;assert warnings.read_text(encoding='utf-8')==''

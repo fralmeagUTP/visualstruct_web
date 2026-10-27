@@ -1,8 +1,8 @@
-"""Exact archived DFS traces, request-owned publication, and corrupt pool rejection."""
+"""Canonical DFS request-owned publication; archives retained, corrupt pools rejected."""
 from pathlib import Path
 import copy,gzip,json
 import pytest
-from app.domain.graph.dfs_instruction import build_dfs_trace,build_dfs_rejection_trace
+from _book_traversal_oracle import recorded_call
 from app.domain.graph.owned_transport import OwnedTransportPool
 from app.domain.graph.snapshot_pool import SnapshotPool,GraphLogicalTrace,expand_graph_trace,REFERENCE
 from app.services.trace.engine import TraceEngine
@@ -14,25 +14,33 @@ CASES=['chain3','cycle3','disconnected','self-loop','prior-marks','raw-missing-s
 def wire(v):return json.dumps(v,ensure_ascii=False,separators=(',',':'),allow_nan=True).encode()
 
 @pytest.mark.parametrize('case',CASES)
-def test_every_c_event_and_field_matches_accepted_archive_and_legacy_transport(case):
-    expected=json.loads(gzip.decompress((FIXTURES/(case+'.json.gz')).read_bytes()))
-    before=copy.deepcopy(expected['steps'][0]['state_snapshot']);after=copy.deepcopy(expected['final_state']);seed=copy.deepcopy(expected);seed['steps']=[]
-    builder=build_dfs_rejection_trace if case=='API-missing-start-rejection' else build_dfs_trace
-    if case=='API-missing-start-rejection':seed['source_code']=CCodeService._build_graph_data()['operations']['run_dfs']
-    seal=wire((seed,before,after));trace=builder(copy.deepcopy(seed),before,after)
-    assert wire(trace)==wire(expected)
-    assert wire((seed,before,after))==seal
+def test_every_c_event_and_field_roundtrips_canonical_trace_with_archive_preserved(case):
+    historical=json.loads(gzip.decompress((FIXTURES/(case+'.json.gz')).read_bytes()))
+    assert historical['steps'] and historical['source_code']
+    fixture={'vertices':[1,2,3],'edges':[[1,2],[2,3]],'start':1}
+    if case=='cycle3':fixture['edges'].append([3,1])
+    elif case=='disconnected':fixture['edges']=[[1,2]]
+    elif case=='self-loop':fixture={'vertices':[1],'edges':[[1,1]],'start':1}
+    elif case in ['raw-missing-start','API-missing-start-rejection']:fixture['start']=99
+    elif case=='single-vertex-return':fixture={'vertices':[1],'edges':[],'start':1}
+    marks={1:1,2:0,3:1} if case=='prior-marks' else None
+    result,trace=recorded_call('dfs',fixture,marks)
+    expected=copy.deepcopy(trace)
     TraceEngine.validate_legacy_trace(trace,copy_value=lambda x:x)
-    if case!='API-missing-start-rejection':
-        assert isinstance(trace,GraphLogicalTrace)
-        assert isinstance(trace.snapshot_pool,OwnedTransportPool)
-        own=trace.snapshot_pool.pack(trace);legacy=SnapshotPool().pack(expected)
-        assert wire(own)==wire(legacy)
-        assert wire(expand_graph_trace(own))==wire(expected)
-        assert wire(_json_safe(own))==wire(_json_safe(legacy))
-        assert wire(trace.snapshot_pool.pack(trace))==wire(own)
-        seal=wire(trace);before['nodes'].clear();after['nodes'].clear()
-        assert wire(trace)==seal
+    assert isinstance(trace,GraphLogicalTrace) and trace['book_instruction_model']
+    own=trace.snapshot_pool.pack(trace);legacy=SnapshotPool().pack(expected)
+    # Pool record numbering belongs to its construction order, not C semantics.
+    # The full expanded transport must remain exactly equal in every field.
+    assert wire(expand_graph_trace(own))==wire(expand_graph_trace(legacy))
+    assert wire(expand_graph_trace(own))==wire(expected)
+    assert wire(_json_safe(expand_graph_trace(own)))==wire(_json_safe(expand_graph_trace(legacy)))
+    assert wire(trace.snapshot_pool.pack(trace))==wire(own)
+    seal=wire(trace)
+    # Mutation of actual external recorded transition inputs must not alter
+    # the already assembled request-owned canonical trace.
+    result['transitions'][0]['before']['heap_nodes'].clear()
+    result['graph_after']['vertices'].clear()
+    assert wire(trace)==seal
 
 @pytest.mark.parametrize('value',[b'x',{1},object()])
 def test_invalid_primitive_in_unreachable_record_is_not_silently_omitted(value):

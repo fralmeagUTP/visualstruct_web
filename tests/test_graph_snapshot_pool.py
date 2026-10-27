@@ -1,17 +1,19 @@
-"""Whole-trace exact compatibility and independent frozen JSON fixtures."""
+"""Whole canonical trace transport; earlier frozen fixtures remain historical."""
 from pathlib import Path
 import gzip,json
 import pytest
-from _graph_snapshot_cases import CASES,arguments
-from app.domain.graph.numeric_instruction import build_graph_numeric_trace
+from _graph_snapshot_cases import CASES,capture
+from app.domain.graph.book_trace import build_book_trace
 from app.domain.graph.snapshot_pool import SnapshotPool,expand_graph_trace,CODEC,REFERENCE
 
 def canonical(value):return json.dumps(value,sort_keys=True,ensure_ascii=False,separators=(',',':'))
 
 @pytest.mark.parametrize('case',CASES)
-def test_every_expanded_event_field_state_and_type_equal_pre_codec_fixture(case):
- expected=json.loads(gzip.decompress((Path(__file__).parent/'fixtures/graph_snapshot_expanded'/f'{case}.json.gz').read_bytes()))
- compact=build_graph_numeric_trace(**arguments(case));expanded=expand_graph_trace(compact)
+def test_every_expanded_event_field_state_and_type_equal_streamed_canonical_trace(case):
+ historical=json.loads(gzip.decompress((Path(__file__).parent/'fixtures/graph_snapshot_expanded'/f'{case}.json.gz').read_bytes()))
+ assert historical['steps'] and historical['C_instruction_events']
+ arguments,expected=capture(case)
+ compact=build_book_trace(**arguments,compact=True);expanded=expand_graph_trace(compact)
  assert compact['graph_snapshot_codec']==CODEC
  assert canonical(expanded)==canonical(expected)
  assert expanded['C_instruction_events']==expected['C_instruction_events']

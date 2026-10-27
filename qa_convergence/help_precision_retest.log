@@ -1,0 +1,10 @@
+test_book_contract_content (qa_convergence.test_book_main_help.BookGuide.test_book_contract_content) ... ok
+test_non_graph_enrichment_unchanged (qa_convergence.test_book_main_help.BookGuide.test_non_graph_enrichment_unchanged) ... ok
+test_other_shared_template_blocks_unchanged (qa_convergence.test_book_main_help.BookGuide.test_other_shared_template_blocks_unchanged) ... ok
+test_rendered_guide (qa_convergence.test_book_main_help.BookGuide.test_rendered_guide) ... [2026-10-27 05:33:17,061] WARNING in __init__: Se usa la clave de desarrollo. Configure FLASK_SECRET_KEY antes de desplegar.
+ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.193s
+
+OK

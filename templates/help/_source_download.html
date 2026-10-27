@@ -8,7 +8,7 @@
   </div>
   {% if help_data.source_download.note %}<p class="help-source-note">{{ help_data.source_download.note }}</p>{% endif %}
   {% if help_data.source_download.dependencies %}
-  <p class="help-source-note">Dependencias: {% for dependency in help_data.source_download.dependencies %}<a href="{{ url_for('help.structure_help', structure_id=dependency) }}">{{ dependency }}</a>{% if not loop.last %}, {% endif %}{% endfor %}.</p>
+  <p class="help-source-note">Dependencias: {% for dependency in help_data.source_download.dependencies %}<a href="{{ url_for('help.structure_help', structure_id=dependency) }}">{{ "Cola FIFO" if dependency == "queue" else dependency }}</a>{% if not loop.last %}, {% endif %}{% endfor %}.</p>
   {% endif %}
 </section>
 {% endif %}

@@ -1,0 +1,1 @@
+- [x] local-smoke: Instalar dependencias, arrancar en loopback y verificar rutas/operaciones/UI.

@@ -27,8 +27,8 @@ class CCodeService:
         "binary_heap": {"source": "tad_monticulo_binario.c", "header": "tad_monticulo_binario.h", "label": "Montículo binario"},
         "graph": {
             "source": "tad_grafo.c", "header": "tad_grafo.h", "label": "Grafo",
-            "dependencies": ("queue",),
-            "note": "Los recorridos del grafo usan el TAD Cola; descarga también sus archivos si vas a compilar los recorridos.",
+            "dependencies": (),
+            "note": "Implementación canónica del libro. Compila con tad_grafo.c y tad_grafo.h; BFS usa una cola de índices propia, sin depender del TAD Cola.",
         },
         "hash_table": {"source": "tad_tabla_hash.c", "header": "tad_tabla_hash.h", "label": "Tabla hash"},
         "sorting_array": {"source": "tad_ordenamiento.c", "header": "tad_ordenamiento.h", "label": "Métodos de ordenamiento"},
@@ -719,74 +719,25 @@ class CCodeService:
 
     @classmethod
     def _build_graph_data(cls) -> dict[str, Any]:
-        """Build didactic C-code payload for graph TAD."""
-        c_text = cls._safe_read(cls._DOCS_TADS_C / "tad_grafo.c")
+        """Expose byte-exact book source, including every real helper and type.
+
+        One source/line coordinate system is shared by the restricted interpreter
+        and the code viewer. Downloaded C/H are never rewritten to fit a snippet.
+        """
+        from app.domain.graph.book_source import canonical_source, HASHES
+        c_text = canonical_source()
         h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_grafo.h")
-
-        operation_code: dict[str, str] = {}
-        for operation_name, function_name in cls._GRAPH_OPERATION_MAP.items():
-            snippet = cls._extract_function_with_comment(c_text, function_name)
-            if snippet:
-                operation_code[operation_name] = snippet
-
-        # BFS calls the actual graph scans, successor allocator and FIFO TAD.
-        # These are verbatim downloadable definitions, never synthetic C.
-        bfs = operation_code.get("run_bfs")
-        if bfs:
-            helpers = [cls._extract_function_with_comment(c_text, name) for name in
-                       ("grafo_desmarcar", "grafo_marcar_vertice", "grafo_marcado_vertice", "grafo_sucesores")]
-            queue_text = cls._safe_read(cls._DOCS_TADS_C / "tad_cola.c")
-            helpers += [cls._extract_function_with_comment(queue_text, name) for name in
-                        ("cola_encolar", "cola_desencolar")]
-            operation_code["run_bfs"] = "\n\n".join([bfs] + [h for h in helpers if h])
-
-        # Para DFS se muestra tambien la subrutina recursiva llamada para
-        # mantener coherencia con la interpretacion paso a paso.
-        dfs_wrapper = cls._extract_function_with_comment(c_text, "grafo_dfs")
-        dfs_recursive = cls._extract_function_with_comment(c_text, "grafo_dfs_recursivo")
-        if dfs_wrapper and dfs_recursive:
-            dfs_helpers = [cls._extract_function_with_comment(c_text, name) for name in (
-                "grafo_agregar_recorrido", "grafo_existe_vertice", "grafo_desmarcar",
-                "grafo_marcar_vertice", "grafo_marcado_vertice", "grafo_sucesores",
-            )]
-            operation_code["run_dfs"] = "\n\n".join([dfs_wrapper, dfs_recursive] + [h for h in dfs_helpers if h])
-
-        # Four numeric algorithms show every actual helper they can call.
-        # BFS/DFS snippets above remain unchanged and are not reopened.
-        dependencies = {
-            "run_dijkstra": ("grafo_orden", "grafo_vertices", "inicializarVectorVertices", "indiceVertice",
-                "grafo_tiene_peso_negativo", "grafo_sucesores_atomicos", "grafo_costo_arco", "liberarListaArcos"),
-            "run_bellman_ford": ("grafo_orden", "grafo_vertices", "inicializarVectorVertices", "indiceVertice",
-                "grafo_arcos", "grafo_costo_arco", "liberarListaArcos"),
-            "run_prim": ("grafo_orden", "grafo_vertices", "inicializarVectorVertices", "indiceVertice",
-                "grafo_sucesores_atomicos", "grafo_costo_arco", "liberarListaArcos"),
-            "run_kruskal": ("grafo_orden", "grafo_tamano", "grafo_vertices", "inicializarVectorVertices", "indiceVertice",
-                "grafo_arcos", "grafo_encontrar_conjunto", "grafo_unir_conjuntos", "liberarListaArcos"),
-        }
-        for operation, names in dependencies.items():
-            if operation in operation_code:
-                helpers = [cls._extract_function_with_comment(c_text, name) for name in names]
-                if not all(helpers):
-                    raise ValueError(f"Falta una dependencia C real de {operation}.")
-                operation_code[operation] = "\n\n".join([operation_code[operation], *helpers])
-
-        create_fn = cls._extract_function_with_comment(c_text, "grafo_crear")
-        if create_fn:
-            operation_code["create_graph"] = create_fn
-        operation_code["clear_graph"] = (
-            "/* El TAD nuevo de grafo devuelve estructura por valor. */\n"
-            "/* Reinicio didactico: */\n"
-            "g = grafo_crear();"
-        )
-
-        structure_text = cls._extract_graph_structure(h_text, c_text)
+        operations = set(cls._GRAPH_OPERATION_MAP) | {"create_graph", "clear_graph", "generate_random_graph"}
         return {
-            "record": structure_text,
-            "operations": operation_code,
-            "default_operation": (
-                "Codigo C no disponible para esta operacion en docs/tads_C/tad_grafo.c."
-            ),
-            "code_title": "Codigo C",
+            "record": h_text,
+            "operations": {operation: c_text for operation in operations},
+            "default_operation": c_text,
+            "code_title": "Código C canónico del libro — tad_grafo.c",
+            "source_contract": "graph-book/v1",
+            "source_hashes": dict(HASHES),
+            "operation_functions": {**cls._GRAPH_OPERATION_MAP,
+                "clear_graph": "grafo_destruir", "create_graph": "grafo_crear",
+                "generate_random_graph": "grafo_insertar_arco"},
         }
 
     @classmethod

@@ -1,0 +1,11 @@
+--- ../qa_independent/baseline_test_stdout_raw_renderer.js
++++ qa/test_stdout_raw_renderer.js
+@@ -5,7 +5,7 @@
+ function fixture(){
+  const context={window:{},document:{addEventListener(){}}};vm.createContext(context);vm.runInContext(source,context);
+  const start=source.indexOf('  function collectPrintfConsoleLines('),end=source.indexOf('  const tracePlayer =',start);assert.ok(start>=0&&end>start);vm.runInContext(source.slice(start,end),context);
+- let text='',html='';const element={style:{},scrollHeight:0,scrollTop:0,set textContent(value){text=value;html=String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');},get textContent(){return text;},set innerHTML(value){html=value;text='';},get innerHTML(){return html;}};
++ let text='',html='';const element={dataset:{},style:{},scrollHeight:0,scrollTop:0,set textContent(value){text=value;html=String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');},get textContent(){return text;},set innerHTML(value){html=value;text='';},get innerHTML(){return html;}};
+  context.printfConsole=element;context.consoleState={trace:null,fallbackMessage:'host is not stdout',rawStdout:null};
+  return{context,element};
+ }
