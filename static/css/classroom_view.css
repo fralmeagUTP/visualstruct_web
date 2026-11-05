@@ -142,3 +142,28 @@ body:has(.classroom-workspace) .classroom-execution-controls { position:sticky; 
 #graph-visual-state.classroom-stage svg text { font-size: 18px; }
 #graph-visual-state.classroom-stage .viz-graph-weight { font-weight: 600; }
 @media(max-width:900px) { .graph-primary-workspace.classroom-workspace { height: auto !important; } #graph-visual-state.classroom-stage { height: 520px; flex: none !important; } }
+
+/* UX review: the visual mode really omits source/memory, including keyboard focus. */
+html[data-didactic-mode="visual"] .didactic-technical,
+html[data-didactic-mode="visual"] :is(#seq-code-region,#hier-code-region,#sorting-code-region,#graph-code-region,#hash-code-region),
+html[data-didactic-mode="visual"] :is(.sequential-mobile-tabs,.hier-mobile-tabs,.sorting-mobile-tabs,.hash-mobile-tabs,.graph-mobile-tabs) { display:none !important; }
+html[data-didactic-mode="visual"] .classroom-workspace { grid-template-columns:minmax(0,1fr) !important; }
+html[data-didactic-mode="visual"] .classroom-visual { display:flex !important; }
+/* Explicit grid position prevents Pila controls from being auto-placed after results. */
+.is-stack-pilot { grid-template-areas:"header" "prepare" "execute" "prediction" "workspace" "understand" "reflect" !important; }
+.is-stack-pilot > .seq-execute { grid-area:execute; }
+.is-stack-pilot > #seq-prediction-panel { grid-area:prediction; }
+#seq-prediction-panel { padding:.65rem; border:2px solid #377195; border-radius:.5rem; background:#f2f8fc; }
+#seq-prediction-panel[hidden] { display:none !important; }
+.nav-tools { flex-wrap:wrap; }
+#didactic-mode-help { max-width:22rem; color:#355064; font-size:.75rem; }
+#export-jpg-help { max-width:24rem; font-size:.75rem; }
+.nav-export-controls { flex-wrap:wrap; }
+.code-navigation-help { font-size:.8rem; margin:.15rem 0; }
+:is(.seq-function-index,.hier-function-index,.sorting-function-index,.graph-function-index,.hash-function-index) button.is-code-consulted { outline:2px solid #a85b00; outline-offset:1px; }
+@media(max-width:760px) {
+  .classroom-execution-controls .actions { gap:.3rem; }
+  .classroom-execution-controls .btn { min-height:34px; }
+  .classroom-execution-controls { max-height:45vh; overflow-y:auto; }
+  #didactic-mode-help,#export-jpg-help { max-width:100%; }
+}

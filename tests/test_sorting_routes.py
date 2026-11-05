@@ -15,7 +15,7 @@ def test_sorting_visualizer_page_loads(client) -> None:
     response = client.get("/sorting/visualizador")
     assert response.status_code == 200
     assert b"didactic-mode-switch" in response.data
-    assert "Mostrar codigo y detalles tecnicos".encode("utf-8") in response.data
+    assert "Mostrar código y detalles técnicos".encode("utf-8") in response.data
     assert b"sorting-sim-play" in response.data
     assert b"sorting-step-navigation" in response.data
     assert "Relacionar con código".encode("utf-8") in response.data

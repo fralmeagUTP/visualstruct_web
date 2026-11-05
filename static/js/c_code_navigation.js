@@ -40,5 +40,18 @@
     if (item.top < top) panel.scrollTop += item.top - top;
     else if (item.bottom > bottom) panel.scrollTop += item.bottom - bottom;
   }
+  // Consulting a function scrolls the reader; it does not execute C or change the blue trace marker.
+  if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('[class$="function-index"], .seq-function-index, .hier-function-index, .sorting-function-index, .graph-function-index, .hash-function-index').forEach(nav => {
+      const heading=nav.querySelector("strong"); if(heading) heading.textContent="Ir a una función";
+      const help=document.createElement("p"); help.className="code-navigation-help";
+      help.textContent="Estos enlaces desplazan el código; no ejecutan la función. Azul: función en ejecución. Borde naranja: última función consultada.";
+      nav.after(help);
+      nav.addEventListener("click",event=>{
+        const chosen=event.target.closest("button"); if(!chosen || !nav.contains(chosen)) return;
+        nav.querySelectorAll("button").forEach(button=>button.classList.toggle("is-code-consulted",button===chosen));
+      });
+    });
+  });
   scope.CCodeNavigation = { commentOnlyLines, markComments, revealLine };
 }(window));

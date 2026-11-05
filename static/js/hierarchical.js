@@ -85,7 +85,21 @@ function enhanceHierCodeNavigation(activeLine = null) {
   const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0]; list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${hEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>'; list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>window.CCodeNavigation?.revealLine(code,code.querySelector(`.code-line[data-line="${button.dataset.line}"]`))));
 }
 
+function renderHierLevelGuide(frame, level) {
+  const guide = hById("hier-level-guide");
+  if (!guide) return;
+  const structure = frame?.structure || window.HIER_VIEW_MODEL?.id;
+  const rule = {abb: "En un ABB, los valores menores van a la izquierda y los mayores a la derecha.", avl: "Un AVL mantiene el orden de búsqueda y un factor de equilibrio (FE) entre −1 y 1 al terminar.", red_black: "Un rojo-negro mantiene reglas de color: la raíz es negra y un nodo rojo no tiene hijos rojos.", binary_heap: "Un montículo mantiene la prioridad entre padre e hijos; no ordena todo el arreglo."}[structure] || "Observa cómo cambia la estructura en cada paso.";
+  const lessons = {
+    basic: `Básico · Qué observar: ${rule} Sigue el valor y los enlaces antes y después del paso.`,
+    intermediate: `Intermedio · Cómo decidir: ${rule} Relaciona el nodo actual, la ruta y la condición C con la siguiente acción. NULL significa que no hay un nodo referenciado.`,
+    advanced: `Avanzado · Cómo justificar: ${rule} Contrasta ámbitos de llamada, referencias, retornos y evidencia del invariante. Un estado transitorio no certifica el resultado final.`
+  };
+  guide.textContent = lessons[level] || lessons.intermediate;
+}
+
 function renderHierPedagogy(frame, level) {
+  renderHierLevelGuide(frame, level);
   if (!frame) return;
   const summary=hById("hier-pedagogy-summary"), path=hById("hier-path-view"), stack=hById("hier-stack-view"), invariant=hById("hier-invariant-view"), variables=hById("hier-variables-view"), memory=hById("hier-memory-view"), relations=hById("hier-relations-view");
   if(summary)summary.innerHTML=`<strong>${hEscape(frame.phase?.label||frame.concept)}</strong>: ${hEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;
@@ -1380,7 +1394,11 @@ function drawTreeSvgFromNodes(nodes, options = {}) {
   const compare = comparisonHighlight(options.compareState);
 
   const minY = Math.min(...nodes.map(node => node.y), ...nullLeaves.map(leaf => leaf.y));
-  const viewBox = options.fitBounds ? `${minX + offsetX - 35} ${minY - 35} ${maxX - minX + 70} ${maxY - minY + 80}` : `0 0 ${svgWidth} ${svgHeight}`;
+  // The annotated AVL card extends beyond the node circle on both axes.
+  // Include its full rectangle and FE baseline when fitting the drawing.
+  const boundsPadX = options.avlInsertionMemory ? 80 : 35;
+  const boundsBottom = options.avlInsertionMemory ? 76 : 45;
+  const viewBox = options.fitBounds ? `${minX + offsetX - boundsPadX} ${minY - 35} ${maxX - minX + boundsPadX * 2} ${maxY - minY + 35 + boundsBottom}` : `0 0 ${svgWidth} ${svgHeight}`;
   let svg = `<svg class="viz-tree-svg" width="${svgWidth}" height="${svgHeight}" viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg">`;
 
   nodes.forEach((node) => {
@@ -1421,10 +1439,10 @@ function drawTreeSvgFromNodes(nodes, options = {}) {
     svg += `<text x="${node.x + offsetX}" y="${node.y + 6}" text-anchor="middle" class="viz-tree-text">${hEscape(node.value)}</text>`;
 
     if (options.rbtClearMemory && options.rbtInsertMemory) svg += `<text x="${node.x+offsetX}" y="${node.y+44}" text-anchor="middle" data-rbt-svg-reference="${node.id}">${hEscape(node.id)}; color:${hEscape(({BLACK:"negro",RED:"rojo"})[node.color] || node.color)}</text>`;
-    if (options.avlInsertionMemory) svg += `<text x="${node.x+offsetX}" y="${node.y+44}" text-anchor="middle" data-avl-svg-reference="${node.id}">${node.id}; padre:${hEscape(node.parentReference)}</text>`;
+    if (options.avlInsertionMemory) svg += `<rect x="${node.x+offsetX-72}" y="${node.y+28}" width="144" height="40" rx="4" fill="var(--card-bg, white)" /><text x="${node.x+offsetX}" y="${node.y+44}" text-anchor="middle" data-avl-svg-reference="${node.id}">${node.id}; padre:${hEscape(node.parentReference)}</text>`;
     if (options.showBalanceFactor) {
       const feClass = node.balanceFactor >= -1 && node.balanceFactor <= 1 ? "viz-tree-fe ok" : "viz-tree-fe bad";
-      svg += `<text x="${node.x + offsetX + 25}" y="${node.y - 18}" class="${feClass}">fe:${hEscape(node.balanceFactor)}</text>`;
+      svg += `<text x="${node.x + offsetX + (options.avlInsertionMemory ? 0 : 25)}" y="${node.y + (options.avlInsertionMemory ? 62 : -18)}" text-anchor="${options.avlInsertionMemory ? "middle" : "start"}" class="${feClass}">fe:${hEscape(node.balanceFactor)}</text>`;
     } else if (node.height !== null && node.height !== undefined) {
       svg += `<text x="${node.x + offsetX + 20}" y="${node.y - 18}" class="viz-tree-height">h:${hEscape(node.height)}</text>`;
     }
@@ -1807,11 +1825,13 @@ function layoutHierMemoryGraph(state) {
   if (state.head !== "NULL") validate(state.head);
   const reachable = new Set(visited);
   for (const node of heap) if (!visited.has(node.id)) validate(node.id);
+  const annotatedAVL = Boolean(state.avl_insert_model || state.avl_delete_model);
+  const gapX = annotatedAVL ? 152 : 88, gapY = annotatedAVL ? 120 : 64;
   const positions = new Map(); let slot = 0, maxDepth = 0;
   function place(id, depth) {
     if (id === "NULL") return;
     const node = byId.get(id); place(node.left,depth+1);
-    positions.set(id,{x:48+(slot++)*88,y:42+depth*64});maxDepth=Math.max(maxDepth,depth);
+    positions.set(id,{x:80+(slot++)*gapX,y:42+depth*gapY});maxDepth=Math.max(maxDepth,depth);
     place(node.right,depth+1);
   }
   if (safe) {
@@ -1819,7 +1839,7 @@ function layoutHierMemoryGraph(state) {
     const detachedDepth=maxDepth+2;
     for (const node of heap) if (!positions.has(node.id) && !incoming.has(node.id)) place(node.id,detachedDepth);
   }
-  const graph=heap.map((node,index)=>({...node,key:node.id,...(safe?positions.get(node.id):{x:48+(index%4)*120,y:42+Math.floor(index/4)*100}),leftKey:node.left,rightKey:node.right,parentReference:node.parent,balanceFactor:node.balance_factor}));
+  const graph=heap.map((node,index)=>({...node,key:node.id,...(safe?positions.get(node.id):{x:80+(index%4)*(annotatedAVL ? 160 : 120),y:42+Math.floor(index/4)*(annotatedAVL ? 120 : 100)}),leftKey:node.left,rightKey:node.right,parentReference:node.parent,balanceFactor:node.balance_factor}));
   return {graph,safe,detached:heap.filter(node=>!reachable.has(node.id)).map(node=>node.id),label:safe?(state.head === "NULL"?"Sin raíz publicada: reservas desconectadas.":"Árbol de enlaces observados; no certifica el invariante."):"Diagrama de memoria; no árbol válido todavía. Enlaces indeterminados o transitorios conservados."};
 }
 
@@ -1932,6 +1952,7 @@ function renderHierState(
 
   if (state.traversals) {
     html += "<details class=\"viz-traversals hier-traversal-summary\"><summary>Recorridos de la estructura</summary>";
+    if (!Object.keys(state.traversals).length) html += '<p class="hier-traversal-empty">Durante esta traza no se calcula un recorrido de los enlaces transitorios. El recorrido estará disponible al terminar.</p>';
     Object.keys(state.traversals).forEach((name) => {
       html += `<p><strong>${hEscape(name)}:</strong> ${hEscape(JSON.stringify(state.traversals[name]))}</p>`;
     });
@@ -2490,9 +2511,7 @@ function initHierSimplifiedWorkspace() {
   }
   moveLearningPanel("hier-predict-title", "Predecir");
   moveLearningPanel("hier-compare-title", "Comparar");
-  const levelLabel = hById("hier-learning-level")?.closest("label");
-  const codeToolbar = codeTitle?.closest("section")?.querySelector(".hier-code-toolbar");
-  if (levelLabel && codeToolbar) codeToolbar.append(levelLabel);
+  // Learning level explains the lesson, independently of optional C visibility.
 
   // The old position slider is an internal value only; navigation is manual.
   const comparePosition = hById("hier-compare-progress");
@@ -2563,7 +2582,16 @@ function initHierSimplifiedWorkspace() {
     classroomControls.className = "hier-classroom-controls";
     classroomControls.setAttribute("role", "group");
     classroomControls.setAttribute("aria-label", "Controles de ejecución");
-    classroomControls.append(actions, stepToggle, counter, status);
+    const predictLink = document.createElement("button");
+    predictLink.type = "button"; predictLink.id = "hier-open-prediction";
+    predictLink.className = "btn secondary"; predictLink.textContent = "Practicar una predicción";
+    predictLink.addEventListener("click", () => {
+      const content = hById("hier-understand-content");
+      if (content?.hidden) hById("hier-understand-toggle")?.click();
+      const panel = hById("hier-prediction")?.closest("details");
+      if (panel) { panel.open = true; panel.querySelector("summary")?.focus(); panel.scrollIntoView({block:"nearest"}); }
+    });
+    classroomControls.append(actions, predictLink, stepToggle, counter, status);
     const workspace = document.querySelector(".hier-primary-workspace");
     if (workspace) workspace.before(classroomControls);
     else prepareStage.append(classroomControls);
@@ -3158,6 +3186,7 @@ function initHierPage(model) {
     writePresentation({cursor:-1});
   });
 
+  renderHierLevelGuide(currentPedagogyFrame, learningLevel?.value || "intermediate");
   learningLevel?.addEventListener("change",()=>{renderHierPedagogy(currentPedagogyFrame,learningLevel.value);writePresentation();});
   guidedExample?.addEventListener("change",()=>{const example=(model.guided_examples||[]).find((item)=>item.id===guidedExample.value);if(exampleLesson)exampleLesson.textContent=example?example.lesson:"Los ejemplos construyen el estado mediante operaciones públicas reales.";});
   loadExampleButton?.addEventListener("click",async()=>{
@@ -3204,7 +3233,7 @@ function initHierPage(model) {
       updateHierDidacticPanel(model, current.name);
       const finalOnly = Boolean(options && options.finalOnly);
       const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
-      const deferQueryResult = hasExecutionTrace && ((pageState.modelId === "red_black" && ["buscar", "inorden", "altura", "validar", "limpiar", "insertar", "eliminar"].includes(current.name)) || (pageState.modelId === "abb" && current.name === "validar") || (pageState.modelId === "avl" && ["altura", "buscar", "inorden", "minimo", "maximo", "limpiar", "validar", "insertar", "eliminar"].includes(current.name)) || (pageState.modelId === "binary_heap" && ["raiz", "a_lista", "limpiar", "insertar", "extraer_raiz"].includes(current.name)));
+      const deferQueryResult = hasExecutionTrace && ((pageState.modelId === "red_black" && ["buscar", "inorden", "altura", "validar", "limpiar", "insertar", "eliminar"].includes(current.name)) || (pageState.modelId === "abb" && ["validar", "insertar"].includes(current.name)) || (pageState.modelId === "avl" && ["altura", "buscar", "inorden", "minimo", "maximo", "limpiar", "validar", "insertar", "eliminar"].includes(current.name)) || (pageState.modelId === "binary_heap" && ["raiz", "a_lista", "limpiar", "insertar", "extraer_raiz"].includes(current.name)));
       consoleState.resultMessage = deferQueryResult ? { text: data.message, operation: current.name, success: Boolean(data.success) } : null;
       showHierMessage(deferQueryResult ? (current.name === "validar" ? "Validacion preparada: resultado pendiente hasta completar la traza." : current.name === "limpiar" ? "Limpieza preparada: resultado pendiente hasta completar la traza." : current.name === "insertar" ? "Insercion preparada: resultado pendiente hasta completar la traza." : current.name === "eliminar" ? "Eliminacion preparada: resultado pendiente hasta completar la traza." : current.name === "extraer_raiz" ? "Extraccion preparada: resultado pendiente hasta completar la traza." : "Consulta preparada: resultado pendiente hasta completar la traza.") : data.message, deferQueryResult ? true : Boolean(data.success));
       window.ConsoleHistory?.setHistory(printfConsole, data.history);
@@ -3445,7 +3474,11 @@ function initHierPage(model) {
     if (hintButton) hintButton.disabled = !pending;
     if (skipPrediction) { skipPrediction.disabled = !pending; skipPrediction.textContent = "Revelar decisión sin responder"; }
     const prompt = hById("hier-prediction-prompt");
-    if (prompt) prompt.textContent = pending?.prompt || "No hay una próxima decisión con condición C registrada. Ejecuta una operación en modo paso a paso o sigue navegando.";
+    if (prompt) prompt.textContent = pending?.prompt || "Sin decisión pendiente. Elige Insertar y un valor, activa Paso a paso y pulsa Ejecutar operación. Si ya terminaste la traza, vuelve a un paso anterior o prepara otra operación.";
+    const shortcut = hById("hier-open-prediction");
+    if (shortcut) shortcut.textContent = pending ? `Predecir próxima decisión (paso ${pending.index + 1})` : "Practicar una predicción";
+    const context = hById("hier-prediction-context");
+    if (context) context.textContent = pending ? `Operación: ${operationSelect.selectedOptions[0]?.textContent || operationSelect.value}. Valor preparado: ${hById("h-field-value")?.value || "no aplica"}. Ruta del estado visible: ${(currentPedagogyFrame?.path?.keys || []).join(" → ") || "sin recorrido aún"}.` : "";
     if (practiceCover) practiceCover.hidden = true;
     visualContainer.classList.remove("hier-practice-hidden");
   }
@@ -3559,7 +3592,6 @@ function hierMountClassroomView() {
   const root = document.querySelector(".hier-primary-workspace");
   if (!root) return;
   document.getElementById("hier-code-region")?.classList.add("classroom-code");
-  document.getElementById("hier-code-region")?.classList.remove("didactic-technical");
   const history = document.getElementById("action-history");
   const consoleNode = document.getElementById("hier-printf-console");
   const record = document.getElementById("tad-record");
@@ -3569,9 +3601,8 @@ function hierMountClassroomView() {
     {label:"Estructura del TAD",panel:record?.parentElement,code:record,getText:()=>record?.dataset.rawCode ?? record?.textContent ?? ""}
   ];
   results.forEach(entry=>{
-    entry.panel?.classList.remove("didactic-technical");
     for(let node=entry.panel?.parentElement;node && node.tagName!=="ARTICLE";node=node.parentElement) {
-      node.classList.remove("didactic-technical", "seq-pilot-collapsed");
+      node.classList.remove("seq-pilot-collapsed");
       node.hidden = false;
       if(node.tagName==="DETAILS") node.open=true;
     }

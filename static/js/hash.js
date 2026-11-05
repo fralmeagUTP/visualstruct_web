@@ -944,7 +944,6 @@ function hashMountClassroomView() {
     if (heading.textContent.trim() === "Estado visual") heading.remove();
   });
   document.getElementById("hash-code-region")?.classList.add("classroom-code");
-  document.getElementById("hash-code-region")?.classList.remove("didactic-technical");
   const history = document.getElementById("action-history");
   const consoleNode = document.getElementById("hash-printf-console");
   const record = document.getElementById("tad-record");
@@ -954,9 +953,8 @@ function hashMountClassroomView() {
     {label:"Estructura del TAD",panel:record?.parentElement,code:record,getText:()=>record?.dataset.rawCode ?? record?.textContent ?? ""}
   ];
   results.forEach(entry=>{
-    entry.panel?.classList.remove("didactic-technical");
     for(let node=entry.panel?.parentElement;node && node.tagName!=="ARTICLE";node=node.parentElement) {
-      node.classList.remove("didactic-technical", "seq-pilot-collapsed");
+      node.classList.remove("seq-pilot-collapsed");
       node.hidden = false;
       if(node.tagName==="DETAILS") node.open=true;
     }

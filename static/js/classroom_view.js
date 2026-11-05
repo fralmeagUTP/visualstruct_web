@@ -15,9 +15,6 @@
     const lines = Array.from(node.querySelectorAll?.(".code-line") || []);
     return lines.length ? lines.map(line => line.textContent).join("\n") : node.textContent;
   }
-  function revealTechnical(node, boundary) {
-    for (let current=node; current && current!==boundary; current=current.parentElement) current.classList.remove("didactic-technical");
-  }
   async function copyText(text) {
     if (!navigator.clipboard?.writeText) throw new Error("El navegador no permite copiar; selecciona el texto del código.");
     await navigator.clipboard.writeText(text);
@@ -67,7 +64,7 @@
     const memoryPanels = new Map();
     root.classList.add("classroom-workspace");
     visual?.classList.add("classroom-visual"); stage?.classList.add("classroom-stage");
-    if (code) { revealTechnical(code,root); code.classList.add("classroom-source"); code.parentElement.classList.add("classroom-code"); addCodeActions(code.parentElement,code,"Código C",options.getCodeText); }
+    if (code) { code.classList.add("classroom-source"); code.parentElement.classList.add("classroom-code"); addCodeActions(code.parentElement,code,"Código C",options.getCodeText); }
     const toolbar = document.createElement("div"); toolbar.className = "classroom-view-tools";
     const indicator = document.createElement("output"); indicator.setAttribute("aria-live", "polite");
     function refresh() {
@@ -98,7 +95,7 @@
         if (!node) return;
         if(panel?.node===node) return;
         if(!panel){
-          const details=document.createElement("details");details.className="classroom-memory";
+          const details=document.createElement("details");details.className="classroom-memory didactic-technical";
           details.open=memories.get(index)||false;
           const summary=document.createElement("summary");summary.textContent="Memoria y reservas · abrir / cerrar";
           details.append(summary);visual.append(details);
@@ -141,7 +138,7 @@
     if (options.results?.length) {
       const entries=options.results.map(item=>({...item,panel:resolve(item.panel)})).filter(item=>item.panel);
       if(entries.length) {
-        const shell=document.createElement("section"); shell.className="classroom-results";
+        const shell=document.createElement("section"); shell.className="classroom-results didactic-technical";
         const tabs=document.createElement("div"); tabs.className="classroom-result-tabs"; tabs.setAttribute("role","tablist");
         entries[0].panel.before(shell); shell.append(tabs);
         entries.forEach((entry,index)=>{
@@ -153,7 +150,7 @@
             const delta=event.key==="ArrowRight"?1:event.key==="ArrowLeft"?-1:0;
             if(delta){event.preventDefault();const next=(index+delta+entries.length)%entries.length;select(next);entries[next].tab.focus();}
           });
-          tabs.append(tab); shell.append(entry.panel); entry.panel.classList.add("classroom-result-panel"); revealTechnical(entry.panel,shell);
+          tabs.append(tab); shell.append(entry.panel); entry.panel.classList.add("classroom-result-panel");
           if(entry.panel.tagName==="DETAILS") entry.panel.open=true;
           const c=resolve(entry.code,entry.panel); if(c) addCodeActions(entry.panel,c,entry.label,entry.getText,entry.copyLabel || (/consola/i.test(entry.label) ? "Copiar salida" : "Copiar C"));
         });

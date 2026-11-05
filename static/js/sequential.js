@@ -3113,6 +3113,8 @@ function initStructurePage(model) {
   let currentPedagogyFrame = null;
   let predictionPendingIndex = -1;
   let predictionHintLevel = 0;
+  let predictionAutoplay = false;
+  const predictionMaskedElements = new Map();
   const presentationKey = `sequential-presentation:${model.id}`;
   const learningProgressKey = `sequential-learning-progress:${model.id}`;
   function readLearningProgress() { try { return JSON.parse(window.sessionStorage.getItem(learningProgressKey) || '{"attempts":0,"correct":0,"concepts":{}}'); } catch (_error) { return { attempts: 0, correct: 0, concepts: {} }; } }
@@ -3202,10 +3204,15 @@ function initStructurePage(model) {
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
+        clearPrediction();
+        if (event?.reason !== "advance") predictionAutoplay = false;
         traceCursor = cursor;
         traceTotalSteps = event && event.trace && Array.isArray(event.trace.steps)
           ? event.trace.steps.length
           : 0;
+        // Rewinding or replaying a completed trace must unlock its next step.
+        // Derive this from the cursor for buttons, keyboard shortcuts and seek alike.
+        lockStepUntilInput = traceTotalSteps > 0 && cursor >= traceTotalSteps - 1;
         refreshPrintfConsole(cursor);
         if (consoleState.resultMessage) {
           const finished = traceTotalSteps > 0 && cursor >= traceTotalSteps - 1;
@@ -3281,6 +3288,9 @@ function initStructurePage(model) {
         writePresentation({ cursor });
         if (cursor < 0) window.ContextualHelp?.frame("seq", null);
         setSimulationButtonsEnabled();
+        if (predictionAutoplay && cursor < traceTotalSteps - 1) {
+          requestPrediction(event.trace.steps[cursor + 1], cursor + 1);
+        }
       },
     })
     : null;
@@ -3452,6 +3462,16 @@ function initStructurePage(model) {
   }
 
   initStackPilotPanels();
+  const predictionGuide = byId("seq-prediction-guide");
+  const predictionExamples = {
+    stack: "Pila: apila 10 y 20; después prepara Desapilar. Piensa cuál es el tope y qué enlace cambiará.",
+    queue: "Cola: encola 10 y 20; después prepara Desencolar. Piensa qué ocurre en el frente y qué pasa al retirar el último nodo.",
+    priority_queue: "Cola de prioridad: compara 10 con prioridad 2 y 20 con prioridad 1. Menor número significa mayor prioridad; en empate se conserva el orden de llegada.",
+    linked_list: "Lista: inserta 10 y 20; prepara una eliminación y anticipa qué enlace debe conservar los nodos restantes.",
+    circular_list: "Lista circular: inserta 10 y 20; anticipa cómo el último nodo seguirá apuntando al primero tras una eliminación.",
+    sublist: "Sublista: crea un padre 10 y un hijo 20; anticipa si la operación cambia la cadena de padres o la rama de hijos.",
+  };
+  if (predictionGuide) predictionGuide.textContent = "1. Activa Preguntas predictivas. 2. Enciende Paso a paso y ejecuta una operación. 3. Pulsa Siguiente paso: en los pasos clave responde o elige Continuar sin responder antes de ver el efecto. " + (predictionExamples[model.id] || "") + " NULL significa que un puntero no apunta a un nodo. En práctica se ocultan las ayudas y resultados hasta responder u omitir.";
 
   function initSiblingSequentialViews() {
     if (model.id === "stack") return;
@@ -3559,7 +3579,8 @@ function initStructurePage(model) {
     visualTraceState.frames = [];
     visualTraceState.totalSteps = 0;
     tracePlayer?.clear(message || "Activa Paso a paso antes de ejecutar una operación para revisar su traza.");
-    predictionPendingIndex = -1; if (predictionPanel) predictionPanel.hidden = true;
+    clearPrediction();
+    predictionAutoplay = false;
     refreshPrintfConsole(-1);
     setSimulationButtonsEnabled();
   }
@@ -3570,51 +3591,93 @@ function initStructurePage(model) {
     const pointerChanged = (frame.pointers || []).some((item) => item.changed);
     const extremeChanged = (frame.state_changes || []).some((item) => ["empty", "size", "items"].includes(item));
     if (!["condition", "link", "free"].includes(frame.concept) && !pointerChanged && !extremeChanged) return null;
+    if (frame.concept === "condition" && typeof frame.condition?.result !== "boolean") return null;
     if (frame.concept === "condition") return { question: `¿La condición «${frame.condition?.substituted || frame.condition?.source}» resulta verdadera?`, expected: frame.condition?.result === true, hint: ["Observa los valores sustituidos.", "Compara ambos operandos de la condición.", `La ruta registrada ${frame.condition?.result ? "entra" : "no entra"} al cuerpo.`] };
     const changes = (frame.state_changes || []).length > 0 || pointerChanged || frame.concept === "free";
-    const label = frame.concept === "free" ? "liberará y hará inalcanzable un nodo" : frame.concept === "link" ? "reasignará un enlace" : "cambiará un extremo o el tamaño";
-    return { question: `¿Esta instrucción ${label}?`, expected: changes, hint: ["Compara el estado anterior con el siguiente frame.", `Concepto actual: ${frame.concept}.`, changes ? "Sí existe una transición registrada." : "El estado observable permanece estable."] };
+    const label = frame.concept === "free" ? "liberará la memoria de un nodo" : frame.concept === "link" ? "reasignará un enlace" : "cambiará un extremo o el tamaño";
+    return { question: `¿Esta instrucción ${label}?`, expected: changes, hint: ["Observa los extremos y enlaces del estado anterior.", "Piensa qué debe conservar la estructura tras esta instrucción.", changes ? "Sí existe una transición registrada." : "El estado observable permanece estable."] };
   }
 
-  async function advancePendingPrediction(answered) {
+  function maskPredictionAnswers(masked) {
+    // Preserve the previous graph: the predicted event has NOT happened yet.
+    // Hide textual help, source and results rather than blurring only SVG nodes.
+    if (!masked) {
+      predictionMaskedElements.forEach((saved, node) => {
+        node.style.display = saved.display;
+        if (saved.aria === null) node.removeAttribute("aria-hidden");
+        else node.setAttribute("aria-hidden", saved.aria);
+      });
+      predictionMaskedElements.clear();
+      visualContainer.classList.remove("seq-practice-hidden");
+      return;
+    }
+    document.querySelectorAll("#seq-code-region, #seq-pedagogy-summary, .seq-c-semantics, #seq-printf-console, #action-history, .classroom-caption").forEach((node) => {
+      if (!predictionMaskedElements.has(node)) predictionMaskedElements.set(node, { display: node.style.display, aria: node.getAttribute("aria-hidden") });
+      node.style.display = "none";
+      node.setAttribute("aria-hidden", "true");
+    });
+  }
+
+  function clearPrediction() {
+    predictionPendingIndex = -1;
+    predictionHintLevel = 0;
+    if (predictionPanel) predictionPanel.hidden = true;
+    maskPredictionAnswers(false);
+  }
+
+  async function advancePendingPrediction(answered, feedback = "") {
     if (predictionPendingIndex < 0) return;
-    predictionPendingIndex = -1; predictionHintLevel = 0;
-    if (predictionPanel && !answered) predictionPanel.hidden = true;
-    if (answered) predictionChoices?.querySelectorAll("button").forEach((button) => { button.disabled = true; });
-    const advanced = await tracePlayer?.step();
-    visualContainer.classList.remove("seq-practice-hidden");
+    const index = predictionPendingIndex;
+    clearPrediction();
+    predictionAutoplay = false;
+    if (tracePlayer.getCursor() + 1 !== index) return;
+    const advanced = await tracePlayer.step();
+    if (advanced) traceWasNavigated = true;
     if (advanced && tracePlayer.isAtEnd()) lockStepUntilInput = true;
-    if (!answered && simStatus) simStatus.textContent = "Continuaste sin responder; revisa la explicación del frame.";
+    // Feedback is retrospective, never a future-tense question after its event.
+    if (advanced && simStatus) simStatus.textContent = answered
+      ? `${feedback} Paso ${index + 1} mostrado; revisa su efecto.`
+      : `Continuaste sin responder. Paso ${index + 1} mostrado; revisa su efecto.`;
     setSimulationButtonsEnabled();
   }
 
   function requestPrediction(step, index) {
     const prompt = predictionForStep(step);
-    if (!prompt || !predictionsEnabled?.checked) return false;
-    // Predecir acompaña la traza, pero no debe interrumpir su avance.
-    predictionPendingIndex = -1; predictionHintLevel = 0;
-    const predictionStage = predictionPanel?.closest(".seq-predict");
-    if (predictionStage?.classList.contains("seq-pilot-collapsed")) {
-      predictionStage.classList.remove("seq-pilot-collapsed");
-      const toggle = predictionStage.querySelector(".seq-pilot-toggle");
-      if (toggle) { toggle.setAttribute("aria-expanded", "true"); toggle.textContent = "Ocultar"; }
-      try {
-        const savedPanels = JSON.parse(window.sessionStorage.getItem("sequential-stack-pilot-panels-v2") || "{}");
-        savedPanels.seqPredict = true;
-        window.sessionStorage.setItem("sequential-stack-pilot-panels-v2", JSON.stringify(savedPanels));
-      } catch (_error) { /* optional storage */ }
-    }
-    predictionPanel.hidden = false; predictionQuestion.textContent = prompt.question; predictionFeedback.textContent = "Selecciona una respuesta o continúa sin responder.";
+    if (!prompt || !predictionsEnabled?.checked || !predictionPanel || predictionPendingIndex >= 0) return false;
+    tracePlayer.pause(true);
+    predictionPendingIndex = index;
+    predictionHintLevel = 0;
+    predictionPanel.hidden = false;
+    predictionQuestion.textContent = `Antes del paso ${index + 1}: ${prompt.question}`;
+    predictionFeedback.textContent = "El gráfico conserva el estado anterior. Responde o continúa sin responder para ver el efecto.";
     predictionChoices.innerHTML = '<button class="btn" type="button" data-answer="true">Sí</button><button class="btn secondary" type="button" data-answer="false">No</button>';
-    if (practiceMode?.checked) visualContainer.classList.add("seq-practice-hidden");
+    maskPredictionAnswers(Boolean(practiceMode?.checked));
     predictionChoices.querySelectorAll("[data-answer]").forEach((button) => button.addEventListener("click", () => {
-      const answer = button.dataset.answer === "true"; const correct = answer === prompt.expected;
-      learningProgress.attempts += 1; if (correct) learningProgress.correct += 1; learningProgress.concepts[step.pedagogy.concept] = (learningProgress.concepts[step.pedagogy.concept] || 0) + 1; saveLearningProgress();
-      predictionFeedback.textContent = correct ? "Correcto. Continúa la traza para observar el efecto real." : `No coincide. ${prompt.hint[2]}`;
-      predictionChoices.querySelectorAll("button").forEach((choice) => { choice.disabled = true; });
+      if (predictionPendingIndex !== index) return;
+      const correct = (button.dataset.answer === "true") === prompt.expected;
+      learningProgress.attempts += 1;
+      if (correct) learningProgress.correct += 1;
+      learningProgress.concepts[step.pedagogy.concept] = (learningProgress.concepts[step.pedagogy.concept] || 0) + 1;
+      saveLearningProgress();
+      advancePendingPrediction(true, correct ? "Correcto." : `No coincide. ${prompt.hint[2]}`);
     }));
-    predictionHint.onclick = () => { predictionFeedback.textContent = prompt.hint[Math.min(predictionHintLevel, prompt.hint.length - 1)]; predictionHintLevel += 1; };
-    return false;
+    predictionHint.onclick = () => {
+      // The final hint reveals the answer; reserve it for feedback after answering.
+      predictionFeedback.textContent = prompt.hint[Math.min(predictionHintLevel, prompt.hint.length - 2)];
+      predictionHintLevel += 1;
+    };
+    predictionQuestion.setAttribute("tabindex", "-1");
+    predictionQuestion.focus({ preventScroll: true });
+    if (simStatus) simStatus.textContent = `Predicción pendiente antes del paso ${index + 1}. Responde junto al gráfico o continúa sin responder.`;
+    setSimulationButtonsEnabled();
+    return true;
+  }
+
+  async function playWithPredictions() {
+    tracePlayer.reset();
+    predictionAutoplay = Boolean(predictionsEnabled?.checked);
+    if (requestPrediction(consoleState.trace?.steps?.[0], 0)) return;
+    await tracePlayer.play();
   }
 
   function collectPayload(current) {
@@ -3829,7 +3892,8 @@ function initStructurePage(model) {
     selected = operationCatalog.get(operationSelect.value) || null;
     renderOperationInputs(selected, inputsContainer);
     updateDidacticPanel(model, selected ? selected.name : "");
-    invalidateTrace("Operación cambiada. Ejecuta una nueva operación para crear su traza.");
+    invalidateTrace(`Operación preparada: ${selected?.label || "sin selección"}. Pulsa Ejecutar operación para aplicarla; elegirla no cambia el gráfico.`);
+    showMessage(`Operación preparada: ${selected?.label || "sin selección"}. El gráfico no cambia hasta ejecutar.`, true);
     writePresentation({ cursor: -1 });
   });
 
@@ -3882,11 +3946,20 @@ function initStructurePage(model) {
     if (!requirePreparedTrace()) return;
     tracePlayer.seek(tracePlayer.getTotalSteps() - 1); traceWasNavigated = true; lockStepUntilInput = true; setSimulationButtonsEnabled();
   });
-  simRepeatButton?.addEventListener("click", async () => { if (!requirePreparedTrace()) return; lockStepUntilInput = false; await tracePlayer.playFromStart(); setSimulationButtonsEnabled(); });
+  simRepeatButton?.addEventListener("click", async () => { if (!requirePreparedTrace()) return; lockStepUntilInput = false; await playWithPredictions(); setSimulationButtonsEnabled(); });
   progressSlider?.addEventListener("input", () => { if (tracePlayer?.hasTrace()) { tracePlayer.seek(Number(progressSlider.value) - 1); traceWasNavigated = true; lockStepUntilInput = tracePlayer.isAtEnd(); setSimulationButtonsEnabled(); } });
-  predictionSkip?.addEventListener("click", () => { if (predictionPanel) predictionPanel.hidden = true; visualContainer.classList.remove("seq-practice-hidden"); });
+  predictionSkip?.addEventListener("click", () => advancePendingPrediction(false));
+  predictionsEnabled?.addEventListener("change", () => {
+    if (!predictionsEnabled.checked) {
+      const wasPending = predictionPendingIndex >= 0;
+      clearPrediction();
+      predictionAutoplay = false;
+      if (wasPending && simStatus) simStatus.textContent = "Preguntas desactivadas. Pulsa Siguiente paso para continuar desde el estado visible.";
+    }
+    setSimulationButtonsEnabled();
+  });
   resetLearningButton?.addEventListener("click", () => { learningProgress = { attempts: 0, correct: 0, concepts: {} }; saveLearningProgress(); });
-  practiceMode?.addEventListener("change", () => { if (!practiceMode.checked) visualContainer.classList.remove("seq-practice-hidden"); });
+  practiceMode?.addEventListener("change", () => maskPredictionAnswers(practiceMode.checked && predictionPendingIndex >= 0));
   const refreshComparison = () => renderSequentialComparison(compareKind?.value, compareProgress?.value, compareGrid, compareConclusion);
   compareRun?.addEventListener("click", refreshComparison);
   compareProgress?.addEventListener("input", refreshComparison);
@@ -3923,14 +3996,14 @@ function initStructurePage(model) {
     else if (key === "home") { event.preventDefault(); tracePlayer?.seek(-1); }
     else if (key === "end") { event.preventDefault(); if (tracePlayer?.hasTrace()) tracePlayer.seek(tracePlayer.getTotalSteps() - 1); }
     else if (key === "p") { event.preventDefault(); tracePlayer?.pause(); }
-    else if (key === "r") { event.preventDefault(); if (tracePlayer?.hasTrace()) await tracePlayer.playFromStart(); }
+    else if (key === "r") { event.preventDefault(); if (tracePlayer?.hasTrace()) await playWithPredictions(); }
     setSimulationButtonsEnabled();
   });
 
   simPlayButton?.addEventListener("click", async () => {
     if (!requirePreparedTrace()) return;
     traceWasNavigated = true;
-    await tracePlayer.playFromStart();
+    await playWithPredictions();
   });
 
   simPrevButton?.addEventListener("click", () => {
@@ -4144,7 +4217,9 @@ function seqMountClassroomView() {
   const controls = document.querySelector(".sequential-learning-shell .seq-execute");
   if (controls) {
     controls.classList.add("classroom-execution-controls");
-    root.before(controls);
+    const prepare = document.querySelector(".sequential-learning-shell > .seq-prepare");
+    if (prepare) prepare.after(controls);
+    else root.before(controls);
     const explanation = controls.querySelector(".seq-control-explanation");
     if (explanation && explanation.parentElement?.tagName !== "DETAILS") {
       const detail = document.createElement("details"), summary = document.createElement("summary");
@@ -4153,7 +4228,7 @@ function seqMountClassroomView() {
     }
   }
   document.getElementById("seq-code-region")?.classList.add("classroom-code");
-  document.getElementById("seq-code-region")?.classList.remove("didactic-technical");
+
   const history = document.getElementById("action-history");
   const consoleNode = document.getElementById("seq-printf-console");
   const record = document.getElementById("tad-record");

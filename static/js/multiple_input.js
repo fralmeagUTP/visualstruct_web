@@ -92,18 +92,26 @@
     const operation = operations[adapter.model.id];
     if (!operation || !adapter.player) return null;
     const panel=document.createElement('details'); panel.id='multiple-input'; panel.className='multiple-input';
-    panel.innerHTML=`<summary>Agregar varios</summary><p id="multiple-rule"></p>
+    panel.innerHTML=`<summary>Agregar varios valores · lote independiente</summary><p id="multiple-rule"></p>
       <label for="multiple-values">Valores separados por comas (máximo 50)</label>
       <input id="multiple-values" type="text" placeholder="50,25,75,12,37" autocomplete="off" aria-describedby="multiple-preview multiple-rule">
       <p id="multiple-preview" role="status"></p>
-      <div class="actions"><button id="multiple-load" class="btn" type="button">Cargar valores</button><button id="multiple-step" class="btn secondary" type="button">Agregar paso a paso</button></div>
+      <div class="actions"><button id="multiple-load" class="btn" type="button">Cargar valores</button><button id="multiple-step" class="btn secondary" type="button">Agregar lote paso a paso</button></div>
       <div id="multiple-controls" hidden class="actions"><button id="multiple-prev" class="btn secondary" type="button">Paso anterior</button><button id="multiple-next" class="btn" type="button">Siguiente paso</button><button id="multiple-play" class="btn" type="button">Reproducir traza</button><button id="multiple-pause" class="btn secondary" type="button">Pausar</button><button id="multiple-stop" class="btn secondary" type="button">Detener lote</button></div>
       <p id="multiple-status" role="status" aria-live="polite"></p><button id="multiple-reconcile" type="button" class="btn secondary" hidden>Recargar estado e historial (sin reintentar)</button>
       <small>Una llamada al TAD por valor. Detener conserva la operación ya aceptada y descarta pendientes; no deshace el lote. No uses otra pestaña de esta sesión para modificar el mismo TAD durante la carga.</small>`;
     adapter.form.insertAdjacentElement('afterend', panel);
     const el=id=>panel.querySelector('#multiple-'+id), input=el('values');
     el('rule').textContent = (operation==='insertar_final' ? 'Se agrega al final, en el orden escrito. ' : operation==='apilar' ? 'Se apila en el orden escrito; el último queda en el tope. ' : operation==='encolar' ? 'Se encola en el orden escrito. ' : 'Se inserta en el orden escrito. ') + (unique.has(adapter.model.id) ? 'Este árbol no admite duplicados.' : 'Este TAD permite valores repetidos.');
-    let locked=false, submittedInput=false;
+    let locked=false, submittedInput=false, priorSelection=null;
+    function restoreIndividualForm() {
+      if (!priorSelection) return;
+      const saved=priorSelection; priorSelection=null;
+      if (saved.operation && saved.operation!==operation) adapter.select(saved.operation);
+      const field=adapter.form.querySelector?.('input[name="value"]');
+      if (field) { field.value=''; field.dispatchEvent(new Event('input',{bubbles:true})); }
+      adapter.sync?.();
+    }
     const disabledBefore=new Map();
     function lock(value) {
       if (value===locked) return; locked=value;
@@ -123,7 +131,7 @@
     };
     function preview() {
       const parsed=parse(input.value,adapter.model.id,adapter.model.visual_state?.traversals?.inorden||[]);
-      el('preview').textContent=parsed.valid ? `${parsed.values.length} valores · Orden: ${parsed.values.join(' → ')}` : parsed.errors.join(' ');
+      el('preview').textContent=parsed.valid ? `${parsed.values.length} valores · ${operation==='apilar' ? 'Se apilarán' : operation==='encolar' ? 'Se encolarán' : 'Se insertarán'} en este orden: ${parsed.values.join(' → ')}. No ejecuta la operación individual seleccionada.` : parsed.errors.join(' ');
       el('load').disabled=locked || submittedInput || !parsed.valid || adapter.isBusy(); el('step').disabled=el('load').disabled;
       input.setAttribute('aria-invalid',String(!parsed.valid)); return parsed;
     }
@@ -133,7 +141,8 @@
       submittedInput=false; el('status').textContent='La estructura cambió después del lote; revisa el estado y el historial actuales.'; preview();
     };
     const queue=createQueue(adapter,s=>{
-      lock(s.active); input.disabled=s.active; el('load').disabled=s.active; el('step').disabled=s.active;
+      lock(s.active);
+      if (['done','stopped','failed'].includes(s.phase)) restoreIndividualForm(); input.disabled=s.active; el('load').disabled=s.active; el('step').disabled=s.active;
       el('controls').hidden=!s.active || s.phase==='uncertain';
       const trace=s.phase==='trace' && s.mode==='step';
       ['prev','next','play'].forEach(id=>{el(id).disabled=!trace||s.busy||s.playing;});
@@ -148,7 +157,7 @@
           el('preview').textContent=`${s.values.length} valores · Orden solicitado: ${s.values.join(' → ')}`;
           el('load').disabled=true; el('step').disabled=true; input.setAttribute('aria-invalid','false');
         } else preview();
-        el('status').textContent += ' Edita la lista para preparar otro lote.';
+        el('status').textContent += ' Tu selección individual se conserva; introduce un valor nuevo para otra operación. Edita la lista para preparar otro lote.';
       }
     });
     function guard(event) {
@@ -172,6 +181,8 @@
       if (queue.state().active || submittedInput || adapter.isBusy()) return;
       const parsed=preview(); if(!parsed.valid) return;
       // Select the actual operation before the lock, so existing C/source UI stays honest.
+      const select=adapter.form.querySelector?.('select[name="operation"]');
+      priorSelection={operation:select?.value || operation};
       adapter.select(operation); submittedInput=true;
       await queue.start(parsed.values,mode);
     }

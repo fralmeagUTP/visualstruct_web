@@ -74,7 +74,7 @@ def test_trace_boundaries_are_exactly_reversible(client) -> None:
 
 def test_sequential_page_exposes_learning_regions_and_mobile_workspace(client) -> None:
     html = client.get("/sequential/stack").get_data(as_text=True)
-    for label in ("Preparar y controlar ejecución", "Predecir", "Controles de ejecución", "Comprender", "Relacionar con código", "Resultados de ejecución"):
+    for label in ("Preparar", "Predecir", "Controles de ejecución", "Comprender", "Relacionar con código", "Resultados de ejecución"):
         assert label in html
     assert 'id="seq-visual-region"' in html
     assert 'id="seq-code-region"' in html

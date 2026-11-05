@@ -25,7 +25,7 @@ def test_global_didactic_switch_is_rendered_in_layout(client) -> None:
     response = client.get("/sequential/stack")
     assert response.status_code == 200
     assert b"didactic-mode-switch" in response.data
-    assert "Mostrar codigo y detalles tecnicos".encode("utf-8") in response.data
+    assert "Mostrar código y detalles técnicos".encode("utf-8") in response.data
     assert "/help/manual".encode("utf-8") in response.data
 
 

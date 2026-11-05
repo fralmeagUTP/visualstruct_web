@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "description": "DOM-emulated UX regression, without browser or network calls",
+  "devDependencies": { "jsdom": "26.1.0" }
+}

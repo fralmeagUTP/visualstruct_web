@@ -17,6 +17,74 @@ function sNormalizeDidacticText(text) {
   return String(text || "").replace(/\s+/g, " ").trim();
 }
 
+// Translate presentation only: source tokens and the C execution contract stay intact.
+function sConceptLabel(concept) {
+  return ({call: "Entrar en una función", return: "Volver de una función", condition: "Comprobar una condición", comparison: "Comparar valores", assignment: "Actualizar un valor", branch: "Elegir un camino", phase: "Paso del recorrido"})[concept] || "Paso del recorrido";
+}
+
+function sStudentNarration(frame) {
+  if (!frame) return "Aún no has recorrido instrucciones. Pulsa Siguiente paso.";
+  const token = frame.source?.line_token || frame.phase?.id || "";
+  const goal = String(frame.phase?.goal || "");
+  const rawLabel = token.replaceAll("_", " ");
+  let text = String(frame.narration?.intermediate || goal);
+  if (goal.toLowerCase() === rawLabel.toLowerCase() || text === rawLabel || text.startsWith(rawLabel + " ") || text.startsWith(rawLabel + ":")) {
+    const explanations = {
+      initial: "Este es el estado anterior a la llamada. El arreglo todavía no cambia.",
+      valid_ptr: "Comprueba que el arreglo exista.", valid_n: "Comprueba que el arreglo tenga elementos.",
+      swap_a_null: "Comprueba si falta la primera posición del intercambio.",
+      swap_b_null: "Comprueba si falta la segunda posición del intercambio.",
+      swap_guard: "Comprueba que existan las dos posiciones antes de intercambiar.",
+      swap_temp: "Guarda el primer valor en una variable temporal para no perderlo.",
+      swap_assign_a: "Copia el segundo valor en la primera posición.",
+      swap_assign_b: "Copia el valor temporal en la segunda posición y completa el intercambio.",
+      valid_call: "Llama a la función que valida la entrada antes de ordenar.",
+      build_call: "Prepara el montículo: cada padre debe ser mayor o igual que sus hijos.",
+      extract_swap_call: "Intercambia el máximo de la raíz con el extremo de la zona pendiente.",
+      extract_heap_call: "Reorganiza la zona pendiente para recuperar la propiedad del montículo.",
+      minmax_call: "Busca los valores mínimo y máximo para conocer el rango que debe contar.",
+      min_assign: "Actualiza el menor valor encontrado.",
+      range_compute: "Calcula cuántos valores distintos caben entre el mínimo y el máximo, incluidos ambos.",
+      count_fill: "Suma una aparición del valor actual en la tabla de frecuencias.",
+      valid_return: "Devuelve el resultado de validar el arreglo a la función que lo llamó.",
+      positive_null: "Comprueba si falló la reserva de memoria para los valores no negativos.",
+      negative_null: "Comprueba si falló la reserva de memoria para las magnitudes negativas.",
+      sort_guard: "Comprueba si se cumplen las condiciones para ordenar.",
+      radix_invalid_guard: "Comprueba si la entrada debe rechazarse.",
+      split_reserve_guard: "Comprueba si falta alguna reserva necesaria para separar los signos.",
+      sign_test: "Comprueba si el valor actual es negativo para elegir su grupo.",
+      split_init: "Sitúa el índice al comienzo para separar los valores por signo.",
+      negative_write: "Guarda la magnitud del valor negativo en su grupo auxiliar.",
+      positive_write: "Guarda el valor no negativo en su grupo auxiliar.",
+      digit_frequency_write: "Incrementa la frecuencia del dígito actual.",
+      digit_prefix_write: "Acumula frecuencias para calcular las posiciones de salida.",
+      digit_value_read: "Copia el valor que se colocará según su dígito.",
+      digit_select: "Calcula el dígito que se está ordenando.",
+      digit_work_copy: "Copia el valor ordenado por este dígito al grupo de trabajo.",
+      caller_index_init: "Sitúa el índice de escritura al comienzo del arreglo original.",
+      negative_magnitude_read: "Lee una magnitud negativa desde el final del grupo para recomponer el orden."
+    };
+    text = explanations[token];
+    if (!text && token.endsWith("_declare")) text = "Declara una variable de trabajo; todavía no le asigna un valor.";
+    if (!text && token.endsWith("_resume")) text = "Continúa la función después de completar la llamada auxiliar.";
+    if (!text && token.endsWith("_entry")) text = "Entra en una función. Sus parámetros estarán disponibles en el detalle C.";
+    if (!text && token.endsWith("_return")) text = "La función devuelve el control a quien la llamó.";
+    if (!text && frame.condition) text = "Evalúa la condición para decidir cómo continúa el recorrido. Evaluar no intercambia valores.";
+    if (!text && token.endsWith("_init")) text = "Inicializa los valores de trabajo para comenzar esta parte del recorrido.";
+    if (!text && /_(increment|decrement)$/.test(token)) text = "Avanza el índice del recorrido; este cambio no ordena por sí solo el arreglo.";
+    if (!text && token.endsWith("_max_assign")) text = "Actualiza el máximo encontrado en el grupo.";
+    if (!text && token.endsWith("_digit_call")) text = "Llama a la función auxiliar que ordena el grupo por el dígito actual.";
+    if (!text && token.endsWith("_exp_multiply")) text = "Pasa al siguiente dígito multiplicando por diez su posición.";
+    if (!text && /_(break|block_exit)$/.test(token)) text = "Termina esta parte del recorrido y continúa con la siguiente.";
+    if (!text) text = "Actualiza el estado de trabajo de esta instrucción. Consulta sus valores en el detalle C.";
+  }
+  return text.replace(/Valores del modelo tras esta transición\./g, "")
+    .replace(/Los valores corresponden a esta transición, sin anticipar la siguiente\./g, "")
+    .replace(/\bframes?\b/gi, "paso").replace(/\bcaller\b/gi, "función que llamó")
+    .replace(/\bwrapper\b/gi, "función principal").replace(/\bhelper\b/gi, "función auxiliar")
+    .replace(/\bscope\b/gi, "ámbito de la variable").trim();
+}
+
 function sPushUniqueConsoleLine(lines, line) {
   const normalized = sNormalizeDidacticText(line);
   if (!normalized) {
@@ -100,7 +168,7 @@ function renderSortingVisualState(state, container) {
     ? Object.entries(state.temporaries)
     : [];
   const temporariesHtml = temporaries.length
-    ? `<div class="sorting-aux"><h5>Variables temporales</h5><div class="sorting-aux-items">${temporaries.map(([name, value]) => `<span>${sEscape(name)} = ${sEscape(value)}</span>`).join("")}</div></div>`
+    ? `<div class="sorting-aux didactic-technical"><h5>Variables temporales</h5><div class="sorting-aux-items">${temporaries.map(([name, value]) => `<span>${sEscape(name)} = ${sEscape(value)}</span>`).join("")}</div></div>`
     : "";
 
   const metrics = state.metrics || {};
@@ -125,13 +193,12 @@ function renderSortingStrategy(state, container) {
   const comparing = Array.isArray(state.comparing_indices) ? state.comparing_indices.map(Number) : [];
   const range = Array.isArray(state.active_range) ? state.active_range.map(Number) : null;
   const auxiliary = Array.isArray(state.auxiliary_array) ? (algorithm === "mergesort" ? state.auxiliary_array : state.auxiliary_array.map(Number)) : [];
-  const action = sEscape(state.trace_action || state.last_operation?.message || "Prepara la ejecución.");
   const cells = (values, className = "") => `<div class="sorting-strategy-cells ${className}">${values.map((value, index) => `<span><small>${index}</small>${sEscape(value)}</span>`).join("")}</div>`;
-  let html = `<p>${action}</p>`;
+  let html = "";
 
   if (algorithm === "seleccion") {
     const candidate = state.selection_context ? state.selection_context.indice_menor : (comparing.length ? comparing[comparing.length - 1] : null);
-    html += `<div class="sorting-cue-row"><strong>Prefijo confirmado:</strong> ${state.sorted_indices?.length ? `[0..${state.sorted_indices[state.sorted_indices.length - 1]}]` : "—"}<strong>Mínimo provisional:</strong> ${candidate === null ? "—" : `[${candidate}] = ${sEscape(items[candidate])}`}</div>`;
+    html += `<div class="sorting-cue-row"><strong>Inicio ya ordenado:</strong> ${state.sorted_indices?.length ? `[0..${state.sorted_indices[state.sorted_indices.length - 1]}]` : "—"}<strong>Mínimo provisional:</strong> ${candidate === null ? "—" : `[${candidate}] = ${sEscape(items[candidate])}`}</div>`;
   } else if (algorithm === "insercion") {
     const insertion = state.insertion_context || {};
     const key = insertion.clave;
@@ -140,7 +207,7 @@ function renderSortingStrategy(state, container) {
   } else if (algorithm === "burbuja") {
     const bubble = state.bubble_context || {};
     const neighbors = Array.isArray(bubble.neighbors) ? bubble.neighbors : [];
-    html += `<div class="sorting-cue-row"><strong>Pasada:</strong> ${Number.isInteger(bubble.pasada) ? bubble.pasada : "—"}<strong>j:</strong> ${Number.isInteger(bubble.j) ? bubble.j : "—"}<strong>hubo_intercambio:</strong> ${Number.isInteger(bubble.hubo_intercambio) ? bubble.hubo_intercambio : bubble.flag_declared ? "sin inicializar" : "—"}<strong>Vecinos:</strong> ${neighbors.length ? neighbors.map((index) => `[${index}]`).join(" / ") : "—"}</div>`;
+    html += `<div class="sorting-cue-row"><strong>Pasada:</strong> ${Number.isInteger(bubble.pasada) ? bubble.pasada : "—"}<strong>j:</strong> ${Number.isInteger(bubble.j) ? bubble.j : "—"}<strong>¿Hubo intercambio? (hubo_intercambio):</strong> ${Number.isInteger(bubble.hubo_intercambio) ? bubble.hubo_intercambio : bubble.flag_declared ? "sin inicializar" : "—"}<strong>Vecinos:</strong> ${neighbors.length ? neighbors.map((index) => `[${index}]`).join(" / ") : "—"}</div>`;
   } else if (algorithm === "intercambio") {
     html += `<div class="sorting-cue-row"><strong>Pareja:</strong> ${comparing.length ? comparing.map((index) => `[${index}]`).join(" ↔ ") : "—"}<strong>Frontera:</strong> ${range ? `activo ${range[0]}..${range[1]}` : "—"}</div>`;
   } else if (algorithm === "shell") {
@@ -162,9 +229,9 @@ function renderSortingStrategy(state, container) {
   } else if (algorithm === "heapsort") {
     const heap = state.heap_context || { heap_n: items.length, nodes: [], suffix: [] };
     const hv = (key) => heap[key] === null || heap[key] === undefined ? "-" : sEscape(heap[key]);
-    html += `<div class="sorting-cue-row"><strong>n activo:</strong> ${hv("heap_n")}<strong>i:</strong> ${hv("i")}<strong>raiz:</strong> ${hv("raiz")}<strong>mayor:</strong> ${hv("mayor")}<strong>izquierdo:</strong> ${hv("izquierdo")}<strong>derecho:</strong> ${hv("derecho")}<strong>Profundidad:</strong> ${hv("depth")}<strong>Fase:</strong> ${hv("phase")}</div>`;
+    html += `<div class="sorting-cue-row"><strong>Tamaño del montículo:</strong> ${hv("heap_n")}<strong>i:</strong> ${hv("i")}<strong>raiz:</strong> ${hv("raiz")}<strong>mayor:</strong> ${hv("mayor")}<strong>izquierdo:</strong> ${hv("izquierdo")}<strong>derecho:</strong> ${hv("derecho")}<strong>Profundidad:</strong> ${hv("depth")}<strong>Fase:</strong> ${sEscape(({build: "Construir montículo", extract: "Extraer máximo"})[heap.phase] || "Sin fase activa")}</div>`;
     html += `<div class="sorting-heap-view" data-heap-n="${heap.heap_n}">${heap.nodes.map((node) => `<div data-heap-index="${node.index}" data-children="${node.children.join(",")}"><strong>${sEscape(node.value)}</strong><small>[${node.index}] hijos: ${node.children.join(", ") || "-"}</small></div>`).join("")}</div>`;
-    html += `<div class="sorting-sorted-suffix"><strong>Sufijo confirmado:</strong> ${heap.suffix.map((node) => `<span data-suffix-index="${node.index}">[${node.index}] ${sEscape(node.value)}</span>`).join(" ") || "-"}</div>`;
+    html += `<div class="sorting-sorted-suffix"><strong>Final ya ordenado:</strong> ${heap.suffix.map((node) => `<span data-suffix-index="${node.index}">[${node.index}] ${sEscape(node.value)}</span>`).join(" ") || "-"}</div>`;
   } else if (["counting_sort", "binsort"].includes(algorithm) && state.counting_context) {
     const count = state.counting_context;
     const cv = (key) => {
@@ -174,7 +241,7 @@ function renderSortingStrategy(state, container) {
       if (!declared) return "sin declarar";
       return count[key] === null || count[key] === undefined ? "sin inicializar" : sEscape(count[key]);
     };
-    html += `<div class="sorting-cue-row"><strong>Minimo:</strong> ${cv("minimo")}<strong>Maximo:</strong> ${cv("maximo")}<strong>Rango:</strong> ${cv("rango")}<strong>i:</strong> ${cv("i")}<strong>helper i:</strong> ${cv("helper_i")}<strong>indice:</strong> ${cv("indice")}</div>`;
+    html += `<div class="sorting-cue-row"><strong>Minimo:</strong> ${cv("minimo")}<strong>Maximo:</strong> ${cv("maximo")}<strong>Rango:</strong> ${cv("rango")}<strong>i:</strong> ${cv("i")}<strong>Índice de función auxiliar (i):</strong> ${cv("helper_i")}<strong>indice:</strong> ${cv("indice")}</div>`;
     html += `<p data-count-live="${count.live}">${count.live ? "Conteo vivo: calloc inicializo todas las celdas en cero." : count.released ? "Conteo liberado; sin lectura de memoria." : "Sin reserva conteo activa."} Frecuencias escritas: ${count.filled}; consumidas: ${count.consumed}; escrituras: ${count.written}; decremento pendiente: ${count.pending_decrement}.</p>`;
     let buckets = count.buckets || [];
     if (count.count_state && !Array.isArray(state.auxiliary_array)) {
@@ -495,7 +562,7 @@ function initSortingPage(model) {
   function renderLiveMemory(frame) {
     const phase = sById("sorting-live-phase"), action = sById("sorting-live-action"), values = sById("sorting-live-values");
     if (!phase || !action || !values) return;
-    phase.textContent = frame ? (window.ContextualHelp?.phaseLabel(frame) || "Paso actual") : "Antes de comenzar";
+    phase.textContent = "Variables y memoria de este paso";
     action.textContent = frame ? (frame.source?.function ? `Función: ${frame.source.function}` : "Observa la instrucción resaltada.") : "Prepara la operación y avanza paso a paso.";
     const rows = sCompactMemoryRows(frame);
     values.innerHTML = rows.length ? rows.map(text => `<li>${sEscape(text)}</li>`).join("") : `<li>${frame ? "Sin variables ni punteros activos en este paso." : "Aún no hay instrucciones ejecutadas."}</li>`;
@@ -506,54 +573,51 @@ function initSortingPage(model) {
     renderLiveMemory(currentPedagogy);
     if (!currentPedagogy) {
       if (pedagogyPhase) pedagogyPhase.textContent = "Preparación";
-      if (pedagogyObjective) pedagogyObjective.textContent = "Selecciona datos y un algoritmo para comenzar.";
-      if (pedagogyNarration) pedagogyNarration.textContent = "La explicación de cada paso aparecerá aquí.";
+      if (pedagogyObjective) pedagogyObjective.textContent = "Qué cambia y por qué";
+      if (pedagogyNarration) pedagogyNarration.textContent = trace ? "Recorrido preparado. El gráfico conserva la entrada; aún no has recorrido instrucciones. Pulsa Siguiente paso." : "Crea un arreglo y activa Paso a paso. Después pulsa Preparar recorrido.";
       if (conditionView) { conditionView.textContent = "Sin condición evaluada."; conditionView.className = "sorting-condition-view"; }
-      if (variableTable) variableTable.innerHTML = '<tr><td colspan="4">Sin frame activo.</td></tr>';
-      if (callStack) callStack.innerHTML = "<li>Sin llamadas activas.</li>";
+      if (variableTable) variableTable.innerHTML = `<tr><td colspan="4">${trace ? "Aún no has recorrido instrucciones. Pulsa Siguiente paso para ver las variables." : "Primero crea un arreglo, activa Paso a paso y pulsa Preparar recorrido."}</td></tr>`;
+      if (callStack) callStack.innerHTML = "<li>No hay una función en ejecución en este punto. Las llamadas aparecen al entrar en una función.</li>";
       if (loopView) loopView.textContent = "Sin ciclo activo.";
       if (pointerView) pointerView.textContent = "Sin punteros activos.";
-      window.ContextualHelp?.frame("sorting", null);
+
       if (invariantText) invariantText.textContent = "Se mostrará al preparar la ejecución.";
       return;
     }
-    const level = currentLearningLevel();
-    const phase = currentPedagogy.phase || {};
-    const narration = currentPedagogy.narration || {};
-    if (pedagogyPhase) pedagogyPhase.textContent = (window.ContextualHelp?.phaseLabel(currentPedagogy) || phase.label || "Ejecución");
-    if (pedagogyObjective) pedagogyObjective.textContent = currentPedagogy.source?.function ? `Función: ${currentPedagogy.source.function}` : "Observa la instrucción resaltada y su efecto.";
-    if (pedagogyNarration) pedagogyNarration.textContent = narration[level] || narration.intermediate || "";
-    window.ContextualHelp?.frame("sorting", currentPedagogy, level);
+    if (pedagogyPhase) pedagogyPhase.textContent = sConceptLabel(currentPedagogy.concept);
+    if (pedagogyObjective) pedagogyObjective.textContent = "Qué cambia y por qué";
+    if (pedagogyNarration) pedagogyNarration.textContent = sStudentNarration(currentPedagogy);
+    // This card is the single sorting narrative; do not overwrite it with raw trace labels.
     const condition = currentPedagogy.condition;
     if (conditionView) {
       conditionView.className = `sorting-condition-view${condition && condition.result === true ? " is-true" : condition && condition.result === false ? " is-false" : ""}`;
       conditionView.innerHTML = condition
         ? `<strong>${sEscape(condition.expression)}</strong> → ${condition.result === true ? "VERDADERO" : condition.result === false ? "FALSO" : "resultado pendiente"}<br><span>${sEscape(condition.consequence || "")}</span>`
-        : "Sin condición evaluada en este frame.";
+        : "Sin condición evaluada en este paso.";
     }
     const variables = Array.isArray(currentPedagogy.variables) ? currentPedagogy.variables : [];
     if (variableTable) {
       variableTable.innerHTML = variables.length
         ? variables.map((variable) => `<tr class="${variable.changed ? "is-changed" : ""}"><td>${sEscape(variable.name)}</td><td>${sEscape(variable.type)}</td><td>${sEscape(sMemoryValue(variable.value, variable))}</td><td>${sEscape(variable.meaning)}</td></tr>`).join("")
-        : '<tr><td colspan="4">Este frame no modifica variables escalares.</td></tr>';
+        : '<tr><td colspan="4">No hay variables escalares activas en este paso. Aparecen cuando la ejecución entra en su función y las declara.</td></tr>';
     }
     const stack = Array.isArray(currentPedagogy.call_stack) ? currentPedagogy.call_stack : [];
     if (callStack) {
       callStack.innerHTML = stack.length
         ? stack.map((call) => `<li><strong>${sEscape(call.function)}</strong>(${sEscape(JSON.stringify(call.parameters || {}))})<br><small>${sEscape(call.continuation || "")}</small></li>`).join("")
-        : "<li>Sin llamadas activas.</li>";
+        : "<li>No hay una función en ejecución en este punto. Las llamadas aparecen al entrar en una función.</li>";
     }
     const loop = currentPedagogy.loop;
     if (loopView) {
       loopView.innerHTML = loop
         ? `<strong>${sEscape(loop.kind)}</strong> · iteración ${sEscape(currentPedagogy.source?.function === "mezclar" && loop.iteration === null ? "sin contador ordinal" : loop.iteration)} · límites ${sEscape(JSON.stringify(loop.bounds))}${loop.exit ? " · salida del ciclo" : ""}`
-        : "Sin ciclo activo en este frame.";
+        : "Sin ciclo activo en este paso.";
     }
     const pointers = Array.isArray(currentPedagogy.pointers) ? currentPedagogy.pointers : [];
     if (pointerView) {
       pointerView.innerHTML = pointers.length
         ? pointers.map((pointer) => `<div><strong>${sEscape(pointer.name)}</strong> → ${sEscape(sMemoryValue(pointer.target, {...variables.find(variable => variable.name === pointer.name && variable.scope === pointer.scope), ...pointer}))}${Object.prototype.hasOwnProperty.call(pointer, "value") ? ` = ${sEscape(sMemoryValue(pointer.value))}` : ""}</div>`).join("")
-        : "Sin punteros activos en este frame.";
+        : "Sin punteros activos en este paso.";
     }
     if (invariantText) invariantText.textContent = currentPedagogy.invariant?.text || "Invariante no disponible.";
   }
@@ -574,7 +638,7 @@ function initSortingPage(model) {
     const metrics = state && state.metrics ? state.metrics : {};
     if (observedMetrics) observedMetrics.innerHTML = `<div class="sorting-theory-grid"><span>Comparaciones<br><strong>${sEscape(metrics.comparisons || 0)}</strong></span><span>Intercambios<br><strong>${sEscape(metrics.swaps || 0)}</strong></span><span>Movimientos<br><strong>${sEscape(metrics.moves || 0)}</strong></span></div>`;
     const theory = trace && trace.theory_profile ? trace.theory_profile : null;
-    if (theoryProfile && theory) theoryProfile.innerHTML = `<div class="sorting-theory-grid"><span>Mejor<br><strong>${sEscape(theory.best)}</strong></span><span>Promedio<br><strong>${sEscape(theory.average)}</strong></span><span>Peor<br><strong>${sEscape(theory.worst)}</strong></span><span>Memoria<br><strong>${sEscape(theory.memory)}</strong></span><span>Estable<br><strong>${theory.stable ? "Sí" : "No"}</strong></span><span>In-place<br><strong>${theory.in_place ? "Sí" : "No"}</strong></span></div>`;
+    if (theoryProfile && theory) theoryProfile.innerHTML = `<div class="sorting-theory-grid"><span>Mejor<br><strong>${sEscape(theory.best)}</strong></span><span>Promedio<br><strong>${sEscape(theory.average)}</strong></span><span>Peor<br><strong>${sEscape(theory.worst)}</strong></span><span>Memoria<br><strong>${sEscape(theory.memory)}</strong></span><span>Estable<br><strong>${theory.stable ? "Sí" : "No"}</strong></span><span>Sin arreglo auxiliar proporcional<br><strong>${theory.in_place ? "Sí" : "No"}</strong></span></div>`;
   }
 
   function applyLearningLevel() {
@@ -627,7 +691,7 @@ function initSortingPage(model) {
     const concept = frame?.concept || "otro";
     practiceProgress.concepts[concept] = (practiceProgress.concepts[concept] || 0) + (correct ? 1 : 0);
     savePracticeProgress();
-    predictionFeedback.textContent = correct ? "Correcto. Ahora observa cómo el frame confirma tu predicción." : `No coincide. ${frame?.condition?.consequence || frame?.narration?.intermediate || "Revisa el cambio mostrado."}`;
+    predictionFeedback.textContent = correct ? "Correcto. Ahora observa cómo este paso confirma tu predicción." : `No coincide. ${frame?.condition?.consequence || frame?.narration?.intermediate || "Revisa el cambio mostrado."}`;
     pendingPredictionIndex = null;
     await tracePlayer.step();
     predictionCard.hidden = true;
@@ -643,7 +707,7 @@ function initSortingPage(model) {
   }
 
   function updateCodeByAlgorithm() {
-    window.ContextualHelp?.operation("sorting", model, algorithmSelect?.value || "");
+    renderPedagogy(null);
     const algorithmId = algorithmSelect ? algorithmSelect.value : "";
     const current = (model.algorithms || []).find((item) => item.id === algorithmId);
     const label = current ? current.label : algorithmId;
@@ -700,8 +764,9 @@ function initSortingPage(model) {
         renderCountingOutcome();
         if (trace?.trace_id) { try { window.sessionStorage.setItem("counting-cursor-"+trace.trace_id, String(cursor)); } catch (_error) { /* optional */ } }
         sEnhanceCodeNavigation(codePanel, functionList, hideComments, currentStep ? currentStep.line_index : null);
-        renderPedagogy(currentStep ? currentStep.pedagogy : null);
-        if (cursor < 0) { window.ContextualHelp?.frame("sorting", null); renderLiveMemory(null); }
+        renderPedagogy(cursor >= 0 && currentStep ? currentStep.pedagogy : null);
+        if (status && trace) status.textContent = cursor < 0 ? "Recorrido preparado; aún sin avanzar." : cursor + 1 >= window.CountingRuntime.total(trace) ? "Recorrido finalizado." : "Recorrido en curso.";
+        if (cursor < 0) { renderLiveMemory(null); }
         renderAnalysis(currentStep ? currentStep.state_after : model.visual_state);
         if (progress) {
           progress.max = String(window.CountingRuntime.total(trace));
@@ -724,6 +789,7 @@ function initSortingPage(model) {
     const stepMode = isStepByStepEnabled();
     const hasTrace = Boolean(tracePlayer && tracePlayer.hasTrace());
     const atEnd = Boolean(tracePlayer && tracePlayer.isAtEnd());
+    if (playButton) playButton.textContent = stepMode ? "Preparar recorrido" : "Ejecutar operación";
     if (stepNavigation) stepNavigation.hidden = !stepMode;
     if (countingNavigation) countingNavigation.hidden = !stepMode || !hasTrace || !["counting_sort", "binsort", "radixsort"].includes(trace?.operation_name);
     if (countingJump) countingJump.max = String(tracePlayer?.getTotalSteps() || 0);
@@ -860,7 +926,7 @@ function initSortingPage(model) {
       const algorithmId = algorithmSelect ? algorithmSelect.value : "";
       const mode = finalOnly ? "fast" : "step_by_step";
       const data = await postJson(runUrl, { mode, algorithm_id: algorithmId });
-      setMessage(data.message, Boolean(data.success));
+      setMessage(data.success && !finalOnly ? "Recorrido preparado. El cálculo está listo; el gráfico avanzará cuando pulses Siguiente paso." : data.message, Boolean(data.success));
       if (!data.success) {
         if (["counting_sort", "binsort", "radixsort"].includes(data.execution_trace?.operation_name) && tracePlayer) {
           model.visual_state = data.visual_state;
@@ -1173,7 +1239,7 @@ function sortingMountClassroomView() {
     });
   }
   document.getElementById("sorting-code-region")?.classList.add("classroom-code");
-  document.getElementById("sorting-code-region")?.classList.remove("didactic-technical");
+  // Preserve the technical panel marker for the shared visibility control.
   const history = document.getElementById("sorting-action-history");
   const consoleNode = document.getElementById("sorting-printf-console");
   const record = document.getElementById("sorting-tad-record");
@@ -1183,9 +1249,9 @@ function sortingMountClassroomView() {
     {label:"Estructura del TAD",panel:record?.parentElement,code:record,getText:()=>record?.dataset.rawCode ?? record?.textContent ?? ""}
   ];
   results.forEach(entry=>{
-    entry.panel?.classList.remove("didactic-technical");
+    // Result panels remain technical; shared presentation owns visibility.
     for(let node=entry.panel?.parentElement;node && node.tagName!=="ARTICLE";node=node.parentElement) {
-      node.classList.remove("didactic-technical", "seq-pilot-collapsed");
+      node.classList.remove("seq-pilot-collapsed");
       node.hidden = false;
       if(node.tagName==="DETAILS") node.open=true;
     }

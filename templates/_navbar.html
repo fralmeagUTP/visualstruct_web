@@ -11,26 +11,28 @@
     </div>
     <div class="nav-tools">
       <label class="didactic-mode-switch nav-didactic-switch" for="didactic-mode-switch">
-        <input id="didactic-mode-switch" type="checkbox" aria-label="Mostrar codigo y detalles tecnicos">
-        <span>Mostrar codigo y detalles tecnicos</span>
+        <input id="didactic-mode-switch" type="checkbox" aria-describedby="didactic-mode-help" aria-label="Mostrar código y detalles técnicos">
+        <span>Mostrar código y detalles técnicos</span>
       </label>
-      <div id="export-jpg-controls" class="nav-export-controls">
+      <small id="didactic-mode-help">Oculta o muestra C y memoria dentro de los módulos.</small>
+      <div id="export-jpg-controls" class="nav-export-controls" role="group" aria-label="Exportar imagen JPG" aria-describedby="export-jpg-help">
         <label class="nav-export-option" for="export-jpg-quality">
-          Calidad
+          Calidad JPG
           <select id="export-jpg-quality" aria-label="Calidad de exportacion JPG">
             <option value="0.80">Media</option>
             <option value="0.92" selected>Alta</option>
-            <option value="1.00">Maxima</option>
+            <option value="1.00">Máxima</option>
           </select>
         </label>
         <label class="nav-export-option" for="export-jpg-scale">
-          Escala
+          Resolución
           <select id="export-jpg-scale" aria-label="Escala de exportacion JPG">
             <option value="1">1x</option>
             <option value="2" selected>2x</option>
             <option value="3">3x</option>
           </select>
         </label>
+        <small id="export-jpg-help">Solo cambia el archivo descargado: mayor calidad reduce compresión; 3x tiene más píxeles y pesa más. No cambia el zoom en pantalla.</small>
         <button id="export-visual-jpg-btn" class="nav-export-btn" type="button">Exportar JPG</button>
       </div>
     </div>
