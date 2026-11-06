@@ -28,10 +28,14 @@ _TARGETS = {
 def _constructor_calls(code: Any, name: str) -> frozenset[int]:
  """Identify actual constructor CALLs; do not relabel later metadata/replay errors."""
  pending=False;offsets=set()
- for instruction in dis.get_instructions(code):
+ instructions=list(dis.get_instructions(code))
+ for index,instruction in enumerate(instructions):
   if instruction.opname in {'LOAD_GLOBAL','LOAD_NAME'} and instruction.argval==name:pending=True
   elif pending and instruction.opname.startswith('CALL'):
-   offsets.add(instruction.offset);pending=False
+   # CPython may report the CALL's inline CACHE offset in tb_lasti.
+   # dis hides those caches by default; stop before the next real opcode.
+   end=instructions[index+1].offset if index+1<len(instructions) else len(code.co_code)
+   offsets.update(range(instruction.offset,end,2));pending=False
  return frozenset(offsets)
 
 def is_node_allocation_failure(error: MemoryError, structure_id: str, operation: str) -> bool:

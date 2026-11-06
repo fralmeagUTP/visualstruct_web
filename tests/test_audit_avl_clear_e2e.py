@@ -48,7 +48,7 @@ def test_clear_browser_free_alias_root_scopes_replay_and_actual_main(tmp_path,av
       assert retired==[{'id':n['id'],'value':n['value']} for n in state['freed_nodes']]
       assert page.locator('[data-abb-unusable-count]').get_attribute('data-abb-unusable-count')==str(len(ped['memory']['unusable_reference_records']))
       if any('valor indeterminado' in x['target'] for x in aliases):assert 'valor indeterminado' in page.locator('.abb-instruction-memory').inner_text()
-      if index>=0 and ped['instruction_event']['phase']=='free':assert 'Liberados (identidades historicas)' in page.locator('#hier-memory-view').inner_text()
+      if index>=0 and ped['instruction_event']['phase']=='free':assert 'Liberados (identidades históricas)' in page.locator('#hier-memory-view').inner_text()
 
       assert 'Reconexión del retorno: no' in page.locator('#hier-relations-view').inner_text()
       if index>=0 and ped['instruction_event']['phase'] in {'return','caller_exit'}:assert_completed_scope(page,ped)

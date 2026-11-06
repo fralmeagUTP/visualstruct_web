@@ -59,11 +59,13 @@ class Page:
 
 @pytest.fixture
 def invoke(monkeypatch,tmp_path):
- monkeypatch.chdir(tmp_path)
  def run(page,base=BASE):
-  monkeypatch.setattr(diagnostic,'reveal_public',lambda *args:page.maybe_fail('reveal'))
-  request=SimpleNamespace(post=lambda *args,**kwargs:Response())
-  diagnostic.test_rn_null_projection_and_safe_viewport_capture((page,SimpleNamespace(request=request),base),'small',[7,3,9],5)
+  # Fixture setup and pytest report hooks must retain the original cwd.
+  with monkeypatch.context() as scoped:
+   scoped.chdir(tmp_path)
+   scoped.setattr(diagnostic,'reveal_public',lambda *args:page.maybe_fail('reveal'))
+   request=SimpleNamespace(post=lambda *args,**kwargs:Response())
+   diagnostic.test_rn_null_projection_and_safe_viewport_capture((page,SimpleNamespace(request=request),base),'small',[7,3,9],5)
  return run
 
 @pytest.mark.parametrize('failure',['goto','interaction','reveal','scroll','assertions'])
@@ -106,12 +108,12 @@ def test_capture_failure_still_fails_without_primary(invoke,monkeypatch):
  with pytest.raises(OSError,match='SCREENSHOT FAILED'):invoke(page)
  assert len(page.captures)==2
 
-def test_real_test_success_captures_before_and_after_assertions(invoke):
+def test_real_test_success_captures_before_and_after_assertions(invoke,tmp_path):
  page=Page();invoke(page)
  assert len(page.captures)==2
  assert page.events.index(('capture','rn-small-initial-1366x1000.png')) < page.events.index(('assertions',))
  assert page.events[-1]==('capture','rn-small-null-memory-1366x1000.png')
- assert Path('visual-safe-diagnostics/rn-small-null-memory.json').is_file()
+ assert (tmp_path/'visual-safe-diagnostics/rn-small-null-memory.json').is_file()
 
 
 def test_primary_failure_then_external_url_keeps_error_and_skips_capture(invoke,monkeypatch,capsys):

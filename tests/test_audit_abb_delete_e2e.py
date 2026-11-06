@@ -2,7 +2,7 @@ from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, ass
 """Existing tree/heap views and exact caller, bidirectional replay without POST."""
 import json,threading,subprocess,shutil
 from pathlib import Path
-from e2e_contract_helpers import console_stdout
+from e2e_contract_helpers import console_stdout, observe_before_cleanup
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -60,10 +60,15 @@ def test_delete_browser_native_views_replay_and_actual_caller(tmp_path,delete_ba
     def asserts(identity,expression='arbol'):
      if not identity:return [f'assert({expression} == NULL);']
      n=nodes[identity];return [f'assert({expression} != NULL);',f'assert(({expression})->valor == {n["value"]});',*asserts(n['left'],f'({expression})->izquierdo'),*asserts(n['right'],f'({expression})->derecho')]
-    generated=actual_main.rsplit('    return 0;',1);assert len(generated)==2
-    equivalent='int main(void)'+trace['source_code'].split('int main(void)',1)[1];eqparts=equivalent.rsplit('    return 0;',1)
-    for name,parts in [('actual-main',generated),('equivalent-main',eqparts)]:
-     source=tmp_path/(name+'.c');source.write_text('#include "tad_abb.h"\n#include <stdio.h>\n#include <stddef.h>\n#include <assert.h>\n'+parts[0]+'\n'+'\n'.join(asserts(native['root']))+'\nabb_liberarArbol(arbol);\n    return 0;'+parts[1],encoding='utf-8');exe=source.with_suffix('.exe')
+    observation='\n'.join(asserts(native['root']))
+    # The actual caller already owns final cleanup. Observe before it, preserving
+    # every original statement; the equivalent trace caller has no cleanup.
+    observed=observe_before_cleanup(actual_main,'abb_liberarArbol(arbol);',observation)
+    equivalent='int main(void)'+trace['source_code'].split('int main(void)',1)[1]
+    eqparts=equivalent.rsplit('    return 0;',1);assert len(eqparts)==2
+    equivalent=eqparts[0]+observation+'\nabb_liberarArbol(arbol);\n    return 0;'+eqparts[1]
+    for name,main in [('actual-main',observed),('equivalent-main',equivalent)]:
+     source=tmp_path/(name+'.c');source.write_text('#include "tad_abb.h"\n#include <stdio.h>\n#include <stddef.h>\n#include <assert.h>\n'+main,encoding='utf-8');exe=source.with_suffix('.exe')
      build=subprocess.run([shutil.which('gcc'),'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'tad_abb.c'),str(source),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr
      run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=5);assert run.returncode==0,run.stderr
      if name=='equivalent-main':assert run.stdout==''

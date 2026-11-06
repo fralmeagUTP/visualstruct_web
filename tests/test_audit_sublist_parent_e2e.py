@@ -54,7 +54,7 @@ def test_parent_removal_both_views_replay_scopes_types_highlight_console(tmp_pat
        assert aliases==expected_alias
        if index<0:
         assert page.locator('#seq-variable-view [data-seq-variable]').count()==0
-        assert 'ninguna instrucción ejecutada' in page.locator('#seq-pedagogy-summary').inner_text()
+        assert 'Paso actual: Antes de comenzar' in page.locator('#seq-pedagogy-summary').inner_text()
        if index>=0:
         ped=steps[index]['pedagogy'];shown=page.locator('#seq-variable-view [data-seq-variable]').evaluate_all("xs=>xs.map(x=>({scope:x.dataset.seqVariableScope,name:x.dataset.seqVariable,type:x.dataset.seqVariableType,value:x.querySelector('[data-seq-variable-value]').textContent.replace(/ Δ$/, '')}))")
         expected=[{'scope':v['scope'],'name':v['name'],'type':v['type'],'value':'NULL' if v['value'] is None else str(v['value'])} for v in ped['variables']];assert shown==expected

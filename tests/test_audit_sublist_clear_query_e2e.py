@@ -73,7 +73,7 @@ def test_clear_query_both_views_replay_scopes_buffer_highlight_console(tmp_path,
          assert copied==native['writes']
        if index<0:
         assert page.locator('#seq-variable-view [data-seq-variable]').count()==0
-        assert 'ninguna instrucción ejecutada' in page.locator('#seq-pedagogy-summary').inner_text()
+        assert 'Paso actual: Antes de comenzar' in page.locator('#seq-pedagogy-summary').inner_text()
        if index>=0:
         if meta['operation']=='hijos_de' and steps[index]['line_text'].strip()=='destino[usados] = actual->nro;':
          assert 'Copia' in page.locator('#seq-pedagogy-summary').inner_text() and 'link' not in page.locator('#seq-pedagogy-summary').inner_text()
