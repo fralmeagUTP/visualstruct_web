@@ -1,3 +1,6 @@
+from e2e_hierarchical_contract import live_call_count
+from e2e_hierarchical_contract import assert_stack_records
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Actual SVG plus reservations/frames panels: all native steps and bidirectional replay."""
 from pathlib import Path
 import json,threading,shutil,subprocess
@@ -20,13 +23,15 @@ COLLECT=r'''async ({steps})=>{
    const start=performance.now();while(button.disabled){if(performance.now()-start>5000)throw Error('disabled '+dir+' '+index);await new Promise(r=>setTimeout(r,5));}
    button.click();const text='Paso: '+(index+1)+'/';
    while(!document.querySelector('#hier-sim-counter').textContent.startsWith(text)){if(performance.now()-start>5000)throw Error('counter '+dir+' '+index);await new Promise(r=>setTimeout(r,5));}
+   await new Promise(resolve=>requestAnimationFrame(resolve));
    records.push({direction:dir,index,state:structuredClone(window.auditState),
     nodes:[...document.querySelectorAll('[data-abb-node]')].map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus})),
     cards:[...document.querySelectorAll('[data-abb-node]')].map(x=>x.textContent),
     frames:[...document.querySelectorAll('[data-abb-frame]')].map(x=>({id:x.dataset.abbFrame,depth:Number(x.dataset.abbDepth)})),
     aliases:[...document.querySelectorAll('[data-abb-alias]')].map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget})),
     variables:[...document.querySelectorAll('#hier-variables-view tbody tr')].map(x=>({scope:x.querySelector('small').textContent,previous:x.children[1].textContent,value:x.children[2].textContent,type:x.children[0].querySelector('code').textContent})),
-    stack:document.querySelectorAll('#hier-stack-view .hier-stack-frame').length,
+    stack:document.querySelectorAll('#hier-stack-view > .hier-stack-frame').length,
+    stackRecords:({live:[...document.querySelectorAll('#hier-stack-view > .hier-stack-frame')].map(x=>x.textContent),completed:[...document.querySelectorAll('#hier-stack-view > details > .hier-stack-frame')].map(x=>x.textContent),details:document.querySelectorAll('#hier-stack-view > details').length}),
     stdout:readStdout(),
     message:document.querySelector('#message-box').textContent,
     highlighted:[...document.querySelectorAll('#op-pseudocode .sim-active,#op-pseudocode .sim-done')].map(x=>Number(x.dataset.line)),
@@ -57,12 +62,12 @@ def test_avl_validar_native_views_and_replay(tmp_path,avl_validate_native,monkey
    rows=page.evaluate(COLLECT,{'steps':len(steps)})
    for row in rows:
     i=row['index'];st=row['state'];ped=steps[i]['pedagogy'] if i>=0 else steps[0]['pedagogy']['initial_frame'];expected=ped['memory_state'];assert st==expected
-    assert row['nodes']==[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in st['heap_nodes']]
-    for n,card in zip(st['heap_nodes'],row['cards']):assert 'padre: '+n['parent'] in card and 'FE: '+str(n['balance_factor']) in card
+    assert same_nodes(row['nodes'],[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in st['heap_nodes']])
+    for n,card in memory_cards(row,st['heap_nodes']):assert 'padre: '+n['parent'] in card and 'FE: '+str(n['balance_factor']) in card
     assert row['frames']==[{'id':f['id'],'depth':f['depth']} for f in st['tree_frames']]
     assert row['aliases']==[{'frame':f['id'],'name':name,'type':'AVL' if name in ['arbol','nodo'] else 'int','target':str(v)} for f in st['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items()]
     assert row['variables']==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']]
-    assert row['stack']==len(ped['call_stack']) and row['stdout']==st['console_stdout']==''
+    assert_stack_records(row['stackRecords'],ped);assert row['stack']==live_call_count(ped) and row['stdout']==st['console_stdout']==''
     def values(n):return [] if n is None else [str(n['value']),*values(n['left']),*values(n['right'])]
     assert sorted(row['treeValues'])==sorted(values(st['root'])) and st['root']==data['visual_state']['root']
     assert row['message']==(data['message'] if i==len(steps)-1 else pending)

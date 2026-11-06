@@ -1,3 +1,4 @@
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Actual extraction views, output, physical tail, scopes and no-POST replay."""
 from pathlib import Path
 import json,shutil,subprocess,threading
@@ -49,11 +50,11 @@ def test_heap_extract_views_replay_and_downloads(tmp_path,heap_extract_native,ca
       local=page.locator('[data-heap-local]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.heapLocalFrame,name:x.dataset.heapLocal,value:x.dataset.heapLocalValue}))');assert local==[{'frame':f['id'],'name':k,'value':display(v)} for f in state['query_frames'] for k,v in {**f['parameters'],**f['locals']}.items()]
       ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame'];assert 'Estado intermedio de Extraer' in page.locator('#hier-invariant-view').inner_text()
       variables=page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent,type:x.children[0].querySelector("code").textContent}))');assert variables==[{'scope':v['scope'],'previous':display(v['previous']),'value':display(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']]
-      assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack']);assert page.locator('#message-box').inner_text()==(d['message'] if index==len(steps)-1 else pending)
+      assert_hier_stack(page,ped);assert page.locator('#message-box').inner_text()==(d['message'] if index==len(steps)-1 else pending)
       if index>=0:
        event=native[index];assert steps[index]['line_text'].strip()==event['text'] and state['array']==event['array'] and state['size']==event['quantity'] and state['capacity']==event['capacity']
        active=page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').evaluate_all('xs=>xs.map(x=>Number(x.dataset.line))');assert steps[index]['line_index'] in active
-       if event['phase']=='return':assert 'terminado (contexto del retorno)' in page.locator('#hier-stack-view .hier-stack-frame').last.inner_text()
+       if event['phase']=='return':assert_completed_scope(page,ped)
        if ped['condition']:assert display(ped['condition']['result']) in page.locator('#hier-path-view').text_content()
        if direction=='forward' and case in [3,6,8] and event['scope']=='swap' and event['text']=='*a = *b;':page.screenshot(path=str(tmp_path/f'extract-{case}-{index}.png'),full_page=True)
       else:assert not state['caller_output']['initialized'] and not state['query_frames'] and state['heap_pending_index'] is None and not state['heap_retired'] and not any(o['id']=='A2' for o in state['heap_allocations'])

@@ -216,7 +216,7 @@ def test_trace_contract_all_visible_graph_methods() -> None:
 
 
 def test_trace_contract_all_visible_hash_methods() -> None:
-    from _hash_visible_caller_consumer_oracle import assert_hash_visible_contract
+    from _hash_visible_caller_consumer_oracle import assert_hash_current_visible_contract
     history = _seed_history_hash()
     vm = HashStructureService.get_view_model("hash_table", history)
     for op in _visible_operations(vm):
@@ -231,7 +231,7 @@ def test_trace_contract_all_visible_hash_methods() -> None:
             payload["capacity"] = "17"
 
         result = _exec(HashStructureService.execute_operation, "hash_table", op_name, payload, history)
-        assert_hash_visible_contract(result)
+        assert_hash_current_visible_contract(result)
         history = result["history"]
 
 

@@ -1,3 +1,4 @@
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Both existing representations, scopes, highlight, stdout and bidirectional replay."""
 import json,os
 from pathlib import Path
@@ -31,9 +32,9 @@ def test_rbt_query_browser_instruction_and_replay(avl_server,rbt_query_records,t
     assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
     state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
     assert state['root']==data['visual_state']['root'];assert console_stdout(page, '#hier-printf-console')==state['console_stdout']
-    heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight}))");assert heap==[{k:n[k] for k in ['id','value','left','right']} for n in state['heap_nodes']]
+    heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight}))");assert same_nodes(heap,[{k:n[k] for k in ['id','value','left','right']} for n in state['heap_nodes']])
     for n in state['heap_nodes']:
-     text=page.locator('[data-abb-node="'+n['id']+'"]').inner_text();assert 'padre: '+n['parent'] in text and 'color: '+n['color'] in text
+     text=page.locator('[data-abb-node="'+n['id']+'"]').inner_text();assert 'padre: '+n['parent'] in text and 'color: '+color_label(n['color']) in text
     aliases=page.locator('[data-abb-alias]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget}))');assert aliases==[{'frame':f['id'],'name':k,'type':'int' if k in NUMERIC else 'RBT','target':str(v)} for f in state['tree_frames'] for k,v in {**f['parameters'],**f['locals']}.items()]
     def values(root):return [] if root is None else [str(root['value']),*values(root['left']),*values(root['right'])]
     assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(values(state['root'])+(['NULL']*(len(state['heap_nodes'])+1) if state['root'] else []))
@@ -43,12 +44,12 @@ def test_rbt_query_browser_instruction_and_replay(avl_server,rbt_query_records,t
     by_id={n['id']:n for n in state['heap_nodes']};assert sorted(edges)==sorted([[str(n['value']),side,'NULL' if n[side]=='NULL' else str(by_id[n[side]]['value'])] for n in state['heap_nodes'] for side in ['left','right']])
     assert ('resultado pendiente' in page.locator('#message-box').inner_text())==(index<len(steps)-1)
     ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame'];variables=page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent}))');assert variables==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value'])} for v in ped['variables']]
-    assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack'])
+    assert_hier_stack(page,ped)
     if op=='validar':
      contract=page.locator('[data-rbt-validator-contract]').inner_text();assert 'altura negra y enlaces por identidad' in contract;assert ('pendiente' in contract)==(state['wrapper_result'] is None)
     if index>=0:
      active=page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').evaluate_all('xs=>xs.map(x=>Number(x.dataset.line))');assert steps[index]['line_index'] in active
-     if ped['instruction_event']['phase']=='return':assert 'terminado (contexto del retorno)' in page.locator('#hier-stack-view .hier-stack-frame').last.inner_text()
+     if ped['instruction_event']['phase']=='return':assert_completed_scope(page,ped)
     else:assert not state['tree_frames'] and not variables and state['console_stdout']==''
     rows.append({'direction':direction,'index':index,'frames':[f['id'] for f in state['tree_frames']],'stdout':state['console_stdout']})
   assert len(posts)==count and not errors;context.close();browser.close()

@@ -1,3 +1,4 @@
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Actual validator API, forged internal fixtures, all executed frames and replay."""
 from pathlib import Path
 import json,shutil,subprocess,threading
@@ -17,7 +18,7 @@ def compile_main(main,context,base,target):
   raw=context.request.get(base+'/help/source/abb/'+kind).body();assert raw==(Path(__file__).resolve().parents[1]/'docs/tads_C'/('tad_abb.'+suffix)).read_bytes();assert b'abb_validar_rango' not in raw;(target/('tad_abb.'+suffix)).write_bytes(raw)
  gcc=shutil.which('gcc');assert gcc;run=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(target/'main.c'),str(target/'tad_abb.c'),'-o',str(target/'main.exe')],capture_output=True,text=True,timeout=30);assert run.returncode==0,run.stderr
  run=subprocess.run([str(target/'main.exe')],capture_output=True,text=True,timeout=10);assert run.returncode==0,run.stderr
- warning=target/'warnings.log';cfg=target/'Doxyfile';cfg.write_text('\n'.join(['INPUT = "'+target.as_posix()+'"','FILE_PATTERNS = *.c *.h','OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warning.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
+ warning=target/'warnings.log';cfg=target/'Doxyfile';cfg.write_text('\n'.join(['INPUT = "'+target.as_posix()+'"','FILE_PATTERNS = *.c *.h','OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warning.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = YES','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
  docs=subprocess.run([resolve_doxygen(),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warning.read_text(encoding='utf-8')=='',(docs.stderr,warning.read_text(encoding='utf-8'));return run.stdout
 
 @pytest.mark.parametrize('case',range(16))
@@ -48,7 +49,7 @@ def test_abb_validar_native_views_frames_replay_and_calculated_main(tmp_path,abb
      aliases=page.locator('[data-abb-alias]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget}))');assert aliases==[{'frame':f['id'],'name':name,'type':'ABBNodo *' if name=='nodo' else 'int','target':str(value)} for f in st['tree_frames'] for name,value in f['parameters'].items()]
      ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame']
      actual=page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent,type:x.children[0].querySelector("code").textContent}))');assert actual==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']]
-     assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack']);assert console_stdout(page, '#hier-printf-console')==st['console_stdout']==''
+     assert_hier_stack(page,ped);assert console_stdout(page, '#hier-printf-console')==st['console_stdout']==''
      assert page.locator('#message-box').inner_text()==(d['message'] if index==len(steps)-1 else pending)
      assert page.locator('[data-abb-validation-pending]').count()==int(st['wrapper_result'] is None)
      if st['wrapper_result'] is None:assert 'Resultado:' not in page.locator('#visual-state').inner_text()

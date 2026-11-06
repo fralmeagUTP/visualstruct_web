@@ -6,9 +6,10 @@ from app import create_app
 from werkzeug.serving import make_server
 from playwright.sync_api import sync_playwright
 from _audit_intercambio_instructions import CASES
+from _audit_sorting_narration import expected_instruction_narration
 OUT=Path(sys.argv[1]).resolve();NATIVE=Path(sys.argv[2]).resolve();OUT.mkdir(parents=True,exist_ok=True)
 app=create_app();server=make_server('127.0.0.1',0,app);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();rows=[]
-CAPTURE='''() => ({array:Array.from(document.querySelectorAll('.sorting-item-label'),e=>Number(e.textContent.replace(/^\\[\\d+\\]\\s*/,''))),strategy:document.querySelector('#sorting-strategy-view').textContent,variables:Array.from(document.querySelectorAll('#sorting-variable-table tr'),r=>Array.from(r.querySelectorAll('td'),e=>e.textContent)),stack:Array.from(document.querySelectorAll('#sorting-call-stack strong'),e=>e.textContent),pointers:document.querySelector('#sorting-pointer-view').textContent,condition:document.querySelector('#sorting-condition-view').textContent,conditionClass:document.querySelector('#sorting-condition-view').className,loop:document.querySelector('#sorting-loop-view').textContent,active:Array.from(document.querySelectorAll('.code-line.sim-active'),e=>Number(e.dataset.line)),console:document.querySelector('#sorting-printf-console').textContent,progress:window.__auditPlayer.getCursor()+1})'''
+CAPTURE='''() => ({array:Array.from(document.querySelectorAll('.sorting-item-label'),e=>Number(e.textContent.replace(/^\\[\\d+\\]\\s*/,''))),strategy:document.querySelector('#sorting-strategy-view').textContent,narration:document.querySelector('#sorting-pedagogy-narration').textContent,variables:Array.from(document.querySelectorAll('#sorting-variable-table tr'),r=>Array.from(r.querySelectorAll('td'),e=>e.textContent)),stack:Array.from(document.querySelectorAll('#sorting-call-stack strong'),e=>e.textContent),pointers:document.querySelector('#sorting-pointer-view').textContent,condition:document.querySelector('#sorting-condition-view').textContent,conditionClass:document.querySelector('#sorting-condition-view').className,loop:document.querySelector('#sorting-loop-view').textContent,active:Array.from(document.querySelectorAll('.code-line.sim-active'),e=>Number(e.dataset.line)),console:document.querySelector('#sorting-printf-console').textContent,progress:window.__auditPlayer.getCursor()+1})'''
 try:
  with sync_playwright() as pw:
   browser=pw.chromium.launch()
@@ -32,7 +33,8 @@ try:
      assert shown['array']==native[idx]['array'],(name,direction,idx,shown)
      assert shown['active']==([] if step['line_index'] is None else [step['line_index']]),(name,direction,idx,shown['active'],step['line_index'])
      assert shown['stack']==[call['function'] for call in frame['call_stack']],(name,direction,idx)
-     assert step['state_after']['trace_action'] in shown['strategy']
+     # Instruction prose lives in the single student narration card, not strategy cells.
+     assert shown['narration']==expected_instruction_narration(step['state_after']['trace_action']),(name,direction,idx,shown['narration'])
      if frame['loop']:assert frame['loop']['kind'] in shown['loop']
      if frame['variables']:
       assert len(shown['variables'])==len(frame['variables'])

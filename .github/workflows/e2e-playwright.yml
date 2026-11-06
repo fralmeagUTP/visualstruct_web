@@ -97,3 +97,12 @@ jobs:
             e2e-safe-diagnostics/*-result.json
           if-no-files-found: warn
           include-hidden-files: false
+
+      - name: Preserve synthetic visual diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-visual-evidence-${{ matrix.group }}
+          path: visual-safe-diagnostics/*.png
+          if-no-files-found: warn
+          include-hidden-files: false

@@ -34,6 +34,14 @@ def assert_historical_protected_hash(root: Path,relative: str,expected: str) -> 
  actual_digests={actual,hashlib.sha256(raw).hexdigest()}
  row=SUPERSESSIONS.get(relative)
  if row is None:
+  # These three sources have a separately pinned, authentic spelling-only
+  # successor contract. It still rejects unknown hashes, bytes and text deltas.
+  if relative in {'app/domain/sorting/shell_instructions.py',
+                  'app/domain/sorting/quicksort_instructions.py',
+                  'app/domain/sorting/heapsort_instructions.py'}:
+   from tests._sorting_text_source_contract import assert_sorting_text_source_continuity
+   assert_sorting_text_source_continuity(root,relative,expected)
+   return
   assert expected in actual_digests,(relative,'unregistered protected source drift')
   return
  assert expected in row['allowed_historical_sha256'],(relative,'unknown historical source')

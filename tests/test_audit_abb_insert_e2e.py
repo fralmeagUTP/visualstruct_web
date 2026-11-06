@@ -1,3 +1,4 @@
+from e2e_hierarchical_contract import same_nodes
 from e2e_trace_contracts import reveal_public
 """Current ABB tree and individual reservations/scopes, forward/back without POST."""
 import json,threading,re,subprocess,shutil
@@ -19,7 +20,7 @@ def test_abb_insert_current_tree_heap_scopes_replay_and_displayed_caller(tmp_pat
     for value in meta['seed']:assert context.request.post(base+'/hierarchical/abb/operate',data={'operation':'insertar','payload':{'value':value}}).json()['success']
     page.goto(base+'/hierarchical/abb',wait_until='networkidle');assert page.locator('#operation-select option').count()==12
     page.evaluate('''()=>{const old=renderHierState;renderHierState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}''')
-    page.locator('#hier-understand-toggle').click();reveal_public(page,page.locator('#hier-variables-view'));assert page.locator('#hier-variables-view').is_visible()
+    page.locator('#hier-understand-toggle').click();assert not page.locator('#hier-variables-view').is_visible()
     page.select_option('#operation-select','insertar');page.locator('[name="value"]').fill(str(meta['payload']['value']));page.click('#hier-step-mode')
     with page.expect_response(lambda r:r.url.endswith('/abb/operate') and r.request.method=='POST') as response:page.click('#hier-sim-play')
     data=response.value.json();count=len(posts)
@@ -39,9 +40,10 @@ def test_abb_insert_current_tree_heap_scopes_replay_and_displayed_caller(tmp_pat
     for direction,selector,indices in [('forward','#hier-sim-step',range(len(steps))),('backward','#hier-sim-prev',range(len(steps)-2,-2,-1))]:
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
+      if index==0:page.wait_for_function("()=>!document.querySelector('#hier-variables-view').parentElement.hidden");reveal_public(page,page.locator('#hier-variables-view'));assert page.locator('#hier-variables-view').is_visible()
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
       actual_heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:x.dataset.abbValue==='sin inicializar'?'sin inicializar':Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))")
-      assert actual_heap==state['heap_nodes']
+      assert same_nodes(actual_heap,state['heap_nodes'])
       assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head']
       assert page.locator('[data-abb-frame]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbFrame,depth:Number(x.dataset.abbDepth)}))')==[{'id':f['id'],'depth':f['depth']} for f in state['tree_frames']]
       expected_alias=[{'frame':f['id'],'name':name,'type':'int' if name=='valor' else 'ABBNodo *','target':str(target)} for f in state['tree_frames'] for name,target in {**f['parameters'],**f['locals']}.items()]

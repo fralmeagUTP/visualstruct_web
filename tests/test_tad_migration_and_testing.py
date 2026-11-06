@@ -67,7 +67,18 @@ def test_c_code_service_uses_new_tad_file_naming_in_default_messages() -> None:
     for structure_id in structures:
         data = CCodeService.get_structure_data(structure_id)
         assert data is not None
-        assert "docs/tads_C/tad_" in data["default_operation"]
+        if structure_id == "graph":
+            # Graph now exposes the byte-bound canonical C, not a placeholder
+            # comment. Check its real file identity rather than adding a fake path.
+            from app.domain.graph.book_source import canonical_source, HASHES
+            import hashlib
+            assert "tad_grafo.c" in data["code_title"]
+            assert data["source_contract"] == "graph-book/v1"
+            assert data["source_hashes"] == HASHES
+            assert data["default_operation"] == canonical_source()
+            assert hashlib.sha256(data["default_operation"].encode()).hexdigest() == HASHES["tad_grafo.c"]
+        else:
+            assert "docs/tads_C/tad_" in data["default_operation"]
 
 
 def test_sequential_heap_supports_tad_mode_and_generic_priority_mode() -> None:

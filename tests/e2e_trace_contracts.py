@@ -14,10 +14,23 @@ def trace_stdout(trace: dict, cursor: int) -> str:
     if cursor < 0:
         return ""
     step = steps[cursor]
+    if "console_mode" in trace:
+        assert trace["console_mode"] in {"events", "snapshot"}
+        if trace.get("allocation_failure") is True:
+            assert trace["console_mode"] == "events", "Allocation adapter emits event fragments"
     if "console_stdout" in step:
         assert isinstance(step["console_stdout"], str)
         return step["console_stdout"]
-    mode = trace["console_mode"]
+    mode = trace.get("console_mode")
+    if "console_mode" not in trace:
+        # _NullPath predates console_mode. Its allocator-failure producer
+        # explicitly records only printf reached in each individual frame.
+        # Do not infer events for arbitrary malformed/snapshot traces.
+        assert trace.get("allocation_failure") is True
+        assert trace.get("execution_started") is True
+        assert trace.get("success") is False
+        assert trace.get("error", {}).get("code") == "allocation_failed"
+        mode = "events"
     assert mode in {"events", "snapshot"}, f"Unsupported stdout mode: {mode}"
     frames = [step] if mode == "snapshot" else steps[:cursor + 1]
     chunks = [chunk for frame in frames for chunk in frame["console"]]

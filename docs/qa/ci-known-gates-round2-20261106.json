@@ -1,0 +1,227 @@
+{
+  "base_commit": "f1a9bebece2a0971f247b271e992ef7be5bd013c",
+  "meaning": "Known preserved gates and reviewed local successors. No tests are disabled by this record. Local contract controls do not certify a complete browser case or exact-commit CI.",
+  "ui": [
+    {
+      "nodeid": "tests/test_audit_ui_contract.py::test_five_stages_follow_the_same_exact_order[/hash/hash_table]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert numbered==STAGES"
+      ]
+    },
+    {
+      "nodeid": "tests/test_audit_ui_contract.py::test_five_stages_follow_the_same_exact_order[/sequential/queue]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert numbered==STAGES"
+      ]
+    },
+    {
+      "nodeid": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation[avl]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Conservative educational reconciliation preserves three hints, future prediction without seek, manual practice and canonical learning-level placement; original browser node ID remains selected.",
+      "original_assertions": [
+        "page.goto(base+'/hierarchical/'+family);assert page.locator('#hier-learning-level').is_visible() and page.locator('#hier-guided-example').is_visible()"
+      ]
+    },
+    {
+      "nodeid": "tests/test_audit_ui_contract.py::test_five_stages_follow_the_same_exact_order[/sequential/circular_list]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert numbered==STAGES"
+      ]
+    },
+    {
+      "nodeid": "tests/test_audit_ui_contract.py::test_five_stages_follow_the_same_exact_order[/sequential/stack]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert numbered==STAGES"
+      ]
+    },
+    {
+      "nodeid": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation[binary_heap]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Conservative educational reconciliation preserves three hints, future prediction without seek, manual practice and canonical learning-level placement; original browser node ID remains selected.",
+      "original_assertions": [
+        "page.goto(base+'/hierarchical/'+family);assert page.locator('#hier-learning-level').is_visible() and page.locator('#hier-guided-example').is_visible()"
+      ]
+    },
+    {
+      "nodeid": "tests/test_audit_ui_contract.py::test_five_stages_follow_the_same_exact_order[/sequential/linked_list]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert numbered==STAGES"
+      ]
+    },
+    {
+      "nodeid": "tests/test_audit_ui_contract.py::test_five_stages_follow_the_same_exact_order[/sequential/sublist]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert numbered==STAGES"
+      ]
+    },
+    {
+      "nodeid": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation[red_black]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Conservative educational reconciliation preserves three hints, future prediction without seek, manual practice and canonical learning-level placement; original browser node ID remains selected.",
+      "original_assertions": [
+        "page.goto(base+'/hierarchical/'+family);assert page.locator('#hier-learning-level').is_visible() and page.locator('#hier-guided-example').is_visible()"
+      ]
+    },
+    {
+      "nodeid": "tests/test_audit_ui_contract.py::test_five_stages_follow_the_same_exact_order[/sequential/priority_queue]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert numbered==STAGES"
+      ]
+    },
+    {
+      "nodeid": "tests/test_audit_ui_contract.py::test_five_stages_follow_the_same_exact_order[/sorting/visualizador]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert numbered==STAGES"
+      ]
+    },
+    {
+      "nodeid": "tests/test_hierarchical_education_restored_focal.py::test_restored_education_real_functions_and_manual_navigation[abb]",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Conservative educational reconciliation preserves three hints, future prediction without seek, manual practice and canonical learning-level placement; original browser node ID remains selected.",
+      "original_assertions": [
+        "page.goto(base+'/hierarchical/'+family);assert page.locator('#hier-learning-level').is_visible() and page.locator('#hier-guided-example').is_visible()"
+      ]
+    },
+    {
+      "nodeid": "tests/test_ui_playwright_e2e.py::test_playwright_stack_compact_pilot_keeps_primary_workspace_visible",
+      "status": "RECONCILED_LOCAL_PENDING_EXACT_COMMIT_BROWSER",
+      "detail": "Five-stage semantic title contract is explicit and ordered; the original browser node ID remains selected.",
+      "original_assertions": [
+        "assert headings[:3] == ["
+      ]
+    }
+  ],
+  "historical": [
+    {
+      "nodeid": "scripts/tests/test_historical_reconciliation.py::HistoricalReconciliationTests::test_one_complete_requirement_preserved_literally",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/requirement-decisions.json"
+    },
+    {
+      "nodeid": "scripts/tests/test_historical_reconciliation.py::HistoricalReconciliationTests::test_canonical_spec_contains_only_the_admitted_complete_contract",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/requirement-decisions.json"
+    },
+    {
+      "nodeid": "scripts/tests/test_historical_reconciliation.py::HistoricalReconciliationTests::test_all_pending_requirements_keep_source_and_scenarios",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/requirement-decisions.json"
+    },
+    {
+      "nodeid": "scripts/tests/test_historical_reconciliation.py::HistoricalReconciliationTests::test_current_relevant_implementation_matches_proof",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/transfer-proof.json"
+    },
+    {
+      "nodeid": "scripts/tests/test_historical_reconciliation.py::HistoricalReconciliationTests::test_exact_historical_scenarios_have_executed_junit_evidence",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "openspec/changes/archive/2026-10-02-reconcile-verified-historical-trace-contract/evidence/transfer-proof.json"
+    },
+    {
+      "nodeid": "scripts/tests/test_role_workflow_installation.py::RoleArchiveInstallationTests::test_all_genuine_qa_artifacts_preserved",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "openspec/changes/archive/2026-10-02-extend-continuity-role-workflow/evidence/closure-final/qa-before.json"
+    },
+    {
+      "nodeid": "scripts/tests/test_role_workflow_installation.py::RoleArchiveInstallationTests::test_accepted_inputs_resolve_to_identical_archived_bytes",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "openspec/changes/archive/2026-10-02-extend-continuity-role-workflow/evidence/adoption-pilot/documentation-verification.json; evidence/independent-review/adoption-review-20261002/independent-qa.json; evidence/closure-final/technical-qa-transfer.json"
+    },
+    {
+      "nodeid": "scripts/tests/test_role_workflow_installation.py::RoleArchiveInstallationTests::test_closed_tasks_and_new_requirements_preserved",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "openspec/changes/archive/2026-10-02-extend-continuity-role-workflow/evidence/adoption-pilot/workflow.json; evidence/closure-final/implementation-profile-closed.json"
+    },
+    {
+      "nodeid": "tests/test_sorting_heapsort_instructions.py::test_original_regressions_and_seven_modules_hashes_preserved",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "Original baseline test expected SHA beginning8a5953; current 827c669e33fa2ab5a23980a6333a7618141ab978d7f437e15118ccf241929646. Preimage still being located."
+    },
+    {
+      "nodeid": "qa/test_graph_edge_allocation.py::GraphAllocationTests::test_native_faults_and_cleanup",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "qa/test_graph_edge_allocation.py::GraphAllocationTests::test_symbolic_same_faults_preserve_endpoints",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "qa/test_graph_help.py::GraphHelpTests::test_rendered_contract_matches_real_limit_and_controls",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "qa/test_graph_numeric_receipt.py::Receipt::test_null_and_owned_receipt",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "qa/test_graph_numeric_receipt.py::Receipt::test_only_receipt_description_changes",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "qa/test_graph_query_publication.py::Publication::test_only_successful_query_final_narration_changes",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "qa/test_graph_query_publication.py::Publication::test_typed_results",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "qa/test_graph_vertex_publication.py::Publication::test_executed_source_and_all_states_unchanged",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "qa/test_graph_vertex_publication.py::Publication::test_operation_specific_boundary",
+      "status": "HISTORICAL_CONTRACT_CONFLICT",
+      "missing_or_obsolete_contract": "Archived pre-book Graph source/API/representation; qa_convergence/README explicitly states these are historical, not current C acceptance. Baselines may now be recovered but retired interpreter cannot certify equivalence."
+    },
+    {
+      "nodeid": "tests/test_sorting_heapsort_instructions.py::test_mechanical_negative_controls_and_observer_unchanged",
+      "status": "BLOCKED",
+      "missing_or_obsolete_contract": "Heap native-final-second/native.jsonl is absent from published input archive and recovered source packages."
+    },
+    {
+      "nodeid": "tests/test_sorting_binsort_instructions.py::test_binsort_protected_sources_and_original_regressions_unchanged",
+      "status": "HISTORICAL_REVIEW_BINDING_MISMATCH",
+      "review_path": "openspec/changes/archive/2026-10-13-review-sorting-projection-diff-coverage-quality/evidence/dfs-transport-jpg-canonical-integration-independent-review/review.md",
+      "expected_sha256": "575ce6e9c64cadb19e1e141b1ca8a52f1eea6421e0de9bd1cf1a91a25ff64077",
+      "available_sha256": "3c1d3bdda458d61d1a96df4d406cb894f4834d6fce9b4f2ce8602ec7896e448f",
+      "detail": "The available bytes also match both authentic recovered archives. Transport variants do not explain the mismatch. The gate remains failing; no pin replacement is made."
+    }
+  ],
+  "previous_record": "docs/qa/ci-known-gates-20261106.json",
+  "performance": [
+    {
+      "nodeid": "tests/test_checkpoint_reconstruction_performance.py::test_reconstruction_p95_stays_below_200_ms_for_all_families",
+      "status": "CI_RECHECK_REQUIRED",
+      "budget_ms": 200,
+      "iterations": 5,
+      "history_operations": 300,
+      "replay_operations": 300,
+      "detail": "Original gate unchanged. Numeric-only per-family diagnostics added. Local pass does not resolve earlier CI failure."
+    }
+  ]
+}

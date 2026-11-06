@@ -74,7 +74,8 @@ def test_actual_UI_complete_replay_numeric_gap_locals_and_real_C_callers(case):
 
 def test_original_regressions_oracle_bytes_and_four_closed_modules_unchanged():
  import hashlib
- assert (audit_input_path(ROOT/'tests/test_sorting_shell_baseline_low.py')).read_bytes()==(audit_input_path(E/'before/tests/test_sorting_shell_baseline_low.py')).read_bytes()
+ from tests._sorting_published_test_contract import assert_archived_shell_test_portability
+ assert_archived_shell_test_portability(ROOT)
  baseline=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-shell-baseline-low/native-current'
  for name in ['observed.c','native.jsonl','tad_ordenamiento.c','tad_ordenamiento.h']:assert (audit_input_path(E/'native-first'/name)).read_bytes()==(audit_input_path(baseline/name)).read_bytes()
  h=json.loads((audit_input_path(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-burbuja-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']

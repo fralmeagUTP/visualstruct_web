@@ -3,10 +3,10 @@ from e2e_sequential_render_contract import OBSERVER, assert_causal_render
 import re
 import pytest
 from test_ui_playwright_e2e import _live_server_url, _enable_manual_mode
+from ui_stage_contract import assert_stage_contract
 
 pytestmark = pytest.mark.e2e
 PAGES = ["/sequential/"+x for x in ["stack","queue","priority_queue","linked_list","circular_list","sublist"]]+["/hierarchical/"+x for x in ["abb","avl","red_black","binary_heap"]]+["/hash/hash_table","/sorting/visualizador"]+["/graph/graph/"+x for x in ["construccion","recorridos","camino-minimo","expansion-minima"]]
-STAGES=["1 Preparar y controlar ejecución","2 Visualizar y ejecutar","3 Relacionar con código","4 Comprender","5 Resultados de ejecución"]
 
 @pytest.mark.parametrize("path",PAGES)
 def test_five_stages_follow_the_same_exact_order(path):
@@ -15,8 +15,8 @@ def test_five_stages_follow_the_same_exact_order(path):
         browser=p.chromium.launch(); page=browser.new_page()
         page.goto(base+path,wait_until="networkidle")
         headings=page.locator("main h3, main summary").evaluate_all("els => els.map(el => {const copy=el.cloneNode(true); copy.querySelectorAll('small').forEach(n=>n.remove()); return copy.textContent;})")
-        numbered=[re.sub(r"\s+"," ",h).strip().replace("Mostrar","").replace("Ocultar","").strip() for h in headings if re.match(r"\s*[1-5]\s",h)]
-        assert numbered==STAGES
+        numbered=[re.sub(r"\s+"," ",h).strip().replace("Mostrar","").replace("Ocultar","").strip() for h in headings if re.match(r"\s*\d+\s",h)]
+        assert_stage_contract(numbered, path)
         assert not page.evaluate("document.querySelector('.nav-links').scrollWidth > document.querySelector('.nav-links').clientWidth")
         for width in (390,1366):
             page.set_viewport_size({"width":width,"height":900})

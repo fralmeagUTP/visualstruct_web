@@ -1,5 +1,6 @@
 """Finite improved-bubble baseline and scoped move-counter regressions."""
 from pathlib import Path
+from tests._sorting_trace_text_contract import current_swap_display
 import json,sys,types
 import pytest
 from _audit_burbuja_baseline import audit,CASES,UI_CASES
@@ -46,7 +47,7 @@ def test_default_shared_helper_keeps_original_behavior_without_running_closed_me
   exec(compile(audit_input_path(source).read_text(encoding='utf-8'),str(source),'exec'),module.__dict__)
   old=module.SortingInterpreter([2,1],'shell');current=SortingInterpreter([2,1],'shell')
   old._swap(0,1);current._swap(0,1)
-  assert old._steps==current._steps and old.values==current.values and old.metrics.moves==current.metrics.moves==0
+  assert current_swap_display(old._steps)==current._steps and old.values==current.values and old.metrics.moves==current.metrics.moves==0
  finally:sys.modules.pop(module.__name__,None)
 
 

@@ -19,7 +19,7 @@ def test_clear_query_both_views_replay_scopes_buffer_highlight_console(tmp_path,
     for parent,children in meta['seed']:
      assert context.request.post(base+'/sequential/sublist/operate',data={'operation':'insertar_padre','payload':{'parent':parent}}).json()['success']
      for child in children:assert context.request.post(base+'/sequential/sublist/operate',data={'operation':'insertar_hijo','payload':{'parent':parent,'child':child}}).json()['success']
-    page.goto(base+'/sequential/sublist',wait_until='networkidle');page.evaluate('''()=>{const old=renderVisualState;renderVisualState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}''');page.locator('.seq-understand button').filter(has_text='Mostrar').click();reveal_public(page,page.locator('#seq-variable-view'));assert page.locator('#seq-variable-view').is_visible();page.select_option('#operation-select',meta['operation']);
+    page.goto(base+'/sequential/sublist',wait_until='networkidle');page.evaluate('''()=>{const old=renderVisualState;renderVisualState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}''');page.locator('.seq-understand button').filter(has_text='Mostrar').click();assert not page.locator('#seq-variable-view').is_visible();page.select_option('#operation-select',meta['operation']);
     form_payload={'parent':meta['payload']['parent']} if meta['operation']=='hijos_de' else {}
     for name,value in form_payload.items():page.locator(f'[name="{name}"]').fill(str(value))
     page.click('#seq-step-mode')
@@ -44,6 +44,7 @@ def test_clear_query_both_views_replay_scopes_buffer_highlight_console(tmp_path,
      for direction,selector,indices in [('forward','#seq-sim-step',range(len(steps))),('backward','#seq-sim-prev',range(len(steps)-2,-2,-1))]:
       for index in indices:
        assert page.locator(selector).is_enabled();page.locator(selector).evaluate("button=>button.click()");page.wait_for_function("n=>document.querySelector('#seq-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
+       if index==0:page.wait_for_function("()=>!document.querySelector('#seq-variable-view').parentElement.hidden");reveal_public(page,page.locator('#seq-variable-view'));assert page.locator('#seq-variable-view').is_visible()
        state=page.evaluate('window.auditState');actual=[{'parent':x['parent'],'children':x['children']} for x in state['items']]
        canonical=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==canonical
        if index in oracle:assert actual==values(oracle[index]['native'])

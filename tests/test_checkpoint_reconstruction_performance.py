@@ -5,11 +5,13 @@ from __future__ import annotations
 import pytest
 
 from scripts.benchmark_checkpoint_reconstruction import run
+from scripts.checkpoint_performance_diagnostics import write_checkpoint_diagnostics
 
 
 @pytest.mark.performance
 def test_reconstruction_p95_stays_below_200_ms_for_all_families() -> None:
     report = run(iterations=5, budget_ms=200.0)
+    write_checkpoint_diagnostics(report)
     assert report["passed"] is True, report
     assert set(report["results"]) == {
         "sequential",

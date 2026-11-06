@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 from PIL import Image,ImageChops
 from test_controls40_real_flows import controls40_page
+from test_residual58_focal_cases import residual58_app
 
 from scripts.published_test_inputs import audit_input_path
 @pytest.mark.e2e
@@ -38,7 +39,7 @@ def test_empty_and_nonempty_sorting_export(tmp_path,controls40_page):
         assert any(a!=b for a,b in extrema),(label,extrema)
         assert len(posts)==n and not errors
         if label.startswith("empty"):
-            assert size==[996,38] and "Arreglo vacio" in geometry["text"]
+            assert size==[996,38] and "Arreglo vacío" in geometry["text"]
         rows.append({"label":label,"size":size,"RGB_extrema":extrema,"DOM":geometry,"POSTs":posts,"export_POSTs":len(posts)-n,"errors":errors})
         context.close()
     with Image.open(out/"nonempty-before.jpg") as a,Image.open(out/"nonempty-current.jpg") as b:

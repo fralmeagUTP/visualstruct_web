@@ -441,7 +441,7 @@ def test_playwright_other_sequential_structures_show_canonical_final_state(
                 page.fill(f"#field-{name}", value)
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Modo rápido")
-            assert "Tamano: 0" in (page.text_content("#visual-state") or "")
+            assert "Tamaño: 0" in (page.text_content("#visual-state") or "")
             browser.close()
 
 
@@ -1224,7 +1224,7 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
                 assert seen["active_scope"] and seen["family"], algorithm
                 page.wait_for_function("() => (document.querySelector('#sorting-call-stack')?.textContent || '').includes('No hay una función en ejecución en este punto. Las llamadas aparecen al entrar en una función.')")
                 final = _sorting_frame_observation(page)
-                assert "Sin llamadas activas." in final["stack"]
+                assert "No hay una función en ejecución en este punto. Las llamadas aparecen al entrar en una función." in final["stack"]
                 assert not (set(final["variables"]) & local_names[algorithm]), algorithm
                 assert [int(text.split("]", 1)[1]) for text in page.locator(".sorting-item-label").all_text_contents()] == [-3, 0, 1, 2, 5]
                 assert page.locator(".sorting-zero-axis").count() == 5

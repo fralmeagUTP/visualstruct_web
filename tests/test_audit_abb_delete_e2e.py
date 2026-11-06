@@ -1,3 +1,4 @@
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Existing tree/heap views and exact caller, bidirectional replay without POST."""
 import json,threading,subprocess,shutil
 from pathlib import Path
@@ -30,16 +31,16 @@ def test_delete_browser_native_views_replay_and_actual_caller(tmp_path,delete_ba
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
       assert console_stdout(page, '#hier-printf-console')==state['console_stdout']==''
       assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head']
-      heap=page.locator('[data-abb-node]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))');assert heap==state['heap_nodes']
+      heap=page.locator('[data-abb-node]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))');assert same_nodes(heap,state['heap_nodes'])
       assert page.locator('[data-abb-frame]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbFrame,depth:Number(x.dataset.abbDepth)}))')==[{'id':f['id'],'depth':f['depth']} for f in state['tree_frames']]
       aliases=page.locator('[data-abb-alias]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget}))');assert aliases==[{'frame':f['id'],'name':name,'type':'int' if name=='valor' else 'ABBNodo *','target':str(v)} for f in state['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items()]
       def values(root):return [] if root is None else [str(root['value']),*values(root['left']),*values(root['right'])]
       assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(values(state['root']))
       ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame']
       assert page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent}))')==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value'])} for v in ped['variables']]
-      assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack'])
+      assert_hier_stack(page,ped)
       assert 'Vida de reservas y publicaciones pendientes' in page.locator('#hier-invariant-view').inner_text()
-      if ped['call_stack']:assert 'raíz local: '+ped['call_stack'][0]['local_root_address'] in page.locator('#hier-stack-view .hier-stack-frame').first.inner_text()
+      if ped['call_stack']:assert_hier_stack(page,ped)
       assert page.locator('[data-abb-retired-node]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbRetiredNode,value:Number(x.dataset.abbRetiredValue)}))')==[{'id':n['id'],'value':n['value']} for n in state['freed_nodes']]
       assert page.locator('[data-abb-unusable-count]').get_attribute('data-abb-unusable-count')==str(len(ped['memory']['unusable_reference_records']))
       if index>=0:

@@ -3,6 +3,8 @@ from pathlib import Path
 import sys,json,threading,subprocess,shutil,re,hashlib
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from app import create_app
+from e2e_contract_helpers import main_source
+from _graph_caller_request_contract import assert_missing_vertex_call_recorded
 from werkzeug.serving import make_server
 from playwright.sync_api import sync_playwright
 OUT=Path(sys.argv[1]).resolve();OUT.mkdir(parents=True,exist_ok=True)
@@ -24,13 +26,13 @@ try:
     assert data['c_status']==expected_status and data['success']==(expected_status==0),data
     page.wait_for_function("main=>document.querySelector('#action-history').dataset.rawCode===main",arg=data['main_c'])
     results.append(data['result'])
-   main='\n'.join(page.locator('.didactic-history-main .code-line').all_text_contents()).replace('\u00a0','');(out/'main.c').write_text(main,encoding='utf-8')
+   main=main_source(page);(out/'main.c').write_text(main,encoding='utf-8')
    count=len(posts)
    page.wait_for_function("()=>window.dijkstraPlayer.hasTrace() && window.dijkstraPlayer.getTotalSteps()>0")
    page.evaluate("async()=>{const toggle=document.querySelector('#graph-step-toggle');toggle.checked=true;toggle.dispatchEvent(new Event('change'));window.dijkstraPlayer.pause();window.dijkstraPlayer.reset();if(!await window.dijkstraPlayer.step() || window.dijkstraPlayer.getCursor()!==0)throw new Error('Forward replay failed');if(!window.dijkstraPlayer.prev() || window.dijkstraPlayer.getCursor()!==-1)throw new Error('Backward replay failed');window.dijkstraPlayer.seek(window.dijkstraPlayer.getTotalSteps()-1);if(window.dijkstraPlayer.getCursor()!==window.dijkstraPlayer.getTotalSteps()-1)throw new Error('Final seek failed');toggle.checked=false;toggle.dispatchEvent(new Event('change'));}")
    assert len(posts)==count
    for _ in range(2):page.reload(wait_until='networkidle')
-   reloaded='\n'.join(page.locator('.didactic-history-main .code-line').all_text_contents()).replace('\u00a0','');(out/'reloaded-main.c').write_text(reloaded,encoding='utf-8');assert len(posts)==count==2;assert not errors
+   reloaded=main_source(page);(out/'reloaded-main.c').write_text(reloaded,encoding='utf-8');assert len(posts)==count==2;assert not errors
    assert main.count('= grafo_dijkstra(')==2 and reloaded.count('= grafo_dijkstra(')==2
    # Replay the already executed query without executing a new POST.
    page.select_option('#graph-algorithm-select','run_dijkstra');page.locator('#g-alg-field-start').fill(str(c['start']));page.locator('#g-alg-field-end').fill(str(c['end']))
@@ -39,15 +41,16 @@ try:
    with page.expect_response(lambda r:r.url.endswith('/graph/graph/operate') and r.request.method=='POST') as response:page.click('#graph-sim-play')
    rejected=response.value.json();assert not rejected['success'] and rejected['c_status']==2
    page.wait_for_function("main=>document.querySelector('#action-history').dataset.rawCode===main",arg=rejected['main_c'])
-   after_failure='\n'.join(page.locator('.didactic-history-main .code-line').all_text_contents()).replace('\u00a0','')
+   after_failure=main_source(page)
    assert after_failure==rejected['main_c'] and after_failure.count('= grafo_dijkstra(')==3
-   assert rejected['history'][:-1]==data['history'] and rejected['history'][-1]['payload']['start']==999
+   submitted=response.value.request.post_data_json
+   assert_missing_vertex_call_recorded(rejected,data,submitted,'run_dijkstra',c['end'])
    (out/'failed-main.c').write_text(after_failure,encoding='utf-8')
    # Host validation rejects malformed input before a C call and must not append.
    invalid=context.request.post(base+'/graph/graph/operate',data={'operation':'run_dijkstra','payload':{**rejected['history'][-1]['payload'],'start':'bad'}}).json()
    assert not invalid['success'] and invalid['history']==rejected['history'] and invalid['main_c']==after_failure
    before_failed_reload=len(posts);page.reload(wait_until='networkidle');assert len(posts)==before_failed_reload==3
-   assert '\n'.join(page.locator('.didactic-history-main .code-line').all_text_contents()).replace('\u00a0','')==after_failure
+   assert main_source(page)==after_failure
 
    for tad,stem in [('graph','tad_grafo'),('queue','tad_cola')]:
     for part,ext in [('source','c'),('header','h')]:

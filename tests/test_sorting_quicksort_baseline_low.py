@@ -1,5 +1,8 @@
 """Quick sort LOW baseline and strong recorded causal regressions, no xfail."""
 from pathlib import Path
+from tests._sorting_trace_text_contract import current_swap_display
+from _audit_sorting_c_source import assert_source_transport_identity
+from tests._sorting_text_source_contract import assert_sorting_text_source_continuity
 import json,hashlib,types,sys
 import pytest
 from _audit_quicksort_baseline import audit,CASES,UI_CASES
@@ -30,16 +33,16 @@ def test_exact_existing_helpers_and_native_guards(observed):
 
 def test_C_H_Doxygen_and_five_closed_modules_unchanged(observed):
  out,_=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
- for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
+ for ext in ['c','h']:assert_source_transport_identity((audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes(),(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes())
  h=json.loads((audit_input_path(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-shell-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
- for rel in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py','app/domain/sorting/insercion_instructions.py','app/domain/sorting/burbuja_instructions.py','app/domain/sorting/shell_instructions.py']:assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==h[rel]
+ for rel in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py','app/domain/sorting/insercion_instructions.py','app/domain/sorting/burbuja_instructions.py','app/domain/sorting/shell_instructions.py']:assert_sorting_text_source_continuity(ROOT,rel,h[rel])
 
 def test_shared_helper_default_unchanged_without_running_closed_methods():
  p=E/'before/app/domain/sorting/tad_ordenamiento.py';m=types.ModuleType('_quick_old');sys.modules[m.__name__]=m
  try:
   exec(compile(audit_input_path(p).read_text(encoding='utf-8'),str(p),'exec'),m.__dict__)
   old=m.SortingInterpreter([2,1],'shell');now=SortingInterpreter([2,1],'shell');old._swap(0,1);now._swap(0,1)
-  assert old._steps==now._steps and old.values==now.values and old.metrics.moves==now.metrics.moves==0
+  assert current_swap_display(old._steps)==now._steps and old.values==now.values and old.metrics.moves==now.metrics.moves==0
  finally:sys.modules.pop(m.__name__,None)
 
 def test_repeated_history_and_GET_main_no_redispatch(monkeypatch):

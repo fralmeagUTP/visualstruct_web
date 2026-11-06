@@ -280,7 +280,7 @@ function renderSequentialPedagogyFrame(frame, level) {
     if (frame.cleanup_memory) heapView.innerHTML += `<details class="contextual-help-reference"><summary>Registro técnico completo de memoria</summary><strong>Vida y máscaras C</strong><pre>${escapeHtml(JSON.stringify(frame.cleanup_memory, null, 2))}</pre><small>Campos retirados sólo en copia histórica; aux indeterminado no es NULL.</small></details>`;
   }
   if (callView) {
-    const rows = (frame.call_stack || []).map((item) => `<tr><td><code>${escapeHtml(item.function)}</code></td><td>${escapeHtml(sequentialValue(item.parameters))}</td><td>${escapeHtml(sequentialValue(item.return))}</td><td>${escapeHtml(item.continuation)}</td></tr>`);
+    const rows = (frame.call_stack || []).map((item) => `<tr><td><code>${escapeHtml(item.function)}</code></td><td>${escapeHtml(sequentialValue(item.parameters))}</td><td>${escapeHtml(sequentialValue(item.return))}</td><td>${escapeHtml(item.continuation ?? "No registrada en esta instrucción.")}</td></tr>`);
     callView.innerHTML = rows.length ? table(["Función", "Parámetros", "Retorno", "Continuación"], rows) : "Sin llamadas.";
   }
 }
