@@ -1,5 +1,6 @@
 """Boundary parity of the actual history renderer with the application's 1024-copy contract."""
 import json,shutil,subprocess,threading
+from e2e_contract_helpers import main_source, observe_before_cleanup
 import pytest
 from app import create_app
 from app.adapters.sublist_adapter import SublistAdapter
@@ -25,8 +26,8 @@ def test_sublist_main_query_1025_children_respects_actual_backend_copy_limit(tmp
     response=context.request.get(base+'/help/source/sublist/'+kind);assert response.status==200;(tmp_path/('tad_sublista'+suffix)).write_bytes(response.body())
    guide=context.request.get(base+'/help/sequential/sublist');assert guide.status==200 and '1024 hijos por consulta' in guide.text()
    page.evaluate('''history=>{const catalog=new Map([['insertar_padre',{inputs:[{name:'parent',type:'number'}]}],['insertar_hijo',{inputs:[{name:'parent',type:'number'},{name:'child',type:'number'}]}],['hijos_de',{inputs:[{name:'parent',type:'number'}]}]]);const out=document.createElement('ol');out.id='audit-boundary-main';document.body.append(out);renderActionHistory(history,out,'sublist',catalog);}''',history)
-   main=page.locator('#audit-boundary-main .didactic-history-main').inner_text();assert 'hijos_1027[1024]' in main
-   code='#include <stdio.h>\n#include "tad_sublista.h"\n'+main.replace('    return 0;','    printf("AUDIT_COUNT: %d\\n",sublista_contar_hijos(sublista));\n    sublista_destruir(&sublista);\n    return 0;')
+   main=main_source(page, '#audit-boundary-main .didactic-history-main');assert 'hijos_1027[1024]' in main
+   code=observe_before_cleanup(main, 'sublista_destruir(&sublista);', 'printf("AUDIT_COUNT: %d\\n",sublista_contar_hijos(sublista));')
    source=tmp_path/'main-boundary.c';source.write_text(code,encoding='utf-8');exe=tmp_path/'boundary.exe'
    build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'tad_sublista.c'),str(source),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr
    run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=10);assert run.returncode==0,run.stderr

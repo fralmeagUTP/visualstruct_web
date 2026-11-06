@@ -1,3 +1,5 @@
+from e2e_contract_helpers import console_stdout
+from e2e_trace_contracts import trace_stdout
 """Visible first-occurrence deletion: aliases, live/detached heap, both views/replay."""
 
 import json,threading
@@ -70,7 +72,7 @@ def test_visible_search_both_views_replay_and_scope_endpoint(tmp_path):
 
           active=page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').evaluate_all('xs=>xs.map(x=>Number(x.dataset.line))')
 
-          console_lines=page.locator('#seq-printf-console .console-line:not(.muted)').all_text_contents()
+          console_lines=console_stdout(page,'#seq-printf-console')
 
           dom_roots=page.locator('[data-clear-pointer]').evaluate_all("els=>Object.fromEntries(els.map(el=>[el.dataset.clearPointer,el.querySelector('code').textContent]))")
 
@@ -82,7 +84,7 @@ def test_visible_search_both_views_replay_and_scope_endpoint(tmp_path):
 
           root_pass=dom_roots.get('lista')==actual['head'] and dom_roots.get('head')==actual['head'] and all(dom_roots.get(name)==actual.get(name) for name in ['q'])
 
-          rows.append({'case':label,'view':view,'direction':direction,'step':idx,'backend_state_pass':actual==expected and actual['items']==canonical['items'],'highlight_pass':idx<0 or steps[idx]['line_index'] in active,'root_alias_pass':root_pass,'heap_dom_pass':dom_nodes==expected_nodes,'console_pass':[x.strip() for x in console_lines]==[x.strip() for step in steps[:idx+1] for x in step.get('console',[]) if x.strip()] if idx>=0 else len(console_lines)==0,'dom_roots':dom_roots,'dom_nodes':dom_nodes})
+          rows.append({'case':label,'view':view,'direction':direction,'step':idx,'backend_state_pass':actual==expected and actual['items']==canonical['items'],'highlight_pass':idx<0 or steps[idx]['line_index'] in active,'root_alias_pass':root_pass,'heap_dom_pass':dom_nodes==expected_nodes,'console_pass':console_lines==trace_stdout(data['execution_trace'],idx),'dom_roots':dom_roots,'dom_nodes':dom_nodes})
 
           if label=='interior' and direction=='forward' and idx>=0 and 'printf' in steps[idx]['line_text'] and 'Encontrado en la posicion' in steps[idx]['line_text'] and actual.get('head')=='N1':
 

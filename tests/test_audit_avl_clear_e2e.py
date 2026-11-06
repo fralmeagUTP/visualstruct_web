@@ -1,5 +1,6 @@
 """AVL cleanup lifetime records, recursive scopes, true caller NULL and replay."""
 import json,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -26,7 +27,7 @@ def test_clear_browser_free_alias_root_scopes_replay_and_actual_main(tmp_path,av
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert page.locator('#hier-printf-console').text_content()==state['console_stdout']
+      assert console_stdout(page, '#hier-printf-console')==state['console_stdout']
       assert page.locator('#message-box').inner_text()==(data['message'] if index==len(steps)-1 else 'Limpieza preparada: resultado pendiente hasta completar la traza.')
       heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))");assert heap==[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in state['heap_nodes']];assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head'];assert page.locator('[data-abb-caller]').count()==int(state['caller_frame'] is not None)
       for n in state['heap_nodes']:

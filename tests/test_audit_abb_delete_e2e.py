@@ -1,6 +1,7 @@
 """Existing tree/heap views and exact caller, bidirectional replay without POST."""
 import json,threading,subprocess,shutil
 from pathlib import Path
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -27,7 +28,7 @@ def test_delete_browser_native_views_replay_and_actual_caller(tmp_path,delete_ba
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert page.locator('#hier-printf-console').text_content()==state['console_stdout']==''
+      assert console_stdout(page, '#hier-printf-console')==state['console_stdout']==''
       assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head']
       heap=page.locator('[data-abb-node]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))');assert heap==state['heap_nodes']
       assert page.locator('[data-abb-frame]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbFrame,depth:Number(x.dataset.abbDepth)}))')==[{'id':f['id'],'depth':f['depth']} for f in state['tree_frames']]

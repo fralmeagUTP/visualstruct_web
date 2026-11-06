@@ -1,3 +1,4 @@
+from e2e_trace_contracts import reveal_public
 """Both views and replay: visible parent removal, exact C heap and scoped aliases."""
 import json,threading
 import pytest
@@ -18,7 +19,7 @@ def test_clear_query_both_views_replay_scopes_buffer_highlight_console(tmp_path,
     for parent,children in meta['seed']:
      assert context.request.post(base+'/sequential/sublist/operate',data={'operation':'insertar_padre','payload':{'parent':parent}}).json()['success']
      for child in children:assert context.request.post(base+'/sequential/sublist/operate',data={'operation':'insertar_hijo','payload':{'parent':parent,'child':child}}).json()['success']
-    page.goto(base+'/sequential/sublist',wait_until='networkidle');page.evaluate('''()=>{const old=renderVisualState;renderVisualState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}''');page.locator('.seq-understand button').filter(has_text='Mostrar').click();assert page.locator('#seq-variable-view').is_visible();page.select_option('#operation-select',meta['operation']);
+    page.goto(base+'/sequential/sublist',wait_until='networkidle');page.evaluate('''()=>{const old=renderVisualState;renderVisualState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}''');page.locator('.seq-understand button').filter(has_text='Mostrar').click();reveal_public(page,page.locator('#seq-variable-view'));assert page.locator('#seq-variable-view').is_visible();page.select_option('#operation-select',meta['operation']);
     form_payload={'parent':meta['payload']['parent']} if meta['operation']=='hijos_de' else {}
     for name,value in form_payload.items():page.locator(f'[name="{name}"]').fill(str(value))
     page.click('#seq-step-mode')

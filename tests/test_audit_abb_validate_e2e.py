@@ -1,6 +1,7 @@
 """Actual validator API, forged internal fixtures, all executed frames and replay."""
 from pathlib import Path
 import json,shutil,subprocess,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from app.services.hierarchical_structure_service import HierarchicalStructureService
@@ -35,7 +36,7 @@ def test_abb_validar_native_views_frames_replay_and_calculated_main(tmp_path,abb
    page.locator('#hier-understand-toggle').click();page.select_option('#operation-select','validar');page.click('#hier-step-mode')
    with page.expect_response(lambda r:r.url.endswith('/abb/operate') and r.request.method=='POST') as resp:page.click('#hier-sim-play')
    d=resp.value.json();assert d['success'] and d['result']==abb_validate_native['expected'][case];steps=d['execution_trace']['steps'];native=[e for e in abb_validate_native['events'] if e['case']==case];assert len(steps)==len(native);count=len(posts)
-   pending='Validacion preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending
+   pending='Validación preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending
    def values(root):return [] if root is None else [str(root['value']),*values(root['left']),*values(root['right'])]
    for direction,selector,indices in [('forward','#hier-sim-step',range(len(steps))),('backward','#hier-sim-prev',range(len(steps)-2,-2,-1))]:
     for index in indices:
@@ -47,7 +48,7 @@ def test_abb_validar_native_views_frames_replay_and_calculated_main(tmp_path,abb
      aliases=page.locator('[data-abb-alias]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget}))');assert aliases==[{'frame':f['id'],'name':name,'type':'ABBNodo *' if name=='nodo' else 'int','target':str(value)} for f in st['tree_frames'] for name,value in f['parameters'].items()]
      ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame']
      actual=page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent,type:x.children[0].querySelector("code").textContent}))');assert actual==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']]
-     assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack']);assert page.locator('#hier-printf-console').text_content()==st['console_stdout']==''
+     assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack']);assert console_stdout(page, '#hier-printf-console')==st['console_stdout']==''
      assert page.locator('#message-box').inner_text()==(d['message'] if index==len(steps)-1 else pending)
      assert page.locator('[data-abb-validation-pending]').count()==int(st['wrapper_result'] is None)
      if st['wrapper_result'] is None:assert 'Resultado:' not in page.locator('#visual-state').inner_text()

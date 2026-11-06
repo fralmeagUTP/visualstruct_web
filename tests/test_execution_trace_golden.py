@@ -75,13 +75,19 @@ def test_graph_trace_golden() -> None:
         ("insert_vertex", {"vertex": 2}),
         ("insert_edge", {"origin": 1, "target": 2, "weight": 3}),
     ])
-    from _graph_avl_golden_consumer_oracle import assert_golden_consumer
-    assert_golden_consumer(response, "graph")
-    _assert_trace("graph", response)
+    from _book_construction_golden_oracle import assert_book_graph_golden
+    assert_book_graph_golden(response)
+    expected = json.loads((Path(__file__).parent / "golden" / "graph_book_v1.json").read_text(encoding="utf-8"))
+    trace = response["execution_trace"]
+    assert trace["source_sha256"] == expected["source_sha256"]
+    assert response["source_contract"] == expected["source_contract"]
+    assert len(trace["steps"]) == expected["step_count"]
+    assert all(line in [step["line_text"] for step in trace["steps"]] for line in expected["required_lines"])
+    assert LegacyTraceAdapter.round_trip(trace["steps"]) == trace["steps"]
     state = response["visual_state"]
     edge = state["edges"][0]
     actual = {"vertices": state["metadata"]["vertices_count"], "edges": state["metadata"]["edges_count"], "edge": [edge["source"], edge["target"], edge["weight"]]}
-    assert actual == GOLDEN["graph"]["final"]
+    assert actual == expected["final"]
 
 
 def test_hash_trace_golden() -> None:
@@ -89,9 +95,13 @@ def test_hash_trace_golden() -> None:
         ("create_table", {"capacity": 5}),
         ("insert", {"key": "1", "value": "1"}),
     ])
-    from _hash_two_consumer_oracle import assert_hash_empty_insert
-    assert_hash_empty_insert(response)
-    _assert_trace("hash", response)
+    from _hash_two_consumer_oracle import assert_hash_current_empty_insert
+    assert_hash_current_empty_insert(response)
+    # Keep the historical TAD golden unchanged; the additional caller event
+    # is independently checked above, including exact stdout and state boundary.
+    trace = response['execution_trace']
+    _assert_trace("hash", {**response, 'execution_trace': {**trace, 'steps': trace['steps'][:-1]}})
+    assert LegacyTraceAdapter.round_trip(trace['steps']) == trace['steps']
     state = response["visual_state"]
     items = [[entry["key"], entry["value"]] for bucket in state["buckets"] for entry in bucket["entries"]]
     actual = {"size": state["metadata"]["size"], "capacity": state["metadata"]["capacity"], "items": items}

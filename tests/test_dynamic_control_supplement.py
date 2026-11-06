@@ -1,3 +1,4 @@
+from e2e_trace_contracts import reveal_public
 """DOM census of control generation flows, no operation/algorithm executions."""
 import json
 from pathlib import Path
@@ -34,7 +35,9 @@ def test_dynamic_fields_code_links_and_workspace_creator_flows(controls40_page,t
       values=target.locator('option').evaluate_all('(ns)=>ns.map(n=>n.value)');assert values;target.select_option(values[-1])
      fields.append({'name':field['name'],'id':target.get_attribute('id'),'tag':expected_tag,'value_changed':True})
     selected.append({'operation':op,'fields':fields})
-  if group=='graph':
+  if group=='graph' and route.endswith('/construccion'):
+   assert not page.locator('#graph-algorithm-select').is_visible(), 'Algorithms belong to their public phase, not construction'
+  if group=='graph' and not route.endswith('/construccion'):
    algorithm_selector=page.locator('#graph-algorithm-select');names=algorithm_selector.locator('option').evaluate_all('(ns)=>ns.map(n=>n.value).filter(Boolean)')
    for name in names:
     algorithm_selector.select_option(name)
@@ -43,10 +46,16 @@ def test_dynamic_fields_code_links_and_workspace_creator_flows(controls40_page,t
   buttons=page.locator('#'+function_list+' button');count=buttons.count();navigation=[]
   for index in sorted(set([0,count-1])) if count else []:
    target=buttons.nth(index);line=target.get_attribute('data-line') or target.get_attribute('data-code-line');assert line is not None
-   before=len(page.evaluate('window.__dynamicScrolled'));target.click(force=True);assert len(page.evaluate('window.__dynamicScrolled'))>before
-   navigation.append({'line':line,'scroll_called':True,'accepted_scroll_contract':'scrollIntoView or stackpilot scrollTop setter','force_used_for_potential_collapsed_container':True})
+   reveal_public(page,target)
+   before=len(page.evaluate('window.__dynamicScrolled'));target.click()
+   code=page.locator('#sorting-code' if group=='sorting' else '#op-pseudocode')
+   shown=code.locator('.code-line[data-line="'+line+'"]')
+   assert shown.count()==1
+   assert shown.evaluate('e=>{const p=e.closest("pre"),a=e.getBoundingClientRect(),b=p.getBoundingClientRect();return a.top>=b.top+p.clientTop-1 && a.bottom<=b.top+p.clientTop+p.clientHeight+1;}')
+   assert 'is-code-consulted' in target.get_attribute('class')
+   navigation.append({'line':line,'scroll_called':len(page.evaluate('window.__dynamicScrolled'))>before,'accepted_scroll_contract':'target visible within reader; no scroll required when already visible','force_used_for_potential_collapsed_container':False})
   visible=page.locator('button,input,select,textarea,a,summary').evaluate_all("(nodes)=>nodes.filter(n=>n.getClientRects().length&&getComputedStyle(n).display!=='none').map(n=>({tag:n.tagName,id:n.id,name:n.name||null,type:n.type||null,action:n.dataset.line||n.dataset.codeLine||n.dataset.answer||null}))")
   creators=page.evaluate("window.__dynamicCreated.map(x=>({tag:x.tag,id:x.node.id,name:x.node.name||null,connected:x.node.isConnected,visible:Boolean(x.node.getClientRects().length),stack:x.stack}))")
   flows.append({'route':route,'selectors':selected,'code_navigation':navigation,'visible_controls':visible,'creators':creators})
  assert not posts and not errors
- (tmp_path/'dynamic-flow-proof.json').write_text(json.dumps({'group':group,'flows':flows,'POSTs':posts,'JS_errors':errors,'limits':'Fieldgeneration/descriptorbinding andcode-navigation scroll;nooperationexecution. Sourceinventory plus existing exercisedtraces/downloads coverdeferredfactories;forceclickdoesnotprovepublicvisibility.'},ensure_ascii=False,indent=2),encoding='utf-8')
+ (tmp_path/'dynamic-flow-proof.json').write_text(json.dumps({'group':group,'flows':flows,'POSTs':posts,'JS_errors':errors,'limits':'Fieldgeneration/descriptorbinding andcode-navigation scroll;nooperationexecution. Every function target is reached through public controls; an already visible line need not scroll.'},ensure_ascii=False,indent=2),encoding='utf-8')

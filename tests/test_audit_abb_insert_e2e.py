@@ -1,3 +1,4 @@
+from e2e_trace_contracts import reveal_public
 """Current ABB tree and individual reservations/scopes, forward/back without POST."""
 import json,threading,re,subprocess,shutil
 from pathlib import Path
@@ -18,7 +19,7 @@ def test_abb_insert_current_tree_heap_scopes_replay_and_displayed_caller(tmp_pat
     for value in meta['seed']:assert context.request.post(base+'/hierarchical/abb/operate',data={'operation':'insertar','payload':{'value':value}}).json()['success']
     page.goto(base+'/hierarchical/abb',wait_until='networkidle');assert page.locator('#operation-select option').count()==12
     page.evaluate('''()=>{const old=renderHierState;renderHierState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}''')
-    page.locator('#hier-understand-toggle').click();assert page.locator('#hier-variables-view').is_visible()
+    page.locator('#hier-understand-toggle').click();reveal_public(page,page.locator('#hier-variables-view'));assert page.locator('#hier-variables-view').is_visible()
     page.select_option('#operation-select','insertar');page.locator('[name="value"]').fill(str(meta['payload']['value']));page.click('#hier-step-mode')
     with page.expect_response(lambda r:r.url.endswith('/abb/operate') and r.request.method=='POST') as response:page.click('#hier-sim-play')
     data=response.value.json();count=len(posts)

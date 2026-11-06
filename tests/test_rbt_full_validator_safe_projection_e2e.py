@@ -1,3 +1,4 @@
+from e2e_trace_contracts import reveal_public
 """Malformed live-object projections use flat identities in both RN representations."""
 import json
 from pathlib import Path
@@ -23,6 +24,7 @@ def test_full_rn_safe_invalid_projection_browser(avl_server,tmp_path,name,desc):
   for i,step in enumerate(trace['steps']):
    p.evaluate('i=>window.__rnPlayer.seek(i)',i);actual=p.evaluate('window.rnActual');assert actual==step['pedagogy']['memory_state'];assert p.locator('[data-abb-node]').count()==len(desc);assert p.locator('.viz-tree-node:not(.nil)').count()==len(desc)
    for node in projection['heap_nodes']:
+    reveal_public(p,p.locator('[data-abb-node]').first)
     text=p.locator('[data-abb-node="'+node['id']+'"]').inner_text();assert 'padre: '+node['parent'] in text and 'color: '+node['color'] in text
    shots.append(actual)
   for i in range(len(shots)-2,-1,-1):p.evaluate('i=>window.__rnPlayer.seek(i)',i);assert p.evaluate('window.rnActual')==shots[i]

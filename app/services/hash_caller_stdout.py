@@ -91,6 +91,10 @@ def attach_caller_stdout(trace: dict[str, Any], operation: str, payload: dict[st
         nonlocal stdout
         stdout += fragment
         step = deepcopy(template)
+        # printf observes the already completed TAD state. Do not replay the
+        # return instruction's before-snapshot when entering the caller.
+        step['state_snapshot'] = deepcopy(steps[-1]['state_after'])
+        step['state_after'] = deepcopy(steps[-1]['state_after'])
         step.update(step_index=len(steps), line_index=-1, line_text='', event_type='caller_printf',
                     phase='progress', console=[fragment], console_stdout=stdout,
                     instruction_event={'token': 'caller_printf', 'function': 'main',
@@ -101,6 +105,8 @@ def attach_caller_stdout(trace: dict[str, Any], operation: str, payload: dict[st
         step['debug'].update(token='caller_printf', function='main', caller_line_text=line,
                              source_role='caller', caller_variables=observed)
         frame = step.get('pedagogy', {})
+        frame['state_before'] = deepcopy(step['state_snapshot'])
+        frame['state_after'] = deepcopy(step['state_after'])
         frame['source'] = {'line_index': None, 'line_text': line, 'function': 'main', 'source_role': 'caller'}
         frame['narration'] = {level: 'El caller ejecuta '+line+' y agrega exactamente su fragmento a stdout.'
                               for level in ('basic', 'intermediate', 'advanced')}

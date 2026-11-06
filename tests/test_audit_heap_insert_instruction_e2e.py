@@ -1,6 +1,7 @@
 """Actual Insertar array/tree, cell ownership, scoped variables and replay."""
 from pathlib import Path
 import json,shutil,subprocess,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from app.domain.hierarchical import tad_wrappers
@@ -27,12 +28,12 @@ def test_heap_insert_views_replay_growth_failure_and_downloads(tmp_path,heap_ins
     page.locator('#hier-understand-toggle').click();page.select_option('#operation-select','insertar');page.locator('[name="value"]').fill(str(value));page.click('#hier-step-mode');fault['enabled']=fail
     with page.expect_response(lambda r:r.url.endswith('/binary_heap/operate') and r.request.method=='POST') as response:page.click('#hier-sim-play')
     d=response.value.json();assert d['success']==(not fail);trace=d['execution_trace'];steps=trace['steps'];native=[e for e in heap_insert_native['events'] if e['case']==case];assert len(steps)==len(native);nposts=len(posts)
-    pending='Insercion preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending
+    pending='Inserción preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending
     for direction,selector,indices in [('forward','#hier-sim-step',range(len(steps))),('backward','#hier-sim-prev',range(len(steps)-2,-2,-1))]:
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert page.locator('#hier-printf-console').text_content()==state['console_stdout']==''
+      assert console_stdout(page, '#hier-printf-console')==state['console_stdout']==''
       assert page.locator('[data-heap-source-index]').all_text_contents()==[f'[{i}] {v}' for i,v in enumerate(state['array'])]
       assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(map(str,state['array']))
       suspended=state['heap_data_reference'].startswith('indeterminado');assert page.locator('[data-heap-drawing-suspended]').count()==(2 if suspended else 0)

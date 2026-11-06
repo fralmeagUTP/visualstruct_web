@@ -1,0 +1,1 @@
+- [x] sorting-text-continuity: Verify exact recovered snapshots, add narrow contract and negative tests, then report finite checks and preserved blockers.

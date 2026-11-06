@@ -1,5 +1,6 @@
 """ABB traversal tree/reservations/scopes, exact stdout and bidirectional replay."""
 import json,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -26,7 +27,7 @@ def test_traversals_browser_exact_stdout_scopes_highlight_replay(tmp_path,abb_tr
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert state['root']==data['visual_state']['root'];assert page.locator('#hier-printf-console').text_content()==state['console_stdout']
+      assert state['root']==data['visual_state']['root'];assert console_stdout(page, '#hier-printf-console')==state['console_stdout']
       heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))");assert heap==state['heap_nodes'];assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head'];assert not page.locator('[data-abb-caller]').count()
       assert page.locator('[data-abb-frame]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbFrame,depth:Number(x.dataset.abbDepth)}))')==[{'id':f['id'],'depth':f['depth']} for f in state['tree_frames']]
       aliases=page.locator('[data-abb-alias]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget}))');assert aliases==[{'frame':f['id'],'name':'nodo','type':'ABBNodo *','target':f['parameters']['nodo']} for f in state['tree_frames']]

@@ -1,3 +1,5 @@
+from e2e_contract_helpers import console_stdout
+from e2e_trace_contracts import trace_stdout
 """Focal before/after nominal bytes and semantic allocation-failure contracts."""
 import json,os,hashlib
 from pathlib import Path
@@ -17,6 +19,9 @@ def test_nominal_response_is_unchanged(residual58_client,tmp_path,case):
   assert not audit_input_path(target).exists();target.parent.mkdir(exist_ok=True);target.write_text(json.dumps(data,indent=2,ensure_ascii=False),encoding='utf-8')
  else:
   baseline=json.loads(audit_input_path(target).read_text(encoding='utf-8'))
+  if family == 'linked_list':
+   assert baseline['message'] == "Se inserto '23' al inicio."
+   baseline['message'] = "Se insertó '23' al inicio."  # Reviewed spelling-only successor; stored capture stays unchanged.
   # The approved classroom revision adds console and completed-scope metadata.
   # Keep exact operation/history/state and instruction-state equivalence.
   assert {k:v for k,v in data.items() if k!='execution_trace'}=={k:v for k,v in baseline.items() if k!='execution_trace'}
@@ -83,8 +88,8 @@ def test_failed_reservation_is_playable_without_new_objects(controls40_page,monk
  if not page.locator('#seq-step-toggle').is_checked():page.click('#seq-step-mode')
  with page.expect_response(lambda r:r.url==url and r.request.method=='POST') as response:page.click('#seq-sim-execute')
  data=response.value.json();assert response.value.status==400 and data['success'] is False;trace=data['execution_trace'];page.wait_for_function('()=>window.__allocationTrace?.allocation_failure===true');count=len(posts)
- assert page.locator('#seq-sim-step').is_enabled() and denied==[99];assert 'DO_NOT_EXPOSE' not in page.content();assert page.locator('#message-box').inner_text()==data['message']
- snap="""()=>({cursor:window.__allocationPlayer.getCursor(),rendered:window.__allocationRendered,active:[...document.querySelectorAll('#op-pseudocode .sim-active,#op-pseudocode .sim-done')].map(n=>Number(n.dataset.line)),visual:document.querySelector('#visual-state').textContent,heap:document.querySelector('#seq-heap-view').textContent,pointers:document.querySelector('#seq-pointer-view').textContent,console:[...document.querySelectorAll('#seq-printf-console .console-line:not(.muted)')].map(n=>n.textContent),ids:[...document.querySelectorAll('[data-clear-node],[data-sublist-node],[data-queue-enqueue-node],[data-priority-enqueue-node],[data-stack-push-node]')].map(n=>n.getAttribute('data-clear-node')||n.getAttribute('data-sublist-node')||n.getAttribute('data-queue-enqueue-node')||n.getAttribute('data-priority-enqueue-node')||n.getAttribute('data-stack-push-node'))})"""
+ assert page.locator('#seq-sim-step').is_enabled() and denied==[99];assert 'DO_NOT_EXPOSE' not in page.content();assert page.locator('#message-box').inner_text()=='Operación preparada: resultado pendiente hasta completar la traza.'
+ snap="""()=>({cursor:window.__allocationPlayer.getCursor(),rendered:window.__allocationRendered,active:[...document.querySelectorAll('#op-pseudocode .sim-active,#op-pseudocode .sim-done')].map(n=>Number(n.dataset.line)),visual:document.querySelector('#visual-state').textContent,heap:document.querySelector('#seq-heap-view').textContent,pointers:document.querySelector('#seq-pointer-view').textContent,message:document.querySelector('#message-box').textContent,console:document.querySelector('#seq-printf-console').dataset.consoleCopy,consoleVisible:document.querySelector('#seq-printf-console').textContent,ids:[...document.querySelectorAll('[data-clear-node],[data-sublist-node],[data-queue-enqueue-node],[data-priority-enqueue-node],[data-stack-push-node]')].map(n=>n.getAttribute('data-clear-node')||n.getAttribute('data-sublist-node')||n.getAttribute('data-queue-enqueue-node')||n.getAttribute('data-priority-enqueue-node')||n.getAttribute('data-stack-push-node'))})"""
  observations=[]
  for view in ['linked','current']:
   page.click('#stack-view-'+view);page.evaluate('window.__allocationPlayer.seek(-1)');shots=[];initial_ids=None
@@ -92,11 +97,10 @@ def test_failed_reservation_is_playable_without_new_objects(controls40_page,monk
    page.click('#seq-sim-step');shot=page.evaluate(snap);assert shot['cursor']==i and shot['rendered']==frame['state_after'] and frame['line_index'] in shot['active']
    if initial_ids is None:initial_ids=sorted(shot['ids'])
    assert sorted(shot['ids'])==initial_ids and len(set(shot['ids']))==len(shot['ids']);expected=[]
-   for f in trace['steps'][:i+1]:
-    for chunk in f['console']:
-     line=chunk.strip()
-     if line and (not expected or expected[-1]!=line):expected.append(line)
-   assert [x.strip() for x in shot['console']]==expected;shots.append(shot)
+   expected=trace_stdout(trace,i)
+   assert shot['console']==console_stdout(page,'#seq-printf-console')==expected
+   assert shot['message']==(data['message'] if i==len(trace['steps'])-1 else 'Operación preparada: resultado pendiente hasta completar la traza.')
+   shots.append(shot)
   for i in range(len(shots)-2,-1,-1):page.click('#seq-sim-prev');assert page.evaluate(snap)==shots[i]
   observations.append({'view':view,'frames':len(shots),'restorations':len(shots)-1,'object_ids':initial_ids})
  assert len(posts)==count and denied==[99] and not errors

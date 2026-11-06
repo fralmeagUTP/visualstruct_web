@@ -16,10 +16,11 @@ def test_actual_kruskal_history_download_and_ownership(case,actual_browser_calle
  assert r['original_strict_c17_pass'] and r['original_returncode']==0
  assert not r['caller_output_is_precomputed']
  assert r['ownership']['allocations']==r['ownership']['frees'] and r['ownership']['live']==0
+ assert r['ownership']['observed_calls']==2
+ assert r['ownership']['non_null_results']==(2 if case in {'negative_alternative','cheaper_alternative','equal_priority','connected'} else 0)
  lines=[l for l in r['original_stdout'].splitlines() if l.startswith('Kruskal:')]
- expected={'single_vertex':'Kruskal: | costo=0','connected':'Kruskal: 2-3(2) 3-1(1) | costo=3','disconnected':'Kruskal: 4-3(3) 2-1(2) | costo=5'}[case]
+ expected={'single_vertex': 'Kruskal: estado=0 (sin arcos; resultado valido) | costo=0', 'connected': 'Kruskal: estado=0 2->3(2) 3->1(1) | costo=3', 'disconnected': 'Kruskal: estado=5'}[case]
  assert lines==[expected]*2
- # UI/backend tie choice is still held; compare generated main to real native
- # output, not to a precomputed or invented backend path.
+ # Exact canonical C stdout includes GrafoEstado, even for retained failures.
  from test_graph_bfs_documentation import run_doxygen
  run_doxygen(out/case,[out/case/'main.c'])

@@ -1,3 +1,4 @@
+from tests._sorting_text_source_contract import assert_sorting_text_source_continuity
 """Independent native frame, lexical lifetime and actual UI gates for Counting sort."""
 from pathlib import Path
 import json,hashlib
@@ -72,7 +73,7 @@ def test_native_zeroing_partial_write_decrement_ties_retirement_and_oracle_reuse
             if token=='range_limit':assert c['condition'] is False and native[idx+1]['token']=='size_guard'
             if token=='count_free':counts['freed']+=1;assert c['conteo'] is None and all(x==0 for x in native[idx-1]['conteo']) and c['allocations']==c['frees']==1
     assert all(counts.values())
-    for name in ['observed.c','native.jsonl']:assert (audit_input_path(full/name)).read_bytes()==(audit_input_path(LOW/'native-final'/name)).read_bytes()
+    for name in ['observed.c','native.jsonl']:assert (audit_input_path(full/name)).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(LOW/'native-final'/name)).read_bytes().replace(b'\r\n',b'\n')
     for name in ['tad_ordenamiento.c','tad_ordenamiento.h']:
         assert (audit_input_path(full/name)).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/name)).read_bytes().replace(b'\r\n',b'\n')
         assert_historical_protected_hash(ROOT,'docs/tads_C/'+name,hashlib.sha256((audit_input_path(LOW/'native-final'/name)).read_bytes()).hexdigest())
@@ -89,7 +90,7 @@ def test_original_IDs_and_eight_closed_modules_preserved_and_64bit_limit():
     from tests._sorting_published_test_contract import assert_published_test_successor
     assert_published_test_successor(ROOT,original,'counting')
     protected=json.loads((audit_input_path(LOW/'protected-closed-modules.json')).read_text());assert len(protected)==8
-    for rel,sha in protected.items():assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==sha
+    for rel,sha in protected.items():assert_sorting_text_source_continuity(ROOT,rel,sha)
     assert '_Static_assert(sizeof(size_t)==8' in (audit_input_path(ROOT/'tests/_audit_counting_limits.py')).read_text(encoding='utf-8-sig')
 
 

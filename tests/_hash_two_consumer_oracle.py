@@ -36,3 +36,23 @@ def assert_hash_empty_insert(response):
             state=s[field];assert state["metadata"]["capacity"]==5
             assert state["metadata"]["size"]==int(i>=18 or (field=="state_after" and i==17))
     assert trace["final_state"]==response["visual_state"]
+
+
+def assert_hash_current_empty_insert(response):
+    """Preserve the nineteen C instruction oracle and verify the new real caller."""
+    from copy import deepcopy
+    steps = response['execution_trace']['steps']
+    assert len(steps) == 20
+    caller = steps[-1]
+    assert caller['event_type'] == 'caller_printf'
+    assert caller['instruction_event'] == {
+        'token': 'caller_printf', 'function': 'main', 'source_role': 'caller',
+        'C_executed': True, 'caller_line_text': 'printf("insert:%d:%d:%d\\n", key, value, (int)ok);'}
+    assert caller['line_index'] == -1 and caller['line_text'] == ''
+    assert caller['console'] == ['insert:1:1:1\n']
+    assert caller['console_stdout'] == response['console_stdout'] == 'insert:1:1:1\n'
+    assert caller['state_snapshot'] == caller['state_after'] == steps[-2]['state_after']
+    assert caller['debug']['heap'] == steps[-2]['debug']['heap']
+    tad_response = deepcopy(response)
+    tad_response['execution_trace']['steps'] = tad_response['execution_trace']['steps'][:-1]
+    assert_hash_empty_insert(tad_response)

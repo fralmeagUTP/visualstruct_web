@@ -1,6 +1,7 @@
 """Both existing heap representations and destination lifetime against native C."""
 from pathlib import Path
 import collections,json,shutil,subprocess,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -27,7 +28,7 @@ def test_heap_queries_both_representations_forward_backward_native(tmp_path,heap
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert page.locator('#hier-printf-console').text_content()==state['console_stdout']==''
+      assert console_stdout(page, '#hier-printf-console')==state['console_stdout']==''
       assert state['array']==native[0]['array'] and state['capacity']==native[0]['capacity']
       assert page.locator('[data-heap-source-index]').all_text_contents()==[f'[{i}] {v}' for i,v in enumerate(state['array'])]
       assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(map(str,state['array']))

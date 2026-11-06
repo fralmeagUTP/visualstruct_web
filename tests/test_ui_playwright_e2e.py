@@ -173,7 +173,7 @@ def test_playwright_hierarchical_red_black_null_and_history_sync() -> None:
             for value in ["10", "5", "15"]:
                 page.fill("#h-field-value", value)
                 page.click("#hier-sim-play")
-                _wait_status_contains(page, "#hier-sim-status", "Modo rapido")
+                _wait_status_contains(page, "#hier-sim-status", "Modo rápido")
 
             page.wait_for_selector(".viz-tree-svg", timeout=5000)
 
@@ -254,7 +254,7 @@ def test_playwright_global_didactic_switch_visual_default_and_persistence() -> N
             _wait_didactic_mode(page, "visual")
             assert page.is_checked("#didactic-mode-switch") is False
 
-            assert page.locator("#seq-code-region").is_visible()
+            assert not page.locator("#seq-code-region").is_visible()
 
             initial_url = page.url
             page.locator('label[for="didactic-mode-switch"]').click()
@@ -434,7 +434,7 @@ def test_playwright_other_sequential_structures_show_canonical_final_state(
                 page.fill(f"#field-{name}", value)
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Modo rápido")
-            assert "Tamano: 1" in (page.text_content("#visual-state") or "")
+            assert "Tamaño: 1" in (page.text_content("#visual-state") or "")
 
             page.select_option("#operation-select", remove_operation)
             for name, value in remove_payload.items():
@@ -860,8 +860,10 @@ def test_playwright_graph_guided_level_and_mobile_context() -> None:
             _wait_status_contains(page, "#graph-sim-counter", "Paso: 1/")
             cursor = page.text_content("#graph-sim-counter")
             page.set_viewport_size({"width":390,"height":844})
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-graph-tab="code"]')
             assert page.is_visible("#graph-code-region")
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-graph-tab="visual"]')
             assert page.is_visible("#graph-visual-region")
             assert page.text_content("#graph-sim-counter")==cursor
@@ -935,8 +937,10 @@ def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
             summary = (page.text_content("#hier-pedagogy-summary") or "").lower()
             assert "llamador equivalente" in summary and "no hay resultado futuro" in summary
             page.set_viewport_size({"width": 390, "height": 844})
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-hier-tab="code"]')
             assert page.is_visible("#hier-code-region") is True
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-hier-tab="visual"]')
             assert page.is_visible("#hier-visual-region") is True
             assert page.text_content("#hier-sim-counter") == cursor
@@ -1147,6 +1151,7 @@ def test_playwright_sorting_compact_workspace_omits_removed_learning_widgets() -
             assert (page.text_content("#sorting-pedagogy-narration") or "").strip()
             assert (page.text_content("#sorting-call-stack") or "").strip()
             assert (page.text_content("#sorting-variable-table") or "").strip()
+            page.locator("#didactic-mode-switch").check()
             assert page.locator("#sorting-code-region").is_visible()
             browser.close()
 
@@ -1217,7 +1222,7 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
                 _finish_manual_trace(page, "sorting", observe=observe_frame)
                 assert seen["cursor"] == seen["total"]
                 assert seen["active_scope"] and seen["family"], algorithm
-                page.wait_for_function("() => (document.querySelector('#sorting-call-stack')?.textContent || '').includes('Sin llamadas activas.')")
+                page.wait_for_function("() => (document.querySelector('#sorting-call-stack')?.textContent || '').includes('No hay una función en ejecución en este punto. Las llamadas aparecen al entrar en una función.')")
                 final = _sorting_frame_observation(page)
                 assert "Sin llamadas activas." in final["stack"]
                 assert not (set(final["variables"]) & local_names[algorithm]), algorithm
@@ -1260,6 +1265,7 @@ def test_playwright_sorting_step_navigation_and_theory_analysis() -> None:
             assert "Paso: 1/" in (page.text_content("#sorting-sim-counter") or "")
             before_tab = page.text_content("#sorting-sim-counter")
             page.set_viewport_size({"width": 760, "height": 900})
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-sorting-tab="code"]')
             assert page.text_content("#sorting-sim-counter") == before_tab
             page.click("#sorting-sim-next")
@@ -1319,10 +1325,13 @@ def test_playwright_sorting_accessibility_keyboard_responsive_and_export() -> No
                 page.set_viewport_size({"width": width, "height": 900})
                 assert page.locator("#sorting-sim-counter").is_visible()
                 if width <= 800:
+                    page.locator("#didactic-mode-switch").check()
                     page.click('[data-sorting-tab="visual"]')
                     assert page.locator("#sorting-visual-region").is_visible()
+                    page.locator("#didactic-mode-switch").check()
                     page.click('[data-sorting-tab="code"]')
-                    assert page.locator("#sorting-code-region").is_visible()
+                    page.locator("#didactic-mode-switch").check()
+            assert page.locator("#sorting-code-region").is_visible()
             results = page.locator("#sorting-export-summary").locator("xpath=ancestor::details")
             for panel in results.all():
                 if panel.get_attribute("open") is None:

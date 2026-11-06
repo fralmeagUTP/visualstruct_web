@@ -39,7 +39,7 @@ jobs:
       VISUALSTRUCT_E2E_SHARD_COUNT: "4"
       VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: ci-safe-diagnostics
       VISUALSTRUCT_E2E_DIAGNOSTICS_NAME: probe
-    timeout-minutes: 15
+    timeout-minutes: 45
 
     steps:
       - name: Checkout
@@ -55,6 +55,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-test.txt
+
+      - name: Setup Node for DOM contract tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: qa/package-lock.json
+
+      - name: Install pinned DOM test dependencies
+        run: npm ci --prefix qa --ignore-scripts
 
       - name: Install and record required Doxygen
         run: |
@@ -109,7 +119,7 @@ jobs:
       VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: ci-safe-diagnostics
       VISUALSTRUCT_E2E_DIAGNOSTICS_NAME: probe
       COVERAGE_FILE: .coverage.${{ matrix.shard }}
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -124,6 +134,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-test.txt
+
+      - name: Setup Node for DOM contract tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: qa/package-lock.json
+
+      - name: Install pinned DOM test dependencies
+        run: npm ci --prefix qa --ignore-scripts
 
       - name: Install and record required Doxygen
         run: |

@@ -1,4 +1,5 @@
 """Regression of approved stages and exact causal state in both sequential views."""
+from e2e_sequential_render_contract import OBSERVER, assert_causal_render
 import re
 import pytest
 from test_ui_playwright_e2e import _live_server_url, _enable_manual_mode
@@ -40,8 +41,7 @@ def test_both_views_use_each_exact_causal_state_and_replay_without_post(tad,oper
         browser=p.chromium.launch();page=browser.new_page();posts=[]
         page.on("request",lambda request:posts.append(request.url) if request.method=="POST" else None)
         page.goto(base+"/sequential/"+tad,wait_until="networkidle")
-        page.evaluate("""() => {const real=window.renderVisualState;window.auditRenderedState=null;
-            window.renderVisualState=(id,state,container,hint)=>{window.auditRenderedState=structuredClone(state);return real(id,state,container,hint);};}""")
+        page.evaluate(OBSERVER)
         _enable_manual_mode(page,"seq")
         for operation in operations:
             page.select_option("#operation-select",operation)
@@ -57,17 +57,20 @@ def test_both_views_use_each_exact_causal_state_and_replay_without_post(tad,oper
             for view in ["current","linked"]:
                 page.click("#stack-view-"+view)
                 page.click("#seq-step-mode");page.click("#seq-step-mode")
-                assert page.evaluate("window.auditRenderedState")==steps[0]["state_snapshot"]
+                assert_causal_render(page.evaluate("window.auditRenderEvent"),result["execution_trace"],-1,tad)
                 for selector,indices in [("#seq-sim-step",range(len(steps))),("#seq-sim-prev",range(len(steps)-2,-2,-1))]:
                     for idx in indices:
                         page.click(selector)
                         page.wait_for_function("n=>document.querySelector('#seq-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=idx+1)
-                        expected=steps[idx]["state_after"] if idx>=0 else steps[0]["state_snapshot"]
-                        assert page.evaluate("window.auditRenderedState")==expected,(tad,operation,view,idx)
+                        expected=assert_causal_render(page.evaluate("window.auditRenderEvent"),result["execution_trace"],idx,tad)
                         if tad=="priority_queue" and view=="linked":
-                            roots=page.locator(".stack-linked-pointer").evaluate_all("els=>Object.fromEntries(els.map(el=>[(el.querySelector('strong')?.textContent||'').trim(),(el.querySelector('code')?.textContent||'').trim()]))")
-                            for key,label in [("delante","delante"),("atras","atrás")]:
-                                if key in expected:assert roots[label]==expected[key],(operation,idx,key)
+                            event=page.evaluate("window.auditRenderEvent")
+                            prefix="priority-enqueue" if operation=="encolar" else "priority-dequeue"
+                            for edge in ["front","rear"]:
+                                node=page.locator(f"[data-{prefix}-{edge}]")
+                                pointer=event["memory"]["root"][edge] or "NULL"
+                                assert node.count()==1 and node.get_attribute(f"data-{prefix}-{edge}")==pointer
+                                assert node.text_content().endswith(pointer), (operation,idx,edge)
 
                         if idx>=0 and steps[idx].get("line_index") is not None:
                             active=page.locator("#op-pseudocode .sim-active").evaluate_all("xs=>xs.map(x=>Number(x.dataset.line))")

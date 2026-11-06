@@ -1,3 +1,5 @@
+from e2e_contract_helpers import console_stdout
+from e2e_trace_contracts import trace_stdout
 """Nine finite singly linked list projections; native historical observers are reused."""
 import json,re,hashlib
 from pathlib import Path
@@ -66,7 +68,7 @@ def test_linked_C_API_animation(controls40_page,tmp_path,case):
  if not page.locator('#seq-step-toggle').is_checked():page.click('#seq-step-mode')
  with page.expect_response(lambda r:'/sequential/linked_list/operate' in r.url and r.request.method=='POST') as response:page.click('#seq-sim-execute')
  data=response.value.json();report=compare(data,case);fs=data['execution_trace']['steps'];page.wait_for_function('(op)=>window.__linkedTrace?.operation_name===op',arg=op);count=len(posts);views=[]
- snapshot="""()=>({rendered:window.__linkedVisual,cursor:window.__linkedPlayer.getCursor(),active:[...document.querySelectorAll('#op-pseudocode .sim-active,#op-pseudocode .sim-done')].map(x=>Number(x.dataset.line)),roots:Object.fromEntries([...document.querySelectorAll('[data-clear-pointer]')].map(n=>[n.dataset.clearPointer,n.querySelector('code').textContent])),nodes:[...document.querySelectorAll('[data-clear-node]')].map(n=>({id:n.dataset.clearNode,next:n.dataset.clearNext,status:n.dataset.clearStatus,value:Number(n.querySelector('.stack-linked-field strong').textContent)})).sort((a,b)=>a.id.localeCompare(b.id)),reachable:[...document.querySelectorAll('[data-clear-node][data-clear-status=linked]')].map(n=>n.dataset.clearNode),freed:[...document.querySelectorAll('[data-clear-freed]')].map(n=>n.dataset.clearFreed),console:[...document.querySelectorAll('#seq-printf-console .console-line:not(.muted)')].map(n=>n.textContent),visual:document.querySelector('#visual-state').textContent,heap:document.querySelector('#seq-heap-view').textContent,pointers:document.querySelector('#seq-pointer-view').textContent})"""
+ snapshot="""()=>({rendered:window.__linkedVisual,cursor:window.__linkedPlayer.getCursor(),active:[...document.querySelectorAll('#op-pseudocode .sim-active,#op-pseudocode .sim-done')].map(x=>Number(x.dataset.line)),roots:Object.fromEntries([...document.querySelectorAll('[data-clear-pointer]')].map(n=>[n.dataset.clearPointer,n.querySelector('code').textContent])),nodes:[...document.querySelectorAll('[data-clear-node]')].map(n=>({id:n.dataset.clearNode,next:n.dataset.clearNext,status:n.dataset.clearStatus,value:Number(n.querySelector('.stack-linked-field strong').textContent)})).sort((a,b)=>a.id.localeCompare(b.id)),reachable:[...document.querySelectorAll('[data-clear-node][data-clear-status=linked]')].map(n=>n.dataset.clearNode),freed:[...document.querySelectorAll('[data-clear-freed]')].map(n=>n.dataset.clearFreed),console:document.querySelector('#seq-printf-console').dataset.consoleCopy,consoleVisible:document.querySelector('#seq-printf-console').textContent,visual:document.querySelector('#visual-state').textContent,heap:document.querySelector('#seq-heap-view').textContent,pointers:document.querySelector('#seq-pointer-view').textContent})"""
  for view in ['linked','current']:
   page.click('#stack-view-'+view);page.evaluate('window.__linkedPlayer.seek(-1)');shots=[]
   for i,f in enumerate(fs):
@@ -74,12 +76,8 @@ def test_linked_C_API_animation(controls40_page,tmp_path,case):
    assert shot['nodes']==sorted([{k:n[k] for k in ['id','next','status','value']} for n in memory['heap_nodes']],key=lambda n:n['id']);assert shot['reachable']==memory['node_ids']
    expected_roots={k:memory[k] for k in ['lista','head','q','t','p','ant'] if k in memory};assert shot['roots']==expected_roots,(i,f['line_text'],shot['roots'],expected_roots)
    freed=[memory[k] for k in ['freed_temp','freed_p','freed_q'] if memory.get(k)];assert shot['freed']==freed
-   expected_console=[]
-   for frame in fs[:i+1]:
-    for chunk in frame['console']:
-     line=chunk.strip()
-     if line and (not expected_console or expected_console[-1]!=line):expected_console.append(line)
-   assert [x.strip() for x in shot['console']]==expected_console;shots.append(shot)
+   expected_console=trace_stdout(data['execution_trace'],i)
+   assert shot['console']==console_stdout(page,'#seq-printf-console')==expected_console;shots.append(shot)
   for i in range(len(shots)-2,-1,-1):page.click('#seq-sim-prev');assert page.evaluate(snapshot)==shots[i]
   views.append({'view':view,'frames':len(shots),'restorations':len(shots)-1})
  assert len(posts)==count and not errors;report.update(animation=views,extra_POSTs=0,JS_errors=errors)

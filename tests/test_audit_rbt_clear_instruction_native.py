@@ -3,7 +3,7 @@ from _instruction_context_contract import context_stack
 import os,sys,json,subprocess
 from pathlib import Path
 import pytest
-SUFFIX=' [valor indeterminado; identidad historica]'
+SUFFIX=' [valor indeterminado; identidad histórica]'
 
 @pytest.fixture(scope='module')
 def rbt_clear_native(tmp_path_factory):

@@ -131,7 +131,7 @@ def test_heap_query_instruction_matches_real_c(heap_query_native,case):
     if event['ok_state']:expected['ok']='sin inicializar' if event['ok_state']==1 else bool(event['ok'])
    else:
     if event['q_state']:expected['cantidad']='sin inicializar' if event['q_state']==1 else event['q']
-    if event['buffer_state']:expected['buffer']={1:'NULL',2:'B1',3:'B1 [valor indeterminado; identidad historica]'}[event['buffer_state']]
+    if event['buffer_state']:expected['buffer']={1:'NULL',2:'B1',3:'B1 [valor indeterminado; identidad histórica]'}[event['buffer_state']]
     if event['used_state']:expected['usados']='sin inicializar' if event['used_state']==1 else event['used']
     if event['ii_present']:expected['i']=event['ii']
    assert caller['locals']==expected

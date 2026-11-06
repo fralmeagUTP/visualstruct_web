@@ -1,6 +1,7 @@
 """Heap clear lifetime in the real array/tree DOM, forward/back and downloads."""
 from pathlib import Path
 import json,shutil,subprocess,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from app.domain.hierarchical.tad_wrappers import MonticuloBinario
@@ -34,7 +35,7 @@ def test_heap_clear_views_replay_callers_and_reserve_failure(tmp_path,heap_clear
       for index in indices:
        assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
        state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-       assert page.locator('#hier-printf-console').text_content()==state['console_stdout']==''
+       assert console_stdout(page, '#hier-printf-console')==state['console_stdout']==''
        assert page.locator('[data-heap-source-index]').all_text_contents()==[f'[{i}] {v}' for i,v in enumerate(state['array'])]
        assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(map(str,state['array']))
        assert page.locator('[data-heap-source-index].sim-active,[data-heap-tree-index].sim-active').count()==0

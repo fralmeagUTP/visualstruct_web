@@ -1,9 +1,10 @@
-"""Compile real Sublista history main fragment with its HTTP-downloaded C/H.
+"""Compile the self-contained Sublista history main with its HTTP-downloaded C/H.
 
-The product downloads C/H; main is a displayed/copyable fragment, not a separate
-main download. Includes provide the documented translation-unit context.
+The product downloads C/H; main is displayed/copyable and includes its own
+dependencies. Native observations run before final ownership cleanup.
 """
 import json,re,shutil,subprocess,threading
+from e2e_contract_helpers import main_source, observe_before_cleanup
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -28,10 +29,10 @@ def test_sublist_actual_main_all_visible_operations_typed_repeated_reload_and_na
     if operation=='hijos_de':query_results.append(data['result'])
     for reload in [False,True]:
      if reload:page.reload(wait_until='networkidle')
-     main=page.locator('.didactic-history-main').inner_text();assert '\u00a0' not in main
+     main=main_source(page);assert '\u00a0' not in main
      if operation=='hijos_de':assert main.count('sublista_obtener_hijos(')==len(query_results)
-     observe='printf("AUDIT:");for(Nodo*p=sublista;p!=NULL;p=p->sgte){printf(" P%d",p->nro);for(Sublista*h=p->sub;h!=NULL;h=h->sgte)printf(" H%d",h->nro);}printf("\\n");sublista_destruir(&sublista);'
-     source=tmp_path/f'main-{index}-{reload}.c';source.write_text('#include <stdio.h>\n#include "tad_sublista.h"\n'+main.replace('    return 0;','    '+observe+'\n    return 0;'),encoding='utf-8');exe=tmp_path/'main.exe';build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'tad_sublista.c'),str(source),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr;run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=5);assert run.returncode==0,run.stderr
+     observe='printf("AUDIT:");for(Nodo*p=sublista;p!=NULL;p=p->sgte){printf(" P%d",p->nro);for(Sublista*h=p->sub;h!=NULL;h=h->sgte)printf(" H%d",h->nro);}printf("\\n");'
+     source=tmp_path/f'main-{index}-{reload}.c';source.write_text(observe_before_cleanup(main, 'sublista_destruir(&sublista);', observe),encoding='utf-8');exe=tmp_path/'main.exe';build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'tad_sublista.c'),str(source),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr;run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=5);assert run.returncode==0,run.stderr
      actual=[]
      for token in next(x for x in run.stdout.splitlines() if x.startswith('AUDIT:'))[6:].split():
       if token.startswith('P'):actual.append({'parent':int(token[1:]),'children':[]})

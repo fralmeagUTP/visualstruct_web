@@ -5,7 +5,7 @@ import pytest
 from werkzeug.serving import make_server
 from app import create_app
 from app.config import Config
-from test_graph_four_instruction_e2e import COLLECT, compact
+from _book_graph_browser_contract import main_text, COLLECT, decoded_body, assert_browser_row
 
 pytestmark=pytest.mark.e2e
 
@@ -47,35 +47,22 @@ def test_vertex_actual_player_reverse_and_reload_no_redispatch(tmp_path,operatio
             page.evaluate("()=>{const b=document.querySelector('#graph-step-toggle');b.checked=true;b.dispatchEvent(new Event('change'));}")
             with page.expect_response(lambda r:r.url.endswith("/graph/graph/operate") and r.request.method=="POST") as response:
                 page.click("#graph-sim-play")
-            data=response.value.json();trace=data["execution_trace"];steps=trace["steps"]
-            assert trace["vertex_instruction_model"]
+            data=decoded_body(response.value.json());trace=data["execution_trace"];steps=trace["steps"]
+            assert trace["book_instruction_model"]
             if incident:
-                raw=steps[-2]
-                assert raw["pedagogy"]["instruction_event"]["C_executed"] and raw["state_after"]["edges"]
-                assert steps[-1]["pedagogy"]["instruction_event"]["C_executed"] is False and not steps[-1]["state_after"]["edges"]
-                assert len([n for n in raw["pedagogy"]["memory_state"]["heap_nodes"] if n["kind"]=="struct NodoA"])==2
+                frees=[s for s in steps if s['phase']=='free']
+                assert len(frees)==3
+                assert all(s['pedagogy']['instruction_event']['function']=='grafo_eliminar_vertice' for s in frees)
+                assert steps[-1]['state_after']['edges']==[]
 
             page.wait_for_function("(n)=>window.auditGraphPlayer.getTotalSteps()===n",arg=len(steps))
             page.evaluate("()=>window.auditGraphPlayer.pause()")
             before=len(posts);rows=page.evaluate(COLLECT,len(steps))
+            assert len(rows)==2*len(steps)+2
             for row in rows:
-                i=row["index"];ped=steps[i]["pedagogy"] if i>=0 else steps[0]["pedagogy"]["initial_frame"];st=ped["memory_state"]
-                assert row["heap"]==[{"id":n["id"],"kind":n["kind"],"contents":compact(n["fields"])} for n in st["heap_nodes"]],(i,row["direction"])
-                assert row["heads"]=="Cabezas C (arcos conservados por esta función): "+compact(st["graph"])
-                assert row["retired"]=="Retiradas (sólo registro histórico): "+compact(st["retired_objects"])
-                assert row["stack"]==[{"id":f["frame_id"],"text":f["function"]+": "+f["scope_status"]} for f in ped["call_stack"]]
-                assert len(row["variables"])==len(ped["variables"])
-                for got,v in zip(row["variables"],ped["variables"]):
-                    assert got["name"]==v["name"] and got["scope"]==v["scope"]
-                    assert compact(v["previous"]) in got["text"] and compact(v["value"]) in got["text"]
-                if ped["condition"]:assert ped["condition"]["substituted"] in row["condition"]
-                assert row["message"]==(data["message"] if i==len(steps)-1 else "Operación preparada: resultado pendiente hasta completar la traza.")
-                assert row["stdout"]=="(sin salida printf en esta ruta)"
-                expected_state=steps[i]["state_after"] if i>=0 else steps[0]["state_snapshot"]
-                assert row["svgNodes"]==len(expected_state["nodes"]),(i,row["direction"])
-                if i>=0:assert steps[i]["line_index"] in row["highlighted"]
+                assert_browser_row(row,data)
             assert len(posts)==before and not errors
-            main=lambda:"\n".join(page.locator(".didactic-history-main .code-line").all_text_contents()).replace("\u00a0","")
+            main=lambda:main_text(page)
             before_main=main();assert before_main
             for _ in range(2):
                 page.reload(wait_until="networkidle");assert main()==before_main and len(posts)==before

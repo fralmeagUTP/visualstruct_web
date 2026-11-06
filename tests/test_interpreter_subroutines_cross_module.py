@@ -210,7 +210,8 @@ def test_trace_contract_all_visible_graph_methods() -> None:
             payload["directed"] = "false"
 
         result = _exec(GraphStructureService.execute_operation, "graph", op_name, payload, history)
-        _assert_trace_contract(result, context=f"graph::graph::{op_name}")
+        from _book_frame_oracle import assert_book_body
+        assert_book_body(result)
         history = result["history"]
 
 

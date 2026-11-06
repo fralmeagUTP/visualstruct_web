@@ -1,5 +1,6 @@
 """Independent retained native observations versus live Hash statement frames."""
 from pathlib import Path
+from copy import deepcopy
 import json
 import pytest
 from app import create_app
@@ -8,7 +9,19 @@ BASE=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-c
 CASES=['create_three','insert_empty','collision_load_gt_one','update_head','update_middle','update_tail','negative_extremes','cap17_collision']
 
 def compare_native(native,frames):
-    frames=[f for f in frames if f['event_type']!='caller_recreate']
+    # The native observer executes TAD functions, while the public trace now also
+    # records the actual main.c printf. Validate that separate caller boundary
+    # before comparing every TAD instruction, rather than dropping a native event.
+    for index, frame in enumerate(frames):
+        if frame['event_type'] != 'caller_printf':
+            continue
+        event = frame['instruction_event']
+        assert event['source_role'] == 'caller' and event['function'] == 'main'
+        assert event['C_executed'] is True and event['caller_line_text'].startswith('printf(')
+        assert frame['line_index'] == -1 and frame['line_text'] == ''
+        assert frame['console'] and index > 0
+        assert frame['state_snapshot'] == frame['state_after'] == frames[index - 1]['state_after']
+    frames=[f for f in frames if f['event_type'] not in {'caller_recreate', 'caller_printf'}]
     native=[n for n in native if n['token']!='initial']
     assert [f['event_type'] for f in frames]==[n['token'] for n in native]
     initial_comps=native[0]['comparisons'];initial_hash=native[0]['hash_calls']
@@ -55,7 +68,13 @@ def test_hash_live_statement_frames_match_independent_native(case):
         operation_id=0 if item['operation']=='create_table' else saved['responses'].index(item)
         observations=[n for n in saved['native'] if n['operation']==operation_id]
         compare_native(observations,data['execution_trace']['steps'])
-        assert data['visual_state']==item['data']['visual_state']
+        expected_state = deepcopy(item['data']['visual_state'])
+        # Retain the native fixture exactly; only its two legacy display
+        # messages were superseded by the reviewed Spanish spelling repair.
+        for field in ('last_operation', 'last_result'):
+            if isinstance(expected_state.get(field), dict) and 'message' in expected_state[field]:
+                expected_state[field]['message'] = expected_state[field]['message'].replace('Se inserto la clave', 'Se insertó la clave').replace('Se actualizo la clave', 'Se actualizó la clave')
+        assert data['visual_state']==expected_state
         assert data['execution_trace']['steps'][-1]['pedagogy']['cost']['comparisons']==item['value_comparisons']
         assert data['execution_trace']['steps'][-1]['pedagogy']['cost']['hash_evaluations']==item['hash_evaluations']
 
@@ -77,6 +96,8 @@ def test_hash_malloc_null_and_existing_update_match_native(case,updates):
     data=response.get_json();assert data['success']==updates
     compare_native([r for r in rows if r['case']==case and r['operation']==(2 if updates else 1)],data['execution_trace']['steps'])
     assert all(not frame['console'] for frame in data['execution_trace']['steps'])
+    assert all(frame['event_type'] != 'caller_printf' for frame in data['execution_trace']['steps'])
+    assert data['console_stdout'] == ''
 
 def test_hash_download_repeated_calls_reload_and_reset(client):
     for op,p in [('create_table',{'capacity':3}),('insert',{'key':1,'value':10}),('insert',{'key':1,'value':10})]:

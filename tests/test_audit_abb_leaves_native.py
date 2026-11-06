@@ -37,7 +37,7 @@ def test_leaves_every_native_instruction_heap_scope_local_and_return(abb_leaves_
   for depth,(f,n) in enumerate(zip(state['tree_frames'],e['frames'])):
    assert f['function']==n['function']=='abb_contarHojas' and f['depth']==depth and f['parameters']=={'nodo':mapping[n['nodo']]}
    assert f['locals']=={}
-   expected={name:('en evaluacion' if flag==1 else value if flag==2 else 'no evaluado') for name,(flag,value) in zip(['left','right'],n['leaf_operands'])}
+   expected={name:('en evaluación' if flag==1 else value if flag==2 else 'no evaluado') for name,(flag,value) in zip(['left','right'],n['leaf_operands'])}
    assert f['expression']==(expected if any(x[0] for x in n['leaf_operands']) else None)
   assert state['console_stdout']==bytes.fromhex(e['console_hex']).decode()=='' and not step['console']
   assert not ped['memory']['allocated_objects'] and not ped['memory']['freed_objects'] and not ped['memory']['dangling_references'] and not ped['return_propagation']['reconnects_subtree']
@@ -45,7 +45,7 @@ def test_leaves_every_native_instruction_heap_scope_local_and_return(abb_leaves_
   if e['phase']=='return':
    assert context_stack(ped)[-1]['scope_status']=='terminado (contexto del retorno)' and context_stack(ped)[-1]['return']==e['result']
    assert len(ped['memory_state']['tree_frames'])==len(e['frames'])-1 and ped['memory_state']['returned']==e['result']
-  if e['phase'].startswith('call_'):assert state['tree_frames'][-1]['expression'][e['phase'][5:]]=='en evaluacion'
+  if e['phase'].startswith('call_'):assert state['tree_frames'][-1]['expression'][e['phase'][5:]]=='en evaluación'
   if e['phase'].startswith('operand_'):assert state['tree_frames'][-1]['expression'][e['phase'][8:]]==e['result']
   assert all(v['name'] in {'raiz','nodo'} for v in ped['variables'])
   assert all(f['locals']=={} for f in context_stack(ped))

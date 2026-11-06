@@ -3,6 +3,7 @@ import json,threading,subprocess,shutil
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
+from _book_graph_browser_contract import main_text
 from _audit_graph_bfs_native_observer import CASES
 pytestmark=pytest.mark.e2e
 
@@ -25,12 +26,13 @@ def test_dfs_actual_history_caller(tmp_path,case):
             assert results[0]==results[1];before=len(posts)
             page.locator('#g-alg-field-start').fill('999')
             with page.expect_response(lambda r:r.url.endswith('/graph/graph/operate') and r.request.method=='POST') as rejected:page.click('#graph-sim-play')
-            fail=rejected.value.json();assert not fail['success'] and fail['history']==data['history'];before=len(posts)
+            fail=rejected.value.json();assert not fail['success'] and fail['history'][:-1]==data['history']
+            assert fail['c_status']==2 and fail['history'][-1]['operation']=='run_dfs';before=len(posts)
             programs=[]
             for _ in range(2):
                 page.reload(wait_until='networkidle')
-                main='\n'.join(page.locator('.didactic-history-main .code-line').all_text_contents()).replace('\u00a0','')
-                assert main.count('= grafo_dfs(')==2;programs.append(main)
+                main=main_text(page)
+                assert main.count('= grafo_dfs(')==3;programs.append(main)
             assert programs[0]==programs[1] and len(posts)==before and not errors
             for tad,stem in [('graph','tad_grafo'),('queue','tad_cola')]:
                 for kind,ext in [('source','c'),('header','h')]:
@@ -39,8 +41,9 @@ def test_dfs_actual_history_caller(tmp_path,case):
             build=subprocess.run([shutil.which('gcc'),'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'main.c'),str(tmp_path/'tad_grafo.c'),str(tmp_path/'tad_cola.c'),'-o',str(exe)],capture_output=True,text=True,timeout=30)
             assert build.returncode==0 and not build.stderr,build.stderr
             run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=10);assert run.returncode==0
-            expected='DFS:'+''.join(' '+str(v) for v in results[0]);assert [line for line in run.stdout.splitlines() if line.startswith('DFS:')]==[expected,expected]
-            assert main.count('free(rec_')==2
-            (tmp_path/'browser-report.json').write_text(json.dumps({'case':case,'result':results[0],'calls_retained':2,'reload_posts':0,'main_strict_c17':True,'computed_stdout':run.stdout,'errors':errors},indent=2))
+            expected='DFS: estado=0'+''.join(' '+str(v) for v in results[0]);assert [line for line in run.stdout.splitlines() if line.startswith('DFS:')]==[expected,expected,'DFS: estado=2']
+            assert run.stdout==fail['console_prefix']+fail['console_stdout']
+            assert main.count('grafo_liberar_vertices(&lista_')==3
+            (tmp_path/'browser-report.json').write_text(json.dumps({'case':case,'result':results[0],'successful_calls_retained':2,'failed_C_calls_retained':1,'reload_posts':0,'main_strict_c17':True,'computed_stdout':run.stdout,'errors':errors},indent=2))
             context.close();browser.close()
     finally:server.shutdown();thread.join(timeout=5)

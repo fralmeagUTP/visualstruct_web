@@ -98,7 +98,7 @@ def test_heap_clear_matches_native(heap_clear_native,case,monkeypatch):
    assert step['line_text'].strip()==event['text'];ped=step['pedagogy'];assert ped['instruction_event']['scope']==event['scope'] and ped['instruction_event']['phase']==event['phase']
    state=ped['memory_state'];assert state['array']==event['array'] and state['size']==event['quantity'] and state['capacity']==event['capacity']
    assert ped['invariant']['holds'] is None and ped['invariant']['name']=='Estado intermedio de vida de memoria' and not ped['invariant']['evidence_by_node_or_path']
-   assert state['heap_data_reference']=={-1:'indeterminado (A1 historico)',0:'NULL',1:'A1',2:'A2'}[event['reference']]
+   assert state['heap_data_reference']=={-1:'indeterminado (A1 histórico)',0:'NULL',1:'A1',2:'A2'}[event['reference']]
    assert [f['id'] for f in state['query_frames']]==[{0:'caller',1:'destroy',2:'init',3:'reserve'}[f] for f in event['stack']]
    assert any(o['id']=='A1' and o['live'] for o in state['heap_allocations'])==bool(event['live1'])
    assert any(o['id']=='A2' and o['live'] for o in state['heap_allocations'])==bool(event['live2'])

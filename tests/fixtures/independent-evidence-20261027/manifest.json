@@ -1,0 +1,32 @@
+{
+  "source_archive": "visualstruct-book-convergence-evidence-light.zip",
+  "source_archive_sha256": "50d29874341580d3802265157c4406694291d2cb41a7547811fb1594eae33bca",
+  "source_created_at": "2026-10-27T11:14:27.647531Z",
+  "purpose": "Authentic historical inputs only. No new approval or claimed equivalence.",
+  "files": {
+    "qa_trazas/matrix.json": {
+      "sha256": "b6e777146f0b6221f6174a0f06a2781815188706f84d73fea22a333ded8b856c",
+      "bytes": 103210
+    },
+    "heap-query-return-baseline.py": {
+      "sha256": "624c9c8977ab312a4d2c401ca1284e7ebdf62e61f19512f5dd0f008472fb3793",
+      "bytes": 17126
+    },
+    "scope-insert-baseline/abb_instruction.py": {
+      "sha256": "f149029590d04554b9c6590ce4fbd8a8bbae486be8d8ddd998b4f42ed13d32ef",
+      "bytes": 12664
+    },
+    "scope-insert-baseline/avl_insert_instruction.py": {
+      "sha256": "db635b6da860a86ecbce820241190eab15650c9819ced8a57df4953c4c164658",
+      "bytes": 19493
+    },
+    "scope-insert-baseline/heap_insert_instruction.py": {
+      "sha256": "175abc0a5666b59cf6a2deac97750e05375629230e00cd0141bf6a28e7bfd73c",
+      "bytes": 17312
+    },
+    "scope-insert-baseline/rbt_insert_instruction.py": {
+      "sha256": "2434a49ffedd85892f80f45d576180715bb52c7efd287aa0a55eeb7d4709b280",
+      "bytes": 23689
+    }
+  }
+}

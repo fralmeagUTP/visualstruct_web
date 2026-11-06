@@ -1,5 +1,6 @@
 """AVL public minimum and auxiliary maximum: guarded callers and full replay."""
 import json,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -26,7 +27,7 @@ def test_extreme_browser_guard_alias_output_and_replay(tmp_path,avl_extreme_nati
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert state['root']==data['visual_state']['root'];assert page.locator('#hier-printf-console').text_content()==state['console_stdout']
+      assert state['root']==data['visual_state']['root'];assert console_stdout(page, '#hier-printf-console')==state['console_stdout']
       scalar=page.locator('[data-avl-output]');assert scalar.get_attribute('data-avl-output-initialized')==str(state['caller_output']['initialized']).lower();assert scalar.get_attribute('data-avl-output-value')==(str(state['caller_output']['value']) if state['caller_output']['initialized'] else 'sin inicializar')
       assert page.locator('#message-box').inner_text()==(data['message'] if index==len(steps)-1 else 'Consulta preparada: resultado pendiente hasta completar la traza.')
       heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))");assert heap==[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in state['heap_nodes']];assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head'];assert page.locator('[data-abb-caller]').count()==int(state['caller_frame'] is not None)

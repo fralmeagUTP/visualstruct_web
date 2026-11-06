@@ -37,3 +37,16 @@ def assert_published_test_successor(root,historical_record,algorithm="mergesort"
 
 assert_published_mergesort_test_successor=assert_published_test_successor
 
+def assert_archived_quicksort_test_portability(root):
+    """Preserve the exact recovered Quick tests apart from existing path adapters."""
+    from scripts.published_test_inputs import audit_input_path
+    snapshot = root / ('openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/'
+                       'evidence/visible-sorting-quicksort-instructions/before/tests/'
+                       'test_sorting_quicksort_baseline_low.py')
+    raw = audit_input_path(snapshot).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == '3c719f717ad85e03fd1f307834fa6bf84333a1f80e3724fbe20269c82917a1d7', 'Quick historical snapshot changed'
+    historical = ast.parse(raw.decode('utf-8-sig'))
+    current = ast.parse((root/'tests/test_sorting_quicksort_baseline_low.py').read_text(encoding='utf-8-sig'))
+    normalize = lambda tree: ast.dump(_FixturePathAdapter().visit(tree), include_attributes=False)
+    assert normalize(current) == normalize(historical), 'Quick historical cases/assertions changed beyond existing path portability adapters'
+

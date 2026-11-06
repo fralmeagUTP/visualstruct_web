@@ -1,5 +1,6 @@
 """Current named-widget behavior among the97 candidates; isolated real requests."""
 from __future__ import annotations
+from e2e_trace_contracts import reveal_public
 import pytest
 from pathlib import Path
 import json,re
@@ -35,6 +36,7 @@ def test_review122_graph_next_previous_reuse_one_trace(controls40_page):
 def test_review122_hash_filter_and_addresses_are_presentation_only(controls40_page):
  page,context,base=controls40_page;seed(context,base,'hash','hash_table',[('create_table',{'capacity':3}),('insert',{'key':1,'value':7})]);page.goto(base+'/hash/hash_table',wait_until='networkidle')
  posts=[];page.on('request',lambda req:posts.append(req.url) if req.method=='POST' else None)
+ reveal_public(page,page.locator('#hash-bucket-filter'))
  page.select_option('#hash-bucket-filter','occupied');assert page.locator('.hash-entry').count()==1
  assert page.locator('.hash-bucket').count()==1
  page.select_option('#hash-bucket-filter','all');assert page.locator('.hash-bucket').count()==3
@@ -83,7 +85,22 @@ def test_review122_sequential_views_tabs_and_mode_mirror(controls40_page):
  page.click('#stack-view-linked');assert page.locator('#stack-view-linked').get_attribute('aria-pressed')=='true';assert page.locator('#visual-state').get_attribute('data-stack-visual-mode')=='linked'
  page.click('#stack-view-current');assert page.locator('#stack-view-current').get_attribute('aria-pressed')=='true';assert page.locator('#visual-state').get_attribute('data-stack-visual-mode')=='current'
  assert not page.locator('#seq-step-toggle').is_checked();page.click('#seq-step-mode');assert page.locator('#seq-step-toggle').is_checked()
- page.set_viewport_size({'width':390,'height':844});page.click('[data-seq-tab="code"]');assert not page.locator('#seq-visual-region').is_visible();page.click('[data-seq-tab="visual"]');assert page.locator('#seq-visual-region').is_visible()
+ page.locator('#didactic-mode-switch').check()
+ page.set_viewport_size({'width':390,'height':844})
+ posts=[];page.on('request',lambda req:posts.append(req.url) if req.method=='POST' else None)
+ before=page.locator('#seq-sim-counter').text_content()
+ for selected in ['code','visual']:
+  page.click('[data-seq-tab="'+selected+'"]')
+  assert page.locator('.sequential-primary-workspace').get_attribute('data-active-tab')==selected
+  for name in ['code','visual']:
+   tab=page.locator('[data-seq-tab="'+name+'"]')
+   assert tab.get_attribute('aria-selected')==str(name==selected).lower()
+   assert ('is-active' in tab.get_attribute('class').split())==(name==selected)
+  assert page.evaluate("sessionStorage.getItem('sequential-stack-workspace-tab-v2')")==selected
+  assert page.locator('#seq-visual-region').is_visible()
+  if selected=='code':assert page.locator('#seq-code-region').is_visible()
+  assert page.locator('#seq-sim-counter').text_content()==before
+ assert not posts
 
 @pytest.mark.e2e
 def test_review122_prediction_hint_skip_and_optin(controls40_page):
@@ -113,6 +130,7 @@ def test_review122_counting_small_paged_controls(controls40_page):
 def test_review122_sorting_comments_use_real_source(controls40_page):
  page,context,base=controls40_page;page.goto(base+'/sorting/visualizador',wait_until='networkidle')
  visible="()=>[...document.querySelectorAll('#sorting-code .is-code-comment,#sorting-code .code-comment')].filter(e=>getComputedStyle(e).display!=='none'&&e.getClientRects().length).length"
+ reveal_public(page,page.locator('#sorting-code' if 'sorting-code' in visible else '#op-pseudocode'))
  before=page.evaluate(visible);assert before>0
  page.check('#sorting-hide-comments');assert page.evaluate(visible)<before;page.uncheck('#sorting-hide-comments');assert page.evaluate(visible)==before
 
@@ -120,6 +138,7 @@ def test_review122_sorting_comments_use_real_source(controls40_page):
 def test_review122_sequential_comments_use_real_source(controls40_page):
  page,context,base=controls40_page;page.goto(base+'/sequential/stack',wait_until='networkidle')
  visible="()=>[...document.querySelectorAll('#op-pseudocode .is-code-comment,#op-pseudocode .code-comment')].filter(e=>getComputedStyle(e).display!=='none'&&e.getClientRects().length).length"
+ reveal_public(page,page.locator('#sorting-code' if 'sorting-code' in visible else '#op-pseudocode'))
  before=page.evaluate(visible);assert before>0
  page.check('#seq-hide-comments');assert page.evaluate(visible)<before;page.uncheck('#seq-hide-comments');assert page.evaluate(visible)==before
 

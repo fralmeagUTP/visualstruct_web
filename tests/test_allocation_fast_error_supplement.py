@@ -1,3 +1,5 @@
+from e2e_contract_helpers import console_stdout
+from e2e_trace_contracts import trace_stdout
 """Fast allocation error preserves state and equals cached replay; private sessions."""
 import importlib,json
 from pathlib import Path
@@ -34,16 +36,12 @@ def test_fast_error_equals_cached_replay_without_new_objects(controls40_page,mon
  page.wait_for_function('()=>window.__fastErrorPlayer?.getCursor()===window.__fastErrorTrace?.steps.length-1')
  assert page.locator('#message-box').inner_text()==data['message'];assert 'FAST_ERROR_PRIVATE_SECRET' not in page.content();assert 'Reserva rechazada' in page.locator('#seq-sim-status').inner_text()
  assert not page.locator('#seq-sim-step').is_visible() and not page.locator('#seq-sim-prev').is_visible()
- snap="""()=>({rendered:window.__fastErrorRendered,visual:document.querySelector('#visual-state').textContent,heap:document.querySelector('#seq-heap-view').textContent,pointers:document.querySelector('#seq-pointer-view').textContent,console:[...document.querySelectorAll('#seq-printf-console .console-line:not(.muted)')].map(n=>n.textContent),ids:[...document.querySelectorAll('[data-clear-node],[data-sublist-node],[data-queue-enqueue-node],[data-priority-enqueue-node],[data-stack-push-node]')].map(n=>n.getAttribute('data-clear-node')||n.getAttribute('data-sublist-node')||n.getAttribute('data-queue-enqueue-node')||n.getAttribute('data-priority-enqueue-node')||n.getAttribute('data-stack-push-node'))})"""
+ snap="""()=>({rendered:window.__fastErrorRendered,visual:document.querySelector('#visual-state').textContent,heap:document.querySelector('#seq-heap-view').textContent,pointers:document.querySelector('#seq-pointer-view').textContent,console:document.querySelector('#seq-printf-console').dataset.consoleCopy,consoleVisible:document.querySelector('#seq-printf-console').textContent,ids:[...document.querySelectorAll('[data-clear-node],[data-sublist-node],[data-queue-enqueue-node],[data-priority-enqueue-node],[data-stack-push-node]')].map(n=>n.getAttribute('data-clear-node')||n.getAttribute('data-sublist-node')||n.getAttribute('data-queue-enqueue-node')||n.getAttribute('data-priority-enqueue-node')||n.getAttribute('data-stack-push-node'))})"""
  objects=trace['steps'][0]['pedagogy']['heap_objects'];object_ids={n['id'] for n in objects}
  assert all({n['id'] for n in f['pedagogy']['heap_objects']}==object_ids for f in trace['steps'])
  fast=page.evaluate(snap);assert fast['rendered']==data['visual_state'];assert len(fast['ids'])==len(set(fast['ids']))
- expected=[]
- for frame in trace['steps']:
-  for chunk in frame['console']:
-   line=chunk.strip()
-   if line and(not expected or expected[-1]!=line):expected.append(line)
- assert [s.strip() for s in fast['console']]==expected
+ expected=trace_stdout(trace,len(trace['steps'])-1)
+ assert fast['console']==console_stdout(page,'#seq-printf-console')==expected
  count=len(posts);page.click('#seq-step-mode');assert page.locator('#seq-step-toggle').is_checked()
  for i in range(len(trace['steps'])):page.click('#seq-sim-step')
  replay=page.evaluate(snap);assert replay==fast

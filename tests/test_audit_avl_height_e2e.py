@@ -1,5 +1,6 @@
 """ABB traversal tree/reservations/scopes, exact stdout and bidirectional replay."""
 import json,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -25,7 +26,7 @@ def test_height_browser_locals_scopes_numeric_returns_and_replay(tmp_path,avl_he
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert state['root']==data['visual_state']['root'];assert page.locator('#hier-printf-console').text_content()==state['console_stdout']
+      assert state['root']==data['visual_state']['root'];assert console_stdout(page, '#hier-printf-console')==state['console_stdout']
       heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))");assert heap==[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in state['heap_nodes']];assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head'];assert page.locator('[data-abb-caller]').count()==int(state['caller_frame'] is not None)
       for n in state['heap_nodes']:
        card=page.locator('[data-abb-node="'+n['id']+'"]').inner_text();assert 'padre: '+n['parent'] in card and 'FE: '+str(n['balance_factor']) in card

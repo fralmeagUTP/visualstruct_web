@@ -25,10 +25,20 @@ from app.services.structure_service import StructureService
 HistoryFactory = Callable[[int], list[dict[str, Any]]]
 Replay = Callable[[str, list[dict[str, Any]]], tuple[Any, list[dict[str, Any]]]]
 
+def graph_history(count: int) -> list[dict[str, Any]]:
+    """Exercise full legal graphs repeatedly without exceeding the vertex cap."""
+    from app.domain.graph.educational_capacity import MAX_VERTICES
+    return [{"operation": "create_graph" if index % (MAX_VERTICES + 1) == 0 else "insert_vertex",
+             "payload": {"directed": False} if index % (MAX_VERTICES + 1) == 0 else
+                        {"vertex": index % (MAX_VERTICES + 1)},
+             "source_contract": GraphStructureService.SOURCE_CONTRACT}
+            for index in range(count)]
+
+
 CASES: dict[str, tuple[Replay, str, HistoryFactory]] = {
     "sequential": (StructureService._rebuild_adapter, "stack", lambda n: [{"operation": "apilar", "payload": {"value": i}} for i in range(n)]),
     "tree": (HierarchicalStructureService._rebuild_adapter, "avl", lambda n: [{"operation": "insertar", "payload": {"value": i}} for i in range(n)]),
-    "graph": (GraphStructureService._rebuild_adapter, "graph", lambda n: [{"operation": "insert_vertex", "payload": {"vertex": i}} for i in range(n)]),
+    "graph": (GraphStructureService._rebuild_adapter, "graph", graph_history),
     "hash": (HashStructureService._rebuild_adapter, "hash_table", lambda n: [{"operation": "insert", "payload": {"key": str(i), "value": str(i)}} for i in range(n)]),
     "sorting": (SortingStructureService._rebuild_adapter, "sorting_array", lambda n: [{"operation": "create_array", "payload": {"values": f"{i},{i + 1}"}} for i in range(n)]),
 }

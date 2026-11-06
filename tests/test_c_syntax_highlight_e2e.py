@@ -238,7 +238,7 @@ def test_accented_title_dynamic_renderer_and_plain_stdout(browser_env):
       const code=document.createElement('code');code.textContent=source;out.append(code);document.body.append(out);
       return p.querySelectorAll('.code-type,.code-keyword').length;
     }""", source)
-    assert before == 0  # Existing title-gated producer; common reader fixes it.
+    assert before > 0  # Approved renderer highlights immediately, including accented titles.
     page.wait_for_function("() => document.querySelector('#title-probe .code-type')")
     assert page.locator('#title-probe').locator('.code-line').all_text_contents() == source.split('\n')
     assert page.evaluate("() => document.querySelector('#title-probe').dataset.rawCode") == source

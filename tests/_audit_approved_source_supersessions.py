@@ -6,13 +6,21 @@ SUPERSESSIONS = {'docs/tads_C/tad_ordenamiento.c': {'allowed_historical_sha256':
 from scripts.published_test_inputs import audit_input_path
 
 def delivered_runtime_successor(root,relative,actual_digests,historical_sha):
- if relative!='static/js/interpreter_runtime.js' or '9c053251f39f44681479d312f42a1f882bbb8fcf4bf048bae8cc83843b145456' not in actual_digests:return False
+ if relative!='static/js/interpreter_runtime.js' or not actual_digests.intersection({'9c053251f39f44681479d312f42a1f882bbb8fcf4bf048bae8cc83843b145456','57370caafcd7207eda8d846412158afac43b8a16142fd26974f9d53472fc1366'}):return False
  receipt=root/'docs/qa/delivered-runtime-source-20261027.json'
  assert receipt.is_file(),'delivered source receipt missing'
  raw=receipt.read_bytes()
  assert hashlib.sha256(raw).hexdigest()=='2c6278965df28c1a0627b80f06d36d9a4e43bbf5cc13940b5b350873b4667182','delivery receipt changed'
  record=json.loads(raw)
- assert record['path']==relative and record['accepted_delivery_sha256'] in actual_digests
+ assert record['path']==relative
+ if record['accepted_delivery_sha256'] not in actual_digests:
+  successor_raw=(root/'docs/qa/delivered-runtime-source-20261106.json').read_bytes()
+  assert hashlib.sha256(successor_raw).hexdigest()=='39d58bd0834adecaf8843be8d288a4d7ce88811c3c1fc3c577c20a5cfbc0563b','successor delivery receipt changed'
+  successor=json.loads(successor_raw)
+  assert successor['path']==relative and successor['accepted_delivery_sha256'] in actual_digests
+  assert successor['source_commit']=='4885855ebb81eed4e1359fb356d602259de6e2f0'
+  previous=base64.b64decode(successor['previous_delivery_source_base64'],validate=True)
+  assert hashlib.sha256(previous).hexdigest()==successor['previous_delivery_sha256']==record['accepted_delivery_sha256']
  assert record['package_sha256']=='004d35d9a06dcce619a6ff05f24eac6165ec5dd97e79a9e6b79f60567573307b'
  original=base64.b64decode(record['historical_source_base64'],validate=True)
  assert hashlib.sha256(original).hexdigest()==record['historical_source_sha256']==historical_sha

@@ -38,4 +38,29 @@ class HashCapacityTests(unittest.TestCase):
      response=client.post('/hash/hash_table/operate',json={'operation':'stats','payload':{}});self.assertEqual(response.status_code,400);body=response.get_json();self.assertEqual(body['history'],h);self.assertEqual(body['main_c'],build_hash_main(journal['entries']))
     with client.session_transaction() as sess:self.assertEqual(dict(sess),saved)
     response=client.post('/hash/hash_table/reset');self.assertEqual(response.status_code,200);self.assertEqual(response.get_json()['history'],[]);self.assertEqual(response.get_json()['main_c'],build_hash_main([]));self.assertEqual(response.get_json()['visual_state']['metadata']['capacity'],17)
+ def test_suspended_stdout_uses_only_recorded_bytes_without_replay(self):
+  from app.services.hash_journal_service import journal_stdout
+  for cap in (129,2147483647):
+   for later in ([],[{'operation':'create_table','payload':{'capacity':5}}]):
+    entries=self.history(cap)+later
+    entries[0]['caller_stdout']='recorded create\n'
+    original=copy.deepcopy(entries)
+    with self.subTest(cap=cap,later=bool(later)),patch.object(S,'execute_operation',side_effect=AssertionError('no execution')):
+     self.assertEqual(journal_stdout(entries),'recorded create\n')
+    self.assertEqual(entries,original)
+ def test_canonical_suspension_prevents_journal_only_replay(self):
+  from app.services.hash_journal_service import get_stdout
+  with tempfile.TemporaryDirectory() as folder:
+   class T(Config):TESTING=True;SESSION_CACHE_DIR=folder
+   app=create_app(T)
+   with app.test_request_context('/'):
+    h=self.history(129)
+    # Even a journal whose cached entries omit the oversized creation may not
+    # override the suspension imposed by the canonical saved history.
+    from flask import session
+    session[JOURNAL_KEY]={'hash::hash_table':{'history_digest':digest(h),'entries':[{'operation':'get','payload':{'key':3}}]}}
+    before=copy.deepcopy(dict(session))
+    with patch.object(S,'execute_operation',side_effect=AssertionError('no execution')):
+     self.assertEqual(get_stdout('hash::hash_table',h),'')
+    self.assertEqual(dict(session),before)
 if __name__=='__main__':unittest.main(verbosity=2)

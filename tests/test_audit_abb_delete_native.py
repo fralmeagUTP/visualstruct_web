@@ -52,7 +52,7 @@ def test_delete_native_instructions_heap_frames_and_caller(delete_baselines,fami
    if i==-2:return 'sin inicializar'
    if i<=-100:i=-100-i
    name=mapping[i]
-   return name if i==0 or i in live else name+' [valor indeterminado; identidad historica]'
+   return name if i==0 or i in live else name+' [valor indeterminado; identidad histórica]'
   assert state['head']==ref(e['root'])
   native_nodes={n['id']:n for n in e['nodes']}
   def projection(identity):

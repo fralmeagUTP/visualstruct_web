@@ -1,6 +1,7 @@
 """Both existing representations, scopes, highlight, stdout and bidirectional replay."""
 import json,os
 from pathlib import Path
+from e2e_contract_helpers import console_stdout
 import pytest
 from test_audit_avl_main_e2e import avl_server
 from test_audit_rbt_query_instruction_native import rbt_query_native,match,NUMERIC
@@ -29,7 +30,7 @@ def test_rbt_query_browser_instruction_and_replay(avl_server,rbt_query_records,t
    for index in indices:
     assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
     state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-    assert state['root']==data['visual_state']['root'];assert page.locator('#hier-printf-console').text_content()==state['console_stdout']
+    assert state['root']==data['visual_state']['root'];assert console_stdout(page, '#hier-printf-console')==state['console_stdout']
     heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight}))");assert heap==[{k:n[k] for k in ['id','value','left','right']} for n in state['heap_nodes']]
     for n in state['heap_nodes']:
      text=page.locator('[data-abb-node="'+n['id']+'"]').inner_text();assert 'padre: '+n['parent'] in text and 'color: '+n['color'] in text

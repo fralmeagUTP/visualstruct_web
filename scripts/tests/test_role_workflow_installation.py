@@ -35,12 +35,16 @@ class RoleArchiveInstallationTests(unittest.TestCase):
         profile=json.loads((ROOT/'openspec/continuity/role-workflow.json').read_text(encoding='utf-8'))
         self.assertEqual(profile['tasks'],{})
         self.assertEqual(profile['change'],'SET_APPROVED_ACTIVE_CHANGE')
+        # Exercise the intended task gate in this read-only checkout without
+        # rewriting the installed canonical project or weakening its root guard.
+        with self.assertRaisesRegex(GuardError,'Wrong workflow project'):
+            evaluate(ROOT,{**profile,'project_root':str(ROOT/'wrong-project')},'documentation-quickstart','before')
         with self.assertRaisesRegex(GuardError,'Unknown workflow task'):
-            evaluate(ROOT,profile,'documentation-quickstart','before')
+            evaluate(ROOT,{**profile,'project_root':str(ROOT)},'documentation-quickstart','before')
         index=json.loads((ROOT/'openspec/continuity/index.json').read_text(encoding='utf-8-sig'))
         self.assertNotIn('extend-continuity-role-workflow',index['changes'])
         with self.assertRaisesRegex(GuardError,'Unregistered change'):
-            checkpoint(ROOT,index,'extend-continuity-role-workflow','workflow.documentation-pilot',ROOT)
+            checkpoint(ROOT,{**index,'canonical_project':str(ROOT)},'extend-continuity-role-workflow','workflow.documentation-pilot',ROOT)
     def test_all_genuine_qa_artifacts_preserved(self):
         baseline=json.loads((ARCHIVE/'evidence/closure-final/qa-before.json').read_text(encoding='utf-8'))
         self.assertTrue(baseline)

@@ -1,3 +1,4 @@
+from e2e_trace_contracts import reveal_public
 """Both views and replay: visible parent removal, exact C heap and scoped aliases."""
 import json,threading
 import pytest
@@ -18,7 +19,7 @@ def test_parent_removal_both_views_replay_scopes_types_highlight_console(tmp_pat
     for parent,children in meta['seed']:
      assert context.request.post(base+'/sequential/sublist/operate',data={'operation':'insertar_padre','payload':{'parent':parent}}).json()['success']
      for child in children:assert context.request.post(base+'/sequential/sublist/operate',data={'operation':'insertar_hijo','payload':{'parent':parent,'child':child}}).json()['success']
-    page.goto(base+'/sequential/sublist',wait_until='networkidle');page.evaluate('''()=>{const old=renderVisualState;renderVisualState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}''');page.locator('.seq-understand button').filter(has_text='Mostrar').click();assert page.locator('#seq-variable-view').is_visible();page.select_option('#operation-select','eliminar_padre');page.locator('[name="parent"]').fill(str(meta['payload']['parent']));page.click('#seq-step-mode')
+    page.goto(base+'/sequential/sublist',wait_until='networkidle');page.evaluate('''()=>{const old=renderVisualState;renderVisualState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}''');page.locator('.seq-understand button').filter(has_text='Mostrar').click();reveal_public(page,page.locator('#seq-variable-view'));assert page.locator('#seq-variable-view').is_visible();page.select_option('#operation-select','eliminar_padre');page.locator('[name="parent"]').fill(str(meta['payload']['parent']));page.click('#seq-step-mode')
     with page.expect_response(lambda r:r.url.endswith('/sublist/operate') and r.request.method=='POST') as response:page.click('#seq-sim-execute')
     data=response.value.json();assert data['success'];steps=data['execution_trace']['steps'];count=len(posts)
     native_rows=[r for r in sublist_native_review['rows'] if r['native']['case']==case];mapping=sublist_identity_map(native_rows);oracle={};used=set()

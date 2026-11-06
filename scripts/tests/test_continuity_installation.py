@@ -66,6 +66,12 @@ class ContinuityInstallationTests(unittest.TestCase):
 
     def test_live_readonly_report_and_assignment_conflict_after_archive(self):
         config=json.loads(guard.CONFIG.read_text(encoding="utf-8-sig"))
+        with self.assertRaisesRegex(guard.GuardError,"Wrong project/cwd"):
+            guard.checkpoint(ROOT,{**config,"canonical_project":str(ROOT/"wrong-project")},
+                             "add-session-continuity-guard","continuity.implementation",ROOT)
+        # Bind only this in-memory test fixture to the isolated checkout. The
+        # installed index and the canonical project's approvals remain intact.
+        config={**config,"canonical_project":str(ROOT)}
         with self.assertRaisesRegex(guard.GuardError,"Unregistered change"):
             guard.checkpoint(ROOT,config,"add-session-continuity-guard",
                              "continuity.implementation",ROOT)

@@ -7,7 +7,8 @@ import _audit_approved_source_supersessions as bindings
 import json
 
 ROOT=Path(__file__).resolve().parents[1]
-CURRENT='9c053251f39f44681479d312f42a1f882bbb8fcf4bf048bae8cc83843b145456'
+CURRENT='57370caafcd7207eda8d846412158afac43b8a16142fd26974f9d53472fc1366'
+PREVIOUS='9c053251f39f44681479d312f42a1f882bbb8fcf4bf048bae8cc83843b145456'
 HISTORICAL='80f9b5ff6950076406e1574b5bf653e5c8a3c0eb2b72369ff6ee6ee2ecbb7c29'
 
 def test_runtime_matches_user_delivery_and_exact_historical_preimage():
@@ -30,6 +31,8 @@ def test_delivery_does_not_waive_a_failed_historical_review(tmp_path,monkeypatch
     source.write_bytes((ROOT/'static/js/interpreter_runtime.js').read_bytes())
     receipt=tmp_path/'docs/qa/delivered-runtime-source-20261027.json';receipt.parent.mkdir(parents=True)
     receipt.write_bytes((ROOT/'docs/qa/delivered-runtime-source-20261027.json').read_bytes())
+    successor=tmp_path/'docs/qa/delivered-runtime-source-20261106.json'
+    successor.write_bytes((ROOT/'docs/qa/delivered-runtime-source-20261106.json').read_bytes())
     (tmp_path/'review.md').write_bytes(b'different review')
     (tmp_path/'authority.json').write_text(json.dumps({'accepted':HISTORICAL}))
     row={'allowed_historical_sha256':[HISTORICAL],'accepted_current_sha256':HISTORICAL,
@@ -38,3 +41,17 @@ def test_delivery_does_not_waive_a_failed_historical_review(tmp_path,monkeypatch
     monkeypatch.setattr(bindings,'SUPERSESSIONS',{'static/js/interpreter_runtime.js':row})
     with pytest.raises(AssertionError,match='approval binding changed'):
         bindings.assert_historical_protected_hash(tmp_path,'static/js/interpreter_runtime.js',HISTORICAL)
+
+
+def test_previous_delivery_remains_bound_to_unchanged_historical_receipt():
+    assert delivered_runtime_successor(ROOT,'static/js/interpreter_runtime.js',{PREVIOUS},HISTORICAL)
+
+
+def test_successor_receipt_mutation_fails_closed(tmp_path):
+    folder=tmp_path/'docs/qa';folder.mkdir(parents=True)
+    for name in ['delivered-runtime-source-20261027.json','delivered-runtime-source-20261106.json']:
+        (folder/name).write_bytes((ROOT/'docs/qa'/name).read_bytes())
+    target=folder/'delivered-runtime-source-20261106.json'
+    target.write_bytes(target.read_bytes()+b' ')
+    with pytest.raises(AssertionError,match='successor delivery receipt changed'):
+        delivered_runtime_successor(tmp_path,'static/js/interpreter_runtime.js',{CURRENT},HISTORICAL)

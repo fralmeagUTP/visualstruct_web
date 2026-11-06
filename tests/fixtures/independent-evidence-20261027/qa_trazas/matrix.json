@@ -1,0 +1,4928 @@
+{
+  "rows": [
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": -1,
+        "priority": -1,
+        "parent": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": 8,
+        "priority": 8,
+        "parent": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "apilar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "desapilar",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 4,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "desapilar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "desapilar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "desapilar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "stack",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": -1,
+        "priority": -1,
+        "parent": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 8,
+        "priority": 8,
+        "parent": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "desencolar",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 4,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "desencolar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "desencolar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "desencolar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 23,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 23,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "queue",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": -1,
+        "priority": -1,
+        "parent": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 8,
+        "priority": 8,
+        "parent": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3,
+        "priority": 2
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3,
+        "priority": 2
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 999,
+        "priority": 2
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3,
+        "priority": 2
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "encolar",
+      "payload": {
+        "value": 3,
+        "priority": 2
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "desencolar",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "desencolar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 38,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "desencolar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 38,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "desencolar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 32,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "frente",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "frente",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 20,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 43,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 43,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "priority_queue",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 10,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": -1,
+        "priority": -1,
+        "parent": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 8,
+        "priority": 8,
+        "parent": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 13,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "lista_insertar_elemento",
+      "payload": {
+        "value": 3,
+        "position": 1
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "lista_insertar_elemento",
+      "payload": {
+        "value": 3,
+        "position": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "lista_insertar_elemento",
+      "payload": {
+        "value": 999,
+        "position": 1
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "lista_insertar_elemento",
+      "payload": {
+        "value": 3,
+        "position": 1
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "lista_insertar_elemento",
+      "payload": {
+        "value": 3,
+        "position": 1
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_elemento",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 4,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_elemento",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_elemento",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 22,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_elemento",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_elemento",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 13,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_repetidos",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 4,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_repetidos",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 28,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_repetidos",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 22,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_repetidos",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 28,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_repetidos",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 14,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "buscar_elemento",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "buscar_elemento",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 26,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "buscar_elemento",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 23,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "mostrar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "mostrar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_posicion",
+      "payload": {
+        "value": 3,
+        "position": 1
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_posicion",
+      "payload": {
+        "value": 3,
+        "position": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_posicion",
+      "payload": {
+        "value": 999,
+        "position": 1
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_posicion",
+      "payload": {
+        "value": 3,
+        "position": 1
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_posicion",
+      "payload": {
+        "value": 3,
+        "position": 1
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_elemento",
+      "payload": {
+        "value": 3,
+        "position": 1,
+        "relative": 1
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_elemento",
+      "payload": {
+        "value": 3,
+        "position": 1,
+        "relative": 1
+      },
+      "scenario": "populated",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_elemento",
+      "payload": {
+        "value": 999,
+        "position": 1,
+        "relative": 1
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_elemento",
+      "payload": {
+        "value": 3,
+        "position": 1,
+        "relative": 1
+      },
+      "scenario": "repeat_first",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "insertar_elemento",
+      "payload": {
+        "value": 3,
+        "position": 1,
+        "relative": 1
+      },
+      "scenario": "repeat_second",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 4,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 22,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 13,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "buscar_posiciones",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "buscar_posiciones",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "buscar_posiciones",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_inicio",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_inicio",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_inicio",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_inicio",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_final",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_final",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 16,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_final",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 16,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_final",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 14,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_posicion",
+      "payload": {
+        "position": 1
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_posicion",
+      "payload": {
+        "position": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_posicion",
+      "payload": {
+        "position": 1
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "eliminar_posicion",
+      "payload": {
+        "position": 1
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "primero",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "primero",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 4,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "ultimo",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 0,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "linked_list",
+      "operation": "ultimo",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": -1,
+        "priority": -1,
+        "parent": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 8,
+        "priority": 8,
+        "parent": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_inicio",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "insertar_final",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_inicio",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 4,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_inicio",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_inicio",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_inicio",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "eliminar_primero",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "buscar_posiciones",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "buscar_posiciones",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 33,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "buscar_posiciones",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "invertir",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "invertir",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 36,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "invertir",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 36,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "invertir",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 36,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 36,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 36,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "circular_list",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "value": -1,
+        "priority": -1,
+        "parent": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 19,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "value": 3,
+        "priority": 3,
+        "parent": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "value": 8,
+        "priority": 8,
+        "parent": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 23,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 29,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 31,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 25,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "parent": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 25,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 25,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_padre",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 33,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_hijo",
+      "payload": {
+        "parent": 999,
+        "child": 2
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 33,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "insertar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 35,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_padre",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_padre",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 35,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_padre",
+      "payload": {
+        "parent": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 23,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_padre",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 35,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_padre",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 24,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 22,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_hijo",
+      "payload": {
+        "parent": 999,
+        "child": 2
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 22,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "eliminar_hijo",
+      "payload": {
+        "parent": 3,
+        "child": 2
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 26,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "hijos_de",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "hijos_de",
+      "payload": {
+        "parent": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 30,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "hijos_de",
+      "payload": {
+        "parent": 999
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 78,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 78,
+      "issues": []
+    },
+    {
+      "module": "sequential",
+      "structure": "sublist",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 18,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 2
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 24,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 5
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 24,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "seed",
+      "success": false,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": false,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 25,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": false,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": false,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 2,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 36,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "eliminar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 14,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 36,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": false,
+      "steps": 19,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "buscar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "buscar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "buscar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 16,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "minimo",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 3,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "minimo",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "maximo",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 3,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "maximo",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 5,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "altura",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "altura",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 61,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "contar_hojas",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "contar_hojas",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 41,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "inorden",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 3,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "inorden",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 58,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "preorden",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 3,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "preorden",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 58,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "postorden",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 3,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "postorden",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 58,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "validar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "validar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 61,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 62,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 62,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "abb",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 32,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 29,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 2
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 45,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 5
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 41,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "seed",
+      "success": false,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": false,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 34,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": false,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": false,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 102,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "eliminar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 102,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "buscar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "buscar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "buscar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 18,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "minimo",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 3,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "minimo",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "maximo",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 3,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "maximo",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "altura",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "altura",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 61,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "inorden",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 3,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "inorden",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 58,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "validar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 6,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "validar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 172,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 62,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 62,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "avl",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 25,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 36,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 38,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 2
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 81,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 5
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 43,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "seed",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 25,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 45,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 55,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "eliminar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 55,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "eliminar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "buscar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 9,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "buscar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "buscar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 20,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "inorden",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "inorden",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 62,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "altura",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "altura",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 62,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "validar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "validar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 108,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 62,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 62,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "red_black",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 23,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": -1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 37,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 2
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 41,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 5
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 41,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 23,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "insertar",
+      "payload": {
+        "value": 3
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 27,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "extraer_raiz",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "extraer_raiz",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 72,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "extraer_raiz",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 72,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "extraer_raiz",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 52,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "raiz",
+      "payload": {},
+      "scenario": "empty",
+      "success": false,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "raiz",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 8,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "a_lista",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "a_lista",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 50,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 40,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 40,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 40,
+      "issues": []
+    },
+    {
+      "module": "hierarchical",
+      "structure": "binary_heap",
+      "operation": "limpiar",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 40,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "create_graph",
+      "payload": {
+        "directed": false
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 18,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 2
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 14,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 4
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 20,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2,
+        "weight": 2
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 171,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_edge",
+      "payload": {
+        "origin": 2,
+        "target": 3,
+        "weight": 3
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 176,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_edge",
+      "payload": {
+        "origin": 1,
+        "target": 3,
+        "weight": 8
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 211,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "create_graph",
+      "payload": {
+        "directed": false
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 18,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "create_graph",
+      "payload": {
+        "directed": false
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 98,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "create_graph",
+      "payload": {
+        "directed": false
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 98,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "create_graph",
+      "payload": {
+        "directed": false
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 18,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "generate_random_graph",
+      "payload": {
+        "vertices_count": 4,
+        "seed": 758689884
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 1080,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "generate_random_graph",
+      "payload": {
+        "vertices_count": 4,
+        "seed": 758689884
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 1160,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "generate_random_graph",
+      "payload": {
+        "vertices_count": 4,
+        "seed": 758689884
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 1160,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "generate_random_graph",
+      "payload": {
+        "vertices_count": 4,
+        "seed": 758689884
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 1192,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 11,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 23,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 15,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 54,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_vertex",
+      "payload": {
+        "vertex": 999
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 54,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "repeat_second",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2,
+        "weight": 2
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 143,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2,
+        "weight": 2
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 217,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2,
+        "weight": 2
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 217,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "insert_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2,
+        "weight": 2
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 217,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 35,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 112,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 112,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "remove_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 85,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "exists_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 13,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "exists_vertex",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 26,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "exists_vertex",
+      "payload": {
+        "vertex": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 29,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "exists_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 14,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "exists_edge",
+      "payload": {
+        "origin": 1,
+        "target": 2
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 43,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "list_vertices",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "list_vertices",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "list_edges",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "list_edges",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 7,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "neighbors",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "neighbors",
+      "payload": {
+        "vertex": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 51,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "neighbors",
+      "payload": {
+        "vertex": 999
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "edge_weight",
+      "payload": {
+        "origin": 1,
+        "target": 2
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "edge_weight",
+      "payload": {
+        "origin": 1,
+        "target": 2
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 48,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_bfs",
+      "payload": {
+        "start": 1
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_bfs",
+      "payload": {
+        "start": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 412,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_dfs",
+      "payload": {
+        "start": 1
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_dfs",
+      "payload": {
+        "start": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 359,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_dijkstra",
+      "payload": {
+        "start": 1,
+        "end": 3
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_dijkstra",
+      "payload": {
+        "start": 1,
+        "end": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 1188,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_bellman_ford",
+      "payload": {
+        "start": 1,
+        "end": 3
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 1,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_bellman_ford",
+      "payload": {
+        "start": 1,
+        "end": 3
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 2406,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_prim",
+      "payload": {
+        "start": 1
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 35,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_prim",
+      "payload": {
+        "start": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 1225,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_kruskal",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 46,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "run_kruskal",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 1242,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "clear_graph",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 18,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "clear_graph",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 98,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "clear_graph",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 98,
+      "issues": []
+    },
+    {
+      "module": "graph",
+      "structure": "graph",
+      "operation": "clear_graph",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 18,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "create_table",
+      "payload": {
+        "capacity": 7
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 31,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 1,
+        "value": 10
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 19,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 2,
+        "value": 20
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 19,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 1,
+        "value": 30
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 14,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 8,
+        "value": 40
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 22,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": -1,
+        "value": -10
+      },
+      "scenario": "seed",
+      "success": true,
+      "steps": 20,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "create_table",
+      "payload": {
+        "capacity": 7
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 31,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "create_table",
+      "payload": {
+        "capacity": 7
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 31,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "create_table",
+      "payload": {
+        "capacity": 7
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 31,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "create_table",
+      "payload": {
+        "capacity": 7
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 31,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 1,
+        "value": 10,
+        "simulate_allocation_failure": false
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 19,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 1,
+        "value": 10,
+        "simulate_allocation_failure": false
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 999,
+        "value": 999,
+        "simulate_allocation_failure": false
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 19,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 1,
+        "value": 10,
+        "simulate_allocation_failure": false
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "insert",
+      "payload": {
+        "key": 1,
+        "value": 10,
+        "simulate_allocation_failure": false
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "get",
+      "payload": {
+        "key": 1
+      },
+      "scenario": "empty",
+      "success": false,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "get",
+      "payload": {
+        "key": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "get",
+      "payload": {
+        "key": 999
+      },
+      "scenario": "missing_or_new",
+      "success": false,
+      "steps": 12,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "contains",
+      "payload": {
+        "key": 1
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 16,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "contains",
+      "payload": {
+        "key": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 21,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "contains",
+      "payload": {
+        "key": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 16,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "remove",
+      "payload": {
+        "key": 1
+      },
+      "scenario": "empty",
+      "success": true,
+      "steps": 13,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "remove",
+      "payload": {
+        "key": 1
+      },
+      "scenario": "populated",
+      "success": true,
+      "steps": 22,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "remove",
+      "payload": {
+        "key": 999
+      },
+      "scenario": "missing_or_new",
+      "success": true,
+      "steps": 13,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "remove",
+      "payload": {
+        "key": 1
+      },
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 22,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "remove",
+      "payload": {
+        "key": 1
+      },
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 17,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "keys",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 521,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "keys",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 277,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "values",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 521,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "values",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 277,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "items",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 521,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "items",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 277,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "stats",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 204,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "stats",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 160,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "clear",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 109,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "clear",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 69,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "clear",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 69,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "clear",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 49,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "destroy_table",
+      "payload": {},
+      "scenario": "empty",
+      "success": true,
+      "steps": 117,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "destroy_table",
+      "payload": {},
+      "scenario": "populated",
+      "success": true,
+      "steps": 77,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "destroy_table",
+      "payload": {},
+      "scenario": "repeat_first",
+      "success": true,
+      "steps": 77,
+      "issues": []
+    },
+    {
+      "module": "hash",
+      "structure": "hash_table",
+      "operation": "destroy_table",
+      "payload": {},
+      "scenario": "repeat_second",
+      "success": true,
+      "steps": 3,
+      "issues": []
+    }
+  ],
+  "details": []
+}

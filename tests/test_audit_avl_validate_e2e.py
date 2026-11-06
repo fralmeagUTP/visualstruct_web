@@ -10,6 +10,7 @@ from test_audit_avl_validate_native import avl_validate_native,CASES,fixture
 from test_audit_avl_main_e2e import compile_main
 pytestmark=pytest.mark.e2e
 COLLECT=r'''async ({steps})=>{
+ const readStdout=()=>{const el=document.querySelector('#hier-printf-console'),raw=el.dataset.consoleCopy;if(raw===undefined||el.textContent!==(raw||'(sin salida printf en esta ruta)'))throw Error('Visible console differs from raw stdout');return raw;};
  const records=[];const selectors=['#hier-sim-step','#hier-sim-prev'];
  const treeValues=n=>n?[String(n.value),...treeValues(n.left),...treeValues(n.right)]:[];
  for(const dir of ['forward','backward']){
@@ -26,7 +27,7 @@ COLLECT=r'''async ({steps})=>{
     aliases:[...document.querySelectorAll('[data-abb-alias]')].map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget})),
     variables:[...document.querySelectorAll('#hier-variables-view tbody tr')].map(x=>({scope:x.querySelector('small').textContent,previous:x.children[1].textContent,value:x.children[2].textContent,type:x.children[0].querySelector('code').textContent})),
     stack:document.querySelectorAll('#hier-stack-view .hier-stack-frame').length,
-    stdout:document.querySelector('#hier-printf-console').textContent,
+    stdout:readStdout(),
     message:document.querySelector('#message-box').textContent,
     highlighted:[...document.querySelectorAll('#op-pseudocode .sim-active,#op-pseudocode .sim-done')].map(x=>Number(x.dataset.line)),
     treeValues:[...document.querySelectorAll('.viz-tree-text')].map(x=>x.textContent),
@@ -52,7 +53,7 @@ def test_avl_validar_native_views_and_replay(tmp_path,avl_validate_native,monkey
    page.locator('#hier-understand-toggle').click();page.select_option('#operation-select','validar');page.click('#hier-step-mode')
    with page.expect_response(lambda r:r.url.endswith('/avl/operate') and r.request.method=='POST') as resp:page.click('#hier-sim-play')
    data=resp.value.json();assert data['success'];steps=data['execution_trace']['steps'];native=[e for e in avl_validate_native['events'] if e['case']==case];assert len(steps)==len(native);count=len(posts)
-   pending='Validacion preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending
+   pending='Validación preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending
    rows=page.evaluate(COLLECT,{'steps':len(steps)})
    for row in rows:
     i=row['index'];st=row['state'];ped=steps[i]['pedagogy'] if i>=0 else steps[0]['pedagogy']['initial_frame'];expected=ped['memory_state'];assert st==expected

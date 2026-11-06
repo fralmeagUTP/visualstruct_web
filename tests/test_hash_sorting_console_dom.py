@@ -1,3 +1,4 @@
+from e2e_trace_contracts import reveal_public
 """Finite full-page Chromium checks for real Hash and Sorting caller stdout."""
 from contextlib import contextmanager
 from threading import Thread
@@ -62,6 +63,9 @@ def _exercise(page, tmp_path, base, family, run_path, reset_path):
     assert prefix + trace["steps"][-1]["console_stdout"] == second["console_output"]
     posts = []
     page.on("request", lambda request: posts.append(request.url) if request.method == "POST" else None)
+
+    reveal_public(page, console)
+    assert console.is_visible() and console.evaluate("el=>el.clientHeight>0")
 
     # Constrain only presentation height; every displayed byte still comes from
     # these real API operations. Do not manufacture repeated output for scroll.

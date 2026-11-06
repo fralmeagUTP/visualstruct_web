@@ -1,3 +1,5 @@
+from e2e_contract_helpers import console_stdout
+from e2e_trace_contracts import trace_stdout
 """Visible first-occurrence deletion: aliases, live/detached heap, both views/replay."""
 import json,threading
 import pytest
@@ -34,13 +36,13 @@ def test_visible_delete_both_views_replay_and_scope_endpoint(tmp_path):
           page.click(selector);page.wait_for_function("n=>document.querySelector('#seq-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=idx+1)
           actual=page.evaluate('window.auditRenderedState');canonical=steps[idx]['state_after'] if idx>=0 else steps[0]['state_snapshot'];expected=(steps[idx]['pedagogy']['memory_state'] or canonical) if idx>=0 else canonical
           active=page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').evaluate_all('xs=>xs.map(x=>Number(x.dataset.line))')
-          console_lines=page.locator('#seq-printf-console .console-line:not(.muted)').all_text_contents()
+          console_lines=console_stdout(page,'#seq-printf-console')
           dom_roots=page.locator('[data-clear-pointer]').evaluate_all("els=>Object.fromEntries(els.map(el=>[el.dataset.clearPointer,el.querySelector('code').textContent]))")
           dom_nodes=page.locator('[data-clear-node]').evaluate_all("els=>els.map(el=>({id:el.dataset.clearNode,next:el.dataset.clearNext,status:el.dataset.clearStatus,value:Number(el.querySelector('.stack-linked-field strong').textContent)}))")
           expected_nodes=[{k:n[k] for k in ['id','next','status','value']} for n in actual.get('heap_nodes',[])]
           dom_nodes.sort(key=lambda node:node['id']);expected_nodes.sort(key=lambda node:node['id'])
           root_pass=dom_roots.get('lista')=='&cabeza' and dom_roots.get('head')==actual['head'] and all(dom_roots.get(name)==actual.get(name) for name in ['p','ant'])
-          rows.append({'case':label,'view':view,'direction':direction,'step':idx,'backend_state_pass':actual==expected and actual['items']==canonical['items'],'highlight_pass':idx<0 or steps[idx]['line_index'] in active,'root_alias_pass':root_pass,'heap_dom_pass':dom_nodes==expected_nodes,'console_pass':[x.strip() for x in console_lines]==[x.strip() for step in steps[:idx+1] for x in step.get('console',[]) if x.strip()] if idx>=0 else len(console_lines)==0,'dom_roots':dom_roots,'dom_nodes':dom_nodes})
+          rows.append({'case':label,'view':view,'direction':direction,'step':idx,'backend_state_pass':actual==expected and actual['items']==canonical['items'],'highlight_pass':idx<0 or steps[idx]['line_index'] in active,'root_alias_pass':root_pass,'heap_dom_pass':dom_nodes==expected_nodes,'console_pass':console_lines==trace_stdout(data['execution_trace'],idx),'dom_roots':dom_roots,'dom_nodes':dom_nodes})
           if label=='interior' and direction=='forward' and idx>=0 and steps[idx]['line_text'].strip()=='ant->sgte = p->sgte;' and actual.get('head')=='N1':
            page.screenshot(path=str(W/'audit-evidence'/f'linked-delete-{view}.png'),full_page=True)
         # Closing the mode seeks the same endpoint, preserving heap identities;

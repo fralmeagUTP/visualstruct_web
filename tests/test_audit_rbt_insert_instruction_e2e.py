@@ -27,7 +27,7 @@ def test_rbt_insert_actual_views_native_replay(tmp_path,rbt_insert_instruction_n
    with page.expect_response(lambda r:r.url.endswith(endpoint) and r.request.method=='POST') as response:page.click('#hier-sim-play')
    data=response.value.json();assert data['success'];trace=data['execution_trace'];steps=trace['steps'];events=[e for e in report['events'] if e['case']==case]
    for step,event in pairs(trace,events,report):check(step,event)
-   count=len(posts);pending='Insercion preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending;rows=page.evaluate(COLLECT,{'steps':len(steps)})
+   count=len(posts);pending='Inserción preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending;rows=page.evaluate(COLLECT,{'steps':len(steps)})
    for row in rows:
     i=row['index'];ped=steps[i]['pedagogy'] if i>=0 else steps[0]['pedagogy']['initial_frame'];st=ped['memory_state'];assert row['state']==st
     assert row['stdout']==st['console_stdout'];assert row['message']==(data['message'] if i==len(steps)-1 else pending)

@@ -175,15 +175,20 @@ def test_trace_size_latency_and_session_limits(app, client, record_property):
     record_property("rn_history_backend_roundtrip_and_reload", True)
 
     assert 0 < app.config["SESSION_MAX_HISTORY"] <= 300
-    # Exercise actual save_history with 301 entries without 301 algorithm calls.
-    history = [{"operation": "apilar", "payload": {"value": value}} for value in range(301)]
+    # The current policy rejects growth at capacity; it never truncates replay inputs.
+    history = [{"operation": "apilar", "payload": {"value": value}}
+               for value in range(app.config["SESSION_MAX_HISTORY"])]
     from flask import session
+    from app.services.session_service import SessionHistoryLimitError
     with app.test_request_context():
         SessionService.save_history("phase8-limit-probe", history)
-        assert SessionService.get_history("phase8-limit-probe") == history[-app.config["SESSION_MAX_HISTORY"]:]
+        oversized = [{"operation": "apilar", "payload": {"value": value}} for value in range(301)]
+        with pytest.raises(SessionHistoryLimitError):
+            SessionService.save_history("phase8-limit-probe", oversized)
+        assert SessionService.get_history("phase8-limit-probe") == history
         saved_response = app.response_class()
         app.session_interface.save_session(app, session, saved_response)
         cookie = saved_response.headers["Set-Cookie"].split(";", 1)[0]
     with app.test_request_context(headers={"Cookie": cookie}):
-        assert SessionService.get_history("phase8-limit-probe") == history[-app.config["SESSION_MAX_HISTORY"]:]
-    record_property("session_301_entries_truncated_to", app.config["SESSION_MAX_HISTORY"])
+        assert SessionService.get_history("phase8-limit-probe") == history
+    record_property("session_301_entries_rejected_without_truncation", True)

@@ -52,14 +52,18 @@ class Program:
         pattern = r'/\*.*?\*/|//[^\n]*|"(?:\\.|[^"\\])*"|\d+|[A-Za-z_]\w*|->|\+\+|--|<=|>=|==|!=|&&|\|\||[{}()[\],;:?.+*/%<>=!&-]'
         self.tokens = []
         cursor = 0
+        line = 0
         for m in re.finditer(pattern, source, re.S):
             gap = source[cursor:m.start()]
             if gap.strip():
                 raise ValueError(f"Unsupported C token at {cursor}: {gap!r}")
+            line += gap.count('\n')
+            token_line = line
+            line += m.group().count('\n')
             cursor = m.end()
             if m.group().startswith(('/*', '//')):
                 continue
-            self.tokens.append(Token(m.group(), m.start(), m.end(), source.count('\n', 0, m.start())))
+            self.tokens.append(Token(m.group(), m.start(), m.end(), token_line))
         if source[cursor:].strip():
             raise ValueError("Unsupported trailing C syntax")
         self.at = 0
@@ -330,6 +334,8 @@ class GraphMachine:
         old = self.snapshot() if self.callback else None
         if change:
             change()
+        if not self.record_events and self.event_observer is None and self.callback is None:
+            return  # Execute/count every transition; no absent consumer needs encoded metadata.
         fn = name if phase=='function_exit' else self.frames[-1]['function'] if self.frames else self.root_function
         event = dict(function=fn, pos=tok.pos, line_index=tok.line, phase=phase,
                      name=name, value=self.encoded(value), C_executed=True, source_role='canonical')
@@ -347,6 +353,8 @@ class GraphMachine:
         self._count_event()
         old=self.snapshot() if self.callback else None
         if change:change()
+        if not self.record_events and self.event_observer is None and self.callback is None:
+            return
         event=dict(function=None,pos=-1,line_index=-1,phase=name,name=name,value=None,
                    C_executed=False,source_role='caller',**metadata)
         if self.record_events:self.events.append(event)
@@ -480,6 +488,8 @@ class GraphMachine:
 
     def eval(self, node: Node) -> Any:
         value=self._eval(node)
+        if self.callback is None:
+            return value  # Operand provenance is consumed only by traced callback frames.
         encoded=self.encoded(value)
         if isinstance(encoded,int) and abs(encoded)>(1<<53)-1:
             encoded={'exact_integer':str(encoded)}
@@ -681,13 +691,23 @@ def walk(node: Node):
 OWNED_RESULTS=frozenset({'grafo_sucesores','grafo_predecesores','grafo_bfs','grafo_dfs','grafo_dijkstra','grafo_bellman_ford','grafo_prim','grafo_kruskal'})
 BORROWED_RESULTS=frozenset({'grafo_vertices','grafo_arcos'})
 
+def compiled_program(source: str, *, caller_output: bool = False, cache: dict | None = None) -> Program:
+    """Reuse read-only syntax only within one replay; never cache machine state."""
+    if cache is None:
+        return Program(source, caller_output=caller_output)
+    key = (source, caller_output)
+    if key not in cache:
+        cache[key] = Program(source, caller_output=caller_output)
+    return cache[key]
+
+
 class BookSession:
     """Canonical directed C graph, with explicit caller-owned status/output cells.
 
     Seed vertices/arcs are in insertion order; graph_after lists are HEAD order.
     Undirected policy belongs to the caller (two actual calls), not this engine.
     """
-    def __init__(self, vertices=(), arcs=(), marks=None, *, trace=False, callback=None, fail_allocation=None, event_limit=None, event_observer=None):
+    def __init__(self, vertices=(), arcs=(), marks=None, *, trace=False, callback=None, fail_allocation=None, event_limit=None, event_observer=None, program_cache=None, capture_result_memory=None):
         vertices=list(vertices);arcs=[tuple(a) for a in arcs]
         for value in vertices:
             if type(value) is not int:raise ValueError('Vertex must be int32')
@@ -701,14 +721,22 @@ class BookSession:
                 GraphMachine.cast(value,'int')
             if a[:2] in pairs:raise ValueError('Duplicate seeded arc')
             pairs.add(a[:2])
-        self.source=canonical_source();self.program=Program(self.source)
+        if program_cache is None:
+            self.source = canonical_source()
+        else:
+            # One immutable, hash-checked source snapshot per synchronous replay.
+            source_key = ('canonical_source',)
+            if source_key not in program_cache:
+                program_cache[source_key] = canonical_source()
+            self.source = program_cache[source_key]
+        self.program=compiled_program(self.source,cache=program_cache)
         self.transitions=[]
         def capture(event,before,after):
             if trace:self.transitions.append({'event':deepcopy(event),'before':before,'after':after})
             if callback:callback(event,before,after)
         self.machine=GraphMachine(self.program,vertices,arcs,marks,callback=capture if trace or callback else None,fail_allocation=fail_allocation,record_events=trace,event_limit=event_limit,event_observer=event_observer)
         self.machine.external={};self.trace=trace
-        self.capture_result_memory=bool(trace or callback or event_limit is None)
+        self.capture_result_memory=bool(trace or callback or event_limit is None) if capture_result_memory is None else bool(trace or callback or capture_result_memory)
 
     def _list(self,pointer,kind):
         result=[];seen=set()

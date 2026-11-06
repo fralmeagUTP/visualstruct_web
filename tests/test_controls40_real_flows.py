@@ -1,5 +1,6 @@
 """Behavioral tests for current public flows among the40assigned controls."""
 from __future__ import annotations
+from e2e_trace_contracts import reveal_public
 from pathlib import Path
 import json,threading
 import pytest
@@ -43,6 +44,7 @@ def test_controls40_comments_hide_and_restore_real_source(controls40_page,module
  page,context,base=controls40_page;page.goto(base+path,wait_until='networkidle')
  if module=='hash':page.select_option('#hash-operation-select','keys')
  visible="()=>[...document.querySelectorAll('#op-pseudocode .is-code-comment,#op-pseudocode .code-comment,#op-pseudocode .code-doc')].filter(e=>getComputedStyle(e).display!=='none'&&e.getClientRects().length).length"
+ reveal_public(page,page.locator('#op-pseudocode'))
  before=page.evaluate(visible);assert before>0,'No current source comments to exercise this control'
  page.check(checkbox);assert page.locator(checkbox).is_checked();assert page.evaluate(visible)<before
  page.uncheck(checkbox);assert page.evaluate(visible)==before
@@ -62,6 +64,7 @@ def test_controls40_stack_main_download_contains_real_C_history(controls40_page,
  page,context,base=controls40_page
  response=context.request.post(base+'/sequential/stack/operate',data={'operation':'apilar','payload':{'value':7}});assert response.status==200
  page.goto(base+'/sequential/stack',wait_until='networkidle')
+ reveal_public(page,page.locator('#stack-main-download'))
  with page.expect_download() as downloaded:page.click('#stack-main-download')
  dest=tmp_path/'main.c';downloaded.value.save_as(dest);source=dest.read_text(encoding='utf-8-sig')
  assert downloaded.value.suggested_filename=='main.c'
@@ -97,9 +100,14 @@ def test_controls40_prediction_practice_and_progress_reset(controls40_page)->Non
   if page.locator('#seq-prediction-panel').is_visible():break
   page.click('#seq-sim-step')
  assert page.locator('#seq-prediction-panel').is_visible()
- assert page.locator('#visual-state').evaluate('(e)=>e.classList.contains("seq-practice-hidden")')
+ previous_graph=page.locator('#visual-state').text_content()
+ assert page.locator('#visual-state').is_visible()
+ for selector in ['#seq-code-region','#seq-pedagogy-summary','#seq-printf-console','#action-history']:
+  assert page.locator(selector).get_attribute('aria-hidden')=='true' and not page.locator(selector).is_visible()
  page.uncheck('#seq-practice-mode')
- assert not page.locator('#visual-state').evaluate('(e)=>e.classList.contains("seq-practice-hidden")')
+ assert page.locator('#visual-state').text_content()==previous_graph
+ for selector in ['#seq-code-region','#seq-pedagogy-summary','#seq-printf-console','#action-history']:
+  assert page.locator(selector).get_attribute('aria-hidden') is None
  page.locator('#seq-prediction-choices [data-answer="true"]').click()
  assert page.evaluate("JSON.parse(sessionStorage.getItem('sequential-learning-progress:stack')).attempts")==1
  page.click('#seq-reset-learning')

@@ -106,7 +106,7 @@ def test_heap_insert_completed_statements_match_native(heap_insert_native,case,m
  for step,event in zip(trace['steps'],events):
   assert step['line_text'].strip()==event['text'];ped=step['pedagogy'];assert ped['instruction_event']['scope']==event['scope'] and ped['instruction_event']['phase']==event['phase'];state=ped['memory_state']
   assert state['size']==event['quantity'] and state['capacity']==event['capacity'] and state['array']==event['array'] and state['heap_written']==event['known']
-  assert state['heap_data_reference']=={-1:'indeterminado (A1 historico)',0:'NULL',1:'A1',2:'A2'}[event['reference']] and state['heap_active_indices']==event['active_indices']
+  assert state['heap_data_reference']=={-1:'indeterminado (A1 histórico)',0:'NULL',1:'A1',2:'A2'}[event['reference']] and state['heap_active_indices']==event['active_indices']
   assert [{'kind':f['kind'],'id':f['id'],'params':f['parameters'],'locals':f['locals']} for f in state['query_frames']]==event['frames']
   live=[o for o in state['heap_allocations'] if o['live']];assert len(live)==1 and live[0]['capacity']==event['object_capacity'];assert [cell['value'] for cell in live[0]['cells'][:event['known']]]==event['physical']
   assert any(o['id']=='A1' and o['live'] for o in live)==bool(event['live1']);assert any(o['id']=='A2' and o['live'] for o in live)==bool(event['live2'])

@@ -3,6 +3,8 @@ import importlib
 import unittest
 from pathlib import Path
 from unittest.mock import patch
+from qa.independent_inputs import independent_input_path
+from qa.reviewed_spelling import current_display_spelling
 from qa.test_insert_scope import traces, S
 
 MODULES={'abb':('abb_instruction','build_abb_insert_trace'),'avl':('avl_insert_instruction','build_avl_insert_trace'),'red_black':('rbt_insert_instruction','build_rbt_insert_trace'),'binary_heap':('heap_insert_instruction','build_heap_insert_trace')}
@@ -12,10 +14,11 @@ class ScopeEquivalence(unittest.TestCase):
    with self.subTest(sid=sid,seed=seed,value=value):
     name,fn=MODULES[sid];module=importlib.import_module('app.domain.hierarchical.'+name)
     namespace={'__package__':'app.domain.hierarchical','__file__':module.__file__}
-    source=Path(__file__).resolve().parents[2]/'scope-insert-baseline'/f'{name}.py'
+    source=independent_input_path(f'scope-insert-baseline/{name}.py')
     exec(compile(source.read_text(),str(source),'exec'),namespace)
     history=[{'operation':'insertar','payload':{'value':v}} for v in seed]
     with patch.object(module,fn,namespace[fn]):before=S.execute_operation(sid,'insertar',{'value':value},history)['execution_trace']
+    before=current_display_spelling(before)
     self.assertEqual(after['source_code'],before['source_code'])
     self.assertEqual(len(after['steps']),len(before['steps']))
     for a,b in zip(after['steps'],before['steps']):

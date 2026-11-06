@@ -28,7 +28,7 @@ def test_rbt_delete_actual_views_native_replay(tmp_path,rbt_delete_instruction_n
    data=response.value.json();assert data['success'];trace=data['execution_trace'];steps=trace['steps'];events=[e for e in report['events'] if e['case']==case]
    for step,event in pairs(trace,events,report):check(step,event)
    assert set(page.locator('#hier-function-list button').all_text_contents())=={'colorOf','rbt_rotar_dcha','rbt_rotar_izda','transplantar','minimo','arreglarEliminacion','rbt_eliminar','ejecutar_eliminacion'}
-   count=len(posts);pending='Eliminacion preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending;rows=page.evaluate(COLLECT,{'steps':len(steps)})
+   count=len(posts);pending='Eliminación preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending;rows=page.evaluate(COLLECT,{'steps':len(steps)})
    for row in rows:
     i=row['index'];ped=steps[i]['pedagogy'] if i>=0 else steps[0]['pedagogy']['initial_frame'];st=ped['memory_state'];assert row['state']==st
     if ped['condition']:assert ped['condition']['substituted'] in row['conditionText'] and str(ped['condition']['result']).lower() in row['conditionText']

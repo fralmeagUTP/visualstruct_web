@@ -10,8 +10,11 @@ def run_doxygen(target,inputs):
     # and all existing undocumented/doc-error/parameter checks stay enabled.
     if any(path.name in {'tad_grafo.c','tad_grafo.h'} for path in inputs):
         inputs=[*inputs,Path(__file__).resolve().parents[1]/'docs/graph-book-api.dox']
+    # Doxygen 1.9.8 validates parameter docs during its HTML pass. XML-only
+    # output emits false WARN_NO_PARAMDOC warnings even when XML has the docs.
+    # Generate both formats; keep every warning check enabled.
     warning=target/'warnings.log';cfg=target/'Doxyfile'
-    cfg.write_text('\n'.join(['INPUT = '+' '.join('"'+p.as_posix()+'"' for p in inputs),'OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warning.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
+    cfg.write_text('\n'.join(['INPUT = '+' '.join('"'+p.as_posix()+'"' for p in inputs),'OUTPUT_DIRECTORY = "'+(target/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warning.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = YES','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
     result=subprocess.run([resolve_doxygen(),str(cfg)],capture_output=True,text=True,timeout=45)
     assert result.returncode==0 and warning.read_text(encoding='utf-8')=='',(result.stderr,warning.read_text(encoding='utf-8'))
 

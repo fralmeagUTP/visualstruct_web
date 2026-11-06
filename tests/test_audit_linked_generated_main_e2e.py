@@ -1,5 +1,6 @@
 """Compile the actual displayed history against HTTP-downloaded Linked C/H."""
 import json,shutil,subprocess,threading
+from e2e_contract_helpers import main_source, observe_before_cleanup
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -23,13 +24,13 @@ def test_linked_form_main_compiles_and_replays_typed_values(tmp_path):
           data=response.value.json();assert data['success'];expected=[x['value'] for x in data['visual_state']['items']]
           for reload in [False,True]:
             if reload:page.reload(wait_until='networkidle')
-            main=page.locator('.didactic-history-main').inner_text();assert '\u00a0' not in main
+            main=main_source(page);assert '\u00a0' not in main
             if operation=='buscar_elemento':
               # Approved action-history contract retains successful search on reload.
               assert main.count('lista_buscar_elemento(lista, 8);')==1
             # Only append a native observation before return; displayed calls stay byte-for-byte.
-            observed=main.replace('    return 0;','    printf("AUDIT:");\n    for(Tlista p=lista;p!=NULL;p=p->sgte) printf(" %d",p->nro);\n    printf("\\n");\n    lista_limpiar(&lista);\n    return 0;')
-            source=tmp_path/f'main-{index}-{reload}.c';source.write_text('#include <stdio.h>\n#include "tad_lista.h"\n'+observed,encoding='utf-8');exe=tmp_path/'main.exe'
+            observed=observe_before_cleanup(main, 'lista_limpiar(&lista);','    printf("AUDIT:");\n    for(Tlista p=lista;p!=NULL;p=p->sgte) printf(" %d",p->nro);\n    printf("\\n");')
+            source=tmp_path/f'main-{index}-{reload}.c';source.write_text(observed,encoding='utf-8');exe=tmp_path/'main.exe'
             build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'tad_lista.c'),str(source),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr
             run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=5);assert run.returncode==0,run.stderr
             audit=next(line for line in run.stdout.splitlines() if line.startswith('AUDIT:'));actual=[int(x) for x in audit[6:].split()];assert actual==expected

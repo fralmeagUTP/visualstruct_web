@@ -1,0 +1,9 @@
+{
+  "name": "visualstruct-test-harness",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pinned DOM dependencies for the CI regression harness",
+  "devDependencies": {
+    "jsdom": "26.1.0"
+  }
+}
