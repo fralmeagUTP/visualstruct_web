@@ -49,20 +49,20 @@ def run_counting_sparse_trace(values: list[int], *, allocator: Callable[[int],Sp
         compared=[hi] if token in ('min_compare','max_compare') else []
         pending=written-consumed
         context=dict(wrapper_active=bool(stack),helper_active='obtener_minimo_maximo' in stack,helper_declared=helper_declared,minimo=minimum,maximo=maximum,rango=rng,i=wi,helper_i=hi,indice=output,phase=phase,live=counts is not None,declared=declared,released=released,allocations=allocs,frees=frees,filled=filled,written=written,consumed=consumed,pending_decrement=pending,buckets=[],count_state=counts.snapshot() if counts is not None else None)
-        action={'initial':'Antes de llamar ordenar_counting_sort; ninguna instruccion ejecutada.','declare':'Declarar locales C; valores y puntero aun sin inicializar.','count_init':'calloc reserva y pone todas las frecuencias a cero.','array_write':'Completar arreglo[indice++]=(int)i+minimo; frecuencia aun sin decrementar.','count_write':'Ejecutar --conteo[i] despues de la escritura; consumir una frecuencia.','count_free':'Ejecutar free(conteo); retirar reserva sin asignar NULL al puntero C.','sort_return':'Retornar ORDENAMIENTO_OK y retirar parametros/locales.','error_return':'Retornar ORDENAMIENTO_ERROR (0) y retirar parametros/locales; sin operacion aceptada.','min_init':'Escribir *minimo=arreglo[0] en el local del wrapper.','max_init':'Escribir *maximo=arreglo[0] en el local del wrapper.'}.get(token,token.replace('_',' '))
+        action={'initial':'Antes de llamar ordenar_counting_sort; ninguna instrucción ejecutada.','declare':'Declarar locales C; valores y puntero aún sin inicializar.','count_init':'calloc reserva y pone todas las frecuencias a cero.','array_write':'Completar arreglo[índice++]=(int)i+mínimo; frecuencia aún sin decrementar.','count_write':'Ejecutar --conteo[i] después de la escritura; consumir una frecuencia.','count_free':'Ejecutar free(conteo); retirar reserva sin asignar NULL al puntero C.','sort_return':'Retornar ORDENAMIENTO_OK y retirar parámetros/locales.','error_return':'Retornar ORDENAMIENTO_ERROR (0) y retirar parámetros/locales; sin operación aceptada.','min_init':'Escribir *minimo=arreglo[0] en el local del wrapper.','max_init':'Escribir *maximo=arreglo[0] en el local del wrapper.'}.get(token,token.replace('_',' '))
         if token=='count_init' and counts is None:action='calloc devuelve NULL; no se crea reserva ni se inicializan celdas.'
         steps.append(dict(step=len(steps)+1,line_token=token,action=action,array_snapshot=list(a),comparing_indices=compared,swapping_indices=[],sorted_indices=list(range(n)) if token=='sort_return' else [],active_range=None,pivot_index=None,auxiliary_snapshot=counts.snapshot() if counts is not None else None,temporaries={},pointer_indices=[],console_output='',metrics=dict(comparisons=comparisons,moves=moves,swaps=0),instruction_variables=variables,instruction_stack=list(stack),instruction_pointers=pointers,source_function=function,condition_result=condition,condition_expression=expression,instruction_event=event,counting_context=context,**({'source_line_token':source_token} if source_token else {})))
     def fail(message: str,reason: str,source_token: str,origin: str='native-semantic-guard',simulated: bool=False):
         nonlocal declared,helper_declared,minimum,maximum,wi,hi,rng,output,phase
         stack.clear();declared=helper_declared=False;minimum=maximum=wi=hi=rng=output=None;phase=None
         emit('error_return',source_token=source_token)
-        label='Fallo simulado de calloc para QA; no agotamiento real de memoria.' if simulated else 'Fallo de reserva del modelo Python; ruta C equivalente, no ejecucion del allocator C.' if origin=='python-model-allocation' else 'Rango rechazado por el contrato C; llamada modelada no aceptada.'
+        label='Fallo simulado de calloc para QA; no agotamiento real de memoria.' if simulated else 'Fallo de reserva del modelo Python; ruta C equivalente, no ejecución del allocator C.' if origin=='python-model-allocation' else 'Rango rechazado por el contrato C; llamada modelada no aceptada.'
         info=dict(code=reason,origin=origin,simulated=simulated,real_c_execution=False,label=label,native_status=0,message=message)
         raise CountingExecutionFailure(message,steps,dict(comparisons=comparisons,moves=moves,swaps=0,steps=len(steps)),info)
     def valid():
         stack.append('arreglo_valido');emit('valid_entry');emit('valid_ptr',True,'arreglo != NULL');emit('valid_n',n>0,f'{n} > 0');stack.pop();return n>0
     emit('initial');stack.append('ordenar_counting_sort');emit('sort_entry');declared=True;emit('declare');emit('valid_call');ok=valid();emit('sort_guard',not ok,'!arreglo_valido(arreglo,n)')
-    if not ok:fail('El arreglo no puede estar vacio.','invalid-array','sort_guard')
+    if not ok:fail('El arreglo no puede estar vacío.','invalid-array','sort_guard')
     emit('minmax_call');stack.append('obtener_minimo_maximo');emit('minmax_entry');helper_declared=True;emit('helper_i_declare');ok=valid();emit('minmax_guard',not ok,'!arreglo_valido(arreglo,n) || minimo == NULL || maximo == NULL')
     minimum=a[0];emit('min_init');maximum=a[0];emit('max_init');hi=1;phase='scan';emit('scan_init')
     while True:
@@ -77,7 +77,7 @@ def run_counting_sparse_trace(values: list[int], *, allocator: Callable[[int],Sp
     rng=maximum-minimum+1;emit('range_compute');too_wide=rng>ORDENAMIENTO_RANGO_MAX;emit('range_limit',too_wide,f'{rng} > {ORDENAMIENTO_RANGO_MAX}')
     if not too_wide:emit('size_guard',False,'rango > SIZE_MAX / sizeof(int) [size_t64]')
     emit('range_guard',too_wide,'rango > ORDENAMIENTO_RANGO_MAX || rango > SIZE_MAX / sizeof(int)')
-    if too_wide:fail(f'El rango de conteo ({rng}) supera el maximo permitido ({ORDENAMIENTO_RANGO_MAX}).','range-limit','range_guard')
+    if too_wide:fail(f'El rango de conteo ({rng}) supera el máximo permitido ({ORDENAMIENTO_RANGO_MAX}).','range-limit','range_guard')
     try:counts=(allocator or SparseCounts)(rng)
     except MemoryError as error:
         pointer_defined=True;emit('count_init');emit('allocation_guard',True,'conteo == NULL')
@@ -125,11 +125,11 @@ def instruction_pedagogy(raw: dict[str,Any],line_index: int | None,line_text: st
     frame['call_stack']=calls;ctx=raw['counting_context'];frame['loop']=None;phase=ctx['phase']
     if phase:
         iteration=ctx['helper_i'] if phase=='scan' else ctx['i'];bound=len(raw['array_snapshot']) if phase!='rebuild' else ctx['rango']
-        frame['loop']=dict(kind='for minimo/maximo' if phase=='scan' else 'while frecuencia' if raw['line_token'] in ('bucket_test','array_write','count_write') else 'for conteo' if phase=='fill' else 'for reconstruccion',iteration=iteration,bounds=[1 if phase=='scan' else 0,bound],exit=raw['line_token'] in ('scan_test','fill_test','rebuild_test','bucket_test') and raw['condition_result'] is False)
+        frame['loop']=dict(kind='for minimo/maximo' if phase=='scan' else 'while frecuencia' if raw['line_token'] in ('bucket_test','array_write','count_write') else 'for conteo' if phase=='fill' else 'for reconstrucción',iteration=iteration,bounds=[1 if phase=='scan' else 0,bound],exit=raw['line_token'] in ('scan_test','fill_test','rebuild_test','bucket_test') and raw['condition_result'] is False)
     if raw['line_token'] in ('min_compare','max_compare'):frame['concept']='comparison'
     if raw['line_token']=='error_return':frame['concept']='return'
     holds=ctx['written']==ctx['consumed']+ctx['pending_decrement'] and (sum(v for _,v in ctx['count_state']['nonzero'])==ctx['filled']-ctx['consumed'] if ctx['live'] else True)
     text=f"Frecuencias escritas {ctx['filled']}; consumidas {ctx['consumed']}; valores reconstruidos {ctx['written']}."
-    if ctx['pending_decrement']:text+=' La escritura ya termino; falta --conteo[i], no anticipar su efecto.'
+    if ctx['pending_decrement']:text+=' La escritura ya terminó; falta --conteo[i], no anticipar su efecto.'
     text+=' Reserva calloc viva y cero inicializada.' if ctx['live'] else ' Reserva liberada; no leer memoria.' if ctx['released'] else 'No hay reserva activa.'
     frame['invariant']=dict(text=text,indices=raw['sorted_indices'],holds=holds);return frame

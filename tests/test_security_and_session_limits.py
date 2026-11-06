@@ -41,25 +41,34 @@ def test_help_unknown_structure_falls_back_safely(client, monkeypatch) -> None:
     assert "Estructura no encontrada".encode("utf-8") not in registered.data
 
 
-def test_session_history_is_trimmed_to_configured_max(client, app) -> None:
-    """Session history should keep only the latest N mutating operations."""
+def test_session_history_limit_rejects_growth_without_losing_state(client, app) -> None:
+    """A replay history must never lose its initial mutations to a silent slice."""
     app.config["SESSION_MAX_HISTORY"] = 3
-
-    for value in ("1", "2", "3", "4", "5"):
+    for value in ("1", "2", "3"):
         response = client.post(
             "/sequential/stack/operate",
             json={"operation": "apilar", "payload": {"value": value}},
         )
         assert response.status_code == 200
-
     with client.session_transaction() as sess:
-        histories = sess.get("sequential_histories", {})
-        stack_record = histories.get("stack", {})
-        stack_history = stack_record.get("history", [])
-
-    assert len(stack_history) == 3
-    payload_values = [step["payload"]["value"] for step in stack_history]
-    assert payload_values == ["3", "4", "5"]
+        from copy import deepcopy
+        before = deepcopy(dict(sess))
+    rejected = client.post(
+        "/sequential/stack/operate",
+        json={"operation": "apilar", "payload": {"value": "4"}},
+    )
+    assert rejected.status_code == 409
+    assert rejected.get_json()["preserve_session"] is True
+    assert rejected.get_json()["visual_state"] == response.get_json()["visual_state"]
+    with client.session_transaction() as sess:
+        assert dict(sess) == before
+        history = sess["sequential_histories"]["stack"]["history"]
+        assert [entry["payload"]["value"] for entry in history] == ["1", "2", "3"]
+    assert client.get("/sequential/stack").status_code == 200
+    assert client.post("/sequential/stack/reset").status_code == 200
+    again = client.post("/sequential/stack/operate", json={"operation": "apilar", "payload": {"value": "9"}})
+    assert again.status_code == 200
+    assert again.get_json()["visual_state"]["size"] == 1
 
 
 def test_session_histories_are_isolated_by_module_namespace(client) -> None:

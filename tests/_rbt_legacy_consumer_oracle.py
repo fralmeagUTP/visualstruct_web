@@ -48,7 +48,7 @@ def _physical_store(before,after,text,phase):
     assert actual==expected, (text,"unexplained physical store")
     assert after["head"]==head, (text,"unexplained root store")
 
-def assert_rbt_consumer(body,case):
+def assert_rbt_consumer(body,case, *, historical_word="histórica"):
     assert case in {"rotation","delete_int","delete_text"}
     kind="rotation" if case=="rotation" else "delete"
     trace=body["execution_trace"];value=1 if kind=="rotation" else (3 if case=="delete_int" else "3")
@@ -110,7 +110,7 @@ def assert_rbt_consumer(body,case):
     assert released["state_snapshot"]["size"]==released["state_after"]["size"]==7
     assert released["pedagogy"]["memory"]["freed_objects"][0]["id"]=="N2"
     locals_=_env(fix["pedagogy"]["memory_state"])
-    assert locals_=={"arbol":"&raiz","key":3,"z":"N2 [valor indeterminado; identidad historica]","y":"N2 [valor indeterminado; identidad historica]","y_color_original":"n","x":"NULL","x_parent":"N1"}
+    assert locals_=={"arbol":"&raiz","key":3,"z":f"N2 [valor indeterminado; identidad {historical_word}]","y":f"N2 [valor indeterminado; identidad {historical_word}]","y_color_original":"n","x":"NULL","x_parent":"N1"}
     enter=anchor("static void arreglarEliminacion(RBT *root, RBT x, RBT x_parent) {","enter")
     assert enter["pedagogy"]["memory_state"]["tree_frames"][-1]["parameters"]=={"root":"&raiz","x":"NULL","x_parent":"N1"}
     assert "w" not in enter["pedagogy"]["memory_state"]["tree_frames"][-1]["locals"]

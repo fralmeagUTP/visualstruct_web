@@ -91,7 +91,7 @@ class HashStructureService:
         """Translate technical exceptions to didactic messages."""
         if isinstance(error, ValueError):
             return str(error)
-        return "Ocurrio un error inesperado durante la operacion."
+        return "Ocurrió un error inesperado durante la operación."
 
     @staticmethod
     def _operations(adapter):
@@ -194,7 +194,7 @@ class HashStructureService:
         operation_meta = next((item for item in operations if item["name"] == operation_name), None)
 
         if operation_meta is None:
-            message = "La operacion solicitada no esta soportada por esta estructura."
+            message = "La operación solicitada no está soportada por esta estructura."
             trace = ExecutionTraceService.build_trace(
                 structure_id=structure_id,
                 operation_name=operation_name,
@@ -250,7 +250,7 @@ class HashStructureService:
             valid_history.append({"operation": operation_name, "payload": deepcopy(payload)})
 
         after_state = adapter.to_visual_state()
-        message = result.get("message", "Operacion ejecutada correctamente.")
+        message = result.get("message", "Operación ejecutada correctamente.")
         trace = ExecutionTraceService.build_trace(
             structure_id=structure_id,
             operation_name=operation_name,

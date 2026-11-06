@@ -117,7 +117,7 @@ def _heap_write(before: dict, after: dict, text: str, phase: str) -> None:
     if phase == "free":
         assert text == "free(m->datos);"
         live().update(live=False, cells=[])
-        ref = "indeterminado (" + ref + " historico)"
+        ref = "indeterminado (" + ref + " histórico)"
     elif phase == "allocation":
         assert "realloc(" in text and ref == "NULL", "focal clear reserves fresh buffer"
         n = _environment(before)["nueva_capacidad"]
@@ -350,7 +350,7 @@ def _scope_causality(before: dict, after: dict, text: str, phase: str) -> None:
                         continue
                     assert ident == a[-1]["id"], "write to suspended caller"
                     if phase == "free":
-                        assert isinstance(left.get(name), str) and right.get(name) == left[name] + " [valor indeterminado; identidad historica]"
+                        assert isinstance(left.get(name), str) and right.get(name) == left[name] + " [valor indeterminado; identidad histórica]"
                     elif phase == "scope_exit":
                         assert text == "}" and name in {"s", "tmp"} and name not in right
                     else:

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Modulo Hash{% endblock %}
+{% block title %}Módulo Hash{% endblock %}
 {% block content %}
 <section>
-  <h2>Modulo de Tablas Hash</h2>
+  <h2>Módulo de Tablas Hash</h2>
   <p>Selecciona la estructura para trabajar con pares clave-valor y visualizar colisiones.</p>
   {% set structure_images = {
     "hash_table": "TablaHash.jpg"
@@ -14,7 +14,7 @@
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename=structure_images[structure.id]) }}"
-          alt="Ilustracion de {{ structure.name }}"
+          alt="Ilustración de {{ structure.name }}"
           loading="lazy"
           onerror="this.closest('.card-illustration').style.display='none';"
         >
@@ -23,7 +23,7 @@
       <h3>{{ structure.name }}</h3>
       <p>{{ structure.description }}</p>
       <a class="btn" href="{{ url_for('hash.structure_page', structure_id=structure.id) }}">Abrir</a>
-      <a class="link" href="{{ url_for('help.hash_structure_help', structure_id=structure.id) }}">Ayuda especifica</a>
+      <a class="link" href="{{ url_for('help.hash_structure_help', structure_id=structure.id) }}">Ayuda específica</a>
     </article>
     {% endfor %}
   </div>

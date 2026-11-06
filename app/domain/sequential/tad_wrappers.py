@@ -96,7 +96,7 @@ class Pila(Generic[T]):
 
     def desapilar(self) -> T:
         if self._tamano == 0:
-            raise EstructuraVaciaError("La pila esta vacia.")
+            raise EstructuraVaciaError("La pila está vacía.")
         valor = pila_desapilar(self._tope_ref)
         self._tamano -= 1
         return valor  # type: ignore[return-value]
@@ -105,7 +105,7 @@ class Pila(Generic[T]):
 
     def cima(self) -> T:
         if self._tope_ref[0] is None:
-            raise EstructuraVaciaError("La pila esta vacia.")
+            raise EstructuraVaciaError("La pila está vacía.")
         return pila_cima(self._tope_ref[0])  # type: ignore[return-value]
 
     peek = cima
@@ -156,7 +156,7 @@ class Cola(Generic[T]):
 
     def desencolar(self) -> T:
         if self._tamano == 0:
-            raise EstructuraVaciaError("La cola esta vacia.")
+            raise EstructuraVaciaError("La cola está vacía.")
         valor = cola_desencolar(self._cola)
         self._tamano -= 1
         return valor  # type: ignore[return-value]
@@ -165,12 +165,12 @@ class Cola(Generic[T]):
 
     def frente(self) -> T:
         if self._cola.delante is None:
-            raise EstructuraVaciaError("La cola esta vacia.")
+            raise EstructuraVaciaError("La cola está vacía.")
         return cola_frente(self._cola)  # type: ignore[return-value]
 
     def final(self) -> T:
         if self._cola.atras is None:
-            raise EstructuraVaciaError("La cola esta vacia.")
+            raise EstructuraVaciaError("La cola está vacía.")
         return cola_final(self._cola)  # type: ignore[return-value]
 
     def limpiar(self) -> None:
@@ -216,14 +216,14 @@ class ColaPrioridad(Generic[T]):
         pri_out: list[int] = []
         ok = cp_desencolar(self._cola, valor_out, pri_out)
         if not ok:
-            raise EstructuraVaciaError("La cola de prioridad esta vacia.")
+            raise EstructuraVaciaError("La cola de prioridad está vacía.")
         return valor_out[0]  # type: ignore[return-value]
 
     def frente(self) -> T:
         valor: list[int] = []
         prioridad: list[int] = []
         if not cp_frente(self._cola, valor, prioridad):
-            raise EstructuraVaciaError("La cola de prioridad esta vacia.")
+            raise EstructuraVaciaError("La cola de prioridad está vacía.")
         return valor[0]  # type: ignore[return-value]
 
     def vacia(self) -> bool:
@@ -267,7 +267,7 @@ class ListaCircular(Generic[T]):
 
     def eliminar_inicio(self) -> T:
         if lcir_vacia(self._lista):
-            raise EstructuraVaciaError("La lista circular esta vacia.")
+            raise EstructuraVaciaError("La lista circular está vacía.")
         head = self._lista.cabeza.valor
         if not lcir_eliminar_inicio(self._lista):
             raise EstructuraVaciaError("No se pudo eliminar el inicio.")
@@ -344,7 +344,7 @@ class ListaEnlazada(Generic[T]):
 
     def insertar_posicion(self, posicion: int, dato: T) -> None:
         if posicion < 0 or posicion > self._tamano:
-            raise PosicionInvalidaError("La posicion esta fuera de rango.")
+            raise PosicionInvalidaError("La posición está fuera de rango.")
         if posicion == 0:
             self.insertar_inicio(dato)
             return
@@ -357,7 +357,7 @@ class ListaEnlazada(Generic[T]):
 
     def eliminar_inicio(self) -> T:
         if self._cabeza is None:
-            raise EstructuraVaciaError("La lista esta vacia.")
+            raise EstructuraVaciaError("La lista está vacía.")
         valor = self._cabeza.nro
         self._cabeza = self._cabeza.sgte
         self._tamano -= 1
@@ -367,7 +367,7 @@ class ListaEnlazada(Generic[T]):
 
     def eliminar_final(self) -> T:
         if self._cabeza is None:
-            raise EstructuraVaciaError("La lista esta vacia.")
+            raise EstructuraVaciaError("La lista está vacía.")
         if self._cabeza is self._cola:
             return self.eliminar_inicio()
         actual = self._cabeza
@@ -381,7 +381,7 @@ class ListaEnlazada(Generic[T]):
 
     def eliminar_posicion(self, posicion: int) -> T:
         if posicion < 0 or posicion >= self._tamano:
-            raise PosicionInvalidaError("La posicion esta fuera de rango.")
+            raise PosicionInvalidaError("La posición está fuera de rango.")
         if posicion == 0:
             return self.eliminar_inicio()
         anterior = self._nodo_en(posicion - 1)
@@ -424,12 +424,12 @@ class ListaEnlazada(Generic[T]):
 
     def primero(self) -> T:
         if self._cabeza is None:
-            raise EstructuraVaciaError("La lista esta vacia.")
+            raise EstructuraVaciaError("La lista está vacía.")
         return self._cabeza.nro  # type: ignore[return-value]
 
     def ultimo(self) -> T:
         if self._cola is None:
-            raise EstructuraVaciaError("La lista esta vacia.")
+            raise EstructuraVaciaError("La lista está vacía.")
         return self._cola.nro  # type: ignore[return-value]
 
     def limpiar(self) -> None:
@@ -449,7 +449,7 @@ class ListaEnlazada(Generic[T]):
 
     def _nodo_en(self, posicion: int) -> NodoLista:
         if posicion < 0 or posicion >= self._tamano:
-            raise PosicionInvalidaError("La posicion esta fuera de rango.")
+            raise PosicionInvalidaError("La posición está fuera de rango.")
         actual = self._cabeza
         for _ in range(posicion):
             actual = actual.sgte
@@ -511,10 +511,10 @@ class MonticuloBinario(Generic[T]):
         if self._use_tad:
             out: list[int] = []
             if not monticulo_extraer_raiz(self._m, out):
-                raise EstructuraVaciaError("El monticulo esta vacio.")
+                raise EstructuraVaciaError("El montículo está vacío.")
             return out[0]  # type: ignore[return-value]
         if not self._py_datos:
-            raise EstructuraVaciaError("El monticulo esta vacio.")
+            raise EstructuraVaciaError("El montículo está vacío.")
         raiz = self._py_datos[0]
         ultimo = self._py_datos.pop()
         if self._py_datos:
@@ -526,10 +526,10 @@ class MonticuloBinario(Generic[T]):
         if self._use_tad:
             out: list[int] = []
             if not monticulo_raiz(self._m, out):
-                raise EstructuraVaciaError("El monticulo esta vacio.")
+                raise EstructuraVaciaError("El montículo está vacío.")
             return out[0]  # type: ignore[return-value]
         if not self._py_datos:
-            raise EstructuraVaciaError("El monticulo esta vacio.")
+            raise EstructuraVaciaError("El montículo está vacío.")
         return self._py_datos[0]
 
     def vacio(self) -> bool:

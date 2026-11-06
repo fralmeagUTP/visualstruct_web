@@ -8,8 +8,8 @@ from typing import Any
 
 SORTING_ALGORITHMS: list[dict[str, str]] = [
     {"id": "intercambio", "label": "Intercambio directo", "c_function": "ordenar_intercambio"},
-    {"id": "seleccion", "label": "Seleccion directa", "c_function": "ordenar_seleccion"},
-    {"id": "insercion", "label": "Insercion directa", "c_function": "ordenar_insercion"},
+    {"id": "seleccion", "label": "Selección directa", "c_function": "ordenar_seleccion"},
+    {"id": "insercion", "label": "Inserción directa", "c_function": "ordenar_insercion"},
     {"id": "burbuja", "label": "Burbuja mejorada", "c_function": "ordenar_burbuja"},
     {"id": "shell", "label": "Shell sort", "c_function": "ordenar_shell"},
     {"id": "quicksort", "label": "Quick sort", "c_function": "ordenar_quicksort"},
@@ -52,7 +52,7 @@ class SortingInterpreter:
     def run(self) -> dict[str, Any]:
         """Execute algorithm and return trace and final visual state."""
         if not self.values:
-            raise SortingExecutionError("El arreglo no puede estar vacio.")
+            raise SortingExecutionError("El arreglo no puede estar vacío.")
 
         if self.algorithm_id == "intercambio":
             from app.domain.sorting.intercambio_instructions import run_intercambio_trace
@@ -160,7 +160,7 @@ class SortingInterpreter:
             try:
                 result = engine.run(self._counting_digit)
             except MemoryError as error:
-                raise SortingExecutionError("No se pudo reservar memoria en el modelo Python de Radix; no se acepto la ejecucion.") from error
+                raise SortingExecutionError("No se pudo reservar memoria en el modelo Python de Radix; no se aceptó la ejecución.") from error
             finally:
                 self._radix_instruction_engine = None
             self.values = list(result["final_state"]["items"])
@@ -170,7 +170,7 @@ class SortingInterpreter:
             result["final_state"] = self._build_state(last_action="Ordenamiento finalizado.")
             return result
 
-        self._record("Inicio de ejecucion.", line_token="entry")
+        self._record("Inicio de ejecución.", line_token="entry")
         self._record(
             "arreglo_valido comprueba que el puntero no sea NULL y que n sea mayor que cero.",
             line_token="validate_array",
@@ -279,7 +279,7 @@ class SortingInterpreter:
         if count_moves:
             self.metrics.moves += 1
         self._record(
-            f"Asignar {second} a la primera posicion; temporal conserva {first}.",
+            f"Asignar {second} a la primera posición; temporal conserva {first}.",
             line_token="swap_assign_a",
             swapping=[i],
             active_range=active_range,
@@ -291,7 +291,7 @@ class SortingInterpreter:
             self.metrics.moves += 1
         self.metrics.swaps += 1
         self._record(
-            f"Asignar temporal ({first}) a la segunda posicion.",
+            f"Asignar temporal ({first}) a la segunda posición.",
             line_token="swap_assign_b",
             swapping=[i, j],
             active_range=active_range,
@@ -315,14 +315,14 @@ class SortingInterpreter:
         for i in range(n - 1):
             min_idx = i
             self._record(
-                f"Nuevo minimo provisional en indice {min_idx}.",
+                f"Nuevo mínimo provisional en índice {min_idx}.",
                 line_token="init_min",
                 active_range=[i, n - 1],
             )
             for j in range(i + 1, n):
                 self.metrics.comparisons += 1
                 self._record(
-                    f"Comparar arreglo[{j}] con minimo actual arreglo[{min_idx}].",
+                    f"Comparar arreglo[{j}] con mínimo actual arreglo[{min_idx}].",
                     line_token="compare_min",
                     comparing=[j, min_idx],
                     active_range=[i, n - 1],
@@ -330,7 +330,7 @@ class SortingInterpreter:
                 if self.values[j] < self.values[min_idx]:
                     min_idx = j
                     self._record(
-                        f"Nuevo indice minimo: {min_idx}.",
+                        f"Nuevo índice mínimo: {min_idx}.",
                         line_token="set_min",
                         comparing=[min_idx],
                         active_range=[i, n - 1],
@@ -347,7 +347,7 @@ class SortingInterpreter:
             key = self.values[i]
             self.metrics.moves += 1
             self._record(
-                f"Tomar clave {key} desde indice {i}.",
+                f"Tomar clave {key} desde índice {i}.",
                 line_token="take_key",
                 active_range=[0, i],
             )
@@ -365,7 +365,7 @@ class SortingInterpreter:
                 self.values[j] = self.values[j - 1]
                 self.metrics.moves += 1
                 self._record(
-                    f"Desplazar arreglo[{j - 1}] a posicion {j}.",
+                    f"Desplazar arreglo[{j - 1}] a posición {j}.",
                     line_token="shift",
                     swapping=[j - 1, j],
                     active_range=[0, i],
@@ -374,7 +374,7 @@ class SortingInterpreter:
             self.values[j] = key
             self.metrics.moves += 1
             self._record(
-                f"Insertar clave {key} en indice {j}.",
+                f"Insertar clave {key} en índice {j}.",
                 line_token="insert_key",
                 swapping=[j],
                 active_range=[0, i],
@@ -432,7 +432,7 @@ class SortingInterpreter:
                 self.values[j] = temp
                 self.metrics.moves += 1
                 self._record(
-                    f"Ubicar temporal en indice {j}.",
+                    f"Ubicar temporal en índice {j}.",
                     line_token="gap_insert",
                     swapping=[j],
                     active_range=[0, n - 1],
@@ -564,7 +564,7 @@ class SortingInterpreter:
         if left < n:
             self.metrics.comparisons += 1
             self._record(
-                f"Comparar hijo izquierdo {left} con raiz {largest}.",
+                f"Comparar hijo izquierdo {left} con raíz {largest}.",
                 line_token="heap_compare_left",
                 comparing=[left, largest],
                 active_range=[0, n - 1],

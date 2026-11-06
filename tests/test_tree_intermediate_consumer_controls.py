@@ -27,9 +27,9 @@ def test_common_consumer_controls(case,mutation):
         m["heap_nodes"][0]["value"]=99
         for card in p["memory"]["objects_after"]:
             if card["id"]==m["heap_nodes"][0]["id"]:card["value"]=99
-    if mutation is None:assert_tree_intermediate_consumer(body,case)
+    if mutation is None:assert_tree_intermediate_consumer(body,case, historical_word="historica")
     else:
-        with pytest.raises(AssertionError):assert_tree_intermediate_consumer(body,case)
+        with pytest.raises(AssertionError):assert_tree_intermediate_consumer(body,case, historical_word="historica")
 @pytest.mark.parametrize("case",["abb","lr","rl"])
 @pytest.mark.parametrize("mutation",["anchor_child","anchor_metadata","anchor_phase"])
 def test_specific_anchor_controls(case,mutation):
@@ -47,7 +47,7 @@ def test_specific_anchor_controls(case,mutation):
         side="left" if case=="lr" else "right"
         if mutation=="anchor_child":anchor["state_after"]["root"][side][side]=None
         else:anchor["state_after"]["root"]["balance_factor"]=0
-    with pytest.raises(AssertionError):assert_tree_intermediate_consumer(body,case)
+    with pytest.raises(AssertionError):assert_tree_intermediate_consumer(body,case, historical_word="historica")
 
 
 @pytest.mark.parametrize("case",["abb","lr","rl"])
@@ -60,4 +60,4 @@ def test_public_projection_corruption_with_next_snapshot_synchronized(case,defec
     elif defect=="topology":public["root"]["left" if case!="rl" else "right"]=None
     else:public[defect]=999
     steps[2]["state_snapshot"]=deepcopy(public)
-    with pytest.raises(AssertionError):assert_tree_intermediate_consumer(b,case)
+    with pytest.raises(AssertionError):assert_tree_intermediate_consumer(b,case, historical_word="historica")

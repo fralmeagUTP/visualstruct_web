@@ -89,7 +89,7 @@ def build_hidden_positional_trace(*, operation_name: str, payload: dict[str, Any
             hidden_alias_memory={'head':head,'root_owner':root_owner,'locals':deepcopy(variables),'output':output,'freed':deepcopy(freed),'return':ret})
         frame['source']['function']=function
         note='Caller de compatibilidad: '+token if function=='caller_compatibilidad' else token
-        if event=='return':note+='; termina este ambito, sin liberar nodos adicionales.'
+        if event=='return':note+='; termina este ámbito, sin liberar nodos adicionales.'
         frame['narration']={level:note for level in ['basic','intermediate','advanced']}
         validate_sequential_frame(frame,source_code=source);step['pedagogy']=frame
         step['debug']={'function':function,'locals':deepcopy(local),'head':head,'root_owner':root_owner,'output':output,'return':ret,'condition_result':condition}

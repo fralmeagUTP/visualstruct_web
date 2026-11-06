@@ -18,7 +18,7 @@ test('JPG download uses attached blob anchor, exact JPEG bytes/MIME and delayed 
 test('download failure releases blob and anchor immediately',()=>{
  const f=runtimeFixture(true);assert.throws(()=>f.api.downloadJpg('data:image/jpeg;base64,/9j/2Q==','x.jpg'),/refused/);assert.deepEqual(f.revoked,['blob:qa/1']);assert.equal(f.anchors[0].attached,false);
 });
-test('invalid image output is not downloaded',()=>{const f=runtimeFixture();assert.throws(()=>f.api.downloadJpg('data:image/png;base64,AA=='),/JPG valido/);assert.equal(f.urls.length,0);});
+test('invalid image output is not downloaded',()=>{const f=runtimeFixture();assert.throws(()=>f.api.downloadJpg('data:image/png;base64,AA=='),/JPG válido/);assert.equal(f.urls.length,0);});
 function imageFixture(mode){
  const images=[],timers=new Map();let number=0;
  class Image{constructor(){images.push(this);}set src(value){this._src=value;if(value&&mode==='load')queueMicrotask(()=>this.onload?.());if(value&&mode==='error')queueMicrotask(()=>this.onerror?.());}get src(){return this._src;}}

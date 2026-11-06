@@ -18,7 +18,7 @@ def build_abb_delete_trace(trace, before_state, after_state):
         item['left'],item['right']=load(n['left']),load(n['right']);return identity
     head=load(before_state.get('root'));live.update(n['id'] for n in heap)
     def node(identity):return next(n for n in heap if n['id']==identity)
-    def reference(identity):return identity if identity in {'NULL','sin inicializar'} or identity in live else identity+' [valor indeterminado; identidad historica]'
+    def reference(identity):return identity if identity in {'NULL','sin inicializar'} or identity in live else identity+' [valor indeterminado; identidad histórica]'
     def projection(identity):
         if identity not in live:return None
         n=node(identity);return {'value':n['value'],'left':projection(n['left']),'right':projection(n['right'])}
@@ -49,16 +49,16 @@ def build_abb_delete_trace(trace, before_state, after_state):
         return state
     def objects(state):return [{'id':n['id'],'address':n['id'],'symbolic_identity':True,'value':n['value'],'left':n['left'],'right':n['right'],'allocated':True,'freed':False} for n in state['heap_nodes']]
     descriptions={
-        'caller_enter':'Entra al main equivalente con su raiz previamente preparada; no reejecuta esa preparacion.',
-        'enter':'Entra una invocacion con sus propios parametros. El padre permanece suspendido.',
-        'condition':'Evalua la condicion con los valores de esta invocacion, sin cambiar el arbol.',
-        'call':'Inicia la llamada, evaluando los argumentos ahora. Su retorno y la asignacion permanecen pendientes; no hay estado futuro.',
+        'caller_enter':'Entra al main equivalente con su raíz previamente preparada; no reejecuta esa preparación.',
+        'enter':'Entra una invocación con sus propios parámetros. El padre permanece suspendido.',
+        'condition':'Evalúa la condición con los valores de esta invocación, sin cambiar el árbol.',
+        'call':'Inicia la llamada, evaluando los argumentos ahora. Su retorno y la asignación permanecen pendientes; no hay estado futuro.',
         'assignment':'Escribe solo el alias o valor indicado. Copiar el valor del sucesor conserva ambas reservas; puede haber valores duplicados transitorios.',
-        'free':'Termina la vida de esta reserva. Los alias a ella son registros historicos inutilizables; no se leen ni se asignan ficticiamente a NULL.',
-        'return':'Termina este ambito y retorna el puntero indicado. El llamador todavia debe asignarlo a su enlace o raiz.',
-        'link':'La llamada ya retorno; ahora escribe solo el enlace indicado con el reemplazo vivo o NULL.',
-        'caller':'La llamada exterior ya retorno; ahora el main publica la raiz sin leer su valor anterior.',
-        'caller_exit':'El main retorna 0; termina su ambito, conservando las reservas restantes.'}
+        'free':'Termina la vida de esta reserva. Los alias a ella son registros históricos inutilizables; no se leen ni se asignan ficticiamente a NULL.',
+        'return':'Termina este ámbito y retorna el puntero indicado. El llamador todavía debe asignarlo a su enlace o raíz.',
+        'link':'La llamada ya retornó; ahora escribe solo el enlace indicado con el reemplazo vivo o NULL.',
+        'caller':'La llamada exterior ya retornó; ahora el main publica la raíz sin leer su valor anterior.',
+        'caller_exit':'El main retorna 0; termina su ámbito, conservando las reservas restantes.'}
     def emit(text,phase,mutate=None,condition=None,expression=None,result=None,fn=None,occurrence=0):
         old=snapshot();owner=frames[-1]['id'] if frames else 'caller';function=fn or (frames[-1]['function'] if frames else 'main')
         if mutate:mutate()
@@ -68,16 +68,16 @@ def build_abb_delete_trace(trace, before_state, after_state):
         if phase=='condition':step['condition_result']=condition
         ped=build_hierarchical_frame(structure_id='abb',operation_name='eliminar',payload=trace['payload'],step=step,source_lines=lines,success=True)
         ped.update(concept={'condition':'compare','free':'free','return':'return','link':'link','caller':'link'}.get(phase,'assignment'),case=phase,phase={'id':'eliminar-'+phase,'label':phase.title(),'goal':text},condition=None)
-        if phase=='condition':ped['condition']={'source':text,'substituted':expression,'result':condition,'consequence':'rama evaluada de esta invocacion'};ped['executed_branch']='cuerpo' if condition else 'else/salida'
+        if phase=='condition':ped['condition']={'source':text,'substituted':expression,'result':condition,'consequence':'rama evaluada de esta invocación'};ped['executed_branch']='cuerpo' if condition else 'else/salida'
         previous={(f['id'],name):v for f in old['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items()};current={(f['id'],name):v for f in new['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items()};variables=[]
-        if old['caller_frame'] or new['caller_frame']:variables.append({'name':'arbol','scope':'main','frame_id':'caller','type':'ABBNodo *','previous':old['head'] if old['caller_frame'] else 'fuera de ámbito','value':new['head'] if new['caller_frame'] else 'fuera de ámbito','changed':old['head']!=new['head'] or bool(old['caller_frame'])!=bool(new['caller_frame']),'meaning':'Raiz local; el retorno no la asigna hasta completar la llamada.'})
+        if old['caller_frame'] or new['caller_frame']:variables.append({'name':'arbol','scope':'main','frame_id':'caller','type':'ABBNodo *','previous':old['head'] if old['caller_frame'] else 'fuera de ámbito','value':new['head'] if new['caller_frame'] else 'fuera de ámbito','changed':old['head']!=new['head'] or bool(old['caller_frame'])!=bool(new['caller_frame']),'meaning':'Raíz local; el retorno no la asigna hasta completar la llamada.'})
         for f in history:
             for name in ['nodo','valor','temp']:
                 key=(f['id'],name)
                 if key not in previous and key not in current:continue
-                a=previous.get(key,'fuera de ámbito');b=current.get(key,'fuera de ámbito');variables.append({'name':name,'scope':f['function']+'#'+f['id'],'frame_id':f['id'],'type':'int' if name=='valor' else 'ABBNodo *','previous':a,'value':b,'changed':a!=b,'meaning':'Ambito propio; temp no se inicializa antes del retorno del minimo. Identidades terminadas son historicas, no valores leidos.'})
+                a=previous.get(key,'fuera de ámbito');b=current.get(key,'fuera de ámbito');variables.append({'name':name,'scope':f['function']+'#'+f['id'],'frame_id':f['id'],'type':'int' if name=='valor' else 'ABBNodo *','previous':a,'value':b,'changed':a!=b,'meaning':'Ámbito propio; temp no se inicializa antes del retorno del mínimo. Identidades terminadas son históricas, no valores leídos.'})
         ped['variables']=variables;shown=old['tree_frames'] if phase=='return' else new['tree_frames'];stack=[]
-        if old['caller_frame'] or new['caller_frame']:stack.append({'function':'main','frame_id':'caller','depth':-1,'parameters':{},'locals':{'arbol':new['head']},'local_root':new['head'],'local_root_address':new['head'],'return':0 if phase=='caller_exit' else None,'continuation':'asignar raiz al completar abb_eliminar'})
+        if old['caller_frame'] or new['caller_frame']:stack.append({'function':'main','frame_id':'caller','depth':-1,'parameters':{},'locals':{'arbol':new['head']},'local_root':new['head'],'local_root_address':new['head'],'return':0 if phase=='caller_exit' else None,'continuation':'asignar raíz al completar abb_eliminar'})
         for f in shown:stack.append({'function':f['function'],'frame_id':f['id'],'depth':f['depth'],'parameters':deepcopy(f['parameters']),'locals':deepcopy(f['locals']),'local_root':f['parameters']['nodo'],'local_root_address':f['parameters']['nodo'],'return':reference(result) if phase=='return' and f['id']==owner else None,'continuation':'el retorno no escribe por si solo el enlace del padre'})
         for f in stack:f['scope_status']='terminado (contexto del retorno)' if (phase=='return' and f['frame_id']==owner) or (phase=='caller_exit' and f['frame_id']=='caller') else 'activo' if (new['tree_frames'] and f['frame_id']==new['tree_frames'][-1]['id']) or (not new['tree_frames'] and f['frame_id']=='caller') else 'suspendido'
         ped['call_stack']=stack;records=[]
@@ -91,7 +91,7 @@ def build_abb_delete_trace(trace, before_state, after_state):
                     if n[side]!='NULL' and n[side] not in live:records.append({'kind':'field','object':n['id'],'name':side,'identity':n[side],'usable':False,'historical_identity':True})
         ped['memory']={'event':'free' if phase=='free' else 'link' if phase in {'link','caller'} else 'none','objects_before':objects(old),'objects_after':objects(new),'allocated_objects':[],'freed_objects':[n for n in objects(old) if n['id'] not in live],'dangling_references':[],'unusable_reference_records':records,'retired_objects':deepcopy(retired),'stable_addresses':True,'symbolic_identities':True,'records_are_not_pointer_values':True}
         ped['narration']={level:descriptions[phase] for level in ['basic','intermediate','advanced']};ped['return_propagation']={'active':phase in {'return','link','caller'},'value':reference(result) if result is not None and phase!='caller_exit' else result,'reconnects_subtree':phase in {'link','caller'}};ped['state_before']=deepcopy(old);ped['state_after']=deepcopy(new);ped['memory_state']=deepcopy(new);ped['instruction_event']={'phase':phase,'frame_id':owner,'function':function,'condition':condition,'return':reference(result) if result is not None and phase!='caller_exit' else result}
-        ped['invariant'].update(name='Vida de reservas y publicaciones pendientes',holds=True,symbol='✓',explanation='Identidades y enlaces se conservan hasta su instruccion real. La proyeccion viva no afirma que el C escribio NULL ni certifica orden estricto durante la copia transitoria del sucesor.')
+        ped['invariant'].update(name='Vida de reservas y publicaciones pendientes',holds=True,symbol='✓',explanation='Identidades y enlaces se conservan hasta su instrucción real. La proyección viva no afirma que el C escribió NULL ni certifica orden estricto durante la copia transitoria del sucesor.')
         validate_hierarchical_frame(ped,source_code=source);step['pedagogy']=ped;steps.append(step)
     def invocation(fn,identity,arg=None):
         f={'id':'F'+str(len(history)+1),'function':fn,'depth':len(frames),'parameters':{'nodo':identity},'locals':{}}
@@ -154,5 +154,5 @@ def build_abb_delete_trace(trace, before_state, after_state):
         caller=None
     emit('return 0;','caller_exit',leave_caller,result=0);assert snapshot()['root']==after_state.get('root')
     steps[-1]['state_after']=deepcopy(after_state);steps[-1]['pedagogy']['state_after']=deepcopy(after_state)
-    initial=deepcopy(steps[0]['pedagogy']);initial.update(variables=[],call_stack=[],condition=None,memory_state=deepcopy(steps[0]['state_snapshot']),state_after=deepcopy(steps[0]['state_snapshot']));initial['phase']['label']='Estado inicial';initial['narration']={level:'Ninguna instruccion ejecutada; sin ambitos ni retornos futuros.' for level in ['basic','intermediate','advanced']};steps[0]['pedagogy']['initial_frame']=initial
+    initial=deepcopy(steps[0]['pedagogy']);initial.update(variables=[],call_stack=[],condition=None,memory_state=deepcopy(steps[0]['state_snapshot']),state_after=deepcopy(steps[0]['state_snapshot']));initial['phase']['label']='Estado inicial';initial['narration']={level:'Ninguna instrucción ejecutada; sin ámbitos ni retornos futuros.' for level in ['basic','intermediate','advanced']};steps[0]['pedagogy']['initial_frame']=initial
     trace.update(source_code=source,steps=steps);return trace

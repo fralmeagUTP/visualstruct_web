@@ -154,7 +154,7 @@ class _NullPath:
    for name in ['nuevo','actual']:self.local(name,'indeterminado; no leer','Sublista *');self.emit(inner,'Sublista *'+name+';')
    self.emit(inner,'if (padre == NULL)',condition=False);self.emit(inner,'nuevo = crear_hijo',event='call');self.allocator('crear_hijo','nuevo','Sublista *',child);self.local('nuevo','NULL','Sublista *');self.emit(inner,'nuevo = crear_hijo');self.emit(inner,'if (nuevo == NULL)',condition=True);self.emit(inner,'return false;',after='if (nuevo == NULL)',returning=True,return_value=False);self.emit(outer,'return sublista_insertar_hijo_final',returning=True,return_value=False)
   self.steps[0]['phase']='start';self.steps[-1]['phase']='end';self.steps[-1]['state_after']=deepcopy(self.before)
-  return {'structure_id':f,'operation_name':op,'payload':deepcopy(p),'source_code':self.source,'code_title':'Codigo C','success':False,'message':MESSAGE,'mutates':False,'steps':self.steps,'final_state':deepcopy(self.before),'pedagogy_schema_version':SEQUENTIAL_FRAME_SCHEMA_VERSION,'pedagogy_schema':sequential_frame_schema()}
+  return {'structure_id':f,'operation_name':op,'payload':deepcopy(p),'source_code':self.source,'code_title':'Código C','success':False,'message':MESSAGE,'mutates':False,'steps':self.steps,'final_state':deepcopy(self.before),'pedagogy_schema_version':SEQUENTIAL_FRAME_SCHEMA_VERSION,'pedagogy_schema':sequential_frame_schema()}
 
 def build_allocation_failure_trace(*, structure_id: str, operation_name: str, payload: dict, didactic_data: dict, before_state: dict) -> dict:
  from app.services.execution_trace_service import ExecutionTraceService

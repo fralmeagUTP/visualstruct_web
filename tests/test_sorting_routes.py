@@ -7,7 +7,7 @@ def test_sorting_module_page_loads(client) -> None:
     """Sorting index should be reachable."""
     response = client.get("/sorting/")
     assert response.status_code == 200
-    assert "Modulo de Metodos de Ordenamiento".encode("utf-8") in response.data
+    assert "Módulo de Métodos de Ordenamiento".encode("utf-8") in response.data
 
 
 def test_sorting_visualizer_page_loads(client) -> None:
@@ -105,7 +105,7 @@ def test_sorting_help_pages_available(client) -> None:
     module_help = client.get("/help/sorting")
     structure_help = client.get("/help/sorting/sorting_array")
     assert module_help.status_code == 200
-    assert "Ayuda del modulo de metodos de ordenamiento".encode("utf-8") in module_help.data
+    assert "Ayuda del módulo de métodos de ordenamiento".encode("utf-8") in module_help.data
     assert structure_help.status_code == 200
     assert b"ordenar_burbuja" in structure_help.data
     help_html = structure_help.get_data(as_text=True)

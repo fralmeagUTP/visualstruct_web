@@ -51,6 +51,30 @@ class HierarchicalStructureService:
             "adapter": BinaryHeapAdapter,
         },
     }
+    _COMPARISON_STRUCTURES = (
+        ("abb", "abb", "ABB"),
+        ("avl", "avl", "AVL"),
+        ("red-black", "red_black", "Rojo-Negro"),
+        ("heap", "binary_heap", "Heap binario"),
+    )
+
+    @staticmethod
+    def comparison_options() -> list[dict[str, Any]]:
+        """Return every ordered pair and all-structures view, grouped by base."""
+        structures = HierarchicalStructureService._COMPARISON_STRUCTURES
+        return [
+            {
+                "structure": structure_id,
+                "label": label,
+                "options": [
+                    {"kind": f"{alias}-{other_alias}", "label": f"{label} vs {other_label}"}
+                    for other_alias, other_id, other_label in structures
+                    if other_id != structure_id
+                ] + [{"kind": f"{alias}-all", "label": f"{label} contra todas"}],
+            }
+            for alias, structure_id, label in structures
+        ]
+
     _C_FIRST_STRUCTURES: set[str] = {
         "abb",
         "avl",
@@ -155,7 +179,7 @@ class HierarchicalStructureService:
                 "default_operation": (
                     "/* Codigo C no disponible para esta operacion en docs/tads_C. */"
                 ),
-                "code_title": "Codigo C",
+                "code_title": "Código C",
             }
         return PseudocodeService.get_structure_data(structure_id)
 
@@ -302,11 +326,19 @@ class HierarchicalStructureService:
             raise ValueError("Todos los valores de comparación deben ser enteros.") from error
         if len(set(immutable_input)) != len(immutable_input):
             raise ValueError("La comparación de árboles requiere valores sin duplicados.")
-        pairs = {
-            "abb-avl": ("abb", "avl"),
-            "avl-red-black": ("avl", "red_black"),
-            "abb-heap": ("abb", "binary_heap"),
+        structures = HierarchicalStructureService._COMPARISON_STRUCTURES
+        comparisons = {
+            f"{alias}-{other_alias}": (structure_id, other_id)
+            for alias, structure_id, _ in structures
+            for other_alias, other_id, _ in structures
+            if structure_id != other_id
         }
+        comparisons.update({
+            f"{alias}-all": (structure_id,) + tuple(
+                other_id for _, other_id, _ in structures if other_id != structure_id
+            )
+            for alias, structure_id, _ in structures
+        })
         if kind == "traversals":
             adapter = HierarchicalStructureService._new_adapter("abb")
             for value in immutable_input:
@@ -325,23 +357,51 @@ class HierarchicalStructureService:
                 ],
                 "conclusion": "El orden de visita cambia; la estructura original permanece inmutable.",
             }
-        if kind not in pairs:
+        if kind not in comparisons:
             raise ValueError("Comparación jerárquica no soportada.")
+
+        def is_valid(state: dict[str, Any], structure_id: str) -> bool:
+            if structure_id == "binary_heap":
+                values = state["array"]
+                return all(values[(index - 1) // 2] <= values[index] for index in range(1, len(values)))
+            return state["validation"]
 
         def execute_copy(structure_id: str) -> dict[str, Any]:
             adapter = HierarchicalStructureService._new_adapter(structure_id)
-            timeline=[]
-            for step_index, value in enumerate(immutable_input):
+            timeline = []
+            for step_index, value in enumerate(immutable_input, start=1):
                 adapter.execute("insertar", {"value": value})
-                state=deepcopy(adapter.to_visual_state())
-                timeline.append({"step":step_index+1,"inserted":value,"state":state,"height":state.get("height"),"validation":state.get("validation",True)})
-            final=deepcopy(adapter.to_visual_state())
-            return {"structure":structure_id,"timeline":timeline,"final_state":final,"height":final.get("height"),"size":final.get("size"),"validation":final.get("validation",True)}
+                state = deepcopy(adapter.to_visual_state())
+                timeline.append({
+                    "step": step_index, "inserted": value, "state": state,
+                    "height": state.get("height"), "validation": is_valid(state, structure_id),
+                })
+            final = deepcopy(adapter.to_visual_state())
+            return {
+                "structure": structure_id, "timeline": timeline, "final_state": final,
+                "height": final.get("height"), "size": final.get("size"),
+                "validation": is_valid(final, structure_id),
+            }
 
-        left_id,right_id=pairs[kind]; left=execute_copy(left_id); right=execute_copy(right_id)
-        conclusions={
-            "abb-avl":"El AVL limita la altura mediante rotaciones; el ABB puede degenerarse con entradas ordenadas.",
-            "avl-red-black":"AVL usa balance de alturas más estricto; rojo-negro limita altura mediante reglas de color.",
-            "abb-heap":"El ABB mantiene orden de búsqueda global; el heap solo garantiza prioridad parcial padre-hijos.",
+        selected = comparisons[kind]
+        sides = [execute_copy(structure_id) for structure_id in selected]
+        conclusions = {
+            frozenset(("abb", "avl")): "El AVL limita la altura mediante rotaciones; el ABB puede degenerarse con entradas ordenadas.",
+            frozenset(("abb", "red_black")): "Rojo-Negro limita la altura mediante reglas de color y rotaciones; el ABB puede degenerarse con entradas ordenadas.",
+            frozenset(("avl", "red_black")): "AVL usa balance de alturas más estricto; rojo-negro limita altura mediante reglas de color.",
+            frozenset(("abb", "binary_heap")): "El ABB mantiene orden de búsqueda global; el heap solo garantiza prioridad parcial padre-hijos.",
+            frozenset(("avl", "binary_heap")): "El AVL mantiene orden de búsqueda y balance de alturas; el min-heap es completo y garantiza el mínimo en la raíz, sin orden de búsqueda global.",
+            frozenset(("red_black", "binary_heap")): "Rojo-Negro mantiene orden de búsqueda y balance mediante colores; el min-heap es completo y garantiza el mínimo en la raíz, sin orden de búsqueda global.",
         }
-        return {"kind":kind,"input":list(immutable_input),"left":left,"right":right,"conclusion":conclusions[kind],"isolated":True}
+        conclusion = conclusions[frozenset(selected)] if len(selected) == 2 else (
+            "ABB, AVL y Rojo-Negro mantienen orden de búsqueda. ABB puede degenerarse; "
+            "AVL y Rojo-Negro limitan la altura con distintas reglas de balance. "
+            "El min-heap es completo y garantiza el mínimo en la raíz, sin orden de búsqueda global."
+        )
+        result = {
+            "kind": kind, "input": list(immutable_input), "sides": sides,
+            "conclusion": conclusion, "isolated": True,
+        }
+        if len(sides) == 2:
+            result.update(left=sides[0], right=sides[1])
+        return result

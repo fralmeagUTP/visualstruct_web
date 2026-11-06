@@ -69,26 +69,26 @@ def build_abb_traversal_trace(trace, before_state, after_state):
                              'type': 'ABBNodo *', 'previous': a.get(f['id'], 'fuera de ámbito'),
                              'value': b.get(f['id'], 'fuera de ámbito'),
                              'changed': a.get(f['id']) != b.get(f['id']),
-                             'meaning': 'Parametro por valor de esta invocacion; el retorno void termina su ambito sin liberar el nodo.'}
+                             'meaning': 'Parámetro por valor de esta invocación; el retorno void termina su ámbito sin liberar el nodo.'}
                             for f in history if f['id'] in a or f['id'] in b]
         shown = old['tree_frames'] if phase == 'return' else new['tree_frames']
         ped['call_stack'] = [{'function': function, 'frame_id': f['id'], 'depth': f['depth'],
                               'parameters': deepcopy(f['parameters']), 'locals': {},
                               'local_root': f['parameters']['nodo'], 'local_root_address': f['parameters']['nodo'],
                               'return': 'void' if phase == 'return' and f['id'] == owner else None,
-                              'continuation': 'retoma la instruccion siguiente del llamador; no reconecta enlaces'} for f in shown]
+                              'continuation': 'retoma la instrucción siguiente del llamador; no reconecta enlaces'} for f in shown]
         objects = [{'id': n['id'], 'address': n['id'], 'symbolic_identity': True, 'value': n['value'],
                     'left': n['left'], 'right': n['right'], 'allocated': True, 'freed': False} for n in heap]
         ped['memory'] = {'event': 'none', 'objects_before': deepcopy(objects), 'objects_after': deepcopy(objects),
                          'allocated_objects': [], 'freed_objects': [], 'dangling_references': [],
                          'stable_addresses': True, 'symbolic_identities': True}
         explanations = {
-            'enter': 'Entra una invocacion con su propio parametro nodo, incluso si es NULL. Los llamadores quedan suspendidos.',
-            'condition': 'Evalua nodo != NULL una vez. NULL omite el cuerpo y no imprime ni modifica el arbol.',
-            'call': 'Inicia la llamada al hijo indicado. El parametro del llamador conserva su identidad y la estructura no cambia.',
-            'resume': 'La llamada al hijo termino. Retoma este ambito sin escribir enlaces ni imprimir de nuevo.',
+            'enter': 'Entra una invocación con su propio parámetro nodo, incluso si es NULL. Los llamadores quedan suspendidos.',
+            'condition': 'Evalúa nodo != NULL una vez. NULL omite el cuerpo y no imprime ni modifica el árbol.',
+            'call': 'Inicia la llamada al hijo indicado. El parámetro del llamador conserva su identidad y la estructura no cambia.',
+            'resume': 'La llamada al hijo terminó. Retoma este ámbito sin escribir enlaces ni imprimir de nuevo.',
             'printf': 'printf emite solo el valor de este nodo seguido de un espacio, sin salto de linea. La estructura permanece intacta.',
-            'return': 'Alcanza el cierre de la funcion void y retorna. Termina solo este ambito; no libera memoria ni devuelve un nodo.'}
+            'return': 'Alcanza el cierre de la función void y retorna. Termina solo este ámbito; no libera memoria ni devuelve un nodo.'}
         ped['narration'] = {level: explanations[phase] for level in ['basic', 'intermediate', 'advanced']}
         ped['return_propagation'] = {'active': phase == 'return', 'value': 'void' if phase == 'return' else None, 'reconnects_subtree': False}
         ped['state_before'], ped['state_after'], ped['memory_state'] = deepcopy(old), deepcopy(new), deepcopy(new)
@@ -131,7 +131,7 @@ def build_abb_traversal_trace(trace, before_state, after_state):
     initial = deepcopy(steps[0]['pedagogy'])
     initial.update(variables=[], call_stack=[], condition=None, memory_state=deepcopy(steps[0]['state_snapshot']), state_after=deepcopy(steps[0]['state_snapshot']))
     initial['phase']['label'] = 'Estado inicial'
-    initial['narration'] = {level: 'Ninguna instruccion ejecutada; arbol inicial y consola vacia, sin parametros futuros.' for level in ['basic', 'intermediate', 'advanced']}
+    initial['narration'] = {level: 'Ninguna instrucción ejecutada; árbol inicial y consola vacía, sin parámetros futuros.' for level in ['basic', 'intermediate', 'advanced']}
     steps[0]['pedagogy']['initial_frame'] = initial
     trace.update(steps=steps)
     return trace

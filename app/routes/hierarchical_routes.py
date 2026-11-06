@@ -8,7 +8,7 @@ from flask import Blueprint, abort, jsonify, render_template, request
 
 from app.services.hierarchical_help_service import HierarchicalHelpService
 from app.services.hierarchical_structure_service import HierarchicalStructureService
-from app.services.session_service import SessionService
+from app.services.session_service import SessionHistoryLimitError, SessionService
 
 hierarchical_bp = Blueprint("hierarchical", __name__, url_prefix="/hierarchical")
 
@@ -35,6 +35,7 @@ def structure_page(structure_id: str) -> str:
         "hierarchical/structure.html",
         model=model,
         help_data=help_data,
+        comparison_groups=HierarchicalStructureService.comparison_options(),
     )
 
 
@@ -42,8 +43,10 @@ def structure_page(structure_id: str) -> str:
 def operate_structure(structure_id: str) -> Any:
     """Execute one hierarchical operation and return JSON response."""
     session_key = f"hierarchical::{structure_id}"
+    body = request.get_json(silent=True)
+    if not isinstance(body, dict):
+        return jsonify({"success": False, "message": "El cuerpo enviado debe ser un objeto JSON válido."}), 400
     history = SessionService.get_history(session_key)
-    body = request.get_json(silent=True) or {}
     operation_name = str(body.get("operation", "")).strip()
     payload = body.get("payload", {})
 
@@ -61,6 +64,18 @@ def operate_structure(structure_id: str) -> Any:
         )
     except KeyError:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
+
+    try:
+        SessionService.validate_history_capacity(result["history"], history)
+    except SessionHistoryLimitError as error:
+        previous_model = HierarchicalStructureService.get_view_model(structure_id, history)
+        return jsonify({
+            "success": False,
+            "preserve_session": True,
+            "message": str(error),
+            "history": history,
+            "visual_state": previous_model["visual_state"],
+        }), 409
 
     SessionService.save_history(session_key, result["history"])
     return jsonify(result), (200 if result["success"] else 400)
@@ -89,8 +104,10 @@ def reset_structure(structure_id: str) -> Any:
 
 @hierarchical_bp.post("/compare")
 def compare_structures() -> Any:
-    """Compare two isolated hierarchical executions over one immutable input."""
-    body=request.get_json(silent=True) or {}
+    """Compare isolated hierarchical executions over one immutable input."""
+    body = request.get_json(silent=True)
+    if not isinstance(body, dict):
+        return jsonify({"success": False, "message": "El cuerpo enviado debe ser un objeto JSON válido."}), 400
     try:
         result=HierarchicalStructureService.compare_structures(str(body.get("kind", "")),body.get("values"))
     except ValueError as error:

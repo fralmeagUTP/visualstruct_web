@@ -17,7 +17,7 @@ def test_invalid_source_rejected_before_interpreter_and_state_change(monkeypatch
         calls.append(True)
         raise AssertionError("Interpreter constructed before source rejection")
     monkeypatch.setattr("app.adapters.sorting_adapter.SortingInterpreter", forbidden)
-    with pytest.raises(SortingExecutionError, match="[Cc]odigo C"):
+    with pytest.raises(SortingExecutionError, match="[Cc]ódigo C"):
         if source == "omitted":
             adapter.run(mode)
         else:
@@ -39,7 +39,7 @@ def test_missing_canonical_provider_is_http400_without_success_history(client, m
     data = response.get_json()
     assert response.status_code == 400
     assert data["success"] is False
-    assert "codigo c" in data["message"].lower()
+    assert "código c" in data["message"].lower()
     assert data["history"] == before["history"]
     assert data["visual_state"]["items"] == before["visual_state"]["items"]
     assert not data.get("execution_trace", {}).get("steps")
@@ -55,7 +55,7 @@ def test_invalid_source_preserves_previous_accepted_trace_and_result(monkeypatch
     def forbidden(*args, **kwargs):
         raise AssertionError("Invalid input started a second interpreter")
     monkeypatch.setattr("app.adapters.sorting_adapter.SortingInterpreter", forbidden)
-    with pytest.raises(SortingExecutionError, match="Codigo C"):
+    with pytest.raises(SortingExecutionError, match="Código C"):
         adapter.run(mode, source_code="")
     assert adapter.__dict__ == before
 
@@ -72,7 +72,7 @@ def test_required_helpers_and_uncommented_c_are_required(monkeypatch, kind):
     def forbidden(*args, **kwargs):
         raise AssertionError("Missing executable helper C started interpreter")
     monkeypatch.setattr("app.adapters.sorting_adapter.SortingInterpreter", forbidden)
-    with pytest.raises(SortingExecutionError, match="Codigo C"):
+    with pytest.raises(SortingExecutionError, match="Código C"):
         adapter.run("fast", source_code=source)
     assert adapter.to_visual_state()["items"] == [2, 1]
 
@@ -94,7 +94,7 @@ def test_unsupported_instruction_layout_rejected_before_interpreter(monkeypatch,
     def forbidden(*args, **kwargs):
         raise AssertionError("Unmappable source layout reached interpreter")
     monkeypatch.setattr("app.adapters.sorting_adapter.SortingInterpreter", forbidden)
-    with pytest.raises(SortingExecutionError, match="Codigo C"):
+    with pytest.raises(SortingExecutionError, match="Código C"):
         adapter.run(mode, source_code=source.replace(" ", "  "))
     assert adapter.to_visual_state()["items"] == [2, 1]
 
@@ -114,7 +114,7 @@ def test_absent_provider_never_uses_execution_fallback_and_keeps_accepted_histor
     data = response.get_json()
     assert response.status_code == 400
     assert data["success"] is False
-    assert "codigo c" in data["message"].lower()
+    assert "código c" in data["message"].lower()
     if operation != "compare":
         assert data["history"] == before["history"]
         assert data["visual_state"]["items"] == before["visual_state"]["items"]

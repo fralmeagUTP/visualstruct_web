@@ -53,13 +53,13 @@ def build_sorting_main(history: list[dict[str, Any]]) -> str:
         elif operation == 'select_algorithm':
             selected = payload['algorithm_id']
             if selected not in _C_FUNCTIONS:
-                raise ValueError('Metodo del main no reconocido.')
+                raise ValueError('Método del main no reconocido.')
             lines.append(f'    /* Metodo preparado: {_C_FUNCTIONS[selected]}; seleccion no ejecuta el TAD. */')
         elif operation == 'run':
             selected = payload['algorithm_id']
             effect = entry['array_effect']
             if selected not in _C_FUNCTIONS or current is None or effect['input'] != current or effect['output'] != sorted(current):
-                raise ValueError('Historial no cronologico para generar el main.')
+                raise ValueError('Historial no cronológico para generar el main.')
             run_number += 1
             function = _C_FUNCTIONS[selected]
             lines.append(f'    printf("Run {run_number}: {function}\\n");')

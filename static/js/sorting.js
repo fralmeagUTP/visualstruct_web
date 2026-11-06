@@ -80,8 +80,13 @@ function sStudentNarration(frame) {
   }
   return text.replace(/Valores del modelo tras esta transición\./g, "")
     .replace(/Los valores corresponden a esta transición, sin anticipar la siguiente\./g, "")
-    .replace(/\bframes?\b/gi, "paso").replace(/\bcaller\b/gi, "función que llamó")
-    .replace(/\bwrapper\b/gi, "función principal").replace(/\bhelper\b/gi, "función auxiliar")
+    .replace(/\bframes?\b/gi, "paso")
+    .replace(/\b(?:(al|del|el|un)\s+)?(caller|wrapper|helper)\b(?: (recursivo)\b)?(?: (suspendido)\b)?/gi, (match, article, role, recursive, suspended) => {
+      const prefix = ({al: "a la ", del: "de la ", el: "la ", un: "una "})[(article || "").toLowerCase()] || "";
+      const label = ({caller: "función que llamó", wrapper: "función principal", helper: "función auxiliar"})[role.toLowerCase()];
+      const translated = prefix + label + (recursive ? " recursiva" : "") + (suspended ? " suspendida" : "");
+      return /^[A-Z]/.test(match) ? translated[0].toUpperCase() + translated.slice(1) : translated;
+    })
     .replace(/\bscope\b/gi, "ámbito de la variable").trim();
 }
 
@@ -123,7 +128,7 @@ function renderSortingVisualState(state, container) {
   container.setAttribute("aria-label", `Arreglo del algoritmo ${state.algorithm || "sin seleccionar"}: ${items.join(", ") || "vacío"}`);
   const strategyContainer = sById("sorting-strategy-view");
   if (!items.length) {
-    container.innerHTML = '<p class="muted">Arreglo vacio. Crea o genera datos para iniciar.</p>';
+    container.innerHTML = '<p class="muted">Arreglo vacío. Crea o genera datos para iniciar.</p>';
     renderSortingStrategy(state, strategyContainer);
     return;
   }
@@ -218,14 +223,14 @@ function renderSortingStrategy(state, container) {
   } else if (algorithm === "quicksort") {
     const quick = state.quick_context || {};
     const value = (name) => Number.isInteger(quick[name]) ? sEscape(quick[name]) : "-";
-    html += `<div class="sorting-cue-row"><strong>Primero:</strong> ${value("primero")}<strong>Ultimo:</strong> ${value("ultimo")}<strong>i:</strong> ${value("i")}<strong>j:</strong> ${value("j")}<strong>Pivote local:</strong> ${value("pivote")}<strong>Profundidad:</strong> ${quick.depth || 0}</div>`;
+    html += `<div class="sorting-cue-row"><strong>Primero:</strong> ${value("primero")}<strong>Último:</strong> ${value("ultimo")}<strong>i:</strong> ${value("i")}<strong>j:</strong> ${value("j")}<strong>Pivote local:</strong> ${value("pivote")}<strong>Profundidad:</strong> ${quick.depth || 0}</div>`;
   } else if (algorithm === "mergesort") {
     const merge = state.merge_context || {};
     const value = (name) => Number.isInteger(merge[name]) ? sEscape(merge[name]) : "-";
     const mergeAux = Array.isArray(state.auxiliary_array) ? state.auxiliary_array : [];
     const auxCells = `<div class="sorting-strategy-cells is-auxiliary">${mergeAux.map((cell, index) => `<span data-aux-index="${index}" data-initialized="${cell !== null}"><small>${index}</small>${cell === null ? "sin inicializar" : sEscape(cell)}</span>`).join("")}</div>`;
     html += `<div class="sorting-cue-row"><strong>Izquierda:</strong> ${value("izquierda")}<strong>Medio:</strong> ${value("medio")}<strong>Derecha:</strong> ${value("derecha")}<strong>i:</strong> ${value("i")}<strong>j:</strong> ${value("j")}<strong>k:</strong> ${value("k")}<strong>Profundidad:</strong> ${merge.depth || 0}<strong>Reservas:</strong> ${merge.allocations || 0}<strong>Liberaciones:</strong> ${merge.frees || 0}</div>`;
-    html += `<div class="sorting-recursion-view"><strong>Division/fusion activa</strong><span>${range ? `[${range[0]}..${range[1]}]` : "-"}</span>${merge.aux_live ? auxCells : `<span>${merge.aux_released ? "Auxiliar liberado; sin lectura." : merge.aux_declared ? "Puntero auxiliar sin inicializar." : "Sin reserva auxiliar activa."}</span>`}</div>`;
+    html += `<div class="sorting-recursion-view"><strong>División/fusión activa</strong><span>${range ? `[${range[0]}..${range[1]}]` : "-"}</span>${merge.aux_live ? auxCells : `<span>${merge.aux_released ? "Auxiliar liberado; sin lectura." : merge.aux_declared ? "Puntero auxiliar sin inicializar." : "Sin reserva auxiliar activa."}</span>`}</div>`;
   } else if (algorithm === "heapsort") {
     const heap = state.heap_context || { heap_n: items.length, nodes: [], suffix: [] };
     const hv = (key) => heap[key] === null || heap[key] === undefined ? "-" : sEscape(heap[key]);
@@ -241,7 +246,7 @@ function renderSortingStrategy(state, container) {
       if (!declared) return "sin declarar";
       return count[key] === null || count[key] === undefined ? "sin inicializar" : sEscape(count[key]);
     };
-    html += `<div class="sorting-cue-row"><strong>Minimo:</strong> ${cv("minimo")}<strong>Maximo:</strong> ${cv("maximo")}<strong>Rango:</strong> ${cv("rango")}<strong>i:</strong> ${cv("i")}<strong>Índice de función auxiliar (i):</strong> ${cv("helper_i")}<strong>indice:</strong> ${cv("indice")}</div>`;
+    html += `<div class="sorting-cue-row"><strong>Mínimo:</strong> ${cv("minimo")}<strong>Máximo:</strong> ${cv("maximo")}<strong>Rango:</strong> ${cv("rango")}<strong>i:</strong> ${cv("i")}<strong>Índice de función auxiliar (i):</strong> ${cv("helper_i")}<strong>indice:</strong> ${cv("indice")}</div>`;
     html += `<p data-count-live="${count.live}">${count.live ? "Conteo vivo: calloc inicializo todas las celdas en cero." : count.released ? "Conteo liberado; sin lectura de memoria." : "Sin reserva conteo activa."} Frecuencias escritas: ${count.filled}; consumidas: ${count.consumed}; escrituras: ${count.written}; decremento pendiente: ${count.pending_decrement}.</p>`;
     let buckets = count.buckets || [];
     if (count.count_state && !Array.isArray(state.auxiliary_array)) {
@@ -251,7 +256,7 @@ function renderSortingStrategy(state, container) {
       const start = Math.max(0, Math.min(sparse.length-1, container.dataset.countWindowManual === "true" ? Number(container.dataset.countWindowStart) || 0 : autoStart));
       const nonzero = new Map(sparse.nonzero);
       buckets = Array.from({ length: Math.min(64,sparse.length-start) }, (_,offset)=>({index:start+offset,value:count.minimo+start+offset,count:nonzero.get(start+offset)||0}));
-      html += `<p data-count-range="${sparse.length}">Ventana [${start}..${start+buckets.length-1}] de ${sparse.length} celdas. Las frecuencias no escritas valen cero.</p><label>Ir al indice de conteo <input data-count-window-index type="number" min="0" max="${sparse.length-1}" value="${start}"></label> <button type="button" data-count-window-follow>Seguir indice activo</button>`;
+      html += `<p data-count-range="${sparse.length}">Ventana [${start}..${start+buckets.length-1}] de ${sparse.length} celdas. Las frecuencias no escritas valen cero.</p><label>Ir al índice de conteo <input data-count-window-index type="number" min="0" max="${sparse.length-1}" value="${start}"></label> <button type="button" data-count-window-follow>Seguir índice activo</button>`;
     }
     html += `<div class="sorting-buckets">${buckets.map((node) => `<div data-count-index="${node.index}" data-count-value="${node.value}"><strong>${sEscape(node.value)}</strong><span>${node.count}</span><small>frecuencia [${node.index}]</small></div>`).join("")}</div>`;
   } else if (algorithm === "counting_sort" || algorithm === "binsort") {
@@ -300,7 +305,7 @@ function renderSortingHistory(entries, container, mainCode = "") {
   const rows = entries.length
     ? entries.map((entry) => `<li><strong>${sEscape(entry.title)}</strong>: ${sEscape(entry.message)}</li>`).join("")
     : "<li>Sin acciones ejecutadas.</li>";
-  const program = mainCode ? `<li class="didactic-main-item"><strong>Main reproducible</strong> · <a href="/help/source/sorting_array/main">Descargar main.c</a> · <a href="/help/source/sorting_array/source">C del TAD</a> · <a href="/help/source/sorting_array/header">Cabecera H</a><pre class="didactic-history-main">${sEscape(mainCode)}</pre><small>Compila main.c junto con tad_ordenamiento.c. Las llamadas calculan su salida; seleccion sin ejecución queda como comentario.</small></li>` : "";
+  const program = mainCode ? `<li class="didactic-main-item"><strong>Main reproducible</strong> · <a href="/help/source/sorting_array/main">Descargar main.c</a> · <a href="/help/source/sorting_array/source">C del TAD</a> · <a href="/help/source/sorting_array/header">Cabecera H</a><pre class="didactic-history-main">${sEscape(mainCode)}</pre><small>Compila main.c junto con tad_ordenamiento.c. Las llamadas calculan su salida; selección sin ejecución queda como comentario.</small></li>` : "";
   container.innerHTML = rows + program;
 }
 
@@ -712,11 +717,11 @@ function initSortingPage(model) {
     const current = (model.algorithms || []).find((item) => item.id === algorithmId);
     const label = current ? current.label : algorithmId;
     if (codeTitle) {
-      codeTitle.textContent = `Codigo C: ${label}`;
+      codeTitle.textContent = `Código C: ${label}`;
     }
     const code = didacticOps[algorithmId] || model.didactic.default_operation || "Contenido no disponible.";
     if (window.InterpreterRuntime && codePanel) {
-      window.InterpreterRuntime.renderCode(codePanel, code, "Codigo C");
+      window.InterpreterRuntime.renderCode(codePanel, code, "Código C");
     } else if (codePanel) {
       codePanel.textContent = code;
     }
@@ -956,7 +961,7 @@ function initSortingPage(model) {
       }
       if (finalOnly) {
         trace = null;
-        tracePlayer?.clear("Modo rapido: se aplico el resultado final.");
+        tracePlayer?.clear("Modo rápido: se aplicó el resultado final.");
         renderSortingVisualState(data.visual_state, visualContainer);
         renderSortingConsole(consoleBox, []);
         setButtonsState();

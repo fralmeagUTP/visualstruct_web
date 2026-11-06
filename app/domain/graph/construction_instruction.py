@@ -211,15 +211,15 @@ def build_graph_construction_trace(*, operation_name: str, payload: dict[str,Any
         visual_key=(id(new["heap_nodes"]),id(new["graph"]))
         if visual_key not in visual_cache:visual_cache[visual_key]=pool.intern(_visual(new,before_state,after_state))
         index=event['line_index'];phase=event['phase'];note={
-            'declare':'Declara almacenamiento; no anticipa inicializacion.',
+            'declare':'Declara almacenamiento; no anticipa inicialización.',
             'write':'Completa esta escritura con el estado actual.',
-            'return':'Retorna ahora; las instrucciones posteriores de la funcion se omiten.',
-            'condition':'Evalua la guarda real; el corto circuito omite operandos.',
-            'operand':'Evalua solo este operando del corto circuito.',
-            'allocate':'Reserva propia; campos aun sin inicializar.',
-            'free':'Libera un nodo propio; aliases retirados solo son registros historicos.',
-            'stdout':'Emite ahora el diagnostico C con sus argumentos.',
-            'call':'Prepara esta llamada; el retorno no se ha recibido.'}.get(phase,'Ambito y parametros de la invocacion actual.')
+            'return':'Retorna ahora; las instrucciones posteriores de la función se omiten.',
+            'condition':'Evalúa la guarda real; el corto circuito omite operandos.',
+            'operand':'Evalúa solo este operando del corto circuito.',
+            'allocate':'Reserva propia; campos aún sin inicializar.',
+            'free':'Libera un nodo propio; aliases retirados solo son registros históricos.',
+            'stdout':'Emite ahora el diagnóstico C con sus argumentos.',
+            'call':'Prepara esta llamada; el retorno no se ha recibido.'}.get(phase,'Ámbito y parámetros de la invocación actual.')
         step=dict(step_index=len(steps),line_index=index,line_text=lines[index],event_type='line',phase=phase,
             delay_ms=170,state_snapshot=steps[-1]['state_after'] if steps else before_state,
             state_after=visual_cache[visual_key],console=[event['value']] if phase=='stdout' else [],
@@ -231,8 +231,8 @@ def build_graph_construction_trace(*, operation_name: str, payload: dict[str,Any
         for field in ('memory','source','phase','invariant'):frame[field]=dict(frame[field])
         previous=variables(old);current=variables(new);frame['variables']=[]
         for key in dict.fromkeys([*previous,*current]):
-            record=deepcopy(current.get(key) or previous[key]);a=previous.get(key,{}).get('value','fuera de ambito');b=current.get(key,{}).get('value','fuera de ambito')
-            record.update(previous=a,value=b,changed=a!=b,meaning='Valor tipado del ambito; alias retirado no utilizable.');frame['variables'].append(record)
+            record=deepcopy(current.get(key) or previous[key]);a=previous.get(key,{}).get('value','fuera de ámbito');b=current.get(key,{}).get('value','fuera de ámbito')
+            record.update(previous=a,value=b,changed=a!=b,meaning='Valor tipado del ámbito; alias retirado no utilizable.');frame['variables'].append(record)
         frame['call_stack']=[dict(function=f['function'],frame_id=f['id'],scope_status='terminado (retorno)' if f.get('status')=='returning' else 'activo' if i==len(new['frames'])-1 else 'suspendido',parameters=f['parameters'],scopes=f['scopes']) for i,f in enumerate(new['frames'])]
         frame['condition']=dict(source=event['name'],substituted=event['name']+' => '+str(event['value']),result=bool(event['value']),consequence='Solo la rama real.',evaluated_nodes=event.get('evaluated_nodes',[])) if phase in {'condition','operand'} else None
         oldheap={n['id']:n for n in old['heap_nodes']};newheap={n['id']:n for n in new['heap_nodes']}
@@ -270,11 +270,11 @@ def build_graph_construction_trace(*, operation_name: str, payload: dict[str,Any
     publication_note = message
     if query and success:
         publication_note = {
-            'exists_vertex':'La API publica el resultado booleano de existencia del vertice; C retorna un entero 0 o 1. Esta publicacion no ejecuta otra instruccion C.',
-            'exists_edge':'La API publica el resultado booleano de existencia del arco; C retorna un entero 0 o 1. Esta publicacion no ejecuta otra instruccion C.',
-            'edge_weight':'La API publica el costo entero retornado por C para el arco consultado. Esta publicacion no ejecuta otra instruccion C.',
-            'list_vertices':'La API publica los vertices en su orden logico; la lista retornada por C es prestada, no una copia ni una reserva nueva.',
-            'list_edges':'La API publica los arcos en su orden logico; la lista retornada por C es prestada, no una copia ni una reserva nueva.',
+            'exists_vertex':'La API publica el resultado booleano de existencia del vértice; C retorna un entero 0 o 1. Esta publicación no ejecuta otra instrucción C.',
+            'exists_edge':'La API publica el resultado booleano de existencia del arco; C retorna un entero 0 o 1. Esta publicación no ejecuta otra instrucción C.',
+            'edge_weight':'La API publica el costo entero retornado por C para el arco consultado. Esta publicación no ejecuta otra instrucción C.',
+            'list_vertices':'La API publica los vértices en su orden lógico; la lista retornada por C es prestada, no una copia ni una reserva nueva.',
+            'list_edges':'La API publica los arcos en su orden lógico; la lista retornada por C es prestada, no una copia ni una reserva nueva.',
         }[operation_name]
     frame=build_graph_frame(operation_name=operation_name,payload=payload,step=step,source_lines=lines,success=success)
     frame.update(query_operation=query,construction_operation=not query,concept=phase,variables=[],call_stack=[],condition=None,

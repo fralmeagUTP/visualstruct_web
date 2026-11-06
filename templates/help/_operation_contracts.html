@@ -92,24 +92,24 @@
 <dd>Origen (entero); Destino (entero)</dd>
 <dt><strong>Existe arista</strong> <code>exists_edge</code></dt>
 <dd>Origen (entero); Destino (entero). Consulta auxiliar disponible en la API, sin control independiente en el selector.</dd>
-<dt><strong>Existe vertice</strong> <code>exists_vertex</code></dt>
+<dt><strong>Existe vértice</strong> <code>exists_vertex</code></dt>
 <dd>Vértice (entero). Consulta auxiliar disponible en la API, sin control independiente en el selector.</dd>
 <dt><strong>Generar grafo aleatorio</strong> <code>generate_random_graph</code></dt>
-<dd>Cantidad de vertices (entero)</dd>
+<dd>Cantidad de vértices (entero)</dd>
 <dt><strong>Insertar arista</strong> <code>insert_edge</code></dt>
 <dd>Origen (entero); Destino (entero); Peso (entero)</dd>
-<dt><strong>Insertar vertice</strong> <code>insert_vertex</code></dt>
-<dd>Vertice (entero)</dd>
+<dt><strong>Insertar vértice</strong> <code>insert_vertex</code></dt>
+<dd>Vértice (entero)</dd>
 <dt><strong>Listar aristas</strong> <code>list_edges</code></dt>
 <dd>Sin datos adicionales.</dd>
-<dt><strong>Listar vertices</strong> <code>list_vertices</code></dt>
+<dt><strong>Listar vértices</strong> <code>list_vertices</code></dt>
 <dd>Sin datos adicionales.</dd>
 <dt><strong>Vecinos</strong> <code>neighbors</code></dt>
-<dd>Vertice (entero)</dd>
+<dd>Vértice (entero)</dd>
 <dt><strong>Eliminar arista</strong> <code>remove_edge</code></dt>
 <dd>Origen (entero); Destino (entero)</dd>
-<dt><strong>Eliminar vertice</strong> <code>remove_vertex</code></dt>
-<dd>Vertice (entero)</dd>
+<dt><strong>Eliminar vértice</strong> <code>remove_vertex</code></dt>
+<dd>Vértice (entero)</dd>
 <dt><strong>Bellman-Ford</strong> <code>run_bellman_ford</code></dt>
 <dd>Inicio (entero); Destino (entero)</dd>
 <dt><strong>BFS</strong> <code>run_bfs</code></dt>
@@ -138,13 +138,13 @@
 <dd>Clave (entero)</dd>
 <dt><strong>Insertar/Actualizar clave-valor</strong> <code>insert</code></dt>
 <dd>Clave (entero); Valor entero (entero)</dd>
-<dt><strong>Listar items</strong> <code>items</code></dt>
+<dt><strong>Listar ítems</strong> <code>items</code></dt>
 <dd>Sin datos adicionales.</dd>
 <dt><strong>Listar claves</strong> <code>keys</code></dt>
 <dd>Sin datos adicionales.</dd>
 <dt><strong>Eliminar clave</strong> <code>remove</code></dt>
 <dd>Clave (entero)</dd>
-<dt><strong>Tamano/capacidad/factor</strong> <code>stats</code></dt>
+<dt><strong>Tamaño/capacidad/factor</strong> <code>stats</code></dt>
 <dd>Sin datos adicionales.</dd>
 <dt><strong>Listar valores</strong> <code>values</code></dt>
 <dd>Sin datos adicionales.</dd>
@@ -165,7 +165,7 @@
 <dt><strong>Limpiar</strong> <code>limpiar</code></dt>
 <dd>Sin datos adicionales.</dd>
 <dt><strong>Lista insertar elemento</strong> <code>lista_insertar_elemento</code></dt>
-<dd>Valor (entero); Posicion (entero)</dd>
+<dd>Valor (entero); Posición (entero)</dd>
 </dl>
 <p>La API conserva <code>buscar_posiciones</code>, <code>eliminar_final</code>, <code>eliminar_inicio</code>, <code>eliminar_posicion</code>, <code>eliminar_primero</code>, <code>insertar_elemento</code>, <code>insertar_posicion</code>, <code>mostrar</code>, <code>primero</code>, <code>ultimo</code>. Estas operaciones no aparecen en el selector visible.</p>
 {% endif %}
@@ -178,7 +178,7 @@
 <dt><strong>Limpiar</strong> <code>limpiar</code></dt>
 <dd>Sin datos adicionales.</dd>
 </dl>
-<p>La API conserva <code>frente</code>. Estas operaciones no aparecen en el selector visible.</p>
+<p>La API conserva <code>frente</code>. Esta operación no aparece en el selector visible.</p>
 {% endif %}
 {% if structure_id == 'queue' %}
 <dl>
@@ -213,15 +213,15 @@
 <dt><strong>Crear arreglo</strong> <code>create_array</code></dt>
 <dd>Valores (csv) (texto)</dd>
 <dt><strong>Generar arreglo aleatorio</strong> <code>generate_random_array</code></dt>
-<dd>Tamano (entero); Minimo (entero); Maximo (entero)</dd>
+<dd>Tamaño (entero); Mínimo (entero); Máximo (entero)</dd>
 <dt><strong>Reiniciar</strong> <code>reset</code></dt>
 <dd>Sin datos adicionales.</dd>
 <dt><strong>Ejecutar ordenamiento</strong> <code>run</code></dt>
 <dd>Modo (texto)</dd>
 <dt><strong>Seleccionar algoritmo</strong> <code>select_algorithm</code></dt>
 <dd>Algoritmo (texto)</dd>
-<dt><strong>Paso de ejecucion</strong> <code>step</code></dt>
-<dd>Direccion (texto); Cursor (entero)</dd>
+<dt><strong>Paso de ejecución</strong> <code>step</code></dt>
+<dd>Dirección (texto); Cursor (entero)</dd>
 </dl>
 {% endif %}
 {% if structure_id == 'stack' %}

@@ -6,6 +6,7 @@ import struct
 import subprocess
 import pytest
 from app.services.caller_printf import c_printf
+from app.domain.hash.snapshot_pool import expand_hash_trace
 from app.services.hash_caller_stdout import program_epilogue_stdout
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,7 +49,7 @@ def test_hash_journal_stdout_matches_native_c17(client, tmp_path, operations):
         data = response.get_json()
         assert response.status_code in (200, 400) and not data.get('preserve_session'), data
         assert data['console_prefix'] == complete
-        trace = data['execution_trace']
+        trace = expand_hash_trace(data['execution_trace'])
         assert trace['console_prefix'] == complete
         fragments = ''.join(fragment for step in trace['steps'] for fragment in step['console'])
         assert fragments == data['console_stdout']
@@ -100,6 +101,6 @@ def test_absent_output_cell_is_not_read():
     from app.services.hash_structure_service import HashStructureService as Service
     from app.services.hash_caller_stdout import attach_caller_stdout
     data = Service._execute_operation('hash_table', 'get', {'key': 99}, [])
-    trace = data['execution_trace']
+    trace = expand_hash_trace(data['execution_trace'])
     trace['steps'][-1]['debug']['output'].update(initialized=False, value=None)
     assert attach_caller_stdout(trace, 'get', {'key': 99}, data['visual_state']) == 'get:99:0\n'

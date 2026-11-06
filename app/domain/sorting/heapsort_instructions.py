@@ -114,8 +114,8 @@ def instruction_pedagogy(raw,line_index,line_text):
         calls.append(dict(function=name,parameters=params,continuation='retornar al caller conservando sus locales'))
     frame['call_stack']=calls;context=raw['heap_context'];phase=context['phase'];frame['loop']=None
     if phase:
-        frame['loop']=dict(kind=('for construccion' if phase=='build' else 'for extraccion')+(' (caller suspendido)' if len(calls)>1 else ''),iteration=event['i'],bounds=[0 if phase=='build' else 1,len(raw['array_snapshot'])],exit=raw['line_token'] in ('build_test','extract_test') and raw['condition_result'] is False)
+        frame['loop']=dict(kind=('for construcción' if phase=='build' else 'for extracción')+(' (caller suspendido)' if len(calls)>1 else ''),iteration=event['i'],bounds=[0 if phase=='build' else 1,len(raw['array_snapshot'])],exit=raw['line_token'] in ('build_test','extract_test') and raw['condition_result'] is False)
     if raw['line_token'] in ('left_compare','right_compare'):frame['concept']='comparison'
-    text='Propiedad max-heap del prefijo activo: '+('cumple' if context['max_heap'] else 'no cumple')+'. Estado observado; la construccion parcial no certifica el heap global. El sufijo separado contiene solo extracciones terminadas.'
-    if raw['line_token']=='swap_assign_a':text+=' Duplicacion provisional; temporal conserva el valor pendiente de *b=temporal.'
+    text='Propiedad max-heap del prefijo activo: '+('cumple' if context['max_heap'] else 'no cumple')+'. Estado observado; la construcción parcial no certifica el heap global. El sufijo separado contiene solo extracciones terminadas.'
+    if raw['line_token']=='swap_assign_a':text+=' Duplicación provisional; temporal conserva el valor pendiente de *b=temporal.'
     frame['invariant']=dict(text=text,indices=raw['sorted_indices'],holds=context['max_heap']);return frame

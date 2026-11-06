@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Modulo de Ordenamiento{% endblock %}
+{% block title %}Módulo de Ordenamiento{% endblock %}
 {% block content %}
 <section class="module-page">
-  <h2>Modulo de Metodos de Ordenamiento</h2>
+  <h2>Módulo de Métodos de Ordenamiento</h2>
   <p>Selecciona el visualizador para crear arreglos y ejecutar algoritmos de ordenamiento.</p>
   <div class="cards">
     {% for structure in structures %}
@@ -10,7 +10,7 @@
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename='ordenamiento.jpg') }}"
-          alt="Modulo de metodos de ordenamiento"
+          alt="Módulo de métodos de ordenamiento"
           loading="lazy"
           onerror="this.closest('.card-illustration').style.display='none';"
         >
@@ -19,7 +19,7 @@
       <p>{{ structure.description }}</p>
       <div class="card-actions">
         <a class="btn" href="{{ url_for('sorting.sorting_view') }}">Abrir</a>
-        <a class="link" href="{{ url_for('help.sorting_structure_help', structure_id=structure.id) }}">Ayuda especifica</a>
+        <a class="link" href="{{ url_for('help.sorting_structure_help', structure_id=structure.id) }}">Ayuda específica</a>
       </div>
     </article>
     {% endfor %}

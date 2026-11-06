@@ -145,7 +145,7 @@ class RadixPageSource:
         prev=self.tape[max(0,index-1)];row=self.tape[index];ctx=row['radix_context'];token=row['line_token'];line=self.lookup.get(row.get('source_hint') or token);text=self.lines[line] if line is not None else ''
         vars=typed_variables(ctx,len(row['array_snapshot']));old={(v['scope'],v['name']):v for v in typed_variables(prev['radix_context'],len(prev['array_snapshot']))} if index else {}
         for v in vars:
-            prior=old.get((v['scope'],v['name']));v.update(previous=deepcopy(prior['value']) if prior and prior['initialized'] else None,changed=prior is None or prior['initialized']!=v['initialized'] or prior['value']!=v['value'],meaning=v['scope']+('; valor tras instruccion' if v['initialized'] else '; sin inicializar'))
+            prior=old.get((v['scope'],v['name']));v.update(previous=deepcopy(prior['value']) if prior and prior['initialized'] else None,changed=prior is None or prior['initialized']!=v['initialized'] or prior['value']!=v['value'],meaning=v['scope']+('; valor tras instrucción' if v['initialized'] else '; sin inicializar'))
         stack=[]
         if ctx['wrapper_active']:stack.append(dict(function='ordenar_radixsort',parameters={'arreglo':'caller','n':len(row['array_snapshot'])},continuation='retornar al caller'))
         if ctx['valid_active']:stack.append(dict(function='arreglo_valido',parameters={'arreglo':'caller','n':len(row['array_snapshot'])},continuation='evaluar guarda del wrapper'))
@@ -165,8 +165,8 @@ class RadixPageSource:
             frame['concept_occurrence']=bisect_right(self.concepts[concept],index);mask=self.done_masks[index];frame['done_lines']=[i for i in range(len(self.lines)) if mask>>i&1]
         return frame
     def page(self,start,limit=64):
-        if not 1<=limit<=128:raise ValueError('El limite de pagina debe ser 1..128.')
-        if not 0<=start<len(self.tape):raise ValueError('El indice esta fuera de la traza.')
+        if not 1<=limit<=128:raise ValueError('El límite de página debe ser 1..128.')
+        if not 0<=start<len(self.tape):raise ValueError('El índice está fuera de la traza.')
         end=min(len(self.tape),start+limit)
         return dict(schema='counting-trace-page/v1',start=start,end=end,step_count=len(self.tape),steps=[self.frame(i) for i in range(start,end)])
     def locate(self,concept,occurrence):
@@ -174,7 +174,7 @@ class RadixPageSource:
         positions=self.concepts.get(concept,[])
         return positions[min(occurrence,len(positions))-1] if positions else None
     def trace(self):
-        trace=CountingTrace(structure_id='sorting',operation_name='radixsort',payload={},success=not bool(self.error_info),mutates=not bool(self.error_info),message=self.error_info['message'] if self.error_info else 'Ordenamiento ejecutado correctamente.',code_title='Codigo C',source_code=self.source_code,final_state=deepcopy(self.final_state),pedagogy_schema_version=1,pedagogy_schema=pedagogical_frame_schema(),learning_profile=learning_profile('radixsort'),theory_profile=theory_profile('radixsort'),native_status=0 if self.error_info else 1,metric_policy=dict(comparisons='max_value_comparisons',moves=['work_writes','count_writes','digit_output_writes','caller_writes'],guards_excluded=True,allocator_initialization_excluded=True),execution_origin='python-c-equivalent-model')
+        trace=CountingTrace(structure_id='sorting',operation_name='radixsort',payload={},success=not bool(self.error_info),mutates=not bool(self.error_info),message=self.error_info['message'] if self.error_info else 'Ordenamiento ejecutado correctamente.',code_title='Código C',source_code=self.source_code,final_state=deepcopy(self.final_state),pedagogy_schema_version=1,pedagogy_schema=pedagogical_frame_schema(),learning_profile=learning_profile('radixsort'),theory_profile=theory_profile('radixsort'),native_status=0 if self.error_info else 1,metric_policy=dict(comparisons='max_value_comparisons',moves=['work_writes','count_writes','digit_output_writes','caller_writes'],guards_excluded=True,allocator_initialization_excluded=True),execution_origin='python-c-equivalent-model')
         if self.error_info:trace.update(error=deepcopy(self.error_info),accepted_state=deepcopy(self.accepted_state))
         n=len(self.tape[0]['array_snapshot']);estimate=len(self.tape)*(4*n+80)*96
         if len(self.tape)<=2048 and estimate<=32*1024*1024:

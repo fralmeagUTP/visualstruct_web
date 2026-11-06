@@ -265,7 +265,7 @@
       "source": "app.domain.sorting.SORTING_ALGORITHMS",
       "metadata": {
         "id": "insercion",
-        "label": "Insercion directa",
+        "label": "Inserción directa",
         "c_function": "ordenar_insercion"
       },
       "coverage": {
@@ -345,7 +345,7 @@
       "source": "app.domain.sorting.SORTING_ALGORITHMS",
       "metadata": {
         "id": "seleccion",
-        "label": "Seleccion directa",
+        "label": "Selección directa",
         "c_function": "ordenar_seleccion"
       },
       "coverage": {
@@ -421,7 +421,7 @@
         "identifier": "export-jpg-quality",
         "attributes": {
           "id": "export-jpg-quality",
-          "aria-label": "Calidad de exportacion JPG"
+          "aria-label": "Calidad de exportación JPG"
         }
       },
       "coverage": {
@@ -440,7 +440,7 @@
         "identifier": "export-jpg-scale",
         "attributes": {
           "id": "export-jpg-scale",
-          "aria-label": "Escala de exportacion JPG"
+          "aria-label": "Escala de exportación JPG"
         }
       },
       "coverage": {
@@ -2697,12 +2697,12 @@
         "structure_id": "graph",
         "operation": {
           "name": "exists_vertex",
-          "label": "Existe vertice",
+          "label": "Existe vértice",
           "mutates": false,
           "inputs": [
             {
               "name": "vertex",
-              "label": "Vertice",
+              "label": "Vértice",
               "type": "number"
             }
           ]
@@ -2728,7 +2728,7 @@
           "inputs": [
             {
               "name": "vertices_count",
-              "label": "Cantidad de vertices (maximo 15)",
+              "label": "Cantidad de vértices (máximo 15)",
               "type": "number",
               "min": 1,
               "max": 15,
@@ -2788,12 +2788,12 @@
         "structure_id": "graph",
         "operation": {
           "name": "insert_vertex",
-          "label": "Insertar vertice",
+          "label": "Insertar vértice",
           "mutates": true,
           "inputs": [
             {
               "name": "vertex",
-              "label": "Vertice",
+              "label": "Vértice",
               "type": "number"
             }
           ]
@@ -2834,7 +2834,7 @@
         "structure_id": "graph",
         "operation": {
           "name": "list_vertices",
-          "label": "Listar vertices",
+          "label": "Listar vértices",
           "mutates": false,
           "inputs": []
         }
@@ -2859,7 +2859,7 @@
           "inputs": [
             {
               "name": "vertex",
-              "label": "Vertice",
+              "label": "Vértice",
               "type": "number"
             }
           ]
@@ -2911,12 +2911,12 @@
         "structure_id": "graph",
         "operation": {
           "name": "remove_vertex",
-          "label": "Eliminar vertice",
+          "label": "Eliminar vértice",
           "mutates": true,
           "inputs": [
             {
               "name": "vertex",
-              "label": "Vertice",
+              "label": "Vértice",
               "type": "number"
             }
           ]
@@ -3252,7 +3252,7 @@
         "structure_id": "hash_table",
         "operation": {
           "name": "items",
-          "label": "Listar items",
+          "label": "Listar ítems",
           "mutates": false,
           "inputs": []
         }
@@ -3318,7 +3318,7 @@
         "structure_id": "hash_table",
         "operation": {
           "name": "stats",
-          "label": "Tamano/capacidad/factor",
+          "label": "Tamaño/capacidad/factor",
           "mutates": false,
           "inputs": []
         }
@@ -4363,13 +4363,13 @@
         "structure_id": "linked_list",
         "operation": {
           "name": "eliminar_posicion",
-          "label": "Eliminar posicion (legacy)",
+          "label": "Eliminar posición (legacy)",
           "mutates": true,
           "hidden": true,
           "inputs": [
             {
               "name": "position",
-              "label": "Posicion",
+              "label": "Posición",
               "type": "number",
               "min": 1
             }
@@ -4455,13 +4455,13 @@
             },
             {
               "name": "position",
-              "label": "Posicion",
+              "label": "Posición",
               "type": "number",
               "min": 1
             },
             {
               "name": "relative",
-              "label": "Modo (-1 antes, 0 despues)",
+              "label": "Modo (-1 antes, 0 después)",
               "type": "number",
               "min": -1
             }
@@ -4535,7 +4535,7 @@
         "structure_id": "linked_list",
         "operation": {
           "name": "insertar_posicion",
-          "label": "Insertar posicion (legacy)",
+          "label": "Insertar posición (legacy)",
           "mutates": true,
           "hidden": true,
           "inputs": [
@@ -4546,7 +4546,7 @@
             },
             {
               "name": "position",
-              "label": "Posicion",
+              "label": "Posición",
               "type": "number",
               "min": 1
             }
@@ -4598,7 +4598,7 @@
             },
             {
               "name": "position",
-              "label": "Posicion",
+              "label": "Posición",
               "type": "number",
               "min": 1
             }
@@ -4662,7 +4662,7 @@
         "structure_id": "linked_list",
         "operation": {
           "name": "ultimo",
-          "label": "Ultimo (legacy)",
+          "label": "Último (legacy)",
           "mutates": false,
           "hidden": true,
           "inputs": []
@@ -5098,17 +5098,17 @@
           "inputs": [
             {
               "name": "size",
-              "label": "Tamano",
+              "label": "Tamaño",
               "type": "number"
             },
             {
               "name": "min_value",
-              "label": "Minimo",
+              "label": "Mínimo",
               "type": "number"
             },
             {
               "name": "max_value",
-              "label": "Maximo",
+              "label": "Máximo",
               "type": "number"
             }
           ]
@@ -5201,12 +5201,12 @@
         "structure_id": "sorting_array",
         "operation": {
           "name": "step",
-          "label": "Paso de ejecucion",
+          "label": "Paso de ejecución",
           "mutates": false,
           "inputs": [
             {
               "name": "direction",
-              "label": "Direccion",
+              "label": "Dirección",
               "type": "text"
             },
             {
@@ -6424,8 +6424,8 @@
       "source": "type.list_structures",
       "metadata": {
         "id": "sorting_array",
-        "name": "Metodos de Ordenamiento",
-        "description": "Visualizador didactico de algoritmos de ordenamiento sobre arreglos."
+        "name": "Métodos de Ordenamiento",
+        "description": "Visualizador didáctico de algoritmos de ordenamiento sobre arreglos."
       },
       "coverage": {
         "case_id": "QA-STRUCTURE-SORTING-SORTING-ARRAY",

@@ -34,20 +34,20 @@ class RadixInstructionEngine:
                     **{k:s[k] for k in ['max_value_comparisons','sign_tests','work_writes','count_writes','digit_output_writes','caller_writes']},return_status=status)
     def emit(self,token:str,condition:bool | None=None,expression:str='',*,status:int | None=None,source_hint:str | None=None) -> None:
         function='arreglo_valido' if token.startswith('valid_') else 'counting_por_digito' if token.startswith('digit_') else None if token=='initial' else 'ordenar_radixsort'
-        actions={'initial':'Antes de llamar ordenar_radixsort; ninguna instruccion C ejecutada.',
+        actions={'initial':'Antes de llamar ordenar_radixsort; ninguna instrucción C ejecutada.',
                  'radix_declare':'Declarar punteros y escalares; cant_negativos/cant_positivos inicializados en cero.',
-                 'digit_declare':'Inicializar conteo[10] automatico a cero; salida e i aun sin inicializar.',
+                 'digit_declare':'Inicializar conteo[10] automático a cero; salida e i aún sin inicializar.',
                  'digit_allocate':'malloc reserva salida sin inicializar sus celdas.' if self.s['buffers']['output']['live'] else 'malloc devuelve NULL; ninguna celda de salida existe.',
                  'negative_allocate':'Evaluar malloc para negativos; reserva indeterminada o NULL.',
                  'positive_allocate':'Evaluar malloc para positivos; reserva indeterminada o NULL.',
-                 'digit_output_write':'Escribir salida[conteo[digito]-1]=valor; aun falta decrementar frecuencia.',
-                 'digit_frequency_decrement':'Decrementar conteo[digito] despues de escribir salida.',
+                 'digit_output_write':'Escribir salida[conteo[digito]-1]=valor; aún falta decrementar frecuencia.',
+                 'digit_frequency_decrement':'Decrementar conteo[digito] después de escribir salida.',
                  'digit_free':'Ejecutar free(salida); retirar reserva sin leerla ni asignar NULL al puntero C.',
                  'negative_free':'Ejecutar free(negativos), incluido NULL; no leer reserva retirada.',
                  'positive_free':'Ejecutar free(positivos), incluido NULL; no leer reserva retirada.',
                  'negative_caller_write':'Recomponer magnitud, proteger INT_MIN y completar arreglo[indice++].',
                  'positive_caller_write':'Completar arreglo[indice++]=(int)positivos[i].',
-                 'radix_return':f'Retornar ORDENAMIENTO_{"OK" if status else "ERROR"} ({status}) y retirar parametros/locales del wrapper.',
+                 'radix_return':f'Retornar ORDENAMIENTO_{"OK" if status else "ERROR"} ({status}) y retirar parámetros/locales del wrapper.',
                  'digit_return':f'Retornar ORDENAMIENTO_{"OK" if status else "ERROR"} ({status}); retirar locales del helper y recuperar caller.'}
         self.tape.append(dict(step=len(self.tape)+1,line_token=token,source_hint=source_hint,source_function=function,condition_result=condition,condition_expression=expression or token.replace('_',' '),action=actions.get(token,token.replace('_',' ')),array_snapshot=list(self.a),radix_context=deepcopy(self.s),console_output='',metrics={k:v for k,v in self.metrics().items() if k!='steps'},instruction_event=self.event(token,condition,status)))
     def cond(self,token:str,value:bool,expression:str='') -> bool:
@@ -78,7 +78,7 @@ class RadixInstructionEngine:
         self.s.update(wrapper_active=False,wrapper_declared=False,wi=None,block=None,maximo=None,exp=None,magnitud=None)
         self.emit('radix_return',status=status,source_hint=hint)
         if not status:
-            info=self.failure or dict(code='invalid-array',origin='native-semantic-guard',simulated=False,real_c_execution=False,native_status=0,label='Entrada rechazada por el contrato C.',message='El arreglo no puede estar vacio.')
+            info=self.failure or dict(code='invalid-array',origin='native-semantic-guard',simulated=False,real_c_execution=False,native_status=0,label='Entrada rechazada por el contrato C.',message='El arreglo no puede estar vacío.')
             raise RadixExecutionFailure(info['message'],self.tape,self.metrics(),info)
         return dict(steps=self.tape,metrics=self.metrics(),final_state={'items':list(self.a)})
     def counting_digit(self,arr:list[int | None],exp:int) -> int:

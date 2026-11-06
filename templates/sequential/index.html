@@ -19,7 +19,7 @@
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename=structure_images[structure.id]) }}"
-          alt="Ilustracion de {{ structure.name }}"
+          alt="Ilustración de {{ structure.name }}"
           loading="lazy"
         >
       </div>
@@ -27,7 +27,7 @@
       <h3>{{ structure.name }}</h3>
       <p>{{ structure.description }}</p>
       <a class="btn" href="{{ url_for('sequential.structure_page', structure_id=structure.id) }}">Abrir</a>
-      <a class="link" href="{{ url_for('help.structure_help', structure_id=structure.id) }}">Ayuda especifica</a>
+      <a class="link" href="{{ url_for('help.structure_help', structure_id=structure.id) }}">Ayuda específica</a>
     </article>
     {% endfor %}
   </div>

@@ -16,7 +16,7 @@
     async function request(query) {
       const response = await fetch(`${trace.manifest.page_url}?${new URLSearchParams(query)}`, { credentials: "same-origin", cache: "no-store" });
       const data = await response.json();
-      if (!response.ok || !data.success || data.trace_id !== trace.trace_id) throw new Error(data.message || "La pagina de Counting no esta disponible.");
+      if (!response.ok || !data.success || data.trace_id !== trace.trace_id) throw new Error(data.message || "La página de Counting no está disponible.");
       return data;
     }
     async function get(index) {
@@ -62,7 +62,7 @@
       count(); report(`Paso ${Math.max(0,cursor+1)}/${total(trace)} - ${step.debug?.note || "Counting"}`);
       options.onCursorChange?.({ reason, trace, cursor, step });
     }
-    function pause(silent) { playToken++; if (!silent) report("Simulacion pausada."); }
+    function pause(silent) { playToken++; if (!silent) report("Simulación pausada."); }
     function reset() {
       pause(true); navigation++; cursor = desired = -1;
       const first = trace?.initial_page?.steps?.[0]; if (first) paint(first, true, "reset");

@@ -92,6 +92,9 @@ def _configure_session_backend(app: Flask) -> None:
                     session_type,
                 )
     Session(app)
+    from app.services.concurrent_sessions import install_concurrent_sessions
+
+    install_concurrent_sessions(app)
 
 
 def _configure_proxy_headers(app: Flask) -> None:

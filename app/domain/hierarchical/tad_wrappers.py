@@ -96,13 +96,13 @@ class ABB(Generic[T]):
     def minimo(self) -> T:
         nodo = abb_encontrarMinimo(self._raiz)
         if nodo is None:
-            raise ElementoNoEncontradoError("El arbol esta vacio.")
+            raise ElementoNoEncontradoError("El árbol está vacío.")
         return nodo.valor  # type: ignore[return-value]
 
     def maximo(self) -> T:
         nodo = abb_encontrarMaximo(self._raiz)
         if nodo is None:
-            raise ElementoNoEncontradoError("El arbol esta vacio.")
+            raise ElementoNoEncontradoError("El árbol está vacío.")
         return nodo.valor  # type: ignore[return-value]
 
     def altura(self) -> int:
@@ -231,12 +231,12 @@ class AVL(Generic[T]):
     def minimo(self) -> T:
         nodo = avl_minimo(self._raiz)
         if nodo is None:
-            raise ElementoNoEncontradoError("El arbol esta vacio.")
+            raise ElementoNoEncontradoError("El árbol está vacío.")
         return nodo.nro  # type: ignore[return-value]
 
     def maximo(self) -> T:
         if self._raiz is None:
-            raise ElementoNoEncontradoError("El arbol esta vacio.")
+            raise ElementoNoEncontradoError("El árbol está vacío.")
         actual = self._raiz
         while actual.der is not None:
             actual = actual.der
@@ -463,7 +463,7 @@ class MonticuloBinario(Generic[T]):
     def insertar(self, dato: T) -> None:
         if self._use_tad:
             if not monticulo_insertar(self._m, int(dato)):
-                raise ValueError("No se pudo reservar memoria para insertar en el monticulo.")
+                raise ValueError("No se pudo reservar memoria para insertar en el montículo.")
             return
         self._py_datos.append(dato)
         self._subir_py(len(self._py_datos) - 1)
@@ -473,10 +473,10 @@ class MonticuloBinario(Generic[T]):
             out: list[int] = []
             ok = monticulo_extraer_raiz(self._m, out)
             if not ok:
-                raise EstructuraVaciaError("El monticulo esta vacio.")
+                raise EstructuraVaciaError("El montículo está vacío.")
             return out[0]  # type: ignore[return-value]
         if not self._py_datos:
-            raise EstructuraVaciaError("El monticulo esta vacio.")
+            raise EstructuraVaciaError("El montículo está vacío.")
         raiz = self._py_datos[0]
         ultimo = self._py_datos.pop()
         if self._py_datos:
@@ -489,10 +489,10 @@ class MonticuloBinario(Generic[T]):
             out: list[int] = []
             ok = monticulo_raiz(self._m, out)
             if not ok:
-                raise EstructuraVaciaError("El monticulo esta vacio.")
+                raise EstructuraVaciaError("El montículo está vacío.")
             return out[0]  # type: ignore[return-value]
         if not self._py_datos:
-            raise EstructuraVaciaError("El monticulo esta vacio.")
+            raise EstructuraVaciaError("El montículo está vacío.")
         return self._py_datos[0]
 
     def vacio(self) -> bool:

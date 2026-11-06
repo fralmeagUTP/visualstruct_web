@@ -90,10 +90,10 @@ def test_insert_remove_vertex_and_edge_via_route(client) -> None:
 
 
 def test_generate_random_graph_via_route(client) -> None:
-    """Route should build a random graph from vertex count only."""
+    """Normal mode builds a seeded graph even beyond the step trace budget."""
     response = client.post(
         "/graph/graph/operate",
-        json={"operation": "generate_random_graph", "payload": {"vertices_count": "7"}},
+        json={"operation": "generate_random_graph", "payload": {"vertices_count": "7", "seed": 2}, "execution_mode": "normal"},
     )
     assert response.status_code == 200
     data = response.get_json()
@@ -221,7 +221,7 @@ def test_graph_help_pages_available(client) -> None:
     structure_help = client.get("/help/graph/graph")
 
     assert module_help.status_code == 200
-    assert b"Ayuda del modulo de grafos" in module_help.data
+    assert "Ayuda del módulo de grafos".encode("utf-8") in module_help.data
     assert structure_help.status_code == 200
     page = structure_help.get_data(as_text=True)
     method_cards = re.findall(r'<pre[^>]*class="[^"]*didactic-code[^"]*"[^>]*>(.*?)</pre>', page, re.S)

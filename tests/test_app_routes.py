@@ -59,7 +59,7 @@ def test_linked_list_page_shows_c_code_panel(client) -> None:
     """Linked-list page should render C code instead of pseudocode."""
     response = client.get("/sequential/linked_list")
     assert response.status_code == 200
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Código C:".encode("utf-8") in response.data
     assert "lista_insertar_inicio".encode("utf-8") in response.data
 
 
@@ -67,7 +67,7 @@ def test_circular_list_page_shows_c_code_panel(client) -> None:
     """Circular-list page should render C code instead of pseudocode."""
     response = client.get("/sequential/circular_list")
     assert response.status_code == 200
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Código C:".encode("utf-8") in response.data
     assert "lcir_insertar_inicio".encode("utf-8") in response.data
 
 
@@ -75,7 +75,7 @@ def test_sublist_page_shows_c_code_panel(client) -> None:
     """Sublist page should render C code instead of pseudocode."""
     response = client.get("/sequential/sublist")
     assert response.status_code == 200
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Código C:".encode("utf-8") in response.data
     assert "sublista_insertar_padre_final".encode("utf-8") in response.data
 
 
@@ -83,7 +83,7 @@ def test_abb_page_shows_c_code_panel(client) -> None:
     """ABB page should render C code instead of pseudocode."""
     response = client.get("/hierarchical/abb")
     assert response.status_code == 200
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Código C:".encode("utf-8") in response.data
     assert "abb_insertar".encode("utf-8") in response.data
 
 
@@ -91,7 +91,7 @@ def test_avl_page_shows_c_code_panel(client) -> None:
     """AVL page should render C code instead of pseudocode."""
     response = client.get("/hierarchical/avl")
     assert response.status_code == 200
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Código C:".encode("utf-8") in response.data
     assert "avl_insertar".encode("utf-8") in response.data
 
 
@@ -99,7 +99,7 @@ def test_red_black_page_shows_c_code_panel(client) -> None:
     """Red-black page should render C code instead of pseudocode."""
     response = client.get("/hierarchical/red_black")
     assert response.status_code == 200
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Código C:".encode("utf-8") in response.data
     assert "rbt_insertar".encode("utf-8") in response.data
 
 
@@ -107,7 +107,7 @@ def test_binary_heap_page_shows_c_code_panel(client) -> None:
     """Binary-heap page should render C code instead of pseudocode."""
     response = client.get("/hierarchical/binary_heap")
     assert response.status_code == 200
-    assert "Codigo C:".encode("utf-8") in response.data
+    assert "Código C:".encode("utf-8") in response.data
     assert "monticulo_insertar".encode("utf-8") in response.data
 
 

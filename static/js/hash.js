@@ -1,5 +1,34 @@
 "use strict";
 
+function hashExpandInstructionTrace(trace) {
+  if (!trace || !trace.hash_snapshot_codec) return trace;
+  if (trace.hash_snapshot_codec !== "hash-snapshot-pool/v1") throw new Error("Codec Hash no compatible");
+  const objects = [];
+  function decode(value) {
+    if (value && typeof value === "object") {
+      const keys = Object.keys(value), id = value.$hash_ref;
+      if (Array.isArray(value) || keys.length !== 1 || keys[0] !== "$hash_ref" || !Number.isInteger(id) || id < 0 || id >= objects.length) throw new Error("Referencia Hash inválida");
+      return objects[id];
+    }
+    return value;
+  }
+  for (const record of trace.hash_snapshot_pool) {
+    if (!Array.isArray(record) || record.length !== 2 || ![0, 1].includes(record[0]) || !Array.isArray(record[1])) throw new Error("Registro Hash inválido");
+    let value;
+    if (record[0] === 0) {
+      if (record[1].some(item => !Array.isArray(item) || item.length !== 2)) throw new Error("Pares Hash inválidos");
+      const keys = record[1].map(item => item[0]);
+      if (keys.some(k => typeof k !== "string") || new Set(keys).size !== keys.length) throw new Error("Claves Hash inválidas");
+      value = Object.fromEntries(record[1].map(([key, child]) => [key, decode(child)]));
+    } else value = record[1].map(decode);
+    objects.push(Object.freeze(value));
+  }
+  const {hash_snapshot_codec, hash_snapshot_pool, hash_snapshot_stats, ...expanded} = trace;
+  expanded.steps = trace.steps.map(step => Object.freeze(Object.fromEntries(Object.entries(step).map(([key, value]) => [key, value && typeof value === "object" && !Array.isArray(value) && Object.prototype.hasOwnProperty.call(value, "$hash_ref") ? decode(value) : value]))));
+  return expanded;
+}
+
+
 function hashById(id) {
   return document.getElementById(id);
 }
@@ -79,7 +108,7 @@ function initHashClassroom() {
   ['hash-sim-counter','hash-sim-detail','hash-sim-status'].forEach(id=>{const el=hashById(id);if(el)toolbar.appendChild(el);});workspace.before(toolbar);
 }
 
-function renderHashPedagogy(frame,level){if(!frame)return;const summary=hashById("hash-pedagogy-summary"),formula=hashById("hash-formula-view"),chain=hashById("hash-chain-view"),pointers=hashById("hash-pointers-view"),cost=hashById("hash-cost-view"),memory=hashById("hash-memory-view"),invariant=hashById("hash-invariant-view");if(summary)summary.innerHTML=`<strong>${hashEscape(frame.phase?.label||frame.concept)}</strong>: ${hashEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;window.ContextualHelp?.frame("hash",frame,level);if(formula)formula.innerHTML=`Clave <strong>${hashEscape(frame.hash?.key??"—")}</strong> · capacidad <strong>${hashEscape(frame.hash?.capacity??"—")}</strong><br><code>${hashEscape(frame.hash?.expression||"sin cálculo")}</code><br>Residuo C: <strong>${hashEscape(frame.hash?.raw_remainder??"—")}</strong><br>${hashEscape(frame.hash?.normalization_expression||"")}<br>Bucket final: <strong>${hashEscape(frame.hash?.normalized_index??"—")}</strong>`;if(chain)chain.innerHTML=`Bucket ${hashEscape(frame.chain?.bucket??"—")} · caso: <strong>${hashEscape(frame.chain?.position_kind||"—")}</strong><br>Antes: <code>${hashEscape(JSON.stringify(frame.chain?.before||[]))}</code><br>Después: <code>${hashEscape(JSON.stringify(frame.chain?.after||[]))}</code><br>Comparaciones ejecutadas: ${hashEscape(JSON.stringify(frame.chain?.examined||[]))}`;if(pointers)pointers.innerHTML=Object.entries(frame.pointers||{}).map(([name,value])=>`<code>${hashEscape(name)}</code> = ${hashEscape(value)}`).join("<br>");if(cost)cost.innerHTML=`Hash: ${frame.cost?.hash_evaluations||0} · comparaciones: ${frame.cost?.comparisons||0} · nodos visitados: ${frame.cost?.nodes_visited||0}<br><small>${hashEscape(frame.cost?.unit||"")}</small><details><summary>Complejidad</summary>${hashEscape(frame.cost?.best_case||"")}<br>${hashEscape(frame.cost?.average_case||"")}<br>${hashEscape(frame.cost?.worst_case||"")}<br>${hashEscape(frame.cost?.depends_on||"")}</details>`;if(memory)memory.innerHTML=`Intento de malloc: ${frame.memory?.allocation_attempted?"sí":"no"} · comprobó NULL: ${frame.memory?.null_checked?"sí":"no"}<br>Fallo simulado: <strong>${frame.memory?.allocation_failed?"sí; estado intacto":"no"}</strong><br>Reservados: <code>${hashEscape(JSON.stringify(frame.memory?.allocated||[]))}</code><br>Campos inicializados: ${hashEscape((frame.memory?.initialized_fields||[]).join(", ")||"ninguno")}<br>Liberados: <code>${hashEscape(JSON.stringify(frame.memory?.freed||[]))}</code><br>Arreglo buckets liberado: ${frame.memory?.bucket_array_freed?"sí":"no"} · buckets = NULL: ${frame.memory?.bucket_array_is_null?"sí":"no"}<br>Enlaces cambiados: ${frame.memory?.links_changed?"sí":"no"}`;if(pointers && frame.memory?.variables)pointers.innerHTML += `<hr><strong>Variables tipadas / alcance</strong><pre>${hashEscape(JSON.stringify(frame.memory.variables,null,2))}</pre><p>Pila: ${hashEscape(JSON.stringify(frame.memory.call_stack||[]))}</p>`;if(memory && frame.memory?.heap)memory.innerHTML += `<hr><strong>Heap y máscaras de inicialización</strong><pre>${hashEscape(JSON.stringify(frame.memory.heap,null,2))}</pre><p>Buckets inicializados: ${hashEscape(JSON.stringify(frame.memory.bucket_initialization||[]))}</p>`;if(memory && frame.operation==="remove" && frame.memory?.bucket_array)memory.innerHTML += `<hr><strong>Arreglo de punteros THNodo *</strong><pre>${hashEscape(JSON.stringify(frame.memory.bucket_array,null,2))}</pre><p>Cantidad pendiente: ${frame.memory.count_write_pending?"sí; cantidad-- aún no ejecutado":"no"}</p><p>Puntero retirado: ${hashEscape(frame.memory.retired_pointer||"ninguno")}. Tras free no se inspecciona ni utiliza su valor; las referencias históricas son simbólicas.</p>`;if(memory && frame.memory?.output)memory.innerHTML += `<hr><strong>Almacenamiento de salida int</strong><pre>${hashEscape(JSON.stringify(frame.memory.output,null,2))}</pre><small>Valor indeterminado se muestra null; no se lee antes de escritura. alive=false indica alcance terminado.</small>`;if(memory && frame.memory?.buffer)memory.innerHTML += `<hr><strong>Buffer C char[] / bytes inicializados</strong><pre>${hashEscape(JSON.stringify(frame.memory.buffer,null,2))}</pre><small>La zona indeterminada no se lee. ${frame.operation === "stats" ? "Este texto C representa estadisticas con float y dos decimales; la API conserva su cociente y formato propios." : "Este texto C representa la tabla completa; el resultado API es una proyeccion independiente."}</small>`;if(memory && frame.stats_representation)memory.innerHTML += `<hr><strong>Representaciones C / API</strong><pre>${hashEscape(JSON.stringify(frame.stats_representation,null,2))}</pre><small>Las copias THEstadisticas y sus scopes son propios de cada llamada; padding y ABI no se inspeccionan.</small>`;if(memory && frame.lifecycle)memory.innerHTML += `<hr><strong>Vida de buckets / raiz C</strong><pre>${hashEscape(JSON.stringify(frame.memory.bucket_array,null,2))}</pre><p>Pointer raiz valido: ${frame.memory.root_bucket_pointer_valid?"si":"no; indeterminado"}. Cantidad pendiente: ${frame.memory.count_write_pending?"si":"no"}. Root TablaHash sigue vivo: ${frame.memory.root_stack_object_alive?"si":"no"}.</p>`;if(invariant)invariant.innerHTML=`<strong>${hashEscape(frame.invariant?.symbol||"")} ${hashEscape(frame.invariant?.name||"")}</strong><br>${hashEscape(frame.invariant?.evidence||"")}`;decorateHashPedagogy(frame);}
+function renderHashPedagogy(frame,level){if(!frame)return;const summary=hashById("hash-pedagogy-summary"),formula=hashById("hash-formula-view"),chain=hashById("hash-chain-view"),pointers=hashById("hash-pointers-view"),cost=hashById("hash-cost-view"),memory=hashById("hash-memory-view"),invariant=hashById("hash-invariant-view");if(summary)summary.innerHTML=`<strong>${hashEscape(frame.phase?.label||frame.concept)}</strong>: ${hashEscape(frame.narration?.[level]||frame.narration?.intermediate||"")}`;window.ContextualHelp?.frame("hash",frame,level);if(formula)formula.innerHTML=`Clave <strong>${hashEscape(frame.hash?.key??"—")}</strong> · capacidad <strong>${hashEscape(frame.hash?.capacity??"—")}</strong><br><code>${hashEscape(frame.hash?.expression||"sin cálculo")}</code><br>Residuo C: <strong>${hashEscape(frame.hash?.raw_remainder??"—")}</strong><br>${hashEscape(frame.hash?.normalization_expression||"")}<br>Bucket final: <strong>${hashEscape(frame.hash?.normalized_index??"—")}</strong>`;if(chain)chain.innerHTML=`Bucket ${hashEscape(frame.chain?.bucket??"—")} · caso: <strong>${hashEscape(frame.chain?.position_kind||"—")}</strong><br>Antes: <code>${hashEscape(JSON.stringify(frame.chain?.before||[]))}</code><br>Después: <code>${hashEscape(JSON.stringify(frame.chain?.after||[]))}</code><br>Comparaciones ejecutadas: ${hashEscape(JSON.stringify(frame.chain?.examined||[]))}`;if(pointers)pointers.innerHTML=Object.entries(frame.pointers||{}).map(([name,value])=>`<code>${hashEscape(name)}</code> = ${hashEscape(value)}`).join("<br>");if(cost)cost.innerHTML=`Hash: ${frame.cost?.hash_evaluations||0} · comparaciones: ${frame.cost?.comparisons||0} · nodos visitados: ${frame.cost?.nodes_visited||0}<br><small>${hashEscape(frame.cost?.unit||"")}</small><details><summary>Complejidad</summary>${hashEscape(frame.cost?.best_case||"")}<br>${hashEscape(frame.cost?.average_case||"")}<br>${hashEscape(frame.cost?.worst_case||"")}<br>${hashEscape(frame.cost?.depends_on||"")}</details>`;if(memory)memory.innerHTML=`Intento de malloc: ${frame.memory?.allocation_attempted?"sí":"no"} · comprobó NULL: ${frame.memory?.null_checked?"sí":"no"}<br>Fallo simulado: <strong>${frame.memory?.allocation_failed?"sí; estado intacto":"no"}</strong><br>Reservados: <code>${hashEscape(JSON.stringify(frame.memory?.allocated||[]))}</code><br>Campos inicializados: ${hashEscape((frame.memory?.initialized_fields||[]).join(", ")||"ninguno")}<br>Liberados: <code>${hashEscape(JSON.stringify(frame.memory?.freed||[]))}</code><br>Arreglo buckets liberado: ${frame.memory?.bucket_array_freed?"sí":"no"} · buckets = NULL: ${frame.memory?.bucket_array_is_null?"sí":"no"}<br>Enlaces cambiados: ${frame.memory?.links_changed?"sí":"no"}`;if(pointers && frame.memory?.variables)pointers.innerHTML += `<hr><strong>Variables tipadas / alcance</strong><pre>${hashEscape(JSON.stringify(frame.memory.variables,null,2))}</pre><p>Pila: ${hashEscape(JSON.stringify(frame.memory.call_stack||[]))}</p>`;if(memory && frame.memory?.heap)memory.innerHTML += `<hr><strong>Heap y máscaras de inicialización</strong><pre>${hashEscape(JSON.stringify(frame.memory.heap,null,2))}</pre><p>Buckets inicializados: ${hashEscape(JSON.stringify(frame.memory.bucket_initialization||[]))}</p>`;if(memory && frame.operation==="remove" && frame.memory?.bucket_array)memory.innerHTML += `<hr><strong>Arreglo de punteros THNodo *</strong><pre>${hashEscape(JSON.stringify(frame.memory.bucket_array,null,2))}</pre><p>Cantidad pendiente: ${frame.memory.count_write_pending?"sí; cantidad-- aún no ejecutado":"no"}</p><p>Puntero retirado: ${hashEscape(frame.memory.retired_pointer||"ninguno")}. Tras free no se inspecciona ni utiliza su valor; las referencias históricas son simbólicas.</p>`;if(memory && frame.memory?.output)memory.innerHTML += `<hr><strong>Almacenamiento de salida int</strong><pre>${hashEscape(JSON.stringify(frame.memory.output,null,2))}</pre><small>Valor indeterminado se muestra null; no se lee antes de escritura. alive=false indica alcance terminado.</small>`;if(memory && frame.memory?.buffer)memory.innerHTML += `<hr><strong>Buffer C char[] / bytes inicializados</strong><pre>${hashEscape(JSON.stringify(frame.memory.buffer,null,2))}</pre><small>La zona indeterminada no se lee. ${frame.operation === "stats" ? "Este texto C representa estadísticas con float y dos decimales; la API conserva su cociente y formato propios." : "Este texto C representa la tabla completa; el resultado API es una proyección independiente."}</small>`;if(memory && frame.stats_representation)memory.innerHTML += `<hr><strong>Representaciones C / API</strong><pre>${hashEscape(JSON.stringify(frame.stats_representation,null,2))}</pre><small>Las copias THEstadisticas y sus scopes son propios de cada llamada; padding y ABI no se inspeccionan.</small>`;if(memory && frame.lifecycle)memory.innerHTML += `<hr><strong>Vida de buckets / raíz C</strong><pre>${hashEscape(JSON.stringify(frame.memory.bucket_array,null,2))}</pre><p>Pointer raíz válido: ${frame.memory.root_bucket_pointer_valid?"sí":"no; indeterminado"}. Cantidad pendiente: ${frame.memory.count_write_pending?"sí":"no"}. Root TablaHash sigue vivo: ${frame.memory.root_stack_object_alive?"sí":"no"}.</p>`;if(invariant)invariant.innerHTML=`<strong>${hashEscape(frame.invariant?.symbol||"")} ${hashEscape(frame.invariant?.name||"")}</strong><br>${hashEscape(frame.invariant?.evidence||"")}`;decorateHashPedagogy(frame);}
 
 function initHashResponsiveWorkspace(){const workspace=document.querySelector(".hash-primary-workspace"),tabs=[...document.querySelectorAll("[data-hash-tab]")];if(!workspace||!tabs.length)return;let saved="visual";try{saved=sessionStorage.getItem("hash-active-tab")||"visual";}catch(_error){}const activate=(name)=>{const value=name==="code"?"code":"visual";workspace.dataset.activeTab=value;tabs.forEach((tab)=>{const active=tab.dataset.hashTab===value;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));});try{sessionStorage.setItem("hash-active-tab",value);}catch(_error){}};tabs.forEach((tab)=>tab.addEventListener("click",()=>activate(tab.dataset.hashTab)));activate(saved);}
 
@@ -196,7 +225,7 @@ function buildHashOperationInputs(operation, container) {
 
 function renderHashEntries(entries, showAddresses, examinedKeys) {
   if (!Array.isArray(entries) || !entries.length) {
-    return "<span class=\"hash-empty\">vacio</span>";
+    return "<span class=\"hash-empty\">vacío</span>";
   }
 
   return entries
@@ -240,7 +269,7 @@ function renderHashState(state, container, frame) {
   let html = "<div class=\"viz-canvas\"><div class=\"viz-stage\">";
   html += `<div class="viz-meta"><strong>${hashEscape(state.title || "Tabla Hash")}</strong></div>`;
   html += (
-    `<div class="viz-meta">Tamano: ${hashEscape(metadata.size || 0)} | ` +
+    `<div class="viz-meta">Tamaño: ${hashEscape(metadata.size || 0)} | ` +
     `Capacidad: ${hashEscape(metadata.capacity || 0)} | ` +
     `Factor de carga: ${hashEscape(metadata.load_factor ?? 0)} | ` +
     `Ocupados: ${hashEscape(state.lifecycle && !state.lifecycle.chain_statistics_available ? "indeterminado" : metadata.occupied_buckets || 0)} | ` +
@@ -275,7 +304,7 @@ function renderHashState(state, container, frame) {
   }
 
   if (state.last_operation && state.last_operation.message) {
-    html += `<p class="viz-meta"><strong>Ultima operacion:</strong> ${hashEscape(state.last_operation.message)}</p>`;
+    html += `<p class="viz-meta"><strong>Última operación:</strong> ${hashEscape(state.last_operation.message)}</p>`;
   }
 
   html += "</div></div>";
@@ -305,7 +334,7 @@ function updateHashDidacticPanel(model, operationName) {
 
   const didactic = model && model.didactic ? model.didactic : {};
   const opMap = didactic.operations || {};
-  const fallback = didactic.default_operation || "Seudocodigo no disponible para esta operacion.";
+  const fallback = didactic.default_operation || "Seudocódigo no disponible para esta operación.";
   const codeTitle = didactic.code_title || "Seudocodigo";
   const selectedOp = operationName || "";
   const selectedMeta = (model.operations || []).find((item) => item.name === selectedOp);
@@ -315,7 +344,7 @@ function updateHashDidacticPanel(model, operationName) {
     window.InterpreterRuntime.renderCode(
       recordBox,
       didactic.record || "Estructura no documentada.",
-      didactic.code_title || "Seudocodigo",
+      didactic.code_title || "Seudocódigo",
     );
   } else {
     recordBox.textContent = didactic.record || "Estructura no documentada.";
@@ -441,7 +470,7 @@ function renderHashHistory(history, container, didactic, mainCode) {
     return;
   }
   const codeTitle = didactic && didactic.code_title ? String(didactic.code_title) : "";
-  if (codeTitle.toLowerCase().includes("codigo c")) {
+  if (/c[oó]digo c/i.test(codeTitle)) {
     const code = mainCode || buildHashMainCode(history);
     container.dataset.rawCode = code;
     const tmp = document.createElement("pre");
@@ -468,15 +497,15 @@ function renderHashHistory(history, container, didactic, mainCode) {
       return (
         "<li class=\"didactic-history-item\">" +
         `<div class="didactic-history-head">Paso ${index + 1}: Historial</div>` +
-        `<div class="didactic-history-line"><span class="k">Salida:</span> ${hashEscape(item)}</div>` +
+        `<div class="didactic-history-line"><span class="k">Salida:</span> ${hashEscape(item === "Operacion aplicada." ? "Operación aplicada." : item)}</div>` +
         "</li>"
       );
     }
     return (
       "<li class=\"didactic-history-item\">" +
-      `<div class="didactic-history-head">Paso ${index + 1}: ${hashEscape(item.subroutine || "Operacion")}</div>` +
+      `<div class="didactic-history-head">Paso ${index + 1}: ${hashEscape(item.subroutine || "Operación")}</div>` +
       `<div class="didactic-history-line"><span class="k">Entrada:</span> ${hashEscape(item.payload || "-")}</div>` +
-      `<div class="didactic-history-line"><span class="k">Salida:</span> ${hashEscape(item.result || "-")}</div>` +
+      `<div class="didactic-history-line"><span class="k">Salida:</span> ${hashEscape(item.result === "Operacion aplicada." ? "Operación aplicada." : item.result || "-")}</div>` +
       "</li>"
     );
   }).join("");
@@ -703,6 +732,7 @@ function initHashPage(model) {
         body: JSON.stringify({ operation: current.name, payload }),
       });
       const data = await response.json();
+      if (data.execution_trace?.hash_snapshot_codec) data.execution_trace = hashExpandInstructionTrace(data.execution_trace);
       showHashMessage(data.message, Boolean(data.success));
       const recordedSteps = Array.isArray(data.execution_trace?.steps) && data.execution_trace.steps.length > 0;
       if(data.preserve_session || ((!response.ok || !data.success) && !recordedSteps))return null;
@@ -736,13 +766,13 @@ function initHashPage(model) {
         if (!hasExecutionTrace) {
           renderHashState(visualState, visualContainer);
           if (simStatus && finalOnly) {
-            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
+            simStatus.textContent = "Modo rápido: se aplicó el resultado final de la operación.";
           }
         }
       }
       return data;
     } catch (_error) {
-      showHashMessage("No fue posible completar la operacion.", false);
+      showHashMessage("No fue posible completar la operación.", false);
       return null;
     } finally {
       pendingExecution = false;
@@ -756,7 +786,7 @@ function initHashPage(model) {
   async function ensureTraceForCurrentSelection() {
     const current = operations.find((item) => item.name === operationSelect.value);
     if (!current) {
-      showHashMessage("Debes seleccionar una operacion valida.", false);
+      showHashMessage("Debes seleccionar una operación válida.", false);
       return null;
     }
     const payload = collectPayload(current);
@@ -773,7 +803,7 @@ function initHashPage(model) {
 
   invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
   if (!visualState?.suspended && model.execution_trace && tracePlayer) {
-    const restored = model.execution_trace;
+    const restored = hashExpandInstructionTrace(model.execution_trace);
     selected = operations.find(item => item.name === restored.operation_name) || selected;
     operationSelect.value = selected.name;
     buildHashOperationInputs(selected, inputsContainer);
@@ -793,7 +823,7 @@ function initHashPage(model) {
     buildHashOperationInputs(selected, inputsContainer);
     updateHashDidacticPanel(model, selected ? selected.name : "");
     enhanceHashCodeNavigation(null);
-    invalidateTrace("Operacion cambiada. Ejecuta nuevamente.");
+    invalidateTrace("Operación cambiada. Ejecuta nuevamente.");
     updatePredictionPrompt();
   });
 
@@ -808,7 +838,7 @@ function initHashPage(model) {
   simRepeatButton?.addEventListener("click",async()=>{if(tracePlayer?.hasTrace())await tracePlayer.playFromStart();});
   simProgress?.addEventListener("input",()=>tracePlayer?.seek(Number(simProgress.value||0)-1));
   predictionKind?.addEventListener("change",()=>updatePredictionPrompt());
-  predictionCheck?.addEventListener("click",()=>{const context=updatePredictionPrompt();if(!context||!predictionAnswer)return;const expected=hashNormalizePrediction(hashPredictionExpected(visualState,context.current?.name,context.payload,predictionKind?.value));const actual=hashNormalizePrediction(predictionAnswer.value);conceptualProgress.attempts+=1;const correct=Boolean(actual)&&actual===expected;if(correct)conceptualProgress.correct+=1;saveConceptualProgress();if(predictionFeedback){predictionFeedback.className=correct?"message ok":"message error";predictionFeedback.textContent=correct?"Correcto. Tu predicción coincide con la ejecución C.":`Aún no. Revisa la capacidad, el bucket y la cadena; respuesta esperada: ${expected}.`;}});
+  predictionCheck?.addEventListener("click",()=>{const context=updatePredictionPrompt();if(!context||!predictionAnswer)return;const expected=hashNormalizePrediction(hashPredictionExpected(visualState,context.current?.name,context.payload,predictionKind?.value));const actual=hashNormalizePrediction(predictionAnswer.value);conceptualProgress.attempts+=1;const correct=Boolean(actual)&&actual===expected;if(correct)conceptualProgress.correct+=1;saveConceptualProgress();if(predictionFeedback){predictionFeedback.className=correct?"message ok":"message error";predictionFeedback.textContent=correct?"Correcto. Tu predicción coincide con la ejecución C.":`Aún no. Revisa la capacidad, el bucket y la cadena; respuesta esperada: ${expected === "si" ? "sí" : expected}.`;}});
   predictionHint?.addEventListener("click",()=>{const context=updatePredictionPrompt();if(!context)return;conceptualProgress.hints+=1;saveConceptualProgress();const expected=hashPredictionExpected(visualState,context.current?.name,context.payload,predictionKind?.value);if(predictionFeedback){predictionFeedback.className="message";predictionFeedback.textContent=`Pista ${conceptualProgress.hints}: usa clave % capacidad y observa la cadena correspondiente.${practiceMode?.checked?" En práctica no se muestra aún el resultado final.":` La respuesta tiene la forma: ${String(expected).replace(/./g,"•")}`}`;}});
   predictionSkip?.addEventListener("click",()=>{conceptualProgress.skipped+=1;saveConceptualProgress();if(predictionFeedback){predictionFeedback.className="message";predictionFeedback.textContent="Puedes continuar; la traza te mostrará la respuesta causal.";}});
   resetProgress?.addEventListener("click",()=>{conceptualProgress={correct:0,attempts:0,hints:0,skipped:0};saveConceptualProgress();updatePredictionPrompt();});

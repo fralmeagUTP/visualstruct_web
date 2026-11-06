@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 from tests.test_hash_stats_baseline_low import fixture
 from app.domain.hash.stats_instruction import cfloat
+from tests._hash_caller_trace_partition import tad_frames_with_caller
 E=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-stats-instructions-medium'
 
 from scripts.published_test_inputs import audit_input_path
@@ -18,6 +19,10 @@ def test_native_C_sequences_conditions_structs_and_rounding_preserved():
 def test_C_float_struct_copies_lifetimes_and_API_semantics_remain_distinct(client):
  for case in ['empty','collision','sparse','destroyed']:
   row=fixture(client,case);d=client.post('/hash/hash_table/operate',json={'operation':'stats','payload':{}}).get_json();frames=d['execution_trace']['steps'];assert d['result']==row['data']['result'];n=row['native'];expected={name:n[key] for name,key in [('capacidad','capacity'),('cantidad','size'),('buckets_ocupados','occupied'),('colisiones','collisions'),('factor_carga','C_float_load')]}
+  terminal = frames[-4]['debug']
+  formatted = bytes(terminal['buffer']['bytes']).split(b'\0', 1)[0].decode('ascii')
+  fragments = [f"stats-C:{n['capacity']}:{n['size']}:{n['occupied']}:{n['collisions']}:{n['C_float_load']:.9g}\n", 'stats-format:\n' + formatted, f"stats-API-projection:{n['capacity']}:{n['size']}:{(n['size']/n['capacity'] if n['capacity'] else 0):.17g}\n"]
+  frames = tad_frames_with_caller(d['execution_trace'], fragments)
   assert frames[0]['debug']['variables']['caller.stats']['initialized'] is False
   entries=[f for f in frames if f['event_type']=='stats_entry'];assert len(entries)==(1 if case=='destroyed' else 2)
   ids=[]

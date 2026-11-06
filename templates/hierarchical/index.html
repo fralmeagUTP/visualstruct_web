@@ -1,8 +1,8 @@
 ﻿{% extends "base.html" %}
-{% block title %}Modulo Jerarquico{% endblock %}
+{% block title %}Módulo Jerárquico{% endblock %}
 {% block content %}
 <section>
-  <h2>Modulo de Estructuras Jerarquicas</h2>
+  <h2>Módulo de Estructuras Jerárquicas</h2>
   <p>Selecciona una estructura para ejecutar operaciones y validar propiedades.</p>
   {% set structure_images = {
     "abb": "ABB.jpg",
@@ -17,7 +17,7 @@
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename=structure_images[structure.id]) }}"
-          alt="Ilustracion de {{ structure.name }}"
+          alt="Ilustración de {{ structure.name }}"
           loading="lazy"
           onerror="this.closest('.card-illustration').style.display='none';"
         >
@@ -26,7 +26,7 @@
       <h3>{{ structure.name }}</h3>
       <p>{{ structure.description }}</p>
       <a class="btn" href="{{ url_for('hierarchical.structure_page', structure_id=structure.id) }}">Abrir</a>
-      <a class="link" href="{{ url_for('help.hierarchical_structure_help', structure_id=structure.id) }}">Ayuda especifica</a>
+      <a class="link" href="{{ url_for('help.hierarchical_structure_help', structure_id=structure.id) }}">Ayuda específica</a>
     </article>
     {% endfor %}
   </div>

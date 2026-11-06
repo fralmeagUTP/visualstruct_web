@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import pytest
+from tests._hash_caller_trace_partition import tad_frames_with_caller
 BASE=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-remove-instructions-medium'
 PAIRS={'empty':[],'head':[(1,10),(4,40),(7,70),(10,100)],'middle':[(1,10),(4,40),(7,70),(10,100)],'tail':[(1,10),(4,40),(7,70),(10,100)],'negative':[(-1,-10),(-4,-40),(-6,-60)],'extremes':[(-2147483648,2147483647),(2147483647,-2147483648)]}
 from scripts.published_test_inputs import audit_input_path
@@ -10,7 +11,7 @@ def test_remove_each_native_event_heap_scope_and_count(client,case):
  client.post('/hash/hash_table/operate',json={'operation':'create_table','payload':{'capacity':3}})
  for k,v in PAIRS[case]:client.post('/hash/hash_table/operate',json={'operation':'insert','payload':{'key':k,'value':v}})
  for fixture in [r for r in json.loads((audit_input_path(BASE/'report.json')).read_text(encoding='utf-8')) if r['case']==case]:
-  data=client.post('/hash/hash_table/operate',json={'operation':'remove','payload':{'key':fixture['key']}}).get_json();frames=data['execution_trace']['steps'];native=fixture['native']
+  data=client.post('/hash/hash_table/operate',json={'operation':'remove','payload':{'key':fixture['key']}}).get_json();frames=tad_frames_with_caller(data['execution_trace'], [f"remove:{int(data['result'])}\n"]);native=fixture['native']
   assert [f['event_type'] for f in frames]==[n['token'] for n in native]
   for i,(frame,n) in enumerate(zip(frames,native)):
    d=frame['debug'];state=frame['state_after'];assert state['metadata']['size']==n['size']
@@ -63,7 +64,7 @@ def test_remove_destroyed_table_guard_has_no_hash_call_or_free(client):
  client.post('/hash/hash_table/operate',json={'operation':'destroy_table','payload':{}})
  response=client.post('/hash/hash_table/operate',json={'operation':'remove','payload':{'key':-2147483648}})
  assert response.status_code==200 and response.get_json()['result'] is False
- frames=response.get_json()['execution_trace']['steps']
+ frames=tad_frames_with_caller(response.get_json()['execution_trace'], ['remove:0\n'])
  assert [f['event_type'] for f in frames]==['remove_entry','remove_guard','remove_return']
  assert frames[1]['debug']['condition_result'] is True
  assert all(f['debug']['frees']==f['debug']['hash_calls']==0 for f in frames)

@@ -4,7 +4,7 @@ from pathlib import Path
 from app.services.c_code_service import CCodeService
 from .pedagogy import build_hierarchical_frame,validate_hierarchical_frame
 
-INSERT_RESERVE_ERROR='No se pudo reservar memoria para insertar en el monticulo.'
+INSERT_RESERVE_ERROR='No se pudo reservar memoria para insertar en el montículo.'
 
 def heap_insert_source():
     raw=(Path(__file__).resolve().parents[3]/'docs/tads_C/tad_monticulo_binario.c').read_text(encoding='utf-8-sig')
@@ -57,10 +57,10 @@ def build_heap_insert_trace(trace,before_state,after_state):
             a=old.get(ident,{});b=new.get(ident,{});f=b or a;prev={**a.get('parameters',{}),**a.get('locals',{})};now={**b.get('parameters',{}),**b.get('locals',{})}
             for name in dict.fromkeys([*prev,*now]):
                 typ='MonticuloBinario *' if name=='m' else 'int *' if name=='nuevos_datos' or f['kind']=='swap' and name in ['a','b'] else 'bool' if name=='ok' else 'TipoMonticulo' if name=='tipo' else 'int'
-                variables.append({'name':name,'frame_id':ident,'scope':f['function']+'#'+ident,'type':typ,'previous':prev.get(name,'fuera de ambito'),'value':now.get(name,'fuera de ambito'),'changed':prev.get(name)!=now.get(name),'meaning':'Parametro/local C real; los a/b de comparar son enteros por valor y los de intercambiar alias int *. Identidades de vidas simbolicas.'})
-        for name,typ,field in [('m->datos','int *','heap_data_reference'),('m->cantidad','int','size'),('m->capacidad','int','capacity')]:variables.append({'name':name,'frame_id':'external','scope':'M1 compartido','type':typ,'previous':previous[field],'value':current[field],'changed':previous[field]!=current[field],'meaning':'Campos reales; escribir datos[cantidad] aun no incrementa cantidad. No se lee un puntero indeterminado.'})
+                variables.append({'name':name,'frame_id':ident,'scope':f['function']+'#'+ident,'type':typ,'previous':prev.get(name,'fuera de ámbito'),'value':now.get(name,'fuera de ámbito'),'changed':prev.get(name)!=now.get(name),'meaning':'Parámetro/local C real; los a/b de comparar son enteros por valor y los de intercambiar alias int *. Identidades de vidas simbólicas.'})
+        for name,typ,field in [('m->datos','int *','heap_data_reference'),('m->cantidad','int','size'),('m->capacidad','int','capacity')]:variables.append({'name':name,'frame_id':'external','scope':'M1 compartido','type':typ,'previous':previous[field],'value':current[field],'changed':previous[field]!=current[field],'meaning':'Campos reales; escribir datos[cantidad] aún no incrementa cantidad. No se lee un puntero indeterminado.'})
         ped['variables']=variables;shown=previous['query_frames'] if phase=='return' else current['query_frames']
-        ped['call_stack']=[{'function':f['function'],'frame_id':f['id'],'depth':i,'parameters':deepcopy(f['parameters']),'locals':deepcopy(f['locals']),'local_root':'M1' if 'm' in f['parameters'] else None,'local_root_address':'M1' if 'm' in f['parameters'] else None,'return':result if phase=='return' and i==len(shown)-1 else None,'scope_status':'terminado (contexto del retorno)' if phase=='return' and i==len(shown)-1 else 'suspendido' if i<len(shown)-1 else 'activo','continuation':'Retornar reanuda el llamador. Cada llamada repetida tiene otro ambito; bool no es valor ni cantidad.'} for i,f in enumerate(shown)]
+        ped['call_stack']=[{'function':f['function'],'frame_id':f['id'],'depth':i,'parameters':deepcopy(f['parameters']),'locals':deepcopy(f['locals']),'local_root':'M1' if 'm' in f['parameters'] else None,'local_root_address':'M1' if 'm' in f['parameters'] else None,'return':result if phase=='return' and i==len(shown)-1 else None,'scope_status':'terminado (contexto del retorno)' if phase=='return' and i==len(shown)-1 else 'suspendido' if i<len(shown)-1 else 'activo','continuation':'Retornar reanuda el llamador. Cada llamada repetida tiene otro ámbito; bool no es valor ni cantidad.'} for i,f in enumerate(shown)]
         # Current stack is post-instruction; returned scopes are historical context only.
         live_ids=[f['id'] for f in current['query_frames']]
         ped['completed_call_stack']=[entry for entry in ped['call_stack'] if entry['frame_id'] not in live_ids]
@@ -69,7 +69,7 @@ def build_heap_insert_trace(trace,before_state,after_state):
         def memory(state):return [dict(o,address=o['id'],allocated=o['live'],freed=not o['live'],symbolic_identity=True) for o in state['heap_allocations']]
         ped['memory']={'event':phase if phase=='allocation' else 'none','objects_before':memory(previous),'objects_after':memory(current),'allocated_objects':[{'id':o['id'],'address':o['id']} for o in current['heap_allocations'] if o['live'] and not any(a['id']==o['id'] and a['live'] for a in previous['heap_allocations'])],'freed_objects':[{'id':o['id'],'address':o['id']} for o in previous['heap_allocations'] if o['live'] and not any(a['id']==o['id'] and a['live'] for a in current['heap_allocations'])],'dangling_references':[],'stable_addresses':False,'symbolic_identities':True,'historical_objects':deepcopy(retired)}
         ped['array'].update(active_index=active[0] if active else None,parent_index=None)
-        explanation=note or {'enter':'Entra este ambito con los argumentos C por valor o los alias indicados.','declaration':'Declara el local sin inicializar; aun no hay resultado ni memoria nueva.','call':'Evalua argumentos y llama al C real. El llamador queda suspendido.','resume':'Reanuda el llamador; solo se asigna el retorno si esta instruccion contiene un inicializador.','condition':'Evalua la condicion real y el cortocircuito. No modifica celdas ni cantidad.','assignment':'Solo escribe el campo, local o celda indicado. Las tres instrucciones del intercambio no son un cambio atomico.','allocation':'realloc exitoso termina A1 y crea A2 conservando el prefijo inicializado. datos es indeterminado hasta publicarlo; capacidad conserva su valor hasta su propia asignacion. No se simula el asignador ni se evalua el puntero anterior.','return':'Termina este ambito. El bool es estado; el retorno void no aporta valor.'}[phase]
+        explanation=note or {'enter':'Entra este ámbito con los argumentos C por valor o los alias indicados.','declaration':'Declara el local sin inicializar; aún no hay resultado ni memoria nueva.','call':'Evalúa argumentos y llama al C real. El llamador queda suspendido.','resume':'Reanuda el llamador; solo se asigna el retorno si esta instrucción contiene un inicializador.','condition':'Evalúa la condición real y el cortocircuito. No modifica celdas ni cantidad.','assignment':'Solo escribe el campo, local o celda indicado. Las tres instrucciones del intercambio no son un cambio atómico.','allocation':'realloc exitoso termina A1 y crea A2 conservando el prefijo inicializado. datos es indeterminado hasta publicarlo; capacidad conserva su valor hasta su propia asignación. No se simula el asignador ni se evalúa el puntero anterior.','return':'Termina este ámbito. El bool es estado; el retorno void no aporta valor.'}[phase]
         ped['narration']={level:explanation for level in ['basic','intermediate','advanced']};ped['return_propagation']={'active':phase=='return','value':result,'reconnects_subtree':False}
         ped.update(state_before=deepcopy(previous),state_after=deepcopy(current),memory_state=deepcopy(current),instruction_event={'scope':scope,'phase':phase,'condition':condition,'return':result})
         ped['invariant'].update(name='Estado intermedio de Insertar',holds=None,symbol='—',evidence_by_node_or_path=[],explanation='Los dibujos siguen celdas escritas, incluyendo datos[cantidad] pendiente; cantidad se incrementa al final. Intercambios parciales y realloc no afirman el invariante final ni leen memoria terminada.')
@@ -84,7 +84,7 @@ def build_heap_insert_trace(trace,before_state,after_state):
     emit('reserve','int *nuevos_datos;','declaration',lambda:reserve['locals'].update(nuevos_datos='sin inicializar'))
     emit('reserve','if (m == NULL || capacidad_objetivo <= 0) {','condition',condition=False,expression=f'M1 == NULL || {target} <= 0')
     enough=capacity>=target and reference!='NULL'
-    emit('reserve','if (m->capacidad >= capacidad_objetivo && m->datos != NULL) {','condition',condition=enough,expression=f'{capacity} >= {target}'+(' && '+reference+' != NULL' if capacity>=target else ' [cortocircuito; datos no se evalua]'))
+    emit('reserve','if (m->capacidad >= capacidad_objetivo && m->datos != NULL) {','condition',condition=enough,expression=f'{capacity} >= {target}'+(' && '+reference+' != NULL' if capacity>=target else ' [cortocircuito; datos no se evalúa]'))
     if not enough:
         n=capacity if capacity>0 else 10;emit('reserve','nueva_capacidad = (m->capacidad > 0) ? m->capacidad : MONTICULO_CAPACIDAD_POR_DEFECTO;','assignment',lambda:reserve['locals'].update(nueva_capacidad=n),condition=capacity>0,expression=f'{capacity} > 0 ? {capacity} : 10')
         while True:
@@ -98,7 +98,7 @@ def build_heap_insert_trace(trace,before_state,after_state):
             if success:
                 old=deepcopy(obj()) if current_id else None
                 if old:
-                    retired.append(dict(old,status='registro anterior a realloc exitoso; no memoria accesible'));obj().update(live=False,cells=[]);reference='indeterminado (A1 historico)'
+                    retired.append(dict(old,status='registro anterior a realloc exitoso; no memoria accesible'));obj().update(live=False,cells=[]);reference='indeterminado (A1 histórico)'
                 cells=deepcopy(old['cells']) if old else [];cells.extend({'index':i,'initialized':False,'value':None} for i in range(len(cells),n));objects.append({'id':'A2','capacity':n,'live':True,'cells':cells});current_id='A2'
         emit('reserve','nuevos_datos = (int *)realloc(m->datos, sizeof(int) * (size_t)nueva_capacidad);','allocation',allocate,note=None if success else 'realloc falla y devuelve NULL: A1 sigue vivo y datos, cantidad, capacidad y contenido no cambian. No se escribe el valor nuevo.')
         emit('reserve','if (nuevos_datos == NULL) {','condition',condition=not success,expression=('A2' if success else 'NULL')+' == NULL')
@@ -117,10 +117,10 @@ def build_heap_insert_trace(trace,before_state,after_state):
         def store():
             nonlocal written
             obj()['cells'][quantity].update(initialized=True,value=value);written=quantity+1
-        emit('insert','m->datos[m->cantidad] = valor;','assignment',store,indices=[quantity],note=f'Escribe {value} en {reference}[{quantity}]. La celda queda inicializada, pero cantidad aun es {quantity}.')
+        emit('insert','m->datos[m->cantidad] = valor;','assignment',store,indices=[quantity],note=f'Escribe {value} en {reference}[{quantity}]. La celda queda inicializada, pero cantidad aún es {quantity}.')
         emit('insert','heapify_up(m, m->cantidad);','call')
         i=quantity;p=int((i-1)/2);emit('up','static void heapify_up(MonticuloBinario *m, int indice) {','enter',lambda:enter('up',{'m':'M1','indice':i}));up=frames[-1]
-        emit('up','int padre = (indice - 1) / 2;','assignment',lambda:up['locals'].update(padre=p),note='Division entera C trunca hacia cero: para indice 0, (-1)/2 es 0. No se lee datos[-1].')
+        emit('up','int padre = (indice - 1) / 2;','assignment',lambda:up['locals'].update(padre=p),note='División entera C trunca hacia cero: para indice 0, (-1)/2 es 0. No se lee datos[-1].')
         loop='while (indice > 0 && comparar(m->tipo, m->datos[indice], m->datos[padre])) {'
         while True:
             cmp=False
@@ -150,5 +150,5 @@ def build_heap_insert_trace(trace,before_state,after_state):
     emit('caller',call,'resume',lambda:caller['locals'].update(ok=success))
     emit('caller','return ok;','return',lambda:leave(success),result=success)
     steps[-1]['state_after']=deepcopy(after_state);steps[-1]['pedagogy']['state_after']=deepcopy(after_state)
-    initial=deepcopy(steps[0]['pedagogy']);initial.update(variables=[],call_stack=[],condition=None,memory_state=deepcopy(steps[0]['state_snapshot']),state_after=deepcopy(steps[0]['state_snapshot']));initial['phase']['label']='Estado inicial';initial['narration']={level:'Ninguna instruccion ejecutada: no hay nueva celda escrita, nueva reserva ni resultado booleano.' for level in ['basic','intermediate','advanced']};steps[0]['pedagogy']['initial_frame']=initial
+    initial=deepcopy(steps[0]['pedagogy']);initial.update(variables=[],call_stack=[],condition=None,memory_state=deepcopy(steps[0]['state_snapshot']),state_after=deepcopy(steps[0]['state_snapshot']));initial['phase']['label']='Estado inicial';initial['narration']={level:'Ninguna instrucción ejecutada: no hay nueva celda escrita, nueva reserva ni resultado booleano.' for level in ['basic','intermediate','advanced']};steps[0]['pedagogy']['initial_frame']=initial
     trace.update(source_code=source,steps=steps);return trace

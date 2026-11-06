@@ -29,7 +29,7 @@ def build_heap_query_trace(trace,before_state,after_state):
     lines=source.splitlines();values=list(before_state['array']);count=len(values);capacity=before_state['capacity']
     frames=[];steps=[];buffer=None;retired=None;active_index=None;last_return=None;wrapper_status=None;observed=None
     output={'id':'salida','type':'int','initialized':False,'value':None}
-    pointer_history='B1 [valor indeterminado; identidad historica]'
+    pointer_history='B1 [valor indeterminado; identidad histórica]'
     def snapshot():
         result=deepcopy(before_state);result.update(heap_query_model=True,query_operation=operation,query_frames=deepcopy(frames),caller_output=deepcopy(output),destination=deepcopy(buffer),retired_destination=deepcopy(retired),active_copy_index=active_index,last_return=deepcopy(last_return),wrapper_status=wrapper_status,observed_result=deepcopy(observed),console_stdout='')
         return result
@@ -50,14 +50,14 @@ def build_heap_query_trace(trace,before_state,after_state):
         if condition is not None:step['condition_result']=condition
         ped=build_hierarchical_frame(structure_id='binary_heap',operation_name=operation,payload=trace['payload'],step=step,source_lines=lines,success=trace['success'])
         ped.update(concept='compare' if condition is not None else 'return' if phase=='return' else 'allocation' if phase=='allocation' else 'free' if phase=='free' else 'assignment',case=phase,phase={'id':scope+'-'+phase,'label':phase.replace('_',' ').title(),'goal':text})
-        ped['condition']={'source':text,'substituted':expression,'result':condition,'consequence':'cuerpo' if condition else 'siguiente instruccion'} if condition is not None else None
+        ped['condition']={'source':text,'substituted':expression,'result':condition,'consequence':'cuerpo' if condition else 'siguiente instrucción'} if condition is not None else None
         ped['executed_branch']=('cuerpo' if condition else 'salida/siguiente') if condition is not None else None
         old={f['id']:f for f in previous['query_frames']};new={f['id']:f for f in current['query_frames']};variables=[]
         for ident in dict.fromkeys([*old,*new]):
             a=old.get(ident,{});b=new.get(ident,{});before={**a.get('parameters',{}),**a.get('locals',{})};after={**b.get('parameters',{}),**b.get('locals',{})}
             for name in dict.fromkeys([*before,*after]):
                 typ='MonticuloBinario *' if name=='m' and ident=='caller' else types[name]
-                variables.append({'name':name,'scope':describe(b or a),'frame_id':ident,'type':typ,'previous':before.get(name,'fuera de ambito'),'value':after.get(name,'fuera de ambito'),'changed':before.get(name)!=after.get(name),'meaning':'Parametro/local real; pendiente indica inicializador no terminado. Identidades simbolicas, no direcciones reales.'})
+                variables.append({'name':name,'scope':describe(b or a),'frame_id':ident,'type':typ,'previous':before.get(name,'fuera de ámbito'),'value':after.get(name,'fuera de ámbito'),'changed':before.get(name)!=after.get(name),'meaning':'Parámetro/local real; pendiente indica inicializador no terminado. Identidades simbólicas, no direcciones reales.'})
         if operation=='raiz':variables.append({'name':'salida','scope':'llamador externo','frame_id':'external','type':'int','previous':previous['caller_output']['value'] if previous['caller_output']['initialized'] else 'sin inicializar','value':output['value'] if output['initialized'] else 'sin inicializar','changed':previous['caller_output']!=output,'meaning':'Entero independiente; solo *resultado lo escribe. Bool de retorno no es este valor.'})
         ped['variables']=variables;shown=previous['query_frames'] if phase=='return' else current['query_frames']
         ped['call_stack']=[{'function':f['function'],'frame_id':f['id'],'depth':depth,'parameters':deepcopy(f['parameters']),'locals':deepcopy(f['locals']),'local_root':'M1','local_root_address':'M1','return':result if phase=='return' and depth==len(shown)-1 else None,'scope_status':'terminado (contexto del retorno)' if phase=='return' and depth==len(shown)-1 else 'suspendido' if depth<len(shown)-1 else 'activo','continuation':'El TAD permanece intacto. La copia y la salida son destinos del llamador.'} for depth,f in enumerate(shown)]
@@ -68,12 +68,12 @@ def build_heap_query_trace(trace,before_state,after_state):
         ped['memory']={'event':phase if phase in {'allocation','free'} else 'none','objects_before':objects(previous),'objects_after':objects(current),'allocated_objects':[{'id':'B1','address':'B1'}] if phase=='allocation' and buffer else [],'freed_objects':[{'id':'B1','address':'B1'}] if phase=='free' and previous['destination'] else [],'dangling_references':[],'stable_addresses':True,'symbolic_identities':True}
         if retired:ped['memory']['historical_destination']=deepcopy(retired)
         ped['array'].update(active_index=active_index,parent_index=None if active_index is None or active_index==0 else (active_index-1)//2)
-        explanation=note or {'enter':'Entra un ambito con parametros por valor. M1 designa la misma estructura, A1 su arreglo existente.','call':'El inicializador queda pendiente hasta el retorno de la llamada; aun no hay valor calculado.','resume':'El retorno inicializa exclusivamente el local del llamador. No escribe el monticulo.','condition':'Evalua la condicion C real y el cortocircuito. No modifica estructura ni destino.','assignment':'Escribe solo el destino o local indicado por esta instruccion.','loop_init':'Inicializa i dentro del ambito del for; no cambia la estructura.','loop_increment':'Incrementa i; no copia ni muta valores.','allocation':'La reserva del ejemplo es exitosa y contiene enteros sin inicializar. No es una reserva del monticulo. Internos de malloc no se simulan.','free':'Termina la vida de B1. Sus valores previos son solo registros historicos; no se leen punteros ni memoria liberados. A1 permanece vivo.','return':'Termina este ambito; el retorno queda pendiente de asignacion en el llamador.','loop_condition':'Evalua el for. El cuerpo del bucle didactico solo es un comentario: no muta ni vuelve a copiar.'}[phase]
+        explanation=note or {'enter':'Entra un ámbito con parámetros por valor. M1 designa la misma estructura, A1 su arreglo existente.','call':'El inicializador queda pendiente hasta el retorno de la llamada; aún no hay valor calculado.','resume':'El retorno inicializa exclusivamente el local del llamador. No escribe el montículo.','condition':'Evalúa la condición C real y el cortocircuito. No modifica estructura ni destino.','assignment':'Escribe solo el destino o local indicado por esta instrucción.','loop_init':'Inicializa i dentro del ámbito del for; no cambia la estructura.','loop_increment':'Incrementa i; no copia ni muta valores.','allocation':'La reserva del ejemplo es exitosa y contiene enteros sin inicializar. No es una reserva del montículo. Internos de malloc no se simulan.','free':'Termina la vida de B1. Sus valores previos son solo registros históricos; no se leen punteros ni memoria liberados. A1 permanece vivo.','return':'Termina este ámbito; el retorno queda pendiente de asignación en el llamador.','loop_condition':'Evalúa el for. El cuerpo del bucle didáctico solo es un comentario: no muta ni vuelve a copiar.'}[phase]
         if phase=='return' and not current['query_frames']:
-            explanation='Finaliza el llamador equivalente y entrega su estado de retorno. La traza termina aqui; no se anima otra asignacion.'
+            explanation='Finaliza el llamador equivalente y entrega su estado de retorno. La traza termina aquí; no se anima otra asignación.'
         ped['narration']={level:explanation for level in ['basic','intermediate','advanced']};ped['return_propagation']={'active':phase=='return','value':result,'reconnects_subtree':False}
         ped.update(state_before=deepcopy(previous),state_after=deepcopy(current),memory_state=deepcopy(current),instruction_event={'scope':scope,'phase':phase,'condition':condition,'return':result})
-        ped['invariant'].update(holds=True,symbol='V',explanation='Consulta: M1/A1, cantidad, capacidad y orden interno permanecen iguales. Solo se escriben salida o destino independiente; no hay intercambio ni cambio del arbol.')
+        ped['invariant'].update(holds=True,symbol='V',explanation='Consulta: M1/A1, cantidad, capacidad y orden interno permanecen iguales. Solo se escriben salida o destino independiente; no hay intercambio ni cambio del árbol.')
         validate_hierarchical_frame(ped,source_code=source);step['pedagogy']=ped;steps.append(step)
     def enter(scope,function,params):
         frame={'id':scope,'function':function,'parameters':params,'locals':{}};frames.append(frame);return frame
@@ -86,7 +86,7 @@ def build_heap_query_trace(trace,before_state,after_state):
         text='bool ok = monticulo_raiz(m, resultado);';emit('caller',text,'call',lambda:caller['locals'].update(ok='sin inicializar'))
         emit('root','bool monticulo_raiz(const MonticuloBinario *m, int *resultado) {','enter',lambda:enter('root','monticulo_raiz',{'m':'M1','resultado':'&salida'}))
         guard='if (m == NULL || m->cantidad == 0 || resultado == NULL) return false;'
-        emit('root',guard,'condition',condition=count==0,expression='if (M1 == NULL || '+str(count)+' == 0'+(' [cortocircuito; resultado no se evalua]' if count==0 else ' || &salida == NULL')+')')
+        emit('root',guard,'condition',condition=count==0,expression='if (M1 == NULL || '+str(count)+' == 0'+(' [cortocircuito; resultado no se evalúa]' if count==0 else ' || &salida == NULL')+')')
         if count:
             def store_root():
                 nonlocal active_index
@@ -107,13 +107,13 @@ def build_heap_query_trace(trace,before_state,after_state):
             caller['locals']['buffer']='B1' if count else 'NULL'
             if count:buffer={'id':'B1','capacity':count,'cells':[{'index':i,'initialized':False,'value':None} for i in range(count)]}
         emit('caller','int *buffer = cantidad > 0 ? malloc((size_t)cantidad * sizeof *buffer) : NULL;','allocation' if count else 'assignment',allocate,condition=count>0,expression=str(count)+' > 0 ? malloc('+str(count)+' * sizeof(int)) : NULL',note=None if count else 'cantidad es 0: el condicional elige NULL sin invocar malloc; no hay reserva ni valores de destino.')
-        emit('caller','if (cantidad > 0 && buffer == NULL) {','condition',condition=False,expression='if ('+str(count)+' > 0'+(' && B1 == NULL)' if count else ' [cortocircuito; buffer no se evalua])'))
+        emit('caller','if (cantidad > 0 && buffer == NULL) {','condition',condition=False,expression='if ('+str(count)+' > 0'+(' && B1 == NULL)' if count else ' [cortocircuito; buffer no se evalúa])'))
         text='int usados = monticulo_copiar_valores(m, buffer, cantidad);';emit('caller',text,'call',lambda:caller['locals'].update(usados='sin inicializar'))
         emit('copy','int monticulo_copiar_valores(const MonticuloBinario *m, int *destino, int capacidad) {','enter',lambda:enter('copy','monticulo_copiar_valores',{'m':'M1','destino':'B1' if count else 'NULL','capacidad':count}));copy=frames[-1]
         guard='if (m == NULL || destino == NULL || capacidad <= 0) return 0;'
-        emit('copy',guard,'condition',condition=count==0,expression='if (M1 == NULL || '+('NULL == NULL [cortocircuito; capacidad no se evalua])' if count==0 else 'B1 == NULL || '+str(count)+' <= 0)'))
+        emit('copy',guard,'condition',condition=count==0,expression='if (M1 == NULL || '+('NULL == NULL [cortocircuito; capacidad no se evalúa])' if count==0 else 'B1 == NULL || '+str(count)+' <= 0)'))
         if count:
-            emit('copy','int a_copiar = m->cantidad < capacidad ? m->cantidad : capacidad;','assignment',lambda:copy['locals'].update(a_copiar=count),condition=False,expression=str(count)+' < '+str(count)+' ? '+str(count)+' : '+str(count),note='El condicional compara cantidad < capacidad; aqui son iguales y elige capacidad. No reserva ni copia aun.')
+            emit('copy','int a_copiar = m->cantidad < capacidad ? m->cantidad : capacidad;','assignment',lambda:copy['locals'].update(a_copiar=count),condition=False,expression=str(count)+' < '+str(count)+' ? '+str(count)+' : '+str(count),note='El condicional compara cantidad < capacidad; aquí son iguales y elige capacidad. No reserva ni copia aún.')
             loop='for (int i = 0; i < a_copiar; i++) {'
             emit('copy',loop,'loop_init',lambda:copy['locals'].update(i=0))
             for i in range(count+1):
@@ -122,7 +122,7 @@ def build_heap_query_trace(trace,before_state,after_state):
                 def store(index=i):
                     nonlocal active_index
                     buffer['cells'][index].update(initialized=True,value=values[index]);active_index=index
-                emit('copy','destino[i] = m->datos[i];','assignment',store,note='Copia A1['+str(i)+'] en B1['+str(i)+']; solo este elemento pasa a estar inicializado. A1 y el arbol no cambian.')
+                emit('copy','destino[i] = m->datos[i];','assignment',store,note='Copia A1['+str(i)+'] en B1['+str(i)+']; solo este elemento pasa a estar inicializado. A1 y el árbol no cambian.')
                 emit('copy',loop,'loop_increment',lambda index=i:copy['locals'].update(i=index+1))
             emit('copy','return a_copiar;','return',lambda:leave('copy',count),result=count)
         else:emit('copy',guard,'return',lambda:leave('copy',0),result=0)
@@ -138,8 +138,8 @@ def build_heap_query_trace(trace,before_state,after_state):
             nonlocal buffer,retired
             if buffer:retired={'id':'B1','capacity':count,'cells':deepcopy(buffer['cells']),'status':'vida terminada; registro anterior a free'};caller['locals']['buffer']=pointer_history
             buffer=None
-        emit('caller','free(buffer);','free',release,note=None if count else 'free(NULL) no hace nada: no libera A1 ni crea una reserva historica. buffer sigue NULL.')
+        emit('caller','free(buffer);','free',release,note=None if count else 'free(NULL) no hace nada: no libera A1 ni crea una reserva histórica. buffer sigue NULL.')
         emit('caller','return EXIT_SUCCESS;','return',lambda:leave('caller',0),result=0)
     steps[-1]['state_after']=deepcopy(after_state);steps[-1]['pedagogy']['state_after']=deepcopy(after_state)
-    initial=deepcopy(steps[0]['pedagogy']);initial.update(variables=[],call_stack=[],condition=None,memory_state=deepcopy(steps[0]['state_snapshot']),state_after=deepcopy(steps[0]['state_snapshot']));initial['phase']['label']='Estado inicial';initial['narration']={level:'Ninguna instruccion ejecutada; no hay salida inicializada ni copia futura.' for level in ['basic','intermediate','advanced']};steps[0]['pedagogy']['initial_frame']=initial
+    initial=deepcopy(steps[0]['pedagogy']);initial.update(variables=[],call_stack=[],condition=None,memory_state=deepcopy(steps[0]['state_snapshot']),state_after=deepcopy(steps[0]['state_snapshot']));initial['phase']['label']='Estado inicial';initial['narration']={level:'Ninguna instrucción ejecutada; no hay salida inicializada ni copia futura.' for level in ['basic','intermediate','advanced']};steps[0]['pedagogy']['initial_frame']=initial
     trace.update(source_code=source,steps=steps);return trace

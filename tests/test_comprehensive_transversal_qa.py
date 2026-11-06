@@ -13,7 +13,7 @@ from app.services.session_service import SESSION_KEY
         ("/", b"Visualizador Web de Estructuras de Datos"),
         ("/healthz", b'"status":"ok"'),
         ("/sequential/", b"Estructuras Secuenciales"),
-        ("/hierarchical/", b"Estructuras Jerarquicas"),
+        ("/hierarchical/", "Estructuras Jerárquicas".encode("utf-8")),
         ("/graph/", b"Grafos"),
         ("/hash/", b"Hash"),
         ("/sorting/", b"Ordenamiento"),

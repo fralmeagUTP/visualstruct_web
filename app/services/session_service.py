@@ -11,6 +11,18 @@ SESSION_KEY = "sequential_histories"
 SESSION_RECORD_VERSION = 1
 
 
+class SessionHistoryLimitError(ValueError):
+    """An append would exceed the configured lossless replay-history budget."""
+
+    def __init__(self, limit: int) -> None:
+        self.limit = limit
+        super().__init__(
+            f"El historial alcanzó el límite de {limit} operaciones. "
+            "El estado y el historial se conservan sin cambios. "
+            "Reinicia la estructura para comenzar una nueva sesión de trabajo."
+        )
+
+
 class SessionService:
     """Provide a thin wrapper over Flask session for histories."""
 
@@ -85,12 +97,15 @@ class SessionService:
 
     @staticmethod
     def save_history(structure_id: str, history: list[dict[str, Any]]) -> None:
-        """Persist history for one structure and invalidate its old checkpoint."""
+        """Persist a complete replay prefix, never silently discard its origin.
+
+        Routes must validate before storing related journals or trace ownership.
+        This check is a final safety net for every other persistence caller.
+        """
         histories = SessionService._get_histories()
         cleaned_history = SessionService._clean_history(history)
-        max_history = int(current_app.config.get("SESSION_MAX_HISTORY", 300))
-        if max_history > 0:
-            cleaned_history = cleaned_history[-max_history:]
+        previous_record, _ = SessionService._record(histories.get(structure_id, []))
+        SessionService.validate_history_capacity(cleaned_history, previous_record["history"])
         histories[structure_id] = {
             "schema_version": SESSION_RECORD_VERSION,
             "history": cleaned_history,
@@ -98,6 +113,20 @@ class SessionService:
         }
         session[SESSION_KEY] = histories
         session.modified = True
+
+    @staticmethod
+    def validate_history_capacity(
+        history: list[dict[str, Any]], previous_history: list[dict[str, Any]]
+    ) -> None:
+        """Reject growth past the budget while allowing reads and safe resets.
+
+        Existing oversized records remain readable and are never truncated.
+        An unchanged or shorter history may still be saved.
+        The graph module has its separately documented lossless history policy.
+        """
+        limit = int(current_app.config.get("SESSION_MAX_HISTORY", 300))
+        if limit > 0 and len(history) > limit and len(history) > len(previous_history):
+            raise SessionHistoryLimitError(limit)
 
     @staticmethod
     def save_checkpoint(structure_id: str, checkpoint: dict[str, Any]) -> None:

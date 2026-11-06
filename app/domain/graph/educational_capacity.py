@@ -6,12 +6,12 @@ class GraphCapacityError(ValueError):
 
 def check_capacity(graph, operation, payload, require_vertex, require_int):
     count=graph.cantidad_vertices()
-    message=f"El limite educativo es de {MAX_VERTICES} vertices. No se modifico el grafo ni el historial."
+    message=f"El límite educativo es de {MAX_VERTICES} vértices. No se modificó el grafo ni el historial."
     if count>MAX_VERTICES and (operation in {'insert_vertex','insert_edge'} or operation.startswith('run_')):
-        raise GraphCapacityError(message+" Esta sesion anterior conserva todos sus datos; elimina vertices o limpia el grafo para volver al limite.")
+        raise GraphCapacityError(message+" Esta sesión anterior conserva todos sus datos; elimina vértices o limpia el grafo para volver al límite.")
     try:
         if operation=='generate_random_graph':
-            requested=require_int(payload,'vertices_count','cantidad de vertices')
+            requested=require_int(payload,'vertices_count','cantidad de vértices')
             if requested>MAX_VERTICES:raise GraphCapacityError(message)
         elif operation=='insert_vertex':
             vertex=require_vertex(payload,'vertex','vertice')

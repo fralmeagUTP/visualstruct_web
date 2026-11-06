@@ -21,8 +21,8 @@ class SortingStructureService:
 
     _REGISTRY: dict[str, dict[str, Any]] = {
         "sorting_array": {
-            "name": "Metodos de Ordenamiento",
-            "description": "Visualizador didactico de algoritmos de ordenamiento sobre arreglos.",
+            "name": "Métodos de Ordenamiento",
+            "description": "Visualizador didáctico de algoritmos de ordenamiento sobre arreglos.",
             "adapter": SortingAdapter,
         }
     }
@@ -79,9 +79,9 @@ class SortingStructureService:
                     else:
                         if not isinstance(materialized, list) or any(type(v) is not int for v in materialized):
                             continue
-                        size = adapter._require_int(payload, "size", "tamano")
-                        low = adapter._require_int(payload, "min_value", "minimo")
-                        high = adapter._require_int(payload, "max_value", "maximo")
+                        size = adapter._require_int(payload, "size", "tamaño")
+                        low = adapter._require_int(payload, "min_value", "mínimo")
+                        high = adapter._require_int(payload, "max_value", "máximo")
                         adapter._validate_values([low, high])
                         if len(materialized) != size or low > high or any(not low <= v <= high for v in materialized):
                             continue
@@ -129,7 +129,7 @@ class SortingStructureService:
             return str(error)
         if isinstance(error, ValueError):
             return str(error)
-        return "Ocurrio un error inesperado durante la simulacion de ordenamiento."
+        return "Ocurrió un error inesperado durante la simulación de ordenamiento."
 
     @staticmethod
     def _didactic_content(structure_id: str) -> dict[str, Any]:
@@ -183,7 +183,7 @@ class SortingStructureService:
         operation_meta = next((item for item in operations if item["name"] == operation_name), None)
 
         if operation_meta is None:
-            message = "La operacion solicitada no esta soportada por el modulo de ordenamiento."
+            message = "La operación solicitada no está soportada por el módulo de ordenamiento."
             return {
                 "success": False,
                 "message": message,
@@ -214,7 +214,7 @@ class SortingStructureService:
                 "message": message,
                 "visual_state": accepted_before_state if isinstance(error, SortingSourceError) else before_state if (
                     getattr(error, "execution_trace", None)
-                    or (operation_name == "run" and (payload.get("algorithm_id") or before_state.get("algorithm")) in {"binsort", "radixsort"})
+                    or (operation_name == "run" and (payload.get("algorithm_id") or before_state.get("algorithm")) in ("binsort", "radixsort"))
                 ) else adapter.to_visual_state(),
                 "history": valid_history,
             }
@@ -244,7 +244,7 @@ class SortingStructureService:
 
         response: dict[str, Any] = {
             "success": True,
-            "message": result.get("message", "Operacion ejecutada correctamente."),
+            "message": result.get("message", "Operación ejecutada correctamente."),
             "result": result.get("result"),
             "visual_state": result.get("visual_state", adapter.to_visual_state()),
             "history": valid_history,

@@ -1,0 +1,23 @@
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {load}=require('../qa_ux_yuliana/test_shared_dom.cjs');
+(async()=>{
+ const rows=JSON.parse(fs.readFileSync('qa_general/frontend-fixtures/avl-conflict.json'));
+ const {w,d,dom}=await load('avl','/hierarchical/avl');let calls=0,releaseConflict=null;
+ w.fetch=async()=>{const row=rows[calls++];assert(row,'No retry after409');if(row.status===409)await new Promise(resolve=>{releaseConflict=resolve;});return {ok:row.status===200,status:row.status,json:async()=>structuredClone(row.data)}};
+ const wait=async check=>{const deadline=Date.now()+4000;while(!check()&&Date.now()<deadline)await new Promise(r=>w.setTimeout(r,5));assert(check(),'Expected terminal UI state');};
+ const selection=d.querySelector('#operation-select');selection.value='insertar';selection.dispatchEvent(new w.Event('change'));
+ d.querySelector('input[name=value]').value='10';
+ const toggle=d.querySelector('#hier-step-toggle');toggle.checked=true;toggle.dispatchEvent(new w.Event('change'));
+ d.querySelector('#operation-form').dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ await wait(()=>calls===1&&!d.querySelector('#hier-sim-counter').textContent.endsWith('/0'));
+ d.querySelector('#hier-sim-step').click();await new Promise(r=>w.setTimeout(r,20));
+ const snapshot=()=>({visual:d.querySelector('#visual-state').innerHTML,history:d.querySelector('#action-history').innerHTML,counter:d.querySelector('#hier-sim-counter').textContent,model:JSON.stringify(w.HIER_VIEW_MODEL.visual_state)});
+ const before=snapshot();const values=d.querySelector('#multiple-values');values.value='20,30';values.dispatchEvent(new w.Event('input'));
+ d.querySelector('#multiple-step').click();await wait(()=>releaseConflict!==null);await new Promise(r=>w.setTimeout(r,30));
+ const prepared=snapshot();assert.equal(prepared.counter,'Paso: 0/0','Preparing batch invalidates the prior selection trace before HTTP returns');
+ assert.equal(prepared.visual,before.visual);assert.equal(prepared.history,before.history);assert.equal(prepared.model,before.model);
+ releaseConflict();await wait(()=>d.querySelector('#multiple-status').textContent.includes('Se detuvo'));await new Promise(r=>w.setTimeout(r,30));
+ assert.equal(calls,2);assert.deepEqual(snapshot(),prepared);assert.equal(d.querySelector('input[name=value]').value,'','Never reuse previous batch value');assert(d.querySelector('#multiple-status').textContent.includes(rows[1].data.message),'Batch preserves real rejection message');assert.match(d.querySelector('#hier-sim-status').textContent,/Entradas cambiadas/);
+ await new Promise(r=>w.setTimeout(r,20));assert.equal(calls,2);dom.window.close();
+ console.log('PASS real AVL200 trace/step followed by batch409: drawing/history/model retained through rejection; prior trace deliberately invalidated at preparation, empty input after rejection; no pending value or retry. DOM only.');
+})().catch(e=>{console.error(e);process.exit(1)});

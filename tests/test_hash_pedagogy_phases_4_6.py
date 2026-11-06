@@ -96,7 +96,11 @@ def test_real_trace_visits_each_collision_and_takes_found_branch(client) -> None
     lines = [step["line_text"].strip() for step in data["execution_trace"]["steps"]]
     assert lines.count("if (actual->clave == clave) {") == 3
     assert "*valor = actual->valor;" in lines
-    assert lines[-1] == "return true;"
+    steps = data["execution_trace"]["steps"]
+    tad_steps = [step for step in steps if step.get("instruction_event", {}).get("function") == "th_buscar"]
+    assert tad_steps[-1]["line_text"].strip() == "return true;"
+    assert [step["instruction_event"]["token"] for step in steps[-3:]] == ["caller_printf"] * 3
+    assert all(step["instruction_event"]["function"] == "main" for step in steps[-3:])
     comparison_frames = [step["pedagogy"] for step in data["execution_trace"]["steps"] if "actual->clave == clave" in step["line_text"]]
     assert [frame["pointers"]["actual"] for frame in comparison_frames] == ["0xHASH-7", "0xHASH-4", "0xHASH-1"]
 

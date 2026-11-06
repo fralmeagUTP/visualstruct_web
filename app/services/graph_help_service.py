@@ -11,19 +11,19 @@ class GraphHelpService:
     """Serve educational texts for the graph module."""
 
     _MODULE_HELP = {
-        "title": "Ayuda del modulo de grafos",
+        "title": "Ayuda del módulo de grafos",
         "description": (
-            "Este modulo separa construccion y algoritmos para interpretar codigo C de grafos "
-            "de forma didactica: primero se modela el grafo y luego se simulan recorridos, "
-            "caminos minimos y expansion minima paso a paso o en modo rapido de resultado final."
+            "Este módulo separa construcción y algoritmos para interpretar código C de grafos "
+            "de forma didáctica: primero se modela el grafo y luego se simulan recorridos, "
+            "caminos mínimos y expansión mínima paso a paso o en modo rápido de resultado final."
         ),
         "tips": [
             f"Límite educativo de la aplicación: {MAX_VERTICES} vértices distintos, incluidos extremos creados por aristas. Los históricos de otro contrato se conservan sin reinterpretarlos silenciosamente. El C/H descargable coincide con el libro.",
-            "Flujo sugerido: define tipo de grafo, crea vertices/aristas y despues ejecuta el algoritmo.",
+            "Flujo sugerido: define tipo de grafo, crea vértices/aristas y después ejecuta el algoritmo.",
             "Activa Paso a paso y pulsa Ejecutar operación; usa Siguiente paso y Paso anterior para validar condiciones y actualizaciones.",
             "Al cerrar Paso a paso se muestra el estado final de la misma ejecución; navegar no repite la operación.",
-            "El resultado visual final en modo rapido debe coincidir con el ultimo estado de la traza interpretada.",
-            "Interpreta el estado visual junto con 'Accion actual' para distinguir exploracion, relajacion y cierre.",
+            "El resultado visual final en modo rápido debe coincidir con el último estado de la traza interpretada.",
+            "Interpreta el estado visual junto con 'Acción actual' para distinguir exploración, relajación y cierre.",
             "Con pesos negativos usa Bellman-Ford; para no dirigidos ponderados compara Prim y Kruskal.",
             "Ejecuta BFS y DFS desde el mismo origen para contrastar ordenes de visita.",
             "BFS usa t.prev como cola de índices y t.usado como marcas temporales. Las marcas del grafo se publican sólo al terminar con éxito; -1 sigue siendo un vértice válido.",
@@ -37,8 +37,8 @@ class GraphHelpService:
             "max_vertices": MAX_VERTICES,
             "summary": (
                 "Listas enlazadas separadas de vértices y arcos con pesos enteros. La vista no dirigida usa llamadas para ambos sentidos. "
-                "La simulacion interpreta el codigo C por subrutinas y muestra visualmente recorridos, "
-                "relajacion de aristas, rutas minimas y expansion minima segun el algoritmo seleccionado."
+                "La simulación interpreta el código C por subrutinas y muestra visualmente recorridos, "
+                "relajación de aristas, rutas mínimas y expansión mínima según el algoritmo seleccionado."
             ),
             "supported_operations": [
                 "create_graph",

@@ -19,7 +19,7 @@ def test_disabled_canonical_source_rejected_before_interpreter(monkeypatch, algo
         calls.append(True)
         raise AssertionError("Disabled C reached interpreter")
     monkeypatch.setattr("app.adapters.sorting_adapter.SortingInterpreter", forbidden)
-    with pytest.raises(SortingSourceError, match="Codigo C"):
+    with pytest.raises(SortingSourceError, match="Código C"):
         adapter.run(mode, source_code="#if 0\n" + source + "\n#endif")
     assert calls == []
     assert adapter.__dict__ == before
@@ -33,7 +33,7 @@ def test_preprocessing_outside_supported_subset_rejected_before_interpreter(monk
     def forbidden(*args, **kwargs):
         raise AssertionError("Preprocessing reached interpreter")
     monkeypatch.setattr("app.adapters.sorting_adapter.SortingInterpreter", forbidden)
-    with pytest.raises(SortingSourceError, match="Codigo C"):
+    with pytest.raises(SortingSourceError, match="Código C"):
         adapter.run("fast", source_code=prefix + source)
     assert adapter.__dict__ == before
 

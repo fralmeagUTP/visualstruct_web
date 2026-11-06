@@ -41,7 +41,7 @@ def test_radix_fast_and_step_modes_match_at_integer_limits():
 
 
 def test_radix_empty_input_remains_a_typed_invalid_case():
-    with pytest.raises(SortingExecutionError, match="vacio"):
+    with pytest.raises(SortingExecutionError, match="vacío"):
         SortingInterpreter([], "radixsort").run()
 
 

@@ -48,7 +48,7 @@ def _json_safe(value: Any, _memo=None) -> Any:
 _GRAPH_PHASES: dict[str, dict[str, Any]] = {
     "construccion": {
         "title": "Construcción del grafo",
-        "description": "Configura tipo de grafo y administra vertices/aristas.",
+        "description": "Configura tipo de grafo y administra vértices/aristas.",
         "operations": {
             "insert_vertex",
             "generate_random_graph",
@@ -123,29 +123,29 @@ _GRAPH_PHASES: dict[str, dict[str, Any]] = {
 _GRAPH_DIDACTIC_NOTES: dict[str, dict[str, Any]] = {
     "construccion": {
         "default": (
-            "Construccion del grafo: define si es dirigido o no dirigido, luego agrega o elimina vertices/aristas. "
-            "La simulacion debe reflejar altas, bajas y consultas sobre la lista de adyacencia."
+            "Construcción del grafo: define si es dirigido o no dirigido, luego agrega o elimina vértices/aristas. "
+            "La simulación debe reflejar altas, bajas y consultas sobre la lista de adyacencia."
         ),
         "operations": {
             "create_graph": (
-                "Crear/Reiniciar: limpia la estructura e inicializa un grafo vacio con el tipo elegido "
+                "Crear/Reiniciar: limpia la estructura e inicializa un grafo vacío con el tipo elegido "
                 "(dirigido o no dirigido)."
             ),
             "generate_random_graph": (
-                "Generacion aleatoria: con N vertices construye un grafo conectado base y agrega aristas extra, "
+                "Generación aleatoria: con N vértices construye un grafo conectado base y agrega aristas extra, "
                 "manteniendo pesos positivos para facilitar pruebas de recorridos y caminos."
             ),
-            "insert_vertex": "Insertar vertice: agrega el vertice si no existe y actualiza la representacion del grafo.",
+            "insert_vertex": "Insertar vértice: agrega el vértice si no existe y actualiza la representación del grafo.",
             "remove_vertex": (
-                "Eliminar vertice: quita el vertice y todas sus aristas incidentes para conservar consistencia."
+                "Eliminar vértice: quita el vértice y todas sus aristas incidentes para conservar consistencia."
             ),
             "insert_edge": (
                 "Insertar arista/arco: conecta origen-destino con su peso. En no dirigido se refleja en ambos sentidos."
             ),
-            "remove_edge": "Eliminar arista/arco: borra la conexion indicada (y su espejo si el grafo no es dirigido).",
-            "neighbors": "Vecinos: lista sucesores/adyacentes del vertice segun el tipo de grafo.",
-            "edge_weight": "Peso de arista: consulta el costo asociado a una conexion origen-destino.",
-            "list_vertices": "Vertices: devuelve el conjunto actual de vertices del grafo.",
+            "remove_edge": "Eliminar arista/arco: borra la conexión indicada (y su espejo si el grafo no es dirigido).",
+            "neighbors": "Vecinos: lista sucesores/adyacentes del vértice según el tipo de grafo.",
+            "edge_weight": "Peso de arista: consulta el costo asociado a una conexión origen-destino.",
+            "list_vertices": "Vértices: devuelve el conjunto actual de vértices del grafo.",
             "list_edges": "Aristas: devuelve las conexiones actuales con sus pesos.",
         },
     },
@@ -166,11 +166,11 @@ _GRAPH_DIDACTIC_NOTES: dict[str, dict[str, Any]] = {
     },
     "camino-minimo": {
         "default": (
-            "Camino minimo: compara distancias tentativas y predecesores para reconstruir la ruta de menor costo."
+            "Camino mínimo: compara distancias tentativas y predecesores para reconstruir la ruta de menor costo."
         ),
         "algorithms": {
             "run_dijkstra": (
-                "Dijkstra: selecciona el vertice no visitado con menor distancia y relaja sus aristas salientes. "
+                "Dijkstra: selecciona el vértice no visitado con menor distancia y relaja sus aristas salientes. "
                 "Requiere pesos no negativos."
             ),
             "run_bellman_ford": (
@@ -180,12 +180,12 @@ _GRAPH_DIDACTIC_NOTES: dict[str, dict[str, Any]] = {
     },
     "expansion-minima": {
         "default": (
-            "Arbol de expansion minima: selecciona aristas de menor costo para conectar todos los vertices "
+            "Árbol de expansión mínima: selecciona aristas de menor costo para conectar todos los vértices "
             "sin formar ciclos."
         ),
         "algorithms": {
             "run_prim": (
-                "Prim: crece un arbol desde un vertice inicial, agregando siempre la arista minima que conecta "
+                "Prim: crece un árbol desde un vértice inicial, agregando siempre la arista mínima que conecta "
                 "un nodo nuevo. Exige arcos simétricos y conexión completa; informa GrafoEstado al fallar."
             ),
             "run_kruskal": (
@@ -245,15 +245,17 @@ def _render_graph_phase(structure_id: str, phase: str) -> str:
 def operate_structure(structure_id: str) -> Any:
     """Execute one graph operation and return JSON response."""
     session_key = f"graph::{structure_id}"
+    body = request.get_json(silent=True)
+    if not isinstance(body, dict):
+        return jsonify({"success": False, "message": "El cuerpo enviado debe ser un objeto JSON válido."}), 400
     history = read_graph_history(session_key)
-    body = request.get_json(silent=True) or {}
     operation_name = str(body.get("operation", "")).strip()
     payload = body.get("payload", {})
 
     if not operation_name:
         return jsonify({"success": False, "message": "Debes seleccionar una operación."}), 400
     if not isinstance(payload, dict):
-        return jsonify({"success": False, "message": "El payload enviado es invalido."}), 400
+        return jsonify({"success": False, "message": "El payload enviado es inválido."}), 400
 
     try:
         result = GraphStructureService.execute_operation(
@@ -300,7 +302,9 @@ def reset_structure(structure_id: str) -> Any:
 @graph_bp.post("/compare")
 def compare_algorithms() -> Any:
     """Compare two algorithms over independent copies of a graph snapshot."""
-    body = request.get_json(silent=True) or {}
+    body = request.get_json(silent=True)
+    if not isinstance(body, dict):
+        return jsonify({"success": False, "message": "El cuerpo enviado debe ser un objeto JSON válido."}), 400
     try:
         result = GraphStructureService.compare_algorithms(
             str(body.get("kind", "")), body.get("graph"), body.get("start"), body.get("end")

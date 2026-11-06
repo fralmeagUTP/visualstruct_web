@@ -1,7 +1,7 @@
 """Exact hidden linked_list relative1 API refusal; no fictitious C execution."""
 import hashlib
 SOURCE_SHA="60243e196fe9a3627fc3aec328fa6b5e63bc42437aa1a953b47dbf01c76385ff"
-MESSAGE="El modo de insercion debe ser -1 (antes) o 0 (despues)."
+MESSAGE="El modo de inserción debe ser -1 (antes) o 0 (después)."
 def assert_linked_list_mode_validation(body,status,payload):
     assert status==400 and body.get("success") is False
     assert payload=={"position":"1","relative":"1","value":"1"}

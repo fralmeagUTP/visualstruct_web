@@ -67,7 +67,7 @@ class GraphAdapter(BaseAdapter):
                 return False
         if isinstance(value, (int, float)):
             return bool(value)
-        raise ValueError("El valor de 'dirigido' es invalido.")
+        raise ValueError("El valor de 'dirigido' es inválido.")
 
     @staticmethod
     def _parse_weight(payload: dict[str, Any], key: str = "weight") -> int:
@@ -84,7 +84,7 @@ class GraphAdapter(BaseAdapter):
         self._record_last_operation(
             name=name,
             status="success" if result.get("success", True) else "error",
-            message=result.get("message", "Operacion ejecutada correctamente."),
+            message=result.get("message", "Operación ejecutada correctamente."),
         )
         return result
 
@@ -168,7 +168,7 @@ class GraphAdapter(BaseAdapter):
                 "inputs": [
                     {
                         "name": "vertices_count",
-                        "label": f"Cantidad de vertices (maximo {MAX_VERTICES})",
+                        "label": f"Cantidad de vértices (máximo {MAX_VERTICES})",
                         "type": "number",
                         "min": 1, "max": MAX_VERTICES, "step": 1,
                     }
@@ -176,15 +176,15 @@ class GraphAdapter(BaseAdapter):
             },
             {
                 "name": "insert_vertex",
-                "label": "Insertar vertice",
+                "label": "Insertar vértice",
                 "mutates": True,
-                "inputs": [{"name": "vertex", "label": "Vertice", "type": "number"}],
+                "inputs": [{"name": "vertex", "label": "Vértice", "type": "number"}],
             },
             {
                 "name": "remove_vertex",
-                "label": "Eliminar vertice",
+                "label": "Eliminar vértice",
                 "mutates": True,
-                "inputs": [{"name": "vertex", "label": "Vertice", "type": "number"}],
+                "inputs": [{"name": "vertex", "label": "Vértice", "type": "number"}],
             },
             {
                 "name": "insert_edge",
@@ -207,9 +207,9 @@ class GraphAdapter(BaseAdapter):
             },
             {
                 "name": "exists_vertex",
-                "label": "Existe vertice",
+                "label": "Existe vértice",
                 "mutates": False,
-                "inputs": [{"name": "vertex", "label": "Vertice", "type": "number"}],
+                "inputs": [{"name": "vertex", "label": "Vértice", "type": "number"}],
             },
             {
                 "name": "exists_edge",
@@ -220,13 +220,13 @@ class GraphAdapter(BaseAdapter):
                     {"name": "target", "label": "Destino", "type": "number"},
                 ],
             },
-            {"name": "list_vertices", "label": "Listar vertices", "mutates": False, "inputs": []},
+            {"name": "list_vertices", "label": "Listar vértices", "mutates": False, "inputs": []},
             {"name": "list_edges", "label": "Listar aristas", "mutates": False, "inputs": []},
             {
                 "name": "neighbors",
                 "label": "Vecinos",
                 "mutates": False,
-                "inputs": [{"name": "vertex", "label": "Vertice", "type": "number"}],
+                "inputs": [{"name": "vertex", "label": "Vértice", "type": "number"}],
             },
             {
                 "name": "edge_weight",

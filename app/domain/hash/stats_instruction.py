@@ -1,5 +1,6 @@
 """Finite statement model of existing C statistics; API precision stays intact."""
 from copy import deepcopy
+from app.domain.hash.snapshot_pool import HashSnapshotPool
 import struct
 from app.domain.hash.pedagogy import build_hash_frame, hash_frame_schema, HASH_LEARNING_CATALOG
 
@@ -13,6 +14,8 @@ def build_hash_stats_trace(*,operation_name,payload,source_code,code_title,befor
         after_state,success,message,buffer_capacity=512,caller_buffer_capacity=None,
         null_destination=False,null_table=False,**_):
     """Execute two distinct struct-return invocations and bounded formatter writes."""
+    pool=HashSnapshotPool()
+    before_state=pool.intern(before_state)
     lines=source_code.replace('\r\n','\n').split('\n');steps=[];stack=['caller'];variables={}
     cap=int(before_state['metadata']['capacity']);size=int(before_state['metadata']['size'])
     buckets=before_state.get('buckets',[]);physical=buffer_capacity if caller_buffer_capacity is None else caller_buffer_capacity
@@ -55,34 +58,37 @@ def build_hash_stats_trace(*,operation_name,payload,source_code,code_title,befor
                 'text':bytes(raw[:prefix]).split(b'\0',1)[0].decode('ascii') if prefix else None,
                 'alive':True,'uninitialized_bytes_read':False}
             variables['caller.texto'].update(buffer)
-        scopes=[{'function':scope,'variables':{n.split('.',1)[1]:deepcopy(v) for n,v in variables.items() if n.startswith(scope+'.')}} for scope in stack]
+        # One immutable snapshot per emitted instruction, shared by debug and pedagogy.
+        variable_snapshot=pool.intern(variables)
+        if buffer is not None:buffer=pool.intern(buffer)
+        scopes=[{'function':scope,'variables':{n.split('.',1)[1]:v for n,v in variable_snapshot.items() if n.startswith(scope+'.')}} for scope in stack]
         current=variables.get('th_estadisticas.stats',{}).get('value')
         representation={'C_float_load':(current or return_value or {}).get('factor_carga'),
             'API_double_load':size/cap if cap else 0.0,'API_fields':['capacity','size','load_factor'],
             'C_fields':list(FIELDS),'C_text_decimals':2,'API_message_decimals':3,'metadata_decimals':6,
             'same_numeric_representation':False,'API_semantics_changed':False}
-        debug={'token':event,'function':function,'variables':deepcopy(variables),'scopes':scopes,'call_stack':list(stack),
+        debug={'token':event,'function':function,'variables':variable_snapshot,'scopes':scopes,'call_stack':list(stack),
             'stats_invocation':invocation,'stats':deepcopy(current),'returned_stats':deepcopy(return_value),
             'bucket_index':i,'actual':actual,'nodes_visited':nodes,'condition_result':condition,
             'buffer':buffer,'allocations':0,'frees':0,'representation':representation,
             'libc_boundary':'snprintf decimal formats; binary32 finite host, no ABI/padding inspection'}
         step={'step_index':len(steps),'line_index':line,'line_text':lines[line] if line>=0 else '',
             'event_type':event,'phase':'progress','delay_ms':100,'console':[],'debug':debug,
-            'state_snapshot':deepcopy(before_state),'state_after':deepcopy(before_state),
+            'state_snapshot':before_state,'state_after':before_state,
             'instruction_event':{'token':event,'function':function,'condition':condition}}
         frame=build_hash_frame(operation_name=operation_name,payload=payload,step=step,source_lines=lines,success=success)
-        frame['source']['function']=function;frame['variables']={n:deepcopy(v['value']) for n,v in variables.items()}
-        frame['memory'].update({'variables':deepcopy(variables),'scopes':scopes,'call_stack':list(stack),
+        frame['source']['function']=function;frame['variables']={n:v['value'] for n,v in variable_snapshot.items()}
+        frame['memory'].update({'variables':variable_snapshot,'scopes':scopes,'call_stack':list(stack),
             'heap':[{'id':e['address'],'type':'THNodo','initialized_mask':7,'key':e['key'],'value':e['value'],'next':e.get('next')} for b in buckets for e in b['entries']],
             'allocated':[],'freed':[],'allocation_attempted':False,'links_changed':False})
-        if buffer is not None:frame['memory']['buffer']=deepcopy(buffer)
+        if buffer is not None:frame['memory']['buffer']=buffer
         frame['pointers'].update({'actual':actual or 'NULL','tabla':'NULL' if null_table else '&tabla',
             'destino':('NULL' if null_destination else '&caller.texto') if 'th_formatear_estadisticas' in stack else 'fuera de alcance'})
         frame['cost'].update({'nodes_visited':nodes,'hash_evaluations':0,'stats_invocations':invocation})
         frame['condition']=None if condition is None else {'source':step['line_text'],'result':condition,'substituted':str(condition),'consequence':'Rama C ejecutada.'}
         frame['stats_representation']=representation
-        frame['narration']['advanced']=f'{function}: {event}; float C y proyeccion API separados, padding no inspeccionado.'
-        step['pedagogy']=frame;steps.append(step)
+        frame['narration']['advanced']=f'{function}: {event}; float C y proyección API separados, padding no inspeccionado.'
+        step['pedagogy']=frame;steps.append({key: pool.intern(value) if isinstance(value, (dict, list)) else value for key, value in step.items()})
     def stats_call():
         nonlocal invocation,nodes,actual,i,return_value
         invocation+=1;return_value=None;stack.append('th_estadisticas')
@@ -149,6 +155,7 @@ def build_hash_stats_trace(*,operation_name,payload,source_code,code_title,befor
         retire('th_formatear_estadisticas');emit('formatter_return','@table_return' if invalid_table else '@end','th_formatear_estadisticas')
     else:
         retire('th_formatear_estadisticas');emit('formatter_return','if (!destino || capacidad == 0)','th_formatear_estadisticas')
+    steps[-1]['pedagogy']=dict(steps[-1]['pedagogy'])
     steps[0]['phase']='start';steps[-1]['phase']='end';steps[-1]['state_after']=deepcopy(after_state);steps[-1]['pedagogy']['state_after']=deepcopy(after_state)
     return {'structure_id':'hash_table','operation_name':operation_name,'payload':deepcopy(payload),'success':success,
         'mutates':False,'message':message,'code_title':code_title,'source_code':source_code,'steps':steps,

@@ -6,10 +6,10 @@ function extract(source,start,end){const a=source.indexOf(start),b=source.indexO
 function fixture(kind){
  const source=file(kind),hier=kind==='hierarchical';
  const code=hier?extract(source,'  function collectHierPrintfLines','  operations.forEach'):extract(source,'  function collectGraphPrintfLines','  function parseJsonArray');
- const consoleEl={dataset:{},textContent:'',innerHTML:'',style:{}},state={trace:null,fallbackMessage:''},page={modelId:'avl',consoleTrace:null,consoleFallbackMessage:''};
+ const consoleEl={dataset:{},textContent:'',innerHTML:'',style:{}},state={trace:null,fallbackMessage:''},page={modelId:'avl',consolePrefix:'',consoleTrace:null,consoleFallbackMessage:''};
  const render=(element,lines,fallback)=>{element.textContent=lines.length?lines.join('\n'):fallback;};
  const push=(out,line)=>{if(String(line).trim()&&out.at(-1)!==line)out.push(line);};
- const context={consoleState:state,pageState:page,printfConsole:consoleEl,renderHierPrintfConsole:render,renderGraphPrintfConsole:render,hPushUniqueConsoleLine:push,gPushUniqueConsoleLine:push};vm.createContext(context);vm.runInContext(code,context);
+ const context={window:{},consoleState:state,pageState:page,printfConsole:consoleEl,renderHierPrintfConsole:render,renderGraphPrintfConsole:render,hPushUniqueConsoleLine:push,gPushUniqueConsoleLine:push};vm.createContext(context);vm.runInContext(fs.readFileSync("static/js/console-history.js","utf8"),context);vm.runInContext(code,context);
  return{source,context,state,page,consoleEl,refresh:cursor=>context[hier?'refreshHierPrintfConsole':'refreshGraphPrintfConsole'](cursor)};
 }
 for(const kind of ['hierarchical','graph'])test(`${kind}: host feedback never assigned as C console fallback`,()=>{
@@ -29,9 +29,9 @@ for(const kind of ['hierarchical','graph'])test(`${kind}: non-printing executed 
  memory.console_stdout='1 2 3\n';f.refresh(0);assert.equal(f.consoleEl.textContent,'1 2 3\n');
  f.refresh(-1);assert.ok(f.consoleEl.textContent===''||f.consoleEl.textContent==='(sin salida printf en esta ruta)');
 });
-test('graph create normal path retains actual trace and final cursor',()=>{
- const f=fixture('graph');const begin=f.source.indexOf('    } else {',f.source.indexOf('const data = await executeGraphOperation(controls, "create_graph"'));
- const end=f.source.indexOf('    const createSubroutine',begin);let code=f.source.slice(begin,end).replace(/^\s*\} else \{/,'').replace(/\}\s*$/,'');
- const trace={steps:[{console:['C created output']}]};f.context.data={message:'API graph created',execution_trace:trace};vm.runInContext(code,f.context);
- assert.equal(f.page.consoleTrace,trace);assert.equal(f.consoleEl.textContent,'C created output');
+test('graph create normal path delegates to the shared execution pipeline in final-only mode',async()=>{
+ const source=file('graph');const code=extract(source,'  createButton?.addEventListener("click", async () => {','  operationRunButton?.addEventListener');
+ let click;const calls=[];const context={createButton:{addEventListener(type,handler){assert.equal(type,'click');click=handler;}},modeSelect:{value:'false'},executeTargetAndLoadTrace:async(...args)=>{calls.push(args);return {success:true};},buildSelectionKey:()=> 'create',isStepByStepEnabled:()=>false,setSimulationButtonsState(){}};
+ vm.createContext(context);vm.runInContext(code,context);await click();
+ assert.equal(calls.length,1);assert.equal(calls[0][0].operation.name,'create_graph');assert.equal(calls[0][0].payload.directed,'false');assert.equal(calls[0][2].finalOnly,true);
 });

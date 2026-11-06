@@ -52,7 +52,7 @@ class BaseAdapter(ABC):
         evolve independently.
         """
         raise NotImplementedError(
-            f"{type(self).__name__} no implementa exportacion de estado."
+            f"{type(self).__name__} no implementa exportación de estado."
         )
 
     def import_state(self, state: dict[str, Any]) -> None:
@@ -62,7 +62,7 @@ class BaseAdapter(ABC):
         adapter and raise ``AdapterStateError`` for malformed input.
         """
         raise NotImplementedError(
-            f"{type(self).__name__} no implementa importacion de estado."
+            f"{type(self).__name__} no implementa importación de estado."
         )
 
     @classmethod
@@ -130,5 +130,5 @@ class BaseAdapter(ABC):
                     raise AdapterInputError(
                         "El historial contiene datos incompatibles con int de C de 32 bits. "
                         "Se conservaron el historial y el estado; restablece la estructura "
-                        "para iniciar una simulacion nueva con valores representables."
+                        "para iniciar una simulación nueva con valores representables."
                     )

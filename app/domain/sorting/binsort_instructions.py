@@ -35,10 +35,10 @@ class BinsortTape(CountingTape):
             row.pop('source_line_token', None)
             row['source_function'] = 'ordenar_binsort' if token != 'initial' else None
             row['action'] = {
-                'initial':'Antes de llamar ordenar_binsort; ninguna instruccion ejecutada.',
-                'binsort_entry':'Entrar a ordenar_binsort con los parametros arreglo/n.',
+                'initial':'Antes de llamar ordenar_binsort; ninguna instrucción ejecutada.',
+                'binsort_entry':'Entrar a ordenar_binsort con los parámetros arreglo/n.',
                 'binsort_delegate':'Evaluar ordenar_counting_sort(arreglo,n); mismos arreglo/n, wrapper suspendido.',
-                'binsort_return':f'Retornar {"ORDENAMIENTO_OK (1)" if self.native_status else "ORDENAMIENTO_ERROR (0)"} del delegado y retirar parametros de ordenar_binsort.',
+                'binsort_return':f'Retornar {"ORDENAMIENTO_OK (1)" if self.native_status else "ORDENAMIENTO_ERROR (0)"} del delegado y retirar parámetros de ordenar_binsort.',
             }[token]
         if active:
             parent = [

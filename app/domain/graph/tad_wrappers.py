@@ -30,7 +30,7 @@ class Grafo(Generic[V]):
     def eliminar_vertice(self, vertice: V) -> None:
         value = int(vertice)
         if not grafo_existe_vertice(self._g, value):
-            raise VerticeNoEncontradoError(f"El vertice {vertice!r} no existe.")
+            raise VerticeNoEncontradoError(f"El vértice {vertice!r} no existe.")
         grafo_eliminar_vertice(self._g, value)
 
     def insertar_arista(self, origen: V, destino: V, peso: float = 1) -> None:
@@ -151,7 +151,7 @@ class Grafo(Generic[V]):
     def _validar_vertice(self, vertice: V) -> None:
         value = int(vertice)
         if not grafo_existe_vertice(self._g, value):
-            raise VerticeNoEncontradoError(f"El vertice {vertice!r} no existe.")
+            raise VerticeNoEncontradoError(f"El vértice {vertice!r} no existe.")
 
     def _validar_pesos_no_negativos(self) -> None:
         for origen, destino, peso in self._g._arcos:

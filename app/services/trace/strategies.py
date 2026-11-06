@@ -5920,22 +5920,22 @@ class TreeTraceStrategy(LegacyTraceStrategy):
         messages = {
 
 
-            "LL": f"Rotacion AVL LL: rotacion a la derecha en {pivot}.",
+            "LL": f"Rotación AVL LL: rotación a la derecha en {pivot}.",
 
 
-            "RR": f"Rotacion AVL RR: rotacion a la izquierda en {pivot}.",
+            "RR": f"Rotación AVL RR: rotación a la izquierda en {pivot}.",
 
 
-            "LR": f"Rotacion AVL LR: izquierda en {child} y luego derecha en {pivot}.",
+            "LR": f"Rotación AVL LR: izquierda en {child} y luego derecha en {pivot}.",
 
 
-            "RL": f"Rotacion AVL RL: derecha en {child} y luego izquierda en {pivot}.",
+            "RL": f"Rotación AVL RL: derecha en {child} y luego izquierda en {pivot}.",
 
 
         }
 
 
-        return messages.get(kind, "Rotacion AVL detectada.")
+        return messages.get(kind, "Rotación AVL detectada.")
 
 
 
@@ -6073,7 +6073,7 @@ class TreeTraceStrategy(LegacyTraceStrategy):
                 if any(token in line for token in ("*raiz = nuevo;", "padre->izq = nuevo;", "padre->der = nuevo;")):
 
 
-                    stage, active, note = "apply", [str(path[-1])], "Aplicando cambio final sobre el arbol."
+                    stage, active, note = "apply", [str(path[-1])], "Aplicando cambio final sobre el árbol."
 
 
             elif family == "red_black" and operation_name in {"insertar", "eliminar"}:
@@ -6085,13 +6085,13 @@ class TreeTraceStrategy(LegacyTraceStrategy):
                 if "while (actual != null && dato != actual->nro)" in line:
 
 
-                    note = "Recorriendo el arbol para ubicar la posicion de insercion."
+                    note = "Recorriendo el árbol para ubicar la posición de inserción."
 
 
                 elif any(token in line for token in ("*arbol = actual;", "padre->izq = actual;", "padre->der = actual;")):
 
 
-                    stage, active, note = "apply", [str(path[-1])], "Nodo enlazado al arbol (insercion BST)."
+                    stage, active, note = "apply", [str(path[-1])], "Nodo enlazado al árbol (inserción BST)."
 
 
                 elif "actual->rbt_color = rojo;" in line:
@@ -6127,7 +6127,7 @@ class TreeTraceStrategy(LegacyTraceStrategy):
                 elif "printf(" in line:
 
 
-                    stage, note = "post_fixup", "Insercion Rojo-Negro completada."
+                    stage, note = "post_fixup", "Inserción Rojo-Negro completada."
 
 
             elif operation_name in {"minimo", "maximo"}:
@@ -6139,19 +6139,19 @@ class TreeTraceStrategy(LegacyTraceStrategy):
                 active = [str(path[path_index])]
 
 
-                note = ("Descendiendo por izquierda para encontrar el minimo." if operation_name == "minimo" else "Descendiendo por derecha para encontrar el maximo.")
+                note = ("Descendiendo por izquierda para encontrar el mínimo." if operation_name == "minimo" else "Descendiendo por derecha para encontrar el máximo.")
 
 
                 if index == total_steps - 1:
 
 
-                    note = f"{'Minimo' if operation_name == 'minimo' else 'Maximo'} encontrado en {path[-1]}."
+                    note = f"{'Mínimo' if operation_name == 'minimo' else 'Máximo'} encontrado en {path[-1]}."
 
 
             elif index == total_steps - 1 and operation_name in {"insertar", "eliminar"}:
 
 
-                stage, active, note = "apply", [str(path[-1])], "Aplicando cambio final sobre el arbol."
+                stage, active, note = "apply", [str(path[-1])], "Aplicando cambio final sobre el árbol."
 
 
             debug: dict[str, Any] = {"path_keys": deepcopy(path), "path_index": path_index, "stage": stage}

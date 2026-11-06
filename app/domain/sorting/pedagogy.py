@@ -222,7 +222,7 @@ def build_pedagogical_frame(
         "call_stack": stack,
         "loop": loop,
         "pointers": pointers,
-        "invariant": {"text": "Estado agregado de frecuencias; permite comparar antes/despues, sin certificar ejecucion por instruccion." if algorithm_id == "counting_sort" else _INVARIANTS[algorithm_id], "indices": list(raw_step.get("sorted_indices") or []), "holds": True},
+        "invariant": {"text": "Estado agregado de frecuencias; permite comparar antes/después, sin certificar ejecución por instrucción." if algorithm_id == "counting_sort" else _INVARIANTS[algorithm_id], "indices": list(raw_step.get("sorted_indices") or []), "holds": True},
         "narration": {
             "basic": f"{profile['objective']} Ahora: {action}",
             "intermediate": f"{concept_explanation} {action}",

@@ -16,7 +16,7 @@ def test_sorting_interpreter_rejects_unknown_algorithm() -> None:
 
 
 def test_sorting_interpreter_rejects_empty_array() -> None:
-    with pytest.raises(SortingExecutionError, match="vacio"):
+    with pytest.raises(SortingExecutionError, match="vacío"):
         SortingInterpreter([], "quicksort").run()
 
 

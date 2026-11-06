@@ -63,7 +63,7 @@ def build_hidden_terminal_trace(*,operation_name,payload,source_code,code_title,
             call_stack=[] if ended else [dict(function=fn,parameters=deepcopy(args))],
             scopes=[dict(id=fn,kind='function',state=scope,variables=deepcopy({**args,**locals}))],
             condition=dict(source=expression,result=condition,substituted=substituted) if condition is not None else None)
-        frame['source']['function']=fn;frame['narration']={level:token+('; termina el ambito; no se leen aliases liberados.' if ended else '') for level in ['basic','intermediate','advanced']}
+        frame['source']['function']=fn;frame['narration']={level:token+('; termina el ámbito; no se leen aliases liberados.' if ended else '') for level in ['basic','intermediate','advanced']}
         validate_sequential_frame(frame,source_code=source_code);step['pedagogy']=frame
         step['debug']=dict(head=head,locals=deepcopy(locals),output=output,return_value=ret,free_count=len(freed))
         steps.append(step);last=deepcopy(after)

@@ -25,22 +25,22 @@ class LinkedListAdapter(BaseAdapter):
             valor = self._require_int(payload, "value", "valor")
             posicion_ui = self._require_int(payload, "position", "posicion")
             if posicion_ui < 1:
-                raise ValueError("La posicion debe iniciar en 1.")
+                raise ValueError("La posición debe iniciar en 1.")
             changed = self._structure.insertar_elemento(posicion_ui, valor, -1)
             if not changed:
                 return {"message": "Error...Posicion no encontrada..!"}
-            return {"message": f"Se inserto '{valor}' en la posicion {posicion_ui}."}
+            return {"message": f"Se insertó '{valor}' en la posición {posicion_ui}."}
 
         op = operation_name
         if op == "lista_insertar_elemento":
             valor = self._require_int(payload, "value", "valor")
             posicion_ui = self._require_int(payload, "position", "posicion")
             if posicion_ui < 1:
-                raise ValueError("La posicion debe iniciar en 1.")
+                raise ValueError("La posición debe iniciar en 1.")
             changed = self._structure.insertar_elemento(posicion_ui, valor, 0)
             if not changed:
                 return {"message": "Error...Posicion no encontrada..!"}
-            return {"message": f"Se inserto '{valor}' en la posicion base {posicion_ui}."}
+            return {"message": f"Se insertó '{valor}' en la posición base {posicion_ui}."}
         if op == "eliminar_primero":
             op = "eliminar_elemento"
         elif op in {"buscar_posiciones", "primero", "ultimo"}:
@@ -55,23 +55,23 @@ class LinkedListAdapter(BaseAdapter):
             if not changed:
                 return {"message": "Error...Posicion no encontrada..!"}
             if posicion_ui == 1:
-                return {"message": f"Se inserto '{valor}' al inicio de la lista (posicion 1)."}
+                return {"message": f"Se insertó '{valor}' al inicio de la lista (posición 1)."}
             lugar = "antes" if desplazamiento < 0 else "despues"
-            return {"message": f"Se inserto '{valor}' {lugar} de la posicion {posicion_ui}."}
+            return {"message": f"Se insertó '{valor}' {lugar} de la posición {posicion_ui}."}
         if op == "insertar_inicio":
             valor = self._require_int(payload, "value", "valor")
             self._structure.insertar_inicio(valor)
-            return {"message": f"Se inserto '{valor}' al inicio."}
+            return {"message": f"Se insertó '{valor}' al inicio."}
         if op == "insertar_final":
             valor = self._require_int(payload, "value", "valor")
             self._structure.insertar_final(valor)
-            return {"message": f"Se inserto '{valor}' al final."}
+            return {"message": f"Se insertó '{valor}' al final."}
         if op == "eliminar_elemento":
             valor = self._require_int(payload, "value", "valor")
             eliminado = self._structure.eliminar_elemento(valor)
             if eliminado:
-                return {"message": f"Se elimino la primera ocurrencia de '{valor}'."}
-            return {"message": f"No se encontro '{valor}' para eliminar."}
+                return {"message": f"Se eliminó la primera ocurrencia de '{valor}'."}
+            return {"message": f"No se encontró '{valor}' para eliminar."}
         if op == "eliminar_repetidos":
             valor = self._require_int(payload, "value", "valor")
             eliminados = self._structure.eliminar_repetidos(valor)
@@ -102,16 +102,16 @@ class LinkedListAdapter(BaseAdapter):
             return {"message": f"'{valor}' no aparece en la lista.", "result": []}
         if op == "eliminar_inicio":
             valor = self._structure.eliminar_inicio()
-            return {"message": f"Se elimino '{valor}' desde el inicio.", "result": valor}
+            return {"message": f"Se eliminó '{valor}' desde el inicio.", "result": valor}
         if op == "eliminar_final":
             valor = self._structure.eliminar_final()
-            return {"message": f"Se elimino '{valor}' desde el final.", "result": valor}
+            return {"message": f"Se eliminó '{valor}' desde el final.", "result": valor}
         if op == "eliminar_posicion":
             posicion_ui = self._require_int(payload, "position", "posicion")
             posicion_tad = self._to_zero_based_position(posicion_ui)
             valor = self._structure.eliminar_posicion(posicion_tad)
             return {
-                "message": f"Se elimino '{valor}' en la posicion {posicion_ui}.",
+                "message": f"Se eliminó '{valor}' en la posición {posicion_ui}.",
                 "result": valor,
             }
         if op == "primero":
@@ -119,11 +119,11 @@ class LinkedListAdapter(BaseAdapter):
             return {"message": f"El primer elemento es '{valor}'.", "result": valor}
         if op == "ultimo":
             valor = self._structure.ultimo()
-            return {"message": f"El ultimo elemento es '{valor}'.", "result": valor}
+            return {"message": f"El último elemento es '{valor}'.", "result": valor}
         if op == "limpiar":
             self._structure.limpiar()
-            return {"message": "La lista enlazada se limpio correctamente."}
-        raise ValueError(f"Operacion no soportada: {operation_name}.")
+            return {"message": "La lista enlazada se limpió correctamente."}
+        raise ValueError(f"Operación no soportada: {operation_name}.")
 
     def to_visual_state(self) -> dict[str, Any]:
         """Serialize linked-list state for frontend rendering."""
@@ -161,7 +161,7 @@ class LinkedListAdapter(BaseAdapter):
                 "mutates": True,
                 "inputs": [
                     {"name": "value", "label": "Valor", "type": "number"},
-                    {"name": "position", "label": "Posicion", "type": "number", "min": 1},
+                    {"name": "position", "label": "Posición", "type": "number", "min": 1},
                 ],
             },
             {
@@ -188,12 +188,12 @@ class LinkedListAdapter(BaseAdapter):
             {"name": "limpiar", "label": "Limpiar", "mutates": True, "inputs": []},
             {
                 "name": "insertar_posicion",
-                "label": "Insertar posicion (legacy)",
+                "label": "Insertar posición (legacy)",
                 "mutates": True,
                 "hidden": True,
                 "inputs": [
                     {"name": "value", "label": "Valor", "type": "number"},
-                    {"name": "position", "label": "Posicion", "type": "number", "min": 1},
+                    {"name": "position", "label": "Posición", "type": "number", "min": 1},
                 ],
             },
             {
@@ -203,10 +203,10 @@ class LinkedListAdapter(BaseAdapter):
                 "hidden": True,
                 "inputs": [
                     {"name": "value", "label": "Valor", "type": "number"},
-                    {"name": "position", "label": "Posicion", "type": "number", "min": 1},
+                    {"name": "position", "label": "Posición", "type": "number", "min": 1},
                     {
                         "name": "relative",
-                        "label": "Modo (-1 antes, 0 despues)",
+                        "label": "Modo (-1 antes, 0 después)",
                         "type": "number",
                         "min": -1,
                     },
@@ -230,22 +230,22 @@ class LinkedListAdapter(BaseAdapter):
             {"name": "eliminar_final", "label": "Eliminar final (legacy)", "mutates": True, "hidden": True, "inputs": []},
             {
                 "name": "eliminar_posicion",
-                "label": "Eliminar posicion (legacy)",
+                "label": "Eliminar posición (legacy)",
                 "mutates": True,
                 "hidden": True,
                 "inputs": [
-                    {"name": "position", "label": "Posicion", "type": "number", "min": 1}
+                    {"name": "position", "label": "Posición", "type": "number", "min": 1}
                 ],
             },
             {"name": "primero", "label": "Primero (legacy)", "mutates": False, "hidden": True, "inputs": []},
-            {"name": "ultimo", "label": "Ultimo (legacy)", "mutates": False, "hidden": True, "inputs": []},
+            {"name": "ultimo", "label": "Último (legacy)", "mutates": False, "hidden": True, "inputs": []},
         ]
 
     @staticmethod
     def _to_zero_based_position(position_ui: int) -> int:
         """Convert one-based UI position into zero-based TAD position."""
         if position_ui < 1:
-            raise ValueError("La posicion debe iniciar en 1.")
+            raise ValueError("La posición debe iniciar en 1.")
         return position_ui - 1
 
     @staticmethod
@@ -255,6 +255,6 @@ class LinkedListAdapter(BaseAdapter):
             return 0
         value = int(raw)
         if value not in {-1, 0}:
-            raise ValueError("El modo de insercion debe ser -1 (antes) o 0 (despues).")
+            raise ValueError("El modo de inserción debe ser -1 (antes) o 0 (después).")
         return value
 

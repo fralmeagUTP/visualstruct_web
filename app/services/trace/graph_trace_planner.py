@@ -132,7 +132,7 @@ class GraphTracePlanner:
                     note = (
                         f"Llamada DFS en {current}."
                         if stage != "complete"
-                        else f"DFS completado. Ultimo retorno en {current}."
+                        else f"DFS completado. Último retorno en {current}."
                     )
                     stack: list[str] = []
                     cursor: str | None = current
@@ -231,14 +231,14 @@ class GraphTracePlanner:
                 timeline.append(
                     {
                         "stage": "detect_negative_cycle",
-                        "note": "Se detecto ciclo negativo: aun hay relajacion tras |V|-1 pasadas.",
+                        "note": "Se detectó ciclo negativo: aún hay relajación tras |V|-1 pasadas.",
                         "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[], edges=sample_edges, iteration=max(1, len(node_ids))),
                     }
                 )
                 timeline.append(
                     {
                         "stage": "complete",
-                        "note": "Bellman-Ford finalizo con ciclo negativo.",
+                        "note": "Bellman-Ford finalizó con ciclo negativo.",
                         "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[], edges=sample_edges),
                     }
                 )
@@ -260,7 +260,7 @@ class GraphTracePlanner:
                     },
                     {
                         "stage": "complete",
-                        "note": "Ejecucion finalizada sin ruta alcanzable.",
+                        "note": "Ejecución finalizada sin ruta alcanzable.",
                         "graph_progress": _progress(distances=final_distances, previous=final_previous, visited=[]),
                     },
                 ]
@@ -350,7 +350,7 @@ class GraphTracePlanner:
                     last_edge = edges[-1]
                     note = f"Agregando arista MST {last_edge[0]} - {last_edge[1]}."
                 else:
-                    note = "Preparando arbol de expansion minima."
+                    note = "Preparando árbol de expansión mínima."
                 debug_steps.append(
                     {
                         "stage": stage,

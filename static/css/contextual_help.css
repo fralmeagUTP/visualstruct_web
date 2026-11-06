@@ -103,6 +103,7 @@
 .hier-classroom-controls { padding: .45rem .6rem; border: 1px solid #c4d4e1; border-radius: .5rem; background: #fffdf8; }
 .hier-classroom-controls .actions { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
 .hier-classroom-controls .actions .btn { min-height: 32px; padding: .3rem .5rem; font-size: .85rem; }
+.hier-classroom-controls > #hier-open-prediction { margin-top: .5rem; }
 .hier-classroom-controls > p { display: inline; margin: .2rem .6rem 0 0; font-size: .8rem; }
 .hier-learning-shell #op-pseudocode, .hier-learning-shell #op-pseudocode .code-line { white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; }
 .hier-learning-shell #op-pseudocode .code-line { width: auto; min-width: 0; max-width: 100%; box-sizing: border-box; }

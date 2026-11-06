@@ -121,9 +121,9 @@ function renderHierPedagogy(frame, level) {
   if(variables)variables.innerHTML=`<table><thead><tr><th>Tipo y variable</th><th>Anterior</th><th>Actual</th><th>Significado</th></tr></thead><tbody>${(frame.variables||[]).map((item)=>`<tr class="${item.changed?'is-changed':''}"><td><code>${hEscape(item.type)} ${hEscape(item.name)}</code>${item.scope?`<br><small>${hEscape(item.scope)}</small>`:""}</td><td>${hEscape(item.previous??"NULL")}</td><td>${hEscape(item.value??"NULL")}</td><td>${hEscape(item.meaning)}</td></tr>`).join("")}</tbody></table>`;
   if(memory){const mem=frame.memory||{};memory.innerHTML=`Evento: <strong>${hEscape(({none:"sin cambios de memoria",allocate:"reserva de memoria",allocation:"reserva de memoria",free:"liberación de memoria",link:"actualización de enlaces"})[mem.event] || mem.event || "sin cambios de memoria")}</strong><br>Reservados: ${hEscape((mem.allocated_objects||[]).map((item)=>item.address).join(", ")||"—")}<br>Liberados: ${hEscape((mem.freed_objects||[]).map((item)=>item.address).join(", ")||"—")}<br>Referencias colgantes: <strong>${(mem.dangling_references||[]).length}</strong>`;}
   if(memory && frame.memory && frame.memory.unusable_reference_records){
-    const mem=frame.memory;memory.innerHTML=`Evento: <strong>${hEscape(mem.event)}</strong><br>Liberados (identidades historicas): ${hEscape((mem.freed_objects||[]).map(x=>x.address).join(', ')||'—')}<br>Referencias inutilizables registradas: <strong data-abb-unusable-count="${mem.unusable_reference_records.length}">${mem.unusable_reference_records.length}</strong><br>Son identidades guardadas; no se leen valores de punteros indeterminados.`;
+    const mem=frame.memory;memory.innerHTML=`Evento: <strong>${hEscape(mem.event)}</strong><br>Liberados (identidades históricas): ${hEscape((mem.freed_objects||[]).map(x=>x.address).join(', ')||'—')}<br>Referencias inutilizables registradas: <strong data-abb-unusable-count="${mem.unusable_reference_records.length}">${mem.unusable_reference_records.length}</strong><br>Son identidades guardadas; no se leen valores de punteros indeterminados.`;
   }
-  if(relations){const arr=frame.array||{};relations.innerHTML=frame.structure==="binary_heap"?`A[i] activo: ${hEscape(arr.active_index??"—")} · padre: ${hEscape(arr.parent_index??"—")} · hijos: ${hEscape((arr.child_indices||[]).join(", ")||"—")}<br><strong>El heap no es un ABB ni un arreglo totalmente ordenado:</strong> solo garantiza prioridad padre-hijos.`:`Límites: ${hEscape(frame.path?.bounds?.lower||"-∞")} … ${hEscape(frame.path?.bounds?.upper||"+∞")} · sucesor: ${hEscape(frame.path?.successor??"—")}<br>Retorno: ${frame.return_propagation?.active?"activo":"sin retorno en esta instruccion"}<br>Reconexión del retorno: ${frame.return_propagation?.reconnects_subtree?"si":"no"}`;}
+  if(relations){const arr=frame.array||{};relations.innerHTML=frame.structure==="binary_heap"?`A[i] activo: ${hEscape(arr.active_index??"—")} · padre: ${hEscape(arr.parent_index??"—")} · hijos: ${hEscape((arr.child_indices||[]).join(", ")||"—")}<br><strong>El heap no es un ABB ni un arreglo totalmente ordenado:</strong> solo garantiza prioridad padre-hijos.`:`Límites: ${hEscape(frame.path?.bounds?.lower||"-∞")} … ${hEscape(frame.path?.bounds?.upper||"+∞")} · sucesor: ${hEscape(frame.path?.successor??"—")}<br>Retorno: ${frame.return_propagation?.active?"activo":"sin retorno en esta instrucción"}<br>Reconexión del retorno: ${frame.return_propagation?.reconnects_subtree?"sí":"no"}`;}
 }
 
 function hEscape(value) {
@@ -381,7 +381,7 @@ function highlightHierCLine(line, state) {
 function buildHierHighlightedCodeHtml(raw, codeTitle) {
   const lines = String(raw || "").replaceAll("\r\n", "\n").split("\n");
 
-  if (String(codeTitle || "").toLowerCase().includes("codigo c")) {
+  if (/c[oó]digo c/i.test(String(codeTitle || ""))) {
     let state = { inBlockComment: false };
     return lines
       .map((line, index) => {
@@ -567,7 +567,7 @@ function rbDidacticDelta(stepMeta, compareState) {
     events.push(`Recoloracion: ${recolored.join(", ")}.`);
   }
   if (reparented.length >= 2) {
-    events.push(`Rotacion detectada (cambio estructural en: ${reparented.join(", ")}).`);
+    events.push(`Rotación detectada (cambio estructural en: ${reparented.join(", ")}).`);
   }
 
   const beforeRules = rbAnalyzeRules(beforeRoot);
@@ -578,7 +578,7 @@ function rbDidacticDelta(stepMeta, compareState) {
     events.push(`Conflicto rojo-rojo activo en: ${afterRules.redRedPairs.join(", ")}.`);
   }
   if (!afterRules.rootBlack) {
-    events.push("Advertencia: la raiz debe ser negra.");
+    events.push("Advertencia: la raíz debe ser negra.");
   }
   if (!afterRules.blackHeightOk) {
     events.push("Advertencia: altura negra inconsistente entre caminos.");
@@ -603,11 +603,11 @@ function rbDidacticDelta(stepMeta, compareState) {
 function rbStageLabel(stage) {
   const value = String(stage || "").trim().toLowerCase();
   if (!value) {
-    return "Ejecucion";
+    return "Ejecución";
   }
   const labels = {
-    search: "Busqueda",
-    apply: "Aplicacion",
+    search: "Búsqueda",
+    apply: "Aplicación",
     pre_fixup: "Pre-fixup",
     fixup: "Fixup",
     post_fixup: "Post-fixup",
@@ -615,7 +615,7 @@ function rbStageLabel(stage) {
     start: "Inicio",
     progress: "Progreso",
     end: "Fin",
-    single: "Paso unico",
+    single: "Paso único",
   };
   return labels[value] || value;
 }
@@ -627,7 +627,7 @@ function rbTimelineEntryFromStep(step) {
   const lineText = step && step.line_text ? String(step.line_text).trim() : "";
   const entry = {
     stage,
-    note: baseNote || (lineText ? `Linea C: ${lineText}` : "Paso del algoritmo."),
+    note: baseNote || (lineText ? `Línea C: ${lineText}` : "Paso del algoritmo."),
   };
   return entry;
 }
@@ -659,7 +659,7 @@ function isHierExecutableLine(text, codeTitle) {
   if (line === "{" || line === "}") {
     return false;
   }
-  if (String(codeTitle || "").toLowerCase().includes("codigo c") && line.startsWith("#")) {
+  if (/c[oó]digo c/i.test(String(codeTitle || "")) && line.startsWith("#")) {
     return false;
   }
   return true;
@@ -1306,18 +1306,18 @@ function rotationHintText(rotationHint) {
   const child = String(rotationHint.child || "");
 
   if (type === "LL") {
-    return `Rotacion AVL LL: rotacion a la derecha en ${pivot}.`;
+    return `Rotación AVL LL: rotación a la derecha en ${pivot}.`;
   }
   if (type === "RR") {
-    return `Rotacion AVL RR: rotacion a la izquierda en ${pivot}.`;
+    return `Rotación AVL RR: rotación a la izquierda en ${pivot}.`;
   }
   if (type === "LR") {
-    return `Rotacion AVL LR: izquierda en ${child} y luego derecha en ${pivot}.`;
+    return `Rotación AVL LR: izquierda en ${child} y luego derecha en ${pivot}.`;
   }
   if (type === "RL") {
-    return `Rotacion AVL RL: derecha en ${child} y luego izquierda en ${pivot}.`;
+    return `Rotación AVL RL: derecha en ${child} y luego izquierda en ${pivot}.`;
   }
-  return "Rotacion AVL detectada.";
+  return "Rotación AVL detectada.";
 }
 
 function buildNullLeafVisuals(nodes, options = {}) {
@@ -1365,7 +1365,7 @@ function buildNullLeafVisuals(nodes, options = {}) {
 
 function drawTreeSvgFromNodes(nodes, options = {}) {
   if (!nodes.length) {
-    return "<p class=\"viz-empty\">Estructura vacia.</p>";
+    return "<p class=\"viz-empty\">Estructura vacía.</p>";
   }
 
   const nodeMap = new Map(nodes.map((node) => [node.key, node]));
@@ -1527,7 +1527,7 @@ function renderTreeTransitionSvg(transitionData, options = {}) {
   });
 
   if (!interpolatedNodes.length) {
-    return "<p class=\"viz-empty\">Estructura vacia.</p>";
+    return "<p class=\"viz-empty\">Estructura vacía.</p>";
   }
 
   const nodeMap = new Map(interpolatedNodes.map((node) => [node.key, node]));
@@ -1617,7 +1617,7 @@ function renderTreeTransitionSvg(transitionData, options = {}) {
 
 function renderHeapArray(arrayValues) {
   if (!arrayValues || !arrayValues.length) {
-    return "<p class=\"viz-empty\">Arreglo vacio.</p>";
+    return "<p class=\"viz-empty\">Arreglo vacío.</p>";
   }
   const chips = arrayValues
     .map((value, index) => `<span class="viz-array-chip">[${index}] ${hEscape(value)}</span>`)
@@ -1627,7 +1627,7 @@ function renderHeapArray(arrayValues) {
 
 function renderHeapArrayFrame(arrayValues, frame) {
   if (!arrayValues || !arrayValues.length) {
-    return "<p class=\"viz-empty\">Arreglo vacio.</p>";
+    return "<p class=\"viz-empty\">Arreglo vacío.</p>";
   }
 
   const visited = new Set(frame && Array.isArray(frame.visitedIndices) ? frame.visitedIndices : []);
@@ -1689,7 +1689,7 @@ function buildHeapInsertFrames(previousArray, value) {
         array: [...array],
         activeIndices: [parent, current],
         visitedIndices: [...visited],
-        note: `Comparacion final: ${array[parent]} <= ${array[current]}.`,
+        note: `Comparación final: ${array[parent]} <= ${array[current]}.`,
       });
       break;
     }
@@ -1723,7 +1723,7 @@ function buildHeapExtractFrames(previousArray) {
       array: [],
       activeIndices: [],
       visitedIndices: [0],
-      note: `Se extrae la raiz ${extracted}. El monticulo queda vacio.`,
+      note: `Se extrae la raíz ${extracted}. El montículo queda vacío.`,
     });
     return frames;
   }
@@ -1734,7 +1734,7 @@ function buildHeapExtractFrames(previousArray) {
     array: [...array],
     activeIndices: [0],
     visitedIndices: [0],
-    note: `Se extrae la raiz ${extracted}. El ultimo valor ${last} sube a la raiz.`,
+    note: `Se extrae la raíz ${extracted}. El último valor ${last} sube a la raíz.`,
   });
 
   let current = 0;
@@ -1870,14 +1870,14 @@ function renderHierState(
     rotationHint: rotationVisualHint,
   };
 
-  let html = `<div class="viz-canvas${modelId === "binary_heap" ? " heap-classroom-canvas" : ""}${(state.abb_traversal_model || state.abb_read_model) ? " abb-traversal-canvas" : ""}"><div class="viz-meta"><strong>${hEscape(state.title)}</strong> | Tamano: ${hEscape(state.size ?? 0)}</div>`;
+  let html = `<div class="viz-canvas${modelId === "binary_heap" ? " heap-classroom-canvas" : ""}${(state.abb_traversal_model || state.abb_read_model) ? " abb-traversal-canvas" : ""}"><div class="viz-meta"><strong>${hEscape(state.title)}</strong> | Tamaño: ${hEscape(state.size ?? 0)}</div>`;
 
-  if ((state.abb_validate_model || state.avl_validate_model) && state.wrapper_result === null) html += "<p data-abb-validation-pending>Validacion pendiente: aun no retorna el llamador.</p>";
+  if ((state.abb_validate_model || state.avl_validate_model) && state.wrapper_result === null) html += "<p data-abb-validation-pending>Validación pendiente: aún no retorna el llamador.</p>";
   if (state.rbt_validate_model) html += `<p data-rbt-validator-contract>${hEscape(state.validator_contract)}; resultado: ${state.wrapper_result === null ? "pendiente" : state.wrapper_result ? "correcto" : "incorrecto"}</p>`;
   if (state.avl_validate_model && typeof state.height_balance_result === "boolean") html += `<p data-avl-height-result>Equilibrio por alturas (C): ${state.height_balance_result ? "correcto" : "incorrecto"}. No comprueba orden ABB ni FE almacenado.</p>`;
-  if (state.avl_validate_model && state.wrapper_result !== null) html += `<p data-avl-backend-validation>Validacion backend (orden y equilibrio): ${state.backend_validation ? "OK" : "ERROR"}</p>`;
+  if (state.avl_validate_model && state.wrapper_result !== null) html += `<p data-avl-backend-validation>Validación backend (orden y equilibrio): ${state.backend_validation ? "OK" : "ERROR"}</p>`;
   if (typeof state.validation === "boolean") {
-    html += `<div class="viz-validation">${modelId === "red_black" ? "Validar reglas RN y enlaces" : "Validacion"}: ${state.validation ? "OK" : "ERROR"}</div>`;
+    html += `<div class="viz-validation">${modelId === "red_black" ? "Validar reglas RN y enlaces" : "Validación"}: ${state.validation ? "OK" : "ERROR"}</div>`;
   }
   if (modelId === "avl") {
     html += "<div class=\"viz-meta\">Regla AVL: cada nodo debe tener fe en {-1, 0, 1}.</div>";
@@ -1900,9 +1900,9 @@ function renderHierState(
     }
     if (H_SHOW_RN_TIMELINE && compareState && Array.isArray(compareState.rnTimeline) && compareState.rnTimeline.length) {
       const currentIndex = Number.isInteger(compareState.rnTimelineIndex) ? compareState.rnTimelineIndex : -1;
-      html += "<div class=\"viz-rn-timeline\"><strong>Linea de tiempo RN (paso a paso)</strong><ol>";
+      html += "<div class=\"viz-rn-timeline\"><strong>Línea de tiempo RN (paso a paso)</strong><ol>";
       compareState.rnTimeline.forEach((entry, idx) => {
-        const stage = entry && entry.stage ? String(entry.stage) : "Ejecucion";
+        const stage = entry && entry.stage ? String(entry.stage) : "Ejecución";
         const note = entry && entry.note ? String(entry.note) : "Paso del algoritmo.";
         const cls = idx === currentIndex ? " class=\"is-current\"" : "";
         html += `<li${cls}><span class=\"rn-stage\">${hEscape(stage)}:</span> ${hEscape(note)}</li>`;
@@ -1921,26 +1921,26 @@ function renderHierState(
       activeKeys: (heapFrame.activeIndices || []).map((index) => `idx-${index}`),
     } : treeOptions.compareState;
     const insertSuspended = Boolean(state.heap_insert_model && state.heap_data_reference.startsWith("indeterminado"));
-    if (state.heap_extract_model) html += `<details class="hier-diagram-note"><summary>Arreglo y árbol: estado de esta instrucción</summary><p data-heap-extract-views>Ambas vistas siguen el prefijo logico de A1: cantidad C ${state.size}. La memoria conserva ${state.heap_written} celdas observadas, incluida la cola fuera de cantidad. Capacidad ${state.capacity}; extraer no libera ni reduce el buffer.</p></details>`;
-    if (state.heap_insert_model) html += `<details class="hier-diagram-note"><summary>Arreglo y árbol: estado de esta instrucción</summary><p data-heap-insert-views>Ambas vistas siguen las celdas escritas de ${hEscape(state.heap_data_reference)}, no afirman cantidad futura. Cantidad C: ${state.size}; celdas escritas: ${state.heap_written}. ${state.heap_pending_index!==null?`<span data-heap-insert-pending="${state.heap_pending_index}">datos[${state.heap_pending_index}] escrito, aun fuera de cantidad hasta m-&gt;cantidad++.</span>`:""}</p></details>`;
-    html += "<h4>Representacion en arreglo</h4>";
-    html += insertSuspended ? "<p data-heap-drawing-suspended>Lectura de datos suspendida hasta publicar el nuevo buffer; no es un heap vacio.</p>" : renderHeapArrayFrame(heapArray, heapFrame);
+    if (state.heap_extract_model) html += `<details class="hier-diagram-note"><summary>Arreglo y árbol: estado de esta instrucción</summary><p data-heap-extract-views>Ambas vistas siguen el prefijo lógico de A1: cantidad C ${state.size}. La memoria conserva ${state.heap_written} celdas observadas, incluida la cola fuera de cantidad. Capacidad ${state.capacity}; extraer no libera ni reduce el buffer.</p></details>`;
+    if (state.heap_insert_model) html += `<details class="hier-diagram-note"><summary>Arreglo y árbol: estado de esta instrucción</summary><p data-heap-insert-views>Ambas vistas siguen las celdas escritas de ${hEscape(state.heap_data_reference)}, no afirman cantidad futura. Cantidad C: ${state.size}; celdas escritas: ${state.heap_written}. ${state.heap_pending_index!==null?`<span data-heap-insert-pending="${state.heap_pending_index}">datos[${state.heap_pending_index}] escrito, aún fuera de cantidad hasta m-&gt;cantidad++.</span>`:""}</p></details>`;
+    html += "<h4>Representación en arreglo</h4>";
+    html += insertSuspended ? "<p data-heap-drawing-suspended>Lectura de datos suspendida hasta publicar el nuevo buffer; no es un heap vacío.</p>" : renderHeapArrayFrame(heapArray, heapFrame);
     if (heapFrame && heapFrame.note) {
       html += `<p class="viz-sim-note">${hEscape(heapFrame.note)}</p>`;
     }
-    html += "<h4>Representacion en arbol</h4>";
-    html += insertSuspended ? "<p data-heap-drawing-suspended>Arbol suspendido: el puntero previo termino su vida; el temporal nuevo aparece en memoria.</p>" : transitionData
+    html += "<h4>Representación en árbol</h4>";
+    html += insertSuspended ? "<p data-heap-drawing-suspended>Árbol suspendido: el puntero previo terminó su vida; el temporal nuevo aparece en memoria.</p>" : transitionData
       ? renderTreeTransitionSvg(transitionData, { ...treeOptions, compareState: heapCompareState })
       : drawTreeSvgFromNodes(flattenTree(heapRoot), { ...treeOptions, compareState: heapCompareState });
   } else {
     if (state.rbt_clear_model || state.rbt_insert_model || state.rbt_delete_model || state.rbt_validation_graph) {
       const memoryGraph = layoutHierMemoryGraph(state); const graph = memoryGraph.graph;
-      html += '<details class="hier-diagram-note"><summary>Reservas y enlaces observados; no certifica RN.</summary>' + (state.rbt_insert_model ? '<p data-rbt-insert-graph>Reservas vivas: '+hEscape(state.heap_count)+'; alcanzables en la proyeccion: '+hEscape(state.reachable_count)+'. Identidades y campos C escritos; sin inicializar no significa cero. Las rotaciones pueden tener enlaces/ciclos transitorios. NULL es un enlace realmente NULL, no una reserva NIL. No se certifica aqui un rojo-negro final.</p>' : '<p data-rbt-clear-graph>Reservas vivas y colores registrados. NULL representa solo un enlace realmente NULL; no es una reserva NIL. Los enlaces inutilizables conservan su identidad historica en las tarjetas. La proyeccion parcial no certifica un arbol rojo-negro completo.</p>') + '</details>';
+      html += '<details class="hier-diagram-note"><summary>Reservas y enlaces observados; no certifica RN.</summary>' + (state.rbt_insert_model ? '<p data-rbt-insert-graph>Reservas vivas: '+hEscape(state.heap_count)+'; alcanzables en la proyección: '+hEscape(state.reachable_count)+'. Identidades y campos C escritos; sin inicializar no significa cero. Las rotaciones pueden tener enlaces/ciclos transitorios. NULL es un enlace realmente NULL, no una reserva NIL. No se certifica aquí un rojo-negro final.</p>' : '<p data-rbt-clear-graph>Reservas vivas y colores registrados. NULL representa solo un enlace realmente NULL; no es una reserva NIL. Los enlaces inutilizables conservan su identidad histórica en las tarjetas. La proyección parcial no certifica un árbol rojo-negro completo.</p>') + '</details>';
       html += `<div class="hier-memory-projection">${hEscape(memoryGraph.label)}${memoryGraph.detached.length ? ` Reservas aparte: ${hEscape(memoryGraph.detached.join(", "))}.` : ""}</div>`;
       html += drawTreeSvgFromNodes(graph,{...treeOptions,showNullLeaves:false,rbtClearMemory:true,rbtInsertMemory:!!(state.rbt_insert_model||state.rbt_delete_model)});
     } else if (state.avl_insert_model || state.avl_delete_model) {
       const memoryGraph = layoutHierMemoryGraph(state); const graph = memoryGraph.graph;
-      html += '<details class="hier-diagram-note"><summary>Reservas y enlaces observados; no certifica AVL.</summary>' + ('<p data-avl-insert-graph>Reservas vivas e identidades estables, incluso desconectadas. Enlaces y FE observados: la reconexion transitoria no certifica un AVL terminado.</p>') + '</details>';
+      html += '<details class="hier-diagram-note"><summary>Reservas y enlaces observados; no certifica AVL.</summary>' + ('<p data-avl-insert-graph>Reservas vivas e identidades estables, incluso desconectadas. Enlaces y FE observados: la reconexión transitoria no certifica un AVL terminado.</p>') + '</details>';
       html += `<div class="hier-memory-projection">${hEscape(memoryGraph.label)}${memoryGraph.detached.length ? ` Reservas aparte: ${hEscape(memoryGraph.detached.join(", "))}.` : ""}</div>`;
       html += drawTreeSvgFromNodes(graph,{...treeOptions,showNullLeaves:false,avlInsertionMemory:true});
     } else html += transitionData
@@ -1970,12 +1970,12 @@ function renderHierState(
     const focusId = [...(state.tree_frames || [])].reverse().flatMap(frame => Object.values({...frame.parameters, ...frame.locals})).find(target => liveIds.has(target));
     const displayNodes = [...memoryNodes].sort((a, b) => Number(b.id === focusId) - Number(a.id === focusId));
     const fields = (node) => `<span>valor: <strong>${hEscape(node.value)}</strong></span> · <span>izquierdo: <code>${hEscape(node.left)}</code></span> · <span>derecho: <code>${hEscape(node.right)}</code></span>`;
-    html += `<section class="abb-instruction-memory"><p data-abb-head="${hEscape(state.head)}"><strong>Raiz del llamador:</strong> ${hEscape(state.head)}</p><p>Identidades simbólicas, no direcciones reales.</p>`;
+    html += `<section class="abb-instruction-memory"><p data-abb-head="${hEscape(state.head)}"><strong>Raíz del llamador:</strong> ${hEscape(state.head)}</p><p>Identidades simbólicas, no direcciones reales.</p>`;
     const callerDetail = state.caller_frame ? state.caller_frame.description ? `<div data-abb-caller><code>${hEscape(state.caller_frame.function)}</code>: ${hEscape(state.caller_frame.description)}</div>` : `<div data-abb-caller><code>ejecutar_insercion</code>: arbol (ABBNodo **) → &amp;raiz; *arbol → ${hEscape(state.head)}</div>` : "";
     const frameDetails = (state.tree_frames || []).map((f,i,all) => `<div class="hier-stack-frame" data-abb-frame="${hEscape(f.id)}" data-abb-depth="${f.depth}"><strong>${hEscape(f.function)}#${hEscape(f.id)}</strong> · ${i===all.length-1?"activo":"suspendido"}<br>${Object.entries({...f.parameters,...f.locals}).map(([name,target])=>`<span data-abb-alias="${name}" data-abb-alias-frame="${f.id}" data-abb-alias-type="${(state.rbt_delete_model?['key','es_izq']:['valor','x','altIzq','altDer','bhIzq','bhDer','fe','hay_minimo','minimo','hay_maximo','maximo','tmp','feL','feR','dato','key','es_izq','tieneMin','minimo','tieneMax','maximo']).includes(name)?'int':state.rbt_delete_model&&name==='y_color_original'?'char':((state.avl_insert_model && ['raiz','r'].includes(name)) || (state.avl_delete_model && (name==='r' || (name==='raiz' && ['avl_eliminar','rebalancearTrasEliminar'].includes(f.function)))))?'AVL *':(state.rbt_insert_model||state.rbt_delete_model)&&['arbol','r','root'].includes(name)?'RBT *':state.rbt_read_model?'RBT':state.avl_read_model?'AVL':'ABBNodo *'}" data-abb-alias-target="${hEscape(target)}" data-abb-alias-usable="${(state.rbt_clear_model||state.rbt_delete_model) ? !String(target).includes("valor indeterminado") : !state.avl_delete_model || !(state.freed_nodes||[]).some(n=>n.id===target)}">${name} (${(state.rbt_delete_model?['key','es_izq']:['valor','x','altIzq','altDer','bhIzq','bhDer','fe','hay_minimo','minimo','hay_maximo','maximo','tmp','feL','feR','dato','key','es_izq','tieneMin','minimo','tieneMax','maximo']).includes(name)?'int':state.rbt_delete_model&&name==='y_color_original'?'char':((state.avl_insert_model && ['raiz','r'].includes(name)) || (state.avl_delete_model && (name==='r' || (name==='raiz' && ['avl_eliminar','rebalancearTrasEliminar'].includes(f.function)))))?'AVL *':(state.rbt_insert_model||state.rbt_delete_model)&&['arbol','r','root'].includes(name)?'RBT *':state.rbt_read_model?'RBT':state.avl_read_model?'AVL':'ABBNodo *'}) → ${hEscape(target)}${state.avl_delete_model && (state.freed_nodes||[]).some(n=>n.id===target)?" (vida terminada; no desreferenciar)":""}</span>`).join('<br>')}${f.expression?`<p data-abb-expression-frame="${f.id}">Operandos de expresión (no variables C): izquierdo = ${hEscape(f.expression.left)}; derecho = ${hEscape(f.expression.right)}. Orden elegido: ${hEscape(state.operand_evaluation_order)}; C permite otro orden.</p>`:''}</div>`).join('');
     const retiredNote = (state.abb_clear_model || state.abb_delete_model || state.avl_delete_model || state.rbt_delete_model) ? '<p>El SVG representa reservas vivas. Enlaces a reservas terminadas son identidades históricas inutilizables; esto no asigna NULL en C.</p>' : '';
     if (state.avl_extreme_model) html += `<p data-avl-output data-avl-output-initialized="${state.caller_output.initialized}" data-avl-output-value="${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}">salida (int del llamador): ${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}; no es una reserva AVL.</p>`;
-    html += '<h4>Reservas vivas y sus enlaces</h4>' + displayNodes.map(node => `<div class="hier-stack-frame${node.id === focusId ? " is-current-memory" : ""}" data-abb-node="${node.id}" data-abb-status="${node.status}" data-abb-value="${hEscape(node.value)}" data-abb-left="${hEscape(node.left)}" data-abb-right="${hEscape(node.right)}"><strong>${node.id}</strong> · ${node.status==='linked'?'alcanzable desde la raiz':'desconectado, aun vivo'}<br>${fields(node)}${state.rbt_read_model?` | padre: <code>${hEscape(node.parent)}</code> | color: ${hEscape(({BLACK:"negro",RED:"rojo"})[node.color] || node.color)}`:state.avl_read_model?` · padre: <code>${hEscape(node.parent)}</code> · FE: ${hEscape(node.balance_factor)}`:""}</div>`).join('') + `<details class="hier-memory-call-detail"><summary>Pila de llamadas: ${(state.tree_frames || []).length} marco(s)</summary>${callerDetail}${frameDetails}${retiredNote}</details></section>`;
+    html += '<h4>Reservas vivas y sus enlaces</h4>' + displayNodes.map(node => `<div class="hier-stack-frame${node.id === focusId ? " is-current-memory" : ""}" data-abb-node="${node.id}" data-abb-status="${node.status}" data-abb-value="${hEscape(node.value)}" data-abb-left="${hEscape(node.left)}" data-abb-right="${hEscape(node.right)}"><strong>${node.id}</strong> · ${node.status==='linked'?'alcanzable desde la raíz':'desconectado, aún vivo'}<br>${fields(node)}${state.rbt_read_model?` | padre: <code>${hEscape(node.parent)}</code> | color: ${hEscape(({BLACK:"negro",RED:"rojo"})[node.color] || node.color)}`:state.avl_read_model?` · padre: <code>${hEscape(node.parent)}</code> · FE: ${hEscape(node.balance_factor)}`:""}</div>`).join('') + `<details class="hier-memory-call-detail"><summary>Pila de llamadas: ${(state.tree_frames || []).length} marco(s)</summary>${callerDetail}${frameDetails}${retiredNote}</details></section>`;
   }
   if(state.abb_clear_model || state.abb_delete_model || state.avl_delete_model || state.rbt_delete_model) html += `<details class="hier-retired-memory"><summary>Reservas terminadas: ${(state.freed_nodes || []).length} (histórico)</summary>`+(state.freed_nodes||[]).map(n=>`<div data-abb-retired-node="${n.id}" data-abb-retired-value="${n.value}">${hEscape(n.id)}: vida terminada. Valor registrado antes de free: ${hEscape(n.value)}. No es un objeto vivo ni un puntero utilizable.</div>`).join('') + "</details>";
   container.innerHTML = html;
@@ -1984,14 +1984,14 @@ function renderHierState(
 }
 
 function renderHeapClearMemory(state) {
-  let html = `<section class="abb-instruction-memory" data-heap-clear-memory${state.heap_insert_model?" data-heap-insert-memory":""}><h4>Vida de memoria durante ${state.heap_insert_model?"Insertar":state.heap_extract_model?"Extraer raiz":"Limpiar"}</h4><p data-heap-clear-storage data-heap-count="${state.size}" data-heap-capacity="${state.capacity}" data-heap-reference="${hEscape(state.heap_data_reference)}">M1: datos ${hEscape(state.heap_data_reference)}; cantidad ${state.size}; capacidad ${state.capacity}. Identidades simbólicas; nunca leer un buffer liberado.</p>`;
+  let html = `<section class="abb-instruction-memory" data-heap-clear-memory${state.heap_insert_model?" data-heap-insert-memory":""}><h4>Vida de memoria durante ${state.heap_insert_model?"Insertar":state.heap_extract_model?"Extraer raíz":"Limpiar"}</h4><p data-heap-clear-storage data-heap-count="${state.size}" data-heap-capacity="${state.capacity}" data-heap-reference="${hEscape(state.heap_data_reference)}">M1: datos ${hEscape(state.heap_data_reference)}; cantidad ${state.size}; capacidad ${state.capacity}. Identidades simbólicas; nunca leer un buffer liberado.</p>`;
   if (state.heap_extract_model) html += `<p data-heap-extract-output data-heap-output-initialized="${state.caller_output.initialized}" data-heap-output-value="${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}">R1 salida int: ${state.caller_output.initialized?hEscape(state.caller_output.value):'sin inicializar'}; independiente del bool. La memoria A1 permanece viva, incluyendo la cola fuera de cantidad.</p>`;
   const framesHtml = (state.query_frames || []).map((f,i,all) => `<div class="hier-stack-frame" data-heap-frame="${f.id}" data-heap-function="${hEscape(f.function)}"><strong>${hEscape(f.function)}</strong>: ${i===all.length-1?'activo':'suspendido'}<br>${Object.entries({...f.parameters,...f.locals}).map(([name,value])=>`<span data-heap-local="${name}" data-heap-local-frame="${f.id}" data-heap-local-value="${hEscape(value)}">${name}: ${hEscape(value)}</span>`).join('<br>')}</div>`).join('');
   for (const object of state.heap_allocations || []) {
     if (!object.live) continue;
     html += `<div data-heap-clear-allocation="${object.id}" data-heap-clear-capacity="${object.capacity}"><strong>${object.id}: buffer vivo, capacidad ${object.capacity}</strong><div class="viz-array-wrap">${object.cells.map(cell=>`<span class="viz-array-chip${state.heap_extract_model && (state.heap_active_indices || []).includes(cell.index)?' sim-active':''}" data-heap-clear-cell="${cell.index}" data-heap-clear-owner="${object.id}" data-heap-initialized="${cell.initialized===null?'desconocido':cell.initialized}" data-heap-value="${cell.initialized===true?hEscape(cell.value):cell.initialized===false?'sin inicializar':'no observado'}">[${cell.index}] ${cell.initialized===true?hEscape(cell.value):cell.initialized===false?'sin inicializar':'no observado'}</span>`).join(' ')}</div></div>`;
   }
-  for (const object of state.heap_retired || []) html += `<div data-heap-clear-retired="${object.id}"><strong>${object.id}: vida terminada</strong><p>Registro previo a ${state.heap_insert_model?"realloc exitoso":"free"}; no es memoria accesible. No se evalua el puntero indeterminado.</p>${object.cells.filter(cell=>cell.initialized===true).map(cell=>`<span data-heap-clear-retired-index="${cell.index}" data-heap-retired-value="${hEscape(cell.value)}">[${cell.index}] ${hEscape(cell.value)}</span>`).join(' ')}</div>`;
+  for (const object of state.heap_retired || []) html += `<div data-heap-clear-retired="${object.id}"><strong>${object.id}: vida terminada</strong><p>Registro previo a ${state.heap_insert_model?"realloc exitoso":"free"}; no es memoria accesible. No se evalúa el puntero indeterminado.</p>${object.cells.filter(cell=>cell.initialized===true).map(cell=>`<span data-heap-clear-retired-index="${cell.index}" data-heap-retired-value="${hEscape(cell.value)}">[${cell.index}] ${hEscape(cell.value)}</span>`).join(' ')}</div>`;
   return html+`<details class="hier-memory-call-detail"><summary>Pila de llamadas: ${(state.query_frames || []).length} marco(s)</summary>${framesHtml}</details></section>`;
 }
 
@@ -2027,7 +2027,7 @@ function updateHierDidacticPanel(model, operationName) {
   const didactic = model && model.didactic ? model.didactic : {};
   const opMap = didactic.operations || {};
   const codeTitle = didactic.code_title || "Seudocodigo";
-  const fallback = didactic.default_operation || "Contenido didactico no disponible para esta operacion.";
+  const fallback = didactic.default_operation || "Contenido didáctico no disponible para esta operación.";
   const selectedOp = operationName || "";
   const selectedMeta = (model.operations || []).find((item) => item.name === selectedOp);
   const selectedLabel = selectedMeta ? selectedMeta.label : selectedOp;
@@ -2243,7 +2243,7 @@ function buildHierMainCode(modelId, history, didactic) {
     for (const op of ["contar_hojas", "validar"]) {
       if (!history.some(entry => entry && entry.success !== false && entry.operation === op)) continue;
       const helper = source.operations?.[op];
-      if (!helper) throw new Error(`Falta el auxiliar canonico ABB de ${op}.`);
+      if (!helper) throw new Error(`Falta el auxiliar canónico ABB de ${op}.`);
       lines.push(helper, "");
     }
     lines.push("/**", " * @brief Reproduce operaciones exitosas del historial ABB y calcula sus consultas.",
@@ -2262,7 +2262,7 @@ function buildHierMainCode(modelId, history, didactic) {
     definitions.forEach(([op, brief, parameter, meaning, result]) => {
       if (!history.some(entry => entry && entry.success !== false && entry.operation === op)) return;
       const helper = source.operations?.[op];
-      if (!helper) throw new Error(`Falta el auxiliar canonico AVL de ${op}.`);
+      if (!helper) throw new Error(`Falta el auxiliar canónico AVL de ${op}.`);
       if (helper.trimStart().startsWith("/**")) { lines.push(helper, ""); return; }
       lines.push("/**", ` * @brief ${brief}`, ` * @param ${parameter} ${meaning}`);
       if (result) lines.push(` * @return ${result}`);
@@ -2279,7 +2279,7 @@ function buildHierMainCode(modelId, history, didactic) {
     for (const op of ["inorden", "altura"]) {
       if (!history.some(entry => entry && entry.success !== false && entry.operation === op)) continue;
       const helper = source.operations?.[op];
-      if (!helper) throw new Error(`Falta el auxiliar canonico Rojo-Negro de ${op}.`);
+      if (!helper) throw new Error(`Falta el auxiliar canónico Rojo-Negro de ${op}.`);
       lines.push(helper, "");
     }
     lines.push("/**", " * @brief Reproduce operaciones exitosas y calcula consultas del historial Rojo-Negro.",
@@ -2448,7 +2448,7 @@ function renderHierHistory(history, container, modelId, didactic) {
   }
 
   const codeTitle = didactic && didactic.code_title ? String(didactic.code_title) : "";
-  if (codeTitle.toLowerCase().includes("codigo c")) {
+  if (/c[oó]digo c/i.test(codeTitle)) {
     const code = buildHierMainCode(modelId, history, didactic);
     container.dataset.rawCode = code;
     const codeHtml = buildHierHighlightedCodeHtml(code, codeTitle);
@@ -2466,15 +2466,15 @@ function renderHierHistory(history, container, modelId, didactic) {
       return (
         "<li class=\"didactic-history-item\">" +
         `<div class="didactic-history-head">Paso ${index + 1}: Historial</div>` +
-        `<div class="didactic-history-line"><span class="k">Salida:</span> ${hEscape(item)}</div>` +
+        `<div class="didactic-history-line"><span class="k">Salida:</span> ${hEscape(item === "Operacion aplicada." ? "Operación aplicada." : item)}</div>` +
         "</li>"
       );
     }
     return (
       "<li class=\"didactic-history-item\">" +
-      `<div class="didactic-history-head">Paso ${index + 1}: ${hEscape(item.subroutine || "Operacion")}</div>` +
+      `<div class="didactic-history-head">Paso ${index + 1}: ${hEscape(item.subroutine || "Operación")}</div>` +
       `<div class="didactic-history-line"><span class="k">Entrada:</span> ${hEscape(item.payload || "-")}</div>` +
-      `<div class="didactic-history-line"><span class="k">Salida:</span> ${hEscape(getHierEntryVisibleResult(item) || "(en ejecucion)")}</div>` +
+      `<div class="didactic-history-line"><span class="k">Salida:</span> ${hEscape(getHierEntryVisibleResult(item) === "Operacion aplicada." ? "Operación aplicada." : getHierEntryVisibleResult(item) || "(en ejecución)")}</div>` +
       "</li>"
     );
   }).join("");
@@ -2919,7 +2919,7 @@ function initHierPage(model) {
           : 0;
         pageState.traceAtEnd = total > 0 && cursor >= total - 1;
         if (consoleState.resultMessage) {
-          showHierMessage(pageState.traceAtEnd ? consoleState.resultMessage.text : (consoleState.resultMessage.operation === "validar" ? "Validacion preparada: resultado pendiente hasta completar la traza." : consoleState.resultMessage.operation === "limpiar" ? "Limpieza preparada: resultado pendiente hasta completar la traza." : consoleState.resultMessage.operation === "insertar" ? "Insercion preparada: resultado pendiente hasta completar la traza." : consoleState.resultMessage.operation === "eliminar" ? "Eliminacion preparada: resultado pendiente hasta completar la traza." : consoleState.resultMessage.operation === "extraer_raiz" ? "Extraccion preparada: resultado pendiente hasta completar la traza." : "Consulta preparada: resultado pendiente hasta completar la traza."), pageState.traceAtEnd ? consoleState.resultMessage.success : true);
+          showHierMessage(pageState.traceAtEnd ? consoleState.resultMessage.text : (consoleState.resultMessage.operation === "validar" ? "Validación preparada: resultado pendiente hasta completar la traza." : consoleState.resultMessage.operation === "limpiar" ? "Limpieza preparada: resultado pendiente hasta completar la traza." : consoleState.resultMessage.operation === "insertar" ? "Inserción preparada: resultado pendiente hasta completar la traza." : consoleState.resultMessage.operation === "eliminar" ? "Eliminación preparada: resultado pendiente hasta completar la traza." : consoleState.resultMessage.operation === "extraer_raiz" ? "Extracción preparada: resultado pendiente hasta completar la traza." : "Consulta preparada: resultado pendiente hasta completar la traza."), pageState.traceAtEnd ? consoleState.resultMessage.success : true);
         }
         if (pageState.traceAtEnd) {
           if (pageState.pendingExecution) {
@@ -3177,7 +3177,7 @@ function initHierPage(model) {
     selected = operations.find((op) => op.name === operationSelect.value) || null;
     buildOperationInputs(selected, inputsContainer);
     updateHierDidacticPanel(model, selected ? selected.name : "");
-    invalidateTrace("Operacion cambiada. Ejecuta nuevamente.");
+    invalidateTrace("Operación cambiada. Ejecuta nuevamente.");
     writePresentation({cursor:-1});
   });
 
@@ -3221,13 +3221,14 @@ function initHierPage(model) {
         body: JSON.stringify({ operation: current.name, payload }),
       });
       const data = await response.json();
-      if (data.execution_trace?.execution_started === false
+      if (data.preserve_session === true
+          || data.execution_trace?.execution_started === false
           || data.execution_trace?.validation?.accepted === false) {
         // Host validation never entered C: keep the previous frame/history and
         // do not defer an error behind an empty trace or invent fallback steps.
         tracePlayer?.pause(true);
         showHierMessage(data.message, false);
-        if (simStatus) simStatus.textContent = "La operacion no se ejecuto; el estado y la traza anterior permanecen sin cambios.";
+        if (simStatus) simStatus.textContent = "La operación no se ejecutó; el estado y la traza anterior permanecen sin cambios.";
         return options?.multiple ? data : null;
       }
       updateHierDidacticPanel(model, current.name);
@@ -3235,7 +3236,7 @@ function initHierPage(model) {
       const hasExecutionTrace = Boolean(!finalOnly && data.execution_trace && tracePlayer);
       const deferQueryResult = hasExecutionTrace && ((pageState.modelId === "red_black" && ["buscar", "inorden", "altura", "validar", "limpiar", "insertar", "eliminar"].includes(current.name)) || (pageState.modelId === "abb" && ["validar", "insertar"].includes(current.name)) || (pageState.modelId === "avl" && ["altura", "buscar", "inorden", "minimo", "maximo", "limpiar", "validar", "insertar", "eliminar"].includes(current.name)) || (pageState.modelId === "binary_heap" && ["raiz", "a_lista", "limpiar", "insertar", "extraer_raiz"].includes(current.name)));
       consoleState.resultMessage = deferQueryResult ? { text: data.message, operation: current.name, success: Boolean(data.success) } : null;
-      showHierMessage(deferQueryResult ? (current.name === "validar" ? "Validacion preparada: resultado pendiente hasta completar la traza." : current.name === "limpiar" ? "Limpieza preparada: resultado pendiente hasta completar la traza." : current.name === "insertar" ? "Insercion preparada: resultado pendiente hasta completar la traza." : current.name === "eliminar" ? "Eliminacion preparada: resultado pendiente hasta completar la traza." : current.name === "extraer_raiz" ? "Extraccion preparada: resultado pendiente hasta completar la traza." : "Consulta preparada: resultado pendiente hasta completar la traza.") : data.message, deferQueryResult ? true : Boolean(data.success));
+      showHierMessage(deferQueryResult ? (current.name === "validar" ? "Validación preparada: resultado pendiente hasta completar la traza." : current.name === "limpiar" ? "Limpieza preparada: resultado pendiente hasta completar la traza." : current.name === "insertar" ? "Inserción preparada: resultado pendiente hasta completar la traza." : current.name === "eliminar" ? "Eliminación preparada: resultado pendiente hasta completar la traza." : current.name === "extraer_raiz" ? "Extracción preparada: resultado pendiente hasta completar la traza." : "Consulta preparada: resultado pendiente hasta completar la traza.") : data.message, deferQueryResult ? true : Boolean(data.success));
       window.ConsoleHistory?.setHistory(printfConsole, data.history);
       if (hasExecutionTrace) {
         consoleState.trace = data.execution_trace;
@@ -3338,7 +3339,7 @@ function initHierPage(model) {
           // A normal batch commits a complete final frame, not an unfinished rotation tween.
           applyState(data.visual_state, options?.multiple && finalOnly ? null : execution);
           if (simStatus && finalOnly) {
-            simStatus.textContent = "Modo rapido: se aplico el resultado final de la operacion.";
+            simStatus.textContent = "Modo rápido: se aplicó el resultado final de la operación.";
           }
         }
       }
@@ -3352,7 +3353,7 @@ function initHierPage(model) {
       if (!options?.multiple && data.success && current.mutates) window.MultipleInput?.stateChanged?.();
       return data;
     } catch (_error) {
-      showHierMessage("No fue posible completar la operacion.", false);
+      showHierMessage("No fue posible completar la operación.", false);
       return null;
     } finally {
       pendingExecution = false;
@@ -3366,7 +3367,7 @@ function initHierPage(model) {
   async function ensureTraceForCurrentSelection() {
     const current = operations.find((op) => op.name === operationSelect.value);
     if (!current) {
-      showHierMessage("Debes seleccionar una operacion valida.", false);
+      showHierMessage("Debes seleccionar una operación válida.", false);
       return null;
     }
     const payload = collectPayload(current);
@@ -3498,9 +3499,69 @@ function initHierPage(model) {
   });
   resetProgress?.addEventListener("click", () => { conceptualProgress = {attempts:0,correct:0}; renderConceptualProgress(); if (predictionFeedback) predictionFeedback.textContent = "Progreso conceptual reiniciado."; });
   syncPredictionUI();
-  function compareStateSummary(side,step){return renderHierComparisonState(side,step);}
-  function renderHierComparison(){if(!hierarchicalComparison||!compareGrid)return;if(hierarchicalComparison.kind==="traversals"){compareGrid.innerHTML=renderHierComparisonShape(hierarchicalComparison.state || {}, "abb").html + hierarchicalComparison.traversals.map((item)=>`<article class="hier-compare-card"><h4>${hEscape(item.name)}</h4><p>${hEscape(item.stack_rule)}</p><p><strong>Orden de visita:</strong> <code>${hEscape(item.values.join(" → "))}</code></p></article>`).join("");}else{const cursor=Math.max(0,Number(compareProgress?.value||0));const leftStep=hierarchicalComparison.left.timeline[cursor]||hierarchicalComparison.left.timeline.at(-1);const rightStep=hierarchicalComparison.right.timeline[cursor]||hierarchicalComparison.right.timeline.at(-1);compareGrid.innerHTML=compareStateSummary(hierarchicalComparison.left,leftStep)+compareStateSummary(hierarchicalComparison.right,rightStep);}if(compareConclusion)compareConclusion.textContent=`${hierarchicalComparison.conclusion} Entrada, forma y estados de ambos lados se mantuvieron aislados.`;}
-  compareRun?.addEventListener("click",async()=>{const values=String(compareValues?.value||"").split(/[,\s]+/).filter(Boolean).map(Number);try{const response=await fetch(compareSection?.dataset.compareUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:compareKind?.value,values})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"No se pudo comparar.");hierarchicalComparison=data;if(compareInput)compareInput.textContent=`Entrada inmutable: [${data.input.join(", ")}]`;if(compareProgress){const count=data.left?.timeline?.length||1;compareProgress.max=String(Math.max(0,count-1));compareProgress.value="0";compareProgress.disabled=data.kind==="traversals";}renderHierComparison();syncComparisonNavigation();if(announcer)announcer.textContent="Comparación jerárquica preparada.";}catch(error){if(compareConclusion)compareConclusion.textContent=error.message;}});
+  let comparisonRequestVersion = 0, comparisonController = null;
+  function comparisonSides(comparison) {
+    return comparison.sides || [comparison.left, comparison.right].filter(Boolean);
+  }
+  function resetComparison() {
+    comparisonRequestVersion += 1;
+    comparisonController?.abort(); comparisonController = null;
+    hierarchicalComparison = null;
+    if (compareProgress) { compareProgress.disabled = true; compareProgress.value = "0"; compareProgress.max = "0"; }
+    if (compareInput) compareInput.textContent = "";
+    if (compareGrid) compareGrid.innerHTML = "<p>Ejecuta la comparación con la selección y entrada actuales.</p>";
+    if (compareConclusion) compareConclusion.textContent = "";
+    if (compareRun) { compareRun.disabled = false; compareRun.removeAttribute("aria-busy"); }
+    syncComparisonNavigation();
+  }
+  function renderHierComparison() {
+    if (!hierarchicalComparison || !compareGrid) return;
+    if (hierarchicalComparison.kind === "traversals") {
+      compareGrid.innerHTML = renderHierComparisonShape(hierarchicalComparison.state || {}, "abb").html
+        + hierarchicalComparison.traversals.map((item) => `<article class="hier-compare-card"><h4>${hEscape(item.name)}</h4><p>${hEscape(item.stack_rule)}</p><p><strong>Orden de visita:</strong> <code>${hEscape(item.values.join(" → "))}</code></p></article>`).join("");
+    } else {
+      const cursor = Math.max(0, Number(compareProgress?.value || 0));
+      compareGrid.innerHTML = comparisonSides(hierarchicalComparison).map((side) => {
+        const step = side.timeline[cursor] || side.timeline.at(-1);
+        return renderHierComparisonState(side, step);
+      }).join("");
+    }
+    if (compareConclusion) compareConclusion.textContent = `${hierarchicalComparison.conclusion} Las estructuras de esta comparación se mantuvieron aisladas de la sesión principal.`;
+  }
+  compareRun?.addEventListener("click", async () => {
+    if (comparisonController) return;
+    resetComparison();
+    const requestVersion = comparisonRequestVersion;
+    comparisonController = new AbortController();
+    compareRun.disabled = true; compareRun.setAttribute("aria-busy", "true");
+    const values = String(compareValues?.value || "").split(/[,\s]+/).filter(Boolean).map(Number);
+    try {
+      const response = await fetch(compareSection?.dataset.compareUrl, {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({kind: compareKind?.value, values}), signal: comparisonController.signal,
+      });
+      const data = await response.json();
+      if (requestVersion !== comparisonRequestVersion) return;
+      if (!response.ok || !data.success) throw new Error(data.message || "No se pudo comparar.");
+      hierarchicalComparison = data;
+      if (compareInput) compareInput.textContent = `Entrada inmutable: [${data.input.join(", ")}]`;
+      if (compareProgress) {
+        const count = comparisonSides(data)[0]?.timeline?.length || 1;
+        compareProgress.max = String(Math.max(0, count - 1)); compareProgress.value = "0";
+        compareProgress.disabled = data.kind === "traversals";
+      }
+      renderHierComparison(); syncComparisonNavigation();
+      if (announcer) announcer.textContent = "Comparación jerárquica preparada.";
+    } catch (error) {
+      if (requestVersion !== comparisonRequestVersion || error.name === "AbortError") return;
+      if (compareConclusion) compareConclusion.textContent = error.message;
+      if (announcer) announcer.textContent = error.message;
+    } finally {
+      if (requestVersion === comparisonRequestVersion) {
+        comparisonController = null; compareRun.disabled = false; compareRun.removeAttribute("aria-busy");
+      }
+    }
+  });
   function syncComparisonNavigation() {
     const previous = hById("hier-compare-prev"), next = hById("hier-compare-next");
     const available = Boolean(hierarchicalComparison && hierarchicalComparison.kind !== "traversals");
@@ -3519,7 +3580,8 @@ function initHierPage(model) {
     renderHierComparison(); syncComparisonNavigation();
   });
   compareProgress?.addEventListener("input", () => { renderHierComparison(); syncComparisonNavigation(); });
-  compareKind?.addEventListener("change",()=>{hierarchicalComparison=null;if(compareProgress)compareProgress.disabled=true;syncComparisonNavigation();});
+  compareKind?.addEventListener("change", resetComparison);
+  compareValues?.addEventListener("input", resetComparison);
   exportImage?.addEventListener("click", async () => {
     if (exportImage.disabled) return;
     const originalText = exportImage.textContent;

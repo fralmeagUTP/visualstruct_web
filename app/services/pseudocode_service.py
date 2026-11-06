@@ -94,7 +94,7 @@ class PseudocodeService:
                 "  cola   : Nodo\n"
                 "  tam    : Entero\n"
                 "FinRegistro\n\n"
-                "Nota UI: posicion inicia en 1."
+                "Nota UI: posición inicia en 1."
             ),
             "operations": {
                 "insertar_inicio": "Crear nodo\nnodo.siguiente = cabeza\ncabeza = nodo\nActualizar tam",
@@ -717,7 +717,7 @@ class PseudocodeService:
             return {
                 "record": "Estructura no documentada.",
                 "operations": {},
-                "default_operation": "Seudocodigo no disponible para esta operacion.",
+                "default_operation": "Seudocódigo no disponible para esta operación.",
             }
         raw_operations: dict[str, str] = data.get("operations", {})
         formatted_operations = {
@@ -727,5 +727,5 @@ class PseudocodeService:
         return {
             "record": cls._format_record(data.get("record", "Estructura no documentada."), structure_id),
             "operations": formatted_operations,
-            "default_operation": "Seudocodigo no disponible para esta operacion.",
+            "default_operation": "Seudocódigo no disponible para esta operación.",
         }

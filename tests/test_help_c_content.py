@@ -10,8 +10,8 @@ def test_sequential_help_structure_includes_c_tad_content(client) -> None:
     """Sequential help page should expose C struct and methods for the selected TAD."""
     response = client.get("/help/sequential/linked_list")
     assert response.status_code == 200
-    assert "Estructura del TAD en C".encode("utf-8") in response.data
-    assert re.search(rb'<h4>[^<]+</h4>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre>', response.data, re.S)
+    assert "Referencia: estructura del TAD en C".encode("utf-8") in response.data
+    assert re.search(rb'<details><summary>[^<]+</summary>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre></details>', response.data, re.S)
     assert "NodoLista".encode("utf-8") in response.data
     assert "lista_insertar_inicio".encode("utf-8") in response.data
 
@@ -21,8 +21,8 @@ def test_hierarchical_help_structure_includes_c_tad_content(client) -> None:
     """Hierarchical help page should expose C struct and methods for ABB."""
     response = client.get("/help/hierarchical/abb")
     assert response.status_code == 200
-    assert "Estructura del TAD en C".encode("utf-8") in response.data
-    assert re.search(rb'<h4>[^<]+</h4>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre>', response.data, re.S)
+    assert "Referencia: estructura del TAD en C".encode("utf-8") in response.data
+    assert re.search(rb'<details><summary>[^<]+</summary>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre></details>', response.data, re.S)
     assert "ABBNodo".encode("utf-8") in response.data
     assert "abb_insertar".encode("utf-8") in response.data
 
@@ -32,8 +32,10 @@ def test_graph_help_structure_includes_c_tad_content(client) -> None:
     """Graph help page should expose C graph struct and operation snippets."""
     response = client.get("/help/graph/graph")
     assert response.status_code == 200
-    assert "Estructura del TAD en C".encode("utf-8") in response.data
-    assert re.search(rb'<h4>[^<]+</h4>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre>', response.data, re.S)
+    assert "Referencia: estructura del TAD en C".encode("utf-8") in response.data
+    assert b'id="graph-canonical-source"' in response.data
+    assert re.search(rb'<pre id="graph-canonical-code"[^>]*>.+?</pre>', response.data, re.S)
+    assert b'data-book-function="grafo_insertar_vertice"' in response.data
     assert "nodoGrafo".encode("utf-8") in response.data
     assert "grafo_insertar_vertice".encode("utf-8") in response.data
 
@@ -43,8 +45,8 @@ def test_hash_help_structure_includes_c_tad_content(client) -> None:
     """Hash help should expose C hash-table structure and methods."""
     response = client.get("/help/hash/hash_table")
     assert response.status_code == 200
-    assert "Estructura del TAD en C".encode("utf-8") in response.data
-    assert re.search(rb'<h4>[^<]+</h4>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre>', response.data, re.S)
+    assert "Referencia: estructura del TAD en C".encode("utf-8") in response.data
+    assert re.search(rb'<details><summary>[^<]+</summary>\s*<p>.*?</p>\s*<pre class="didactic-code">.+?</pre></details>', response.data, re.S)
     assert "TablaHash".encode("utf-8") in response.data
     assert "th_insertar".encode("utf-8") in response.data
 
@@ -66,8 +68,8 @@ def test_help_pages_include_tad_introduction_and_method_explanation(client) -> N
     """Help page should render unified TAD description and per-method explanation text."""
     response = client.get("/help/sequential/linked_list")
     assert response.status_code == 200
-    assert "Descripcion del TAD".encode("utf-8") in response.data
-    assert "Este metodo del TAD".encode("utf-8") in response.data or "Inserta".encode("utf-8") in response.data
+    assert "¿Qué representa este TAD?".encode("utf-8") in response.data
+    assert "Este método del TAD".encode("utf-8") in response.data or "Inserta".encode("utf-8") in response.data
 
 
 def test_graph_help_supported_operations_use_c_tad_names(client) -> None:

@@ -520,7 +520,7 @@ function renderDidacticCode(preElement, code, codeTitle) {
   preElement.dataset.codeTitle = String(codeTitle || "");
   const lines = raw.replaceAll("\r\n", "\n").split("\n");
 
-  if (String(codeTitle || "").toLowerCase().includes("codigo c")) {
+  if (/c[oó]digo c/i.test(String(codeTitle || ""))) {
     let state = { inBlockComment: false };
     const html = lines
       .map((line, index) => {
@@ -557,7 +557,7 @@ function isExecutableLine(text, codeTitle) {
   if (line === "{" || line === "}") {
     return false;
   }
-  if (String(codeTitle || "").toLowerCase().includes("codigo c") && line.startsWith("#")) {
+  if (/c[oó]digo c/i.test(String(codeTitle || "")) && line.startsWith("#")) {
     return false;
   }
   return true;
@@ -934,7 +934,7 @@ function renderLinearWithHeadTail(state, circular, hint) {
     ),
   );
   if (!items.length && !hasTempNode) {
-    return '<p class="viz-empty">Estructura vacia.</p>';
+    return '<p class="viz-empty">Estructura vacía.</p>';
   }
 
   const activeIndices = new Set(simulation && simulation.activeIndices ? simulation.activeIndices : []);
@@ -1134,7 +1134,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
       return frames;
     }
     if (!baseValues.length) {
-      frames.push(makeLinkedListFrame(currentState, baseValues, { opLabel: "Estado inicial (lista vacia)" }));
+      frames.push(makeLinkedListFrame(currentState, baseValues, { opLabel: "Estado inicial (lista vacía)" }));
       frames.push(makeLinkedListFrame(currentState, baseValues, {
         tempNodeValue: value,
         opLabel: `1) CrearNodoLista crea q con valor ${value}`,
@@ -1285,7 +1285,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
       frames.push(makeLinkedListFrame(currentState, baseValues, {
         activeIndices: [i],
         visitedIndices: visited.slice(0, -1),
-        opLabel: `Buscando ultimo nodo (paso ${i + 1})`,
+        opLabel: `Buscando último nodo (paso ${i + 1})`,
       }));
     }
     const removed = baseValues[baseValues.length - 1];
@@ -1301,7 +1301,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
       commitIndices: [remaining.length - 1],
       tempDetachedValue: removed,
       tempDetachedTitle: "nodo removido",
-      opLabel: "2) Reasignacion del ultimo enlace",
+      opLabel: "2) Reasignación del último enlace",
     }));
     frames.push(makeLinkedListFrame(currentState, remaining, {
       opLabel: "3) free(aux)",
@@ -1343,7 +1343,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
         commitIndices: index < remaining.length ? [index] : [],
         tempDetachedValue: value,
         tempDetachedTitle: "nodo removido",
-        opLabel: "Reasignacion de enlaces (nodo removido)",
+        opLabel: "Reasignación de enlaces (nodo removido)",
       }));
       frames.push(makeLinkedListFrame(currentState, remaining, {
         commitIndices: index < remaining.length ? [index] : [],
@@ -1371,7 +1371,7 @@ function buildLinkedListSimulationFrames(currentState, operationName, payload) {
     frames.push(makeLinkedListFrame(currentState, remaining, {
       tempDetachedValue: value,
       tempDetachedTitle: "valor eliminado",
-      opLabel: "Eliminacion de todas las ocurrencias",
+      opLabel: "Eliminación de todas las ocurrencias",
     }));
     return frames;
   }
@@ -1518,7 +1518,7 @@ function buildQueueSimulationFrames(currentState, operationName, payload) {
       }));
     } else {
       frames.push(makeQueueFrame(currentState, baseValues, {
-        opLabel: "Estado inicial (cola vacia)",
+        opLabel: "Estado inicial (cola vacía)",
       }));
     }
     frames.push(makeQueueFrame(currentState, baseValues, {
@@ -1997,7 +1997,7 @@ function renderQueue(state, hint) {
   const hasTempNode = simulation && simulation.tempNodeValue !== undefined && simulation.tempNodeValue !== null;
   const hasDetachedNode = simulation && simulation.tempDetachedValue !== undefined && simulation.tempDetachedValue !== null;
   if (!items.length && !hasTempNode && !hasDetachedNode) {
-    return '<p class="viz-empty">Cola vacia.</p>';
+    return '<p class="viz-empty">Cola vacía.</p>';
   }
 
   const activeIndices = new Set(simulation && simulation.activeIndices ? simulation.activeIndices : []);
@@ -2078,7 +2078,7 @@ function renderQueue(state, hint) {
 function renderPriorityQueue(state, hint) {
   const items = state.items || [];
   if (!items.length) {
-    return '<p class="viz-empty">Cola de prioridad vacia.</p>';
+    return '<p class="viz-empty">Cola de prioridad vacía.</p>';
   }
 
   const simulation = hint && hint.simulation ? hint.simulation : null;
@@ -2140,7 +2140,7 @@ function renderStack(state, hint) {
   const hasTempNode = simulation && simulation.tempNodeValue !== undefined && simulation.tempNodeValue !== null;
   const hasDetachedNode = simulation && simulation.tempDetachedValue !== undefined && simulation.tempDetachedValue !== null;
   if (!items.length && !hasTempNode && !hasDetachedNode) {
-    return '<p class="viz-empty">Pila vacia.</p>';
+    return '<p class="viz-empty">Pila vacía.</p>';
   }
 
   const activeIndices = new Set(simulation && simulation.activeIndices ? simulation.activeIndices : []);
@@ -2501,7 +2501,7 @@ function renderVisualState(structureId, state, container, hint) {
     return;
   }
 
-  let inner = `<div class="viz-meta"><strong>${escapeHtml(state.title || "Estado")}</strong> | Tamano: ${escapeHtml(state.size ?? 0)}</div>`;
+  let inner = `<div class="viz-meta"><strong>${escapeHtml(state.title || "Estado")}</strong> | Tamaño: ${escapeHtml(state.size ?? 0)}</div>`;
 
   if (structureId === "sublist" && state.sublist_delete_model) {
     inner += renderSublistDeletionState(state, container.dataset.stackVisualMode === "linked" || container.dataset.structuralVisualMode === "nodes");
@@ -2536,7 +2536,7 @@ function renderVisualState(structureId, state, container, hint) {
   } else if (structureId === "sublist") {
     inner += renderSublist(state);
   } else {
-    inner += '<p class="viz-empty">Tipo de visualizacion no soportado.</p>';
+    inner += '<p class="viz-empty">Tipo de visualización no soportado.</p>';
   }
 
   container.innerHTML = `<div class="viz-canvas"><div class="viz-stage">${inner}</div></div>`;
@@ -2622,7 +2622,7 @@ function updateDidacticPanel(model, operationName) {
   const didactic = model && model.didactic ? model.didactic : {};
   const opMap = didactic.operations || {};
   const codeTitle = didactic.code_title || "Seudocodigo";
-  const fallback = didactic.default_operation || "Contenido didactico no disponible para esta operacion.";
+  const fallback = didactic.default_operation || "Contenido didáctico no disponible para esta operación.";
   const selectedOp = operationName || "";
   const selectedMeta = (model.operations || []).find((item) => item.name === selectedOp);
   const selectedLabel = selectedMeta ? selectedMeta.label : selectedOp;
@@ -3216,7 +3216,7 @@ function initStructurePage(model) {
         refreshPrintfConsole(cursor);
         if (consoleState.resultMessage) {
           const finished = traceTotalSteps > 0 && cursor >= traceTotalSteps - 1;
-          showMessage(finished ? consoleState.resultMessage.text : "Operacion preparada: resultado pendiente hasta completar la traza.",
+          showMessage(finished ? consoleState.resultMessage.text : "Operación preparada: resultado pendiente hasta completar la traza.",
             finished ? consoleState.resultMessage.success : true);
         }
         const step = event && event.step ? event.step : null;
@@ -3748,7 +3748,7 @@ function initStructurePage(model) {
       const hasExecutionTrace = Boolean((!finalOnly || allocationFailureTrace) && data.execution_trace && tracePlayer);
       const deferResult = hasExecutionTrace && Boolean(data.execution_trace.steps?.length);
       consoleState.resultMessage = deferResult ? { text: data.message, success: Boolean(data.success) } : null;
-      showMessage(deferResult ? "Operacion preparada: resultado pendiente hasta completar la traza." : data.message,
+      showMessage(deferResult ? "Operación preparada: resultado pendiente hasta completar la traza." : data.message,
         deferResult ? true : Boolean(data.success));
       if (hasExecutionTrace) {
         lockStepUntilInput = false;
@@ -3781,7 +3781,7 @@ function initStructurePage(model) {
         consoleState.fallbackMessage = collectPrintfConsoleLines(data.execution_trace, (data.execution_trace?.steps?.length || 0) - 1).join("\n") || "(sin salida printf en esta ruta)";
         refreshPrintfConsole(-1);
         if (simStatus && !finalOnly) {
-          simStatus.textContent = "No hay traza paso a paso disponible para esta operacion.";
+          simStatus.textContent = "No hay traza paso a paso disponible para esta operación.";
         }
         traceSelectionKey = "";
         tracePlayer?.clear(finalOnly
@@ -3828,7 +3828,7 @@ function initStructurePage(model) {
       if (!options?.multiple && data.success && current.mutates) window.MultipleInput?.stateChanged?.();
       return data;
     } catch (_error) {
-      showMessage("No fue posible completar la operacion.", false);
+      showMessage("No fue posible completar la operación.", false);
       return null;
     } finally {
       pendingExecution = false;
@@ -3844,7 +3844,7 @@ function initStructurePage(model) {
     if (pendingExecution) return null;
     const current = operationCatalog.get(operationSelect.value);
     if (!current) {
-      showMessage("Debes seleccionar una operacion valida.", false);
+      showMessage("Debes seleccionar una operación válida.", false);
       return null;
     }
     if (!isCurrentSelectionValid()) {

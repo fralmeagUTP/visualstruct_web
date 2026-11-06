@@ -39,11 +39,21 @@ def test_stack_pop_keeps_aux_until_the_real_free_and_emits_printf(client) -> Non
     assert _values(by_line["ptrPila aux = *p;"]) == [7]
     assert _values(by_line["*p = aux->sgte;"]) == []
     assert by_line["*p = aux->sgte;"]["pedagogy"]["heap_transition"]["freed"] == []
-    assert by_line["free(aux);"]["pedagogy"]["heap_transition"]["freed"][0]["id"] == "aux"
+    # aux is a pointer variable, not the allocation identity. Preserve the
+    # detached node's identity through the real free and invalidate the pointer.
+    detached = by_line["*p = aux->sgte;"]
+    freed = by_line["free(aux);"]
+    identity = detached["debug"]["aux"]["value"]
+    assert identity is not None
+    assert detached["debug"]["aux"]["valid"] is True
+    assert [item["id"] for item in freed["pedagogy"]["heap_transition"]["freed"]] == [identity]
+    assert freed["debug"]["aux"]["historical_identity"] == identity
+    assert freed["debug"]["aux"]["valid"] is False
+    assert freed["debug"]["aux"]["value"] is None
 
     empty = client.post(
         "/sequential/stack/operate",
         json={"operation": "desapilar", "payload": {}},
     ).get_json()["execution_trace"]["steps"]
     printf_step = next(step for step in empty if "printf(" in step["line_text"])
-    assert printf_step["console"] == ["Pila vacía. No se puede desapilar."]
+    assert printf_step["console"] == ["Pila vacía. No se puede desapilar.\n"]

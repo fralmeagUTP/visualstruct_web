@@ -93,7 +93,7 @@ def create_checkpoint(
     if not normalized_structure:
         raise CheckpointFormatError("El identificador de estructura es obligatorio.")
     if type(history_offset) is not int or history_offset < 0:
-        raise CheckpointFormatError("La posicion del historial debe ser un entero no negativo.")
+        raise CheckpointFormatError("La posición del historial debe ser un entero no negativo.")
 
     state = adapter.export_state()
     if not isinstance(state, dict):
@@ -131,7 +131,7 @@ def validate_checkpoint(
             detail.append(f"faltan: {', '.join(missing)}")
         if extra:
             detail.append(f"sobran: {', '.join(extra)}")
-        raise CheckpointFormatError(f"Campos de checkpoint invalidos ({'; '.join(detail)}).")
+        raise CheckpointFormatError(f"Campos de checkpoint inválidos ({'; '.join(detail)}).")
 
     schema_version = raw_checkpoint["schema_version"]
     history_offset = raw_checkpoint["history_offset"]
@@ -141,21 +141,21 @@ def validate_checkpoint(
     checksum = raw_checkpoint["checksum"]
 
     if type(schema_version) is not int:
-        raise CheckpointFormatError("La version de esquema debe ser un entero.")
+        raise CheckpointFormatError("La versión de esquema debe ser un entero.")
     if schema_version != CHECKPOINT_SCHEMA_VERSION:
         raise CheckpointCompatibilityError(
-            f"Version de checkpoint no soportada: {schema_version}."
+            f"Versión de checkpoint no soportada: {schema_version}."
         )
     if type(history_offset) is not int or history_offset < 0:
-        raise CheckpointFormatError("La posicion del historial debe ser un entero no negativo.")
+        raise CheckpointFormatError("La posición del historial debe ser un entero no negativo.")
     if not isinstance(structure_id, str) or not structure_id:
-        raise CheckpointFormatError("El identificador de estructura es invalido.")
+        raise CheckpointFormatError("El identificador de estructura es inválido.")
     if structure_id != expected_structure_id:
         raise CheckpointCompatibilityError("El checkpoint pertenece a otra estructura.")
     if not isinstance(adapter_version, str) or not adapter_version:
-        raise CheckpointFormatError("La version del adapter es invalida.")
+        raise CheckpointFormatError("La versión del adapter es inválida.")
     if adapter_version != expected_adapter_version:
-        raise CheckpointCompatibilityError("La version del adapter no es compatible.")
+        raise CheckpointCompatibilityError("La versión del adapter no es compatible.")
     if not isinstance(state, dict):
         raise CheckpointFormatError("El estado del checkpoint debe ser un objeto JSON.")
     if (
@@ -163,7 +163,7 @@ def validate_checkpoint(
         or len(checksum) != 64
         or any(character not in "0123456789abcdef" for character in checksum)
     ):
-        raise CheckpointFormatError("El checksum SHA-256 tiene un formato invalido.")
+        raise CheckpointFormatError("El checksum SHA-256 tiene un formato inválido.")
 
     payload = {field: deepcopy(raw_checkpoint[field]) for field in _PAYLOAD_FIELDS}
     expected_checksum = _calculate_checksum(payload)

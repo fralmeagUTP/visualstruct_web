@@ -7,7 +7,7 @@ def test_hierarchical_index_loads(client) -> None:
     """Hierarchical index should return available structures."""
     response = client.get("/hierarchical/")
     assert response.status_code == 200
-    assert b"Modulo de Estructuras Jerarquicas" in response.data
+    assert "Módulo de Estructuras Jerárquicas".encode("utf-8") in response.data
 
 
 def test_hierarchical_structure_page_loads(client) -> None:
@@ -33,4 +33,4 @@ def test_hierarchical_help_loads(client) -> None:
     """Hierarchical help page should be available."""
     response = client.get("/help/hierarchical")
     assert response.status_code == 200
-    assert b"Ayuda del modulo jerarquico" in response.data
+    assert "Ayuda del módulo jerárquico".encode("utf-8") in response.data

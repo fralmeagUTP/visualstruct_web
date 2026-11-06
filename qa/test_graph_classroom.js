@@ -1,5 +1,8 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const panels={};const ctx=vm.createContext({window:{},document:{addEventListener(){},getElementById(id){return panels[id] ||= {innerHTML:''};}}});
+// Match the browser script order and its window/global identity.
+ctx.window = ctx;
+vm.runInContext(fs.readFileSync('static/js/graph_layout.js','utf8'),ctx);
 vm.runInContext(fs.readFileSync('static/js/graph.js','utf8'),ctx);
 const fixtures=JSON.parse(fs.readFileSync('qa/graph_classroom_fixtures.json','utf8'));let count=0;
 for(const c of fixtures)for(const step of c.steps){const f=step.pedagogy;if(!f)continue;const before=JSON.stringify(f);ctx.renderGraphPedagogy(f,'intermediate');const html=panels['graph-live-memory'].innerHTML;
@@ -18,7 +21,7 @@ let active=0;
 for(const c of fixtures)for(const step of c.steps){const f=step.pedagogy;if(!f)continue;const tokens=new Set(String(f.source?.line_text||f.instruction_event?.statement||'').match(/[A-Za-z_]\w*/g)||[]);const scoped=[...new Map((f.variables||[]).map(v=>[v.name,v])).values()];const vars=scoped.filter(v=>tokens.has(v.name));const ids=new Set((f.memory_state?.heap_nodes||[]).map(n=>n.id));const relevant=vars.filter(v=>ids.has(v.value));if(!relevant.length)continue;const html=ctx.gGraphMemoryMarkup(f),first=html.match(/data-graph-live-node="([^"]+)"/)[1];assert.ok(relevant.some(v=>v.value===first)||vars.some(v=>v.value&&typeof v.value==='object'&&Object.values(v.value).includes(first)));for(const v of vars.slice(0,6))assert.ok(html.includes(`<code>${v.name}</code>`));active++;}
 console.log(`PASS ${active} real active-line pointer frames prioritize relevant reservations and variables without inventing scope`);
 const src=fs.readFileSync('static/js/graph.js','utf8');const invalidate=src.slice(src.indexOf('  function invalidateTrace(message) {'),src.indexOf('  function buildSelectionKey'));
-const clearCtx=vm.createContext({currentPedagogyFrame:{old:true},visualState:{querySelector(){return null;}},pageState:{},gById:id=>panels[id],tracePlayer:{clear(){}},stepNavigation:{},simStep:{},updateGraphStepKind(){},refreshGraphPrintfConsole(){},setSimulationButtonsState(){}});vm.runInContext(invalidate+'\ninvalidateTrace("reset");',clearCtx);assert.equal(clearCtx.currentPedagogyFrame,null);assert.match(panels['graph-live-memory'].textContent,/Prepara una traza/);assert.equal(clearCtx.pageState.traceCursor,-1);
+const clearCtx=vm.createContext({model:{console_stdout:'persisted output'},currentPedagogyFrame:{old:true},visualState:{querySelector(){return null;}},pageState:{},gById:id=>panels[id],tracePlayer:{clear(){}},stepNavigation:{},simStep:{},updateGraphStepKind(){},refreshGraphPrintfConsole(){},setSimulationButtonsState(){}});vm.runInContext(invalidate+'\ninvalidateTrace("reset");',clearCtx);assert.equal(clearCtx.currentPedagogyFrame,null);assert.match(panels['graph-live-memory'].textContent,/Prepara una traza/);assert.equal(clearCtx.pageState.traceCursor,-1);assert.equal(clearCtx.pageState.consolePrefix,'persisted output');
 console.log('PASS invalidation clears stale live memory and source frame after reset/input changes');
 const oldState={last_operation:{name:'remove_edge'},last_result:{result:true}};
 const oldCopy=JSON.stringify(oldState);assert.doesNotMatch(ctx.gGraphPresentedResult(oldState,{operation:'run_bfs',pending:true}),/true/);assert.match(ctx.gGraphPresentedResult(oldState,{operation:'run_bfs'}),/pendiente/);

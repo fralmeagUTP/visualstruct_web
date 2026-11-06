@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import pytest
+from tests._hash_caller_trace_partition import tad_frames_with_caller
 BASE=Path(__file__).resolve().parents[1]/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-hash-get-contains-baseline-low'
 CASES=[('empty',3,[]),('chain',3,[(1,10),(4,40),(7,70)]),('negative',3,[(-1,-10),(-4,-40),(-6,-60)]),('extremes',3,[(-2147483648,2147483647),(2147483647,-2147483648)])]
 from scripts.published_test_inputs import audit_input_path
@@ -16,7 +17,8 @@ def test_hash_queries_match_retained_native_each_instruction(client,case,capacit
         absent=fixture['operation']=='get' and not fixture['native_result']
         assert response.status_code==(400 if absent else 200)
         assert data['success']==(not absent)
-        frames=data['execution_trace']['steps'];native=fixture['native'];assert [f['event_type'] for f in frames]==[n['token'] for n in native]
+        fragments = ([f"get:{fixture['key']}:{int(bool(fixture['native_result']))}"] + ([f":{fixture['result']}"] if fixture['native_result'] else []) + ["\n"]) if fixture['operation'] == 'get' else [f"contains:{fixture['key']}:{int(bool(fixture['native_result']))}\n"]
+        frames=tad_frames_with_caller(data['execution_trace'], fragments);native=fixture['native'];assert [f['event_type'] for f in frames]==[n['token'] for n in native]
         for f,n in zip(frames,native):
             debug=f['debug'];assert debug['condition_result']==n['condition']
             assert debug['output']['initialized']==n['output_initialized']

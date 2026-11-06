@@ -134,4 +134,5 @@ async function checkBatchTerminals() {
   }
   console.log('PASS batch terminal DOM states: done, stopped, failed restore selection/clear value; uncertain outcome locks and never retries.');
 }
-checkModules().then(checkBatches).then(checkBatchTerminals).catch(error=>{console.error(error);process.exitCode=1});
+module.exports={load};
+if(require.main===module)checkModules().then(checkBatches).then(checkBatchTerminals).catch(error=>{console.error(error);process.exitCode=1});

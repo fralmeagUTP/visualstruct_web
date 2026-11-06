@@ -165,7 +165,7 @@ class ControlFlowPlanner:
             return False
         if text in {"{", "}"}:
             return False
-        if "codigo c" in str(code_title).lower() and text.startswith("#"):
+        if "codigo c" in str(code_title).lower().replace("ó", "o") and text.startswith("#"):
             return False
         return True
 

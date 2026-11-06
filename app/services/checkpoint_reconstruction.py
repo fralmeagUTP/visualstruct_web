@@ -86,7 +86,7 @@ def prepare_reconstruction(
         )
         if checkpoint.history_offset > history_length:
             raise CheckpointFormatError(
-                "La posicion del checkpoint excede el historial disponible."
+                "La posición del checkpoint excede el historial disponible."
             )
         candidate.import_state(checkpoint.state)
     except (CheckpointError, AdapterStateError, TypeError, NotImplementedError) as error:

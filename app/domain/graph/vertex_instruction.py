@@ -137,14 +137,14 @@ def build_graph_vertex_trace(*, operation_name, payload, source_code, code_title
         if c and visual_key not in visual_cache:visual_cache[visual_key]=pool.intern(visual())
         state_after = visual_cache[visual_key] if c else deepcopy(after_state)
         note = {"enter":"Entrada: Grafo por valor y nodos propios compartidos con el caller.",
-                "condition":"Se evalua esta condicion y solo se toma su rama real.",
+                "condition":"Se evalúa esta condición y solo se toma su rama real.",
                 "allocate":"Reserva nueva: los campos siguen sin inicializar.",
-                "free":"Finaliza la vida del nodo; sus aliases son identidades historicas no utilizables.",
+                "free":"Finaliza la vida del nodo; sus aliases son identidades históricas no utilizables.",
                 "return":"Se devuelve la cabeza actual por valor.",
-                "api_projection":"La API recibe el grafo retornado por la insercion y conserva los arcos existentes; esta publicacion no ejecuta otra instruccion C." if operation_name == "insert_vertex" else "La API recibe el resultado del caller equivalente; la funcion C de vertice conserva arcos y el caller los retira." if translate_incident_arcs else "La API recibe el resultado. La retirada de arcos incidentes pertenece a Python, no a esta funcion C.",
-                "input_validation":"La API rechaza la solicitud sin invocar C."}.get(phase, "Se ejecuta esta instruccion C; no se anticipa una escritura futura.")
+                "api_projection":"La API recibe el grafo retornado por la inserción y conserva los arcos existentes; esta publicación no ejecuta otra instrucción C." if operation_name == "insert_vertex" else "La API recibe el resultado del caller equivalente; la función C de vértice conserva arcos y el caller los retira." if translate_incident_arcs else "La API recibe el resultado. La retirada de arcos incidentes pertenece a Python, no a esta función C.",
+                "input_validation":"La API rechaza la solicitud sin invocar C."}.get(phase, "Se ejecuta esta instrucción C; no se anticipa una escritura futura.")
         if frame_fn == "main" and phase == "free":
-            note = "El caller libera este arco ya desenlazado; la funcion de vertice no lo libero. Alias retirado no utilizable."
+            note = "El caller libera este arco ya desenlazado; la función de vértice no lo liberó. Alias retirado no utilizable."
         step = dict(step_index=len(steps), line_index=idx, line_text=lines[idx], event_type="line", phase=phase,
                     delay_ms=170, state_snapshot=state_before, state_after=state_after, console=[],
                     debug={"stage":phase, "note":note, "vertex_memory":new})
@@ -154,10 +154,10 @@ def build_graph_vertex_trace(*, operation_name, payload, source_code, code_title
         old_cells = {(old_scopes.get(k,old_fn),k):v for k,v in previous.items()}
         new_cells = {(scope_names.get(k,frame_fn),k):v for k,v in current.items()}
         for scope,k in dict.fromkeys([*old_cells,*new_cells]):
-            before_value=old_cells.get((scope,k),"fuera de ambito")
-            after_value=new_cells.get((scope,k),"fuera de ambito")
+            before_value=old_cells.get((scope,k),"fuera de ámbito")
+            after_value=new_cells.get((scope,k),"fuera de ámbito")
             frame["variables"].append(dict(name=k,type="ListaArco" if k=="actual" and scope.startswith("main") else types[k],previous=before_value,value=after_value,
-                changed=before_value!=after_value,scope=scope,meaning="Valor de este ambito; aliases retirados no son punteros legibles."))
+                changed=before_value!=after_value,scope=scope,meaning="Valor de este ámbito; aliases retirados no son punteros legibles."))
         frame["call_stack"] = deepcopy(new["frames"])
         frame["condition"] = dict(source=lines[idx].strip(),substituted=str(operands or {})+" => "+str(value),result=value,
                                    evaluated_operands=deepcopy(operands),consequence="Rama ejecutada registrada.") if phase=="condition" else None

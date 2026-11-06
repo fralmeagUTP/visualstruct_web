@@ -11,13 +11,13 @@ class HashHelpService:
     """Serve educational texts for hash-table module."""
 
     _MODULE_HELP = {
-        "title": "Ayuda del modulo de tablas hash",
+        "title": "Ayuda del módulo de tablas hash",
         "description": (
-            "Este modulo permite interpretar operaciones de tabla hash sobre codigo C real: "
-            "insercion, consulta y eliminacion se reflejan en buckets, colisiones, punteros y memoria."
+            "Este módulo permite interpretar operaciones de tabla hash sobre código C real: "
+            "inserción, consulta y eliminación se reflejan en buckets, colisiones, punteros y memoria."
         ),
         "tips": [
-            "Inicializa la tabla con capacidad valida antes de operar.",
+            "Inicializa la tabla con capacidad válida antes de operar.",
             "Usa Ejecutar operación; activa Paso a paso antes de ejecutarla para analizar cada evento con Siguiente paso y Paso anterior.",
                 "La capacidad es fija: monitorea cómo factor de carga y colisiones afectan las cadenas.",
         ],
@@ -29,7 +29,7 @@ class HashHelpService:
             "max_visual_capacity": MAX_VISUAL_CAPACITY,
             "summary": (
                 "Tabla hash de capacidad fija con claves y valores enteros, usando encadenamiento separado. "
-                "La animacion sigue el indice hash, la normalizacion de negativos, las colisiones y la memoria."
+                "La animación sigue el índice hash, la normalización de negativos, las colisiones y la memoria."
             ),
             "supported_operations": [
                 "create_table",
@@ -44,7 +44,7 @@ class HashHelpService:
                 "clear",
             ],
             "pending_operations": [
-                "El TAD no expone tecnicas alternativas de hashing (lineal/cuadratico/doble hash).",
+                "El TAD no expone técnicas alternativas de hashing (lineal/cuadrático/doble hash).",
                 "La capacidad es fija: no hay resize ni rehash automático en el C interpretado.",
             ],
             "learning_guide": {

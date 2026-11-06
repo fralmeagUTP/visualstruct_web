@@ -252,8 +252,8 @@ def build_dfs_rejection_trace(trace, before, after):
     source="/* Validacion de la aplicacion: no se invoco grafo_dfs; no hay ejecucion C ni printf. */\n\n"+trace['source_code']
     lines=source.splitlines();step={'line_index':0,'line_text':lines[0],'state_snapshot':deepcopy(before),'state_after':deepcopy(after),'console':[],'debug':{'stage':'input_validation','note':trace['message'],'graph_progress':{'mode':'traversal','nodes':[],'edges':[],'queue':[],'visited':[]}}}
     frame=build_graph_frame(operation_name='run_dfs',payload=trace['payload'],step=step,source_lines=lines,success=False)
-    frame.update(concept='input_validation',call_stack=[],variables=[],condition=None,narration={level:'La aplicacion rechaza la entrada antes de llamar DFS. El C crudo comprueba inicio antes de desmarcar; si falta retorna NULL y conserva las marcas previas.' for level in ['basic','intermediate','advanced']})
-    frame['invariant'].update(holds=None,symbol='?',evidence='No se ejecuto el TAD C: no se infieren ramas, marcas, reservas ni printf.')
+    frame.update(concept='input_validation',call_stack=[],variables=[],condition=None,narration={level:'La aplicación rechaza la entrada antes de llamar DFS. El C crudo comprueba inicio antes de desmarcar; si falta retorna NULL y conserva las marcas previas.' for level in ['basic','intermediate','advanced']})
+    frame['invariant'].update(holds=None,symbol='?',evidence='No se ejecutó el TAD C: no se infieren ramas, marcas, reservas ni printf.')
     validate_graph_frame(frame,source_code=source);step['pedagogy']=frame
     trace.update(source_code=source,steps=[step],console=[],final_state=deepcopy(after),dfs_application_rejection=True)
     return trace

@@ -119,7 +119,7 @@ def rejection_trace(trace: dict[str,Any], before: dict[str,Any], after: dict[str
     frame=build_graph_frame(operation_name=trace['operation_name'],payload=trace['payload'],step=step,source_lines=lines,success=False)
     frame.update(concept='input_validation',numeric_algorithm=True,condition=None,variables=[],call_stack=[],
         instruction_event={'function':None,'phase':'API_rejection','C_executed':False},
-        narration={level:'La aplicacion rechaza antes del TAD. No se atribuyen a C condiciones, ramas, llamadas, memoria ni printf.' for level in ['basic','intermediate','advanced']})
+        narration={level:'La aplicación rechaza antes del TAD. No se atribuyen a C condiciones, ramas, llamadas, memoria ni printf.' for level in ['basic','intermediate','advanced']})
     frame['invariant'].update(holds=None,symbol='?',evidence='Guardas de la API; ninguna invocación del algoritmo C.')
     validate_graph_frame(frame,source_code=trace['source_code']);step['pedagogy']=frame
     trace.update(steps=[step],execution_started=False,numeric_instruction_model=True,
@@ -213,8 +213,8 @@ def build_graph_numeric_trace(*, operation_name: str, payload: dict[str,Any], so
             right = root_calls.get('grafo_encontrar_conjunto(&conjuntos, v)')
             if type(left) is int and type(right) is int and left >= 0 and left == right:
                 explanation = (f'Se descarta esta arista: ambos extremos pertenecen al mismo '
-                    f'conjunto (raiz {left}). Agregarla formaria un ciclo; la condicion C '
-                    'es falsa y la rama de insercion y Union no se ejecuta.')
+                    f'conjunto (raíz {left}). Agregarla formaría un ciclo; la condición C '
+                    'es falsa y la rama de inserción y Union no se ejecuta.')
                 frame['narration'] = {level: explanation
                     for level in ['basic', 'intermediate', 'advanced']}
         validate_graph_frame(frame,source_code=source_code);step['pedagogy']=frame

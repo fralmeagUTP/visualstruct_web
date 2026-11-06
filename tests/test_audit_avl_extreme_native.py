@@ -86,7 +86,7 @@ def test_avl_extreme_native_aliases_guarded_caller_and_output(avl_extreme_native
  if seed:assert data['result']==(min(seed) if op=='minimo' else max(seed))
  else:assert 'result' not in data
  trace=data['execution_trace'];events=[e for e in avl_extreme_native['events'] if e['case']==case];assert len(trace['steps'])==len(events)
- if not seed:assert not any(e['scope']=='callee' for e in events) and data['message']=='El arbol esta vacio.'
+ if not seed:assert not any(e['scope']=='callee' for e in events) and data['message']=='El árbol está vacío.'
  initial=trace['steps'][0]['state_snapshot']
  for e,step in extreme_matches(trace,events):
   ped=step['pedagogy'];state=step['state_snapshot'] if e['phase'] in {'return','caller_result'} else ped['memory_state']

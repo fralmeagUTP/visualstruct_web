@@ -43,18 +43,18 @@ def validate_sorting_source(algorithm_id: str, source_code: str) -> None:
     content is used only for comparison; absent input is never filled or defaulted.
     """
     if not isinstance(source_code, str) or not source_code.strip():
-        raise SortingSourceError("Codigo C completo requerido para ordenar; no se ejecuto el algoritmo.")
+        raise SortingSourceError("Código C completo requerido para ordenar; no se ejecutó el algoritmo.")
     if _has_preprocessing_directive(source_code):
-        raise SortingSourceError("Codigo C con directivas de preprocesamiento fuera del subconjunto soportado; no se ejecuto el algoritmo.")
+        raise SortingSourceError("Código C con directivas de preprocesamiento fuera del subconjunto soportado; no se ejecutó el algoritmo.")
     data = CCodeService.get_structure_data("sorting_array")
     canonical = data.get("operations", {}).get(algorithm_id, "") if data else ""
     expected = _without_comments(canonical)
     required = list(dict.fromkeys(_FUNCTIONS.findall(expected)))
     if not required or "ordenar_" + algorithm_id not in required:
-        raise SortingSourceError("Codigo C canonico no disponible; no se ejecuto el algoritmo.")
+        raise SortingSourceError("Código C canónico no disponible; no se ejecutó el algoritmo.")
     supplied = _without_comments(source_code)
     for name in required:
         actual = CCodeService._extract_function_with_comment(supplied, name)
         approved = CCodeService._extract_function_with_comment(expected, name)
         if not actual or _instruction_lines(actual) != _instruction_lines(approved):
-            raise SortingSourceError("Codigo C incompleto o no compatible con el algoritmo y sus auxiliares; no se ejecuto el algoritmo.")
+            raise SortingSourceError("Código C incompleto o no compatible con el algoritmo y sus auxiliares; no se ejecutó el algoritmo.")

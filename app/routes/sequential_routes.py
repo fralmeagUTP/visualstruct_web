@@ -7,7 +7,7 @@ from typing import Any
 from flask import Blueprint, abort, jsonify, render_template, request
 
 from app.services.help_service import HelpService
-from app.services.session_service import SessionService
+from app.services.session_service import SessionHistoryLimitError, SessionService
 from app.services.structure_service import StructureService
 
 sequential_bp = Blueprint("sequential", __name__, url_prefix="/sequential")
@@ -59,8 +59,10 @@ def structure_page(structure_id: str) -> str:
 @sequential_bp.post("/<structure_id>/operate")
 def operate_structure(structure_id: str) -> Any:
     """Execute one operation and return JSON response."""
+    body = request.get_json(silent=True)
+    if not isinstance(body, dict):
+        return jsonify({"success": False, "message": "El cuerpo enviado debe ser un objeto JSON válido."}), 400
     history = SessionService.get_history(structure_id)
-    body = request.get_json(silent=True) or {}
     operation_name = str(body.get("operation", "")).strip()
     payload = body.get("payload", {})
 
@@ -78,6 +80,18 @@ def operate_structure(structure_id: str) -> Any:
         )
     except KeyError:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
+
+    try:
+        SessionService.validate_history_capacity(result["history"], history)
+    except SessionHistoryLimitError as error:
+        previous_model = StructureService.get_view_model(structure_id, history)
+        return jsonify({
+            "success": False,
+            "preserve_session": True,
+            "message": str(error),
+            "history": history,
+            "visual_state": previous_model["visual_state"],
+        }), 409
 
     SessionService.save_history(structure_id, result["history"])
     if structure_id == "stack":

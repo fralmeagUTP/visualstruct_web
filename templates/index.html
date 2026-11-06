@@ -2,25 +2,25 @@
 {% block title %}Inicio | Visualizador de Estructuras{% endblock %}
 {% block content %}
 <section class="hero">
-  <h2>Proyecto Didactico</h2>
+  <h2>Proyecto Didáctico</h2>
   <p>
-    Esta aplicacion permite explorar estructuras de datos mediante una interfaz visual.
-    En esta version estan disponibles los modulos secuencial, jerarquico, ordenamiento, grafos y tablas hash.
+    Esta aplicación permite explorar estructuras de datos mediante una interfaz visual.
+    En esta versión están disponibles los módulos secuencial, jerárquico, ordenamiento, grafos y tablas hash.
   </p>
   <div class="cards home-module-cards">
     <article class="card card-with-image home-module-card">
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename='ordenamiento.jpg') }}"
-          alt="Modulo de metodos de ordenamiento"
+          alt="Módulo de métodos de ordenamiento"
           loading="lazy"
           onerror="this.closest('.card-illustration').style.display='none';"
         >
       </div>
-      <h3>Metodos de Ordenamiento</h3>
+      <h3>Métodos de Ordenamiento</h3>
       <p>Comparaciones, intercambios y trazas paso a paso sobre arreglos.</p>
       <div class="home-module-actions">
-        <a class="btn" href="{{ url_for('sorting.sorting_view') }}">Explorar modulo</a>
+        <a class="btn" href="{{ url_for('sorting.sorting_view') }}">Explorar módulo</a>
       </div>
     </article>
 
@@ -28,7 +28,7 @@
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename='moduloSecuencial.jpg') }}"
-          alt="Modulo de estructuras secuenciales"
+          alt="Módulo de estructuras secuenciales"
           loading="lazy"
           onerror="this.closest('.card-illustration').style.display='none';"
         >
@@ -36,7 +36,7 @@
       <h3>Estructuras Secuenciales</h3>
       <p>Pila, cola, cola de prioridad y listas enlazadas.</p>
       <div class="home-module-actions">
-        <a class="btn" href="{{ url_for('sequential.sequential_index') }}">Explorar modulo</a>
+        <a class="btn" href="{{ url_for('sequential.sequential_index') }}">Explorar módulo</a>
       </div>
     </article>
 
@@ -44,15 +44,15 @@
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename='moduloJerarquico.jpg') }}"
-          alt="Modulo de estructuras jerarquicas"
+          alt="Módulo de estructuras jerárquicas"
           loading="lazy"
           onerror="this.closest('.card-illustration').style.display='none';"
         >
       </div>
-      <h3>Estructuras Jerarquicas</h3>
-      <p>ABB, AVL, Rojo-Negro y monticulo binario.</p>
+      <h3>Estructuras Jerárquicas</h3>
+      <p>ABB, AVL, Rojo-Negro y montículo binario.</p>
       <div class="home-module-actions">
-        <a class="btn" href="{{ url_for('hierarchical.hierarchical_index') }}">Explorar modulo</a>
+        <a class="btn" href="{{ url_for('hierarchical.hierarchical_index') }}">Explorar módulo</a>
       </div>
     </article>
 
@@ -60,15 +60,15 @@
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename='ModuloGrafos.jpg') }}"
-          alt="Modulo de grafos"
+          alt="Módulo de grafos"
           loading="lazy"
           onerror="this.closest('.card-illustration').style.display='none';"
         >
       </div>
       <h3>Grafos</h3>
-      <p>Construccion de grafos, recorridos y algoritmos clasicos.</p>
+      <p>Construcción de grafos, recorridos y algoritmos clásicos.</p>
       <div class="home-module-actions">
-        <a class="btn" href="{{ url_for('graph.graph_index') }}">Explorar modulo</a>
+        <a class="btn" href="{{ url_for('graph.graph_index') }}">Explorar módulo</a>
       </div>
     </article>
 
@@ -76,15 +76,15 @@
       <div class="card-illustration">
         <img
           src="{{ url_for('main.asset_file', filename='ModuloHash.jpg') }}"
-          alt="Modulo de tablas hash"
+          alt="Módulo de tablas hash"
           loading="lazy"
           onerror="this.closest('.card-illustration').style.display='none';"
         >
       </div>
       <h3>Tablas Hash</h3>
-      <p>Manejo de colisiones, busqueda y redimensionamiento.</p>
+      <p>Manejo de colisiones, búsqueda y redimensionamiento.</p>
       <div class="home-module-actions">
-        <a class="btn" href="{{ url_for('hash.structure_page', structure_id='hash_table') }}">Explorar modulo</a>
+        <a class="btn" href="{{ url_for('hash.structure_page', structure_id='hash_table') }}">Explorar módulo</a>
       </div>
     </article>
   </div>

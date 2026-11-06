@@ -89,19 +89,19 @@ def build_graph_neighbor_trace(*, payload, source_code, code_title, before_state
         if c:
             state_after["last_result"] = None
             state_after["last_operation"] = None
-        note = {"enter":"Parametros por valor; el grafo y sus nodos son prestados.",
+        note = {"enter":"Parámetros por valor; el grafo y sus nodos son prestados.",
                 "condition":"Solo se ejecuta la rama cuyo predicado resulta verdadero.",
                 "allocate":"Reserva nueva: ningun campo se lee antes de inicializarse.",
                 "free":"El caller libera solamente un nodo de la lista retornada; el grafo permanece prestado.",
                 "return":"La cabeza de la lista propia retorna al caller.",
-                "api_publication":"Se publica la consulta despues de que el observer libera la lista C; no agrega historial.",
-                "input_validation":"La API rechaza la consulta sin invocar C."}.get(phase,"Se ejecuta esta asignacion sin anticipar valores futuros.")
+                "api_publication":"Se publica la consulta después de que el observer libera la lista C; no agrega historial.",
+                "input_validation":"La API rechaza la consulta sin invocar C."}.get(phase,"Se ejecuta esta asignación sin anticipar valores futuros.")
         step = dict(step_index=len(steps),line_index=idx,line_text=lines[idx],event_type="line",phase=phase,
                     delay_ms=170,state_snapshot=state_before,state_after=state_after,console=[],debug={"stage":phase,"note":note})
         frame = build_graph_frame(operation_name="neighbors",payload=payload,step=step,source_lines=lines,success=success)
         frame["variables"] = [dict(name=name,type=types[name],scope=scope,
-            previous=previous.get((scope,name),"fuera de ambito"),value=current.get((scope,name),"fuera de ambito"),
-            changed=previous.get((scope,name))!=current.get((scope,name)),meaning="Valor del ambito; aliases retirados no se leen.")
+            previous=previous.get((scope,name),"fuera de ámbito"),value=current.get((scope,name),"fuera de ámbito"),
+            changed=previous.get((scope,name))!=current.get((scope,name)),meaning="Valor del ámbito; aliases retirados no se leen.")
             for scope,name in dict.fromkeys([*previous,*current])]
         frame["call_stack"] = deepcopy(new["frames"])
         frame["condition"] = dict(source=lines[idx].strip(),substituted=str(operands or {})+" => "+str(value),

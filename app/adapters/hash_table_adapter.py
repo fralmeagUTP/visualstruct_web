@@ -74,7 +74,7 @@ class HashTableAdapter(BaseAdapter):
         self._record_last_operation(
             name=name,
             status="success",
-            message=result.get("message", "Operacion ejecutada correctamente."),
+            message=result.get("message", "Operación ejecutada correctamente."),
         )
         return result
 
@@ -102,9 +102,9 @@ class HashTableAdapter(BaseAdapter):
             self.table.insertar(key, value)
 
             message = (
-                f"Se actualizo la clave '{key}' con el nuevo valor."
+                f"Se actualizó la clave '{key}' con el nuevo valor."
                 if existed_before
-                else f"Se inserto la clave '{key}' en la tabla hash."
+                else f"Se insertó la clave '{key}' en la tabla hash."
             )
             return self._set_result(
                 operation_name,
@@ -137,7 +137,7 @@ class HashTableAdapter(BaseAdapter):
             key = self._require_key(payload)
             removed = self.table.eliminar(key)
             if removed:
-                message = f"Se elimino la clave '{key}'."
+                message = f"Se eliminó la clave '{key}'."
             else:
                 message = f"La clave '{key}' no existe; no hubo cambios."
             return self._set_result(operation_name, {"message": message, "result": removed})
@@ -152,7 +152,7 @@ class HashTableAdapter(BaseAdapter):
 
         if operation_name == "items":
             result = self.table.items()
-            return self._set_result(operation_name, {"message": f"Items: {result}.", "result": result})
+            return self._set_result(operation_name, {"message": f"Ítems: {result}.", "result": result})
 
         if operation_name == "stats":
             result = {
@@ -164,7 +164,7 @@ class HashTableAdapter(BaseAdapter):
                 operation_name,
                 {
                     "message": (
-                        "Tamano: "
+                        "Tamaño: "
                         f"{result['size']}, Capacidad: {result['capacity']}, "
                         f"Factor de carga: {result['load_factor']:.3f}."
                     ),
@@ -180,7 +180,7 @@ class HashTableAdapter(BaseAdapter):
             self.table.destruir()
             return self._set_result(operation_name, {"message": "Tabla destruida: nodos y arreglo de buckets fueron liberados."})
 
-        raise ValueError(f"Operacion no soportada: {operation_name}.")
+        raise ValueError(f"Operación no soportada: {operation_name}.")
 
     def _buckets_visual_snapshot(self) -> list[dict[str, Any]]:
         """Return serializable bucket list.
@@ -289,8 +289,8 @@ class HashTableAdapter(BaseAdapter):
             },
             {"name": "keys", "label": "Listar claves", "mutates": False, "inputs": []},
             {"name": "values", "label": "Listar valores", "mutates": False, "inputs": []},
-            {"name": "items", "label": "Listar items", "mutates": False, "inputs": []},
-            {"name": "stats", "label": "Tamano/capacidad/factor", "mutates": False, "inputs": []},
+            {"name": "items", "label": "Listar ítems", "mutates": False, "inputs": []},
+            {"name": "stats", "label": "Tamaño/capacidad/factor", "mutates": False, "inputs": []},
             {"name": "clear", "label": "Limpiar tabla", "mutates": True, "inputs": []},
             {"name": "destroy_table", "label": "Destruir tabla", "mutates": True, "inputs": []},
         ]

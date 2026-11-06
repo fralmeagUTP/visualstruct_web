@@ -1045,7 +1045,7 @@ class ExecutionTraceService:
         didactic_data: dict[str, Any],
         operation_name: str,
     ) -> tuple[str, str]:
-        code_title = str(didactic_data.get("code_title", "Codigo C"))
+        code_title = str(didactic_data.get("code_title", "Código C"))
         operation_map = didactic_data.get("operations", {})
         if not isinstance(operation_map, dict):
             operation_map = {}
@@ -1777,7 +1777,7 @@ class ExecutionTraceService:
         if structure_id == "abb" and operation_name in {"inorden", "preorden", "postorden"} and success:
             from app.domain.hierarchical.abb_traversal_instruction import build_abb_traversal_trace
             trace = build_abb_traversal_trace(trace, before_state, after_state)
-        if structure_id == "abb" and operation_name in {"minimo", "maximo"} and (success or message == "El arbol esta vacio."):
+        if structure_id == "abb" and operation_name in {"minimo", "maximo"} and (success or message == "El árbol está vacío."):
             from app.domain.hierarchical.abb_extreme_instruction import build_abb_extreme_trace
             trace = build_abb_extreme_trace(trace, before_state, after_state)
         if structure_id == "abb" and operation_name == "buscar" and success:
@@ -1810,7 +1810,7 @@ class ExecutionTraceService:
         if structure_id == 'avl' and operation_name == 'limpiar' and success:
             from app.domain.hierarchical.avl_clear_instruction import build_avl_clear_trace
             trace = build_avl_clear_trace(trace, before_state, after_state)
-        if structure_id == 'avl' and operation_name in {'minimo', 'maximo'} and (success or message == 'El arbol esta vacio.'):
+        if structure_id == 'avl' and operation_name in {'minimo', 'maximo'} and (success or message == 'El árbol está vacío.'):
             from app.domain.hierarchical.avl_extreme_instruction import build_avl_extreme_trace
             trace = build_avl_extreme_trace(trace, before_state, after_state)
         if structure_id == 'avl' and operation_name == 'inorden' and success:

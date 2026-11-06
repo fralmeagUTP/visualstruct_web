@@ -22,7 +22,7 @@ def test_counting_family_rejects_excessive_range_before_auxiliary_allocation(alg
     interpreter = SortingInterpreter(values, algorithm, counting_allocator=reject_allocation)
     with pytest.raises(
         SortingExecutionError,
-        match=r"^El rango de conteo \(4294967296\) supera el maximo permitido \(1000000\)\.$",
+        match=r"^El rango de conteo \(4294967296\) supera el máximo permitido \(1000000\)\.$",
     ) as caught:
         interpreter.run()
     assert allocation_attempts == []
@@ -42,7 +42,7 @@ def test_counting_family_accepts_documented_boundary_and_preserves_multiset(algo
 @pytest.mark.parametrize("algorithm", ["counting_sort", "binsort"])
 def test_counting_rejection_is_identical_in_fast_and_step_modes(algorithm):
     values = [-(2**31), 2**31 - 1]
-    expected_message = f"El rango de conteo (4294967296) supera el maximo permitido ({ORDENAMIENTO_RANGO_MAX})."
+    expected_message = f"El rango de conteo (4294967296) supera el máximo permitido ({ORDENAMIENTO_RANGO_MAX})."
     messages = []
     allocation_attempts = []
     def forbidden_allocation(size):

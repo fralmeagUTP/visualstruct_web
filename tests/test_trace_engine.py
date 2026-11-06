@@ -20,7 +20,7 @@ def test_control_flow_planner_filters_non_executable_c_lines() -> None:
     assert [
         index
         for index, line in enumerate(lines)
-        if ControlFlowPlanner.is_executable_line(line, "Codigo C")
+        if ControlFlowPlanner.is_executable_line(line, "Código C")
     ] == [3]
 
 
@@ -321,7 +321,7 @@ def test_tree_debug_strategy_tracks_extreme_search() -> None:
     steps = strategy.build_debug_steps("minimo", {}, state, state, True, False, 3, ["while", "nodo = nodo->izq;", "return nodo;"])
     assert steps[-1]["stage"] == "result"
     assert steps[-1]["active_keys"] == ["1"]
-    assert steps[-1]["note"] == "Minimo encontrado en 1."
+    assert steps[-1]["note"] == "Mínimo encontrado en 1."
 
 
 def test_hash_strategy_derives_bucket_metadata_during_collision() -> None:

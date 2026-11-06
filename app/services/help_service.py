@@ -9,11 +9,11 @@ class HelpService:
     """Serve educational texts for the sequential module."""
 
     _MODULE_HELP = {
-        "title": "Ayuda del modulo secuencial",
+        "title": "Ayuda del módulo secuencial",
         "description": (
-            "Este modulo permite estudiar estructuras lineales (pila, cola, listas) "
-            "como un interprete de codigo C: cada operacion se ejecuta por pasos y su "
-            "efecto se refleja de inmediato en la animacion del estado."
+            "Este módulo permite estudiar estructuras lineales (pila, cola, listas) "
+            "como un intérprete de código C: cada operación se ejecuta por pasos y su "
+            "efecto se refleja de inmediato en la animación del estado."
         ),
         "tips": [
             "Flujo sugerido: selecciona operación, completa entradas y usa Ejecutar operación. Activa Paso a paso antes de ejecutar para recorrer la traza.",
@@ -26,8 +26,8 @@ class HelpService:
         "stack": {
             "title": "Pila",
             "summary": (
-                "Estructura LIFO (Last In, First Out): el ultimo nodo en entrar queda en el TOPE "
-                "y es el primero en salir. En la simulacion observa como se crea el nodo auxiliar, "
+                "Estructura LIFO (Last In, First Out): el último nodo en entrar queda en el TOPE "
+                "y es el primero en salir. En la simulación observa cómo se crea el nodo auxiliar, "
                 "se enlaza al tope actual y luego se reasigna el puntero principal de la pila."
             ),
             "supported_operations": ["apilar", "desapilar", "limpiar"],
@@ -37,8 +37,8 @@ class HelpService:
             "title": "Cola",
             "summary": (
                 "Estructura FIFO (First In, First Out): el primer nodo en entrar queda al frente y "
-                "sale primero. En la animacion revisa las reasignaciones de frente/atras y verifica "
-                "que al quedar vacia ambos extremos vuelvan al estado nulo."
+                "sale primero. En la animación revisa las reasignaciones de frente/atrás y verifica "
+                "que al quedar vacía ambos extremos vuelvan al estado nulo."
             ),
             "supported_operations": ["encolar", "desencolar", "limpiar"],
             "pending_operations": [],
@@ -47,7 +47,7 @@ class HelpService:
             "title": "Cola de Prioridad",
             "summary": (
                 "Estructura FIFO por nivel de prioridad: se atiende primero el elemento con menor "
-                "valor numerico de prioridad y, en empate, se conserva el orden de llegada. "
+                "valor numérico de prioridad y, en empate, se conserva el orden de llegada. "
                 "La inserción conserva el orden de llegada; la selección recorre la cadena y compara prioridades."
             ),
             "supported_operations": ["encolar(valor, prioridad)", "desencolar", "frente", "limpiar"],
@@ -58,7 +58,7 @@ class HelpService:
             "summary": (
                 "Secuencia lineal de nodos enlazados por referencias al siguiente. En el simulador "
                 "debes seguir el avance de punteros auxiliares para inserciones/eliminaciones por "
-                "posicion, verificando que *lista (HEAD) siempre conserve la conectividad. "
+                "posición, verificando que *lista (HEAD) siempre conserve la conectividad. "
                 "Para limpiar, lista_limpiar desconecta la cabeza con q y la libera en cada vuelta."
             ),
             "supported_operations": [
@@ -75,9 +75,9 @@ class HelpService:
         "circular_list": {
             "title": "Lista Circular",
             "summary": (
-                "Lista enlazada circular donde el ultimo nodo apunta nuevamente al primero. "
-                "La interpretacion paso a paso muestra cada escritura; el cierre del ciclo se restablece al terminar cada alta/baja "
-                "de nodos para evitar rupturas o ciclos invalidos."
+                "Lista enlazada circular donde el último nodo apunta nuevamente al primero. "
+                "La interpretación paso a paso muestra cada escritura; el cierre del ciclo se restablece al terminar cada alta/baja "
+                "de nodos para evitar rupturas o ciclos inválidos."
             ),
             "supported_operations": [
                 "insertar_inicio",
@@ -102,9 +102,9 @@ class HelpService:
         "sublist": {
             "title": "Sublista",
             "summary": (
-                "Estructura jerarquica secuencial: cada nodo padre mantiene su propia sublista de hijos. "
-                "En la animacion observa dos niveles de punteros (padres e hijos) y valida que cada "
-                "operacion afecte solo la rama correspondiente sin corromper otras sublistas. "
+                "Estructura jerárquica secuencial: cada nodo padre mantiene su propia sublista de hijos. "
+                "En la animación observa dos niveles de punteros (padres e hijos) y valida que cada "
+                "operación afecte solo la rama correspondiente sin corromper otras sublistas. "
                 "Listar hijos conserva la consulta exitosa en el historial tras recargar, sin volver a ejecutarla. "
                 "El programa principal mostrado está completo: cópialo en main.c; ya incluye stdio.h y tad_sublista.h, "
                 "y compila junto con el archivo C descargado. La aplicación copia como máximo 1024 hijos por consulta. El arreglo de consulta tiene capacidad "

@@ -14,7 +14,7 @@ def step(b,text,phase):
     return next(s for s in b["execution_trace"]["steps"] if s["line_text"].strip()==text and s["pedagogy"]["instruction_event"]["phase"]==phase)
 
 @pytest.mark.parametrize("case",CASES)
-def test_frozen_original_response(case):assert_rbt_consumer(body(case),case)
+def test_frozen_original_response(case):assert_rbt_consumer(body(case),case, historical_word="historica")
 
 @pytest.mark.parametrize("case",CASES)
 @pytest.mark.parametrize("defect",("heap_duplicate","card_duplicate","invented_retired","wrong_seed","wrong_payload","wrong_scope","wrong_source","fabricated_allocation"))
@@ -29,7 +29,7 @@ def test_rejects_common_memory_source_contract_defect(case,defect):
     elif defect=="wrong_scope":ss[1]["pedagogy"]["memory_state"]["tree_frames"][0]["parameters"]["arbol"]="&other"
     elif defect=="wrong_source":b["execution_trace"]["source_code"]+="\n/* fabricated */"
     else:s["pedagogy"]["memory"]["allocated_objects"]=[{"id":"N999"}]
-    with pytest.raises(AssertionError):assert_rbt_consumer(b,case)
+    with pytest.raises(AssertionError):assert_rbt_consumer(b,case, historical_word="historica")
 
 @pytest.mark.parametrize("defect",("early_root","missing_completed_child","wrong_parent","wrong_phase","early_free"))
 def test_rejects_rotation_defect(defect):
@@ -39,7 +39,7 @@ def test_rejects_rotation_defect(defect):
     elif defect=="wrong_parent":step(b,"B->padre = padre;","link")["pedagogy"]["memory_state"]["heap_nodes"][1]["parent"]="N1"
     elif defect=="wrong_phase":step(b,"rbt_rotar_dcha(arbol, a);","resume")["pedagogy"]["instruction_event"]["phase"]="call"
     else:step(b,"*r = B;","link")["pedagogy"]["memory_state"]["heap_nodes"].pop(0)
-    with pytest.raises(AssertionError):assert_rbt_consumer(b,"rotation")
+    with pytest.raises(AssertionError):assert_rbt_consumer(b,"rotation", historical_word="historica")
 
 @pytest.mark.parametrize("case",("delete_int","delete_text"))
 @pytest.mark.parametrize("defect",("wrong_loop_condition","future_reachability","wrong_freed_identity","stale_live_alias","future_sibling","wrong_fix_parameter"))
@@ -51,7 +51,7 @@ def test_rejects_delete_defect(case,defect):
     elif defect=="stale_live_alias":step(b,"arreglarEliminacion(arbol, x, x_parent);","call")["pedagogy"]["memory_state"]["tree_frames"][0]["locals"]["z"]="N2"
     elif defect=="future_sibling":step(b,"static void arreglarEliminacion(RBT *root, RBT x, RBT x_parent) {","enter")["pedagogy"]["memory_state"]["tree_frames"][-1]["locals"]["w"]="N3"
     else:step(b,"static void arreglarEliminacion(RBT *root, RBT x, RBT x_parent) {","enter")["pedagogy"]["memory_state"]["tree_frames"][-1]["parameters"]["x_parent"]="N3"
-    with pytest.raises(AssertionError):assert_rbt_consumer(b,case)
+    with pytest.raises(AssertionError):assert_rbt_consumer(b,case, historical_word="historica")
 
 
 @pytest.mark.parametrize("case",CASES)
@@ -65,4 +65,4 @@ def test_public_projection_corruption_with_next_snapshot_synchronized(case,defec
     elif defect=="color":public["root"]["color"]="RED"
     else:public[defect]=999
     steps[2]["state_snapshot"]=deepcopy(public)
-    with pytest.raises(AssertionError):assert_rbt_consumer(b,case)
+    with pytest.raises(AssertionError):assert_rbt_consumer(b,case, historical_word="historica")

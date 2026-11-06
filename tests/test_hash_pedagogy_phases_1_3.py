@@ -68,7 +68,7 @@ def test_catalog_examples_and_page_regions(client):
     assert HASH_LEARNING_CATALOG["value_type"] == "int"
     assert {item["id"] for item in HASH_GUIDED_EXAMPLES} >= {"empty","collision","update","negative"}
     html = client.get("/hash/hash_table").get_data(as_text=True)
-    for label in ("Preparar y controlar ejecución", "Visualizar y ejecutar", "Relacionar con código", "Comprender", "Resultados de ejecución"):
+    for label in ("Preparar y controlar ejecución", "Tabla hash", "Relacionar con código", "Comprender", "Resultados de ejecución"):
         assert label in html
     for element_id in ("hash-operation-form","hash-operation-select","hash-sim-play","hash-sim-step","hash-step-navigation","hash-visual-region","hash-code-region","hash-function-list","hash-hide-comments","hash-formula-view","hash-chain-view","hash-pointers-view","hash-memory-view","hash-invariant-view","hash-export-image","hash-printf-console","action-history","tad-record"):
         assert f'id="{element_id}"' in html

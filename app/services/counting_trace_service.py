@@ -122,13 +122,13 @@ class CountingPageSource:
         return frame
 
     def page(self, start: int, limit: int = 64) -> dict[str, Any]:
-        if not 1 <= limit <= 128: raise ValueError('El limite de pagina debe ser 1..128.')
-        if not 0 <= start < len(self.tape): raise ValueError('El indice esta fuera de la traza.')
+        if not 1 <= limit <= 128: raise ValueError('El límite de página debe ser 1..128.')
+        if not 0 <= start < len(self.tape): raise ValueError('El índice está fuera de la traza.')
         end = min(len(self.tape), start + limit)
         return dict(schema='counting-trace-page/v1', start=start, end=end, step_count=len(self.tape), steps=[self.frame(i) for i in range(start, end)])
 
     def trace(self) -> dict[str, Any]:
-        trace = CountingTrace(structure_id='sorting', operation_name='counting_sort', payload={}, success=True, mutates=True, message='Ordenamiento ejecutado correctamente.', code_title='Codigo C', source_code=self.source_code, final_state=deepcopy(self.final_state), pedagogy_schema_version=1, pedagogy_schema=pedagogical_frame_schema(), learning_profile=learning_profile('counting_sort'), theory_profile=theory_profile('counting_sort'))
+        trace = CountingTrace(structure_id='sorting', operation_name='counting_sort', payload={}, success=True, mutates=True, message='Ordenamiento ejecutado correctamente.', code_title='Código C', source_code=self.source_code, final_state=deepcopy(self.final_state), pedagogy_schema_version=1, pedagogy_schema=pedagogical_frame_schema(), learning_profile=learning_profile('counting_sort'), theory_profile=theory_profile('counting_sort'))
         if self.error_info:
             trace.update(success=False,mutates=False,message=self.error_info['message'],native_status=0,error=deepcopy(self.error_info),accepted_state=deepcopy(self.accepted_state))
         n = len(self.tape[0]['array_snapshot'])
@@ -162,14 +162,14 @@ class CountingTraceStore:
         self.entries: dict[str, StoredTrace] = {}
         self.lock = RLock()
 
-    def register(self, owner: str, source: CountingPageSource) -> str:
+    def register(self, owner: str, source: CountingPageSource, *, key: str | None = None) -> str:
         if source.retained_bytes > self.max_bytes: raise ValueError('La traza supera el presupuesto de almacenamiento local.')
         with self.lock:
             now = monotonic()
             self.entries = {k:v for k,v in self.entries.items() if v.expires > now}
             while self.entries and (len(self.entries) >= self.max_traces or sum(v.source.retained_bytes for v in self.entries.values()) + source.retained_bytes > self.max_bytes):
                 del self.entries[next(iter(self.entries))]
-            key = token_urlsafe(24)
+            key = key or token_urlsafe(24)
             self.entries[key] = StoredTrace(owner, source, now+self.ttl)
             return key
 
@@ -177,8 +177,21 @@ class CountingTraceStore:
         with self.lock:
             item = self.entries.get(key)
             if item is None or item.owner != owner: raise KeyError(key)
-            if item.expires <= monotonic(): raise TimeoutError('La traza expiro. La navegacion no vuelve a ejecutar el algoritmo.')
+            if item.expires <= monotonic(): raise TimeoutError('La traza expiró. La navegación no vuelve a ejecutar el algoritmo.')
             return item.source
+
+    def keys_for_owner(self, owner: str | None) -> tuple[str, ...]:
+        """Snapshot cleanup targets without affecting concurrent registrations."""
+        with self.lock:
+            return tuple(key for key, item in self.entries.items() if item.owner == owner)
+
+    def revoke_keys(self, owner: str | None, keys: tuple[str, ...]) -> None:
+        """Revoke only previously selected entries, never a newer owner's work."""
+        with self.lock:
+            for key in keys:
+                item = self.entries.get(key)
+                if item is not None and item.owner == owner:
+                    del self.entries[key]
 
     def revoke(self, owner: str | None) -> None:
         with self.lock: self.entries = {k:v for k,v in self.entries.items() if v.owner != owner}

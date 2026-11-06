@@ -1,5 +1,6 @@
 """Statement model of the existing C formatter; API projections stay independent."""
 from copy import deepcopy
+from app.domain.hash.snapshot_pool import HashSnapshotPool
 from app.domain.hash.pedagogy import build_hash_frame, hash_frame_schema, HASH_LEARNING_CATALOG
 
 
@@ -7,6 +8,8 @@ def build_hash_listing_trace(*, operation_name, payload, source_code, code_title
         before_state, after_state, success, message, buffer_capacity=2048,
         null_destination=False, null_table=False, caller_buffer_capacity=None, **_):
     """Model finite decimal formats, opaque libc call and explicit byte lifetimes."""
+    pool=HashSnapshotPool()
+    before_state=pool.intern(before_state)
     lines=source_code.replace("\r\n","\n").split("\n")
     storage_capacity=buffer_capacity if caller_buffer_capacity is None else caller_buffer_capacity
     steps=[]; variables={}; stack=['caller']; raw=bytearray(storage_capacity)
@@ -45,26 +48,29 @@ def build_hash_listing_trace(*, operation_name, payload, source_code, code_title
             'bytes':list(raw[:prefix]),'uninitialized_bytes_read':False,
             'text':bytes(raw[:prefix]).split(b'\0',1)[0].decode('ascii') if prefix else None}
         if 'caller.buffer' in variables:variables['caller.buffer'].update(buffer)
-        scopes=[{'function':scope,'variables':{n.split('.',1)[1]:deepcopy(v) for n,v in variables.items() if n.startswith(scope+'.')}} for scope in stack]
+        # One immutable snapshot per emitted instruction, shared by debug and pedagogy.
+        variable_snapshot=pool.intern(variables)
+        if buffer is not None:buffer=pool.intern(buffer)
+        scopes=[{'function':scope,'variables':{n.split('.',1)[1]:v for n,v in variable_snapshot.items() if n.startswith(scope+'.')}} for scope in stack]
         debug={'token':event,'function':function,'scopes':scopes,'call_stack':list(stack),
-            'variables':deepcopy(variables),'buffer':buffer,'used':used if 'th_formatear.usado' in variables else None,
+            'variables':variable_snapshot,'buffer':buffer,'used':used if 'th_formatear.usado' in variables else None,
             'bucket_index':i,'actual':actual,'nodes_visited':nodes,'append_calls':calls,
             'condition_result':condition,'allocations':0,'frees':0,
             'libc_boundary':'vsnprintf decimal ASCII success; va_list opaque, not ABI inspection'}
         step={'step_index':len(steps),'line_index':line,'line_text':lines[line] if line>=0 else '',
             'event_type':event,'phase':'progress','delay_ms':100,'console':[],
-            'state_snapshot':deepcopy(before_state),'state_after':deepcopy(before_state),
+            'state_snapshot':before_state,'state_after':before_state,
             'debug':debug,'instruction_event':{'token':event,'function':function,'condition':condition}}
         frame=build_hash_frame(operation_name=operation_name,payload=payload,step=step,source_lines=lines,success=success)
-        frame['source']['function']=function;frame['variables']={n:v['value'] for n,v in variables.items()}
-        frame['memory'].update({'variables':deepcopy(variables),'scopes':scopes,'call_stack':list(stack),
-            'buffer':deepcopy(buffer),'heap':[{'id':n['address'],'type':'THNodo','initialized_mask':7,'key':n['key'],'value':n['value'],'next':n.get('next')} for b in buckets for n in b['entries']],'allocated':[],'freed':[],'allocation_attempted':False,'links_changed':False})
+        frame['source']['function']=function;frame['variables']={n:v['value'] for n,v in variable_snapshot.items()}
+        frame['memory'].update({'variables':variable_snapshot,'scopes':scopes,'call_stack':list(stack),
+            'buffer':buffer,'heap':[{'id':n['address'],'type':'THNodo','initialized_mask':7,'key':n['key'],'value':n['value'],'next':n.get('next')} for b in buckets for n in b['entries']],'allocated':[],'freed':[],'allocation_attempted':False,'links_changed':False})
         frame['pointers'].update({'actual':actual or 'NULL','destino':'&caller.buffer' if not null_destination else 'NULL','usado':'&th_formatear.usado' if 'th_append_text' in stack else 'fuera de alcance'})
         frame['cost'].update({'nodes_visited':nodes,'append_calls':calls,'comparisons':0,'hash_evaluations':0})
         frame['condition']=None if condition is None else {'source':step['line_text'],'result':condition,'substituted':str(condition),'consequence':'Rama C ejecutada.'}
-        frame['narration']['advanced']=f'{function}: {event}. Texto C de tabla completa; proyeccion API independiente.'
+        frame['narration']['advanced']=f'{function}: {event}. Texto C de tabla completa; proyección API independiente.'
         frame['listing']={'operation':operation_name,'C_output':'formatted whole table text','API_output':'complete ordered projection','same_representation':False}
-        step['pedagogy']=frame;steps.append(step)
+        step['pedagogy']=frame;steps.append({key: pool.intern(value) if isinstance(value, (dict, list)) else value for key, value in step.items()})
     def write(offset,text):
         encoded=text.encode('ascii');remaining=buffer_capacity-offset
         if remaining>0:
@@ -128,6 +134,7 @@ def build_hash_listing_trace(*, operation_name, payload, source_code, code_title
     else:
         retire('th_formatear');emit('formatter_return','if (!destino || capacidad == 0)','th_formatear')
     # Caller has no printf in the selected teaching snippet; console remains empty.
+    steps[-1]['pedagogy']=dict(steps[-1]['pedagogy'])
     steps[0]['phase']='start';steps[-1]['phase']='end';steps[-1]['state_after']=deepcopy(after_state);steps[-1]['pedagogy']['state_after']=deepcopy(after_state)
     return {'structure_id':'hash_table','operation_name':operation_name,'payload':deepcopy(payload),
         'success':success,'mutates':False,'message':message,'code_title':code_title,'source_code':source_code,

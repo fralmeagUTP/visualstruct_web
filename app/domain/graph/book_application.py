@@ -79,7 +79,7 @@ def execute_book_operation(adapter, operation, payload):
     elif operation == 'generate_random_graph':
         seed, commands = materialize_random_commands(payload, directed)
     elif operation not in FUNCTIONS and operation != 'clear_graph':
-        raise ValueError(f'Operacion no soportada: {operation}.')
+        raise ValueError(f'Operación no soportada: {operation}.')
     args = []
     if operation in FUNCTIONS:
         for key in FUNCTIONS[operation][1]:

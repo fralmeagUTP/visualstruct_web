@@ -6,7 +6,7 @@ from typing import Any
 
 from flask import Blueprint, abort, jsonify, render_template, request, session, current_app
 
-from app.services.session_service import SessionService
+from app.services.session_service import SessionService, SessionHistoryLimitError
 from app.services.sorting_help_service import SortingHelpService
 from app.services.sorting_structure_service import SortingStructureService
 from app.services.sorting_main_program import build_sorting_main
@@ -17,6 +17,18 @@ sorting_api_bp = Blueprint("sorting_api", __name__, url_prefix="/api/ordenamient
 _STRUCTURE_ID = "sorting_array"
 _SESSION_KEY = "sorting::sorting_array"
 
+
+
+@sorting_api_bp.before_request
+def _validate_json_body() -> Any:
+    """Reject malformed/non-object payloads before any session state is read."""
+    if request.endpoint in {'sorting_api.api_random_array', 'sorting_api.api_step', 'sorting_api.api_run', 'sorting_api.api_compare', 'sorting_api.api_create_array', 'sorting_api.api_select_algorithm'}:
+        body = request.get_json(silent=True)
+        if not isinstance(body, dict):
+            return jsonify(success=False, message="El cuerpo enviado debe ser un objeto JSON válido."), 400
+        if "algorithm_id" in body and not isinstance(body["algorithm_id"], str):
+            return jsonify(success=False, message="El algoritmo debe identificarse mediante texto."), 400
+    return None
 
 
 def _describe_counting_trace(trace: dict[str, Any], key: str) -> dict[str, Any]:
@@ -33,12 +45,19 @@ def _bind_counting_trace(trace: dict[str, Any] | None) -> dict[str, Any] | None:
     if not trace or not hasattr(trace, "page_source"): return trace
     from secrets import token_urlsafe
     from app.services.counting_trace_service import get_counting_store
+    from app.services.concurrent_sessions import require_session_unchanged
+    require_session_unchanged("counting_owner")
     owner = session.get("counting_owner")
     if owner is None:
         owner = token_urlsafe(24)
         session["counting_owner"] = owner
     source = trace.page_source
-    key = get_counting_store().register(owner, source)
+    from app.services.concurrent_sessions import after_session_commit
+    store = get_counting_store()
+    if source.retained_bytes > store.max_bytes:
+        raise ValueError('La traza supera el presupuesto de almacenamiento local.')
+    key = token_urlsafe(24)
+    after_session_commit(lambda: store.register(owner, source, key=key), lock=store.lock)
     return _describe_counting_trace(trace, key)
 
 
@@ -97,6 +116,9 @@ def sorting_view_alias() -> Any:
 
 
 def _execute(operation_name: str, payload: dict[str, Any]) -> tuple[Any, int]:
+    from app.services.concurrent_sessions import require_session_unchanged
+    from app.services.session_service import SESSION_KEY
+    require_session_unchanged(SESSION_KEY, _SESSION_KEY)
     history = SessionService.get_history(_SESSION_KEY)
     try:
         result = SortingStructureService.execute_operation(
@@ -109,6 +131,14 @@ def _execute(operation_name: str, payload: dict[str, Any]) -> tuple[Any, int]:
         )
     except KeyError:
         abort(404)
+
+    try:
+        SessionService.validate_history_capacity(result.get("history", history), history)
+    except SessionHistoryLimitError as error:
+        previous = SortingStructureService.get_view_model(_STRUCTURE_ID, history)
+        return jsonify(success=False, preserve_session=True, message=str(error),
+                       history=history, visual_state=previous["visual_state"],
+                       main_c=previous["main_c"]), 409
 
     try:
         if result.get("execution_trace"):
@@ -184,7 +214,7 @@ def api_step() -> tuple[Any, int]:
     body = request.get_json(silent=True) or {}
     try:
         saved = _saved_counting_source(strict=True) if not body.get("algorithm_id") or body["algorithm_id"] in {"counting_sort", "binsort", "radixsort"} else None
-    except KeyError: return jsonify(success=False, message="Traza no disponible; la navegacion no reejecuta Counting."), 404
+    except KeyError: return jsonify(success=False, message="Traza no disponible; la navegación no reejecuta Counting."), 404
     except TimeoutError as error: return jsonify(success=False, message=str(error)), 410
     if saved:
         key, source = saved
@@ -192,7 +222,7 @@ def api_step() -> tuple[Any, int]:
             return jsonify(success=False, message="La traza guardada corresponde a otro algoritmo."), 409
         try:
             direction = body.get("direction", "next")
-            if direction not in {"next", "prev", "previous"}: raise ValueError("Direccion no valida.")
+            if direction not in {"next", "prev", "previous"}: raise ValueError("Dirección no válida.")
             cursor = int(body.get("cursor", -1)) + (1 if direction == "next" else -1)
             cursor = max(0, min(cursor, len(source.tape)-1))
             trace = _describe_counting_trace(source.trace(), key)
@@ -234,7 +264,11 @@ def api_state() -> tuple[Any, int]:
 @sorting_api_bp.post("/reset")
 def api_reset() -> tuple[Any, int]:
     from app.services.counting_trace_service import get_counting_store
-    get_counting_store().revoke(session.get("counting_owner"))
+    from app.services.concurrent_sessions import after_session_commit
+    store = get_counting_store()
+    owner = session.get("counting_owner")
+    keys = store.keys_for_owner(owner)
+    after_session_commit(lambda: store.revoke_keys(owner, keys), lock=store.lock)
     session.pop("counting_latest", None)
     session.pop("counting_error_latest", None)
     session.pop("counting_owner", None)
@@ -271,7 +305,7 @@ def api_counting_page(trace_id: str) -> tuple[Any, int]:
         page = source.page(start, limit)
         page.update(success=True, trace_id=trace_id)
         return jsonify(page), 200
-    except KeyError: return jsonify(success=False, message="Traza no disponible para esta sesion."), 404
+    except KeyError: return jsonify(success=False, message="Traza no disponible para esta sesión."), 404
     except TimeoutError as error: return jsonify(success=False, message=str(error)), 410
     except (ValueError, TypeError) as error: return jsonify(success=False, message=str(error)), 400
 
@@ -283,5 +317,5 @@ def api_counting_export(trace_id: str) -> tuple[Any, int]:
     try:
         source = get_counting_store().get(session.get("counting_owner"), trace_id)
         return jsonify(success=True, trace_id=trace_id, compact_trace=source.compact_export()), 200
-    except KeyError: return jsonify(success=False, message="Traza no disponible para esta sesion."), 404
+    except KeyError: return jsonify(success=False, message="Traza no disponible para esta sesión."), 404
     except TimeoutError as error: return jsonify(success=False, message=str(error)), 410

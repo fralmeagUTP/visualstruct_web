@@ -1,0 +1,22 @@
+{
+  "source": "current services + unmodified canonical C",
+  "compile_command": [
+    "gcc",
+    "-std=c17",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-pedantic",
+    "-I",
+    "/workspace/scratch/644977913e22/visualstruct_qa_general_20261106/docs/tads_C",
+    "/workspace/scratch/644977913e22/visualstruct_qa_general_20261106/qa_general/frontend-fixtures/queue-stdout.c",
+    "/workspace/scratch/644977913e22/visualstruct_qa_general_20261106/docs/tads_C/tad_cola.c",
+    "-o",
+    "/workspace/scratch/644977913e22/visualstruct_qa_general_20261106/qa_general/frontend-fixtures/queue-stdout"
+  ],
+  "sha256": {
+    "docs/tads_C/tad_cola.c": "adaa60def6ccf0e6294f8ae5da4c1f4e3e1c7c7f492e8224535e7683ad968e48",
+    "app/services/execution_trace_service.py": "a90176c35a23c71473ed662a5ff59990a7145bcfa416ac3d229cb8ec31aa4aae",
+    "static/js/sequential.js": "11c3033a7d7facc22176c671761a959836a97fefaa4e1857526fd97b147ca2ab"
+  }
+}

@@ -135,9 +135,9 @@ class GraphStructureService:
         if isinstance(error, ValueError):
             message = str(error)
             if "Prim requiere un grafo no dirigido" in message:
-                return "Prim solo esta disponible para grafos no dirigidos."
+                return "Prim solo está disponible para grafos no dirigidos."
             if "Kruskal requiere un grafo no dirigido" in message:
-                return "Kruskal solo esta disponible para grafos no dirigidos."
+                return "Kruskal solo está disponible para grafos no dirigidos."
             return message
         if isinstance(error, TADError):
             return str(error)
@@ -250,8 +250,12 @@ class GraphStructureService:
             raise ValueError("Comparación de grafos no soportada.")
         if graph_state.get("asymmetric_pairs"):
             raise ValueError("La comparación requiere un grafo sin pares incompletos; revisa las inserciones que fallaron.")
-        nodes = graph_state.get("nodes") or []
-        edges = graph_state.get("edges") or []
+        nodes = graph_state.get("nodes", [])
+        edges = graph_state.get("edges", [])
+        if (not isinstance(nodes, list) or not isinstance(edges, list)
+                or any(not isinstance(node, dict) for node in nodes)
+                or any(not isinstance(edge, dict) for edge in edges)):
+            raise ValueError("Los vértices y las aristas deben ser listas de objetos JSON.")
         if not nodes or len(nodes) > MAX_VERTICES or len(edges) > 300:
             raise ValueError(f"La comparación requiere entre 1 y {MAX_VERTICES} vértices y máximo 300 aristas.")
         immutable = deepcopy({"directed": bool(graph_state.get("directed", False)), "nodes": nodes, "edges": edges})

@@ -249,7 +249,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_lista.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -283,7 +283,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_pila.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -317,7 +317,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_cola.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -359,7 +359,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_cola_prioridad.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -392,7 +392,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_lista_circular.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -438,7 +438,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_sublista.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -515,7 +515,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_abb.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -593,7 +593,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_avl.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -658,7 +658,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_rojo_negro.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -714,7 +714,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_monticulo_binario.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -803,7 +803,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_tabla_hash.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @classmethod
@@ -855,7 +855,7 @@ class CCodeService:
             "default_operation": (
                 "Codigo C no disponible para esta operacion en docs/tads_C/tad_ordenamiento.c."
             ),
-            "code_title": "Codigo C",
+            "code_title": "Código C",
         }
 
     @staticmethod

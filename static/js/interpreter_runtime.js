@@ -229,7 +229,7 @@
         if (error) { image.src = ""; reject(error); }
         else resolve(image);
       };
-      const timer = window.setTimeout(() => finish(new Error("La imagen SVG no termino de cargar en 5 segundos.")), 5000);
+      const timer = window.setTimeout(() => finish(new Error("La imagen SVG no terminó de cargar en 5 segundos.")), 5000);
       image.onload = () => finish();
       image.onerror = () => finish(new Error("No se pudo cargar la imagen SVG intermedia."));
       image.src = src;
@@ -257,7 +257,7 @@
           lastError = error;
         }
       }
-      throw lastError || new Error("No se pudo rasterizar la visualizacion.");
+      throw lastError || new Error("No se pudo rasterizar la visualización.");
     } finally {
       URL.revokeObjectURL(objectUrl);
     }
@@ -427,7 +427,7 @@
 
   function triggerDataUrlDownload(dataUrl, fileName) {
     const match = /^data:image\/jpeg;base64,(.+)$/.exec(String(dataUrl));
-    if (!match) throw new Error("La captura no produjo un JPG valido.");
+    if (!match) throw new Error("La captura no produjo un JPG válido.");
     const binary = window.atob(match[1]);
     const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
     const objectUrl = URL.createObjectURL(new Blob([bytes], { type: "image/jpeg" }));
@@ -506,7 +506,7 @@
       } catch (error) {
         // Exponer detalle en consola para facilitar depuracion del navegador/entorno.
         console.error("Export JPG error:", error);
-        window.alert(error.message || "No fue posible exportar la visualizacion en JPG.");
+        window.alert(error.message || "No fue posible exportar la visualización en JPG.");
       } finally {
         exportButton.disabled = false;
         if (qualitySelect instanceof HTMLSelectElement) {
@@ -715,7 +715,7 @@
     codeElement.dataset.rawCode = raw;
     codeElement.dataset.codeTitle = String(codeTitle || "");
     const rows = raw.replaceAll("\r\n", "\n").split("\n");
-    if (String(codeTitle || "").toLowerCase().includes("codigo c")) {
+    if (/c[oó]digo c/i.test(String(codeTitle || ""))) {
       let state = { inBlockComment: false };
       codeElement.innerHTML = rows
         .map((line, index) => {
@@ -942,7 +942,7 @@
       }
       if (cursor >= trace.steps.length - 1) {
         playing = false;
-        setStatus(statusElement, `Simulacion completada (${trace.steps.length} pasos).`);
+        setStatus(statusElement, `Simulación completada (${trace.steps.length} pasos).`);
       }
     }
 
@@ -969,7 +969,7 @@
         applyStateSnapshot(firstStep);
       }
       setCounter(0, trace.steps.length);
-      setStatus(statusElement, `Simulacion lista: ${trace.steps.length} pasos.`);
+      setStatus(statusElement, `Simulación lista: ${trace.steps.length} pasos.`);
       emitCursorChange("load", firstStep);
     }
 
@@ -982,7 +982,7 @@
         clearLineClasses(clearLines);
       }
       setCounter(0, 0);
-      setStatus(statusElement, message || "Ejecuta una operacion para generar la simulacion.");
+      setStatus(statusElement, message || "Ejecuta una operación para generar la simulación.");
       emitCursorChange("clear", null);
     }
 
@@ -993,7 +993,7 @@
       playing = false;
       playToken += 1;
       if (!silent) {
-        setStatus(statusElement, "Simulacion pausada.");
+        setStatus(statusElement, "Simulación pausada.");
       }
     }
 
@@ -1009,7 +1009,7 @@
         applyStateSnapshot(firstStep);
       }
       setCounter(0, trace.steps.length);
-      setStatus(statusElement, `Simulacion reiniciada (${trace.steps.length} pasos).`);
+      setStatus(statusElement, `Simulación reiniciada (${trace.steps.length} pasos).`);
       emitCursorChange("reset", firstStep);
     }
 
@@ -1020,7 +1020,7 @@
       }
       pause(true);
       if (cursor >= trace.steps.length - 1) {
-        setStatus(statusElement, "Simulacion completada. Ingresa nuevos datos para continuar.");
+        setStatus(statusElement, "Simulación completada. Ingresa nuevos datos para continuar.");
         return false;
       }
       return _advanceOne(false, playToken);
@@ -1033,7 +1033,7 @@
       }
       pause(true);
       if (cursor < 0) {
-        setStatus(statusElement, "Ya estas en el inicio de la simulacion.");
+        setStatus(statusElement, "Ya estás en el inicio de la simulación.");
         return false;
       }
       if (cursor === 0) {

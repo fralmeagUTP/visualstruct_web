@@ -10,14 +10,14 @@ def test_hash_module_page_loads(client) -> None:
     """Hash module index should be reachable."""
     response = client.get("/hash/")
     assert response.status_code == 200
-    assert b"Modulo de Tablas Hash" in response.data
+    assert "Módulo de Tablas Hash".encode("utf-8") in response.data
 
 
 def test_hash_structure_page_loads(client) -> None:
     """Hash structure page should load."""
     response = client.get("/hash/hash_table")
     assert response.status_code == 200
-    assert b"Estado visual" in response.data
+    assert b'id="hash-visual-title">Tabla hash</h3>' in response.data
 
 
 def test_create_table_valid_and_invalid_capacity_via_route(client) -> None:
@@ -152,10 +152,10 @@ def test_hash_help_pages_available(client) -> None:
     structure_help = client.get("/help/hash/hash_table")
 
     assert module_help.status_code == 200
-    assert b"Ayuda del modulo de tablas hash" in module_help.data
+    assert "Ayuda del módulo de tablas hash".encode("utf-8") in module_help.data
     assert structure_help.status_code == 200
     page = structure_help.get_data(as_text=True)
-    method_cards = re.findall(r'<h4>([^<]+)</h4>\s*<p>(.*?)</p>\s*<pre class="didactic-code">(.*?)</pre>', page, re.S)
+    method_cards = re.findall(r'<details><summary>(.*?)</summary>\s*<p>(.*?)</p>\s*<pre class="didactic-code">(.*?)</pre></details>', page, re.S)
     assert method_cards
     for symbol in ('th_inicializar', 'th_insertar', 'th_buscar', 'th_eliminar'):
         matches = [(heading, explanation, unescape(code)) for heading, explanation, code in method_cards if re.search(r'\b' + symbol + r'\s*\(', unescape(code))]

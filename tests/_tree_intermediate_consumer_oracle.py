@@ -48,7 +48,7 @@ def _assert_tree_public_projection(public, physical, structure):
         for order,values in traversals.items():
             assert order in {"inorden","preorden","postorden"} and values==traversal(root,order)
     if "heap_nodes" in public:assert public["validation"] is None
-def assert_tree_intermediate_consumer(body,case):
+def assert_tree_intermediate_consumer(body,case, *, historical_word="histórica"):
     assert case in CASES
     structure,operation,value=CASES[case]
     trace=body["execution_trace"]
@@ -105,7 +105,7 @@ def assert_tree_intermediate_consumer(body,case):
         assert b[root_id]["right"]==successor
         assert released["pedagogy"]["memory"]["freed_objects"][0]["id"]==successor
         before_link=_nodes(linked["state_snapshot"]);after_link=_nodes(linked["pedagogy"]["memory_state"])
-        assert len(before_link)==2 and successor not in before_link and before_link[root_id]["right"]==successor+" [valor indeterminado; identidad historica]"
+        assert len(before_link)==2 and successor not in before_link and before_link[root_id]["right"]==successor+f" [valor indeterminado; identidad {historical_word}]"
         assert after_link[root_id]["right"]=="NULL" and after_link[root_id]["value"]==3
         assert body["visual_state"]["root"]=={"value":3,"left":{"value":1,"left":None,"right":None},"right":None}
         return copied["state_after"]["root"],linked["state_after"]["root"]

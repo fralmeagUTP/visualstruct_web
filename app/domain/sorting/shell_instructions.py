@@ -35,19 +35,19 @@ def run_shell_trace(values: list[int]) -> dict[str, Any]:
           'source_function':function,'condition_result':condition,'condition_expression':expression,
           'shell_context':{'intervalo':intervalo if stack else None,'gap_declared':gap_declared and bool(stack),'i':i,'i_declared':i_declared,'j':j,'temporal':temporal,'group':group,'gap_completed':intervalo if token=='gap_body_exit' else None},
           'instruction_event':dict(token=token,function=function,intervalo=intervalo,i=i,j=j,temporal=temporal,comparisons=comparisons,moves=moves)})
-    emit('initial',None,'Antes de llamar ordenar_shell; ninguna instruccion C ejecutada.')
+    emit('initial',None,'Antes de llamar ordenar_shell; ninguna instrucción C ejecutada.')
     stack.append('ordenar_shell');emit('sort_entry','ordenar_shell','Entrar en ordenar_shell.')
     gap_declared=True;emit('gap_declare','ordenar_shell','Declarar intervalo size_t sin inicializar.')
     emit('valid_call','ordenar_shell','Llamar arreglo_valido antes de decidir la guarda.')
     stack.append('arreglo_valido');emit('valid_entry','arreglo_valido','Entrar en arreglo_valido.')
     emit('valid_ptr','arreglo_valido','Evaluar arreglo != NULL.',True,'arreglo != NULL')
     emit('valid_n','arreglo_valido','Evaluar n>0 por cortocircuito.',n>0,f'{n} > 0')
-    stack.pop();emit('valid_return','arreglo_valido','Retornar validacion y retirar el scope del helper.')
+    stack.pop();emit('valid_return','arreglo_valido','Retornar validación y retirar el scope del helper.')
     emit('sort_guard','ordenar_shell','Evaluar !arreglo_valido(arreglo,n).',n==0,'!arreglo_valido(arreglo,n)')
     if not n:
-        stack.clear();gap_declared=False;emit('guard_return','ordenar_shell','Retornar sin procesar entrada vacia.')
+        stack.clear();gap_declared=False;emit('guard_return','ordenar_shell','Retornar sin procesar entrada vacía.')
     else:
-        intervalo=n//2;emit('gap_init','ordenar_shell','Asignar intervalo=n/2 con division entera size_t.')
+        intervalo=n//2;emit('gap_init','ordenar_shell','Asignar intervalo=n/2 con división entera size_t.')
         while True:
             test=intervalo>0;emit('gap_test','ordenar_shell','Evaluar intervalo>0.',test,f'{intervalo} > 0')
             if not test:break
@@ -66,12 +66,12 @@ def run_shell_trace(values: list[int]) -> dict[str, Any]:
                         emit('while_compare','ordenar_shell','Comparar arreglo[j-intervalo] con temporal.',test,f'{a[j-intervalo]} > {temporal}')
                     emit('while_test','ordenar_shell','Evaluar resultado compuesto; omitir acceso si j<intervalo.',test,'j >= intervalo && arreglo[j - intervalo] > temporal')
                     if not test:break
-                    a[j]=a[j-intervalo];moves+=1;emit('shift','ordenar_shell','Asignar arreglo[j]=arreglo[j-intervalo]; duplicacion provisional, temporal conservado.')
+                    a[j]=a[j-intervalo];moves+=1;emit('shift','ordenar_shell','Asignar arreglo[j]=arreglo[j-intervalo]; duplicación provisional, temporal conservado.')
                     j-=intervalo;emit('j_subtract','ordenar_shell','Ejecutar j-=intervalo; el arreglo permanece igual.')
-                a[j]=temporal;moves+=1;emit('temp_write','ordenar_shell','Asignar arreglo[j]=temporal; completar esta insercion.')
+                a[j]=temporal;moves+=1;emit('temp_write','ordenar_shell','Asignar arreglo[j]=temporal; completar esta inserción.')
                 temporal=None;j=None;emit('inner_body_exit','ordenar_shell','Cerrar cuerpo de i; retirar temporal y j, conservar i/intervalo.')
                 i+=1;emit('i_increment','ordenar_shell','Ejecutar ++i antes de su prueba.')
-            i=None;i_declared=False;emit('gap_body_exit','ordenar_shell','Cerrar cuerpo del intervalo; retirar i. Los grupos por este intervalo estan ordenados.')
+            i=None;i_declared=False;emit('gap_body_exit','ordenar_shell','Cerrar cuerpo del intervalo; retirar i. Los grupos por este intervalo están ordenados.')
             intervalo//=2;emit('gap_divide','ordenar_shell','Ejecutar intervalo/=2 antes de la siguiente prueba.')
         stack.clear();gap_declared=False;emit('sort_return','ordenar_shell','Retorno void al caller; retirar intervalo, sin printf del TAD.')
     return dict(steps=steps,final_state={'items':list(a)},metrics=dict(comparisons=comparisons,swaps=0,moves=moves,steps=len(steps)))
@@ -98,7 +98,7 @@ def instruction_pedagogy(raw: dict[str,Any],line_index: int | None,line_text: st
     frame['loop']=None
     if inner or middle or outer:
         frame['loop']=dict(kind='while interno' if inner else 'for i' if middle else 'for intervalo',iteration=event['j'] if inner else event['i'] if middle else event['intervalo'],bounds=[event['intervalo'],event['i']] if inner else [event['intervalo'],n] if middle else [0,n//2],exit=token in {'while_test','i_test','gap_test'} and raw['condition_result'] is False)
-    text='Cada insercion trabaja en un grupo por intervalo; sus valores pueden cambiar en intervalos posteriores. El arreglo muestra sus valores reales.'
-    if token=='gap_body_exit':text='Todos los grupos por el intervalo completado estan ordenados; sus valores aun pueden cambiar al reducir el intervalo.'
+    text='Cada inserción trabaja en un grupo por intervalo; sus valores pueden cambiar en intervalos posteriores. El arreglo muestra sus valores reales.'
+    if token=='gap_body_exit':text='Todos los grupos por el intervalo completado están ordenados; sus valores aún pueden cambiar al reducir el intervalo.'
     if token in {'shift','j_subtract'}:text+=' El duplicado provisional conserva el valor pendiente en el local int temporal.'
     frame['invariant']={'text':text,'indices':raw['shell_context']['group'],'holds':True};return frame

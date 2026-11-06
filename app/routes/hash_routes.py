@@ -4,24 +4,36 @@ from __future__ import annotations
 
 from typing import Any
 
-from copy import deepcopy
 import hashlib
 import json
 
 from flask import Blueprint, abort, jsonify, render_template, request, session
 
+from app.domain.hash.snapshot_pool import compact_hash_trace
 from app.services.hash_help_service import HashHelpService
 from app.services.hash_structure_service import HashStructureService
 from app.services import hash_journal_service
-from app.services.session_service import SessionService, SESSION_KEY
+from app.services.session_service import SessionService, SESSION_KEY, SessionHistoryLimitError
 
 hash_bp = Blueprint("hash", __name__, url_prefix="/hash")
 
 
-def _read_record(session_key):
+@hash_bp.before_request
+def _validate_json_body() -> Any:
+    """Reject malformed/non-object payloads before any session state is read."""
+    if request.endpoint in {'hash.operate_structure', 'hash.compare_capacities'}:
+        if not isinstance(request.get_json(silent=True), dict):
+            return jsonify(success=False, message="El cuerpo enviado debe ser un objeto JSON válido."), 400
+    return None
+
+
+def _read_record(session_key, *, include_checkpoint=False):
     # Hash suspension must inspect even legacy records without migrating storage.
     raw = session.get(SESSION_KEY, {})
-    record, _ = SessionService._record(raw.get(session_key, []) if isinstance(raw, dict) else [])
+    stored = raw.get(session_key, []) if isinstance(raw, dict) else []
+    if isinstance(stored, dict) and not include_checkpoint:
+        stored = {**stored, "checkpoint": None}
+    record, _ = SessionService._record(stored)
     return record
 
 
@@ -57,10 +69,10 @@ def structure_page(structure_id: str) -> str:
 
     model["main_c"] = hash_journal_service.get_main(session_key, history)
     model['console_output'] = hash_journal_service.get_stdout(session_key, history)
-    checkpoint = _read_record(session_key)["checkpoint"]
+    checkpoint = _read_record(session_key, include_checkpoint=True)["checkpoint"]
     digest = hashlib.sha256(json.dumps(history, sort_keys=True).encode()).hexdigest()
     if not model["visual_state"].get("suspended") and checkpoint and checkpoint.get("schema") == "hash-trace/v1" and checkpoint.get("history_digest") == digest:
-        model["execution_trace"] = deepcopy(checkpoint.get("trace"))
+        model["execution_trace"] = checkpoint.get("trace")
     help_data = HashHelpService.get_structure_help(structure_id)
     return render_template(
         "hash/structure.html",
@@ -79,9 +91,9 @@ def operate_structure(structure_id: str) -> Any:
     payload = body.get("payload", {})
 
     if not operation_name:
-        return jsonify({"success": False, "message": "Debes seleccionar una operacion."}), 400
+        return jsonify({"success": False, "message": "Debes seleccionar una operación."}), 400
     if not isinstance(payload, dict):
-        return jsonify({"success": False, "message": "El payload enviado es invalido."}), 400
+        return jsonify({"success": False, "message": "El payload enviado es inválido."}), 400
 
     try:
         result = HashStructureService.execute_operation(
@@ -93,16 +105,26 @@ def operate_structure(structure_id: str) -> Any:
     except KeyError:
         return jsonify({"success": False, "message": "La estructura solicitada no existe."}), 404
 
+    try:
+        SessionService.validate_history_capacity(result["history"], history)
+    except SessionHistoryLimitError as error:
+        previous = HashStructureService.get_view_model(structure_id, history)
+        return jsonify(success=False, preserve_session=True, message=str(error),
+                       history=history, visual_state=previous["visual_state"],
+                       main_c=hash_journal_service.get_main(session_key, history)), 409
+
     if result.get("preserve_session"):
         result["main_c"] = hash_journal_service.get_main(session_key, history)
         return jsonify(result), 400
     result["main_c"] = hash_journal_service.record_journal(session_key, history, result["history"], operation_name, payload, result)
+    if result.get("execution_trace"):
+        result["execution_trace"] = compact_hash_trace(result["execution_trace"])
     SessionService.save_history(session_key, result["history"])
     persisted_history = _read_record(session_key)["history"]
     if persisted_history == result["history"] and result.get("execution_trace"):
         SessionService.save_checkpoint(session_key, {"schema": "hash-trace/v1",
             "history_digest": hashlib.sha256(json.dumps(persisted_history, sort_keys=True).encode()).hexdigest(),
-            "trace": deepcopy(result["execution_trace"])})
+            "trace": result["execution_trace"]})
     return jsonify(result), (200 if result["success"] else 400)
 
 

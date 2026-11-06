@@ -97,7 +97,7 @@ def test_hash_help_and_page_cover_comparison_accessibility_and_export(client) ->
         assert f'id="{element_id}"' in page
     assert "hash-compare-controls" not in page
     help_page = client.get("/help/hash/hash_table").get_data(as_text=True)
-    for label in ("Guía de aprendizaje", "Capacidad fija", "Glosario", "Guía docente", "Teclado"):
+    for label in ("Cómo razonar sobre el algoritmo", "Capacidad del visualizador frente a capacidad del C", "Glosario: palabras de esta guía", "Qué observar · tres pasos", "Teclado"):
         assert label in help_page
     source = Path("static/js/hash.js").read_text(encoding="utf-8")
     for token in ("exportVisualStateAsJpg", "hash-learning-summary/v1"):

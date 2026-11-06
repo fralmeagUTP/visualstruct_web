@@ -12,33 +12,33 @@ class SortingHelpService:
     """Serve educational texts for sorting."""
 
     _MODULE_HELP = {
-        "title": "Ayuda del modulo de metodos de ordenamiento",
+        "title": "Ayuda del módulo de métodos de ordenamiento",
         "description": (
-            "Este modulo interpreta algoritmos de ordenamiento del TAD en C sobre arreglos de enteros. "
-            "Puedes ejecutar en modo rapido (resultado final) o paso a paso (traza didactica completa)."
+            "Este módulo interpreta algoritmos de ordenamiento del TAD en C sobre arreglos de enteros. "
+            "Puedes ejecutar en modo rápido (resultado final) o paso a paso (traza didáctica completa)."
         ),
         "tips": [
             "Primero crea un arreglo manual o genera uno aleatorio.",
-            "En Resultados de ejecucion abre el historial en modo tecnico: muestra y descarga main.c con el C/H del TAD. Compila main.c junto a tad_ordenamiento.c; los aleatorios se materializan y los runs repetidos se conservan.",
+            "En Resultados de ejecución abre el historial en modo técnico: muestra y descarga main.c con el C/H del TAD. Compila main.c junto a tad_ordenamiento.c; los aleatorios se materializan y los runs repetidos se conservan.",
             "Luego selecciona el algoritmo y usa Ejecutar operación.",
             "Activa Paso a paso antes de ejecutar y usa Paso anterior/Siguiente paso para validar comparaciones y movimientos.",
             "Con Paso a paso desactivado, Ejecutar operación muestra directamente el resultado final.",
-            "El resultado final debe ser identico entre modo rapido y ultimo paso interpretado.",
+            "El resultado final debe ser idéntico entre modo rápido y último paso interpretado.",
         ],
     }
 
     _ALGO_SUMMARY: dict[str, str] = {
         "intercambio": "Compara cada par (i, j) y permuta cuando encuentra desorden.",
-        "seleccion": "Busca el minimo del tramo no ordenado y lo coloca en la posicion actual.",
+        "seleccion": "Busca el mínimo del tramo no ordenado y lo coloca en la posición actual.",
         "insercion": "Inserta cada elemento en su lugar desplazando mayores hacia la derecha.",
         "burbuja": "Compara adyacentes y burbujea los mayores hacia el final en cada pasada.",
-        "shell": "Generaliza insercion usando saltos (gaps) decrecientes hasta 1.",
+        "shell": "Generaliza inserción usando saltos (gaps) decrecientes hasta 1.",
         "quicksort": "Particiona por pivote y ordena recursivamente subarreglos.",
         "mergesort": "Divide recursivamente y fusiona subarreglos ordenados usando auxiliar.",
-        "heapsort": "Construye max-heap y extrae repetidamente la raiz al final del arreglo.",
+        "heapsort": "Construye max-heap y extrae repetidamente la raíz al final del arreglo.",
         "counting_sort": "Cuenta ocurrencias por rango de valores y reconstruye el arreglo.",
         "binsort": "En este TAD delega en counting sort.",
-        "radixsort": "Ordena por digitos (LSD) y maneja negativos separando grupos.",
+        "radixsort": "Ordena por dígitos (LSD) y maneja negativos separando grupos.",
     }
 
     @staticmethod
@@ -60,14 +60,14 @@ class SortingHelpService:
         ops = [item["id"] for item in SORTING_ALGORITHMS]
         ops.extend(["imprimir_arreglo", "copiar_arreglo", "probar_algoritmo_void", "probar_algoritmo_int"])
         pending = [
-            "El SDD lista como candidatos burbuja/seleccion/insercion/shell/merge/quick/heap.",
-            "El TAD real tambien incluye intercambio, counting sort, binsort y radixsort.",
+            "El SDD lista como candidatos burbuja/selección/inserción/shell/merge/quick/heap.",
+            "El TAD real también incluye intercambio, counting sort, binsort y radixsort.",
         ]
         return {
-            "title": "Metodos de Ordenamiento",
+            "title": "Métodos de Ordenamiento",
             "summary": (
-                "Arreglo lineal de enteros ordenado mediante metodos clasicos del TAD C. "
-                "La simulacion resalta comparaciones, intercambios/movimientos, pivote, rangos y auxiliares."
+                "Arreglo lineal de enteros ordenado mediante métodos clásicos del TAD C. "
+                "La simulación resalta comparaciones, intercambios/movimientos, pivote, rangos y auxiliares."
             ),
             "supported_operations": ops,
             "supported_algorithms": [

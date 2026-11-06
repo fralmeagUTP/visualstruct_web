@@ -965,7 +965,7 @@ function formatGraphResultBody(state) {
     return (
       "<p><strong>Resultado:</strong> Grafo aleatorio generado correctamente.</p>" +
       "<div class=\"viz-path-steps\">" +
-      `<p>Vertices creados: ${gEscape(verticesCount)}</p>` +
+      `<p>Vértices creados: ${gEscape(verticesCount)}</p>` +
       `<p>Aristas generadas: ${gEscape(edgesCount)}</p>` +
       `<p>Semilla usada: ${gEscape(seed)}</p>` +
       "</div>"
@@ -1014,7 +1014,7 @@ function renderGraphState(state, container, simulation, traceDebug, presentation
   const imageViewport={left:oldStage?.scrollLeft||0,top:oldStage?.scrollTop||0};
   const metadata = state.metadata || {};
   const graphType = state.directed ? "Dirigido" : "No dirigido";
-  const weighted = state.weighted ? "Si" : "No";
+  const weighted = state.weighted ? "Sí" : "No";
 
   let html = "";
   html += "<div class=\"viz-canvas\">";
@@ -1249,8 +1249,8 @@ function graphCapacityError(controls, operationName, payload) {
   const limit = Number(controls.dataset.vertexLimit || 15);
   const nodes = window.GRAPH_VIEW_MODEL?.visual_state?.nodes || [];
   const ids = new Set(nodes.map(node => String(Number(node.id))));
-  const message = `El limite educativo es de ${limit} vertices. No se modifico el grafo ni el historial.`;
-  if (nodes.length > limit && (["insert_vertex", "insert_edge"].includes(operationName) || operationName.startsWith("run_"))) return message + " La sesion anterior conserva todos sus datos; elimina vertices o limpia el grafo para volver al limite.";
+  const message = `El límite educativo es de ${limit} vértices. No se modificó el grafo ni el historial.`;
+  if (nodes.length > limit && (["insert_vertex", "insert_edge"].includes(operationName) || operationName.startsWith("run_"))) return message + " La sesión anterior conserva todos sus datos; elimina vértices o limpia el grafo para volver al límite.";
   if (operationName === "generate_random_graph" && Number(payload.vertices_count) > limit) return message;
   const fields = operationName === "insert_vertex" ? ["vertex"] : operationName === "insert_edge" ? ["origin", "target"] : [];
   if (fields.length) {
@@ -1544,7 +1544,7 @@ function initGraphPage(model) {
   renderGraphHistory(pageState.actionHistory, historyBox, model.didactic, model.main_c);
   renderGraphState(pageState.graphState, visualState, pageState.simulation, null, {operation:getTargetSelection()?.operation?.name});
   const capacityPolicy = gById("graph-capacity-policy");
-  if (capacityPolicy && pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)) capacityPolicy.textContent = "Sesion anterior: se conservan todos los vertices. Elimina vertices o limpia para volver al limite de 15; las inserciones y algoritmos estan bloqueados mientras lo supere.";
+  if (capacityPolicy && pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)) capacityPolicy.textContent = "Sesión anterior: se conservan todos los vértices. Elimina vértices o limpia para volver al límite de 15; las inserciones y algoritmos están bloqueados mientras lo supere.";
 
   if (modeSelect) {
     modeSelect.value = pageState.graphState && pageState.graphState.directed ? "true" : "false";
@@ -1861,8 +1861,8 @@ function initGraphPage(model) {
   function repaint() {
     const policy = gById("graph-capacity-policy");
     if (policy) policy.textContent = pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)
-      ? "Sesion anterior: se conservan todos los vertices. Elimina vertices o limpia para volver al limite de 15; las inserciones y algoritmos estan bloqueados mientras lo supere."
-      : "Limite educativo: 15 vertices. No se truncan grafos ni se cambia el C descargable.";
+      ? "Sesión anterior: se conservan todos los vértices. Elimina vértices o limpia para volver al límite de 15; las inserciones y algoritmos están bloqueados mientras lo supere."
+      : "Límite educativo: 15 vértices. No se truncan grafos ni se cambia el C descargable.";
     renderGraphState(pageState.graphState, visualState, pageState.simulation, pageState.finalTraceDebug, {operation:pageState.lastTraceOperation || getTargetSelection()?.operation?.name,pending:pageState.traceTotalSteps>0 && pageState.traceCursor<pageState.traceTotalSteps-1});
     refreshSimulationStatus();
   }

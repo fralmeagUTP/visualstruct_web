@@ -164,7 +164,7 @@ class StructureService:
                 "default_operation": (
                     "/* Codigo C no disponible para esta operacion en docs/tads_C. */"
                 ),
-                "code_title": "Codigo C",
+                "code_title": "Código C",
             }
         return PseudocodeService.get_structure_data(structure_id)
 

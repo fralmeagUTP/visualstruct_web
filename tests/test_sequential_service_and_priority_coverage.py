@@ -45,7 +45,7 @@ def test_structure_service_didactic_content_c_first_fallback(monkeypatch) -> Non
     )
 
     data = StructureService._didactic_content("stack")
-    assert data["code_title"] == "Codigo C"
+    assert data["code_title"] == "Código C"
     assert "no disponible" in data["default_operation"].lower()
 
 

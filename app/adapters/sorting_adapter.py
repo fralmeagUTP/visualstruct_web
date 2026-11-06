@@ -44,7 +44,7 @@ class SortingAdapter(BaseAdapter):
         self._counting_allocator = None
         self._array: list[int] = []
         self._algorithm_id: str = "burbuja"
-        self._last_operation: dict[str, Any] = {"name": "create", "status": "success", "message": "Modulo inicializado."}
+        self._last_operation: dict[str, Any] = {"name": "create", "status": "success", "message": "Módulo inicializado."}
         self._last_result: dict[str, Any] | None = None
         self._last_trace: dict[str, Any] | None = None
         self.create()
@@ -58,7 +58,7 @@ class SortingAdapter(BaseAdapter):
         self._last_operation = {
             "name": "create",
             "status": "success",
-            "message": "Modulo de ordenamiento listo.",
+            "message": "Módulo de ordenamiento listo.",
         }
 
     def _set_operation(self, name: str, message: str, success: bool = True) -> None:
@@ -77,24 +77,24 @@ class SortingAdapter(BaseAdapter):
                 for value in raw:
                     out.append(int(str(value).strip()))
             except (TypeError, ValueError) as error:
-                raise ValueError("Cada posicion del arreglo debe contener un entero.") from error
+                raise ValueError("Cada posición del arreglo debe contener un entero.") from error
             return out
         text = BaseAdapter._require_text(payload, "values", "valores")
         raw_items = text.split(",")
         if any(not item.strip() for item in raw_items):
-            raise ValueError("Cada posicion del arreglo debe contener un entero.")
+            raise ValueError("Cada posición del arreglo debe contener un entero.")
         items = [item.strip() for item in raw_items]
         if not items:
-            raise ValueError("Debes ingresar al menos un numero en el arreglo.")
+            raise ValueError("Debes ingresar al menos un número en el arreglo.")
         try:
             return [int(item) for item in items]
         except ValueError as error:
-            raise ValueError("Cada posicion del arreglo debe contener un entero.") from error
+            raise ValueError("Cada posición del arreglo debe contener un entero.") from error
 
     @staticmethod
     def _validate_values(values: list[int]) -> None:
         if not values:
-            raise ValueError("El arreglo no puede estar vacio.")
+            raise ValueError("El arreglo no puede estar vacío.")
         if len(values) > SortingAdapter._MAX_SIZE:
             raise ValueError(f"El arreglo no puede superar {SortingAdapter._MAX_SIZE} elementos.")
         if any(value < SortingAdapter._C_INT_MIN or value > SortingAdapter._C_INT_MAX for value in values):
@@ -118,11 +118,11 @@ class SortingAdapter(BaseAdapter):
     ) -> dict[str, Any]:
         """Generate didactic random array."""
         if size <= 0:
-            raise ValueError("El tamano del arreglo debe ser mayor a 0.")
+            raise ValueError("El tamaño del arreglo debe ser mayor a 0.")
         if size > self._MAX_SIZE:
-            raise ValueError(f"El tamano maximo permitido es {self._MAX_SIZE}.")
+            raise ValueError(f"El tamaño máximo permitido es {self._MAX_SIZE}.")
         if min_value > max_value:
-            raise ValueError("El valor minimo no puede ser mayor al maximo.")
+            raise ValueError("El valor mínimo no puede ser mayor al máximo.")
         self._validate_values([min_value, max_value])
         effective_seed = seed if seed is not None else random.randint(1, 1_000_000_000)
         rng = random.Random(effective_seed)
@@ -225,7 +225,7 @@ class SortingAdapter(BaseAdapter):
         if self._algorithm_id in {"counting_sort", "binsort", "radixsort"}:
             from app.services.counting_trace_service import BUILD_SLOTS
             if not BUILD_SLOTS.acquire(timeout=30):
-                raise ValueError("Counting esta ocupado; vuelve a intentar la ejecucion.")
+                raise ValueError("Counting está ocupado; vuelve a intentar la ejecución.")
             try:
                 run_result = interpreter.run()
             except SortingExecutionError as error:
@@ -370,7 +370,7 @@ class SortingAdapter(BaseAdapter):
             "success": True,
             "mutates": True,
             "message": "Ordenamiento ejecutado correctamente.",
-            "code_title": "Codigo C",
+            "code_title": "Código C",
             "source_code": source_code,
             "steps": execution_steps,
             "final_state": final_state,
@@ -399,12 +399,12 @@ class SortingAdapter(BaseAdapter):
         if direction == "prev":
             direction = "previous"
         if direction not in {"next", "previous"}:
-            raise ValueError("La direccion del paso debe ser 'next' o 'previous'.")
+            raise ValueError("La dirección del paso debe ser 'next' o 'previous'.")
         trace_result = self.run("step_by_step", source_code=source_code)
         trace = trace_result["execution_trace"]
         steps = trace.get("steps", [])
         if not steps:
-            raise ValueError("No hay pasos disponibles para esta ejecucion.")
+            raise ValueError("No hay pasos disponibles para esta ejecución.")
         next_cursor = cursor + 1 if direction == "next" else cursor - 1
         next_cursor = max(0, min(next_cursor, len(steps) - 1))
         current = steps[next_cursor]
@@ -443,7 +443,7 @@ class SortingAdapter(BaseAdapter):
         if operation_name == "reset":
             self.reset()
             return {"message": "Estado de ordenamiento reiniciado correctamente."}
-        raise SortingExecutionError(f"Operacion no soportada: {operation_name}.")
+        raise SortingExecutionError(f"Operación no soportada: {operation_name}.")
 
     def to_visual_state(self) -> dict[str, Any]:
         """Return visual state for frontend."""
@@ -493,9 +493,9 @@ class SortingAdapter(BaseAdapter):
                 "label": "Generar arreglo aleatorio",
                 "mutates": True,
                 "inputs": [
-                    {"name": "size", "label": "Tamano", "type": "number"},
-                    {"name": "min_value", "label": "Minimo", "type": "number"},
-                    {"name": "max_value", "label": "Maximo", "type": "number"},
+                    {"name": "size", "label": "Tamaño", "type": "number"},
+                    {"name": "min_value", "label": "Mínimo", "type": "number"},
+                    {"name": "max_value", "label": "Máximo", "type": "number"},
                 ],
             },
             {
@@ -512,10 +512,10 @@ class SortingAdapter(BaseAdapter):
             },
             {
                 "name": "step",
-                "label": "Paso de ejecucion",
+                "label": "Paso de ejecución",
                 "mutates": False,
                 "inputs": [
-                    {"name": "direction", "label": "Direccion", "type": "text"},
+                    {"name": "direction", "label": "Dirección", "type": "text"},
                     {"name": "cursor", "label": "Cursor", "type": "number"},
                 ],
             },
