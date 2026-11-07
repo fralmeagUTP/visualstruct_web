@@ -62,7 +62,18 @@ def test_all_13_tads_frames_are_source_mapped_continuous_and_causal(structure_id
     semantic = TraceEngine.validate_legacy_trace(trace)
     assert semantic
     assert trace["final_state"] == result["visual_state"]
-    if structure_id == "sorting":
+    if structure_id == "graph":
+        from _book_frame_oracle import assert_book_body
+        # Application/caller boundaries have no canonical C line; executed C
+        # still requires exact source/hash mapping and full state continuity.
+        assert_book_body(result)
+        assert trace["C_instruction_events"]
+        assert trace["steps"][0]["phase"] == "caller_prepare"
+        assert trace["steps"][-1]["phase"] == "api_publication"
+    elif structure_id == "hash_table":
+        from _hash_phase8_source_oracle import assert_phase8_hash_insert_source
+        assert_phase8_hash_insert_source(result)
+    elif structure_id == "sorting":
         assert_bubble_canonical_consumer(result, [3, 1, 2, 1])
     else:
         source_lines = trace["source_code"].splitlines()
@@ -175,15 +186,20 @@ def test_trace_size_latency_and_session_limits(app, client, record_property):
     record_property("rn_history_backend_roundtrip_and_reload", True)
 
     assert 0 < app.config["SESSION_MAX_HISTORY"] <= 300
-    # Exercise actual save_history with 301 entries without 301 algorithm calls.
-    history = [{"operation": "apilar", "payload": {"value": value}} for value in range(301)]
+    # The current policy rejects growth at capacity; it never truncates replay inputs.
+    history = [{"operation": "apilar", "payload": {"value": value}}
+               for value in range(app.config["SESSION_MAX_HISTORY"])]
     from flask import session
+    from app.services.session_service import SessionHistoryLimitError
     with app.test_request_context():
         SessionService.save_history("phase8-limit-probe", history)
-        assert SessionService.get_history("phase8-limit-probe") == history[-app.config["SESSION_MAX_HISTORY"]:]
+        oversized = [{"operation": "apilar", "payload": {"value": value}} for value in range(301)]
+        with pytest.raises(SessionHistoryLimitError):
+            SessionService.save_history("phase8-limit-probe", oversized)
+        assert SessionService.get_history("phase8-limit-probe") == history
         saved_response = app.response_class()
         app.session_interface.save_session(app, session, saved_response)
         cookie = saved_response.headers["Set-Cookie"].split(";", 1)[0]
     with app.test_request_context(headers={"Cookie": cookie}):
-        assert SessionService.get_history("phase8-limit-probe") == history[-app.config["SESSION_MAX_HISTORY"]:]
-    record_property("session_301_entries_truncated_to", app.config["SESSION_MAX_HISTORY"])
+        assert SessionService.get_history("phase8-limit-probe") == history
+    record_property("session_301_entries_rejected_without_truncation", True)

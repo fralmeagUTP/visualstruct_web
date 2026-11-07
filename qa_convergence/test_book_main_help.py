@@ -22,6 +22,25 @@ class BookGuide(unittest.TestCase):
  def test_other_shared_template_blocks_unchanged(self):
   old=(FROZEN/'templates/help/_operation_contracts.html').read_text();new=(ROOT/'templates/help/_operation_contracts.html').read_text()
   pattern=r'{% if structure_id == "graph" %}[\s\S]*?{% endif %}'
+  # The frozen checkpoint remains byte-identical. Later delivered guide edits
+  # are explicit here rather than silently replacing the historical fixture.
+  replacements = [
+   ('{# Documentary snapshot of current operation metadata; provenance: visible-eight-criteria-matrix-manual-low/current-option-source-inventory.json. #}', '<details><summary>Referencia de operaciones y datos de entrada</summary>'),
+   ('Existe vertice','Existe vértice'),('Cantidad de vertices','Cantidad de vértices'),
+   ('Insertar vertice','Insertar vértice'),('Listar vertices','Listar vértices'),
+   ('Eliminar vertice','Eliminar vértice'),('Vertice (entero)','Vértice (entero)'),
+   ('Clave (entero); Valor entero (entero); Simular fallo de malloc (texto)', 'Clave (entero); Valor entero (entero)'),
+   ('Listar items','Listar ítems'),('Tamano','Tamaño'),('Posicion','Posición'),
+   ('Minimo','Mínimo'),('Maximo','Máximo'),('Paso de ejecucion','Paso de ejecución'),
+   ('Direccion','Dirección'),
+   ('La API conserva <code>frente</code>. Estas operaciones no aparecen en el selector visible.', 'La API conserva <code>frente</code>. Esta operación no aparece en el selector visible.'),
+   ('Crear tabla recibe sólo capacidad positiva, como máximo INT_MAX, que permanece fija durante su vida;', 'La aplicación acepta de 1 a 128 buckets. El TAD C recibe una capacidad int positiva, limitada por INT_MAX y la memoria disponible; permanece fija durante su vida;'),
+   ('Reiniciar borra el estado del módulo.', 'Restablecer TAD (o Reiniciar, según el módulo) borra la estructura y su historial.'),
+   ('</section>','</section></details>'),
+  ]
+  for previous,current in replacements:
+   self.assertIn(previous,old)
+   old=old.replace(previous,current)
   self.assertEqual(re.sub(pattern,'GRAPH_BLOCK',old),re.sub(pattern,'GRAPH_BLOCK',new))
  def test_rendered_guide(self):
   with tempfile.TemporaryDirectory() as folder:

@@ -148,6 +148,20 @@ class TraceEngine:
                 if expected != observed:
                     raise TraceContractError(f"line_text no coincide con source_code en el paso {index}.")
 
+    @staticmethod
+    def _validate_caller_sources(trace: dict[str, Any], raw_steps: list[dict[str, Any]]) -> None:
+        """Apply the same separate-source check before either conversion path."""
+        for raw_step in raw_steps:
+            if not isinstance(raw_step, dict):
+                raise TypeError("Cada paso legado debe ser un diccionario.")
+            if raw_step.get("event_type") == "caller_printf":
+                caller = raw_step.get("instruction_event")
+                if not isinstance(caller, dict):
+                    raise TraceContractError("caller_printf requiere instruction_event explícito.")
+                caller_lines = str(trace.get("caller_source_code") or "").splitlines()
+                if caller.get("caller_line_text") not in caller_lines:
+                    raise TraceContractError("caller_line_text no coincide con caller_source_code.")
+
     @classmethod
     def validate_legacy_trace(cls, trace: dict[str, Any], *, copy_value=deepcopy) -> list[TraceStep]:
         """Validate a current public trace without mutating its JSON representation."""
@@ -165,6 +179,7 @@ class TraceEngine:
                 raise TraceContractError("steps debe ser una lista.")
             strategy = TraceStrategyRegistry.resolve(structure_id)
             strategy_name = strategy.family
+            cls._validate_caller_sources(trace, raw_steps)
             if LegacyTraceAdapter.round_trip(raw_steps, copy_value=copy_value) != raw_steps:
                 raise TraceContractError("La adaptación de compatibilidad modificó el esquema público.")
             steps = strategy.normalize_steps(raw_steps, copy_value=copy_value) if strategy.family == "graph" else strategy.normalize_steps(raw_steps)
@@ -222,6 +237,7 @@ class TraceEngine:
             cls.validate_legacy_trace(trace)
             return
         try:
+            cls._validate_caller_sources(trace, raw_steps)
             # All semantic conversion errors precede round-trip comparison,
             # exactly as in to_semantic's eager list conversion.
             for raw in raw_steps:

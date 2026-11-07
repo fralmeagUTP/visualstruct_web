@@ -1,0 +1,184 @@
+{
+  "source_zip_sha256": "0cd9e56da858a2b9df74ff1b61e8752b1ac7613dbe3363303835e99ad2300083",
+  "meaning": "Historical preimages and exact textual delta verified. This report is not authorization, historical approval, or a claim of runtime test success.",
+  "schema": "sorting-text-source-continuity/v1",
+  "modules": [
+    {
+      "path": "app/domain/sorting/shell_instructions.py",
+      "zip_member": "visualstruct_web-main/app/domain/sorting/shell_instructions.py",
+      "historical_sha256": "b69513305892a043e029eff8d7d8b49420e311e7158a2d1acf6911d911df4ba1",
+      "current_sha256": "28612b1820e76c7563e4c37ee5485333a8f7a972a7d7ed395b7f2913ac80052a",
+      "historical_hash_matches_frozen_manifest": true,
+      "differences_only_string_literal_diacritics": true,
+      "changed_literal_count": 9,
+      "changes": [
+        {
+          "ast_path": ".body[6].body[12].value.args[2].value",
+          "before": "Antes de llamar ordenar_shell; ninguna instruccion C ejecutada.",
+          "after": "Antes de llamar ordenar_shell; ninguna instrucción C ejecutada."
+        },
+        {
+          "ast_path": ".body[6].body[23].value.args[2].value",
+          "before": "Retornar validacion y retirar el scope del helper.",
+          "after": "Retornar validación y retirar el scope del helper."
+        },
+        {
+          "ast_path": ".body[6].body[25].body[2].value.args[2].value",
+          "before": "Retornar sin procesar entrada vacia.",
+          "after": "Retornar sin procesar entrada vacía."
+        },
+        {
+          "ast_path": ".body[6].body[25].orelse[1].value.args[2].value",
+          "before": "Asignar intervalo=n/2 con division entera size_t.",
+          "after": "Asignar intervalo=n/2 con división entera size_t."
+        },
+        {
+          "ast_path": ".body[6].body[25].orelse[2].body[8].body[8].body[8].value.args[2].value",
+          "before": "Asignar arreglo[j]=arreglo[j-intervalo]; duplicacion provisional, temporal conservado.",
+          "after": "Asignar arreglo[j]=arreglo[j-intervalo]; duplicación provisional, temporal conservado."
+        },
+        {
+          "ast_path": ".body[6].body[25].orelse[2].body[8].body[11].value.args[2].value",
+          "before": "Asignar arreglo[j]=temporal; completar esta insercion.",
+          "after": "Asignar arreglo[j]=temporal; completar esta inserción."
+        },
+        {
+          "ast_path": ".body[6].body[25].orelse[2].body[11].value.args[2].value",
+          "before": "Cerrar cuerpo del intervalo; retirar i. Los grupos por este intervalo estan ordenados.",
+          "after": "Cerrar cuerpo del intervalo; retirar i. Los grupos por este intervalo están ordenados."
+        },
+        {
+          "ast_path": ".body[8].body[12].value.value",
+          "before": "Cada insercion trabaja en un grupo por intervalo; sus valores pueden cambiar en intervalos posteriores. El arreglo muestra sus valores reales.",
+          "after": "Cada inserción trabaja en un grupo por intervalo; sus valores pueden cambiar en intervalos posteriores. El arreglo muestra sus valores reales."
+        },
+        {
+          "ast_path": ".body[8].body[13].body[0].value.value",
+          "before": "Todos los grupos por el intervalo completado estan ordenados; sus valores aun pueden cambiar al reducir el intervalo.",
+          "after": "Todos los grupos por el intervalo completado están ordenados; sus valores aún pueden cambiar al reducir el intervalo."
+        }
+      ],
+      "snapshot": "shell_instructions.py.snapshot"
+    },
+    {
+      "path": "app/domain/sorting/quicksort_instructions.py",
+      "zip_member": "visualstruct_web-main/app/domain/sorting/quicksort_instructions.py",
+      "historical_sha256": "ca82081fea5c768893062af935aab76f640c0fc60cdbb75a341d72b461ff1244",
+      "current_sha256": "c52a5b21f054016fef54ced423325b5d3c35b978c822bb9ff07bfcb2057f655f",
+      "historical_hash_matches_frozen_manifest": true,
+      "differences_only_string_literal_diacritics": true,
+      "changed_literal_count": 15,
+      "changes": [
+        {
+          "ast_path": ".body[6].body[11].body[4].value.args[2].value",
+          "before": "Entrar en una activacion recursiva; parametros int propios, caller suspendido.",
+          "after": "Entrar en una activación recursiva; parámetros int propios, caller suspendido."
+        },
+        {
+          "ast_path": ".body[6].body[11].body[7].body[7].value.args[2].value",
+          "before": "Evaluar el if i<=j despues de los scans.",
+          "after": "Evaluar el if i<=j después de los scans."
+        },
+        {
+          "ast_path": ".body[6].body[11].body[7].body[8].body[23].value.args[2].value",
+          "before": "Continuar en el caller despues del helper.",
+          "after": "Continuar en el caller después del helper."
+        },
+        {
+          "ast_path": ".body[6].body[11].body[7].body[8].body[25].value.args[2].value",
+          "before": "Ejecutar ++i despues de intercambiar.",
+          "after": "Ejecutar ++i después de intercambiar."
+        },
+        {
+          "ast_path": ".body[6].body[11].body[7].body[8].body[27].value.args[2].value",
+          "before": "Ejecutar --j despues de intercambiar; int admite -1.",
+          "after": "Ejecutar --j después de intercambiar; int admite -1."
+        },
+        {
+          "ast_path": ".body[6].body[11].body[10].body[2].value.args[2].value",
+          "before": "Retomar caller tras retirar la activacion izquierda.",
+          "after": "Retomar caller tras retirar la activación izquierda."
+        },
+        {
+          "ast_path": ".body[6].body[11].body[13].body[2].value.args[2].value",
+          "before": "Retomar caller tras retirar la activacion derecha.",
+          "after": "Retomar caller tras retirar la activación derecha."
+        },
+        {
+          "ast_path": ".body[6].body[11].body[16].value.args[2].value",
+          "before": "Retorno void recursivo; retirar solo locales de la activacion terminada.",
+          "after": "Retorno void recursivo; retirar solo locales de la activación terminada."
+        },
+        {
+          "ast_path": ".body[6].body[12].value.args[2].value",
+          "before": "Antes de llamar ordenar_quicksort; ninguna instruccion C ejecutada.",
+          "after": "Antes de llamar ordenar_quicksort; ninguna instrucción C ejecutada."
+        },
+        {
+          "ast_path": ".body[6].body[21].value.args[2].value",
+          "before": "Retornar validacion y retirar el helper.",
+          "after": "Retornar validación y retirar el helper."
+        },
+        {
+          "ast_path": ".body[6].body[23].body[1].value.args[2].value",
+          "before": "Retornar sin entrar al helper para entrada vacia.",
+          "after": "Retornar sin entrar al helper para entrada vacía."
+        },
+        {
+          "ast_path": ".body[6].body[23].orelse[2].value.args[2].value",
+          "before": "Retomar wrapper despues de la recursion.",
+          "after": "Retomar wrapper después de la recursión."
+        },
+        {
+          "ast_path": ".body[8].body[8].body[0].body[3].value.body.values[0].value",
+          "before": "retornar a activacion ",
+          "after": "retornar a activación "
+        },
+        {
+          "ast_path": ".body[8].body[12].body[2].value.orelse.orelse.value",
+          "before": "while particion",
+          "after": "while partición"
+        },
+        {
+          "ast_path": ".body[8].body[14].value.value",
+          "before": "Cada activacion conserva parametros y locales int propios; el pivote es su valor guardado, no el valor futuro de una celda. Solo el retorno final confirma todos los valores.",
+          "after": "Cada activación conserva parámetros y locales int propios; el pivote es su valor guardado, no el valor futuro de una celda. Solo el retorno final confirma todos los valores."
+        }
+      ],
+      "snapshot": "quicksort_instructions.py.snapshot"
+    },
+    {
+      "path": "app/domain/sorting/heapsort_instructions.py",
+      "zip_member": "visualstruct_web-main/app/domain/sorting/heapsort_instructions.py",
+      "historical_sha256": "1d5bac5b1f10447a35b5af96be222e3d26ef0535cec7c5ef113e325b2b076a1d",
+      "current_sha256": "437f20568cb16b60c6307fa739d51d44d8d6335965c249c343c21a7ad2b9a204",
+      "historical_hash_matches_frozen_manifest": true,
+      "differences_only_string_literal_diacritics": true,
+      "changed_literal_count": 4,
+      "changes": [
+        {
+          "ast_path": ".body[5].body[11].body[0].value.keywords[0].value.left.body.value",
+          "before": "for construccion",
+          "after": "for construcción"
+        },
+        {
+          "ast_path": ".body[5].body[11].body[0].value.keywords[0].value.left.orelse.value",
+          "before": "for extraccion",
+          "after": "for extracción"
+        },
+        {
+          "ast_path": ".body[5].body[13].value.right.value",
+          "before": ". Estado observado; la construccion parcial no certifica el heap global. El sufijo separado contiene solo extracciones terminadas.",
+          "after": ". Estado observado; la construcción parcial no certifica el heap global. El sufijo separado contiene solo extracciones terminadas."
+        },
+        {
+          "ast_path": ".body[5].body[14].body[0].value.value",
+          "before": " Duplicacion provisional; temporal conserva el valor pendiente de *b=temporal.",
+          "after": " Duplicación provisional; temporal conserva el valor pendiente de *b=temporal."
+        }
+      ],
+      "snapshot": "heapsort_instructions.py.snapshot"
+    }
+  ],
+  "source_archive": "visualstruct_web-main.zip"
+}

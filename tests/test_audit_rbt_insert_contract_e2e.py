@@ -1,5 +1,6 @@
 """Actual browser rejection/history/reload and downloaded C/H final caller cleanup."""
 import json,re
+from e2e_contract_helpers import console_stdout
 import pytest
 from test_audit_avl_main_e2e import avl_server
 from test_audit_rbt_queries_main_e2e import compile_main
@@ -11,9 +12,12 @@ def test_actual_range_rejection_and_final_owner_after_repeat_reload(avl_server,t
  with pytest.importorskip('playwright.sync_api').sync_playwright() as p:
   browser=p.chromium.launch();context=browser.new_context();page=context.new_page();errors=[];posts=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:posts.append(r.url) if r.method=='POST' else None)
   page.goto(avl_server+'/hierarchical/red_black',wait_until='networkidle');assert page.locator('#operation-select option').count()==7
+  before_request={}
+  snapshot="""()=>({counter:document.querySelector('#hier-sim-counter').textContent,visual:document.querySelector('#visual-state').textContent,active:[...document.querySelectorAll('#op-pseudocode .sim-active,#op-pseudocode .sim-done')].map(e=>e.dataset.line)})"""
   def op(name,value=None):
    page.select_option('#operation-select',name)
    if value is not None:page.locator('[name="value"]').fill(str(value))
+   before_request.clear();before_request.update(page.evaluate(snapshot))
    with page.expect_response(lambda r:r.url.endswith('/red_black/operate') and r.request.method=='POST') as response:page.click('#hier-sim-play')
    data=response.value.json();page.wait_for_function("()=>!document.querySelector('#hier-sim-play').disabled");return data
   expected='';allocated=0
@@ -27,13 +31,15 @@ def test_actual_range_rejection_and_final_owner_after_repeat_reload(avl_server,t
   history=None;state=None
   # Range rejection is rendered as application rejection, never as C execution.
   page.click('#hier-step-mode')
+  previous_stdout=console_stdout(page,'#hier-printf-console')
   for value in [-2147483649,2147483648]:
-   bad=op('insertar',value);assert not bad['success'];t=bad['execution_trace'];assert t['application_precondition_rejected'];assert '-2147483648' in bad['message'] and '2147483647' in bad['message'];assert len(t['steps'])==1
+   bad=op('insertar',value);assert not bad['success'];t=bad['execution_trace'];assert t['execution_started'] is False and t['mutates'] is False;assert '-2147483648' in bad['message'] and '2147483647' in bad['message'];assert t['steps']==[]
    if history is None:history=bad['history'];state=bad['visual_state']
    else:assert bad['history']==history and bad['visual_state']==state
-   assert page.locator('#hier-printf-console').text_content()==''
-   n=len(posts);page.click('#hier-sim-step');page.wait_for_function("()=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: 1/')");assert page.locator('#hier-printf-console').text_content()=='';assert 'Solicitud rechazada' in page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').inner_text()
-   page.click('#hier-sim-prev');page.wait_for_function("()=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: 0/')");assert page.locator('#hier-printf-console').text_content()=='' and len(posts)==n
+   assert console_stdout(page,'#hier-printf-console')==previous_stdout
+   assert page.locator('#message-box').text_content()==bad['message']
+   assert page.evaluate(snapshot)==before_request
+   assert 'Solicitud rechazada' not in page.locator('#op-pseudocode').text_content()
   mains=[];programs=[]
   for label in ['before','after']:
    main='\n'.join(page.locator('#action-history .didactic-history-main .code-line').all_text_contents()).replace('\u00a0','');mains.append(main)

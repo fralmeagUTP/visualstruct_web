@@ -14,4 +14,4 @@ def test_graph_main_actual_activation(controls40_page,tmp_path:Path,activation:s
  with page.expect_download() as got:
   if activation=='click':loc.click()
   else:loc.focus();assert loc.evaluate('(e)=>document.activeElement===e');loc.press('Enter')
- path=tmp_path/'main.c';got.value.save_as(path);source=path.read_text(encoding='utf-8-sig');assert 'int main(' in source and 'free(g.a)' in source and 'free(g.v)' in source
+ path=tmp_path/'main.c';got.value.save_as(path);source=path.read_text(encoding='utf-8-sig');assert 'int main(' in source and 'grafo_destruir(&g);' in source and 'Grafo g = grafo_crear();' in source

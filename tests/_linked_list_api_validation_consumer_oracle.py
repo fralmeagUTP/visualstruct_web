@@ -2,16 +2,18 @@
 import hashlib
 SOURCE_SHA="60243e196fe9a3627fc3aec328fa6b5e63bc42437aa1a953b47dbf01c76385ff"
 MESSAGE="El modo de inserción debe ser -1 (antes) o 0 (después)."
-def assert_linked_list_mode_validation(body,status,payload):
+HISTORICAL_MESSAGE="El modo de insercion debe ser -1 (antes) o 0 (despues)."
+def assert_linked_list_mode_validation(body,status,payload,*,historical=False):
+    expected_message=HISTORICAL_MESSAGE if historical else MESSAGE
     assert status==400 and body.get("success") is False
     assert payload=={"position":"1","relative":"1","value":"1"}
     trace=body.get("execution_trace");assert isinstance(trace,dict)
     assert trace.get("structure_id")=="linked_list" and trace.get("operation_name")=="insertar_elemento"
     assert trace.get("payload")==payload
     assert trace.get("success") is False and trace.get("execution_started") is False
-    assert trace.get("validation")=={"stage":"API","accepted":False,"message":MESSAGE}
+    assert trace.get("validation")=={"stage":"API","accepted":False,"message":expected_message}
     assert trace.get("steps")==[] and trace.get("hidden_positional_instruction_model") is True
-    assert body.get("message")==trace.get("message")==MESSAGE
+    assert body.get("message")==trace.get("message")==expected_message
     assert trace.get("caller_translation")=="Existing positional compatibility caller; separate from unchanged TAD C."
     assert hashlib.sha256(trace["source_code"].encode()).hexdigest()==SOURCE_SHA
     empty={"empty":True,"items":[],"kind":"linear","size":0,"title":"Lista enlazada"}

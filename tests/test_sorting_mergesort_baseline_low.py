@@ -1,5 +1,7 @@
 """Merge LOW results/contracts plus permanent causal failures; no xfail or weakened gates."""
 from pathlib import Path
+from _audit_sorting_c_source import assert_source_transport_identity
+from tests._sorting_text_source_contract import assert_sorting_text_source_continuity
 import json,hashlib
 import pytest
 from _audit_mergesort_baseline import audit,CASES,UI_CASES
@@ -34,10 +36,10 @@ def test_raw_first_allocation_failure_is_error_without_mutation(observed):
  assert all(x['event']['allocations']==x['event']['frees']==0 and not x['event']['aux_live'] for x in rows)
 def test_download_C_H_Doxygen_six_closed_modules_preserved(observed):
  out,_=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
- for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
+ for ext in ['c','h']:assert_source_transport_identity((audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes(),(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes())
  h=json.loads((audit_input_path(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-quicksort-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
  for name in ['intercambio','seleccion','insercion','burbuja','shell','quicksort']:
-  rel=f'app/domain/sorting/{name}_instructions.py';assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==h[rel]
+  rel=f'app/domain/sorting/{name}_instructions.py';assert_sorting_text_source_continuity(ROOT,rel,h[rel])
 def test_repeated_merge_history_GET_does_not_redispatch(monkeypatch):
  from app.adapters.sorting_adapter import SortingAdapter
  c=create_app().test_client();c.post('/api/ordenamiento/create-array',json={'values':[4,3,2,1]});a=c.post('/api/ordenamiento/run',json={'algorithm_id':'mergesort','mode':'fast'}).get_json();b=c.post('/api/ordenamiento/run',json={'algorithm_id':'mergesort','mode':'fast'}).get_json();assert a['success'] and b['success'] and sum(e['operation']=='run' for e in b['history'])==2

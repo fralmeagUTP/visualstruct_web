@@ -371,7 +371,7 @@ def test_avl_rotation_debug_marks_unbalanced_node_and_rotation_message() -> None
     rebalance_steps = [dbg for dbg in debug_steps if dbg.get("stage") in {"pre_rebalance", "rebalance"}]
     assert rebalance_steps
     assert any(str(step.get("unbalanced_key", "")) == "30" for step in rebalance_steps)
-    assert any("Rotacion AVL LL" in str(step.get("rotation_message", "")) for step in rebalance_steps)
+    assert any("Rotación AVL LL" in str(step.get("rotation_message", "")) for step in rebalance_steps)
 
 
 def test_avl_insert_without_rotation_does_not_emit_rotation_hint() -> None:

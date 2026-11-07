@@ -1,3 +1,6 @@
+from e2e_hierarchical_contract import live_call_count
+from e2e_hierarchical_contract import assert_stack_records
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Actual RBT insertion views/replay; raw failure cases use an explicit test-only route."""
 import copy,json,threading
 import pytest
@@ -28,20 +31,20 @@ def test_rbt_delete_actual_views_native_replay(tmp_path,rbt_delete_instruction_n
    data=response.value.json();assert data['success'];trace=data['execution_trace'];steps=trace['steps'];events=[e for e in report['events'] if e['case']==case]
    for step,event in pairs(trace,events,report):check(step,event)
    assert set(page.locator('#hier-function-list button').all_text_contents())=={'colorOf','rbt_rotar_dcha','rbt_rotar_izda','transplantar','minimo','arreglarEliminacion','rbt_eliminar','ejecutar_eliminacion'}
-   count=len(posts);pending='Eliminacion preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending;rows=page.evaluate(COLLECT,{'steps':len(steps)})
+   count=len(posts);pending='Eliminación preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending;rows=page.evaluate(COLLECT,{'steps':len(steps)})
    for row in rows:
     i=row['index'];ped=steps[i]['pedagogy'] if i>=0 else steps[0]['pedagogy']['initial_frame'];st=ped['memory_state'];assert row['state']==st
     if ped['condition']:assert ped['condition']['substituted'] in row['conditionText'] and str(ped['condition']['result']).lower() in row['conditionText']
     assert row['stdout']==st['console_stdout'];assert row['message']==(data['message'] if i==len(steps)-1 else pending)
-    assert row['nodes']==[{k:n[k] for k in ['id','value','left','right','status']} for n in st['heap_nodes']]
+    assert same_nodes(row['nodes'],[{k:n[k] for k in ['id','value','left','right','status']} for n in st['heap_nodes']])
     assert row['svgNodes']==[{'id':n['id'],'parent':n['parent'],'color':n['color'],'initialized':n['initialized'],'red':n['color']=='RED','black':n['color']=='BLACK'} for n in st['heap_nodes']]
     live={n['id'] for n in st['heap_nodes']};edges=[{'from':n['id'],'to':n[side],'side':side} for n in st['heap_nodes'] for side in ['left','right'] if n[side] in live or n[side]=='NULL'];assert sorted((e['from'],e['side'],e['to']) for e in row['svgEdges'])==sorted((e['from'],e['side'],e['to']) for e in edges);assert row['nulls']==sum(e['to']=='NULL' for e in edges)
     assert sorted(x for x in row['treeValues'] if x!='NULL')==sorted(str(n['value']) for n in st['heap_nodes'])
-    for n,card in zip(st['heap_nodes'],row['cards']):assert 'padre: '+n['parent'] in card and 'color: '+n['color'] in card
+    for n,card in memory_cards(row,st['heap_nodes']):assert 'padre: '+n['parent'] in card and 'color: '+color_label(n['color']) in card
     assert row['aliases']==[{'frame':f['id'],'name':name,'type':'int' if name in ['key','es_izq'] else 'char' if name=='y_color_original' else 'RBT *' if name in ['arbol','root','r'] else 'RBT','target':str(v)} for f in st['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items()]
     assert row['retired']==[{'id':n['id'],'value':n['value']} for n in st['freed_nodes']]
     assert row['unusable']==[{'frame':f['id'],'name':name,'target':str(v)} for f in st['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items() if 'valor indeterminado' in str(v)]
-    assert row['variables']==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']];assert row['stack']==len(ped['call_stack'])
+    assert row['variables']==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']];assert_stack_records(row['stackRecords'],ped);assert row['stack']==live_call_count(ped)
     if i>=0:assert steps[i]['line_index'] in row['highlighted']
     assert st['validation'] is None  and not ped['return_propagation']['reconnects_subtree']
    assert len(posts)==count and not errors

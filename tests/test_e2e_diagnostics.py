@@ -43,38 +43,42 @@ def test_runner_records_timeout_and_exit1_without_token_password_or_raw_artifact
 
 
 def test_checkpoint_never_reads_longrepr_and_drops_arbitrary_details(capsys, monkeypatch, tmp_path):
-    from scripts import e2e_diagnostics as diagnostics
-    class UnreadableError:
-        def __str__(self): raise RuntimeError("longrepr must not be read")
-    sentinel = "SYNTHETIC_" + "SECRET_SENTINEL"
-    monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS", "1")
-    monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", str(tmp_path))
-    diagnostics.pytest_runtest_logreport(SimpleNamespace(when="call", outcome="failed", failed=True,
-                                                        longrepr=UnreadableError()))
-    diagnostics.checkpoint("manual_navigation", token=sentinel, password=sentinel, counter=sentinel,
-                           path="/" + sentinel, stack=[{"file": sentinel, "line": 1}], error=sentinel)
-    output = capsys.readouterr().out
-    persisted = (tmp_path / "probe.jsonl").read_text()
-    leaked = sentinel in output or sentinel in persisted
-    assert not leaked
-    rows = [json.loads(line) for line in persisted.splitlines()]
-    assert rows[0]["outcome"] == "failed" and rows[0]["phase"] == "call"
-    assert rows[0]["error_category"] == "failure"
-    assert rows[1]["path"] == "other" and rows[1]["stack"] == []
-    assert "token" not in rows[1] and "password" not in rows[1] and "error" not in rows[0]
+    # Restore globals before pytest call-report hooks, not fixture teardown.
+    with monkeypatch.context() as monkeypatch:
+        from scripts import e2e_diagnostics as diagnostics
+        class UnreadableError:
+            def __str__(self): raise RuntimeError("longrepr must not be read")
+        sentinel = "SYNTHETIC_" + "SECRET_SENTINEL"
+        monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS", "1")
+        monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", str(tmp_path))
+        diagnostics.pytest_runtest_logreport(SimpleNamespace(when="call", outcome="failed", failed=True,
+                                                            longrepr=UnreadableError()))
+        diagnostics.checkpoint("manual_navigation", token=sentinel, password=sentinel, counter=sentinel,
+                               path="/" + sentinel, stack=[{"file": sentinel, "line": 1}], error=sentinel)
+        output = capsys.readouterr().out
+        persisted = (tmp_path / "probe.jsonl").read_text()
+        leaked = sentinel in output or sentinel in persisted
+        assert not leaked
+        rows = [json.loads(line) for line in persisted.splitlines()]
+        assert rows[0]["outcome"] == "failed" and rows[0]["phase"] == "call"
+        assert rows[0]["error_category"] == "failure"
+        assert rows[1]["path"] == "other" and rows[1]["stack"] == []
+        assert "token" not in rows[1] and "password" not in rows[1] and "error" not in rows[0]
 
 
 def test_approved_test_identity_survives_without_parameter_data(capsys, monkeypatch, tmp_path):
-    from scripts import e2e_diagnostics as diagnostics
-    monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS", "1")
-    monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", str(tmp_path))
-    nodeid = sorted(diagnostics._TEST_IDS)[0]
-    sentinel = "SYNTHETIC_" + "SECRET_SENTINEL"
-    diagnostics.pytest_runtest_logstart(nodeid + "[" + sentinel + "]", None)
-    diagnostics.checkpoint("server_shutdown_start")
-    diagnostics.pytest_runtest_logfinish(nodeid, None)
-    rows = [json.loads(line) for line in (tmp_path / "probe.jsonl").read_text().splitlines()]
-    assert all(row["test"] == nodeid for row in rows)
-    assert rows[1]["stage"] == "server_shutdown_start"
-    output = capsys.readouterr().out
-    assert sentinel not in output
+    # Restore globals before pytest call-report hooks, not fixture teardown.
+    with monkeypatch.context() as monkeypatch:
+        from scripts import e2e_diagnostics as diagnostics
+        monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS", "1")
+        monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR", str(tmp_path))
+        nodeid = sorted(diagnostics._TEST_IDS)[0]
+        sentinel = "SYNTHETIC_" + "SECRET_SENTINEL"
+        diagnostics.pytest_runtest_logstart(nodeid + "[" + sentinel + "]", None)
+        diagnostics.checkpoint("server_shutdown_start")
+        diagnostics.pytest_runtest_logfinish(nodeid, None)
+        rows = [json.loads(line) for line in (tmp_path / "probe.jsonl").read_text().splitlines()]
+        assert all(row["test"] == nodeid for row in rows)
+        assert rows[1]["stage"] == "server_shutdown_start"
+        output = capsys.readouterr().out
+        assert sentinel not in output

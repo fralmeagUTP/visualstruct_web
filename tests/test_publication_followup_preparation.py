@@ -33,33 +33,37 @@ def test_doxygen_uses_path_and_missing_tool_remains_error(monkeypatch,tmp_path):
     with pytest.raises(RuntimeError): tools.resolve_doxygen()
 
 def test_safe_failure_and_live_record_never_use_private_details(monkeypatch,tmp_path,capsys):
-    sentinel="SYNTHETIC_SECRET_NOT_FOR_ARTIFACTS"
-    class Unreadable:
-        def __str__(self):raise AssertionError("private exception text must not be read")
-    report=SimpleNamespace()
-    info=SimpleNamespace(type=FileNotFoundError,value=Unreadable(),traceback=[SimpleNamespace(path=ROOT/"tests/test_publication_followup_preparation.py",lineno=10),SimpleNamespace(path=tmp_path/sentinel,lineno=11)])
-    hook=diagnostics.pytest_runtest_makereport(None,SimpleNamespace(excinfo=info));next(hook)
-    with pytest.raises(StopIteration):hook.send(SimpleNamespace(get_result=lambda:report))
-    assert report.publication_failure=={"exception_kind":"FileNotFoundError","repo_locations":[{"file":"tests/test_publication_followup_preparation.py","line":11}]}
-    monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR",str(tmp_path));monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS_NAME","probe")
-    monkeypatch.setattr(diagnostics,"_reports",[])
-    diagnostics.pytest_runtest_logreport(SimpleNamespace(nodeid="test_private["+sentinel+"]",when="setup",outcome="failed",publication_failure=report.publication_failure))
-    public=capsys.readouterr().out+(tmp_path/"probe-events.jsonl").read_text()
-    assert sentinel not in public
-    assert "FileNotFoundError" in public and '"line": 11' in public
+    # Restore globals before pytest call-report hooks, not fixture teardown.
+    with monkeypatch.context() as monkeypatch:
+        sentinel="SYNTHETIC_SECRET_NOT_FOR_ARTIFACTS"
+        class Unreadable:
+            def __str__(self):raise AssertionError("private exception text must not be read")
+        report=SimpleNamespace()
+        info=SimpleNamespace(type=FileNotFoundError,value=Unreadable(),traceback=[SimpleNamespace(path=ROOT/"tests/test_publication_followup_preparation.py",lineno=10),SimpleNamespace(path=tmp_path/sentinel,lineno=11)])
+        hook=diagnostics.pytest_runtest_makereport(None,SimpleNamespace(excinfo=info));next(hook)
+        with pytest.raises(StopIteration):hook.send(SimpleNamespace(get_result=lambda:report))
+        assert report.publication_failure=={"exception_kind":"FileNotFoundError","repo_locations":[{"file":"tests/test_publication_followup_preparation.py","line":11}]}
+        monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS_DIR",str(tmp_path));monkeypatch.setenv("VISUALSTRUCT_E2E_DIAGNOSTICS_NAME","probe")
+        monkeypatch.setattr(diagnostics,"_reports",[])
+        diagnostics.pytest_runtest_logreport(SimpleNamespace(nodeid="test_private["+sentinel+"]",when="setup",outcome="failed",publication_failure=report.publication_failure))
+        public=capsys.readouterr().out+(tmp_path/"probe-events.jsonl").read_text()
+        assert sentinel not in public
+        assert "FileNotFoundError" in public and '"line": 11' in public
 
 def test_collection_failure_is_reported_without_reading_private_error(monkeypatch,tmp_path,capsys):
-    sentinel='SYNTHETIC_PRIVATE_COLLECTION_VALUE'
-    class PrivateError:
-        def __str__(self):raise AssertionError('collection traceback must stay private')
-    monkeypatch.setenv('VISUALSTRUCT_E2E_DIAGNOSTICS_DIR',str(tmp_path))
-    monkeypatch.setenv('VISUALSTRUCT_E2E_DIAGNOSTICS_NAME','probe')
-    monkeypatch.setattr(diagnostics,'_reports',[])
-    diagnostics.pytest_collectreport(SimpleNamespace(failed=True,nodeid='tests/test_collection.py::case['+sentinel+']',longrepr=PrivateError()))
-    row=diagnostics._reports[0]
-    assert row['phase']=='collection' and row['outcome']=='failed' and row['file']=='tests/test_collection.py'
-    text=capsys.readouterr().out+(tmp_path/'probe-events.jsonl').read_text()
-    assert sentinel not in text
+    # Restore globals before pytest call-report hooks, not fixture teardown.
+    with monkeypatch.context() as monkeypatch:
+        sentinel='SYNTHETIC_PRIVATE_COLLECTION_VALUE'
+        class PrivateError:
+            def __str__(self):raise AssertionError('collection traceback must stay private')
+        monkeypatch.setenv('VISUALSTRUCT_E2E_DIAGNOSTICS_DIR',str(tmp_path))
+        monkeypatch.setenv('VISUALSTRUCT_E2E_DIAGNOSTICS_NAME','probe')
+        monkeypatch.setattr(diagnostics,'_reports',[])
+        diagnostics.pytest_collectreport(SimpleNamespace(failed=True,nodeid='tests/test_collection.py::case['+sentinel+']',longrepr=PrivateError()))
+        row=diagnostics._reports[0]
+        assert row['phase']=='collection' and row['outcome']=='failed' and row['file']=='tests/test_collection.py'
+        text=capsys.readouterr().out+(tmp_path/'probe-events.jsonl').read_text()
+        assert sentinel not in text
 
 def write_partition(root,index,selected,eligible,*,exit=0,executed=True):
     folder=root/f"coverage-shard-{index}";folder.mkdir(exist_ok=True)

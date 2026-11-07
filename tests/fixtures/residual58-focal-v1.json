@@ -496,7 +496,7 @@
           ]
         ],
         "result.connected": true,
-        "result.components_count": 1
+        "normalized_result.components_count": 1
       },
       "expected_status": 200
     },
@@ -575,7 +575,7 @@
           ]
         ],
         "result.connected": true,
-        "result.components_count": 1
+        "normalized_result.components_count": 1
       },
       "expected_status": 200
     },
@@ -652,7 +652,7 @@
           ]
         ],
         "result.connected": true,
-        "result.components_count": 1
+        "normalized_result.components_count": 1
       },
       "expected_status": 200
     },
@@ -731,7 +731,7 @@
           ]
         ],
         "result.connected": true,
-        "result.components_count": 1
+        "normalized_result.components_count": 1
       },
       "expected_status": 200
     },
@@ -1196,8 +1196,8 @@
       },
       "expected": {
         "result": [
-          1,
-          2
+          2,
+          1
         ]
       },
       "expected_status": 200

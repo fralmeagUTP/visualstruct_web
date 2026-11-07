@@ -1,0 +1,7 @@
+{
+  "source_contract": "graph-book/v1",
+  "source_sha256": "13c1bd9ae77ee91fb32aa72ba09f8c33e4d063dd29d3cea4358d23486c3fcc0a",
+  "step_count": 203,
+  "required_lines": ["Grafo grafo_insertar_arco(Grafo g, int x, int y, int z,", "    *nuevo = (struct NodoA){x, y, z, g.a};", "    g.a = nuevo;"],
+  "final": {"vertices": 2, "edges": 1, "edge": ["1", "2", 3]}
+}

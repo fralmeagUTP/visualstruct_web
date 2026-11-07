@@ -1,3 +1,4 @@
+from e2e_trace_contracts import reveal_public
 """Single sparse Counting window creator/gesture witness, not algorithm campaign."""
 import pytest
 import json
@@ -18,7 +19,7 @@ def test_sparse_window_index_and_follow_preserve_cached_cursor(controls40_page,t
   if page.locator('[data-count-window-index]').count():generated=True;chosen=cursor;break
  assert generated,'No sparsewindow generated in selected initialized-count frames'
  before=page.locator('#sorting-sim-counter').inner_text();requests=[];page.on('request',lambda r:requests.append(r.url) if r.url.endswith('/api/ordenamiento/run') else None)
- target=page.locator('[data-count-window-index]');target.fill('10');target.press('Tab')
+ target=page.locator('[data-count-window-index]');reveal_public(page,target);target.fill('10');target.press('Tab')
  assert page.locator('[data-count-window-index]').input_value()=='10'
  assert page.locator('[data-count-index="10"]').count()==1 and page.locator('#sorting-sim-counter').inner_text()==before
  page.click('[data-count-window-follow]');assert page.locator('#sorting-sim-counter').inner_text()==before

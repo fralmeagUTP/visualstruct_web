@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]/"openspec/changes/archive/2026-10-13-au
 from scripts.published_test_inputs import audit_input_path
 @pytest.fixture(scope="module")
 def saved():return json.loads((audit_input_path(ROOT/"linkedcanonical-before-call-20-insertar_elemento-wire.json")).read_text(encoding="utf-8"))
-def check(wire):assert_linked_list_mode_validation(wire["body"],wire["status"],{"position":"1","relative":"1","value":"1"})
+def check(wire):assert_linked_list_mode_validation(wire["body"],wire["status"],{"position":"1","relative":"1","value":"1"},historical=True)
 def test_original_API_refusal_positive(saved):check(saved)
 @pytest.mark.parametrize("fault",["status","success","started","accepted","stage","steps","payload","history","state","message","source","hidden","operation"])
 def test_API_refusal_corruptions_rejected(saved,fault):

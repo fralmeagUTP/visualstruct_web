@@ -117,9 +117,15 @@ class GraphStructureService:
             raise ValueError(GraphStructureService.history_issue(history))
         adapter = GraphStructureService._new_adapter(structure_id)
         adapter._console_history_stdout = ''
-        for step in history:
-            adapter.execute(step["operation"], deepcopy(step["payload"]))
-            adapter._console_history_stdout += adapter._last_book_execution.get('stdout', '')
+        # Parse each exact source once per rebuild. Machine state, allocation
+        # counters, validation, calls and stdout still execute for every entry.
+        adapter._book_program_cache = {}
+        try:
+            for step in history:
+                adapter.execute(step["operation"], deepcopy(step["payload"]))
+                adapter._console_history_stdout += adapter._last_book_execution.get('stdout', '')
+        finally:
+            del adapter._book_program_cache
         return adapter, deepcopy(history)
 
     @staticmethod

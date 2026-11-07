@@ -1,0 +1,47 @@
+{
+  "source_contract": "graph-book/v1",
+  "historical_files_preserved": true,
+  "test_selection_changed": false,
+  "pairs": [
+    {
+      "historical_file": "qa/test_graph_numeric_receipt.py",
+      "historical_sha256": "afca9e7547dcfd8053c7021ef6ae8bb154168f92b6d8fdd90b3000c21004adcf",
+      "current_additional_file": "qa_convergence/test_current_graph_numeric_receipt.py",
+      "equivalence_claimed": false,
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_numeric_receipt.py.snapshot"
+    },
+    {
+      "historical_file": "qa/test_graph_vertex_publication.py",
+      "historical_sha256": "a6e2b86eee02bcb00e6c39d02ed35401b0eb72dcd8e66918ce16d3783da3a0da",
+      "current_additional_file": "qa_convergence/test_current_graph_vertex_publication.py",
+      "equivalence_claimed": false,
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_vertex_publication.py.snapshot"
+    },
+    {
+      "historical_file": "qa/test_graph_query_publication.py",
+      "historical_sha256": "9cc73e75082bec5ab4b5ef8d99a24292da63e2258413d6bf3041e31fea4f224e",
+      "current_additional_file": "qa_convergence/test_current_graph_query_publication.py",
+      "equivalence_claimed": false,
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_query_publication.py.snapshot"
+    },
+    {
+      "historical_file": "qa/test_graph_edge_allocation.py",
+      "historical_sha256": "c47b5f69edbab610393f35cdec532607396fcb4515fa89161e4eef92b84ba61d",
+      "current_additional_file": "qa_convergence/test_current_graph_edge_allocation.py",
+      "equivalence_claimed": false,
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_edge_allocation.py.snapshot"
+    },
+    {
+      "historical_file": "qa/test_graph_help.py",
+      "historical_sha256": "677744705636ec97f28807f714fdbb8850079db80a818f6df9dfa67146d805b2",
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_help.py.snapshot",
+      "current_additional_file": "qa_convergence/_graph_current_help_contract.py",
+      "equivalence_claimed": false
+    }
+  ],
+  "schema": "graph-current-acceptance-custody/v1",
+  "migration_decision": "qa_convergence/graph_contract_migration.json",
+  "historical_execution_recovered": false,
+  "active_acceptance_contract": "graph-book/v1",
+  "historical_snapshot_manifest": "tests/fixtures/graph-history/contract-migration/current_graph_qa_manifest.json.snapshot"
+}

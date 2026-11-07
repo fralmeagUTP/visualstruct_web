@@ -57,8 +57,19 @@ class TraceStep:
             "debug": copy_value(debug_data),
             "legacy_step": copy_value(step),
         }
+        line_index = step.get("line_index")
+        if type(line_index) is int and line_index == -1:
+            caller = step.get("instruction_event")
+            if (step.get("event_type") == "caller_printf" and step.get("line_text") == ""
+                    and isinstance(caller, dict) and caller.get("source_role") == "caller"
+                    and caller.get("function") == "main" and caller.get("C_executed") is True
+                    and isinstance(caller.get("caller_line_text"), str)
+                    and caller["caller_line_text"].strip()):
+                # The wire sentinel refers to a separate caller source, not TAD line -1.
+                # legacy_step retains it unchanged for exact public round trips.
+                line_index = None
         return cls(
-            line_index=step.get("line_index"),
+            line_index=line_index,
             line_text=step.get("line_text", ""),
             event=str(step.get("event_type") or "line"),
             stage=str(debug_data.get("stage") or step.get("phase") or "progress"),

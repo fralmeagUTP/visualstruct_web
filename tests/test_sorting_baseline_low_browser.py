@@ -9,6 +9,7 @@ def browser_report(tmp_path_factory):
  (out/'runner.log').write_text(p.stdout+p.stderr,encoding='utf-8');assert p.returncode==0,p.stdout+p.stderr
  return json.loads((out/'report.json').read_text(encoding='utf-8'))
 @pytest.mark.parametrize('algorithm',['burbuja','mergesort','radixsort'])
+@pytest.mark.e2e
 def test_actual_saved_runs(algorithm,browser_report):
  r=next(r for r in browser_report['rows'] if r['algorithm']==algorithm)
  assert r['actual_runs']==r['saved_runs']==r['before_history_run_entries']==r['after_history_run_entries']==2

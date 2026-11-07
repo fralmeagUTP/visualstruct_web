@@ -4,7 +4,7 @@ from pathlib import Path
 import os,sys,json,shutil,subprocess
 import pytest
 from test_audit_abb_insert_native import identities
-SUFFIX=' [valor indeterminado; identidad historica]'
+SUFFIX=' [valor indeterminado; identidad histórica]'
 
 @pytest.fixture(scope='module')
 def abb_clear_native_review(tmp_path_factory):

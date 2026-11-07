@@ -91,9 +91,13 @@ def execute_book_operation(adapter, operation, payload):
     if failure is not None and (type(failure) is not int or failure < 1):
         raise ValueError('fail_allocation debe ser un índice positivo relativo a esta operación.')
     g = adapter.graph._g
+    from .book_c_subset import compiled_program
+    program_cache = getattr(adapter, '_book_program_cache', None)
     session = BookSession(g._vertices, g._arcos, g._marcas, trace=False,
                           callback=getattr(adapter, '_book_callback', None), fail_allocation=failure,
-                          event_limit=getattr(adapter, '_book_event_limit', None))
+                          event_limit=getattr(adapter, '_book_event_limit', None),
+                          program_cache=program_cache,
+                          capture_result_memory=False if program_cache is not None else None)
     calls = []
     primary = None
     def invoke(function, values=(), output_operation=None, inverse=False):
@@ -107,7 +111,7 @@ def execute_book_operation(adapter, operation, payload):
             machine = session.machine
             canonical = machine.program
             try:
-                machine.program = Program(source, caller_output=True)
+                machine.program = compiled_program(source, caller_output=True, cache=program_cache)
                 # A failed costo query leaves its out-cell untouched. The
                 # generated main initializes it to zero before the call.
                 machine.invoke('caller_output', [0 if raw[key] == UNINIT else raw[key] for key in cells])

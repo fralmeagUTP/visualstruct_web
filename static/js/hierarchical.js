@@ -23,7 +23,7 @@ function createHierPredictionController(getTrace, getCursor) {
       // Only this frame's evaluated C condition is evidence. A branch/case
       // carried over on assignment frames does not create another decision.
       if (frame && ["compare", "condition", "comparison"].includes(frame.concept) && typeof frame.condition?.result === "boolean") {
-        next = { index, source: String(frame.condition.source || frame.source?.line_text || "condición C"), answer: String(frame.condition.result) };
+        next = { index, source: String(frame.condition.source || frame.source?.line_text || "condición C"), answer: String(frame.condition.result), substituted: String(frame.condition.substituted || ""), branch: String(frame.executed_branch || frame.condition.consequence || "") };
         break;
       }
     }
@@ -35,13 +35,22 @@ function createHierPredictionController(getTrace, getCursor) {
     sync();
     if (!target || !["true","false"].includes(choice)) return null;
     const counted = !scored.has(target.index); scored.add(target.index);
-    return { index: target.index, correct: choice === target.answer, counted, label: target.answer === "true" ? "Verdadero" : "Falso" };
+    return { ...reveal(), correct: choice === target.answer, counted };
   }
-  function skip() { sync(); if (!target) return null; scored.add(target.index); return {index:target.index}; }
+  function reveal() {
+    const label = target.answer === "true" ? "Verdadero" : "Falso";
+    return { index: target.index, label, evidence: `${target.substituted || target.source} ⇒ ${label}${target.branch ? ` · rama: ${target.branch}` : ""}` };
+  }
+  function skip() { sync(); if (!target) return null; scored.add(target.index); return reveal(); }
   function hint() {
     sync(); if (!target) return "No quedan decisiones con condición C registrada.";
-    hintLevel = Math.min(2, hintLevel + 1);
-    return hintLevel === 1 ? "Pista 1: identifica los operandos de la condición; consulta el estado previo, no el resultado futuro." : "Pista 2: evalúa los operadores y respeta el cortocircuito de && y ||; una comparación con NULL comprueba un puntero, no el contenido del nodo.";
+    hintLevel = Math.min(3, hintLevel + 1);
+    const hints = [
+      "Pista 1: identifica los operandos de la condición; consulta el estado previo, no el resultado futuro.",
+      "Pista 2: evalúa los operadores y respeta el cortocircuito de && y ||; una comparación con NULL comprueba un puntero, no el contenido del nodo.",
+      `Pista 3: justifica qué rama tomaría C si «${target.source}» fuese verdadera y cuál si fuese falsa. Comprueba los cambios intermedios antes de esa condición; responder no ejecuta ni adelanta esos pasos.`
+    ];
+    return hints[hintLevel - 1];
   }
   return { sync, answer, skip, hint };
 }
@@ -106,7 +115,12 @@ function renderHierPedagogy(frame, level) {
   window.ContextualHelp?.frame("hier", frame, level);
   const condition=frame.condition; if(path)path.innerHTML=`Ruta: <code>${hEscape((frame.path?.keys||[]).join(" → ")||"—")}</code><br>Acción: <strong>${hEscape(window.ContextualHelp?.phaseLabel(frame)||frame.phase?.label||"—")}</strong>${condition?`<br><code>${hEscape(condition.substituted)}</code> ⇒ <strong>${hEscape(condition.result)}</strong> · rama ${hEscape(frame.executed_branch||"registrada")}`:""}${frame.adjustment?`<br>Ajuste: ${hEscape(frame.adjustment.message||frame.adjustment.type)}`:""}`;
   if (stack) {
-    const live = frame.call_stack || [], completed = frame.completed_call_stack || [];
+    // Legacy query frames carry the ended return scope inline; newer producers
+    // publish it separately. Neither representation describes a live call.
+    const ended = call => call.scope_status === "terminado (contexto del retorno)";
+    const calls = frame.call_stack || [];
+    const live = calls.filter(call => !ended(call));
+    const completed = [...(frame.completed_call_stack || []), ...calls.filter(ended)];
     const row = (call, historical) => `<div class="hier-stack-frame"><code>${hEscape(call.function)}</code> · ${historical ? "ámbito terminado (registro histórico)" : `profundidad ${hEscape(call.depth)}`}<br>raíz local registrada: ${hEscape(call.local_root_address||call.local_root||"NULL")}<br>retorno: ${hEscape(call.return ?? (historical ? "sin valor de retorno registrado" : "pendiente"))}${!historical && call.continuation ? ` · ${hEscape(call.continuation)}` : ""}</div>`;
     stack.innerHTML = live.length ? live.map(call => row(call, false)).join("") : "Sin llamadas activas en este paso.";
     if (completed.length) stack.innerHTML += `<details><summary>Marcos terminados (histórico): ${completed.length}</summary>${completed.map(call => row(call, true)).join("")}</details>`;
@@ -1937,7 +1951,7 @@ function renderHierState(
       const memoryGraph = layoutHierMemoryGraph(state); const graph = memoryGraph.graph;
       html += '<details class="hier-diagram-note"><summary>Reservas y enlaces observados; no certifica RN.</summary>' + (state.rbt_insert_model ? '<p data-rbt-insert-graph>Reservas vivas: '+hEscape(state.heap_count)+'; alcanzables en la proyección: '+hEscape(state.reachable_count)+'. Identidades y campos C escritos; sin inicializar no significa cero. Las rotaciones pueden tener enlaces/ciclos transitorios. NULL es un enlace realmente NULL, no una reserva NIL. No se certifica aquí un rojo-negro final.</p>' : '<p data-rbt-clear-graph>Reservas vivas y colores registrados. NULL representa solo un enlace realmente NULL; no es una reserva NIL. Los enlaces inutilizables conservan su identidad histórica en las tarjetas. La proyección parcial no certifica un árbol rojo-negro completo.</p>') + '</details>';
       html += `<div class="hier-memory-projection">${hEscape(memoryGraph.label)}${memoryGraph.detached.length ? ` Reservas aparte: ${hEscape(memoryGraph.detached.join(", "))}.` : ""}</div>`;
-      html += drawTreeSvgFromNodes(graph,{...treeOptions,showNullLeaves:false,rbtClearMemory:true,rbtInsertMemory:!!(state.rbt_insert_model||state.rbt_delete_model)});
+      html += drawTreeSvgFromNodes(graph,{...treeOptions,showNullLeaves:true,rbtClearMemory:true,rbtInsertMemory:!!(state.rbt_insert_model||state.rbt_delete_model)});
     } else if (state.avl_insert_model || state.avl_delete_model) {
       const memoryGraph = layoutHierMemoryGraph(state); const graph = memoryGraph.graph;
       html += '<details class="hier-diagram-note"><summary>Reservas y enlaces observados; no certifica AVL.</summary>' + ('<p data-avl-insert-graph>Reservas vivas e identidades estables, incluso desconectadas. Enlaces y FE observados: la reconexión transitoria no certifica un AVL terminado.</p>') + '</details>';
@@ -2511,7 +2525,19 @@ function initHierSimplifiedWorkspace() {
   }
   moveLearningPanel("hier-predict-title", "Predecir");
   moveLearningPanel("hier-compare-title", "Comparar");
-  // Learning level explains the lesson, independently of optional C visibility.
+  // Restore the specified learning control to Relacionar con código, once.
+  const level = hById("hier-learning-level");
+  const levelLabel = level?.closest("label");
+  const codeToolbar = hById("hier-code-region")?.querySelector(".hier-code-toolbar");
+  if (levelLabel && codeToolbar) {
+    codeToolbar.append(levelLabel);
+    const guides = document.createElement("div");
+    guides.className = "hier-level-guidance";
+    for (const id of ["hier-level-contract", "hier-level-guide"]) {
+      const guide = hById(id); if (guide) guides.append(guide);
+    }
+    codeToolbar.after(guides);
+  }
 
   // The old position slider is an internal value only; navigation is manual.
   const comparePosition = hById("hier-compare-progress");
@@ -3436,23 +3462,24 @@ function initHierPage(model) {
     tracePlayer?.prev();
   });
 
-  simStepButton?.addEventListener("click", async () => {
+  async function stepHierManually(prepareIfNeeded = true) {
     if (!isStepByStepEnabled()) {
       return;
     }
-    const ready = await ensureTraceForCurrentSelection();
+    const ready = prepareIfNeeded ? await ensureTraceForCurrentSelection() : tracePlayer?.hasTrace();
     if (!ready || !tracePlayer || !tracePlayer.hasTrace()) {
       return;
     }
     const pendingDecision = predictionController?.sync();
-    if (practiceMode?.checked && pendingDecision?.index === traceCursor + 1) {
+    if (practiceMode?.checked && pendingDecision?.index === traceCursor + 1 && !pendingDecision.scored) {
       syncPredictionUI();
       if (predictionFeedback) predictionFeedback.textContent = "Antes de ejecutar esta condición, predice o continúa sin responder. El estado visible aún es el anterior.";
       const panel = predictionSelect?.closest("details"); if (panel) panel.open = true;
       return;
     }
     await tracePlayer.step();
-  });
+  }
+  simStepButton?.addEventListener("click", () => stepHierManually());
 
   prepareButton?.addEventListener("click",async()=>{const ready=await ensureTraceForCurrentSelection();if(ready){tracePlayer?.reset();showHierMessage("Ejecución preparada en el estado inicial.",true);}});
   pauseButton?.addEventListener("click",()=>tracePlayer?.pause());
@@ -3488,14 +3515,14 @@ function initHierPage(model) {
     const result = predictionController.answer(predictionSelect?.value);
     if (!result) { if (predictionFeedback) predictionFeedback.textContent = "Selecciona una respuesta para la próxima decisión."; return; }
     if (result.counted) { conceptualProgress.attempts += 1; if (result.correct) conceptualProgress.correct += 1; renderConceptualProgress(); }
-    tracePlayer.seek(result.index);
-    if (predictionFeedback) predictionFeedback.textContent = `${result.correct ? "Correcto" : "No coincide"}: condición del paso ${result.index + 1} = ${result.label}. Decisión revelada.${result.counted ? "" : " Ya se registró este intento; no se puntúa de nuevo."}`;
+    syncPredictionUI();
+    if (predictionFeedback) predictionFeedback.textContent = `${result.correct ? "Correcto" : "No coincide"}: condición futura del paso ${result.index + 1} = ${result.label}. Decisión revelada: ${result.evidence}. El cursor se conserva y el estado visible no cambia; Siguiente paso avanza una instrucción.${result.counted ? "" : " Ya se registró este intento; no se puntúa de nuevo."}`;
   });
   hintButton?.addEventListener("click", () => { if (predictionFeedback) predictionFeedback.textContent = predictionController.hint(); });
   skipPrediction?.addEventListener("click", () => {
     const result = predictionController.skip(); if (!result) return;
-    tracePlayer.seek(result.index);
-    if (predictionFeedback) predictionFeedback.textContent = `Decisión del paso ${result.index + 1} revelada sin responder; no suma intentos.`;
+    syncPredictionUI();
+    if (predictionFeedback) predictionFeedback.textContent = `Decisión futura del paso ${result.index + 1} revelada sin responder: ${result.evidence}. No suma intentos y el cursor se conserva; el estado visible no cambia. Siguiente paso avanza una instrucción.`;
   });
   resetProgress?.addEventListener("click", () => { conceptualProgress = {attempts:0,correct:0}; renderConceptualProgress(); if (predictionFeedback) predictionFeedback.textContent = "Progreso conceptual reiniciado."; });
   syncPredictionUI();
@@ -3602,7 +3629,7 @@ function initHierPage(model) {
     }
   });
   exportSummary?.addEventListener("click",()=>{const current=operations.find((op)=>op.name===operationSelect.value);const summary={schema:"hierarchical-learning-summary/v1",structure:model.id,operation:operationSelect.value,payload:current?collectPayload(current):{},level:learningLevel?.value,cursor:tracePlayer?.getCursor()??-1,total_steps:tracePlayer?.getTotalSteps()??0,frame:currentPedagogyFrame,state:pageState.visualState,practice:conceptualProgress,comparison:hierarchicalComparison};const url=URL.createObjectURL(new Blob([JSON.stringify(summary,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download=`${model.id}-resumen.json`;link.click();URL.revokeObjectURL(url);});
-  document.addEventListener("keydown",async(event)=>{if(event.key===" " && event.target instanceof Element && event.target.closest("button, summary, a, [role=button]"))return;if(event.target instanceof Element && event.target.closest("#hier-variables-view"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key==="ArrowLeft"){event.preventDefault();tracePlayer?.prev();}else if(event.key==="ArrowRight"){event.preventDefault();await tracePlayer?.step();}else if(event.key==="Home"){event.preventDefault();tracePlayer?.seek(-1);}else if(event.key==="End"){event.preventDefault();tracePlayer?.seek(tracePlayer.getTotalSteps()-1);}else if(event.key===" "){event.preventDefault();tracePlayer?.pause();}});
+  document.addEventListener("keydown",async(event)=>{if(event.key===" " && event.target instanceof Element && event.target.closest("button, summary, a, [role=button]"))return;if(event.target instanceof Element && event.target.closest("#hier-variables-view"))return;if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement||event.target instanceof HTMLTextAreaElement)return;if(event.key==="ArrowLeft"){event.preventDefault();tracePlayer?.prev();}else if(event.key==="ArrowRight"){event.preventDefault();await stepHierManually(false);}else if(event.key==="Home"){event.preventDefault();tracePlayer?.seek(-1);}else if(event.key==="End"){event.preventDefault();tracePlayer?.seek(tracePlayer.getTotalSteps()-1);}else if(event.key===" "){event.preventDefault();tracePlayer?.pause();}});
   if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches&&speedSlider){speedSlider.value="-2";setPlaybackSpeed(speedSlider.value);}
 
   window.MultipleInput?.mount({

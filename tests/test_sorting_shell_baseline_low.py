@@ -1,5 +1,6 @@
 """Shell LOW endpoint evidence plus strong failing causal regressions, no xfail."""
 from pathlib import Path
+from _audit_sorting_c_source import assert_source_transport_identity
 import json,hashlib
 import pytest
 from _audit_shell_baseline import audit,CASES,UI_CASES
@@ -29,7 +30,7 @@ def test_existing_shell_variant_and_raw_guards(observed):
 
 def test_c_h_Doxygen_and_four_closed_modules_preserved(observed):
  out,_=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
- for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
+ for ext in ['c','h']:assert_source_transport_identity((audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes(),(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes())
  hashes=json.loads((audit_input_path(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-burbuja-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
  for rel in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py','app/domain/sorting/insercion_instructions.py','app/domain/sorting/burbuja_instructions.py']:assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==hashes[rel]
 

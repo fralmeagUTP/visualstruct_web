@@ -1,0 +1,19 @@
+{
+  "schema": "visualstruct-published-graph-source-succession/v1",
+  "basis": "Existing cloud-graph-book-convergence-20261027 source decision. This records source succession, not equivalence or new historical acceptance.",
+  "decision": "openspec/changes/cloud-graph-book-convergence-20261027/scope.md",
+  "current_contract": "app/domain/graph/book_source.py",
+  "historical_archive": "tests/fixtures/published-audit-inputs/inputs.zip",
+  "sources": [
+    {
+      "path": "docs/tads_C/tad_grafo.c",
+      "historical_sha256": "9b89bd5c50e97cc320993144ef6d3f16ae28c1e2819aa960e458326768456c53",
+      "current_sha256": "13c1bd9ae77ee91fb32aa72ba09f8c33e4d063dd29d3cea4358d23486c3fcc0a"
+    },
+    {
+      "path": "docs/tads_C/tad_grafo.h",
+      "historical_sha256": "0cb8e6130adb65d309f3c190fe59cb8d34a25bce5afb85ddbc637ccade6d46f2",
+      "current_sha256": "b7bc7f3a97e49e0f61e2d34d111bfe3b69abdad7440210309da3dc6c8c81c80a"
+    }
+  ]
+}

@@ -45,7 +45,15 @@ def test_inventory_classifies_mapping_and_didactic_source_gaps() -> None:
     assert "stack::limpiar" in gaps["unmapped_public_operations"]
     # `limpiar` is composed from real C snippets even without a direct symbol map.
     assert "stack::limpiar" not in gaps["fallback_or_derived_operations"]
-    assert "graph::generate_random_graph" in gaps["fallback_or_derived_operations"]
+    # The graph-book viewer now exposes actual canonical C for generated graphs.
+    # The application composes calls, so it is still not one mapped public symbol.
+    assert "graph::generate_random_graph" in gaps["unmapped_public_operations"]
+    assert "graph::generate_random_graph" not in gaps["fallback_or_derived_operations"]
+    graph = next(row for row in inventory["structures"] if row["id"] == "graph")
+    assert graph["c_sources"] == ["docs/tads_C/tad_grafo.c"]
+    from app.services.c_code_service import CCodeService
+    from app.domain.graph.book_source import canonical_source
+    assert CCodeService.get_structure_data("graph")["operations"]["generate_random_graph"] == canonical_source()
     assert gaps["orphan_c_mappings"]["sorting_array"] == [
         "copiar_arreglo", "imprimir_arreglo", "probar_algoritmo_int", "probar_algoritmo_void"
     ]

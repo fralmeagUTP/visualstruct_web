@@ -18,7 +18,25 @@ def test_scoped_formatter_storage_aliases_and_no_kernel_console(client):
   d=client.post('/hash/hash_table/operate',json={'operation':op,'payload':{}}).get_json();f=d['execution_trace']['steps']
   assert f[0]['debug']['buffer']['bytes']==[] and f[0]['debug']['buffer']['initialized_prefix']==0
   assert f[0]['debug']['call_stack']==['caller']
-  assert all(not x['console'] for x in f)
+  # The formatter TAD is silent. The real caller subsequently prints the
+  # initialized buffer and walks the returned linked nodes, as its C declares.
+  caller=[x for x in f if x['event_type']=='caller_printf']
+  assert len(caller)==8 and f[-8:]==caller
+  assert all(not x['console'] for x in f[:-8])
+  formatted='[0] -> (0:0) -> NULL\n[1] -> (7:40) -> (4:40) -> (1:10) -> NULL\n[2] -> (-1:-10) -> NULL\n'
+  listings={'keys':['0;','7;','4;','1;','-1;'],
+            'values':['0;','40;','40;','10;','-10;'],
+            'items':['0:0;','7:40;','4:40;','1:10;','-1:-10;']}
+  fragments=['format:'+op+':\n'+formatted,op+':',*listings[op],'\n']
+  assert [x['console'] for x in caller]==[[fragment] for fragment in fragments]
+  assert d['console_stdout']==''.join(fragments)
+  for index,x in enumerate(f):
+   if x['event_type']!='caller_printf':continue
+   event=x['instruction_event']
+   assert event['source_role']=='caller' and event['function']=='main' and event['C_executed'] is True
+   assert event['caller_line_text'] in [line.strip() for line in d['execution_trace']['caller_source_code'].splitlines()]
+   assert x['line_index']==-1 and x['line_text']==''
+   assert x['state_snapshot']==x['state_after']==f[index-1]['state_after']
   for x in f:
    v=x['debug']['variables'];stack=x['debug']['call_stack']
    assert all(n.split('.',1)[0] in stack for n in v)

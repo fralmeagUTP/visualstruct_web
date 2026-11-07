@@ -1,6 +1,7 @@
 """Finite real export/download activation for the twelve deferred JS factories."""
 import argparse,json,re,tempfile,threading,sys,hashlib
 from pathlib import Path
+from e2e_trace_contracts import reveal_public
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from app import create_app
 from app.config import Config
@@ -36,21 +37,13 @@ def run_flows(report_path):
                     for url,payload in seeds:
                         response=page.request.post(f'http://127.0.0.1:{server.server_port}'+url,data=payload);assert response.status==200,(module,response.status)
                     page.reload(wait_until='networkidle')
-                    if module=='hierarchical':
-                        toggle=page.locator('#hier-results-toggle')
-                        if toggle.get_attribute('aria-expanded')=='false':toggle.click()
                     controls=[prefix+'-export-image',prefix+'-export-summary']
                     if module=='sequential':controls.append('export-visual-jpg-btn')
                     for identifier in controls:
                         button=page.locator('#'+identifier);record={'module':module,'route':route,'control_id':identifier,'own_seed':seeds,'control_present':button.count()==1}
                         if not record['control_present']:record['status']='NO_CONTROL_IN_PAGE';results.append(record);continue
                         # Open only real progressive-panel controls, never force hidden exports.
-                        for _ in range(4):
-                            if button.is_visible():break
-                            opener=button.evaluate_handle("""e=>{for(let p=e.parentElement;p;p=p.parentElement){if(p.tagName==='DETAILS'&&!p.open)return p.querySelector(':scope > summary');const b=p.querySelector(':scope > h3 button[aria-expanded="false"],:scope > h2 button[aria-expanded="false"]');if(b&&b.getClientRects().length)return b;}return null;}""")
-                            element=opener.as_element()
-                            if not element:break
-                            element.click()
+                        reveal_public(page,button)
                         record['control_visible']=button.is_visible()
                         if not record['control_visible']:record['status']='CONTEXT_REQUIRED_HIDDEN';results.append(record);continue
                         try:

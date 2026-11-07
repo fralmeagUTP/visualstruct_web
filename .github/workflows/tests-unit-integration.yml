@@ -27,6 +27,25 @@ jobs:
       - name: Verify delivered C reader scroll behavior
         run: node qa_scroll/test_code_scroll.js
 
+  container-runtime-allocation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - name: Install test dependencies
+        run: python -m pip install -r requirements-test.txt
+      - name: Verify allocation classification on container Python
+        run: |
+          python -m pytest -q \
+            tests/test_allocation_constructor_offsets.py \
+            tests/test_sequential_acceptance_criteria_focal.py::test_required_allocation_failure_C_API \
+            tests/test_allocation_transport_fix.py::test_metadata_memory_error_is_not_relabelled_as_constructor_failure \
+            tests/test_ci_container_runtime_allocation.py
+
   unit-integration:
     runs-on: ubuntu-latest
     strategy:
@@ -39,7 +58,7 @@ jobs:
       VISUALSTRUCT_E2E_SHARD_COUNT: "4"
       VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: ci-safe-diagnostics
       VISUALSTRUCT_E2E_DIAGNOSTICS_NAME: probe
-    timeout-minutes: 15
+    timeout-minutes: 45
 
     steps:
       - name: Checkout
@@ -55,6 +74,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-test.txt
+
+      - name: Setup Node for DOM contract tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: qa/package-lock.json
+
+      - name: Install pinned DOM test dependencies
+        run: npm ci --prefix qa --ignore-scripts
 
       - name: Install and record required Doxygen
         run: |
@@ -84,6 +113,10 @@ jobs:
         run: |
           python -m pytest -q tests -m "not e2e" -p scripts.pytest_e2e_partition --tb=no --no-summary
 
+      - name: Profile synthetic Graph replay separately
+        if: ${{ !cancelled() && hashFiles('ci-safe-diagnostics/probe-selection-result.json') != '' }}
+        run: python -B scripts/profile_graph_reconstruction.py --selection ci-safe-diagnostics/probe-selection-result.json --output-dir ci-safe-diagnostics
+
       - name: Verify published-option coverage inventory
         run: |
           python scripts/build_app_quality_inventory.py --check
@@ -109,7 +142,7 @@ jobs:
       VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: ci-safe-diagnostics
       VISUALSTRUCT_E2E_DIAGNOSTICS_NAME: probe
       COVERAGE_FILE: .coverage.${{ matrix.shard }}
-    timeout-minutes: 30
+    timeout-minutes: 75
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -124,6 +157,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-test.txt
+
+      - name: Setup Node for DOM contract tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: qa/package-lock.json
+
+      - name: Install pinned DOM test dependencies
+        run: npm ci --prefix qa --ignore-scripts
 
       - name: Install and record required Doxygen
         run: |

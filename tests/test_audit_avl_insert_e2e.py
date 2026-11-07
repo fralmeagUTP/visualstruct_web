@@ -1,3 +1,6 @@
+from e2e_hierarchical_contract import live_call_count
+from e2e_hierarchical_contract import assert_stack_records
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Actual insertion SVG/reservations/scopes and instruction replay against native fields."""
 from pathlib import Path
 import json,threading
@@ -20,16 +23,16 @@ def test_avl_insert_native_views_replay_caller_main(tmp_path,avl_insert_native,c
    page.goto(base+'/hierarchical/avl',wait_until='networkidle');assert page.locator('#operation-select option').count()==9;page.evaluate('()=>{const old=renderHierState;renderHierState=function(...args){window.auditState=structuredClone(args[1]);return old(...args);};}');page.locator('#hier-understand-toggle').click();page.select_option('#operation-select','insertar');page.locator('[name="value"]').fill(str(meta['value']));page.click('#hier-step-mode')
    with page.expect_response(lambda r:r.url.endswith('/avl/operate') and r.request.method=='POST') as resp:page.click('#hier-sim-play')
    data=resp.value.json();assert data['success'];steps=data['execution_trace']['steps'];events=[e for e in avl_insert_native['events'] if e['case']==case];ids=mapping(events);base_id=events[1]['frames'][0]['id']-1;oracle={s['step_index']:e for s,e in native_pairs(data['execution_trace'],events,avl_insert_native['source_lines'])};count=len(posts)
-   pending='Insercion preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending;rows=page.evaluate(COLLECT,{'steps':len(steps)})
+   pending='Inserción preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending;rows=page.evaluate(COLLECT,{'steps':len(steps)})
    for row in rows:
     i=row['index'];ped=steps[i]['pedagogy'] if i>=0 else steps[0]['pedagogy']['initial_frame'];st=row['state'];assert st==ped['memory_state'];assert row['stdout']=='';assert row['message']==(data['message'] if i==len(steps)-1 else pending)
-    assert row['nodes']==[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in st['heap_nodes']]
+    assert same_nodes(row['nodes'],[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in st['heap_nodes']])
     assert row['svgNodes']==[{'id':n['id'],'status':n['status'],'parent':str(n['parent']),'fe':str(n['balance_factor'])} for n in st['heap_nodes']]
     expectedEdges=[{'from':n['id'],'to':n[side],'side':side} for n in st['heap_nodes'] for side in ['left','right'] if n[side] in {q['id'] for q in st['heap_nodes']}];assert row['svgEdges']==expectedEdges
     assert sorted(row['treeValues'])==sorted(str(n['value']) for n in st['heap_nodes'])
-    for n,card in zip(st['heap_nodes'],row['cards']):assert 'padre: '+n['parent'] in card and 'FE: '+str(n['balance_factor']) in card
+    for n,card in memory_cards(row,st['heap_nodes']):assert 'padre: '+n['parent'] in card and 'FE: '+str(n['balance_factor']) in card
     assert row['aliases']==[{'frame':f['id'],'name':name,'type':'int' if name=='x' else 'AVL *' if name in ['raiz','r'] else 'AVL','target':str(v)} for f in st['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items()]
-    assert row['variables']==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']];assert row['stack']==len(ped['call_stack'])
+    assert row['variables']==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']];assert_stack_records(row['stackRecords'],ped);assert row['stack']==live_call_count(ped)
     if i>=0:
      assert steps[i]['line_index'] in row['highlighted']
      if i in oracle:steps[i]['_source_lines']=data['execution_trace']['source_code'].splitlines();check(steps[i],oracle[i],ids,base_id,avl_insert_native['source_lines'])

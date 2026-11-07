@@ -13,7 +13,7 @@ def var(v,retired=()):
  if not v['initialized']:return 'sin inicializar'
  if v['kind']==3:return chr(v['value'])
  if v['kind']==0:return v['value']
- value=pointer(v['value']);return value+' [valor indeterminado; identidad historica]' if v['kind']==1 and v['value'] in retired else value
+ value=pointer(v['value']);return value+' [valor indeterminado; identidad histórica]' if v['kind']==1 and v['value'] in retired else value
 def source_line(report,event):return report['_source_lines'][event['line']-1].strip() if event['line'] else None
 def pairs(trace,events,report):
  assert len(trace['steps'])==len(events),(len(trace['steps']),len(events))
@@ -46,7 +46,7 @@ def check(step,event):
  current={(f['id'],name):v for f in ped['memory_state']['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items()}
  shown={(v['frame_id'],v['name']):v for v in ped['variables'] if v['frame_id']!='caller'}
  assert set(shown)==set(previous)|set(current)
- for key,v in shown.items():assert v['previous']==previous.get(key,'fuera de ambito') and v['value']==current.get(key,'fuera de ambito')
+ for key,v in shown.items():assert v['previous']==previous.get(key,'fuera de ámbito') and v['value']==current.get(key,'fuera de ámbito')
 
 
 @pytest.fixture(scope='session')

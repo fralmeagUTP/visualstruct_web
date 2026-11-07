@@ -1,5 +1,7 @@
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """ABB traversal tree/reservations/scopes, exact stdout and bidirectional replay."""
 import json,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -26,15 +28,15 @@ def test_leaves_browser_operands_scopes_numeric_returns_and_replay(tmp_path,abb_
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert state['root']==data['visual_state']['root'];assert page.locator('#hier-printf-console').text_content()==state['console_stdout']
-      heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))");assert heap==state['heap_nodes'];assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head'];assert page.locator('[data-abb-caller]').count()==int(state['caller_frame'] is not None)
+      assert state['root']==data['visual_state']['root'];assert console_stdout(page, '#hier-printf-console')==state['console_stdout']
+      heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))");assert same_nodes(heap,state['heap_nodes']);assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head'];assert page.locator('[data-abb-caller]').count()==int(state['caller_frame'] is not None)
       assert page.locator('[data-abb-frame]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbFrame,depth:Number(x.dataset.abbDepth)}))')==[{'id':f['id'],'depth':f['depth']} for f in state['tree_frames']]
       aliases=page.locator('[data-abb-alias]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget}))');assert aliases==[{'frame':f['id'],'name':name,'type':'ABBNodo *' if name=='nodo' else 'int','target':str(target)} for f in state['tree_frames'] for name,target in {**f['parameters'],**f['locals']}.items()]
       def values(root):return [] if root is None else [str(root['value']),*values(root['left']),*values(root['right'])]
       assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(values(state['root']))
       ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame']
       variables=page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent}))');assert variables==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value'])} for v in ped['variables']]
-      assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack'])
+      assert_hier_stack(page,ped)
       assert all(v['name'] in {'raiz','nodo'} for v in ped['variables']) and all(f['locals']=={} for f in ped['call_stack'])
       panels=page.locator('[data-abb-expression-frame]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.abbExpressionFrame,text:x.textContent}))')
       expected_expressions=[f for f in state['tree_frames'] if f['expression'] is not None];assert len(panels)==len(expected_expressions)
@@ -43,7 +45,7 @@ def test_leaves_browser_operands_scopes_numeric_returns_and_replay(tmp_path,abb_
        assert 'izquierdo = '+str(f['expression']['left']) in panel['text'] and 'derecho = '+str(f['expression']['right']) in panel['text'] and 'C permite otro orden' in panel['text']
 
       assert 'Reconexión del retorno: no' in page.locator('#hier-relations-view').inner_text()
-      if index>=0 and ped['instruction_event']['phase'] in {'return','caller_result'}:assert 'terminado (contexto del retorno)' in page.locator('#hier-stack-view .hier-stack-frame').last.inner_text()
+      if index>=0 and ped['instruction_event']['phase'] in {'return','caller_result'}:assert_completed_scope(page,ped)
       if index>=0:
        active=page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').evaluate_all('xs=>xs.map(x=>Number(x.dataset.line))');assert steps[index]['line_index'] in active
        event=oracle.get(index)

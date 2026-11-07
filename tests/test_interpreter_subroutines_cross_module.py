@@ -198,6 +198,10 @@ def test_trace_contract_all_visible_graph_methods() -> None:
             payload["vertex"] = "2"
         if op_name == "generate_random_graph":
             payload["vertices_count"] = "6"
+            # Exercise a repeatable, nontrivial graph below the capture budget.
+            # Dense-seed refusal is checked separately; an unseeded fixture can
+            # legitimately return no trace and cannot satisfy this trace oracle.
+            payload["seed"] = "0"
         if op_name in {"insert_edge", "remove_edge", "exists_edge", "edge_weight"}:
             payload["origin"] = "1"
             payload["target"] = "2"
@@ -210,12 +214,18 @@ def test_trace_contract_all_visible_graph_methods() -> None:
             payload["directed"] = "false"
 
         result = _exec(GraphStructureService.execute_operation, "graph", op_name, payload, history)
-        _assert_trace_contract(result, context=f"graph::graph::{op_name}")
+        from _book_frame_oracle import assert_book_body
+        assert isinstance(result.get("execution_trace"), dict), (
+            f"graph::{op_name}: expected a complete trace for seed 0; "
+            f"trace_available={result.get('trace_available')}, "
+            f"trace_event_limit={result.get('trace_event_limit')}"
+        )
+        assert_book_body(result)
         history = result["history"]
 
 
 def test_trace_contract_all_visible_hash_methods() -> None:
-    from _hash_visible_caller_consumer_oracle import assert_hash_visible_contract
+    from _hash_visible_caller_consumer_oracle import assert_hash_current_visible_contract
     history = _seed_history_hash()
     vm = HashStructureService.get_view_model("hash_table", history)
     for op in _visible_operations(vm):
@@ -230,7 +240,7 @@ def test_trace_contract_all_visible_hash_methods() -> None:
             payload["capacity"] = "17"
 
         result = _exec(HashStructureService.execute_operation, "hash_table", op_name, payload, history)
-        assert_hash_visible_contract(result)
+        assert_hash_current_visible_contract(result)
         history = result["history"]
 
 

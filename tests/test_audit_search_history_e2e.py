@@ -1,3 +1,4 @@
+from e2e_contract_helpers import main_source, observe_before_cleanup
 """Reload preserves successful searches in actual generated C main, without duplicate POST."""
 import json,re,shutil,subprocess,threading
 import pytest
@@ -27,18 +28,19 @@ def test_search_reload_main_native_results_and_failure_history(tmp_path,structur
     data=response.value.json();assert data['success'] and data['result']==expected;page.wait_for_function("()=>!document.querySelector('#seq-sim-execute').disabled");assert len(data['history'])==4+index
     for reload in [False,True]:
      if reload:page.reload(wait_until='networkidle')
-     main=page.locator('.didactic-history-main').inner_text();calls=[line.strip() for line in main.splitlines() if line.strip().startswith(fn+'(')];assert len(calls)==index+1
-     if structure=='circular_list':assert all(line.endswith(', NULL, 0);') for line in calls)
-     observe='printf("AUDIT:");for(Tlista p=lista;p!=NULL;p=p->sgte)printf(" %d",p->nro);printf("\\n");lista_limpiar(&lista);' if structure=='linked_list' else 'int values[32];int count=lcir_copiar_valores(&lc,values,32);printf("AUDIT:");for(int i=0;i<count;i++)printf(" %d",values[i]);printf("\\n");lcir_destruir(&lc);'
-     source=tmp_path/f'main-{index}-{reload}.c';source.write_text('#include <stdio.h>\n#include "'+stem+'.h"\n'+main.replace('    return 0;','    '+observe+'\n    return 0;'),encoding='utf-8');exe=tmp_path/'main.exe';build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/(stem+'.c')),str(source),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr;run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=5);assert run.returncode==0;actual=[int(x) for x in next(line for line in run.stdout.splitlines() if line.startswith('AUDIT:'))[6:].split()];assert actual==[7,7,9]
+     main=main_source(page);calls=[line.strip() for line in main.splitlines() if re.search(r'\b'+fn+r'\(',line)];assert len(calls)==index+1
+     if structure=='circular_list':assert all(re.search(r'int cantidad_\d+ = lcir_buscar_posiciones\(&lc, (?:7|99), posiciones_\d+, 3\);$',line) for line in calls)
+     observe='printf("AUDIT:");for(Tlista p=lista;p!=NULL;p=p->sgte)printf(" %d",p->nro);printf("\\n");' if structure=='linked_list' else 'int values[32];int count=lcir_copiar_valores(&lc,values,32);printf("AUDIT:");for(int i=0;i<count;i++)printf(" %d",values[i]);printf("\\n");'
+     source=tmp_path/f'main-{index}-{reload}.c';source.write_text(observe_before_cleanup(main,'lista_limpiar(&lista);' if structure=='linked_list' else 'lcir_destruir(&lc);',observe),encoding='utf-8');exe=tmp_path/'main.exe';build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/(stem+'.c')),str(source),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr;run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=5);assert run.returncode==0;actual=[int(x) for x in next(line for line in run.stdout.splitlines() if line.startswith('AUDIT:'))[6:].split()];assert actual==[7,7,9]
      if structure=='linked_list':
       assert len(re.findall(r'Encontrado en la posicion 1\b',run.stdout))==min(index+1,2);assert len(re.findall(r'Encontrado en la posicion 2\b',run.stdout))==min(index+1,2);assert ('Numero no encontrado' in run.stdout)==(index==2)
-     # Instrument only the copied main calls: observe return count from actual C,
-     # leaving its function/source algorithm untouched.
+     # The current caller stores the real C return count and prints every
+     # returned position from its bounded output buffer, including no match.
      else:
-      measured=re.sub(r'(lcir_buscar_posiciones\([^;]+\));',r'printf("SEARCH:%d\\n", \1);',main);check=tmp_path/'main-results.c';check.write_text('#include <stdio.h>\n#include "'+stem+'.h"\n'+measured,encoding='utf-8');build=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/(stem+'.c')),str(check),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr;measured_run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=5);assert measured_run.returncode==0;assert [int(x[7:]) for x in measured_run.stdout.splitlines() if x.startswith('SEARCH:')]==[2,2,0][:index+1]
+      positions=[line for line in run.stdout.splitlines() if line.startswith('Posiciones:')]
+      assert positions==['Posiciones: 1 2','Posiciones: 1 2','Posiciones:'][:index+1]
      rows.append({'search_index':index,'reload':reload,'main':main,'native_stdout':run.stdout,'state':actual,'search_calls':len(calls)})
-   failed=context.request.post(base+'/sequential/'+structure+'/operate',data={'operation':search,'payload':{'value':'abc'}});assert failed.status==400;assert len(failed.json()['history'])==6;page.reload(wait_until='networkidle');assert len([line for line in page.locator('.didactic-history-main').inner_text().splitlines() if line.strip().startswith(fn+'(')])==3;assert len(posts)==6 and not errors
+   failed=context.request.post(base+'/sequential/'+structure+'/operate',data={'operation':search,'payload':{'value':'abc'}});assert failed.status==400;assert len(failed.json()['history'])==6;page.reload(wait_until='networkidle');assert len([line for line in main_source(page).splitlines() if re.search(r'\b'+fn+r'\(',line)])==3;assert len(posts)==6 and not errors
    other=browser.new_context();otherpage=other.new_page();otherpage.goto(base+'/sequential/'+structure);assert otherpage.locator('.didactic-history-main').count()==0;other.close();browser.close()
  finally:server.shutdown();thread.join(timeout=5)
  (tmp_path/'search-history-main-review.json').write_text(json.dumps({'structure':structure,'rows':rows,'browser_operation_posts':len(posts),'errors':errors,'failed_search_not_recorded':True,'isolated_session_empty':True},indent=2),encoding='utf-8')

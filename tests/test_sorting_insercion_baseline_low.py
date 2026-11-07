@@ -1,6 +1,7 @@
 """Insertion baseline contracts plus deliberate failing instruction-conformance regressions."""
 import json,hashlib
 from pathlib import Path
+from _audit_sorting_c_source import assert_source_transport_identity
 import pytest
 from app import create_app
 from _audit_insercion_baseline import audit,CASES
@@ -36,7 +37,7 @@ def test_native_shortcircuit_and_empty_api_rejection(observed):
 def test_c_h_downloads_doxygen_unchanged(observed):
  out,report=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
  for extension in ['c','h']:
-  assert (audit_input_path(out/('tad_ordenamiento.'+extension))).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+extension))).read_bytes()
+  assert_source_transport_identity((audit_input_path(out/('tad_ordenamiento.'+extension))).read_bytes(),(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+extension))).read_bytes())
 
 
 def test_repeated_insertion_history_and_get_preserve_original_caller(monkeypatch):

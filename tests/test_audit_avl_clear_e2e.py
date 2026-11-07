@@ -1,5 +1,7 @@
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """AVL cleanup lifetime records, recursive scopes, true caller NULL and replay."""
 import json,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -26,9 +28,9 @@ def test_clear_browser_free_alias_root_scopes_replay_and_actual_main(tmp_path,av
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert page.locator('#hier-printf-console').text_content()==state['console_stdout']
+      assert console_stdout(page, '#hier-printf-console')==state['console_stdout']
       assert page.locator('#message-box').inner_text()==(data['message'] if index==len(steps)-1 else 'Limpieza preparada: resultado pendiente hasta completar la traza.')
-      heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))");assert heap==[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in state['heap_nodes']];assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head'];assert page.locator('[data-abb-caller]').count()==int(state['caller_frame'] is not None)
+      heap=page.locator('[data-abb-node]').evaluate_all("xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))");assert same_nodes(heap,[{k:v for k,v in n.items() if k not in ['parent','balance_factor']} for n in state['heap_nodes']]);assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head'];assert page.locator('[data-abb-caller]').count()==int(state['caller_frame'] is not None)
       for n in state['heap_nodes']:
        card=page.locator('[data-abb-node="'+n['id']+'"]').inner_text();assert 'padre: '+n['parent'] in card and 'FE: '+str(n['balance_factor']) in card
       assert page.locator('[data-abb-frame]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbFrame,depth:Number(x.dataset.abbDepth)}))')==[{'id':f['id'],'depth':f['depth']} for f in state['tree_frames']]
@@ -37,19 +39,19 @@ def test_clear_browser_free_alias_root_scopes_replay_and_actual_main(tmp_path,av
       assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(values(state['root']))
       ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame']
       variables=page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent}))');assert variables==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value'])} for v in ped['variables']]
-      assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack'])
+      assert_hier_stack(page,ped)
       assert 'Vida de reservas y referencias' in page.locator('#hier-invariant-view').inner_text()
       if ped['call_stack']:
-       assert 'raíz local: '+ped['call_stack'][0]['local_root_address'] in page.locator('#hier-stack-view .hier-stack-frame').first.inner_text()
+       assert_hier_stack(page,ped)
 
       retired=page.locator('[data-abb-retired-node]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbRetiredNode,value:Number(x.dataset.abbRetiredValue)}))')
       assert retired==[{'id':n['id'],'value':n['value']} for n in state['freed_nodes']]
       assert page.locator('[data-abb-unusable-count]').get_attribute('data-abb-unusable-count')==str(len(ped['memory']['unusable_reference_records']))
       if any('valor indeterminado' in x['target'] for x in aliases):assert 'valor indeterminado' in page.locator('.abb-instruction-memory').inner_text()
-      if index>=0 and ped['instruction_event']['phase']=='free':assert 'Liberados (identidades historicas)' in page.locator('#hier-memory-view').inner_text()
+      if index>=0 and ped['instruction_event']['phase']=='free':assert 'Liberados (identidades históricas)' in page.locator('#hier-memory-view').inner_text()
 
       assert 'Reconexión del retorno: no' in page.locator('#hier-relations-view').inner_text()
-      if index>=0 and ped['instruction_event']['phase'] in {'return','caller_exit'}:assert 'terminado (contexto del retorno)' in page.locator('#hier-stack-view .hier-stack-frame').last.inner_text()
+      if index>=0 and ped['instruction_event']['phase'] in {'return','caller_exit'}:assert_completed_scope(page,ped)
       if index>=0:
        active=page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').evaluate_all('xs=>xs.map(x=>Number(x.dataset.line))');assert steps[index]['line_index'] in active
        event=oracle.get(index)

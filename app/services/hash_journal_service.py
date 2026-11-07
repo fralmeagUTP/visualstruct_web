@@ -5,6 +5,7 @@ import hashlib,json
 from typing import Any
 from flask import session
 from app.services.hash_main_service import build_hash_main
+from app.domain.hash.educational_capacity import oversized_history_capacity
 
 KEY='hash_execution_journals'
 def digest(history: list[dict[str,Any]]) -> str:
@@ -34,9 +35,19 @@ def record_journal(structure_id: str,old_history: list[dict[str,Any]],new_histor
     return build_hash_main(entries)
 
 
+def _recorded_stdout(entries: list[dict[str, Any]]) -> str:
+    """Read only previously recorded bytes, without executing a missing caller."""
+    return ''.join(entry['caller_stdout'] for entry in entries
+                   if isinstance(entry.get('caller_stdout'), str))
+
+
 def journal_stdout(entries: list[dict[str, Any]]) -> str:
     """Restore authentic caller bytes; replay legacy cells rather than invent text."""
     from app.services.hash_structure_service import HashStructureService
+    # A later small recreation does not make earlier oversized calls replayable.
+    # Suspended chronology retains exports and recorded bytes, never new output.
+    if oversized_history_capacity(entries) is not None:
+        return _recorded_stdout(entries)
     fragments = []
     history = []
     for entry in entries:
@@ -54,7 +65,10 @@ def journal_stdout(entries: list[dict[str, Any]]) -> str:
 
 def get_stdout(structure_id: str, history: list[dict[str, Any]]) -> str:
     """The session journal output, excluding standalone main's exit epilogue."""
-    return journal_stdout(get_journal(structure_id, history))
+    entries = get_journal(structure_id, history)
+    if oversized_history_capacity(history) is not None:
+        return _recorded_stdout(entries)
+    return journal_stdout(entries)
 def get_main(structure_id: str,history: list[dict[str,Any]]) -> str:
     """Build exact C from chronology without running any operation."""
     return build_hash_main(get_journal(structure_id,history))

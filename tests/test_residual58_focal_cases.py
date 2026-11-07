@@ -39,6 +39,26 @@ def nested(body,path):
  for piece in path.split('.'):value=value[piece]
  return value
 
+def mst_component_count(body):
+ # The canonical C API returns MST arcs, not the removed components_count field.
+ # Preserve the connectivity oracle by deriving components independently from
+ # every input vertex, including isolated vertices, and the returned arcs.
+ vertices={int(node['id']) for node in body['visual_state']['nodes']}
+ parents={vertex:vertex for vertex in vertices}
+ def find(vertex):
+  while parents[vertex]!=vertex:vertex=parents[vertex]
+  return vertex
+ for origin,target,_weight in body['result']['mst_edges']:
+  assert origin in parents and target in parents
+  parents[find(origin)]=find(target)
+ return len({find(vertex) for vertex in vertices})
+
+def test_mst_component_count_includes_isolated_vertices():
+ body={'visual_state':{'nodes':[{'id':str(v)} for v in [1,2,3]]},'result':{'mst_edges':[[1,2,7]]}}
+ assert mst_component_count(body)==2
+ body['result']['mst_edges'].append([2,3,2])
+ assert mst_component_count(body)==1
+
 def run_case(client,row):
  ident=row['id'];parts=ident.split(':',1)[1].split('/')
  module='graph' if ident.startswith('algorithm:') or ident.startswith('route:') else parts[0]
@@ -58,6 +78,7 @@ def run_case(client,row):
    _,operation,result_key=key.split('.');follow=post_operation(client,module,sid,operation);assert follow[result_key]==value
   elif key=='normalized_result.mst_edges':
    actual=sorted([min(a,b),max(a,b),weight] for a,b,weight in body['result']['mst_edges']);assert actual==value
+  elif key=='normalized_result.components_count':assert mst_component_count(body)==value
   elif key=='result_numeric_equality':assert body['result']==value
   elif key=='directed_preserved':assert body['visual_state']['directed'] is value
   elif key=='input_equals_supplied_snapshot':assert body['input']==req['json']['graph']

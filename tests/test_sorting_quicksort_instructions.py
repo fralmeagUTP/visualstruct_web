@@ -1,3 +1,4 @@
+from tests._sorting_text_source_contract import assert_sorting_text_source_continuity
 """Finite Quick signoff: native recursive frames, scopes, signed locals and aliases."""
 from pathlib import Path
 import json,hashlib
@@ -67,11 +68,12 @@ def test_actual_browser_recursive_frames_scopes_pivot_aliases_replay_and_callers
  assert r['empty_UI_rejected'] and r['empty_caller']['successful_native_runs']==0
 
 def test_original_25_tests_independent_C_oracle_and_five_closed_modules_preserved():
- assert (audit_input_path(ROOT/'tests/test_sorting_quicksort_baseline_low.py')).read_bytes()==(audit_input_path(E/'before/tests/test_sorting_quicksort_baseline_low.py')).read_bytes()
+ from tests._sorting_published_test_contract import assert_archived_quicksort_test_portability
+ assert_archived_quicksort_test_portability(ROOT)
  b=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-quicksort-baseline-low/native-after'
  for name in ['observed.c','native.jsonl','tad_ordenamiento.c','tad_ordenamiento.h']:assert (audit_input_path(E/'native-first'/name)).read_bytes()==(audit_input_path(b/name)).read_bytes()
  h=json.loads((audit_input_path(ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-shell-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
- for rel in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py','app/domain/sorting/insercion_instructions.py','app/domain/sorting/burbuja_instructions.py','app/domain/sorting/shell_instructions.py']:assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==h[rel]
+ for rel in ['app/domain/sorting/intercambio_instructions.py','app/domain/sorting/seleccion_instructions.py','app/domain/sorting/insercion_instructions.py','app/domain/sorting/burbuja_instructions.py','app/domain/sorting/shell_instructions.py']:assert_sorting_text_source_continuity(ROOT,rel,h[rel])
 
 def test_existing_step_API_keeps_single_original_input_and_history():
  c=create_app().test_client();c.post('/api/ordenamiento/create-array',json={'values':[7]});run=c.post('/api/ordenamiento/run',json={'algorithm_id':'quicksort','mode':'fast'}).get_json();step=c.post('/api/ordenamiento/step',json={'algorithm_id':'quicksort','direction':'next','cursor':0}).get_json()

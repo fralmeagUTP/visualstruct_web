@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from _dijkstra_legacy_consumer_oracle import assert_dijkstra_legacy_consumer
-from app.domain.graph.snapshot_pool import expand_graph_trace
+from _book_frame_oracle import assert_book_body
 from _graph_trace_contract import decode_graph_http_trace
 
 import json
@@ -13,6 +12,9 @@ from app.services.execution_trace_service import ExecutionTraceService
 
 def _assert_execution_trace_payload(data: dict) -> None:
     trace = data.get("execution_trace")
+    if trace.get("structure_id") == "graph":
+        trace = data["execution_trace"] = decode_graph_http_trace(trace)
+        assert_book_body(data)
     assert isinstance(trace, dict)
     assert isinstance(trace.get("operation_name"), str)
     assert isinstance(trace.get("code_title"), str)
@@ -23,7 +25,10 @@ def _assert_execution_trace_payload(data: dict) -> None:
 
     first = trace["steps"][0]
     assert isinstance(first.get("step_index"), int)
-    assert isinstance(first.get("line_index"), int)
+    if trace.get("structure_id") == "graph":
+        assert first["line_index"] is None and first["event_type"] == "host_boundary"
+    else:
+        assert isinstance(first.get("line_index"), int)
     assert isinstance(first.get("line_text"), str)
     assert "state_snapshot" in first
 
@@ -162,27 +167,30 @@ def test_graph_algorithm_trace_includes_semantic_debug_steps(client) -> None:
     )
     assert response.status_code == 200
     data = response.get_json()
-    data["execution_trace"] = expand_graph_trace(data["execution_trace"])
+    data["execution_trace"] = decode_graph_http_trace(data["execution_trace"])
     assert data["success"] is True
 
     steps = data["execution_trace"]["steps"]
     debug_steps = [step for step in steps if isinstance(step.get("debug"), dict)]
     assert debug_steps
     assert data["result"] == [1, 2, 3]
-    assert all(step["pedagogy"]["instruction_event"]["function"] for step in debug_steps)
+    assert_book_body(data)
+    c_steps = [s for s in debug_steps if s["pedagogy"]["instruction_event"]["C_executed"]]
+    assert c_steps and all(s["pedagogy"]["instruction_event"]["function"] for s in c_steps)
     assert any(step["debug"].get("graph_progress", {}).get("nodes") == ["1", "2", "3"] for step in debug_steps)
-    assert any(step["debug"].get("graph_progress", {}).get("tree_edges") == [["1", "2"], ["2", "3"]] for step in debug_steps)
+    assert any(s["pedagogy"]["auxiliary"]["items"] == ["2"] for s in debug_steps)
+    assert any(s["pedagogy"]["auxiliary"]["items"] == ["3"] for s in debug_steps)
     assert data["execution_trace"]["final_state"] == data["visual_state"]
     assert data["execution_trace"]["steps"][-1]["state_after"] == data["visual_state"]
-    assert any(
-        isinstance(step["debug"].get("graph_progress"), dict)
-        and step["debug"]["graph_progress"].get("mode") == "traversal"
-        for step in debug_steps
-    )
+    assert all(s["pedagogy"]["auxiliary"]["kind"] == "queue" for s in debug_steps)
+    memory = steps[-1]["pedagogy"]["memory_state"]
+    assert memory["allocations"] == memory["frees"]
+    initial = data["execution_trace"]["steps"][0]["pedagogy"]["instruction_state_before"]
+    assert {n["id"] for n in memory["heap_nodes"]} == {n["id"] for n in initial["heap_nodes"]}
     assert "grafo_bfs" in data["execution_trace"]["source_code"]
     normalized_lines = [str(step.get("line_text", "")).strip().lower() for step in steps]
-    assert "while (cola.delante != null) {" in normalized_lines
-    assert "while (suces != null) {" in normalized_lines
+    assert "while (frente < final && correcto) {" in normalized_lines
+    assert "for (listavertice p = suces; p != null; p = p->sig) {" in normalized_lines
 
 
 def test_graph_dfs_trace_includes_recursive_subroutine_source_and_calls(client) -> None:
@@ -213,11 +221,16 @@ def test_graph_dfs_trace_includes_recursive_subroutine_source_and_calls(client) 
     assert response.status_code == 200
     data = response.get_json()
     assert data["success"] is True
+    data["execution_trace"] = decode_graph_http_trace(data["execution_trace"])
+    assert_book_body(data)
+    assert data["result"] == [1, 2, 4, 3]
     assert "grafo_dfs_recursivo" in data["execution_trace"]["source_code"]
 
     normalized_lines = [str(step.get("line_text", "")).strip().lower() for step in data["execution_trace"]["steps"]]
-    assert "grafo_dfs_recursivo(g, inicio, &recorrido);" in normalized_lines
-    assert normalized_lines.count("grafo_dfs_recursivo(g, suces->dato, recorrido);") >= 2
+    assert "int correcto = grafo_dfs_recursivo(g, &t, s, &lista, &ultimo);" in normalized_lines
+    assert normalized_lines.count("correcto = grafo_dfs_recursivo(g, t, v, lista, ultimo);") >= 2
+    stacks = [s["pedagogy"]["call_stack"] for s in data["execution_trace"]["steps"]]
+    assert any(sum(f["function"] == "grafo_dfs_recursivo" for f in stack) >= 3 for stack in stacks)
 
 def test_stack_stepwise_change_happens_on_mutation_line(client) -> None:
     response = client.post(
@@ -335,11 +348,12 @@ def test_dijkstra_trace_includes_fine_grained_debug_stages(client) -> None:
     data = response.get_json()
     data["execution_trace"] = decode_graph_http_trace(data["execution_trace"])
     assert data["success"] is True
-    assert_dijkstra_legacy_consumer(data, "chain")
+    from _book_numeric_consumer_oracle import assert_chain_dijkstra
+    assert_chain_dijkstra(data)
     assert "grafo_dijkstra" in data["execution_trace"]["source_code"]
     normalized_lines = [str(step.get("line_text", "")).strip().lower() for step in data["execution_trace"]["steps"]]
-    outer_for_count = normalized_lines.count("for (i = 0; i < n; i++) {")
-    inner_for_count = normalized_lines.count("for (j = 0; j < n; j++) {")
+    outer_for_count = normalized_lines.count("for (int k = 0; k < t.n && e == grafo_ok; k++) {")
+    inner_for_count = normalized_lines.count("for (int j = 0; j < t.n; j++)")
     assert outer_for_count >= 2
     assert inner_for_count >= 1
 
@@ -380,8 +394,18 @@ def test_bellman_ford_negative_cycle_trace_includes_detection_stage(client) -> N
     assert response.status_code == 400
     data = response.get_json()
     assert data["success"] is False
-    assert data["history"] == previous_history
-    from _graph_trace_contract import decode_graph_http_trace
-    from _bellman_http_consumer_oracle import assert_bellman_http
+    assert data["history"][:-1] == previous_history
+    assert data["history"][-1] == {"operation": "run_bellman_ford",
+        "payload": {"start": "1", "end": "3"}, "source_contract": "graph-book/v1"}
     data["execution_trace"] = decode_graph_http_trace(data["execution_trace"])
-    assert_bellman_http(data, "cycle3", response.status_code)
+    assert_book_body(data)
+    assert data["c_status_name"] == "GRAFO_CICLO_NEGATIVO"
+    assert data["result"]["has_negative_cycle"] is True
+    assert data["c_return"] == "NULL" and data["result"]["distance_to_destination"] is None
+    events = data["execution_trace"]["C_instruction_events"]
+    assert any(e["function"] == "grafo_bellman_ford" and e["phase"] == "write"
+        and e["name"] == "e" and e["value"] == 4 for e in events)
+    memory = data["execution_trace"]["steps"][-1]["pedagogy"]["memory_state"]
+    assert memory["frames"] == [] and memory["allocations"] == memory["frees"]
+    initial = data["execution_trace"]["steps"][0]["pedagogy"]["instruction_state_before"]
+    assert {n["id"] for n in memory["heap_nodes"]} == {n["id"] for n in initial["heap_nodes"]}

@@ -2,6 +2,8 @@
 import importlib,unittest
 from pathlib import Path
 from unittest.mock import patch
+from qa.independent_inputs import independent_input_path
+from qa.reviewed_spelling import current_display_spelling
 from app.services.hierarchical_structure_service import HierarchicalStructureService as S
 
 class QueryReturn(unittest.TestCase):
@@ -20,10 +22,10 @@ class QueryReturn(unittest.TestCase):
         self.assertNotIn('pendiente',text);self.assertIn('Finaliza',text)
       else:
        self.assertTrue(p['memory_state']['query_frames'])
-       for text in p['narration'].values():self.assertIn('pendiente de asignacion',text)
+       for text in p['narration'].values():self.assertIn('pendiente de asignación',text)
  def test_only_terminal_narration_changes(self):
   m=importlib.import_module('app.domain.hierarchical.heap_query_instruction')
-  old={'__package__':m.__package__,'__file__':m.__file__};path=Path(__file__).resolve().parents[2]/'heap-query-return-baseline.py';exec(compile(path.read_text(),str(path),'exec'),old)
+  old={'__package__':m.__package__,'__file__':m.__file__};path=independent_input_path('heap-query-return-baseline.py');exec(compile(path.read_text(),str(path),'exec'),old)
   fn='build_heap_query_trace'
   for op in ['raiz','a_lista']:
    for seed in [[],[5],[5,20,40,50,30]]:
@@ -33,5 +35,5 @@ class QueryReturn(unittest.TestCase):
     for a,b in zip(after['steps'],before['steps']):
      if a['pedagogy']['instruction_event']=={'scope':'caller','phase':'return','condition':None,'return':a['pedagogy']['instruction_event']['return']}:
       b['pedagogy']['narration']=a['pedagogy']['narration']
-    self.assertEqual(after,before)
+    self.assertEqual(after,current_display_spelling(before))
 if __name__=='__main__':unittest.main(verbosity=2)

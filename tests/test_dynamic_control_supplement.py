@@ -1,3 +1,5 @@
+from e2e_trace_contracts import reveal_public
+from _graph_phase_controls_contract import assert_public_graph_phase_controls
 """DOM census of control generation flows, no operation/algorithm executions."""
 import json
 from pathlib import Path
@@ -8,7 +10,7 @@ GROUPS={
  'sequential':[(f'/sequential/{name}','SEQ_VIEW_MODEL','#operation-select','field','seq-function-list') for name in ['stack','queue','priority_queue','linked_list','circular_list','sublist']],
  'hierarchical':[(f'/hierarchical/{name}','HIER_VIEW_MODEL','#operation-select','h-field','hier-function-list') for name in ['abb','avl','red_black','binary_heap']],
  'hash':[('/hash/hash_table','HASH_VIEW_MODEL','#hash-operation-select','hash-field','hash-function-list')],
- 'graph':[(f'/graph/graph/{phase}','GRAPH_VIEW_MODEL','#graph-operation-select','g-op-field','graph-function-list') for phase in ['construccion','recorridos','camino-minimo','expansion-minima']],
+ 'graph':[(f'/graph/graph/{phase}','GRAPH_VIEW_MODEL','#graph-operation-select' if phase=='construccion' else '#graph-algorithm-select','g-op-field' if phase=='construccion' else 'g-alg-field','graph-function-list') for phase in ['construccion','recorridos','camino-minimo','expansion-minima']],
  'sorting':[('/sorting/visualizador','SORTING_VIEW_MODEL',None,None,'sorting-function-list')],
 }
 OBSERVER="""(()=>{window.__dynamicCreated=[];window.__dynamicScrolled=[];const scrollTop=Object.getOwnPropertyDescriptor(Element.prototype,'scrollTop');if(scrollTop?.set)Object.defineProperty(Element.prototype,'scrollTop',{...scrollTop,set:function(value){window.__dynamicScrolled.push({tag:this.tagName,kind:'scrollTop',value});return scrollTop.set.call(this,value);}});const create=document.createElement.bind(document);document.createElement=function(tag,...args){const node=create(tag,...args);if(['button','input','select','textarea','a','summary','details'].includes(String(tag).toLowerCase()))window.__dynamicCreated.push({node,tag,stack:new Error().stack});return node;};const scroll=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(...args){window.__dynamicScrolled.push({tag:this.tagName,line:this.dataset.line,codeLine:this.dataset.codeLine});return scroll.apply(this,args);};})();"""
@@ -21,6 +23,10 @@ def test_dynamic_fields_code_links_and_workspace_creator_flows(controls40_page,t
   if selector:
    operations=page.evaluate('(name)=>window[name].operations',model_name);catalog={op['name']:op for op in operations}
    options=page.locator(selector+' option').evaluate_all('(ns)=>ns.map(n=>n.value).filter(Boolean)')
+   if group=='graph':
+    phase=route.rsplit('/',1)[-1]
+    active=page.locator(selector);inactive=page.locator('#graph-algorithm-select' if phase=='construccion' else '#graph-operation-select')
+    assert_public_graph_phase_controls(phase,selector,options,active.is_visible(),inactive.is_visible())
    for op in options:
     page.select_option(selector,op);fields=[]
     for field in catalog[op].get('inputs',[]):
@@ -34,19 +40,19 @@ def test_dynamic_fields_code_links_and_workspace_creator_flows(controls40_page,t
       values=target.locator('option').evaluate_all('(ns)=>ns.map(n=>n.value)');assert values;target.select_option(values[-1])
      fields.append({'name':field['name'],'id':target.get_attribute('id'),'tag':expected_tag,'value_changed':True})
     selected.append({'operation':op,'fields':fields})
-  if group=='graph':
-   algorithm_selector=page.locator('#graph-algorithm-select');names=algorithm_selector.locator('option').evaluate_all('(ns)=>ns.map(n=>n.value).filter(Boolean)')
-   for name in names:
-    algorithm_selector.select_option(name)
-    for field in catalog[name].get('inputs',[]):assert page.locator('#g-alg-field-'+field['name']).count()==1
-    selected.append({'algorithm':name,'fields':[field['name'] for field in catalog[name].get('inputs',[])]})
   buttons=page.locator('#'+function_list+' button');count=buttons.count();navigation=[]
   for index in sorted(set([0,count-1])) if count else []:
    target=buttons.nth(index);line=target.get_attribute('data-line') or target.get_attribute('data-code-line');assert line is not None
-   before=len(page.evaluate('window.__dynamicScrolled'));target.click(force=True);assert len(page.evaluate('window.__dynamicScrolled'))>before
-   navigation.append({'line':line,'scroll_called':True,'accepted_scroll_contract':'scrollIntoView or stackpilot scrollTop setter','force_used_for_potential_collapsed_container':True})
+   reveal_public(page,target)
+   before=len(page.evaluate('window.__dynamicScrolled'));target.click()
+   code=page.locator('#sorting-code' if group=='sorting' else '#op-pseudocode')
+   shown=code.locator('.code-line[data-line="'+line+'"]')
+   assert shown.count()==1
+   assert shown.evaluate('e=>{const p=e.closest("pre"),a=e.getBoundingClientRect(),b=p.getBoundingClientRect();return a.top>=b.top+p.clientTop-1 && a.bottom<=b.top+p.clientTop+p.clientHeight+1;}')
+   assert 'is-code-consulted' in target.get_attribute('class')
+   navigation.append({'line':line,'scroll_called':len(page.evaluate('window.__dynamicScrolled'))>before,'accepted_scroll_contract':'target visible within reader; no scroll required when already visible','force_used_for_potential_collapsed_container':False})
   visible=page.locator('button,input,select,textarea,a,summary').evaluate_all("(nodes)=>nodes.filter(n=>n.getClientRects().length&&getComputedStyle(n).display!=='none').map(n=>({tag:n.tagName,id:n.id,name:n.name||null,type:n.type||null,action:n.dataset.line||n.dataset.codeLine||n.dataset.answer||null}))")
   creators=page.evaluate("window.__dynamicCreated.map(x=>({tag:x.tag,id:x.node.id,name:x.node.name||null,connected:x.node.isConnected,visible:Boolean(x.node.getClientRects().length),stack:x.stack}))")
   flows.append({'route':route,'selectors':selected,'code_navigation':navigation,'visible_controls':visible,'creators':creators})
  assert not posts and not errors
- (tmp_path/'dynamic-flow-proof.json').write_text(json.dumps({'group':group,'flows':flows,'POSTs':posts,'JS_errors':errors,'limits':'Fieldgeneration/descriptorbinding andcode-navigation scroll;nooperationexecution. Sourceinventory plus existing exercisedtraces/downloads coverdeferredfactories;forceclickdoesnotprovepublicvisibility.'},ensure_ascii=False,indent=2),encoding='utf-8')
+ (tmp_path/'dynamic-flow-proof.json').write_text(json.dumps({'group':group,'flows':flows,'POSTs':posts,'JS_errors':errors,'limits':'Fieldgeneration/descriptorbinding andcode-navigation scroll;nooperationexecution. Every function target is reached through public controls; an already visible line need not scroll.'},ensure_ascii=False,indent=2),encoding='utf-8')

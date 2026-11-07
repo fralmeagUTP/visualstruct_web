@@ -58,7 +58,7 @@ C_SOURCES: dict[str, tuple[str, ...]] = {
     "avl": ("docs/tads_C/tad_avl.c",),
     "red_black": ("docs/tads_C/tad_rojo_negro.c",),
     "binary_heap": ("docs/tads_C/tad_monticulo_binario.c",),
-    "graph": ("docs/tads_C/tad_grafo.c", "docs/tads_C/tad_cola.c"),
+    "graph": ("docs/tads_C/tad_grafo.c",),
     "hash_table": ("docs/tads_C/tad_tabla_hash.c",),
     "sorting_array": ("docs/tads_C/tad_ordenamiento.c",),
 }

@@ -1,0 +1,27 @@
+{
+  "schema": "sorting-test-portability-migration/v1",
+  "source": {
+    "commit_sha": "dde0d95691482e7c6db1922d0983ef287479dacf",
+    "blob_sha1": "a6b24b7346869a9978a0dc9271b694bad84e9019",
+    "path": "tests/test_sorting_heapsort_baseline_low.py",
+    "snapshot": "test_sorting_heapsort_baseline_low.published.py.snapshot",
+    "sha256": "452f72601e892d160c8399582fe018c08ba81f9b92c6665cc7d17165600952bd"
+  },
+  "historical_record": "openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence/visible-sorting-heapsort-instructions/original-regressions.json",
+  "original_declared_sha256": "8a59530b549cf79ed726e9be3f5d5311b47a5bbea46882e2d038f3361007b637",
+  "original_preimage_available": true,
+  "original_snapshot": "test_sorting_heapsort_baseline_low.original.py.snapshot",
+  "recovery": {
+    "url": "https://github.com/fralmeagUTP/visualstruct_web/blob/dde0d95691482e7c6db1922d0983ef287479dacf/tests/test_sorting_heapsort_baseline_low.py",
+    "method": "Authentic Git LF bytes; original CRLF transport reconstructed only by LF to CRLF conversion and verified against the unchanged historical SHA256.",
+    "git_lf_bytes": 7493,
+    "reconstructed_crlf_bytes": 7562
+  },
+  "allowed_successor_changes": [
+    "Existing audit_input_path import and wrappers",
+    "Existing source transport identity helper",
+    "Existing sorting text source continuity helper",
+    "Existing exact current_swap_display(old) assertion adapter"
+  ],
+  "decision": "New finite migration of the preservation gate, subject to independent review. Recovery establishes original bytes, not missing historical approval or execution evidence."
+}

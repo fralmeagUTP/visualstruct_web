@@ -1,5 +1,6 @@
 """Actual visible deletion histories compile/download/reload and free ownership."""
 import json,re
+from e2e_contract_helpers import console_stdout
 import pytest
 from test_audit_avl_main_e2e import avl_server
 from test_audit_rbt_queries_main_e2e import compile_main
@@ -15,8 +16,8 @@ def test_delete_actual_history_main_rejection_repeat_reload(avl_server,tmp_path,
    with page.expect_response(lambda r:r.url.endswith('/red_black/operate') and r.request.method=='POST') as response:page.click('#hier-sim-play')
    data=response.value.json();page.wait_for_function("()=>!document.querySelector('#hier-sim-play').disabled");return data
   success=remove();assert success['success'];page.click('#hier-step-mode');failure=remove();assert not failure['success'] and failure['history']==success['history'] and failure['visual_state']==success['visual_state']
-  assert failure['execution_trace']['application_precondition_rejected'];assert page.locator('#hier-printf-console').text_content()=='';n=len(posts);page.click('#hier-sim-step');page.wait_for_function("()=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: 1/')");assert 'rbt_eliminar NO fue invocado' in page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').inner_text();assert page.locator('#hier-printf-console').text_content()==''
-  page.click('#hier-sim-prev');page.wait_for_function("()=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: 0/')");assert page.locator('#hier-printf-console').text_content()=='' and len(posts)==n
+  assert failure['execution_trace']['application_precondition_rejected'];assert console_stdout(page, '#hier-printf-console')=='';n=len(posts);page.click('#hier-sim-step');page.wait_for_function("()=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: 1/')");assert 'rbt_eliminar NO fue invocado' in page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').inner_text();assert console_stdout(page, '#hier-printf-console')==''
+  page.click('#hier-sim-prev');page.wait_for_function("()=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: 0/')");assert console_stdout(page, '#hier-printf-console')=='' and len(posts)==n
   mains=[];programs=[]
   for label in ['before','after']:
    main='\n'.join(page.locator('#action-history .didactic-history-main .code-line').all_text_contents()).replace('\u00a0','');mains.append(main);body=re.sub(r'/\*.*?\*/|//[^\n]*','',main.split('int main(void)',1)[1],flags=re.S)

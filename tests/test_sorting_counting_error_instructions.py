@@ -106,4 +106,9 @@ def test_failed_attempt_after_accepted_run_preserves_existing_main_and_latest_tr
     assert sum(x['operation']=='run' for x in failed['history'])==1 and t['trace_id']!=old['trace_id'] and t['accepted_state']==before['visual_state']
     monkeypatch.setattr(SortingInterpreter,'run',forbid)
     html=c.get('/sorting/visualizador').data;assert t['trace_id'].encode() in html and old['trace_id'].encode() not in html
-    assert c.get(old['page_url']).status_code==200 and c.get('/api/ordenamiento/state').get_json()==before
+    assert c.get(old['page_url']).status_code==200
+    # The accepted model is unchanged; read-only replay selects the latest failed attempt.
+    expected={**before,'execution_trace':t}
+    assert c.get('/api/ordenamiento/state').get_json()==expected
+    assert c.get('/api/ordenamiento/state').get_json()==expected
+    assert before['execution_trace']==old

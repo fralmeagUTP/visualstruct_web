@@ -9,13 +9,12 @@ CASES=[('insert_vertex',3,H),('insert_vertex',1,H),('remove_vertex',1,H),('remov
 def get(op,v,h):return expand_graph_trace(S.execute_operation('graph',op,{'vertex':v},h)['execution_trace'])
 class Publication(unittest.TestCase):
  def test_operation_specific_boundary(self):
-  for op,v,h in CASES:
-   with self.subTest(op=op,v=v):
-    trace=get(op,v,h);s=trace['steps'][-1];p=s['pedagogy'];self.assertFalse(p['instruction_event']['C_executed'])
-    if s['phase']=='input_validation':self.assertIn('sin invocar C',p['narration']['basic']);continue
-    if op=='insert_vertex':
-     self.assertNotIn('retira',p['narration']['basic']);self.assertNotIn('retirada',p['narration']['basic']);self.assertIn('conserva',p['narration']['basic']);self.assertNotIn('eliminar',s['line_text']);self.assertEqual(len(s['state_after']['edges']),1 if h else 0)
-    else:self.assertIn('caller',p['narration']['basic']);self.assertEqual(s['state_after']['edges'],[])
+     """Current graph-book/v1 acceptance; literal prior source is preserved."""
+     from qa_convergence._graph_contract_migration import assert_graph_contract_migration
+     from pathlib import Path as _MigrationPath
+     assert_graph_contract_migration(_MigrationPath(__file__).resolve().parents[1])
+     from qa_convergence.test_current_graph_vertex_publication import Publication as CurrentContract
+     CurrentContract.test_operation_specific_boundary(self)
  def test_executed_source_and_all_states_unchanged(self):
   m=importlib.import_module('app.domain.graph.vertex_instruction');ns={'__package__':m.__package__,'__file__':m.__file__};path=Path(__file__).resolve().parents[2]/'graph-vertex-note-baseline.py';exec(compile(path.read_text(),str(path),'exec'),ns)
   for op,v,h in CASES:

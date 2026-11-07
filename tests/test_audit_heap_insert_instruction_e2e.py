@@ -1,6 +1,8 @@
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Actual Insertar array/tree, cell ownership, scoped variables and replay."""
 from pathlib import Path
 import json,shutil,subprocess,threading
+from e2e_contract_helpers import console_stdout
 import pytest
 from app import create_app
 from app.domain.hierarchical import tad_wrappers
@@ -27,12 +29,12 @@ def test_heap_insert_views_replay_growth_failure_and_downloads(tmp_path,heap_ins
     page.locator('#hier-understand-toggle').click();page.select_option('#operation-select','insertar');page.locator('[name="value"]').fill(str(value));page.click('#hier-step-mode');fault['enabled']=fail
     with page.expect_response(lambda r:r.url.endswith('/binary_heap/operate') and r.request.method=='POST') as response:page.click('#hier-sim-play')
     d=response.value.json();assert d['success']==(not fail);trace=d['execution_trace'];steps=trace['steps'];native=[e for e in heap_insert_native['events'] if e['case']==case];assert len(steps)==len(native);nposts=len(posts)
-    pending='Insercion preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending
+    pending='Inserción preparada: resultado pendiente hasta completar la traza.';assert page.locator('#message-box').inner_text()==pending
     for direction,selector,indices in [('forward','#hier-sim-step',range(len(steps))),('backward','#hier-sim-prev',range(len(steps)-2,-2,-1))]:
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert page.locator('#hier-printf-console').text_content()==state['console_stdout']==''
+      assert console_stdout(page, '#hier-printf-console')==state['console_stdout']==''
       assert page.locator('[data-heap-source-index]').all_text_contents()==[f'[{i}] {v}' for i,v in enumerate(state['array'])]
       assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(map(str,state['array']))
       suspended=state['heap_data_reference'].startswith('indeterminado');assert page.locator('[data-heap-drawing-suspended]').count()==(2 if suspended else 0)
@@ -52,11 +54,11 @@ def test_heap_insert_views_replay_growth_failure_and_downloads(tmp_path,heap_ins
       local=page.locator('[data-heap-local]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.heapLocalFrame,name:x.dataset.heapLocal,value:x.dataset.heapLocalValue}))');assert local==[{'frame':f['id'],'name':k,'value':display(v)} for f in state['query_frames'] for k,v in {**f['parameters'],**f['locals']}.items()]
       ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame'];assert 'Estado intermedio de Insertar' in page.locator('#hier-invariant-view').inner_text()
       variables=page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent,type:x.children[0].querySelector("code").textContent}))');assert variables==[{'scope':v['scope'],'previous':display(v['previous']),'value':display(v['value']),'type':v['type']+' '+v['name']} for v in ped['variables']]
-      assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack']);assert page.locator('#message-box').inner_text()==(d['message'] if index==len(steps)-1 else pending)
+      assert_hier_stack(page,ped);assert page.locator('#message-box').inner_text()==(d['message'] if index==len(steps)-1 else pending)
       if index>=0:
        event=native[index];assert steps[index]['line_text'].strip()==event['text'] and state['array']==event['array'] and state['size']==event['quantity'] and state['capacity']==event['capacity']
        active=page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').evaluate_all('xs=>xs.map(x=>Number(x.dataset.line))');assert steps[index]['line_index'] in active
-       if event['phase']=='return':assert 'terminado (contexto del retorno)' in page.locator('#hier-stack-view .hier-stack-frame').last.inner_text()
+       if event['phase']=='return':assert_completed_scope(page,ped)
        if ped['condition']:assert display(ped['condition']['result']) in page.locator('#hier-path-view').text_content()
        if direction=='forward' and case in [2,6,8] and (event['phase']=='allocation' or event['scope']=='swap' and event['text']=='*a = *b;'):page.screenshot(path=str(tmp_path/f'insert-{case}-{index}.png'),full_page=True)
       else:assert not state['query_frames'] and state['heap_pending_index'] is None and not state['heap_retired'] and not any(o['id']=='A2' for o in state['heap_allocations'])

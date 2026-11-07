@@ -59,13 +59,17 @@ def test_hash_journal_stdout_matches_native_c17(client, tmp_path, operations):
             assert fragments == 'get:99:0\n'
             assert '123456789' not in fragments
         emitted = ''
-        for step in trace['steps']:
+        for index, step in enumerate(trace['steps']):
             emitted += ''.join(step['console'])
             assert step['console_stdout'] == emitted
             if step['console']:
                 assert step['event_type'] == 'caller_printf'
                 assert step['instruction_event']['source_role'] == 'caller'
                 assert step['line_index'] == -1
+                assert index > 0
+                assert step['state_snapshot'] == step['state_after'] == trace['steps'][index-1]['state_after']
+                assert step['pedagogy']['state_before'] == step['state_snapshot']
+                assert step['pedagogy']['state_after'] == step['state_after']
         # Seeking reads a snapshot; it never emits/duplicates another printf.
         for cursor in [len(trace['steps'])-1, 0, len(trace['steps'])//2, len(trace['steps'])-1]:
             assert fragments.startswith(trace['steps'][cursor]['console_stdout'])

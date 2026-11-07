@@ -16,6 +16,7 @@ def actual_callers(tmp_path_factory,request):
  out=tmp_path_factory.mktemp('sorting-main-actual');env={**os.environ,'PYTHONIOENCODING':'utf-8'};r=subprocess.run([sys.executable,'-B',str(Path(__file__).with_name('_audit_sorting_main_browser_low.py')),str(out),selected],cwd=ROOT,env=env,capture_output=True,text=True,encoding='utf-8',timeout=120);(out/'runner.log').write_text(r.stdout+r.stderr,encoding='utf-8');assert r.returncode==0,r.stdout+r.stderr;return json.loads((out/'report.json').read_text(encoding='utf-8'))
 
 @pytest.mark.parametrize('method',[a['id'] for a in SORTING_ALGORITHMS])
+@pytest.mark.e2e
 def test_actual_ui_main_download_c17_history_ownership(method,actual_callers):
  r=next(row for row in actual_callers['rows'] if row['algorithm']==method);n=r['native']
  assert n['actual_UI_download'] and n['strict_C17'] and n['doxygen_warnings']==0 and n['live']==0 and n['allocations']==n['frees']
@@ -26,6 +27,7 @@ def test_actual_ui_main_download_c17_history_ownership(method,actual_callers):
  if method in {'mergesort','counting_sort','binsort','radixsort'}:
   assert n['first_allocation_failure']['returncode']==1 and n['first_allocation_failure']['live']==0 and n['first_allocation_failure']['no_success_array_after_failure']
 
+@pytest.mark.e2e
 def test_empty_actual_download_and_reset_do_not_invent_callers(actual_callers):
  e=actual_callers['empty'];assert e['successful_native_runs']==0 and e['arrays']==[[]] and e['allocations']==0 and e['live']==0;assert actual_callers['empty_reset_verified']
 

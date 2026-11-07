@@ -15,3 +15,9 @@ def function_body(source, name):
 def replace_once(body, old, new):
     assert body.count(old)==1, old
     return body.replace(old,new)
+
+
+def assert_source_transport_identity(observed: bytes, canonical: bytes) -> None:
+    """Accept only CRLF/LF transport, preserving every other source byte."""
+    assert isinstance(observed, bytes) and isinstance(canonical, bytes)
+    assert observed.replace(b'\r\n', b'\n') == canonical.replace(b'\r\n', b'\n')

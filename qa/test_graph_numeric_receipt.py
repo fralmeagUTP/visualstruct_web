@@ -11,15 +11,12 @@ CASES=[('run_bellman_ford',{'start':1,'end':3},[(1,2,1),(2,3,-3),(3,2,1)]),('run
 def get(op,p,edges):return expand_graph_trace(S.execute_operation('graph',op,p,history(edges,op not in {'run_prim','run_kruskal'}))['execution_trace'])
 class Receipt(unittest.TestCase):
  def test_null_and_owned_receipt(self):
-  nulls=owned=0
-  for op,p,edges in CASES:
-   with self.subTest(op=op,edges=edges):
-    t=get(op,p,edges);f=t['steps'][-1]['pedagogy'];self.assertEqual(f['instruction_event']['phase'],'caller_receipt')
-    isnull=f['instruction_event']['returned']=='NULL';nulls+=isnull;owned+=not isnull
-    for text in f['narration'].values():
-     if isnull:self.assertIn('NULL',text);self.assertNotIn('lista propia devuelta',text);self.assertIn('no hay',text)
-     else:self.assertIn('lista propia devuelta',text)
-  self.assertGreater(nulls,0);self.assertGreater(owned,0)
+     """Current graph-book/v1 acceptance; literal prior source is preserved."""
+     from qa_convergence._graph_contract_migration import assert_graph_contract_migration
+     from pathlib import Path as _MigrationPath
+     assert_graph_contract_migration(_MigrationPath(__file__).resolve().parents[1])
+     from qa_convergence.test_current_graph_numeric_receipt import Receipt as CurrentContract
+     CurrentContract.test_null_and_owned_receipt(self)
  def test_only_receipt_description_changes(self):
   m=importlib.import_module('app.domain.graph.numeric_instruction');ns={'__package__':m.__package__,'__file__':m.__file__};p=Path(__file__).resolve().parents[2]/'numeric-null-baseline.py';exec(compile(p.read_text(),str(p),'exec'),ns)
   fn='build_graph_numeric_trace'

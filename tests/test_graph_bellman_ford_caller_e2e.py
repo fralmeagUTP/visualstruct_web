@@ -12,14 +12,15 @@ def actual_browser_callers(tmp_path_factory):
 def test_actual_bellman_ford_history_download_and_ownership(case,actual_browser_callers):
  rows,out=actual_browser_callers;r=rows[case]
  assert r['actual_calls']==r['before_reload_calls']==r['after_reload_calls']==2
- assert r['failed_query_omitted'] and r['extra_reload_POSTs']==r['replay_extra_POSTs']==0 and r['page_errors']==[]
+ assert r['c_failure_recorded'] and r['host_rejection_omitted'] and r['extra_reload_POSTs']==r['replay_extra_POSTs']==0 and r['page_errors']==[]
  assert r['original_strict_c17_pass'] and r['original_returncode']==0
  assert not r['caller_output_is_precomputed']
  assert r['ownership']['allocations']==r['ownership']['frees'] and r['ownership']['live']==0
+ assert r['ownership']['observed_calls']==2
+ assert r['ownership']['non_null_results']==(2 if case in {'negative_alternative','cheaper_alternative','equal_priority','connected'} else 0)
  lines=[l for l in r['original_stdout'].splitlines() if l.startswith('Bellman-Ford:')]
- expected={'same_vertex':'Bellman-Ford: NULL (sin arcos, sin ruta, ciclo negativo o error de entrada/memoria)','negative_alternative':'Bellman-Ford: 1 -> 3 -> 2 | costo=-4','reachable_negative_cycle':'Bellman-Ford: NULL (sin arcos, sin ruta, ciclo negativo o error de entrada/memoria)'}[case]
+ expected={'same_vertex': 'Bellman-Ford: estado=0 (sin arcos; resultado valido) | costo=0', 'negative_alternative': 'Bellman-Ford: estado=0 1->3(1) 3->2(-5) | costo=-4', 'reachable_negative_cycle': 'Bellman-Ford: estado=4'}[case]
  assert lines==[expected]*2
- # UI/backend tie choice is still held; compare generated main to real native
- # output, not to a precomputed or invented backend path.
+ # Exact canonical C stdout includes GrafoEstado, even for retained failures.
  from test_graph_bfs_documentation import run_doxygen
  run_doxygen(out/case,[out/case/'main.c'])

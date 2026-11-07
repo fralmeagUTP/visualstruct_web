@@ -1,0 +1,181 @@
+{
+  "schema": "graph-current-obligation-map/v1",
+  "base_commit": "93bbd21dec0a27fb7a36b4065a0f60d88fa4e5dc",
+  "base_tree": "c8d37a66091ae35a0cf66973ae3d736911dc4a17",
+  "source_contract": "graph-book/v1",
+  "historical_gates_replaced": 0,
+  "historical_gates_retained": 9,
+  "obligations": [
+    {
+      "historical_nodeid": "qa/test_graph_edge_allocation.py::GraphAllocationTests::test_native_faults_and_cleanup",
+      "historical_file": "qa/test_graph_edge_allocation.py",
+      "historical_sha256": "c47b5f69edbab610393f35cdec532607396fcb4515fa89161e4eef92b84ba61d",
+      "historical_obligation": "Thirty pre-book native allocation-fault scenarios preserve endpoints and cleanup.",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_edge_allocation.py::GraphAllocationTests::test_native_faults_and_cleanup"
+      ],
+      "current_guarantee": "Thirty canonical C17 scenarios execute with malloc fault injection, valid endpoints, pointer-level atomicity on memory failure, status/cost checks and zero live allocations after cleanup.",
+      "negative_controls": [
+        "dangling_endpoint",
+        "wrong_cost",
+        "missing_cleanup"
+      ],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "The old C harness uses retired signatures and remains unchanged; current execution is not execution of that harness."
+    },
+    {
+      "historical_nodeid": "qa/test_graph_edge_allocation.py::GraphAllocationTests::test_symbolic_same_faults_preserve_endpoints",
+      "historical_file": "qa/test_graph_edge_allocation.py",
+      "historical_sha256": "c47b5f69edbab610393f35cdec532607396fcb4515fa89161e4eef92b84ba61d",
+      "historical_obligation": "Legacy ConstructionMachine results match its native rows across thirty scenarios.",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_edge_allocation.py::GraphAllocationTests::test_symbolic_same_faults_preserve_endpoints"
+      ],
+      "current_guarantee": "BookSession results match canonical native endpoint/vertex/arc/status/cost rows across the same six scenario classes and five allocation settings, with state preservation and final cleanup.",
+      "negative_controls": [
+        "dangling_endpoint",
+        "wrong_cost",
+        "missing_cleanup"
+      ],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "No equivalence between retired ConstructionMachine and BookSession is claimed."
+    },
+    {
+      "historical_nodeid": "qa/test_graph_numeric_receipt.py::Receipt::test_null_and_owned_receipt",
+      "historical_file": "qa/test_graph_numeric_receipt.py",
+      "historical_sha256": "afca9e7547dcfd8053c7021ef6ae8bb154168f92b6d8fdd90b3000c21004adcf",
+      "historical_obligation": "The terminal legacy caller receipt distinguishes returned NULL from owned lists across seven algorithm cases.",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_numeric_receipt.py::Receipt::test_null_and_owned_receipt"
+      ],
+      "current_guarantee": "The actual canonical caller receipt is inspected before printf/free; returned pointer, non-C boundary, live ownership, NULL wording and terminal cleanup are checked across seven cases.",
+      "negative_controls": [
+        "receipt_marked_as_C",
+        "returned_pointer_disagrees",
+        "owned_pointer_missing",
+        "owned_memory_already_freed",
+        "final_cleanup_leak",
+        "null_narration_claims_owned"
+      ],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "The canonical terminal API-publication step is not the legacy final receipt; these are explicit different observation points."
+    },
+    {
+      "historical_nodeid": "qa/test_graph_numeric_receipt.py::Receipt::test_only_receipt_description_changes",
+      "historical_file": "qa/test_graph_numeric_receipt.py",
+      "historical_sha256": "afca9e7547dcfd8053c7021ef6ae8bb154168f92b6d8fdd90b3000c21004adcf",
+      "historical_obligation": "Compare executed trace with numeric-null-baseline.py, allowing only specific presentation fields.",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_numeric_receipt.py::Receipt::test_narration_is_independent_of_canonical_execution",
+        "qa_convergence/test_current_graph_narration_contract.py::test_narration_experiment_rejects_unused_rewording"
+      ],
+      "current_guarantee": "A live replacement of the current narration function must be invoked and change presentation while leaving the complete execution projection equal.",
+      "negative_controls": [
+        "unused narration replacement",
+        "invoked but ignored narration replacement"
+      ],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "numeric-null-baseline.py is missing. Current narration isolation does not establish equivalence with the missing historical program."
+    },
+    {
+      "historical_nodeid": "qa/test_graph_vertex_publication.py::Publication::test_operation_specific_boundary",
+      "historical_file": "qa/test_graph_vertex_publication.py",
+      "historical_sha256": "a6e2b86eee02bcb00e6c39d02ed35401b0eb72dcd8e66918ce16d3783da3a0da",
+      "historical_obligation": "Legacy insertion/removal publication wording and edge-state effects correspond to the selected operation without imaginary C.",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_vertex_publication.py::Publication::test_operation_specific_boundary"
+      ],
+      "current_guarantee": "Canonical API publication has no C line and no executed-C flag; the corresponding C function did execute, receipt matches graph state, history operation is correct and publication does not mutate state.",
+      "negative_controls": [
+        "publication_marked_as_C",
+        "imaginary_C_line",
+        "missing_C_execution",
+        "returned_graph_disagrees",
+        "history_operation_changed",
+        "publication_mutates_state"
+      ],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "Unmarked legacy histories are deliberately not reinterpreted as graph-book/v1; old source remains intact."
+    },
+    {
+      "historical_nodeid": "qa/test_graph_vertex_publication.py::Publication::test_executed_source_and_all_states_unchanged",
+      "historical_file": "qa/test_graph_vertex_publication.py",
+      "historical_sha256": "a6e2b86eee02bcb00e6c39d02ed35401b0eb72dcd8e66918ce16d3783da3a0da",
+      "historical_obligation": "Compare C events, source and every state/memory/console field against graph-vertex-note-baseline.py.",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_vertex_publication.py::Publication::test_narration_preserves_executed_source_and_all_states",
+        "qa_convergence/test_current_graph_narration_contract.py::test_narration_experiment_rejects_unused_rewording"
+      ],
+      "current_guarantee": "The current narration-isolation projection retains all source, event, state, memory, result and stdout fields apart from the three deliberately changed narration fields.",
+      "negative_controls": [
+        "unused narration replacement",
+        "invoked but ignored narration replacement"
+      ],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "graph-vertex-note-baseline.py is missing. This current isolation experiment does not reconstruct or certify the historical comparison."
+    },
+    {
+      "historical_nodeid": "qa/test_graph_query_publication.py::Publication::test_typed_results",
+      "historical_file": "qa/test_graph_query_publication.py",
+      "historical_sha256": "9cc73e75082bec5ab4b5ef8d99a24292da63e2258413d6bf3041e31fea4f224e",
+      "historical_obligation": "Legacy host publication distinguishes scalar results from borrowed lists; absent cost was input validation.",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_query_publication.py::Publication::test_typed_results"
+      ],
+      "current_guarantee": "Canonical int flags, cost output cell and borrowed-list pointers preserve return type, identity, ownership and prior history. Absent cost is checked as an actual C result with uninitialized output, not falsely claimed input rejection.",
+      "negative_controls": [
+        "receipt_marked_as_C",
+        "wrong_return_type",
+        "wrong_external_result",
+        "borrowed_marked_owned",
+        "borrowed_identity_changed",
+        "scalar_result_reversed",
+        "cost_output_changed",
+        "prior_history_removed"
+      ],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "The canonical absent-cost contract intentionally differs from the historical expectation."
+    },
+    {
+      "historical_nodeid": "qa/test_graph_query_publication.py::Publication::test_only_successful_query_final_narration_changes",
+      "historical_file": "qa/test_graph_query_publication.py",
+      "historical_sha256": "9cc73e75082bec5ab4b5ef8d99a24292da63e2258413d6bf3041e31fea4f224e",
+      "historical_obligation": "Compare full trace to graph-query-note-baseline.py, changing only successful final narration.",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_query_publication.py::Publication::test_narration_does_not_change_queries_or_absent_results",
+        "qa_convergence/test_current_graph_narration_contract.py::test_narration_experiment_rejects_unused_rewording"
+      ],
+      "current_guarantee": "Current presentation-isolation checks run successful/absent queries on populated and empty histories, retaining the complete execution projection.",
+      "negative_controls": [
+        "unused narration replacement",
+        "invoked but ignored narration replacement"
+      ],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "graph-query-note-baseline.py is missing. Current instrumentation cannot prove equivalence to a retired engine it no longer invokes."
+    },
+    {
+      "historical_nodeid": "qa/test_graph_help.py::GraphHelpTests::test_rendered_contract_matches_real_limit_and_controls",
+      "historical_file": "qa/test_graph_help.py",
+      "historical_sha256": "677744705636ec97f28807f714fdbb8850079db80a818f6df9dfa67146d805b2",
+      "historical_obligation": "Rendered help states the actual app limit, distinguishes C limits, names linked Cola FIFO and documents hidden auxiliary operations.",
+      "current_successor_tests": [
+        "qa_convergence/test_book_main_help.py::BookGuide::test_book_contract_content",
+        "qa_convergence/test_book_main_help.py::BookGuide::test_rendered_guide",
+        "tests/test_graph_educational_capacity_regression.py::test_capacity_metadata_and_help_use_current15"
+      ],
+      "current_guarantee": "Existing current tests cover canonical book return/status rules, index-queue explanation, exact rendered C and its function links, and current capacity metadata.",
+      "negative_controls": [],
+      "equivalence_claimed": false,
+      "historical_gate": "preserved and still failing; not replaced",
+      "unresolved": "The historical test fails at its Cola FIFO link expectation. Canonical book traversal uses an index queue; these current tests are not a proof of all legacy wording/link guarantees. No additional rendered-help equivalence is claimed."
+    }
+  ]
+}

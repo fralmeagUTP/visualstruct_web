@@ -1,6 +1,8 @@
+from e2e_hierarchical_contract import same_nodes, memory_cards, color_label, assert_hier_stack, assert_completed_scope
 """Existing tree/heap views and exact caller, bidirectional replay without POST."""
 import json,threading,subprocess,shutil
 from pathlib import Path
+from e2e_contract_helpers import console_stdout, observe_before_cleanup
 import pytest
 from app import create_app
 from werkzeug.serving import make_server
@@ -27,18 +29,18 @@ def test_delete_browser_native_views_replay_and_actual_caller(tmp_path,delete_ba
      for index in indices:
       assert page.locator(selector).is_enabled();page.locator(selector).evaluate('b=>b.click()');page.wait_for_function("n=>document.querySelector('#hier-sim-counter').textContent.startsWith('Paso: '+n+'/')",arg=index+1)
       state=page.evaluate('window.auditState');expected=steps[index]['pedagogy']['memory_state'] if index>=0 else steps[0]['state_snapshot'];assert state==expected
-      assert page.locator('#hier-printf-console').text_content()==state['console_stdout']==''
+      assert console_stdout(page, '#hier-printf-console')==state['console_stdout']==''
       assert page.locator('[data-abb-head]').get_attribute('data-abb-head')==state['head']
-      heap=page.locator('[data-abb-node]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))');assert heap==state['heap_nodes']
+      heap=page.locator('[data-abb-node]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbNode,value:Number(x.dataset.abbValue),left:x.dataset.abbLeft,right:x.dataset.abbRight,status:x.dataset.abbStatus}))');assert same_nodes(heap,state['heap_nodes'])
       assert page.locator('[data-abb-frame]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbFrame,depth:Number(x.dataset.abbDepth)}))')==[{'id':f['id'],'depth':f['depth']} for f in state['tree_frames']]
       aliases=page.locator('[data-abb-alias]').evaluate_all('xs=>xs.map(x=>({frame:x.dataset.abbAliasFrame,name:x.dataset.abbAlias,type:x.dataset.abbAliasType,target:x.dataset.abbAliasTarget}))');assert aliases==[{'frame':f['id'],'name':name,'type':'int' if name=='valor' else 'ABBNodo *','target':str(v)} for f in state['tree_frames'] for name,v in {**f['parameters'],**f['locals']}.items()]
       def values(root):return [] if root is None else [str(root['value']),*values(root['left']),*values(root['right'])]
       assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(values(state['root']))
       ped=steps[index]['pedagogy'] if index>=0 else steps[0]['pedagogy']['initial_frame']
       assert page.locator('#hier-variables-view tbody tr').evaluate_all('xs=>xs.map(x=>({scope:x.querySelector("small").textContent,previous:x.children[1].textContent,value:x.children[2].textContent}))')==[{'scope':v['scope'],'previous':str(v['previous']),'value':str(v['value'])} for v in ped['variables']]
-      assert page.locator('#hier-stack-view .hier-stack-frame').count()==len(ped['call_stack'])
+      assert_hier_stack(page,ped)
       assert 'Vida de reservas y publicaciones pendientes' in page.locator('#hier-invariant-view').inner_text()
-      if ped['call_stack']:assert 'raíz local: '+ped['call_stack'][0]['local_root_address'] in page.locator('#hier-stack-view .hier-stack-frame').first.inner_text()
+      if ped['call_stack']:assert_hier_stack(page,ped)
       assert page.locator('[data-abb-retired-node]').evaluate_all('xs=>xs.map(x=>({id:x.dataset.abbRetiredNode,value:Number(x.dataset.abbRetiredValue)}))')==[{'id':n['id'],'value':n['value']} for n in state['freed_nodes']]
       assert page.locator('[data-abb-unusable-count]').get_attribute('data-abb-unusable-count')==str(len(ped['memory']['unusable_reference_records']))
       if index>=0:
@@ -58,10 +60,15 @@ def test_delete_browser_native_views_replay_and_actual_caller(tmp_path,delete_ba
     def asserts(identity,expression='arbol'):
      if not identity:return [f'assert({expression} == NULL);']
      n=nodes[identity];return [f'assert({expression} != NULL);',f'assert(({expression})->valor == {n["value"]});',*asserts(n['left'],f'({expression})->izquierdo'),*asserts(n['right'],f'({expression})->derecho')]
-    generated=actual_main.rsplit('    return 0;',1);assert len(generated)==2
-    equivalent='int main(void)'+trace['source_code'].split('int main(void)',1)[1];eqparts=equivalent.rsplit('    return 0;',1)
-    for name,parts in [('actual-main',generated),('equivalent-main',eqparts)]:
-     source=tmp_path/(name+'.c');source.write_text('#include "tad_abb.h"\n#include <stdio.h>\n#include <stddef.h>\n#include <assert.h>\n'+parts[0]+'\n'+'\n'.join(asserts(native['root']))+'\nabb_liberarArbol(arbol);\n    return 0;'+parts[1],encoding='utf-8');exe=source.with_suffix('.exe')
+    observation='\n'.join(asserts(native['root']))
+    # The actual caller already owns final cleanup. Observe before it, preserving
+    # every original statement; the equivalent trace caller has no cleanup.
+    observed=observe_before_cleanup(actual_main,'abb_liberarArbol(arbol);',observation)
+    equivalent='int main(void)'+trace['source_code'].split('int main(void)',1)[1]
+    eqparts=equivalent.rsplit('    return 0;',1);assert len(eqparts)==2
+    equivalent=eqparts[0]+observation+'\nabb_liberarArbol(arbol);\n    return 0;'+eqparts[1]
+    for name,main in [('actual-main',observed),('equivalent-main',equivalent)]:
+     source=tmp_path/(name+'.c');source.write_text('#include "tad_abb.h"\n#include <stdio.h>\n#include <stddef.h>\n#include <assert.h>\n'+main,encoding='utf-8');exe=source.with_suffix('.exe')
      build=subprocess.run([shutil.which('gcc'),'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(tmp_path/'tad_abb.c'),str(source),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert build.returncode==0,build.stderr
      run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=5);assert run.returncode==0,run.stderr
      if name=='equivalent-main':assert run.stdout==''

@@ -414,3 +414,51 @@ def test_graph_strategy_handles_vertex_removal() -> None:
     boundaries = strategy.build_boundaries(before, after, 3, ["actual = g.v;", "free(eliminar);", "return g;"])
     assert boundaries[-1] == after
     assert all(state["directed"] is True for state in boundaries)
+
+
+def _caller_trace():
+    line = 'printf("ok\\n");'
+    return {'structure_id': 'hash_table', 'source_code': 'return 1;',
+            'caller_source_code': line, 'final_state': {}, 'steps': [{
+                'line_index': -1, 'line_text': '', 'event_type': 'caller_printf',
+                'phase': 'end', 'state_snapshot': {}, 'state_after': {},
+                'console': ['ok\n'], 'instruction_event': {'source_role': 'caller',
+                    'function': 'main', 'C_executed': True, 'caller_line_text': line}}]}
+
+
+def test_caller_source_sentinel_round_trip_keeps_wire_and_validates_separate_source():
+    from copy import deepcopy
+    trace = _caller_trace(); original = deepcopy(trace)
+    steps = TraceEngine.validate_legacy_trace(trace)
+    assert steps[0].line_index is None
+    assert LegacyTraceAdapter.to_public(steps[0]) == original['steps'][0]
+    assert trace == original
+
+
+@pytest.mark.parametrize('field,value', [('source_role', 'canonical'), ('function', 'other'),
+    ('C_executed', False), ('caller_line_text', '')])
+def test_caller_sentinel_cannot_hide_invalid_tad_line(field, value):
+    trace = _caller_trace(); trace['steps'][0]['instruction_event'][field] = value
+    with pytest.raises(TraceContractError):
+        TraceEngine.validate_legacy_trace(trace)
+
+
+def test_caller_source_must_exist_and_match():
+    trace = _caller_trace(); trace['caller_source_code'] = 'printf("different");'
+    with pytest.raises(TraceContractError, match='caller_source_code'):
+        TraceEngine.validate_legacy_trace(trace)
+    trace = _caller_trace(); trace['steps'][0]['line_index'] = -2
+    with pytest.raises(TraceContractError, match='line_index'):
+        TraceEngine.validate_legacy_trace(trace)
+
+
+@pytest.mark.parametrize('readonly', [False, True])
+def test_both_validation_paths_reject_forged_sorting_caller_source(readonly):
+    trace = _caller_trace(); trace['structure_id'] = 'sorting_array'
+    validate = TraceEngine.validate_legacy_trace_readonly if readonly else TraceEngine.validate_legacy_trace
+    validate(trace)
+    trace['caller_source_code'] = 'printf("other");'
+    # Check caller source before conversion errors in both paths.
+    trace['steps'][0]['state_snapshot'] = []
+    with pytest.raises(TraceContractError, match='caller_source_code'):
+        validate(trace)

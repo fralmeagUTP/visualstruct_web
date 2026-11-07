@@ -1,5 +1,8 @@
 """Heap sort LOW, strong causal fidelity regressions remain failing until scoped MEDIUM."""
 from pathlib import Path
+from tests._sorting_trace_text_contract import current_swap_display
+from _audit_sorting_c_source import assert_source_transport_identity
+from tests._sorting_text_source_contract import assert_sorting_text_source_continuity
 from scripts.published_test_inputs import audit_input_path
 import json,hashlib
 import pytest
@@ -37,14 +40,14 @@ def test_real_download_Doxygen_and_seven_closed_modules_untouched(observed):
  out,_=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h'])
  h=json.loads((audit_input_path(B/'evidence/visible-sorting-mergesort-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
  for name in ['intercambio','seleccion','insercion','burbuja','shell','quicksort','mergesort']:
-  rel=f'app/domain/sorting/{name}_instructions.py';assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==h[rel]
- for ext in ['c','h']:assert (out/('tad_ordenamiento.'+ext)).read_bytes()==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes()
+  rel=f'app/domain/sorting/{name}_instructions.py';assert_sorting_text_source_continuity(ROOT,rel,h[rel])
+ for ext in ['c','h']:assert_source_transport_identity((out/('tad_ordenamiento.'+ext)).read_bytes(),(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes())
 def test_repeated_heapsort_history_GET_no_sort_again(monkeypatch):
  from app.adapters.sorting_adapter import SortingAdapter
  c=create_app().test_client();c.post('/api/ordenamiento/create-array',json={'values':[4,3,2,1]});a=c.post('/api/ordenamiento/run',json={'algorithm_id':'heapsort','mode':'fast'}).get_json();b=c.post('/api/ordenamiento/run',json={'algorithm_id':'heapsort','mode':'fast'}).get_json();assert a['success'] and b['success'] and sum(e['operation']=='run' for e in b['history'])==2
  monkeypatch.setattr(SortingAdapter,'run',lambda *a,**k:pytest.fail('GET sorted again'));d=c.get('/api/ordenamiento/state').get_json();assert d['main_c']==b['main_c'] and d['history']==b['history'] and d['main_c'].count('ordenar_heapsort(arreglo, n);')==2
 def test_shared_swap_default_preserved_and_heap_optin_no_fake_TAD_console():
- p=SortingInterpreter([2,1],'heapsort');p._swap(0,1);old=json.loads((audit_input_path(E/'default-helper-before.json')).read_text(encoding='utf-8'));assert old=={'values':p.values,'steps':p._steps,'metrics':vars(p.metrics)}
+ p=SortingInterpreter([2,1],'heapsort');p._swap(0,1);old=json.loads((audit_input_path(E/'default-helper-before.json')).read_text(encoding='utf-8'));assert current_swap_display(old)=={'values':p.values,'steps':p._steps,'metrics':vars(p.metrics)}
  p=SortingInterpreter([4,3,2,1],'heapsort');d=p.run();assert not any(s['console_output'] for s in d['steps'])
 @pytest.mark.parametrize('case',list(UI_CASES))
 def test_actual_browser_coarse_replay_and_C17_downloaded_callers(case):

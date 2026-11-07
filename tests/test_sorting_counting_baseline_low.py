@@ -1,5 +1,6 @@
 """Counting sort LOW preserves causal failures; full instruction trace remains pending."""
 from pathlib import Path
+from tests._sorting_text_source_contract import assert_sorting_text_source_continuity
 import json,hashlib
 import pytest
 from _audit_counting_baseline import audit,CASES,UI_CASES
@@ -41,7 +42,7 @@ def test_actual_download_Doxygen_and_eight_modules_preserved(observed):
     out,_=observed;run_doxygen(out,[out/'tad_ordenamiento.c',out/'tad_ordenamiento.h']);h=json.loads((audit_input_path(H/'implementation-hashes.json')).read_text())['files']
     prior=json.loads((audit_input_path(E.parent/'visible-sorting-mergesort-instructions/implementation-hashes.json')).read_text())['files']
     for method in ['intercambio','seleccion','insercion','burbuja','shell','quicksort','mergesort','heapsort']:
-        rel=f'app/domain/sorting/{method}_instructions.py';assert hashlib.sha256((audit_input_path(ROOT/rel)).read_bytes()).hexdigest()==(h if rel in h else prior)[rel]
+        rel=f'app/domain/sorting/{method}_instructions.py';assert_sorting_text_source_continuity(ROOT,rel,(h if rel in h else prior)[rel])
     for ext in ['c','h']:assert (audit_input_path(out/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')==(audit_input_path(ROOT/'docs/tads_C'/('tad_ordenamiento.'+ext))).read_bytes().replace(b'\r\n',b'\n')
 
 def test_API_input_bounds_and_rejected_range_no_run():

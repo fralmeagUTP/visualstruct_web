@@ -6,6 +6,7 @@ from pathlib import Path
 import zipfile
 import pytest
 from scripts.pytest_e2e_partition import partition
+from tests._published_source_successions import assert_published_source_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -40,4 +41,4 @@ def test_packaged_inputs_have_exact_declared_bytes_and_no_private_stores():
             assert digest.hexdigest() == row["sha256"] and size == row["bytes"]
             current = ROOT / row["path"]
             if "/evidence/" not in row["path"] and current.is_file():
-                assert current.read_bytes().replace(b"\r\n",b"\n") == package.read(row["path"]).replace(b"\r\n",b"\n")
+                assert_published_source_identity(row["path"], package.read(row["path"]), current.read_bytes())

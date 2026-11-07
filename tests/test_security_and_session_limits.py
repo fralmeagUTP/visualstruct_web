@@ -95,32 +95,50 @@ def test_session_histories_are_isolated_by_module_namespace(client) -> None:
 
 @pytest.mark.performance
 def test_graph_bfs_performance_smoke(client) -> None:
-    """Smoke performance check: BFS on the approved educational 30-vertex graph should finish quickly."""
-    client.post(
-        "/graph/graph/operate",
-        json={"operation": "create_graph", "payload": {"directed": "false"}},
-    )
-    for value in range(1, 31):
-        client.post(
-            "/graph/graph/operate",
-            json={"operation": "insert_vertex", "payload": {"vertex": str(value)}},
-        )
-    for value in range(1, 30):
-        client.post(
-            "/graph/graph/operate",
-            json={
-                "operation": "insert_edge",
-                "payload": {"origin": str(value), "target": str(value + 1), "weight": "1"},
-            },
-        )
+    """The public 15-vertex limit completes BFS in normal mode within 5s.
+
+    A large trace must be rejected intact, never truncated to satisfy the budget.
+    The historical 30-vertex fixture ignored capacity failures during setup.
+    """
+    from app.domain.graph.educational_capacity import MAX_VERTICES
+    from app.domain.graph.trace_budget import MAX_TRACE_EVENTS
+    assert MAX_VERTICES == 15
+
+    def post(operation, payload, **options):
+        response = client.post('/graph/graph/operate', json={
+            'operation': operation, 'payload': payload, **options})
+        return response, response.get_json()
+
+    operations = [('create_graph', {'directed': 'false'})]
+    operations += [('insert_vertex', {'vertex': str(v)}) for v in range(1, MAX_VERTICES + 1)]
+    operations += [('insert_edge', {'origin': str(v), 'target': str(v + 1), 'weight': '1'})
+                   for v in range(1, MAX_VERTICES)]
+    for operation, payload in operations:
+        prepared, before = post(operation, payload)
+        assert prepared.status_code == 200 and before['success'], before.get('message')
+    assert len(before['visual_state']['nodes']) == MAX_VERTICES
+
+    rejected, boundary = post('insert_vertex', {'vertex': str(MAX_VERTICES + 1)})
+    assert rejected.status_code == 400 and boundary['success'] is False
+    assert boundary['history'] == before['history']
+    assert boundary['visual_state'] == before['visual_state']
+
+    rejected, over_budget = post('run_bfs', {'start': '1'}, execution_mode='step')
+    assert rejected.status_code == 400 and over_budget['success'] is False
+    assert over_budget['trace_event_limit'] == MAX_TRACE_EVENTS
+    assert over_budget['trace_available'] is False and over_budget['execution_trace'] is None
+    assert over_budget['history'] == before['history']
+    assert over_budget['visual_state'] == before['visual_state']
 
     start = perf_counter()
-    response = client.post(
-        "/graph/graph/operate",
-        json={"operation": "run_bfs", "payload": {"start": "1"}},
-    )
+    response, body = post('run_bfs', {'start': '1'}, execution_mode='normal')
     elapsed = perf_counter() - start
-
-    assert response.status_code == 200
-    assert response.get_json()["success"] is True
+    assert response.status_code == 200 and body['success'] is True
+    assert body['c_status'] == 0 and body['result'] == list(range(1, MAX_VERTICES + 1))
+    assert body['console_stdout'] == 'BFS: estado=0 ' + ' '.join(map(str, range(1, MAX_VERTICES + 1))) + '\n'
+    assert body['trace_available'] is False and body['execution_trace'] is None
+    assert body['history'][:-1] == before['history']
+    assert body['history'][-1] == {'operation': 'run_bfs', 'payload': {'start': '1'}, 'source_contract': 'graph-book/v1'}
+    assert len(body['visual_state']['nodes']) == MAX_VERTICES
+    assert all(node['marked'] == 1 for node in body['visual_state']['nodes'])
     assert elapsed < 5.0

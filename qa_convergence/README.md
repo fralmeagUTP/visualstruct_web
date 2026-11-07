@@ -22,9 +22,15 @@ usan GCC disponible, no descargan herramientas ni servicios. La carpeta
 `../qa_independent/` contiene oráculos y revisiones distintas del autor; la QA
 real de navegador vive en `../qa_ui/` y no queda sustituida por tests DOM.
 
-Los antiguos `qa/test_graph_*` documentan contratos y source hashes previos. Se
-preservan como evidencia, **no deben interpretarse como la suite de aceptación de
-este nuevo C**. También cambió la extracción textual del viejo handler crear de
+Los originales de cinco módulos `qa/test_graph_*` y su manifest previo se
+conservan literalmente en `tests/fixtures/graph-history/contract-migration/`.
+La decisión explícita `graph_contract_migration.json` asigna seis IDs activos a
+aceptación actual de `graph-book/v1`, con diferencias documentadas y controles
+negativos. No son ejecuciones históricas recuperadas. Las tres comparaciones con
+programas baseline ausentes conservan sus cuerpos y dependencias sin cambios.
+El harness C anterior permanece en su ubicación original. El mapa de R8 conserva
+la fotografía anterior a la transición; la decisión de migración describe la
+custodia y autoridad activas. También cambió la extracción textual del viejo handler crear de
 `qa/test_real_stdout.js`; el runner no-grafo ejecuta sus casos jerárquicos y deja
 los casos grafo a las pruebas de handlers canónicos. Los fallos iniciales de esa
 selección quedan registrados; no se eliminan para aparentar verde.

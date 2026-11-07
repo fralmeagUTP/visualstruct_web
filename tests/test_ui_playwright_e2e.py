@@ -173,7 +173,7 @@ def test_playwright_hierarchical_red_black_null_and_history_sync() -> None:
             for value in ["10", "5", "15"]:
                 page.fill("#h-field-value", value)
                 page.click("#hier-sim-play")
-                _wait_status_contains(page, "#hier-sim-status", "Modo rapido")
+                _wait_status_contains(page, "#hier-sim-status", "Modo rápido")
 
             page.wait_for_selector(".viz-tree-svg", timeout=5000)
 
@@ -254,7 +254,7 @@ def test_playwright_global_didactic_switch_visual_default_and_persistence() -> N
             _wait_didactic_mode(page, "visual")
             assert page.is_checked("#didactic-mode-switch") is False
 
-            assert page.locator("#seq-code-region").is_visible()
+            assert not page.locator("#seq-code-region").is_visible()
 
             initial_url = page.url
             page.locator('label[for="didactic-mode-switch"]').click()
@@ -434,14 +434,14 @@ def test_playwright_other_sequential_structures_show_canonical_final_state(
                 page.fill(f"#field-{name}", value)
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Modo rápido")
-            assert "Tamano: 1" in (page.text_content("#visual-state") or "")
+            assert "Tamaño: 1" in (page.text_content("#visual-state") or "")
 
             page.select_option("#operation-select", remove_operation)
             for name, value in remove_payload.items():
                 page.fill(f"#field-{name}", value)
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Modo rápido")
-            assert "Tamano: 0" in (page.text_content("#visual-state") or "")
+            assert "Tamaño: 0" in (page.text_content("#visual-state") or "")
             browser.close()
 
 
@@ -860,8 +860,10 @@ def test_playwright_graph_guided_level_and_mobile_context() -> None:
             _wait_status_contains(page, "#graph-sim-counter", "Paso: 1/")
             cursor = page.text_content("#graph-sim-counter")
             page.set_viewport_size({"width":390,"height":844})
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-graph-tab="code"]')
             assert page.is_visible("#graph-code-region")
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-graph-tab="visual"]')
             assert page.is_visible("#graph-visual-region")
             assert page.text_content("#graph-sim-counter")==cursor
@@ -935,8 +937,10 @@ def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
             summary = (page.text_content("#hier-pedagogy-summary") or "").lower()
             assert "llamador equivalente" in summary and "no hay resultado futuro" in summary
             page.set_viewport_size({"width": 390, "height": 844})
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-hier-tab="code"]')
             assert page.is_visible("#hier-code-region") is True
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-hier-tab="visual"]')
             assert page.is_visible("#hier-visual-region") is True
             assert page.text_content("#hier-sim-counter") == cursor
@@ -1024,14 +1028,30 @@ def test_playwright_sequential_step_progress_keeps_visual_and_c_synchronized() -
 
 
 def test_playwright_stack_compact_pilot_keeps_primary_workspace_visible() -> None:
+    _assert_stack_compact_workspace({"width": 1366, "height": 768}, False)
+
+
+@pytest.mark.parametrize("viewport,technical", [
+    ({"width": 390, "height": 844}, False),
+    ({"width": 1366, "height": 768}, True),
+    ({"width": 390, "height": 844}, True),
+], ids=["narrow-simple", "desktop-technical", "narrow-technical"])
+def test_playwright_stack_compact_workspace_additional_modes(viewport, technical) -> None:
+    _assert_stack_compact_workspace(viewport, technical)
+
+
+def _assert_stack_compact_workspace(viewport, technical) -> None:
     """The stack baseline uses the five requested stages and contextual controls."""
     playwright_mod = pytest.importorskip("playwright.sync_api")
     with _live_server_url() as base_url:
         with playwright_mod.sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(viewport={"width": 1366, "height": 768})
+            page = browser.new_page(viewport=viewport)
             page.goto(f"{base_url}/sequential/stack", wait_until="networkidle")
 
+            if technical:
+                page.locator("#didactic-mode-switch").check()
+                _wait_didactic_mode(page, "full")
             assert page.locator(".is-stack-pilot").count() == 1
             headings = page.evaluate(
                 """() => [
@@ -1052,7 +1072,20 @@ def test_playwright_stack_compact_pilot_keeps_primary_workspace_visible() -> Non
             assert page.locator(".seq-understand details > .seq-compare").count() == 1
             assert page.locator(".seq-compare").evaluate("el => !el.closest('details').open")
             assert page.locator(".seq-understand").count() == 1
-            assert page.locator(".seq-execute").evaluate("el => el.classList.contains('classroom-execution-controls') && el.nextElementSibling.classList.contains('sequential-primary-workspace')")
+            # Classroom mounting keeps controls immediately after Prepare. The
+            # prediction panel and mobile tablist legitimately precede the workspace.
+            assert page.locator(".seq-execute").evaluate("""el => {
+                const prepare = document.querySelector('.seq-prepare');
+                const workspace = document.querySelector('.sequential-primary-workspace');
+                if (!el.classList.contains('classroom-execution-controls') ||
+                    prepare.nextElementSibling !== el || el.parentElement !== workspace.parentElement) return false;
+                let next = el.nextElementSibling;
+                while (next && next !== workspace) {
+                    if (!next.matches('#seq-prediction-panel, nav.sequential-mobile-tabs')) return false;
+                    next = next.nextElementSibling;
+                }
+                return next === workspace && el.getBoundingClientRect().bottom <= workspace.getBoundingClientRect().top;
+            }""")
             assert page.locator(".seq-reflect").count() == 1
 
             page.goto(f"{base_url}/sequential/queue", wait_until="networkidle")
@@ -1147,12 +1180,14 @@ def test_playwright_sorting_compact_workspace_omits_removed_learning_widgets() -
             assert (page.text_content("#sorting-pedagogy-narration") or "").strip()
             assert (page.text_content("#sorting-call-stack") or "").strip()
             assert (page.text_content("#sorting-variable-table") or "").strip()
+            page.locator("#didactic-mode-switch").check()
             assert page.locator("#sorting-code-region").is_visible()
             browser.close()
 
 
 def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
     """Observe distinct real C families while live, then enforce ended scopes."""
+    from e2e_sorting_stack_contract import STACK_ROWS, assert_sorting_stack
     playwright_mod = pytest.importorskip("playwright.sync_api")
     with _live_server_url() as base_url:
         with playwright_mod.sync_playwright() as p:
@@ -1165,7 +1200,7 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
                 "burbuja": "Pasada:",
                 "shell": "Intervalo:",
                 "quicksort": "Pivote local:",
-                "mergesort": "Division/fusion activa",
+                "mergesort": "División/fusión activa",
                 "heapsort": "hijos:",
                 "counting_sort": "Frecuencias",
                 "binsort": "Frecuencias",  # The real C wrapper delegates Counting; no invented urnas.
@@ -1207,28 +1242,40 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
                         assert current == seen["cursor"] + 1 and total == seen["total"]
                     seen["cursor"] = current
                     frame = _sorting_frame_observation(page)
-                    active = bool(frame["stack"].strip()) and "Sin llamadas activas." not in frame["stack"]
+                    expected_calls = operation_steps[current - 1]["pedagogy"]["call_stack"] if current else []
+                    stack_rows = page.locator("#sorting-call-stack").evaluate(STACK_ROWS)
+                    active = assert_sorting_stack(stack_rows, expected_calls)
                     seen["active_scope"] |= active
                     seen["family"] |= active and marker in frame["text"]
                     for field in ("countLive", "heapChildren", "radixLive", "radixCounts"):
                         seen[field] |= active and frame[field]
 
-                page.click("#sorting-sim-play")
+                with page.expect_response(lambda response: response.url.endswith("/api/ordenamiento/run") and response.request.method == "POST") as operation_response:
+                    page.click("#sorting-sim-play")
+                operation_data = operation_response.value.json()
+                assert operation_data["success"]
+                operation_steps = operation_data["execution_trace"]["steps"]
                 _finish_manual_trace(page, "sorting", observe=observe_frame)
-                assert seen["cursor"] == seen["total"]
+                assert seen["cursor"] == seen["total"] == len(operation_steps)
                 assert seen["active_scope"] and seen["family"], algorithm
-                page.wait_for_function("() => (document.querySelector('#sorting-call-stack')?.textContent || '').includes('Sin llamadas activas.')")
+                page.wait_for_function("() => (document.querySelector('#sorting-call-stack')?.textContent || '').includes('No hay una función en ejecución en este punto. Las llamadas aparecen al entrar en una función.')")
                 final = _sorting_frame_observation(page)
-                assert "Sin llamadas activas." in final["stack"]
+                assert "No hay una función en ejecución en este punto. Las llamadas aparecen al entrar en una función." in final["stack"]
                 assert not (set(final["variables"]) & local_names[algorithm]), algorithm
                 assert [int(text.split("]", 1)[1]) for text in page.locator(".sorting-item-label").all_text_contents()] == [-3, 0, 1, 2, 5]
                 assert page.locator(".sorting-zero-axis").count() == 5
                 assert page.locator(".sorting-item-bar.is-negative").count() == 1
                 assert page.locator(".sorting-item-bar.is-zero").count() == 1
                 if algorithm == "burbuja":
+                    final_step = operation_steps[-1]
+                    assert final_step["state_after"]["trace_token"] == "sort_return"
+                    assert final_step["state_after"]["trace_action"] == "Retorno void al caller; retirar locales, sin printf propio del TAD."
+                    assert final_step["pedagogy"]["source"]["function"] == "ordenar_burbuja"
+                    assert final_step["pedagogy"]["source"]["line_text"].strip() == "}"
+                    assert final_step["pedagogy"]["call_stack"] == [] and final_step["pedagogy"]["variables"] == []
                     strategy = page.text_content("#sorting-strategy-view") or ""
-                    assert "Retorno void al caller" in strategy
-                    assert "j: —" in strategy and "hubo_intercambio: —" in strategy
+                    assert page.locator("#sorting-pedagogy-narration").inner_text().strip() == "Retorno void a la función que llamó; retirar locales, sin printf propio del TAD."
+                    assert "j: —" in strategy and "¿Hubo intercambio? (hubo_intercambio): —" in strategy
                 elif algorithm == "heapsort":
                     assert seen["heapChildren"]
                     assert final["heapN"] == "0" and final["suffixCount"] == 5
@@ -1260,6 +1307,7 @@ def test_playwright_sorting_step_navigation_and_theory_analysis() -> None:
             assert "Paso: 1/" in (page.text_content("#sorting-sim-counter") or "")
             before_tab = page.text_content("#sorting-sim-counter")
             page.set_viewport_size({"width": 760, "height": 900})
+            page.locator("#didactic-mode-switch").check()
             page.click('[data-sorting-tab="code"]')
             assert page.text_content("#sorting-sim-counter") == before_tab
             page.click("#sorting-sim-next")
@@ -1319,10 +1367,13 @@ def test_playwright_sorting_accessibility_keyboard_responsive_and_export() -> No
                 page.set_viewport_size({"width": width, "height": 900})
                 assert page.locator("#sorting-sim-counter").is_visible()
                 if width <= 800:
+                    page.locator("#didactic-mode-switch").check()
                     page.click('[data-sorting-tab="visual"]')
                     assert page.locator("#sorting-visual-region").is_visible()
+                    page.locator("#didactic-mode-switch").check()
                     page.click('[data-sorting-tab="code"]')
-                    assert page.locator("#sorting-code-region").is_visible()
+                    page.locator("#didactic-mode-switch").check()
+            assert page.locator("#sorting-code-region").is_visible()
             results = page.locator("#sorting-export-summary").locator("xpath=ancestor::details")
             for panel in results.all():
                 if panel.get_attribute("open") is None:

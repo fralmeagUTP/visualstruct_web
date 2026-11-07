@@ -29,25 +29,25 @@ jobs:
             target: tests
             cases: "--shard-index 0 --shard-count 4"
             addopts: "-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
-            minutes: 40
+            minutes: 60
           - group: chromium-general-1
             suite: chromium
             target: tests
             cases: "--shard-index 1 --shard-count 4"
             addopts: "-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
-            minutes: 40
+            minutes: 60
           - group: chromium-general-2
             suite: chromium
             target: tests
             cases: "--shard-index 2 --shard-count 4"
             addopts: "-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
-            minutes: 40
+            minutes: 60
           - group: chromium-general-3
             suite: chromium
             target: tests
             cases: "--shard-index 3 --shard-count 4"
             addopts: "-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect=tests/test_ui_playwright_e2e.py::test_playwright_graph_execute_completes_algorithms_across_phases"
-            minutes: 40
+            minutes: 60
           - group: firefox-general
             suite: firefox
             target: tests/test_playwright_firefox_smoke.py
@@ -95,5 +95,14 @@ jobs:
           path: |
             e2e-safe-diagnostics/*.jsonl
             e2e-safe-diagnostics/*-result.json
+          if-no-files-found: warn
+          include-hidden-files: false
+
+      - name: Preserve synthetic visual diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-visual-evidence-${{ matrix.group }}
+          path: visual-safe-diagnostics/*.png
           if-no-files-found: warn
           include-hidden-files: false

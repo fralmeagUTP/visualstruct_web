@@ -28,10 +28,14 @@ _TARGETS = {
 def _constructor_calls(code: Any, name: str) -> frozenset[int]:
  """Identify actual constructor CALLs; do not relabel later metadata/replay errors."""
  pending=False;offsets=set()
- for instruction in dis.get_instructions(code):
+ instructions=list(dis.get_instructions(code))
+ for index,instruction in enumerate(instructions):
   if instruction.opname in {'LOAD_GLOBAL','LOAD_NAME'} and instruction.argval==name:pending=True
   elif pending and instruction.opname.startswith('CALL'):
-   offsets.add(instruction.offset);pending=False
+   # CPython may report the CALL's inline CACHE offset in tb_lasti.
+   # dis hides those caches by default; stop before the next real opcode.
+   end=instructions[index+1].offset if index+1<len(instructions) else len(code.co_code)
+   offsets.update(range(instruction.offset,end,2));pending=False
  return frozenset(offsets)
 
 def is_node_allocation_failure(error: MemoryError, structure_id: str, operation: str) -> bool:
@@ -174,6 +178,7 @@ def build_allocation_failure_trace(*, structure_id: str, operation_name: str, pa
    text=CCodeService._safe_read(CCodeService._DOCS_TADS_C/'tad_lista.c');helper=CCodeService._extract_function_with_comment(text,'CrearNodoLista');source+='\n\n'+helper
   trace=_NullPath(structure_id,operation_name,payload,source,before_state).build()
  # Public console contains reached printf chunks, not an exception or cumulative future output.
+ trace['console_mode'] = 'events'
  for step in trace['steps']:
   literal=ExecutionTraceService._printf_literal(step['line_text'],preserve_trailing_newlines=True) if step['line_text'].strip().startswith('printf(') else None
   step['console']=[literal] if literal is not None else []

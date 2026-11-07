@@ -4,6 +4,122 @@ from __future__ import annotations
 
 import re
 from html import unescape
+from html.parser import HTMLParser
+
+import pytest
+
+from ui_stage_contract import assert_stage_contract, expected_stages
+
+
+class _HashHeadings(HTMLParser):
+    """Read heading text independently of whitespace and inline markup."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.headings: list[tuple[str, str | None, str]] = []
+        self.visual_id_tags: list[str] = []
+        self.current: tuple[str, str | None] | None = None
+        self.parts: list[str] = []
+        self.in_small = False
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        identifiers = [value for name, value in attrs if name == "id"]
+        assert len(identifiers) <= 1, "Duplicate id attributes are invalid"
+        identifier = identifiers[0] if identifiers else None
+        if identifier == "hash-visual-title":
+            self.visual_id_tags.append(tag)
+        if tag in {"h3", "summary"}:
+            self.current = (tag, identifier)
+            self.parts = []
+        if tag == "small":
+            self.in_small = True
+
+    def handle_data(self, data: str) -> None:
+        if self.current is not None and not self.in_small:
+            self.parts.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "small":
+            self.in_small = False
+        if self.current is not None and tag == self.current[0]:
+            text = " ".join("".join(self.parts).split())
+            self.headings.append((*self.current, text))
+            self.current = None
+
+
+def _assert_hash_stage_headings(html: str) -> None:
+    parser = _HashHeadings()
+    parser.feed(html)
+    parser.close()
+    assert parser.visual_id_tags == ["h3"]
+    title = expected_stages("/hash/hash_table")[1]
+    assert [heading for heading in parser.headings if heading[1] == "hash-visual-title"] == [
+        ("h3", "hash-visual-title", title),
+    ]
+    numbered = [text for _, _, text in parser.headings if re.match(r"^\d+\s", text)]
+    assert_stage_contract(numbered, "/hash/hash_table")
+
+
+@pytest.mark.parametrize("mutation", [
+    "missing_id", "duplicate_id", "wrong_tag", "missing_number", "wrong_number",
+    "wrong_name", "missing_name", "unknown_suffix", "missing_stage", "duplicate_stage", "reordered",
+])
+def test_hash_structure_heading_contract_rejects_regressions(client, mutation: str) -> None:
+    """The route consumer rejects lost identity, descriptions and stage order."""
+    html = client.get("/hash/hash_table").get_data(as_text=True)
+    title = '<h3 id="hash-visual-title"><span>2</span> Visualizar y ejecutar: Tabla hash</h3>'
+    assert html.count(title) == 1
+    replacement = title
+    if mutation == "missing_id":
+        replacement = title.replace('id="hash-visual-title"', 'id="other-title"')
+    elif mutation == "duplicate_id":
+        replacement += '<div id="hash-visual-title">Duplicate</div>'
+    elif mutation == "wrong_tag":
+        replacement = title.replace("h3", "div")
+    elif mutation == "missing_number":
+        replacement = title.replace("<span>2</span> ", "")
+    elif mutation == "wrong_number":
+        replacement = title.replace("<span>2</span>", "<span>3</span>")
+    elif mutation == "wrong_name":
+        replacement = title.replace("Tabla hash", "Pila")
+    elif mutation == "missing_name":
+        replacement = title.replace(": Tabla hash", "")
+    elif mutation == "unknown_suffix":
+        replacement = title.replace("Tabla hash", "Tabla hash y otra actividad")
+    elif mutation == "duplicate_stage":
+        replacement += title.replace('id="hash-visual-title"', 'id="duplicate-stage"')
+    elif mutation == "missing_stage":
+        html = html.replace("<span>4</span> Comprender", "Comprender")
+    else:
+        first = '<h3 id="hash-prepare-title"><span>1</span> Preparar y controlar ejecución</h3>'
+        assert html.count(first) == 1
+        html = html.replace(first, "__FIRST_STAGE__").replace(title, first)
+        html = html.replace("__FIRST_STAGE__", title)
+    with pytest.raises(AssertionError):
+        _assert_hash_stage_headings(html.replace(title, replacement))
+
+
+@pytest.mark.parametrize("attributes", [
+    'id="lost-visual-title" id="hash-visual-title"',
+    'id="hash-visual-title" id="lost-visual-title"',
+    'id="hash-visual-title" id="hash-visual-title"',
+])
+def test_hash_structure_heading_contract_rejects_duplicate_id_attributes(client, attributes: str) -> None:
+    """Reject ambiguous HTML identity through the same gate used for the route."""
+    html = client.get("/hash/hash_table").get_data(as_text=True)
+    original = '<h3 id="hash-visual-title">'
+    assert html.count(original) == 1
+    html = html.replace(original, f"<h3 {attributes}>")
+    with pytest.raises(AssertionError, match="Duplicate id attributes"):
+        _assert_hash_stage_headings(html)
+
+
+def test_hash_structure_heading_contract_accepts_inline_markup_and_whitespace(client) -> None:
+    """Equivalent rendered text need not have identical HTML serialization."""
+    html = client.get("/hash/hash_table").get_data(as_text=True)
+    html = html.replace(" Visualizar y ejecutar: Tabla hash</h3>",
+                        "\n Visualizar y ejecutar: <em>Tabla hash</em>  </h3>")
+    _assert_hash_stage_headings(html)
 
 
 def test_hash_module_page_loads(client) -> None:
@@ -17,7 +133,7 @@ def test_hash_structure_page_loads(client) -> None:
     """Hash structure page should load."""
     response = client.get("/hash/hash_table")
     assert response.status_code == 200
-    assert b'id="hash-visual-title">Tabla hash</h3>' in response.data
+    _assert_hash_stage_headings(response.get_data(as_text=True))
 
 
 def test_create_table_valid_and_invalid_capacity_via_route(client) -> None:

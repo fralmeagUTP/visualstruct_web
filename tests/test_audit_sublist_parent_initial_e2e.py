@@ -26,6 +26,7 @@ def test_parent_initial_state_has_no_future_scopes_on_load_and_rewind(operation)
       page.click('#seq-sim-step');page.click('#seq-sim-step');page.click('#seq-sim-prev');page.click('#seq-sim-prev')
      assert page.locator('[data-sublist-frame]').count()==0
      assert page.locator('#seq-variable-view [data-seq-variable]').count()==0,phase
-     assert 'ninguna instrucción ejecutada' in page.locator('#seq-pedagogy-summary').inner_text()
+     assert page.locator('#seq-sim-counter').text_content().startswith('Paso: 0/')
+     assert 'Paso 0 · sin función · Antes de comenzar' == page.locator('#seq-progress-detail').text_content()
    assert len(posts)==1;browser.close()
  finally:server.shutdown();thread.join(timeout=5)
