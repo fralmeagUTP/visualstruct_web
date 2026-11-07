@@ -1,3 +1,4 @@
+from e2e_initial_operation_contract import assert_initial_operation_card
 from e2e_trace_contracts import reveal_public
 """Both views and replay: visible parent removal, exact C heap and scoped aliases."""
 import json,threading
@@ -74,7 +75,7 @@ def test_insertions_both_views_replay_scopes_initialization_highlight_console(tm
          assert copied==native['writes']
        if index<0:
         assert page.locator('#seq-variable-view [data-seq-variable]').count()==0
-        assert 'Paso actual: Antes de comenzar' in page.locator('#seq-pedagogy-summary').inner_text()
+        assert_initial_operation_card(page,'seq','sublist',meta['operation'])
        if index>=0:
         if meta['operation']=='hijos_de' and steps[index]['line_text'].strip()=='destino[usados] = actual->nro;':
          assert 'Copia' in page.locator('#seq-pedagogy-summary').inner_text() and 'link' not in page.locator('#seq-pedagogy-summary').inner_text()

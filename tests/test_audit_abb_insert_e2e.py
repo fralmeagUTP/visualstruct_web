@@ -1,3 +1,4 @@
+from e2e_initial_operation_contract import assert_initial_operation_card
 from e2e_hierarchical_contract import same_nodes
 from e2e_trace_contracts import reveal_public
 """Current ABB tree and individual reservations/scopes, forward/back without POST."""
@@ -53,7 +54,10 @@ def test_abb_insert_current_tree_heap_scopes_replay_and_displayed_caller(tmp_pat
       assert sorted(page.locator('.viz-tree-text').all_text_contents())==sorted(values(state['root']))
       assert page.locator('#hier-printf-console').inner_text().strip() in {'','Sin salida printf en esta ruta.','(sin salida printf en esta ruta)'}
       if index<0:
-       assert page.locator('#hier-variables-view tbody tr').count()==0;assert page.locator('[data-abb-frame]').count()==0;assert page.locator('[data-abb-caller]').count()==0;assert 'Ninguna instrucción ejecutada' in page.locator('#hier-pedagogy-summary').inner_text()
+       assert page.locator('#hier-variables-view tbody tr').count()==0
+       assert page.locator('[data-abb-frame]').count()==0
+       assert page.locator('[data-abb-caller]').count()==0
+       assert_initial_operation_card(page,'hier','abb','insertar')
       else:
        step=steps[index];ped=step['pedagogy'];active=page.locator('#op-pseudocode .sim-active,#op-pseudocode .sim-done').evaluate_all('xs=>xs.map(x=>Number(x.dataset.line))');assert step['line_index'] in active
        if index in oracle:

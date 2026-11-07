@@ -62,7 +62,7 @@ def test_e2e_job_installs_chromium_and_runs_only_browser_tests() -> None:
         assert row["suite"] == "chromium" and row["target"] == "tests"
         assert row["cases"] == f"--shard-index {index} --shard-count 4"
         assert row["addopts"] == f"-m e2e --ignore=tests/test_playwright_firefox_smoke.py --deselect={chromium_target}::{graph_case}"
-        assert row["minutes"] == 40
+        assert row["minutes"] == 60
     # The only ignored file and deselected case have complete dedicated jobs above.
     # Every remaining E2E case is included through the tests directory and one shard.
     assert re.findall(r"(?m)^  ([\w-]+):\s*$", workflow.split("\njobs:\n", 1)[1]) == ["e2e"]
