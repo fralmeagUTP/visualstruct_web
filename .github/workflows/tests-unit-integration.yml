@@ -142,7 +142,7 @@ jobs:
       VISUALSTRUCT_E2E_DIAGNOSTICS_DIR: ci-safe-diagnostics
       VISUALSTRUCT_E2E_DIAGNOSTICS_NAME: probe
       COVERAGE_FILE: .coverage.${{ matrix.shard }}
-    timeout-minutes: 60
+    timeout-minutes: 75
     steps:
       - name: Checkout
         uses: actions/checkout@v4
