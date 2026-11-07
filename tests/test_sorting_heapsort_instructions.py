@@ -80,7 +80,9 @@ def test_actual_full_browser_restoration_and_downloaded_callers(case):
     assert r['empty_UI_rejected'] and r['empty_caller']['successful_native_runs']==0
 
 def test_original_regressions_and_seven_modules_hashes_preserved():
-    original=json.loads((audit_input_path(E/'original-regressions.json')).read_text(encoding='utf-8-sig'));assert hashlib.sha256((audit_input_path(ROOT/original['path'])).read_bytes()).hexdigest()==original['sha256']
+    from tests._heapsort_recovered_test_contract import assert_recovered_heapsort_test_successor
+    original=json.loads((audit_input_path(E/'original-regressions.json')).read_text(encoding='utf-8-sig'))
+    assert_recovered_heapsort_test_successor(ROOT,original)
     protected=json.loads((audit_input_path(E.parent/'visible-sorting-mergesort-instructions/implementation-hashes.json')).read_text(encoding='utf-8'))['files']
     for method in ('intercambio','seleccion','insercion','burbuja','shell','quicksort','mergesort'):
         rel=f'app/domain/sorting/{method}_instructions.py';assert_sorting_text_source_continuity(ROOT,rel,protected[rel])
