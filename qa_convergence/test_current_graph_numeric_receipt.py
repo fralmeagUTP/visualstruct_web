@@ -1,6 +1,7 @@
 """Canonical caller receipt describes the C pointer before explicit cleanup."""
 import unittest
-from _canonical_publication_contract import canonical_history, execute, receipt, assert_narration_does_not_change_execution
+from qa_convergence._graph_publication_assertions import narration_levels, assert_caller_receipt
+from qa_convergence._canonical_publication_contract import canonical_history, execute, receipt, assert_narration_does_not_change_execution
 
 
 def history(edges, directed=True):
@@ -28,9 +29,11 @@ class Receipt(unittest.TestCase):
                 isnull = event['returned'] == 'NULL'; nulls += isnull; owned += not isnull
                 self.assertEqual(event['returned'], body['c_return'])
                 self.assertFalse(event['C_executed'])
-                for text in frame['narration'].values():
+                assert_caller_receipt(self, frame)
+                for text in narration_levels(self, frame):
                     if isnull:
                         self.assertIn('NULL', text); self.assertIn('no hay lista', text)
+                        self.assertNotIn('lista propia', text, 'null_no_owned_claim')
                     else:
                         self.assertIn('lista propia', text); self.assertIn('no la libera', text)
                 if not isnull:

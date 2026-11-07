@@ -1,9 +1,12 @@
 # Pruebas actuales de publicación y fallos de reserva
 
-Estas pruebas adicionales usan graph-book/v1 y los C/H canónicos. No reemplazan ni
-certifican retrospectivamente los tests históricos de qa/test_graph_*. Los cinco
-archivos históricos, incluido qa/graph_edge_allocation.c, permanecen sin cambios.
-La separación ya está establecida en README.md de esta carpeta.
+Las pruebas actuales usan graph-book/v1 y los C/H canónicos. La transición
+explícita descrita en `graph_contract_migration.json` migra seis IDs activos de
+`qa/test_graph_*` a ese contrato. Los cinco módulos originales y el manifest
+anterior se preservan como snapshots literales; el harness C antiguo sigue
+intacto. Los cuerpos, imports, fixtures y dependencias de las tres comparaciones
+baseline excluidas no cambian. No hay equivalencia histórica ni ejecución
+recuperada por esta migración. Ver `GRAPH_CONTRACT_MIGRATION_20261107.md`.
 
 Ejecutar desde la raíz:
 

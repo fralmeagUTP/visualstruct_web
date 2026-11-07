@@ -1,6 +1,7 @@
 """Vertex publication is a host boundary after actual canonical C execution."""
 import unittest
-from _canonical_publication_contract import canonical_history, execute, receipt, assert_narration_does_not_change_execution
+from qa_convergence._graph_publication_assertions import narration_levels, assert_caller_receipt, assert_api_publication
+from qa_convergence._canonical_publication_contract import canonical_history, execute, receipt, assert_narration_does_not_change_execution
 
 H = canonical_history([{'operation': 'insert_vertex', 'payload': {'vertex': v}} for v in [1, 2]] +
     [{'operation': 'insert_edge', 'payload': {'origin': 1, 'target': 2, 'weight': 3}}])
@@ -19,10 +20,18 @@ class Publication(unittest.TestCase):
                 self.assertEqual(final['phase'], 'api_publication')
                 function = 'grafo_insertar_vertice' if op == 'insert_vertex' else 'grafo_eliminar_vertice'
                 frame = receipt(trace, function)
+                assert_caller_receipt(self, frame)
+                assert_api_publication(self, final, function)
+                for text in narration_levels(self, final['pedagogy']):
+                    if op == 'insert_vertex':
+                        for forbidden in ('retira', 'elimina', 'borrar'):
+                            self.assertNotIn(forbidden, text.lower(), 'insert_not_delete')
+                    else:
+                        self.assertNotIn('insertar', text.lower(), 'delete_not_insert')
                 self.assertEqual(frame['memory_state']['graph'], frame['instruction_event']['returned'])
                 self.assertTrue(any(e['function'] == function for e in trace['C_instruction_events']))
                 expected_edges = 0 if not h or (op == 'remove_vertex' and vertex == 1) else 1
-                self.assertEqual(len(final['state_after']['edges']), expected_edges)
+                self.assertEqual(len(final['state_after']['edges']), expected_edges, 'vertex_edge_count')
                 self.assertEqual(body['history'][:-1], h)
                 self.assertEqual(body['history'][-1]['operation'], op)
                 self.assertEqual(final['pedagogy']['instruction_state_before'], final['pedagogy']['instruction_state_after'])

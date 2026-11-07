@@ -1,0 +1,94 @@
+{
+  "schema": "graph-six-current-acceptances/v1",
+  "decision": "Explicit technical coordination decision to adopt the reviewed graph-book/v1 acceptance contract. This is not recovered historical execution or historical equivalence.",
+  "source_commit": "950f716761bf59419a2ef714216de964b26489e6",
+  "source_tree": "13cfc3579d5f39c50b3fbeb964687e44cbf88c4c",
+  "historical_equivalence_claimed": false,
+  "historical_execution_recovered": false,
+  "test_selection_changed": false,
+  "binding_transport": "Active Python and JSON permit only LF/CRLF transport normalization; original snapshots are literal bytes.",
+  "six_current_test_ids": [
+    "qa/test_graph_edge_allocation.py::GraphAllocationTests::test_native_faults_and_cleanup",
+    "qa/test_graph_edge_allocation.py::GraphAllocationTests::test_symbolic_same_faults_preserve_endpoints",
+    "qa/test_graph_numeric_receipt.py::Receipt::test_null_and_owned_receipt",
+    "qa/test_graph_vertex_publication.py::Publication::test_operation_specific_boundary",
+    "qa/test_graph_query_publication.py::Publication::test_typed_results",
+    "qa/test_graph_help.py::GraphHelpTests::test_rendered_contract_matches_real_limit_and_controls"
+  ],
+  "excluded_baseline_methods": {
+    "qa/test_graph_numeric_receipt.py": [
+      "Receipt.test_only_receipt_description_changes"
+    ],
+    "qa/test_graph_vertex_publication.py": [
+      "Publication.test_executed_source_and_all_states_unchanged"
+    ],
+    "qa/test_graph_query_publication.py": [
+      "Publication.test_only_successful_query_final_narration_changes"
+    ]
+  },
+  "files": [
+    {
+      "active_path": "qa/test_graph_edge_allocation.py",
+      "original_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_edge_allocation.py.snapshot",
+      "original_sha256": "c47b5f69edbab610393f35cdec532607396fcb4515fa89161e4eef92b84ba61d",
+      "allowed_methods": {
+        "GraphAllocationTests.setUpClass": "040603a62d73602abe4cada6144f09445b171e1ba2a593a81b9133dbeb3e1aea",
+        "GraphAllocationTests.test_native_faults_and_cleanup": "441bfcb2c8271bc7dc6d3fce3b2f3cb951ae2b80cbdb063e0d6efdc1276a2a37",
+        "GraphAllocationTests.test_symbolic_same_faults_preserve_endpoints": "b8ebbcc89fa6f562988c573e729b18e0efd5d0f603aaa678e9c9e3db74e43fe1"
+      }
+    },
+    {
+      "active_path": "qa/test_graph_numeric_receipt.py",
+      "original_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_numeric_receipt.py.snapshot",
+      "original_sha256": "afca9e7547dcfd8053c7021ef6ae8bb154168f92b6d8fdd90b3000c21004adcf",
+      "allowed_methods": {
+        "Receipt.test_null_and_owned_receipt": "4cbc7a0bd910d8a49ddb3353411337c61e1c5feb7771f85b08bdaadbaedff88d"
+      }
+    },
+    {
+      "active_path": "qa/test_graph_vertex_publication.py",
+      "original_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_vertex_publication.py.snapshot",
+      "original_sha256": "a6e2b86eee02bcb00e6c39d02ed35401b0eb72dcd8e66918ce16d3783da3a0da",
+      "allowed_methods": {
+        "Publication.test_operation_specific_boundary": "6d502f20322e34e612bbda36d22176520fce01783c53146fcf647d9b2ae270da"
+      }
+    },
+    {
+      "active_path": "qa/test_graph_query_publication.py",
+      "original_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_query_publication.py.snapshot",
+      "original_sha256": "9cc73e75082bec5ab4b5ef8d99a24292da63e2258413d6bf3041e31fea4f224e",
+      "allowed_methods": {
+        "Publication.test_typed_results": "86d3f631ec65044635392beb13a0b0b250bb5c7d63c3de48e3132efdb1bbf5c0"
+      }
+    },
+    {
+      "active_path": "qa/test_graph_help.py",
+      "original_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_help.py.snapshot",
+      "original_sha256": "677744705636ec97f28807f714fdbb8850079db80a818f6df9dfa67146d805b2",
+      "allowed_methods": {
+        "GraphHelpTests.test_rendered_contract_matches_real_limit_and_controls": "6b0f73c4c5aa6060874acb1eb7091da01b6c0997b5edaaedcaf4324d97b4eeef"
+      }
+    }
+  ],
+  "prior_manifest": {
+    "snapshot": "tests/fixtures/graph-history/contract-migration/current_graph_qa_manifest.json.snapshot",
+    "sha256": "a16bd9c149957397cc59b122a6dc659df7168798df4ac6cc9b8e24e265227ffe"
+  },
+  "current_manifest": {
+    "path": "qa_convergence/current_graph_qa_manifest.json",
+    "normalized_sha256": "3df24b95cc4a870238f0f8ece42ab24d093c81ee46d46b1d278670c0a8873942"
+  },
+  "historical_harness": {
+    "path": "qa/graph_edge_allocation.c",
+    "sha256": "7f0b9d4e5d7ec7df03a8dfe418b0ede2ac9fd7dfa3eb63066434f6516a601904"
+  },
+  "accepted_contract_differences": [
+    "Canonical signatures/status/output cells and destructor replace pre-book APIs.",
+    "BookSession replaces ConstructionMachine; no engine equivalence is asserted.",
+    "Algorithm return receipt is observed before caller printf/free; API publication follows cleanup.",
+    "Synthetic fixtures are versioned graph-book/v1; genuine unversioned history is not rewritten.",
+    "Removing absent vertex executes canonical C and preserves unrelated arcs.",
+    "Absent edge cost executes C, returns int 0 and leaves output uninitialized.",
+    "Help describes the canonical internal index queue instead of an external FIFO dependency."
+  ]
+}

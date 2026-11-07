@@ -1,0 +1,548 @@
+{
+  "reference_head": "950f716761bf59419a2ef714216de964b26489e6",
+  "reference_tree": "13cfc3579d5f39c50b3fbeb964687e44cbf88c4c",
+  "r8_candidate_tree": "7f3cb4e6a58e56ce9cc291ef165d234f4e9f7584",
+  "missing_baseline_gates_excluded": 3,
+  "schema": "graph-current-acceptance-implementation/v1",
+  "status": "implemented locally; review and integration required",
+  "historical_equivalence_claimed": false,
+  "historical_evidence_recovered": false,
+  "obligations": [
+    {
+      "migration_id": "allocation-native",
+      "historical_nodeid": "qa/test_graph_edge_allocation.py::GraphAllocationTests::test_native_faults_and_cleanup",
+      "historical_sha256": "c47b5f69edbab610393f35cdec532607396fcb4515fa89161e4eef92b84ba61d",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_edge_allocation.py::GraphAllocationTests::test_native_faults_and_cleanup"
+      ],
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_edge_allocation.py.snapshot",
+      "atomic_obligations": [
+        {
+          "old": "Six scenario classes × five allocation settings, exactly 30 rows",
+          "proposed": "Same scenario initial vertices, existing arc, loop edge and fault indexes.",
+          "classification": "preserved",
+          "id": "allocation-native-1",
+          "proposal_coverage": "Current native test parses 30 distinct rows; compare scenario matrix literally before migration.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_current_graph_successor_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Every surviving edge has existing endpoints",
+          "proposed": "Same endpoint invariant on canonical C.",
+          "classification": "preserved",
+          "id": "allocation-native-2",
+          "proposal_coverage": "Existing dangling_endpoint mutant rejects real native execution.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_current_graph_successor_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Without injected failure, one edge with cost 9",
+          "proposed": "Same normal result and cost.",
+          "classification": "preserved",
+          "id": "allocation-native-3",
+          "proposal_coverage": "Existing wrong_cost mutant rejects native execution.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_current_graph_successor_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "All allocated nodes freed after cleanup",
+          "proposed": "Canonical grafo_destruir replaces manual harness free loops; zero live allocations and NULL roots.",
+          "classification": "stronger_current_contract",
+          "id": "allocation-native-4",
+          "proposal_coverage": "Existing missing_cleanup mutant; no claim to have executed the retired manual-clear harness against old C.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_current_graph_successor_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Run the pre-book signatures",
+          "proposed": "Use approved canonical status-pointer and cost-output signatures.",
+          "classification": "contract_difference",
+          "id": "allocation-native-5",
+          "proposal_coverage": "Requires explicit current-acceptance migration; original harness remains literal and auditable.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_current_graph_successor_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "No original status or atomic pointer assertion",
+          "proposed": "Add GrafoEstado and pointer-preserving failure atomicity.",
+          "classification": "stronger_current_contract",
+          "id": "allocation-native-6",
+          "proposal_coverage": "Add targeted atomicity/status negative controls; current three harness mutants do not independently isolate both guarantees.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_current_graph_successor_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        }
+      ]
+    },
+    {
+      "migration_id": "allocation-symbolic",
+      "historical_nodeid": "qa/test_graph_edge_allocation.py::GraphAllocationTests::test_symbolic_same_faults_preserve_endpoints",
+      "historical_sha256": "c47b5f69edbab610393f35cdec532607396fcb4515fa89161e4eef92b84ba61d",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_edge_allocation.py::GraphAllocationTests::test_symbolic_same_faults_preserve_endpoints"
+      ],
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_edge_allocation.py.snapshot",
+      "atomic_obligations": [
+        {
+          "old": "Same 30 scenario/fault pairs as native",
+          "proposed": "Same initial vertices/arcs and injected allocation index in BookSession.",
+          "classification": "preserved",
+          "id": "allocation-symbolic-1",
+          "proposal_coverage": "Must compare complete case matrix and assert native key set exactly, not count only.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Each edge endpoint is in reachable vertices",
+          "proposed": "Same endpoint membership invariant.",
+          "classification": "preserved",
+          "id": "allocation-symbolic-2",
+          "proposal_coverage": "Existing symbolic positive coverage; add direct symbolic-response corruption to prove this oracle rejects endpoints independently of native harness mutants.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Vertex/edge counts equal native rows",
+          "proposed": "Counts plus status and cost equal canonical native rows.",
+          "classification": "stronger_current_contract",
+          "id": "allocation-symbolic-3",
+          "proposal_coverage": "Existing current oracle asserts four fields; add individual symbolic count/status/cost mutations.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Successful normal call has one edge at cost 9",
+          "proposed": "Same exact successful result.",
+          "classification": "preserved",
+          "id": "allocation-symbolic-4",
+          "proposal_coverage": "Direct symbolic mutation should target this assertion.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "ConstructionMachine executes extracted old snippets",
+          "proposed": "BookSession executes approved book subset.",
+          "classification": "contract_difference",
+          "id": "allocation-symbolic-5",
+          "proposal_coverage": "No equivalence of engines or exact trace asserted. Historical engine remains an archived diagnostic context.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "No explicit symbolic final destructor assertion",
+          "proposed": "Canonical destruction clears heap and graph; allocation failure preserves prior state and balances temporary allocations.",
+          "classification": "stronger_current_contract",
+          "id": "allocation-symbolic-6",
+          "proposal_coverage": "Add direct symbolic leak and state-on-failure negatives.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_allocation_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        }
+      ]
+    },
+    {
+      "migration_id": "numeric-receipt",
+      "historical_nodeid": "qa/test_graph_numeric_receipt.py::Receipt::test_null_and_owned_receipt",
+      "historical_sha256": "afca9e7547dcfd8053c7021ef6ae8bb154168f92b6d8fdd90b3000c21004adcf",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_numeric_receipt.py::Receipt::test_null_and_owned_receipt"
+      ],
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_numeric_receipt.py.snapshot",
+      "atomic_obligations": [
+        {
+          "old": "Same seven algorithm cases with NULL and owned outcomes",
+          "proposed": "Keep literal seven-case inputs and require both outcome classes.",
+          "classification": "preserved",
+          "id": "numeric-receipt-1",
+          "proposal_coverage": "Current CASES matches original semantically; assert equality independently.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Caller receipt is the final trace step",
+          "proposed": "Find the actual caller receipt before printing/free; terminal step is API publication after cleanup.",
+          "classification": "contract_difference",
+          "id": "numeric-receipt-2",
+          "proposal_coverage": "Canonical caller lifecycle requires two distinct observation points; no final-step equivalence claim.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Every NULL narration contains NULL and no hay",
+          "proposed": "Current checks NULL and no hay lista.",
+          "classification": "preserved",
+          "id": "numeric-receipt-3",
+          "proposal_coverage": "Existing null_narration_claims_owned mutant fails when both phrases disappear.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "NULL narration must not claim lista propia devuelta",
+          "proposed": "Current oracle lacks an explicit contradictory-ownership exclusion.",
+          "classification": "gap_before_migration",
+          "id": "numeric-receipt-4",
+          "proposal_coverage": "A narration containing NULL, no hay lista and lista propia devuelta could satisfy current positive substring checks. Add contradictory-ownership negative and explicit prohibition.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Non-NULL narration claims an owned returned list",
+          "proposed": "Current claims lista propia and no la libera at receipt, verifies returned pointer and live owned allocation.",
+          "classification": "stronger_current_contract",
+          "id": "numeric-receipt-5",
+          "proposal_coverage": "Preserve truthful owned wording without requiring the obsolete exact phrase; verify each narration field is populated.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Original checks only narration ownership",
+          "proposed": "New C return identity, non-C event, pointer liveness and final cleanup.",
+          "classification": "stronger_current_contract",
+          "id": "numeric-receipt-6",
+          "proposal_coverage": "Existing pointer/event/live-memory/leak mutants cover listed regressions, not all possible ones.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        }
+      ]
+    },
+    {
+      "migration_id": "vertex-publication",
+      "historical_nodeid": "qa/test_graph_vertex_publication.py::Publication::test_operation_specific_boundary",
+      "historical_sha256": "a6e2b86eee02bcb00e6c39d02ed35401b0eb72dcd8e66918ce16d3783da3a0da",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_vertex_publication.py::Publication::test_operation_specific_boundary"
+      ],
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_vertex_publication.py.snapshot",
+      "atomic_obligations": [
+        {
+          "old": "Five vertex insert/remove cases",
+          "proposed": "Same case inputs, with canonical_history adding source_contract: graph-book/v1 to deep copies. It does not insert create_graph; vertex/query fixtures lack that explicit operation, whereas numeric already includes it.",
+          "classification": "contract_difference",
+          "id": "vertex-publication-1",
+          "proposal_coverage": "Versioning is explicit; separately prove unmarked legacy histories remain suspended/exportable, not silently upgraded.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Host publication never claims executed C",
+          "proposed": "Same non-C final event, additionally no C line/index and no mutation between instruction states.",
+          "classification": "stronger_current_contract",
+          "id": "vertex-publication-2",
+          "proposal_coverage": "Existing publication_marked_as_C, imaginary_C_line and publication_mutates_state negatives.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Insert narration does not say retira/retirada and says conserva",
+          "proposed": "Current successor checks structure/history, not these operation-specific wording restrictions.",
+          "classification": "gap_before_migration",
+          "id": "vertex-publication-3",
+          "proposal_coverage": "Add semantic operation-specific narration assertions and insert-as-delete negative; exact legacy wording can be deliberately replaced only by documented truthful wording.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence",
+          "wording_limit": "Requires correct insertion API and forbids delete wording; literal word conserva is not required. This is current semantic acceptance, not preservation of that literal."
+        },
+        {
+          "old": "Delete narration identifies caller",
+          "proposed": "Current successor does not assert this wording.",
+          "classification": "gap_before_migration",
+          "id": "vertex-publication-4",
+          "proposal_coverage": "Add host/caller attribution assertion plus missing/misleading attribution negative.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Insertion line must not impersonate eliminar",
+          "proposed": "Current final line is empty and C event must name actual operation function.",
+          "classification": "stronger_current_contract",
+          "id": "vertex-publication-5",
+          "proposal_coverage": "Existing imaginary_C_line and missing_C_execution negatives.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "After the early input_validation branch (which requires sin invocar C and skips edge checks), every removal reaching publication is expected to have no edges.",
+          "proposed": "Canonical removal of absent vertex 9 executes C and preserves the existing unrelated edge; removal of vertex 1 removes its incident edge.",
+          "classification": "contract_difference",
+          "id": "vertex-publication-6",
+          "proposal_coverage": "Explicitly accept validation-to-C route migration and the conditional edge expectation. Do not claim that the old test always required an empty graph for the absent case: its input_validation path bypasses that assertion.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Input validation can be final without invoking C",
+          "proposed": "Valid book calls execute C and then publish; unmarked historical inputs are a separate compatibility path.",
+          "classification": "contract_difference",
+          "id": "vertex-publication-7",
+          "proposal_coverage": "Preserve an explicit invalid-input/no-C test separately; do not silently relabel an old rejection as execution.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        }
+      ]
+    },
+    {
+      "migration_id": "typed-query",
+      "historical_nodeid": "qa/test_graph_query_publication.py::Publication::test_typed_results",
+      "historical_sha256": "9cc73e75082bec5ab4b5ef8d99a24292da63e2258413d6bf3041e31fea4f224e",
+      "current_successor_tests": [
+        "qa_convergence/test_current_graph_query_publication.py::Publication::test_typed_results"
+      ],
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_query_publication.py.snapshot",
+      "atomic_obligations": [
+        {
+          "old": "Eight successful/absent/scalar/list cases",
+          "proposed": "Same eight query inputs on a versioned canonical graph.",
+          "classification": "preserved",
+          "id": "typed-query-1",
+          "proposal_coverage": "Require exact operation and parameter matrix.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Host publication is non-C",
+          "proposed": "Current receipt is non-C and final is API publication, but final non-C property should also be explicit.",
+          "classification": "gap_before_migration",
+          "id": "typed-query-2",
+          "proposal_coverage": "Add final publication event/C-line assertion and adversarial final-C mutation.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Boolean/entero versus borrowed-list narration, API attribution in every level",
+          "proposed": "Current checks C return types, scalar result and borrowed narration, but not all old wording exclusions/API attribution.",
+          "classification": "gap_before_migration",
+          "id": "typed-query-3",
+          "proposal_coverage": "Add semantic external bool versus C int distinction, API/host attribution at final publication, and scalar falsely described as list mutation.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Absent edge cost is rejected as input_validation",
+          "proposed": "Canonical grafo_costo_arco executes, returns flag 0 and leaves output uninitialized.",
+          "classification": "contract_difference",
+          "id": "typed-query-4",
+          "proposal_coverage": "GB02/GB05 and actual canonical signature control. Explicitly accept this new observable path; assert no invented initialized output and no fabricated input rejection.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Existing edge cost narrated as an integer",
+          "proposed": "C return is int flag; actual weight is a separate output cell.",
+          "classification": "contract_difference",
+          "id": "typed-query-5",
+          "proposal_coverage": "Check success flag and output 9 independently; do not conflate returned flag with cost.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Borrowed-list result is distinguishable",
+          "proposed": "Pointer type, ownership borrowed, identity equals graph list root, and narration borrowed.",
+          "classification": "stronger_current_contract",
+          "id": "typed-query-6",
+          "proposal_coverage": "Existing type/external-result/ownership/identity negatives.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Prior state/history retained",
+          "proposed": "Current oracle verifies prior history and live result metadata.",
+          "classification": "stronger_current_contract",
+          "id": "typed-query-7",
+          "proposal_coverage": "Existing prior_history_removed control; require query does not mutate graph state as a separate explicit check if not covered elsewhere.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py",
+            "qa_convergence/test_graph_migration_case_matrices.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        }
+      ]
+    },
+    {
+      "migration_id": "rendered-help",
+      "historical_nodeid": "qa/test_graph_help.py::GraphHelpTests::test_rendered_contract_matches_real_limit_and_controls",
+      "historical_sha256": "677744705636ec97f28807f714fdbb8850079db80a818f6df9dfa67146d805b2",
+      "current_successor_tests": [
+        "qa_convergence/test_book_main_help.py::BookGuide::test_book_contract_content",
+        "qa_convergence/test_book_main_help.py::BookGuide::test_rendered_guide",
+        "tests/test_graph_educational_capacity_regression.py::test_capacity_metadata_and_help_use_current15"
+      ],
+      "historical_snapshot": "tests/fixtures/graph-history/contract-migration/test_graph_help.py.snapshot",
+      "atomic_obligations": [
+        {
+          "old": "HTTP 200 and rendered capacity equals MAX_VERTICES",
+          "proposed": "HTTP 200 is covered; a rendered-capacity assertion must be added.",
+          "classification": "gap_before_migration",
+          "id": "rendered-help-1",
+          "proposal_coverage": "Partial coverage only: current guide checks HTTP 200 and exact C, while the capacity regression checks metadata and tip. Neither currently asserts the final HTML capacity text. Add the rendered MAX_VERTICES assertion and wrong-capacity negative before migration.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "No obsolete 200-vertex claim; app limit is not a C limit",
+          "proposed": "Current capacity test must preserve both exclusions and app/C distinction.",
+          "classification": "gap_before_migration",
+          "id": "rendered-help-2",
+          "proposal_coverage": "Current test_capacity_metadata_and_help_use_current15 checks MAX_VERTICES, view model, random-generator label and first tip. It does not assert rendered HTML, exclusion of 200, or the app/C-limit distinction. Add explicit current rendered assertions and negative controls.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Linked external Cola FIFO label and no raw queue label",
+          "proposed": "Canonical BFS uses an internal index queue without external tad_cola dependency; retain the explicit prohibition of raw >queue</a> labels.",
+          "classification": "contract_difference",
+          "id": "rendered-help-3",
+          "proposal_coverage": "GB01/GB04 require truthful index-queue explanation. Replace external dependency/link demand explicitly; reject a misleading external FIFO dependency claim. Add a raw-label regression mutation and explicit not-in assertion; no need to restore a false external Cola FIFO dependency.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "exists_vertex, exists_edge, clear_graph labeled API/auxiliar and not independent selector options",
+          "proposed": "Book guide tests do not establish all three rendered labels against current operation metadata.",
+          "classification": "gap_before_migration",
+          "id": "rendered-help-4",
+          "proposal_coverage": "Current templates/help/_operation_contracts.html contains all three auxiliary/API descriptions with changed wording. Preserve their meaning per operation and check actual selector behavior, not the old concatenated exact phrase.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Names grafo_existe_vertice and grafo_existe_arco present",
+          "proposed": "Exact canonical C rendering includes these actual functions.",
+          "classification": "preserved",
+          "id": "rendered-help-5",
+          "proposal_coverage": "Require named function presence and real-link targets explicitly, with missing/wrong target negatives.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "Structure max_vertices and first module tip contain current limit",
+          "proposed": "Current capacity regression partially covers metadata; verify exact field/tip obligation.",
+          "classification": "gap_before_migration",
+          "id": "rendered-help-6",
+          "proposal_coverage": "Current capacity regression asserts the first tip and view-model max_vertices, but not get_structure_help(graph)[max_vertices] directly. Preserve the direct structure metadata assertion as well.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        },
+        {
+          "old": "No full canonical-source equality requirement",
+          "proposed": "New rendered guide contains exact canonical C and only real linked functions.",
+          "classification": "stronger_current_contract",
+          "id": "rendered-help-7",
+          "proposal_coverage": "Existing positive source equality; add mutated rendered snippet and nonexistent-function link negatives.",
+          "implemented_controls": [
+            "qa_convergence/test_graph_migration_publication_controls.py"
+          ],
+          "current_acceptance_status": "implemented; explicit contract difference is not historical equivalence"
+        }
+      ]
+    }
+  ]
+}
