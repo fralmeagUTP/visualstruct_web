@@ -261,6 +261,15 @@ class Reference:
     owner: Any = None
 
 
+def _copy_c_value(value: Any) -> Any:
+    """Copy mutable C values; exact scalars and C references already copy by identity."""
+    value_type = type(value)
+    if (value_type is int or value_type is str or value_type is bool
+            or value_type is Reference or value is None):
+        return value
+    return deepcopy(value)
+
+
 class Control(Exception):
     def __init__(self, kind: str, value: Any = None):
         self.kind, self.value = kind, value
@@ -389,7 +398,7 @@ class GraphMachine:
         value = ref.container[ref.key]
         if value == UNINIT:
             raise ValueError(('Uninitialized C read',ref.identity))
-        if isinstance(value,str) and any(n['id']==value for n in self.retired):
+        if self.retired and isinstance(value,str) and any(n['id']==value for n in self.retired):
             raise ValueError(('Indeterminate retired pointer read',ref.identity,value))
         return value
 
@@ -528,7 +537,7 @@ class GraphMachine:
             op=d['op']
             if op=='=':
                 ref=self.ref(d['left']);self.check_reference(ref);value=self.cast(self.eval(d['right']),ref.type)
-                self.emit(node,'write',self.program.text(d['left']),value,lambda:ref.container.__setitem__(ref.key,deepcopy(value)))
+                self.emit(node,'write',self.program.text(d['left']),value,lambda:ref.container.__setitem__(ref.key,_copy_c_value(value)))
                 return value
             left=self.eval(d['left'])
             if op in {'&&','||'}:
@@ -539,9 +548,12 @@ class GraphMachine:
                 return int(right_bool)
             right=self.eval(d['right'])
             if op==',':return right
-            if op in {'==','!=','<','>','<=','>='}:
-                return int({'==':lambda:left==right,'!=':lambda:left!=right,'<':lambda:left<right,
-                            '>':lambda:left>right,'<=':lambda:left<=right,'>=':lambda:left>=right}[op]())
+            if op=='==':return int(left==right)
+            if op=='!=':return int(left!=right)
+            if op=='<':return int(left<right)
+            if op=='>':return int(left>right)
+            if op=='<=':return int(left<=right)
+            if op=='>=':return int(left>=right)
             if op=='+':return left+right
             if op=='-':return left-right
             if op=='*':return left*right
@@ -614,10 +626,10 @@ class GraphMachine:
             for decl in d['declarations']:
                 scope=self.frames[-1]['scopes'][-1];name=decl['name'];typ=decl['type']
                 initial={n:UNINIT for n in FIELDS[typ]} if typ in FIELDS else UNINIT
-                self.emit(decl['token'],'declare',name,initial,lambda:scope['variables'].__setitem__(name,dict(type=typ,value=deepcopy(initial))))
+                self.emit(decl['token'],'declare',name,initial,lambda:scope['variables'].__setitem__(name,dict(type=typ,value=_copy_c_value(initial))))
                 if decl['init'] is not None:
                     value=self.cast(self.eval(decl['init']),typ)
-                    self.emit(decl['token'],'write',name,value,lambda:scope['variables'][name].__setitem__('value',deepcopy(value)))
+                    self.emit(decl['token'],'write',name,value,lambda:scope['variables'][name].__setitem__('value',_copy_c_value(value)))
         elif kind=='expr':
             if d['expr'] is not None:self.eval(d['expr'])
         elif kind=='if':
@@ -785,7 +797,7 @@ class BookSession:
         def publish():
             if fn['type']=='Grafo':m.graph=deepcopy(returned)
             if 'grafo' in external:m.graph=external['grafo']['value']
-            external['result']={'type':fn['type'],'value':deepcopy(returned)}
+            external['result']={'type':fn['type'],'value':_copy_c_value(returned)}
         m.host_event('caller_receipt',publish,called_function=function,returned=m.encoded(returned),return_type=fn['type'])
         status=external.get('estado',{}).get('value')
         ownership='owned' if function in OWNED_RESULTS else 'borrowed' if function in BORROWED_RESULTS else 'none'
