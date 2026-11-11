@@ -142,6 +142,8 @@ def test_hash_real_caller_console_dom(tmp_path):
     with _server(tmp_path) as base, sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
         page = browser.new_page()
+        # Console geometry is a technical-mode assertion, not practice-mode UI.
+        page.add_init_script("localStorage.setItem('didactic-mode', 'full')")
         path = "/hash/hash_table/operate"
         for operation, payload in [("create_table", {"capacity": 3}), ("insert", {"key": "1", "value": "10"})]:
             response = page.request.post(base + path, data={"operation": operation, "payload": payload})
@@ -157,6 +159,8 @@ def test_sorting_real_caller_console_dom(tmp_path):
     with _server(tmp_path) as base, sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
         page = browser.new_page()
+        # Console geometry is a technical-mode assertion, not practice-mode UI.
+        page.add_init_script("localStorage.setItem('didactic-mode', 'full')")
         response = page.request.post(base + "/api/ordenamiento/create-array", data={"values": "2,1"})
         assert response.ok and response.json()["success"]
         page.goto(base + "/sorting/visualizador")
