@@ -31,6 +31,18 @@ function gBookFunctionLine(source, symbol) {
   const pattern=new RegExp('^\\s*(?:static\\s+)?(?:void|int|long\\s+long|size_t|Grafo|ListaVertice|ListaArco)\\s*\\**\\s*'+symbol+'\\s*\\(');
   return String(source).replaceAll('\r\n','\n').split('\n').findIndex(line=>pattern.test(line));
 }
+// Keep every canonical row in place: the player indexes by source line.
+function gApplyGraphCodeScope(model, operationName) {
+  const code=gById('op-pseudocode');
+  if(!code)return;
+  const scope=model.didactic?.operation_code_scopes?.[operationName];
+  code.dataset.operation=operationName || '';
+  code.querySelectorAll('.code-line').forEach(row=>{
+    const line=Number(row.dataset.line);
+    const excluded=Boolean(scope && !scope.ranges.some(([start,end])=>line>=start && line<=end));
+    row.classList.toggle('graph-code-excluded',excluded);
+  });
+}
 function gFocusBookFunction(model, operationName) {
   const code=gById('op-pseudocode'), symbol=model.didactic?.operation_functions?.[operationName];
   if(!code || !symbol)return;
@@ -208,7 +220,7 @@ function renderGraphPedagogy(frame,level){
 
 }
 
-function enhanceGraphCodeNavigation(activeLine=null){const code=gById("op-pseudocode"),list=gById("graph-function-list"),hide=gById("graph-hide-comments");if(!code||!list)return;const raw=String(code.dataset.rawCode||code.textContent||"");const rows=raw.replaceAll("\r\n","\n").split("\n"),functions=[];rows.forEach((row,index)=>{const match=row.match(/^\s*(?:static\s+)?(?:void|bool|int|double|size_t|Grafo|Lista\w*)\s*\**\s*([A-Za-z_]\w*)\s*\(/);if(match&&!['if','for','while','switch'].includes(match[1]))functions.push({name:match[1],line:index});});window.CCodeNavigation?.markComments(code, rows);const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0];list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${gEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>';list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>window.CCodeNavigation?.revealLine(code,code.querySelector(`.code-line[data-line="${button.dataset.line}"]`))));code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));}
+function enhanceGraphCodeNavigation(activeLine=null){const code=gById("op-pseudocode"),list=gById("graph-function-list"),hide=gById("graph-hide-comments");if(!code||!list)return;const raw=String(code.dataset.rawCode||code.textContent||"");const rows=raw.replaceAll("\r\n","\n").split("\n"),functions=[];rows.forEach((row,index)=>{const match=row.match(/^\s*(?:static\s+)?(?:void|bool|int|double|size_t|Grafo|Lista\w*)\s*\**\s*([A-Za-z_]\w*)\s*\(/);if(match&&!['if','for','while','switch'].includes(match[1])&&!code.querySelector(`.code-line[data-line="${index}"]`)?.classList.contains('graph-code-excluded'))functions.push({name:match[1],line:index});});window.CCodeNavigation?.markComments(code, rows);const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0];list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${gEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>';list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>window.CCodeNavigation?.revealLine(code,code.querySelector(`.code-line[data-line="${button.dataset.line}"]`))));code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));}
 
 function initGraphResponsiveWorkspace(){const workspace=document.querySelector(".graph-primary-workspace"),tabs=[...document.querySelectorAll("[data-graph-tab]")];if(!workspace||!tabs.length)return;let saved="visual";try{saved=sessionStorage.getItem("graph-active-tab")||"visual";}catch(_error){/* optional */}const activate=(name)=>{const value=name==="code"?"code":"visual";workspace.dataset.activeTab=value;tabs.forEach((tab)=>{const active=tab.dataset.graphTab===value;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));});try{sessionStorage.setItem("graph-active-tab",value);}catch(_error){/* optional */}};tabs.forEach((tab)=>tab.addEventListener("click",()=>activate(tab.dataset.graphTab)));activate(saved);}
 
@@ -1104,6 +1116,7 @@ function updateGraphDidacticPanel(model, operationName) {
   renderGraphDidacticCode(recordBox, didactic.record || "Estructura no documentada.", codeTitle);
   pseudoTitle.textContent = selectedLabel ? `${codeTitle}: ${selectedLabel}` : codeTitle;
   renderGraphDidacticCode(pseudoBox, opMap[selectedOp] || fallback, codeTitle);
+  gApplyGraphCodeScope(model, selectedOp);
   gFocusBookFunction(model, selectedOp);
 }
 
@@ -1588,6 +1601,7 @@ function initGraphPage(model) {
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
+        gApplyGraphCodeScope(model,event?.trace?.operation_name || getTargetSelection()?.operation?.name);
         pageState.traceCursor = cursor;
         if(event?.trace?.book_instruction_model && pageState.bookFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.bookFinalMessage.text:"Operación preparada: resultado pendiente hasta completar las llamadas C.",done?pageState.bookFinalMessage.success:true);}
         if(cursor<0 && event?.trace?.book_instruction_model){currentPedagogyFrame=event.trace.steps[0]?.pedagogy?.initial_frame || null;if(currentPedagogyFrame)renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");gFocusBookFunction(model,event.trace.operation_name);}
