@@ -20,7 +20,15 @@ def test_queries_keep_graph_borrowed_and_no_future_API_result(operation,payload)
   assert not frame['memory']['allocated'] and not frame['memory']['freed']
  assert trace['steps'][-1]['pedagogy']['instruction_event']['C_executed'] is False
  if operation in ['list_vertices','list_edges']:
-  memory=trace['steps'][-1]['pedagogy']['memory_state'];assert memory['returned']==memory['graph']['v' if operation=='list_vertices' else 'a']
+  receipt=next(s['pedagogy']['memory_state'] for s in trace['steps'] if s['pedagogy']['instruction_event']['phase']=='caller_receipt')
+  memory=trace['steps'][-1]['pedagogy']['memory_state']
+  head=memory['graph']['v' if operation=='list_vertices' else 'a']
+  assert receipt['returned']==head
+  assert receipt['external']['result']['value']==head
+  assert memory['external']['result']['value']==head
+  assert memory['returned'] is None  # caller_output returns void, not the TAD pointer
+  assert memory['heap_nodes']==graph_objects
+  assert memory['allocations']==memory['frees']==0
 
 @pytest.mark.parametrize('operation,payload',[
  ('edge_weight',{'origin':12,'target':11}),('insert_edge',{'origin':'invalid','target':2}),

@@ -123,7 +123,8 @@ def test_graph_c_code_data_loaded() -> None:
     assert "typedef struct NodoV" in data["record"]
     assert "typedef struct NodoA" in data["record"]
     assert "typedef struct nodoGrafo" in data["record"]
-    assert "typedef enum" in data["record"] and "GrafoEstado *estado" in data["record"]
+    assert "GrafoEstado" not in data["record"]
+    assert "Grafo grafo_insertar_vertice(Grafo g, int x)" in data["record"]
     from app.domain.graph.book_source import canonical_source
     assert "Conjunto" in canonical_source()  # private algorithm helper stays in C
     assert "insert_vertex" in data["operations"]

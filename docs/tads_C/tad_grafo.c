@@ -6,6 +6,13 @@
 #include <stdint.h>
 #include <limits.h>
 
+/* Diagnósticos privados: no forman parte del contrato público del TAD. */
+typedef enum {
+    GRAFO_OK, GRAFO_MEMORIA, GRAFO_NO_EXISTE,
+    GRAFO_PESO_NEGATIVO, GRAFO_CICLO_NEGATIVO,
+    GRAFO_DESCONECTADO, GRAFO_ARGUMENTO, GRAFO_RANGO
+} GrafoEstado;
+
 static void fijar_estado(GrafoEstado *e, GrafoEstado valor) {
     if (e != NULL) *e = valor;
 }
@@ -31,7 +38,9 @@ int grafo_existe_arco(Grafo g, int x, int y) {
     return buscar_arco(g, x, y) != NULL;
 }
 
-Grafo grafo_insertar_vertice(Grafo g, int x, GrafoEstado *estado) {
+Grafo grafo_insertar_vertice(Grafo g, int x) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     fijar_estado(estado, GRAFO_OK);
     if (grafo_existe_vertice(g, x)) return g;
     ListaVertice nuevo = malloc(sizeof *nuevo);
@@ -44,8 +53,9 @@ Grafo grafo_insertar_vertice(Grafo g, int x, GrafoEstado *estado) {
     return g;
 }
 
-Grafo grafo_insertar_arco(Grafo g, int x, int y, int z,
-                        GrafoEstado *estado) {
+Grafo grafo_insertar_arco(Grafo g, int x, int y, int z) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     ListaArco existente = buscar_arco(g, x, y);
     ListaVertice vx = NULL, vy = NULL;
     fijar_estado(estado, GRAFO_OK);
@@ -215,11 +225,15 @@ static ListaVertice vecinos(Grafo g, int x, int inverso,
     return lista;
 }
 
-ListaVertice grafo_sucesores(Grafo g, int x, GrafoEstado *estado) {
+ListaVertice grafo_sucesores(Grafo g, int x) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     return vecinos(g, x, 0, estado);
 }
 
-ListaVertice grafo_predecesores(Grafo g, int x, GrafoEstado *estado) {
+ListaVertice grafo_predecesores(Grafo g, int x) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     return vecinos(g, x, 1, estado);
 }
 
@@ -296,7 +310,9 @@ static void publicar_marcas(Grafo g, ListaVertice recorrido) {
 
 
 
-ListaVertice grafo_bfs(Grafo g, int inicio, GrafoEstado *estado) {
+ListaVertice grafo_bfs(Grafo g, int inicio) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     Trabajo t;
     ListaVertice lista = NULL, ultimo = NULL;
     if (!preparar(g, &t, estado)) return NULL;
@@ -313,7 +329,7 @@ ListaVertice grafo_bfs(Grafo g, int inicio, GrafoEstado *estado) {
         correcto = agregar_visita(&lista, &ultimo, t.vertices[u]);
         if (!correcto) break;
         GrafoEstado e;
-        ListaVertice suces = grafo_sucesores(g, t.vertices[u], &e);
+        ListaVertice suces = vecinos(g, t.vertices[u], 0, &e);
         if (e != GRAFO_OK) { correcto = 0; break; }
         for (ListaVertice p = suces; p != NULL; p = p->sig) {
             int v = indiceVertice(&t, p->dato);
@@ -337,7 +353,7 @@ static int grafo_dfs_recursivo(Grafo g, Trabajo *t, int u,
     t->usado[u] = 1;
     if (!agregar_visita(lista, ultimo, t->vertices[u])) return 0;
     GrafoEstado e;
-    ListaVertice suces = grafo_sucesores(g, t->vertices[u], &e);
+    ListaVertice suces = vecinos(g, t->vertices[u], 0, &e);
     if (e != GRAFO_OK) return 0;
     int correcto = 1;
     for (ListaVertice p = suces; p != NULL && correcto; p = p->sig) {
@@ -349,7 +365,9 @@ static int grafo_dfs_recursivo(Grafo g, Trabajo *t, int u,
     return correcto;
 }
 
-ListaVertice grafo_dfs(Grafo g, int inicio, GrafoEstado *estado) {
+ListaVertice grafo_dfs(Grafo g, int inicio) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     Trabajo t;
     ListaVertice lista = NULL, ultimo = NULL;
     if (!preparar(g, &t, estado)) return NULL;
@@ -402,8 +420,9 @@ static ListaArco reconstruir(Grafo g, Trabajo *t, int s, int d,
 
 
 
-ListaArco grafo_dijkstra(Grafo g, int inicio, int llegada,
-                       GrafoEstado *estado) {
+ListaArco grafo_dijkstra(Grafo g, int inicio, int llegada) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     Trabajo t;
     if (!preparar(g, &t, estado)) return NULL;
     int s = indiceVertice(&t, inicio), d = indiceVertice(&t, llegada);
@@ -441,8 +460,9 @@ ListaArco grafo_dijkstra(Grafo g, int inicio, int llegada,
 }
 
 
-ListaArco grafo_bellman_ford(Grafo g, int inicio, int llegada,
-                           GrafoEstado *estado) {
+ListaArco grafo_bellman_ford(Grafo g, int inicio, int llegada) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     Trabajo t;
     if (!preparar(g, &t, estado)) return NULL;
     int s = indiceVertice(&t, inicio), d = indiceVertice(&t, llegada);
@@ -486,7 +506,9 @@ static int grafo_simetrico(Grafo g) {
     return 1;
 }
 
-ListaArco grafo_prim(Grafo g, int inicio, GrafoEstado *estado) {
+ListaArco grafo_prim(Grafo g, int inicio) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     Trabajo t;
     if (!preparar(g, &t, estado)) return NULL;
     int s = indiceVertice(&t, inicio);
@@ -545,7 +567,9 @@ static void grafo_unir_conjuntos(Conjunto *c, int x, int y) {
     if (a != b) c->padre[b] = a;
 }
 
-ListaArco grafo_kruskal(Grafo g, GrafoEstado *estado) {
+ListaArco grafo_kruskal(Grafo g) {
+    GrafoEstado diagnostico = GRAFO_OK;
+    GrafoEstado *estado = &diagnostico;
     Trabajo t;
     if (!preparar(g, &t, estado)) return NULL;
     GrafoEstado e = GRAFO_OK;

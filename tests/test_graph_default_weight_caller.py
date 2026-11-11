@@ -11,7 +11,7 @@ def test_existing_adapter_default_weight_has_faithful_C_caller(client,weight,tmp
  assert 'GrafoEstado *estado' in body['execution_trace']['source_code']
  import subprocess,shutil
  response=client.get('/help/source/graph/main');assert response.status_code==200
- main=response.data.decode('utf-8');assert main==body['main_c'] and 'grafo_insertar_arco(g, 1, 2, 1, &estado_' in main
+ main=response.data.decode('utf-8');assert main==body['main_c'] and 'grafo_insertar_arco(g, 1, 2, 1);' in main
  for tad,stem in [('graph','tad_grafo'),('queue','tad_cola')]:
   for kind,ext in [('source','c'),('header','h')]:
    response=client.get('/help/source/'+tad+'/'+kind);assert response.status_code==200;(tmp_path/(stem+'.'+ext)).write_bytes(response.data)
@@ -21,4 +21,4 @@ def test_existing_adapter_default_weight_has_faithful_C_caller(client,weight,tmp
   path=tmp_path/(name+'.c');path.write_text(code,encoding='utf-8');exe=tmp_path/(name+'.exe')
   built=subprocess.run([shutil.which('gcc'),'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror',str(path),str(tmp_path/'tad_grafo.c'),str(tmp_path/'tad_cola.c'),'-o',str(exe)],capture_output=True,text=True,timeout=30);assert built.returncode==0 and not built.stderr,built.stderr
   run=subprocess.run([str(exe)],capture_output=True,text=True,timeout=10);assert run.returncode==0 and not run.stderr
-  assert run.stdout==('insert_edge: estado=0\nDEFAULT 1\n' if name=='observer' else 'insert_edge: estado=0\n')
+  assert run.stdout==('DEFAULT 1\n' if name=='observer' else '')

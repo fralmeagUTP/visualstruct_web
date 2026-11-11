@@ -13,8 +13,8 @@ def test_prim_download_docs(client,tmp_path):
  source=(tmp_path/'tad_grafo.c').read_text(encoding='utf-8-sig')
  header=(tmp_path/'tad_grafo.h').read_text(encoding='utf-8-sig')
  assert 'grafo_prim(' in source and 'grafo_prim(' in header
- assert 'GrafoEstado *estado' in header
- assert 'GRAFO_RANGO' in header and 'GRAFO_DESCONECTADO' in header
+ assert 'GrafoEstado' not in header
+ assert 'GRAFO_RANGO' in source and 'GRAFO_DESCONECTADO' in source
  assert 'sumar_seguro' in source and 'long long' in source
  assert 'grafo_liberar_arcos' in header and 'grafo_destruir' in header
  guide=(root/'docs/USER_GUIDE.md').read_text(encoding='utf-8')

@@ -5,6 +5,7 @@ they do not claim per-statement native event parity with the retired observer.
 """
 from pathlib import Path
 from copy import deepcopy
+from _graph_private_diagnostic_observer import instrument_private_diagnostics
 import hashlib,json,shutil,subprocess
 from app import create_app
 from app.adapters.graph_adapter import GraphAdapter
@@ -36,18 +37,19 @@ def native_cases(algorithm,out,*,initial_mark=0):
     source='''#include "tad_grafo.h"
 #include <assert.h>
 #include <stdio.h>
+extern int qa_status;
 long traversal_live(void);long traversal_allocated(void);long traversal_released(void);
 int main(void){
 '''
     for case,record in enumerate(CASES):
-        source+='{Grafo g=grafo_crear();GrafoEstado status;'
-        for vertex in record['vertices']:source+=f'g=grafo_insertar_vertice(g,{vertex},&status);assert(status==GRAFO_OK);'
-        for origin,target in record['edges']:source+=f'g=grafo_insertar_arco(g,{origin},{target},1,&status);assert(status==GRAFO_OK);'
+        source+='{Grafo g=grafo_crear();'
+        for vertex in record['vertices']:source+=f'g=grafo_insertar_vertice(g,{vertex});assert(qa_status==0);'
+        for origin,target in record['edges']:source+=f'g=grafo_insertar_arco(g,{origin},{target},1);assert(qa_status==0);'
         source+=f'for(ListaVertice v=g.v;v;v=v->sig)v->marcado={initial_mark};'
         for run in range(record.get('repeat',1)):
             source+='{'+'long base=traversal_live(),a=traversal_allocated(),f=traversal_released();'
-            source+=f'ListaVertice result=grafo_{algorithm}(g,{record["start"]},&status);'
-            source+=f'printf("ROW {case} {run} {{\\"status\\":%d,\\"order\\":[",(int)status);'
+            source+=f'ListaVertice result=grafo_{algorithm}(g,{record["start"]});'
+            source+=f'printf("ROW {case} {run} {{\\"status\\":%d,\\"order\\":[",qa_status);'
             source+='int first=1;for(ListaVertice p=result;p;p=p->sig){printf("%s%d",first?"":",",p->dato);first=0;assert(p->marcado==0);}'
             source+='printf("],\\"marks\\":[");first=1;for(ListaVertice p=g.v;p;p=p->sig){printf("%s[%d,%d]",first?"":",",p->dato,p->marcado);first=0;}'
             source+='printf("],\\"allocations\\":%ld,\\"frees_before_release\\":%ld",traversal_allocated()-a,traversal_released()-f);'
@@ -55,10 +57,11 @@ int main(void){
             source+='printf(",\\"frees_after_release\\":%ld,\\"owned_live\\":0}\\n",traversal_released()-f);}'
         source+='grafo_destruir(&g);assert(g.v==NULL&&g.a==NULL&&traversal_live()==0);}\n'
     source+='return 0;}\n';(out/'main.c').write_text(source,encoding='utf-8');(out/'track.c').write_text(TRACK,encoding='utf-8')
+    (out/'observed-tad.c').write_text(instrument_private_diagnostics((out/'tad_grafo.c').read_text()))
     compiler=shutil.which('gcc');assert compiler
     common=[compiler,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror','-I',str(out)]
     obj=out/'graph.o';exe=out/'native.exe'
-    commands=[common+['-Dmalloc=traversal_malloc','-Dcalloc=traversal_calloc','-Dfree=traversal_free','-c',str(out/'tad_grafo.c'),'-o',str(obj)],common+[str(out/'main.c'),str(out/'track.c'),str(obj),'-o',str(exe)]]
+    commands=[common+['-c',str(out/'tad_grafo.c'),'-o',str(out/'original.o')],common+['-Dmalloc=traversal_malloc','-Dcalloc=traversal_calloc','-Dfree=traversal_free','-c',str(out/'observed-tad.c'),'-o',str(obj)],common+[str(out/'main.c'),str(out/'track.c'),str(obj),'-o',str(exe)]]
     for command in commands:
         result=subprocess.run(command,capture_output=True,text=True,timeout=45);assert result.returncode==0,result.stderr
     result=subprocess.run([str(exe)],capture_output=True,text=True,timeout=20);assert result.returncode==0,result.stderr

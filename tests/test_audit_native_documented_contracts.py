@@ -2,6 +2,7 @@
 import shutil
 import subprocess
 import pytest
+from _graph_private_diagnostic_observer import instrument_private_diagnostics
 
 @pytest.mark.skipif(shutil.which('gcc') is None, reason='gcc unavailable: downloaded native contracts unverified')
 @pytest.mark.parametrize('tad,base,program,dependencies',[
@@ -15,7 +16,14 @@ int main(void){assert(abb_encontrarMinimo(NULL)==NULL);assert(abb_encontrarMaxim
  ('graph','tad_grafo',r'''#include "tad_grafo.h"
 #include <assert.h>
 #include <stdlib.h>
-int main(void){Grafo g=grafo_crear();GrafoEstado e;int output=42;assert(!grafo_costo_arco(g,1,2,&output)&&output==42);assert(!grafo_existe_arco(g,1,2));g=grafo_insertar_vertice(g,1,&e);assert(e==GRAFO_OK);g=grafo_insertar_vertice(g,2,&e);assert(e==GRAFO_OK);g=grafo_insertar_arco(g,1,2,-1,&e);assert(e==GRAFO_OK);assert(grafo_costo_arco(g,1,2,&output)&&output==-1);assert(grafo_existe_arco(g,1,2));assert(grafo_bfs(g,99,&e)==NULL&&e==GRAFO_NO_EXISTE);grafo_destruir(&g);assert(g.v==NULL&&g.a==NULL);return 0;}''',[]),
+#ifdef OBSERVED
+extern int qa_status;
+#define QA_STATUS(n) (qa_status == (n))
+#else
+/* The uninstrumented public API has no diagnostic output. */
+#define QA_STATUS(n) 1
+#endif
+int main(void){Grafo g=grafo_crear();int output=42;assert(!grafo_costo_arco(g,1,2,&output)&&output==42);assert(!grafo_existe_arco(g,1,2));g=grafo_insertar_vertice(g,1);assert(QA_STATUS(0));g=grafo_insertar_vertice(g,2);assert(QA_STATUS(0));g=grafo_insertar_arco(g,1,2,-1);assert(QA_STATUS(0));assert(grafo_costo_arco(g,1,2,&output)&&output==-1);assert(grafo_existe_arco(g,1,2));assert(grafo_bfs(g,99)==NULL&&QA_STATUS(2));grafo_destruir(&g);assert(g.v==NULL&&g.a==NULL);return 0;}''',[]),
 ])
 def test_downloaded_documented_sentinels(client,tmp_path,tad,base,program,dependencies):
  routes={'bst':'/help/source/abb/','graph':'/help/source/graph/','tad_cola':'/help/source/queue/'}
@@ -37,6 +45,15 @@ def test_downloaded_documented_sentinels(client,tmp_path,tad,base,program,depend
  assert result.returncode==0,result.stderr
  result=subprocess.run([str(exe)],capture_output=True,text=True)
  assert result.returncode==0,result.stderr
+ if tad=='graph':
+  original_stdout=result.stdout
+  original=tmp_path/'tad_grafo.c';observed=tmp_path/'observed.c'
+  observed.write_text(instrument_private_diagnostics(original.read_text(encoding='utf-8-sig')))
+  result=subprocess.run([gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror','-DOBSERVED',str(source),str(observed),'-o',str(exe)],capture_output=True,text=True)
+  assert result.returncode==0,result.stderr
+  result=subprocess.run([str(exe)],capture_output=True,text=True)
+  assert result.returncode==0,result.stderr
+  assert result.stdout==original_stdout
  header=(tmp_path/(base+'.h')).read_text(encoding='utf-8')
  if tad=='bst':assert 'o NULL si el árbol está vacío' in header and 'malloc falla' in header
- else:assert 'int *salida' in header and 'GRAFO_NO_EXISTE' in header and 'void grafo_liberar_vertices' in header
+ else:assert 'int *salida' in header and 'GrafoEstado' not in header and 'GRAFO_NO_EXISTE' in (tmp_path/'tad_grafo.c').read_text(encoding='utf-8') and 'void grafo_liberar_vertices' in header

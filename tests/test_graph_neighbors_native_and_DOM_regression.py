@@ -2,6 +2,7 @@
 from pathlib import Path
 import json,os,subprocess,sys
 import pytest
+from _graph_private_diagnostic_observer import instrument_private_diagnostics
 ROOT=Path(__file__).resolve().parents[1]
 CHANGE=ROOT/'openspec/changes/archive/2026-10-13-audit-local-quality-and-unified-controls/evidence'
 from scripts.published_test_inputs import audit_input_path
@@ -23,26 +24,38 @@ def test_independent_native_neighbors_events_locals_fields_and_ownership(tmp_pat
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#ifdef OBSERVED
+extern int qa_status;
+#else
+int qa_status;
+#endif
 static void *pointers[128];static int active[128],slots,allocations,frees,live,bad;
 void *neighbor_test_malloc(size_t n){void*p=malloc(n);if(p){assert(slots<128);pointers[slots]=p;active[slots++]=1;allocations++;live++;}return p;}
 void neighbor_test_free(void*p){if(p){int found=0;for(int i=0;i<slots;i++)if(active[i]&&pointers[i]==p){active[i]=0;found=1;break;}if(!found)bad++;assert(found);frees++;live--;}free(p);}
 int main(void){
 '''
     for index,(vertices,arcs,vertex,expected) in enumerate(cases):
-        code+='{Grafo g=grafo_crear();GrafoEstado e;\n'
-        for value in vertices:code+=f'g=grafo_insertar_vertice(g,{value},&e);assert(e==GRAFO_OK);\n'
-        for a,b,w in arcs:code+=f'g=grafo_insertar_arco(g,{a},{b},{w},&e);assert(e==GRAFO_OK);\n'
-        code+=f'int base=live;allocations=frees=0;ListaVertice r=grafo_sucesores(g,{vertex},&e);assert(e==GRAFO_OK);printf("RESULT {index} [");int comma=0;\n'
+        code+='{Grafo g=grafo_crear();\n'
+        for value in vertices:code+=f'g=grafo_insertar_vertice(g,{value});assert(qa_status==0);\n'
+        for a,b,w in arcs:code+=f'g=grafo_insertar_arco(g,{a},{b},{w});assert(qa_status==0);\n'
+        code+=f'int base=live;allocations=frees=0;ListaVertice r=grafo_sucesores(g,{vertex});assert(qa_status==0);printf("RESULT {index} [");int comma=0;\n'
         code+='for(ListaVertice p=r;p;p=p->sig){printf("%s%d",comma?",":"",p->dato);comma=1;}puts("]");\n'
         code+=f'assert(allocations=={len(expected)});grafo_liberar_vertices(&r);assert(r==NULL&&allocations==frees&&live==base&&bad==0);grafo_destruir(&g);assert(live==0&&bad==0);}}\n'
     code+='return 0;}\n';(tmp_path/'native.c').write_text(code,encoding='utf-8')
     gcc=shutil.which('gcc');assert gcc
     common=[gcc,'-std=c17','-Wall','-Wextra','-Wpedantic','-Werror','-I',str(ROOT/'docs/tads_C')]
-    commands=[[*common,'-Dmalloc=neighbor_test_malloc','-Dfree=neighbor_test_free','-c',str(ROOT/'docs/tads_C/tad_grafo.c'),'-o',str(tmp_path/'graph.o')],
-              [*common,str(tmp_path/'native.c'),str(tmp_path/'graph.o'),'-o',str(tmp_path/'native.exe')]]
-    for command in commands:
-        compiled=subprocess.run(command,capture_output=True,text=True,timeout=30);assert compiled.returncode==0,compiled.stderr
-    native=subprocess.run([str(tmp_path/'native.exe')],capture_output=True,text=True,timeout=10);assert native.returncode==0,native.stderr
+    original = ROOT/'docs/tads_C/tad_grafo.c'
+    observed_source = tmp_path/'observed.c'
+    observed_source.write_text(instrument_private_diagnostics(original.read_text(encoding='utf-8-sig')))
+    outputs = []
+    for source, macros in [(original, []), (observed_source, ['-DOBSERVED'])]:
+        commands=[[*common,'-Dmalloc=neighbor_test_malloc','-Dfree=neighbor_test_free','-c',str(source),'-o',str(tmp_path/'graph.o')],
+                  [*common,*macros,str(tmp_path/'native.c'),str(tmp_path/'graph.o'),'-o',str(tmp_path/'native.exe')]]
+        for command in commands:
+            compiled=subprocess.run(command,capture_output=True,text=True,timeout=30);assert compiled.returncode==0,compiled.stderr
+        native=subprocess.run([str(tmp_path/'native.exe')],capture_output=True,text=True,timeout=10);assert native.returncode==0,native.stderr
+        outputs.append(native.stdout)
+    assert outputs[0] == outputs[1]
     rows=[json.loads(line.split(' ',2)[2]) for line in native.stdout.splitlines() if line.startswith('RESULT ')]
     assert len(rows)==len(cases)==6
     for observed,(vertices,arcs,vertex,expected) in zip(rows,cases):

@@ -11,7 +11,7 @@ def test_dfs_fresh_download_contracts_and_manual(client,tmp_path):
         path=tmp_path/('tad_grafo.'+ext);path.write_bytes(response.data);files.append(path)
         assert response.data==(root/'docs/tads_C'/path.name).read_bytes()
     header=files[1].read_text(encoding='utf-8');source=files[0].read_text(encoding='utf-8')
-    assert 'ListaVertice grafo_dfs(Grafo g, int inicio, GrafoEstado *estado)' in header
+    assert 'ListaVertice grafo_dfs(Grafo g, int inicio)' in header
     assert 'grafo_dfs_recursivo' in source and 'publicar_marcas(g, lista)' in source
     assert 'grafo_liberar_vertices(&suces)' in source
     guide=(root/'docs/USER_GUIDE.md').read_text(encoding='utf-8')

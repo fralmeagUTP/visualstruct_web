@@ -32,7 +32,7 @@ def validate_caller(root,tmp_path,algorithm,case,archived_source,run_doxygen):
     history,count=canonical_history(case,algorithm);main=build_graph_main(history)
     assert main.count('= grafo_'+algorithm+'(')==count
     assert main.count('grafo_liberar_vertices(&lista_')==count
-    assert 'GrafoEstado estado_' in main and 'grafo_destruir(&g)' in main
+    assert 'GrafoEstado' not in main and 'grafo_destruir(&g)' in main
     source=tmp_path/'main.c';source.write_text(main,encoding='utf-8')
     run_doxygen(tmp_path,[source])
     for ext in ['c','h']:(tmp_path/('tad_grafo.'+ext)).write_bytes((root/'docs/tads_C'/('tad_grafo.'+ext)).read_bytes())

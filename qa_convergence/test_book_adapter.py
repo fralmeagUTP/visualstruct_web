@@ -103,7 +103,7 @@ class BookAdapterTests(unittest.TestCase):
 
     def test_invalid_input_precedes_execution(self):
         a=self.seeded();before=deepcopy(a.to_visual_state());execution=a._last_book_execution
-        for op,p in [('insert_vertex',{'vertex':2147483648}),('insert_edge',dict(origin=1,target=2,weight=1.5)),('generate_random_graph',{'vertices_count':16}),('run_bfs',{'start':1,'fail_allocation':0})]:
+        for op,p in [('insert_vertex',{'vertex':2147483648}),('insert_edge',dict(origin=1,target=2,weight=1.5)),('generate_random_graph',{'vertices_count':31}),('run_bfs',{'start':1,'fail_allocation':0})]:
             with self.assertRaises(ValueError):a.execute(op,p)
             self.assertEqual(a.to_visual_state(),before);self.assertIs(a._last_book_execution,execution)
 

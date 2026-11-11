@@ -1393,8 +1393,19 @@ select {
 }
 
 .viz-graph-edge.mst {
-  stroke: #188f4f;
-  stroke-width: 3.4;
+  stroke: #f2c500;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 0.65px #725800);
+}
+
+.graph-mst-legend::before {
+  content: "";
+  display: inline-block;
+  width: 1.5em;
+  border-top: 4px solid #f2c500;
+  box-shadow: 0 1px #725800;
+  margin-right: 0.3em;
+  vertical-align: middle;
 }
 
 .viz-graph-arrowhead {

@@ -1,8 +1,8 @@
 /**
  * \page graph_book_api Contrato del grafo canónico del libro
  *
- * Esta documentación acompaña los C/H del libro sin modificar sus bytes.
- * GrafoEstado distingue éxito, falta de memoria, ausencia, pesos/ciclos
+ * Esta documentación acompaña la interfaz educativa mínima del TAD.
+ * GrafoEstado es privado: el llamador no lo crea ni lo pasa. Distingue éxito, falta de memoria, ausencia, pesos/ciclos
  * negativos, desconexión, argumentos no válidos y rango. Un resultado NULL
  * con GRAFO_OK puede representar una lista vacía válida. Las listas de
  * grafo_vertices/grafo_arcos son prestadas; los resultados de recorridos,

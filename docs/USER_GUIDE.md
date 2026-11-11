@@ -1,6 +1,6 @@
 # VisualStruct · Manual para estudiantes
 
-Actualizado el 27 de octubre de 2026. En la aplicación, abre **Manual** (`/help/manual`) para usar los enlaces y desplegar la referencia avanzada. Este documento explica el mismo flujo sin necesidad de recorrer el código del proyecto.
+Actualizado el 11 de noviembre de 2026. En la aplicación, abre **Manual** (`/help/manual`) para usar los enlaces y desplegar la referencia avanzada. Este documento explica el mismo flujo sin necesidad de recorrer el código del proyecto.
 
 ## Empieza aquí: una práctica de 5 minutos
 
@@ -51,6 +51,8 @@ Después de terminar o detener un lote, **edita la lista antes de iniciar otro**
 
 ## Lee los resultados y guarda tu práctica
 
+Los resultados se ajustan al ancho y crecen en altura, sin el pequeño scroll interno que recortaba recorridos o mensajes. El dibujo y el código pueden conservar desplazamiento propio. En grafos, árboles y secuenciales, las salidas visuales se integran en la tarjeta; hash y ordenamiento conservan su sección de resultados sin recorte.
+
 | Panel o control | Para qué sirve |
 | --- | --- |
 | Consola C (printf) | Salida realmente impresa por C. Puede estar vacía en una operación correcta. No confundir con avisos de la aplicación o diagnósticos de error. |
@@ -86,17 +88,19 @@ Ayuda: `/help/hierarchical`.
 
 ### Grafos
 
+Consulta la [guía práctica de grafos](GUIA_ESTUDIANTES_GRAFOS.md), con firmas mínimas, ejemplo C compilable y gestión de memoria.
+
 Crea un grafo no dirigido con vértices 1, 2, 3 y aristas 1–2 de peso 4, 2–3 de peso 2 y 1–3 de peso 9. El camino mínimo 1→3 pasa por 2 y cuesta 6. BFS busca por capas, no por suma de pesos.
 
 - Usa Construcción, Recorridos, Camino mínimo y Expansión mínima según la pregunta.
 - Identificadores y pesos son enteros de 32 bits. 2.0 se normaliza a 2; fracciones y valores fuera de rango se rechazan.
-- Máximo visual: 15 vértices. Empieza con 3 o 4 para seguir fácilmente las instrucciones.
+- Máximo visual: 30 vértices. Empieza con 3 o 4 para seguir fácilmente las instrucciones.
 - Dijkstra rechaza pesos negativos, incluso desconectados. Bellman-Ford detecta ciclos negativos alcanzables.
 - Prim y Kruskal requieren conexiones simétricas y conectividad en el grafo no dirigido. Un grafo desconectado no devuelve un bosque exitoso.
 - Una traza admite hasta 4.000 eventos C/llamador más la publicación final. Si supera ese presupuesto se rechaza su preparación, sin truncarla. Reduce el ejemplo o usa modo normal para obtener el resultado completo sin guardar esa traza extensa.
 - Historiales del contrato anterior se conservan suspendidos, no vacíos. Expórtalos antes de confirmar Restablecer datos; no se reinterpretan silenciosamente.
 
-**Referencia avanzada:** el C sigue el código del libro. `GrafoEstado` distingue OK, MEMORIA, NO_EXISTE, PESO_NEGATIVO, CICLO_NEGATIVO, DESCONECTADO, ARGUMENTO y RANGO. NULL no basta para concluir error: un camino de un vértice a sí mismo puede tener cero arcos y estar bien. Distancias `long long` y marca alcanzable son independientes; INT_MAX no es infinito. Eliminar vértice elimina sus arcos incidentes dentro del C. Las listas de vértices/arcos consultadas son prestadas; resultados propios se liberan con la función correspondiente. El modo no dirigido hace una llamada por sentido: si falla la segunda, no deshace la primera.
+**Referencia avanzada:** la interfaz educativa usa firmas mínimas sin declarar ni pasar `GrafoEstado`. Los diagnósticos privados del visualizador distinguen OK, MEMORIA, NO_EXISTE, PESO_NEGATIVO, CICLO_NEGATIVO, DESCONECTADO, ARGUMENTO y RANGO. NULL no basta para concluir error: un camino de un vértice a sí mismo puede tener cero arcos y estar bien. Distancias `long long` y marca alcanzable son independientes; INT_MAX no es infinito. Eliminar vértice elimina sus arcos incidentes dentro del C. Las listas de vértices/arcos consultadas son prestadas; resultados propios se liberan con la función correspondiente. El modo no dirigido hace una llamada por sentido: si falla la segunda, no deshace la primera.
 
 Ayuda: `/help/graph`.
 

@@ -2,6 +2,7 @@
 from pathlib import Path
 import subprocess,shutil,json,hashlib
 from test_graph_bfs_documentation import run_doxygen
+from _graph_private_diagnostic_observer import instrument_private_diagnostics
 
 def test_dijkstra_download_contracts_helpers_and_guide(client,tmp_path):
  files=[]
@@ -13,30 +14,31 @@ def test_dijkstra_download_contracts_helpers_and_guide(client,tmp_path):
   assert p.read_bytes()==(root/'docs'/'tads_C'/p.name).read_bytes()
  source=(tmp_path/'tad_grafo.c').read_text(encoding='utf-8-sig')
  header=(tmp_path/'tad_grafo.h').read_text(encoding='utf-8-sig')
- assert 'grafo_dijkstra(' in source and 'GrafoEstado *estado' in header
+ assert 'grafo_dijkstra(' in source and 'GrafoEstado' not in header
  assert 'GRAFO_PESO_NEGATIVO' in source and 'sumar_seguro' in source
  guide=(root/'docs/USER_GUIDE.md').read_text(encoding='utf-8')
  assert 'GrafoEstado' in guide and 'Dijkstra' in guide
  run_doxygen(tmp_path,files)
+ (tmp_path/'observed_graph.c').write_text(instrument_private_diagnostics(source),encoding='utf-8')
  # Static helpers remain private in the student source; same translation unit
  # invokes their real bodies. No algorithm is reimplemented in this observer.
- main=r"""#include "tad_grafo.c"
+ main=r"""#include "observed_graph.c"
 #include <assert.h>
 int main(void){
  GrafoEstado estado=GRAFO_OK; Grafo g=grafo_crear(); Trabajo t;
  assert(!preparar(g,&t,&estado));assert(estado==GRAFO_NO_EXISTE&&t.n==0);liberar_trabajo(&t);
- g=grafo_insertar_vertice(g,-1,&estado);assert(estado==GRAFO_OK);
- g=grafo_insertar_vertice(g,7,&estado);assert(estado==GRAFO_OK);
+ g=grafo_insertar_vertice(g,-1);assert(qa_status==GRAFO_OK);
+ g=grafo_insertar_vertice(g,7);assert(qa_status==GRAFO_OK);
  assert(preparar(g,&t,&estado));assert(t.n==2);
  assert(indiceVertice(&t,7)==0);assert(indiceVertice(&t,-1)==1);
  assert(indiceVertice(&t,999)==-1);liberar_trabajo(&t);
  /* liberar_trabajo frees its private workspace; it does not promise pointer reset. */
  long long salida=77;assert(sumar_seguro(0,INT_MAX,&salida));assert(salida==INT_MAX);
  assert(!sumar_seguro(LLONG_MAX,1,&salida));assert(salida==INT_MAX);
- g=grafo_insertar_arco(g,-1,7,0,&estado);assert(estado==GRAFO_OK);
- ListaArco camino=grafo_dijkstra(g,-1,7,&estado);assert(estado==GRAFO_OK&&camino&&camino->costo==0);grafo_liberar_arcos(&camino);assert(camino==NULL);
- g=grafo_insertar_arco(g,7,-1,-1,&estado);
- camino=grafo_dijkstra(g,-1,7,&estado);assert(estado==GRAFO_PESO_NEGATIVO&&camino==NULL);
+ g=grafo_insertar_arco(g,-1,7,0);assert(qa_status==GRAFO_OK);
+ ListaArco camino=grafo_dijkstra(g,-1,7);assert(qa_status==GRAFO_OK&&camino&&camino->costo==0);grafo_liberar_arcos(&camino);assert(camino==NULL);
+ g=grafo_insertar_arco(g,7,-1,-1);
+ camino=grafo_dijkstra(g,-1,7);assert(qa_status==GRAFO_PESO_NEGATIVO&&camino==NULL);
  grafo_destruir(&g);assert(g.a==NULL&&g.v==NULL);
  return 0;}
 """

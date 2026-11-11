@@ -75,10 +75,10 @@ class GraphHelpService:
                 "common_errors": ["confundir menor número de aristas con menor peso", "usar Dijkstra con pesos negativos", "olvidar componentes desconectadas", "aceptar una arista que cierra ciclo"],
             },
             "book_contract": [
-                "La vista pedagógica admite hasta 15 vértices. Una traza conserva como máximo 4.000 eventos C/llamador más la publicación final; no se recortan pasos. Si supera el presupuesto, reduce el ejemplo o usa modo normal, que devuelve el resultado completo sin guardar una traza extensa.",
+                "La vista pedagógica admite hasta 30 vértices. Una traza conserva como máximo 4.000 eventos C/llamador más la publicación final; no se recortan pasos. Si supera el presupuesto, reduce el ejemplo o usa modo normal, que devuelve el resultado completo sin guardar una traza extensa.",
                 "Los historiales del contrato anterior quedan suspendidos, no vacíos: se pueden exportar sin reinterpretarlos. Restablecer datos requiere confirmación para empezar con el código del libro.",
-                "GrafoEstado: 0 OK; 1 MEMORIA; 2 NO_EXISTE; 3 PESO_NEGATIVO; 4 CICLO_NEGATIVO; 5 DESCONECTADO; 6 ARGUMENTO; 7 RANGO.",
-                "NULL no determina el éxito: un camino de un vértice a sí mismo o un MST de un solo vértice puede ser NULL con GRAFO_OK.",
+                "Las funciones públicas reciben únicamente el grafo y sus datos: no se declara ni se pasa GrafoEstado. El visualizador observa diagnósticos privados de la implementación.",
+                "NULL no determina el éxito: un camino de un vértice a sí mismo o un MST de un solo vértice puede devolver NULL correctamente; el visualizador distingue ese caso con su diagnóstico interno.",
                 "grafo_costo_arco retorna int 0/1 y escribe el costo en int *salida sólo si retorna 1; costo cero es válido.",
                 "Las distancias usan long long; alcanzable distingue ausencia de distancia. INT_MAX no se usa como infinito. sumar_seguro devuelve 0 si detecta desbordamiento; el algoritmo llamador lo traduce a GRAFO_RANGO.",
                 "grafo_eliminar_vertice retira y libera los arcos incidentes dentro del C del libro; el main no repite esa eliminación.",

@@ -86,6 +86,33 @@
     }
     return {points:p,cost:best};
   }
+  // Above the small classroom examples, avoid exhaustive multistart crossing
+  // searches. Coordinates remain deterministic and never change graph data.
+  function largeComponentLayout(n,links) {
+    const adj=Array.from({length:n},()=>[]);
+    links.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a);});
+    adj.forEach(a=>a.sort((x,y)=>x-y));
+    if(links.length===n-1 && adj.every(a=>a.length<=2)){
+      const order=[],seen=new Set();let at=adj.findIndex(a=>a.length===1);
+      while(at>=0){order.push(at);seen.add(at);at=adj[at].find(v=>!seen.has(v))??-1;}
+      const columns=Math.ceil(sqrt(n)),points=Array(n);
+      order.forEach((id,i)=>{const row=Math.floor(i/columns),col=i%columns;points[id]={x:(row%2?columns-1-col:col)*130,y:row*130};});
+      return {points,cost:0};
+    }
+    if(links.length===n-1){
+      const root=adj.reduce((best,a,i)=>a.length>adj[best].length?i:best,0);
+      const levels=[[root]],seen=new Set([root]);
+      for(let i=0;i<levels.length;i++){
+        const next=[];for(const v of levels[i])for(const u of adj[v])if(!seen.has(u)){seen.add(u);next.push(u);}
+        if(next.length)levels.push(next);
+      }
+      const width=max(...levels.map(l=>l.length))*120,points=Array(n);
+      levels.forEach((level,y)=>level.forEach((v,x)=>{points[v]={x:(width-(level.length-1)*120)/2+x*120,y:y*140};}));
+      return {points,cost:0};
+    }
+    const radius=max(150,n*110/(2*PI));
+    return {points:Array.from({length:n},(_,i)=>({x:radius*cos(2*PI*i/n),y:radius*sin(2*PI*i/n)})),cost:0};
+  }
   function compute(ids,links) {
     const n=ids.length,adj=Array.from({length:n},()=>[]);
     links.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a);});
@@ -103,6 +130,7 @@
       const localLinks=links.filter(([a,b])=>local.has(a)&&local.has(b)).map(([a,b])=>[local.get(a),local.get(b)]);
       let best;
       if(group.length===1)best={points:[{x:0,y:0}],cost:0};
+      else if(group.length>15)best=largeComponentLayout(group.length,localLinks);
       else for(let seed=0;seed<(localLinks.length>45?4:8);seed++){const trial=componentLayout(group.length,localLinks,seed);if(!best||trial.cost<best.cost)best=trial;}
       const p=best.points;const minX=min(...p.map(q=>q.x)),minY=min(...p.map(q=>q.y));
       const w=max(...p.map(q=>q.x))-minX+140,h=max(...p.map(q=>q.y))-minY+140;

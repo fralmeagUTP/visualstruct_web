@@ -186,10 +186,10 @@ _GRAPH_DIDACTIC_NOTES: dict[str, dict[str, Any]] = {
         "algorithms": {
             "run_prim": (
                 "Prim: crece un árbol desde un vértice inicial, agregando siempre la arista mínima que conecta "
-                "un nodo nuevo. Exige arcos simétricos y conexión completa; informa GrafoEstado al fallar."
+                "un nodo nuevo. Exige arcos simétricos y conexión completa; el visualizador informa el diagnóstico interno si falla."
             ),
             "run_kruskal": (
-                "Kruskal: ordena aristas por peso y evita ciclos con conjuntos. Si no conecta todos los vértices, libera el resultado parcial e informa GRAFO_DESCONECTADO."
+                "Kruskal: ordena aristas por peso y evita ciclos con conjuntos. Si no conecta todos los vértices, libera el resultado parcial y el visualizador indica que el grafo está desconectado."
             ),
         },
     },

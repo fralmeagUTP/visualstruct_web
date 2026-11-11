@@ -23,8 +23,9 @@ def test_bfs_fresh_download_contracts_and_manual(client,tmp_path):
         assert response.data==(root/'docs/tads_C'/path.name).read_bytes()
         hashes[path.name]=hashlib.sha256(response.data).hexdigest()
     header=files[1].read_text(encoding='utf-8')
-    assert 'ListaVertice grafo_bfs(Grafo g, int inicio, GrafoEstado *estado)' in header
-    assert 'GRAFO_MEMORIA' in header and 'GRAFO_NO_EXISTE' in header
+    assert 'ListaVertice grafo_bfs(Grafo g, int inicio)' in header
+    source=files[0].read_text(encoding='utf-8')
+    assert 'GRAFO_MEMORIA' in source and 'GRAFO_NO_EXISTE' in source
     assert 'void grafo_liberar_vertices(ListaVertice *lista)' in header
     source=files[0].read_text(encoding='utf-8')
     assert 't.prev[final++] = s' in source and 'publicar_marcas(g, lista)' in source

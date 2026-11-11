@@ -1,5 +1,6 @@
 #include "harness_common.h"
 #include "tad_grafo.h"
+#include "graph_private_diagnostic_qa.h"
 #include <string.h>
 
 static int vertex_count(Grafo graph) { int count = 0; ListaVertice item = grafo_vertices(graph); while (item != NULL) { count++; item = item->sig; } return count; }
@@ -15,7 +16,7 @@ static int compare_edges(const void *left, const void *right) {
     return (a->weight > b->weight) - (a->weight < b->weight);
 }
 static void destroy_graph(Grafo *graph) { grafo_destruir(graph); }
-static void emit_status(const char *operation, GrafoEstado status) {
+static void emit_status(const char *operation, int status) {
     char detail[128]; (void)snprintf(detail, sizeof(detail), "%s_status=%d", operation, (int)status); HARNESS_QA_RETURN(detail);
 }
 static void emit_vertex_result(const char *label, ListaVertice list) {
@@ -51,16 +52,16 @@ static void emit_state(Grafo graph) {
 int main(int argc, char **argv) {
     Grafo graph = grafo_crear(); int index = 1; harness_qa_begin("graph", argc, argv);
     while (index < argc) {
-        int first, second, weight; GrafoEstado status = GRAFO_OK;
+        int first, second, weight;
         if (strcmp(argv[index], "add_vertex") == 0) {
             HARNESS_QA_OPERATION("add_vertex", "before");
             if (index + 1 >= argc || !harness_parse_int(argv[index + 1], &first)) { destroy_graph(&graph); return harness_error("add_vertex requiere entero"); }
-            { int before = vertex_count(graph); graph = grafo_insertar_vertice(graph, first, &status); if (vertex_count(graph) > before) HARNESS_QA_ALLOCATION("allocated graph vertex"); } emit_status("add_vertex", status); HARNESS_QA_COMPARISON("vertex list searched for duplicate"); HARNESS_QA_POINTER("vertex linked into graph vertex list"); HARNESS_QA_OPERATION("add_vertex", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after add_vertex"); emit_state(graph); } index += 2; continue;
+            { int before = vertex_count(graph); graph = grafo_insertar_vertice(graph, first); if (vertex_count(graph) > before) HARNESS_QA_ALLOCATION("allocated graph vertex"); } emit_status("add_vertex", qa_status); HARNESS_QA_COMPARISON("vertex list searched for duplicate"); HARNESS_QA_POINTER("vertex linked into graph vertex list"); HARNESS_QA_OPERATION("add_vertex", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after add_vertex"); emit_state(graph); } index += 2; continue;
         }
         if (strcmp(argv[index], "add_edge") == 0) {
             HARNESS_QA_OPERATION("add_edge", "before");
             if (index + 3 >= argc || !harness_parse_int(argv[index + 1], &first) || !harness_parse_int(argv[index + 2], &second) || !harness_parse_int(argv[index + 3], &weight)) { destroy_graph(&graph); return harness_error("add_edge requiere origen destino peso"); }
-            { int before = edge_count(graph); graph = grafo_insertar_arco(graph, first, second, weight, &status); if (edge_count(graph) > before) HARNESS_QA_ALLOCATION("allocated graph edge"); } emit_status("add_edge", status); HARNESS_QA_CONDITION("C insertion atomically creates missing endpoints and updates duplicate cost"); HARNESS_QA_POINTER("edge linked into graph edge list"); HARNESS_QA_OPERATION("add_edge", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after add_edge"); emit_state(graph); } index += 4; continue;
+            { int before = edge_count(graph); graph = grafo_insertar_arco(graph, first, second, weight); if (edge_count(graph) > before) HARNESS_QA_ALLOCATION("allocated graph edge"); } emit_status("add_edge", qa_status); HARNESS_QA_CONDITION("C insertion atomically creates missing endpoints and updates duplicate cost"); HARNESS_QA_POINTER("edge linked into graph edge list"); HARNESS_QA_OPERATION("add_edge", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state after add_edge"); emit_state(graph); } index += 4; continue;
         }
         if (strcmp(argv[index], "remove_vertex") == 0 || strcmp(argv[index], "exists_vertex") == 0) {
             const char *operation = argv[index]; HARNESS_QA_OPERATION(operation, "before");
@@ -88,18 +89,18 @@ int main(int argc, char **argv) {
         if (strcmp(argv[index], "bfs") == 0 || strcmp(argv[index], "dfs") == 0 || strcmp(argv[index], "prim") == 0) {
             const char *operation = argv[index]; HARNESS_QA_OPERATION(operation, "before");
             if (index + 1 >= argc || !harness_parse_int(argv[index + 1], &first)) { destroy_graph(&graph); return harness_error("algoritmo requiere vertice inicial"); }
-            if (strcmp(operation, "bfs") == 0 || strcmp(operation, "dfs") == 0) { ListaVertice result = strcmp(operation, "bfs") == 0 ? grafo_bfs(graph, first, &status) : grafo_dfs(graph, first, &status); emit_status(operation, status); emit_vertex_result(operation, result); free_vertex_result(result); HARNESS_QA_FREE("released traversal result"); }
-            else { ListaArco result = grafo_prim(graph, first, &status); emit_status(operation, status); emit_edge_result(operation, result); free_edge_result(result); HARNESS_QA_FREE("released Prim result"); }
+            if (strcmp(operation, "bfs") == 0 || strcmp(operation, "dfs") == 0) { ListaVertice result = strcmp(operation, "bfs") == 0 ? grafo_bfs(graph, first) : grafo_dfs(graph, first); emit_status(operation, qa_status); emit_vertex_result(operation, result); free_vertex_result(result); HARNESS_QA_FREE("released traversal result"); }
+            else { ListaArco result = grafo_prim(graph, first); emit_status(operation, qa_status); emit_edge_result(operation, result); free_edge_result(result); HARNESS_QA_FREE("released Prim result"); }
             HARNESS_QA_OPERATION(operation, "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state unchanged after graph algorithm"); emit_state(graph); } index += 2; continue;
         }
         if (strcmp(argv[index], "dijkstra") == 0 || strcmp(argv[index], "bellman") == 0) {
             const char *operation = argv[index]; HARNESS_QA_OPERATION(operation, "before");
             if (index + 2 >= argc || !harness_parse_int(argv[index + 1], &first) || !harness_parse_int(argv[index + 2], &second)) { destroy_graph(&graph); return harness_error("camino requiere inicio y llegada"); }
-            { ListaArco result = strcmp(operation, "dijkstra") == 0 ? grafo_dijkstra(graph, first, second, &status) : grafo_bellman_ford(graph, first, second, &status); emit_status(operation, status); emit_edge_result(operation, result); free_edge_result(result); HARNESS_QA_FREE("released shortest-path result"); }
+            { ListaArco result = strcmp(operation, "dijkstra") == 0 ? grafo_dijkstra(graph, first, second) : grafo_bellman_ford(graph, first, second); emit_status(operation, qa_status); emit_edge_result(operation, result); free_edge_result(result); HARNESS_QA_FREE("released shortest-path result"); }
             HARNESS_QA_OPERATION(operation, "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state unchanged after shortest path"); emit_state(graph); } index += 3; continue;
         }
         if (strcmp(argv[index], "kruskal") == 0) {
-            ListaArco result; HARNESS_QA_OPERATION("kruskal", "before"); result = grafo_kruskal(graph, &status); emit_status("kruskal", status); emit_edge_result("kruskal", result); free_edge_result(result); HARNESS_QA_FREE("released Kruskal result"); HARNESS_QA_OPERATION("kruskal", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state unchanged after Kruskal"); emit_state(graph); } index += 1; continue;
+            ListaArco result; HARNESS_QA_OPERATION("kruskal", "before"); result = grafo_kruskal(graph); emit_status("kruskal", qa_status); emit_edge_result("kruskal", result); free_edge_result(result); HARNESS_QA_FREE("released Kruskal result"); HARNESS_QA_OPERATION("kruskal", "after"); if (harness_qa_enabled()) { HARNESS_QA_SNAPSHOT("state unchanged after Kruskal"); emit_state(graph); } index += 1; continue;
         }
         destroy_graph(&graph); return harness_error("operacion no permitida");
     }
