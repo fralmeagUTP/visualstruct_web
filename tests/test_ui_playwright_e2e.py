@@ -637,7 +637,11 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
             _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
                                   result_data["history"], vertices, edges, expected_history)
             _wait_status_contains(page, "#graph-message-box", "grafo_bfs")
-            result_text = page.text_content("#graph-visual-state") or ""
+            # The current result is a sibling of the scrollable drawing so it
+            # remains readable without the graph viewport's internal scrollbar.
+            result_panel = page.locator("#graph-visual-region > #graph-current-result")
+            assert result_panel.is_visible()
+            result_text = result_panel.text_content() or ""
             assert ("Recorrido" in result_text) or ("BFS" in result_text)
 
             # 3) Shortest path phase (Dijkstra).
@@ -779,7 +783,7 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
                     scrollHeight: target.scrollHeight,
                     nativeWidth: Math.max(...Array.from(target.querySelectorAll('svg'), svg => svg.viewBox.baseVal.width)),
                     nativeHeight: Math.max(...Array.from(target.querySelectorAll('svg'), svg => svg.viewBox.baseVal.height)),
-                    resultText: target.querySelector('.graph-current-result').textContent,
+                    resultText: target.closest('#graph-visual-region').querySelector('#graph-current-result').textContent,
                   };
                   // Observe the actual scene passed to the rasterizer, not an
                   // independently rebuilt expected graph or zoomed pixel size.

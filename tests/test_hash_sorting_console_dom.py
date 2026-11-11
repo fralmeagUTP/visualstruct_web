@@ -63,21 +63,32 @@ def _exercise(page, tmp_path, base, family, run_path, reset_path):
     posts = []
     page.on("request", lambda request: posts.append(request.url) if request.method == "POST" else None)
 
-    # Constrain only presentation height; every displayed byte still comes from
-    # these real API operations. Do not manufacture repeated output for scroll.
-    console.evaluate("el=>{el.style.height='32px';el.style.minHeight='0';el.style.maxHeight='32px';}")
-    assert console.evaluate("el=>el.scrollHeight>el.clientHeight+5")
-    console.evaluate("el=>{el.scrollTop=1;}")
+    def expect_natural_output():
+        metrics = console.evaluate("""el=>{
+          const css=getComputedStyle(el);
+          return {height:el.clientHeight, scrollHeight:el.scrollHeight,
+            width:el.clientWidth, scrollWidth:el.scrollWidth,
+            overflowY:css.overflowY, whiteSpace:css.whiteSpace, maxHeight:css.maxHeight};
+        }""")
+        assert metrics["height"] > 0
+        assert metrics["scrollHeight"] <= metrics["height"] + 1
+        assert metrics["scrollWidth"] <= metrics["width"] + 1
+        assert metrics["overflowY"] == "visible"
+        assert metrics["whiteSpace"] == "pre-wrap"
+        assert metrics["maxHeight"] == "none"
+
+    # The output now grows in document flow; do not force a nested scroll box.
+    expect_natural_output()
     page.locator(f"#{family}-sim-step").dispatch_event("click")
     expect_text(prefix)
-    assert console.evaluate("el=>el.scrollTop") == 1
+    expect_natural_output()
 
     # Walk the real current trace: stdout at every cursor is exact, not a
     # fabricated query/result message. No navigation may execute a new caller.
     for cursor, step in enumerate(trace["steps"]):
         page.locator(f"#{family}-sim-next").dispatch_event("click")
         expect_text(prefix + step["console_stdout"])
-    assert console.evaluate("el=>el.scrollTop") == 1
+    expect_natural_output()
     for cursor in range(len(trace["steps"]) - 2, -2, -1):
         page.locator(f"#{family}-sim-prev").dispatch_event("click")
         expect_text(prefix + (trace["steps"][cursor]["console_stdout"] if cursor >= 0 else ""))
@@ -92,16 +103,16 @@ def _exercise(page, tmp_path, base, family, run_path, reset_path):
     expect_text(second["console_output"])
     page.locator(f"#{family}-sim-step").dispatch_event("click")
     expect_text(prefix)
-    console.evaluate("el=>{el.scrollTop=el.scrollHeight;}")
     page.locator(f"#{family}-sim-step").dispatch_event("click")
     expect_text(second["console_output"])
-    assert console.evaluate("el=>el.scrollHeight-el.clientHeight-el.scrollTop") <= 4
+    expect_natural_output()
     assert posts == []
 
     # Backend reconstruction must survive removing the optional observed cache.
     page.evaluate("sessionStorage.clear()")
     page.reload()
     expect_text(second["console_output"])
+    expect_natural_output()
     if family == "hash":
         # A missing key still executes the authentic caller: success=False
         # must not suppress its initialized found-flag stdout or read output.

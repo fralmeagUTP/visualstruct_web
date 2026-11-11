@@ -225,20 +225,23 @@ def test_baseline_and_fixed_sorting_main_screenshots(browser_env):
     context.close()
 
 
-def test_accented_title_dynamic_renderer_and_plain_stdout(browser_env):
+@pytest.mark.parametrize("title,producer_tokens", [("Código C: título con acento", 2), ("Referencia del TAD", 0)])
+def test_accented_title_dynamic_renderer_and_plain_stdout(browser_env, title, producer_tokens):
     browser, base, _ = browser_env
     context, page = _page(browser, base)
     page.goto(base + "/sequential/queue", wait_until="networkidle")
     source = 'int value = 7;\nreturn value;\n'
-    before = page.evaluate("""source => {
+    before = page.evaluate("""([source,title]) => {
       const p=document.createElement('pre');p.id='title-probe';p.className='didactic-code';document.body.append(p);
-      InterpreterRuntime.renderCode(p,source,'Código C: título con acento');
+      InterpreterRuntime.renderCode(p,source,title);
       window.__titleRows=[...p.querySelectorAll('.code-line')];
       const out=document.createElement('pre');out.id='stdout-probe';out.className='console-screen';
       const code=document.createElement('code');code.textContent=source;out.append(code);document.body.append(out);
       return p.querySelectorAll('.code-type,.code-keyword').length;
-    }""", source)
-    assert before == 0  # Existing title-gated producer; common reader fixes it.
+    }""", [source, title])
+    # The producer recognizes accented Código C immediately; the shared reader
+    # must also tokenize an unrelated title without replacing its line nodes.
+    assert before == producer_tokens
     page.wait_for_function("() => document.querySelector('#title-probe .code-type')")
     assert page.locator('#title-probe').locator('.code-line').all_text_contents() == source.split('\n')
     assert page.evaluate("() => document.querySelector('#title-probe').dataset.rawCode") == source
