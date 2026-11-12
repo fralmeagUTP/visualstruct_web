@@ -123,20 +123,103 @@ def test_controls40_optional_comparison_changes_results(controls40_page)->None:
  assert page.locator('#seq-compare-grid .seq-compare-sequence').all_text_contents()==['sale 10 por llegada','sale 20 por prioridad']
  assert not posts
 
+def prediction_graph_snapshot(page):
+ # Pila uses real HTML memory nodes; include SVG drawings when a view has them.
+ graph=page.locator('#visual-state')
+ assert graph.is_visible()
+ graph.locator('[data-stack-push-root]').wait_for(state='visible')
+ assert graph.locator('[data-stack-push-root]').count()==1
+ return graph.locator('[data-stack-push-root],[data-stack-push-aux-valid],.stack-linked-chain,svg').evaluate_all("nodes=>nodes.map(node=>node.outerHTML)")
+
+def assert_prediction_aids_masked(page):
+ for selector in ('#seq-code-region','#seq-pedagogy-summary','.seq-c-semantics','#seq-printf-console','#action-history'):
+  node=page.locator(selector)
+  assert node.count()==1
+  assert not node.is_visible()
+  assert node.get_attribute('aria-hidden')=='true'
+
 @pytest.mark.e2e
 def test_controls40_prediction_practice_and_progress_reset(controls40_page)->None:
  page,context,base=controls40_page;page.goto(base+'/sequential/stack',wait_until='networkidle');open_optional_panel(page,'Predecir')
+ page.locator('label[for="didactic-mode-switch"]').click()
+ page.wait_for_function("document.documentElement.getAttribute('data-didactic-mode') === 'full'")
  page.check('#seq-predictions-enabled');page.check('#seq-practice-mode')
  page.locator('#field-value').fill('7');page.click('#seq-step-mode');page.click('#seq-sim-execute')
+ previous=prediction_graph_snapshot(page)
  for _ in range(8):
   if page.locator('#seq-prediction-panel').is_visible():break
+  previous=prediction_graph_snapshot(page)
   page.click('#seq-sim-step')
  assert page.locator('#seq-prediction-panel').is_visible()
- assert page.locator('#visual-state').evaluate('(e)=>e.classList.contains("seq-practice-hidden")')
+ assert prediction_graph_snapshot(page)==previous
+ assert_prediction_aids_masked(page)
  page.uncheck('#seq-practice-mode')
- assert not page.locator('#visual-state').evaluate('(e)=>e.classList.contains("seq-practice-hidden")')
+ assert prediction_graph_snapshot(page)==previous
+ assert page.locator('#seq-code-region').is_visible()
+ assert page.locator('#seq-pedagogy-summary').get_attribute('aria-hidden')!='true'
  page.locator('#seq-prediction-choices [data-answer="true"]').click()
  assert page.evaluate("JSON.parse(sessionStorage.getItem('sequential-learning-progress:stack')).attempts")==1
  page.click('#seq-reset-learning')
  assert page.evaluate("JSON.parse(sessionStorage.getItem('sequential-learning-progress:stack'))")=={'attempts':0,'correct':0,'concepts':{}}
  assert '0/0' in page.locator('#seq-concept-progress').inner_text()
+
+@pytest.mark.e2e
+@pytest.mark.parametrize('decision',['answer','skip'])
+def test_prediction_publication_preserves_previous_until_decision(controls40_page,decision):
+ page,context,base=controls40_page
+ page.goto(base+'/sequential/stack',wait_until='networkidle');open_optional_panel(page,'Predecir')
+ page.locator('label[for="didactic-mode-switch"]').click()
+ page.wait_for_function("document.documentElement.getAttribute('data-didactic-mode') === 'full'")
+ page.check('#seq-practice-mode')
+ page.click('#seq-reset-learning')
+ page.locator('#field-value').fill('7');page.click('#seq-step-mode')
+ with page.expect_response(lambda r:r.url.endswith('/sequential/stack/operate') and r.request.method=='POST') as response:
+  page.click('#seq-sim-execute')
+ body=response.value.json();assert response.value.status==200 and body['success']
+ steps=body['execution_trace']['steps']
+ # Choose a real root-publication event, not a condition with identical pictures.
+ target=next(i for i,step in enumerate(steps) if step['event_type']=='root_assigned')
+ assert target>0
+ detail=page.locator('#seq-progress-detail')
+ assert target<len(steps)<=10
+ page.wait_for_function("document.querySelector('#seq-progress-detail').textContent.startsWith('Paso 0 ·')")
+ for position in range(1,target+1):
+  page.click('#seq-sim-step')
+  page.wait_for_function("n=>document.querySelector('#seq-progress-detail').textContent.startsWith('Paso '+n+' ·')",arg=position)
+ before=prediction_graph_snapshot(page)
+ assert page.locator('[data-stack-push-root]').get_attribute('data-stack-push-root')=='NULL'
+ assert page.locator('[data-stack-push-status="temporary"]').count()==1
+ page.click('#seq-sim-step')
+ page.wait_for_function("n=>document.querySelector('#seq-progress-detail').textContent.startsWith('Paso '+n+' ·')",arg=target+1)
+ after=prediction_graph_snapshot(page)
+ assert page.locator('[data-stack-push-root]').get_attribute('data-stack-push-root')=='push-new'
+ assert page.locator('[data-stack-push-status="linked"]').count()==1
+ assert page.locator('[data-stack-push-field="nro"] strong').inner_text()=='7'
+ assert before!=after,'The chosen root publication must change the actual displayed memory'
+ page.click('#seq-sim-prev')
+ page.wait_for_function("n=>document.querySelector('#seq-progress-detail').textContent.startsWith('Paso '+n+' ·')",arg=target)
+ assert prediction_graph_snapshot(page)==before
+ posts=[];page.on('request',lambda req:posts.append(req.url) if req.method=='POST' else None)
+ page.check('#seq-predictions-enabled')
+ page.click('#seq-sim-step')
+ assert page.locator('#seq-prediction-panel').is_visible()
+ assert f'Antes del paso {target+1}:' in page.locator('#seq-prediction-question').inner_text()
+ assert detail.inner_text().startswith(f'Paso {target} ·')
+ assert prediction_graph_snapshot(page)==before
+ assert_prediction_aids_masked(page)
+ # Safe hints must not render the target event either, even after repeated clicks.
+ for _ in range(3):page.click('#seq-prediction-hint')
+ assert 'Sí existe una transición registrada.' not in page.locator('#seq-prediction-feedback').inner_text()
+ assert prediction_graph_snapshot(page)==before
+ assert detail.inner_text().startswith(f'Paso {target} ·')
+ button=page.locator('#seq-prediction-choices [data-answer="true"]' if decision=='answer' else '#seq-prediction-skip')
+ assert button.is_visible()
+ # Retain the same actual button for two immediate activations; no state injection.
+ button.evaluate('(button)=>{button.click();button.click();}')
+ page.wait_for_function("n=>document.querySelector('#seq-progress-detail').textContent.startsWith('Paso '+n+' ·')",arg=target+1)
+ assert not page.locator('#seq-prediction-panel').is_visible()
+ assert prediction_graph_snapshot(page)==after
+ progress=page.evaluate("JSON.parse(sessionStorage.getItem('sequential-learning-progress:stack'))")
+ assert progress==({'attempts':1,'correct':1,'concepts':{'assignment':1}} if decision=='answer' else {'attempts':0,'correct':0,'concepts':{}})
+ assert detail.inner_text().startswith(f'Paso {target+1} ·')
+ assert not posts

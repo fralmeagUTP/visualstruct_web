@@ -1,0 +1,2 @@
+- [x] prediction: documentar decisión vigente y verificar pruebas causales acotadas en copia. V2:3PASS12.76s.
+- [ ] publication: revisión y publicación del lote por coordinación; no autorizada a este agente.
