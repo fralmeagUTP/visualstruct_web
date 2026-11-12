@@ -35,17 +35,49 @@ def test_controls40_public_mode_changes_internal_state(controls40_page,module:st
 
 @pytest.mark.e2e
 @pytest.mark.parametrize('module,path,checkbox',[
- ('graph','/graph/graph/expansion-minima','#graph-hide-comments'),
+ ('graph','/graph/graph/recorridos','#graph-hide-comments'),
  ('hash','/hash/hash_table','#hash-hide-comments'),
  ('hierarchical','/hierarchical/abb','#hier-hide-comments'),
 ])
 def test_controls40_comments_hide_and_restore_real_source(controls40_page,module:str,path:str,checkbox:str)->None:
  page,context,base=controls40_page;page.goto(base+path,wait_until='networkidle')
+ # Source comments are exercised in the explicitly enabled technical view.
+ page.locator('label[for="didactic-mode-switch"]').click()
+ page.wait_for_function("document.documentElement.getAttribute('data-didactic-mode') === 'full'")
+ if module=='graph':page.select_option('#graph-algorithm-select','run_bfs')
  if module=='hash':page.select_option('#hash-operation-select','keys')
  visible="()=>[...document.querySelectorAll('#op-pseudocode .is-code-comment,#op-pseudocode .code-comment,#op-pseudocode .code-doc')].filter(e=>getComputedStyle(e).display!=='none'&&e.getClientRects().length).length"
  before=page.evaluate(visible);assert before>0,'No current source comments to exercise this control'
  page.check(checkbox);assert page.locator(checkbox).is_checked();assert page.evaluate(visible)<before
  page.uncheck(checkbox);assert page.evaluate(visible)==before
+
+@pytest.mark.e2e
+def test_controls40_graph_comments_toggle_preserves_prim_scope(controls40_page)->None:
+ page,context,base=controls40_page
+ posts=[];page.on('request',lambda req:posts.append(req.url) if req.method=='POST' else None)
+ page.goto(base+'/graph/graph/expansion-minima',wait_until='networkidle')
+ page.locator('label[for="didactic-mode-switch"]').click()
+ page.wait_for_function("document.documentElement.getAttribute('data-didactic-mode') === 'full'")
+ page.select_option('#graph-algorithm-select','run_prim')
+ code=page.locator('#op-pseudocode')
+ assert code.get_attribute('data-operation')=='run_prim'
+ rows=code.locator('.code-line')
+ native_rows=rows.evaluate_all("rows=>rows.map(row=>[row.getAttribute('data-line'),row.textContent])")
+ assert [int(row[0]) for row in native_rows]==list(range(len(native_rows)))
+ bfs_comment=code.locator('.code-line[data-line="323"]')
+ assert 'prev se usa aqui como cola de indices, con capacidad n' in bfs_comment.text_content()
+ excluded=code.locator('.graph-code-excluded')
+ excluded_indices=excluded.evaluate_all("rows=>rows.map(row=>row.getAttribute('data-line'))")
+ assert '323' in excluded_indices
+ for hidden in (False,True,False):
+  page.locator('#graph-hide-comments').set_checked(hidden)
+  assert page.locator('#graph-hide-comments').is_checked()==hidden
+  assert code.get_attribute('data-operation')=='run_prim'
+  assert excluded.evaluate_all("rows=>rows.map(row=>row.getAttribute('data-line'))")==excluded_indices
+  assert excluded.evaluate_all("rows=>rows.every(row=>getComputedStyle(row).display==='none' && !row.getClientRects().length)")
+  assert not bfs_comment.is_visible()
+  assert rows.evaluate_all("rows=>rows.map(row=>[row.getAttribute('data-line'),row.textContent])")==native_rows
+ assert not posts
 
 @pytest.mark.e2e
 def test_controls40_graph_reset_changes_private_graph(controls40_page)->None:
