@@ -94,6 +94,9 @@ def test_controls40_stack_main_download_contains_real_C_history(controls40_page,
  page,context,base=controls40_page
  response=context.request.post(base+'/sequential/stack/operate',data={'operation':'apilar','payload':{'value':7}});assert response.status==200
  page.goto(base+'/sequential/stack',wait_until='networkidle')
+ page.locator('label[for="didactic-mode-switch"]').click()
+ page.wait_for_function("document.documentElement.getAttribute('data-didactic-mode') === 'full'")
+ page.get_by_role('tab',name='Estructura del TAD',exact=True).click()
  with page.expect_download() as downloaded:page.click('#stack-main-download')
  dest=tmp_path/'main.c';downloaded.value.save_as(dest);source=dest.read_text(encoding='utf-8-sig')
  assert downloaded.value.suggested_filename=='main.c'
