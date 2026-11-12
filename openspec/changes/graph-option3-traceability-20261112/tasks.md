@@ -1,0 +1,3 @@
+- [x] graph-option3-record: documentar requisitos/diseño/trazabilidad y límites; entregar copia para revisión.
+- [x] publication: persistir expediente aprobado en repositorio compartido sin índices/asignaciones locales.
+- [ ] current-release-verification: adjuntar comprobación de opción 3 sobre release final actualizado, sin atribuirle evidencia histórica.
