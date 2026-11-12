@@ -1,6 +1,7 @@
-/* Deterministic, topology-only graph drawing. Pure presentation: never mutates graph data.
- * Heuristic multistart stress + local crossing/clearance search, not a planarity test
- * or a guarantee of the global crossing minimum. No dependencies or animation loop.
+/* Incremental graph drawing with a stable mental map for each editing session.
+ * Pure presentation: never mutates graph data. Initial small graphs use multistart
+ * stress; later edits grow locally. Not a planarity test or global crossing minimum.
+ * No dependencies or animation loop.
  */
 (function (root) {
   'use strict';
@@ -86,32 +87,64 @@
     }
     return {points:p,cost:best};
   }
-  // Above the small classroom examples, avoid exhaustive multistart crossing
-  // searches. Coordinates remain deterministic and never change graph data.
-  function largeComponentLayout(n,links) {
-    const adj=Array.from({length:n},()=>[]);
-    links.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a);});
-    adj.forEach(a=>a.sort((x,y)=>x-y));
-    if(links.length===n-1 && adj.every(a=>a.length<=2)){
-      const order=[],seen=new Set();let at=adj.findIndex(a=>a.length===1);
-      while(at>=0){order.push(at);seen.add(at);at=adj[at].find(v=>!seen.has(v))??-1;}
-      const columns=Math.ceil(sqrt(n)),points=Array(n);
-      order.forEach((id,i)=>{const row=Math.floor(i/columns),col=i%columns;points[id]={x:(row%2?columns-1-col:col)*130,y:row*130};});
-      return {points,cost:0};
-    }
-    if(links.length===n-1){
-      const root=adj.reduce((best,a,i)=>a.length>adj[best].length?i:best,0);
-      const levels=[[root]],seen=new Set([root]);
-      for(let i=0;i<levels.length;i++){
-        const next=[];for(const v of levels[i])for(const u of adj[v])if(!seen.has(u)){seen.add(u);next.push(u);}
-        if(next.length)levels.push(next);
+  // A persistent mental map: additions start near neighbours, never on a
+  // size-triggered ring. Only presentation coordinates are retained.
+  let previous = new Map();
+  let previousPairs = new Set();
+  let previousKey = null;
+  function grow(ids, links, seedPositions) {
+    const p=ids.map(id=>seedPositions.has(id)?{...seedPositions.get(id)}:null);
+    const neighbours=ids.map(()=>[]);
+    links.forEach(([a,b])=>{neighbours[a].push(b);neighbours[b].push(a);});
+    function score(at,q) {
+      let value=0;
+      for(let j=0;j<p.length;j++)if(j!==at&&p[j]){
+        const d=distance(q,p[j]);
+        if(d<100)value+=pow(100-d,2)*10000;
+        else value+=1000/(d*d);
       }
-      const width=max(...levels.map(l=>l.length))*120,points=Array(n);
-      levels.forEach((level,y)=>level.forEach((v,x)=>{points[v]={x:(width-(level.length-1)*120)/2+x*120,y:y*140};}));
-      return {points,cost:0};
+      for(const j of neighbours[at])if(p[j])value+=pow(distance(q,p[j])-130,2);
+      for(const [a,b] of links){
+        if(a===at||b===at||!p[a]||!p[b])continue;
+        const d=segmentDistance(q,p[a],p[b]);if(d<48)value+=pow(48-d,2)*100;
+        for(const j of neighbours[at])if(j!==a&&j!==b&&p[j]&&crosses(q,p[j],p[a],p[b]))value+=50000;
+      }
+      return value;
     }
-    const radius=max(150,n*110/(2*PI));
-    return {points:Array.from({length:n},(_,i)=>({x:radius*cos(2*PI*i/n),y:radius*sin(2*PI*i/n)})),cost:0};
+    // Input vertex order is preserved for cold loading; existing vertices stay
+    // anchored when a new vertex is inserted. IDs are never rewritten.
+    for(let i=0;i<p.length;i++)if(!p[i]){
+      const connected=neighbours[i].map(j=>p[j]).filter(Boolean);
+      const occupied=p.filter(Boolean);
+      if(!occupied.length){p[i]={x:70,y:70};continue;}
+      const anchor=connected.length?{
+        x:connected.reduce((v,q)=>v+q.x,0)/connected.length,
+        y:connected.reduce((v,q)=>v+q.y,0)/connected.length
+      }:{x:occupied[occupied.length-1].x,y:occupied[occupied.length-1].y};
+      let best=null,bestCost=Infinity;
+      for(let ring=1;ring<=4;ring++)for(let k=0;k<16;k++){
+        const angle=k*PI/8,q={x:anchor.x+130*ring*cos(angle),y:anchor.y+130*ring*sin(angle)};
+        const cost=score(i,q)+ring*ring+(connected.length?0:distance(q,{x:70,y:70})*.1);
+        if(cost<bestCost){best=q;bestCost=cost;}
+      }
+      p[i]=best;
+    }
+    // A newly added link may improve its immediate neighbourhood, with a hard
+    // 24 px displacement cap per existing vertex. No component-wide repacking.
+    const allKnown=ids.every(id=>seedPositions.has(id));
+    if(allKnown){
+      const touched=new Set();
+      links.forEach(([a,b])=>{const key=[ids[a],ids[b]].sort(compare).join('\u0000');if(!previousPairs.has(key)){touched.add(a);touched.add(b);}});
+      for(const i of touched){
+        const original=p[i];let best=original,bestCost=score(i,original);
+        for(let k=0;k<16;k++){
+          const q={x:original.x+24*cos(k*PI/8),y:original.y+24*sin(k*PI/8)},cost=score(i,q);
+          if(cost<bestCost){best=q;bestCost=cost;}
+        }
+        p[i]=best;
+      }
+    }
+    return p;
   }
   function compute(ids,links) {
     const n=ids.length,adj=Array.from({length:n},()=>[]);
@@ -130,7 +163,7 @@
       const localLinks=links.filter(([a,b])=>local.has(a)&&local.has(b)).map(([a,b])=>[local.get(a),local.get(b)]);
       let best;
       if(group.length===1)best={points:[{x:0,y:0}],cost:0};
-      else if(group.length>15)best=largeComponentLayout(group.length,localLinks);
+      else if(group.length>15)best={points:grow(group.map(i=>ids[i]),localLinks,new Map()),cost:0};
       else for(let seed=0;seed<(localLinks.length>45?4:8);seed++){const trial=componentLayout(group.length,localLinks,seed);if(!best||trial.cost<best.cost)best=trial;}
       const p=best.points;const minX=min(...p.map(q=>q.x)),minY=min(...p.map(q=>q.y));
       const w=max(...p.map(q=>q.x))-minX+140,h=max(...p.map(q=>q.y))-minY+140;
@@ -140,19 +173,47 @@
     }
     return output;
   }
-  function adaptive(nodes,edges) {
-    const ids=[...new Set(nodes.map(n=>String(n.id)))].sort(compare),index=new Map(ids.map((id,i)=>[id,i]));
+  function adaptive(nodes,edges,options={}) {
+    const insertionIds=[...new Set(nodes.map(n=>String(n.id)))];
+    const ids=[...insertionIds].sort(compare),index=new Map(ids.map((id,i)=>[id,i]));
     const pairs=new Set();
     for(const e of edges){let a=index.get(String(e.source)),b=index.get(String(e.target));if(a===undefined||b===undefined||a===b)continue;if(a>b)[a,b]=[b,a];pairs.add(`${a},${b}`);}
     const links=[...pairs].sort().map(s=>s.split(',').map(Number));
     // Geometry is independent of weights, traversal flags and ordering. Reciprocal
     // arcs share the same underlying graph; the renderer separates their paths.
     const key=JSON.stringify([ids,links]);
-    let points=cache.get(key);
-    if(!points){points=compute(ids,links);if(cache.size>=64)cache.delete(cache.keys().next().value);cache.set(key,points);}
+    // Editing must not jump to an older arrangement of the same topology.
+    // Playback explicitly opts into stored snapshots; unchanged frames are stable.
+    let points=key===previousKey?ids.map(id=>previous.get(id)):
+      options.replay===true?cache.get(key):null;
+    if(!ids.length){
+      if(options.replay!==true)cache.clear();
+      previous.clear();previousPairs.clear();previousKey=key;
+      if(options.replay===true)cache.set(key,[]);
+      return new Map();
+    }
+    if(!points){
+      const shared=ids.some(id=>previous.has(id));
+      if(shared)points=grow(ids,links,previous);
+      else if(ids.length>15){
+        const order=new Map(insertionIds.map((id,i)=>[id,i]));
+        const orderedLinks=links.map(([a,b])=>[order.get(ids[a]),order.get(ids[b])]);
+        const placed=grow(insertionIds,orderedLinks,new Map());
+        points=ids.map(id=>placed[order.get(id)]);
+      }else points=compute(ids,links);
+      if(cache.size>=64)cache.delete(cache.keys().next().value);cache.set(key,points);
+    }
+    previousKey=key;
+    previous=new Map(ids.map((id,i)=>[id,{...points[i]}]));
+    previousPairs=new Set(links.map(([a,b])=>[ids[a],ids[b]].sort(compare).join('\u0000')));
     const labels=new Map(nodes.map(node=>[String(node.id),node.label]));
     return new Map(ids.map((id,i)=>[id,{...points[i],label:labels.get(id)}]));
   }
+  // A fresh C execution owns a fresh replay cache, but keeps the editing map.
+  adaptive.beginExecution = () => {
+    cache.clear();
+    if(previousKey!==null)cache.set(previousKey,[...previous.keys()].sort(compare).map(id=>({...previous.get(id)})));
+  };
   root.gAdaptiveGraphPositions=adaptive;
   if(typeof module!=='undefined'&&module.exports)module.exports={gAdaptiveGraphPositions:adaptive,gGraphLayoutMetrics:metrics};
 })(typeof window!=='undefined'?window:globalThis);

@@ -1,16 +1,16 @@
-/* Adaptacion docente del TAD para este libro.
-   Conserva sus identificadores y las estrategias de los seis algoritmos. */
+
+
 #include "tad_grafo.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <limits.h>
 
-/* Diagnósticos privados: no forman parte del contrato público del TAD. */
+/* GrafoEstado identifica el resultado interno de la operación; fijar_estado lo registra si recibe un puntero. */
 typedef enum {
-    GRAFO_OK, GRAFO_MEMORIA, GRAFO_NO_EXISTE,
-    GRAFO_PESO_NEGATIVO, GRAFO_CICLO_NEGATIVO,
-    GRAFO_DESCONECTADO, GRAFO_ARGUMENTO, GRAFO_RANGO
+    GRAFO_OK, GRAFO_MEMORIA, GRAFO_NO_EXISTE, /* Éxito; reserva fallida; vértice, grafo o camino ausente. */
+    GRAFO_PESO_NEGATIVO, GRAFO_CICLO_NEGATIVO, /* Dijkstra rechaza pesos negativos; Bellman-Ford detecta un ciclo negativo alcanzable. */
+    GRAFO_DESCONECTADO, GRAFO_ARGUMENTO, GRAFO_RANGO /* Árbol mínimo imposible por desconexión; entrada/reconstrucción inválida; tamaño o suma fuera de rango. */
 } GrafoEstado;
 
 static void fijar_estado(GrafoEstado *e, GrafoEstado valor) {

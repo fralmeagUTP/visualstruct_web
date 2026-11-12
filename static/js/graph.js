@@ -836,16 +836,17 @@ function gPlaceGraphWeightLabels(positions, edges, nodeRadius=26, routes=gGraphR
   return placed;
 }
 
-function renderGraphSvg(state, simulation, traceDebug) {
+function renderGraphSvg(state, simulation, traceDebug, geometryReplay = false) {
   const nodes = Array.isArray(state.nodes) ? state.nodes : [];
   const edges = Array.isArray(state.edges) ? state.edges : [];
 
   if (!nodes.length) {
+    gAdaptiveGraphPositions([], [], {replay: geometryReplay || Boolean(traceDebug)});
     return "<p class=\"viz-empty\">Grafo vacío. Crea vértices para iniciar.</p>";
   }
 
   const nodeRadius = 26;
-  const positions = gAdaptiveGraphPositions(nodes, edges);
+  const positions = gAdaptiveGraphPositions(nodes, edges, {replay: geometryReplay || Boolean(traceDebug)});
   const routes=gGraphRoutes(positions,edges,nodeRadius);
   const weightLabels=gPlaceGraphWeightLabels(positions,edges,nodeRadius,routes);
   const geometry=[...[...positions.values()].flatMap(p=>[{x:p.x-nodeRadius-20,y:p.y-nodeRadius-24},{x:p.x+nodeRadius+20,y:p.y+nodeRadius+20}]),...routes.filter(Boolean).flatMap(r=>r.control),...weightLabels.flatMap(p=>[{x:p.box.left,y:p.box.top},{x:p.box.right,y:p.box.bottom}])];
@@ -1059,7 +1060,7 @@ function renderGraphState(state, container, simulation, traceDebug, presentation
   let html = "";
   html += "<div class=\"viz-canvas\">";
   html += `<div class=\"viz-meta\"><strong>Grafo</strong> | Tipo: ${graphType} | Ponderado: ${weighted} | Vértices: ${metadata.vertices_count ?? 0} | Aristas: ${metadata.edges_count ?? 0}<span class="graph-image-pan-note" hidden> · Imagen ampliada: desplázala dentro del panel.</span></div>`;
-  html += `<div class=\"viz-stage\"><div class="viz-stage-center">${renderGraphSvg(state.asymmetric_pairs?.length ? {...state,directed:true,edges:state.c_arcs||state.edges} : state, simulation, traceDebug)}</div></div>`;
+  html += `<div class=\"viz-stage\"><div class="viz-stage-center">${renderGraphSvg(state.asymmetric_pairs?.length ? {...state,directed:true,edges:state.c_arcs||state.edges} : state, simulation, traceDebug, presentation.geometryReplay)}</div></div>`;
 
 
 
@@ -1601,7 +1602,7 @@ function initGraphPage(model) {
       renderState: (stateSnapshot, stepMeta) => {
         pageState.graphState = stateSnapshot;
         pageState.simulation = null;
-        renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null, {pending:true});
+        renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null, {pending:true,geometryReplay:true});
         if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
         updateGraphStepKind(stepMeta || null);
       },
@@ -1614,7 +1615,7 @@ function initGraphPage(model) {
         if((event?.trace?.bfs_instruction_model || event?.trace?.dfs_instruction_model) && pageState.bfsFinalMessage)showGraphMessage(cursor===event.trace.steps.length-1?pageState.bfsFinalMessage:`${event?.trace?.dfs_instruction_model ? "DFS" : "BFS"} preparado: resultado pendiente hasta completar la traza.`,true);
         if(event?.trace?.numeric_instruction_model && pageState.numericFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.numericFinalMessage.text:"Algoritmo preparado: resultado pendiente hasta completar la traza.",done?pageState.numericFinalMessage.success:true);}
         if((event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model) && pageState.vertexFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.vertexFinalMessage.text:"Operación preparada: resultado pendiente hasta completar la traza.",done?pageState.vertexFinalMessage.success:true);}
-        if(cursor<0 && (event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,null);}
+        if(cursor<0 && (event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,null,{geometryReplay:true});}
         if(cursor<0 && event?.trace?.numeric_instruction_model && event.trace.execution_started){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,{graph_memory:currentPedagogyFrame.memory_state,graph_progress:{mode:"path",nodes:[],edges:[]}});}
         if(cursor<0 && (event?.trace?.bfs_instruction_model || event?.trace?.dfs_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,{bfs_memory:currentPedagogyFrame.memory_state,graph_progress:{mode:"traversal",nodes:[],edges:[]}});}
         pageState.traceTotalSteps = event && event.trace && Array.isArray(event.trace.steps)
@@ -1925,6 +1926,8 @@ function initGraphPage(model) {
       const payload = target.payload || {};
       const data = await executeGraphOperation(controls, operationName, payload, options?.finalOnly ? "normal" : "step");
       if(data.preserve_session){showGraphMessage(data.message,false);return null;}
+      if(data.success || data.execution_started || data.execution_trace?.execution_started)
+        gAdaptiveGraphPositions.beginExecution(); // New execution, same geometric anchors.
       if(Array.isArray(data.history))model.history=data.history;
       pageState.traceUnavailableReason=data.trace_unavailable_reason || "";
       pageState.consoleRawStdout=typeof data.console_stdout==="string"?data.console_stdout:null;

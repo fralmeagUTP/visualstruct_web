@@ -6,13 +6,15 @@ import pytest
 
 # 52dcec05 explicitly advanced these seven scripts to 20261111graph2.
 # Graph subsequently advanced through scope1 (4521915) to mst1 (8186a4f).
+# The authorized organic-growth release advances graph and graph_layout together.
 # Do not derive expectations from templates: stale URLs must fail this check.
 EXPECTED_SCRIPT_VERSIONS = {
     'interpreter_runtime.js': '20261111graph2',
     'counting_runtime.js': '20261111graph2',
     'sequential.js': '20261111graph2',
     'hierarchical.js': '20261111graph2',
-    'graph.js': '20261112mst1',
+    'graph.js': '20261112organic1',
+    'graph_layout.js': '20261112organic1',
     'hash.js': '20261111graph2',
     'sorting.js': '20261111graph2',
 }
