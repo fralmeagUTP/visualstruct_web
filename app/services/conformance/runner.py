@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
+import sys
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -247,11 +248,27 @@ class ConformanceRunner:
         if not self.compiler:
             raise ConformanceRunnerError("gcc no está disponible")
         spec = SPECS[structure_id]
+        sources = [self.c_tads_dir / source for source in spec.tad_sources]
+        if structure_id == "graph":
+            # This QA runner already requires tests/conformance/c_harnesses.
+            # The adjacent observer is a QA resource, not a public API adapter.
+            observed = destination.parent / "observed_graph.c"
+            for preparation in (
+                [self.compiler, "-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror",
+                 "-I", str(self.c_tads_dir), "-c", str(self.c_tads_dir / "tad_grafo.c"),
+                 "-o", str(destination.parent / "original_graph.o")],
+                [sys.executable, str(self.root / "tests" / "_graph_private_diagnostic_observer.py"),
+                 str(self.c_tads_dir / "tad_grafo.c"), str(observed)],
+            ):
+                prepared = subprocess.run(preparation, capture_output=True, text=True, check=False)
+                if prepared.returncode:
+                    raise ConformanceRunnerError(f"falló preparación QA de graph: {prepared.stderr.strip()}")
+            sources = [observed if source.name == "tad_grafo.c" else source for source in sources]
         command = [
             self.compiler, "-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror",
             "-I", str(self.c_tads_dir), "-I", str(self.harness_dir),
             str(self.harness_dir / spec.c_source),
-            *(str(self.c_tads_dir / source) for source in spec.tad_sources),
+            *(str(source) for source in sources),
             "-o", str(destination),
         ]
         completed = subprocess.run(command, capture_output=True, text=True, check=False)

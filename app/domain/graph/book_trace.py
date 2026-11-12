@@ -101,15 +101,15 @@ def progress(memory,operation):
 
 
 def _text(event,memory):
-    phase=event['phase'];name=event.get('name','');value=event.get('value');external=memory.get('external',{});status=external.get('estado',{}).get('value')
+    phase=event['phase'];name=event.get('name','');value=event.get('value');external=memory.get('external',{});status=memory.get('diagnostic_status')
     if event.get('caller_C_executed'):
         return ('El printf del caller agrega exactamente el texto registrado a stdout. ' if phase == 'stdout' else 'El caller ejecuta su instrucción C. ') + event.get('caller_line_text', '')
     if not event.get('C_executed'):
         if phase=='caller_prepare':return 'El caller prepara los argumentos y las salidas. No se ejecuta una sentencia del TAD en este paso.'
         if phase=='caller_receipt':
-            state=STATUS_NAMES[status] if type(status)is int and 0<=status<len(STATUS_NAMES) else 'sin salida GrafoEstado'
+            state=STATUS_NAMES[status] if type(status)is int and 0<=status<len(STATUS_NAMES) else 'sin diagnóstico adicional'
             result=event.get('returned');function=event.get('called_function')
-            if result==NULL:tail='NULL: no hay lista devuelta que poseer o liberar. NULL no identifica por si solo un error; se consulta el estado.'
+            if result==NULL:tail='NULL: no hay lista devuelta que poseer o liberar. NULL no identifica por si solo un error; el visualizador consulta el diagnóstico interno.'
             elif function in BORROWED_RESULTS:tail='Recibe una lista prestada del grafo, no una copia ni una lista propia que deba liberar.'
             elif function in OWNED_RESULTS:tail='Recibe una lista propia. Su liberación requiere una llamada explícita del caller; este paso no la libera.'
             elif function=='grafo_costo_arco':tail=f'Retorno de éxito 0/1: {result}; salida entera: {external.get("salida",{}).get("value",UNINIT)}. No confundir el indicador con el costo.'

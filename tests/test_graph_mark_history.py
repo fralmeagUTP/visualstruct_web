@@ -25,13 +25,13 @@ def marks(state):return {int(n['id']):n['marked'] for n in state['nodes']}
 
 def c_statement(op,p):
  if op=='create_graph':return 'g=grafo_crear();'
- if op=='insert_vertex':return f'g=grafo_insertar_vertice(g,{p["vertex"]},&status);'
- if op=='insert_edge':return f'g=grafo_insertar_arco(g,{p["origin"]},{p["target"]},{p["weight"]},&status);'
+ if op=='insert_vertex':return f'g=grafo_insertar_vertice(g,{p["vertex"]});'
+ if op=='insert_edge':return f'g=grafo_insertar_arco(g,{p["origin"]},{p["target"]},{p["weight"]});'
  if op=='remove_edge':return f'g=grafo_eliminar_arco(g,{p["origin"]},{p["target"]});'
  if op=='remove_vertex':return f'g=grafo_eliminar_vertice(g,{p["vertex"]});'
  if op=='clear_graph':return 'release_graph(g);g=grafo_crear();'
  if op in ['run_dfs','run_bfs']:
-  return f'{{ListaVertice r=grafo_{op[4:]}(g,{p["start"]},&status);grafo_liberar_vertices(&r);}}'
+  return f'{{ListaVertice r=grafo_{op[4:]}(g,{p["start"]});grafo_liberar_vertices(&r);}}'
  raise AssertionError(op)
 
 @pytest.fixture(scope='module')
@@ -43,7 +43,7 @@ def native_mark_sequences(tmp_path_factory):
    response=client.get('/help/source/'+tad+'/'+part);assert response.status_code==200;(out/(stem+'.'+ext)).write_bytes(response.data)
  source='#include "tad_grafo.h"\n#include <stdio.h>\n#include <stdlib.h>\nstatic void release_graph(Grafo g){while(g.a){ListaArco n=g.a;g.a=n->sig;free(n);}while(g.v){ListaVertice n=g.v;g.v=n->sig;free(n);}}\nstatic void emit(Grafo g,int c,int s,const char*phase){printf("\\nMARKS %d %d %s [",c,s,phase);int first=1;for(ListaVertice v=g.v;v;v=v->sig){printf("%s[%d,%d]",first?"":",",v->dato,v->marcado);first=0;}puts("]");}\nint main(void){\n'
  for case,(_,tail) in enumerate(CASES):
-  source+='{Grafo g=grafo_crear();GrafoEstado status;'+''.join(c_statement(op,p) for op,p in BASE)
+  source+='{Grafo g=grafo_crear();'+''.join(c_statement(op,p) for op,p in BASE)
   for step,(op,p) in enumerate(tail):source+=f'emit(g,{case},{step},"before");'+c_statement(op,p)+f'emit(g,{case},{step},"after");'
   source+='release_graph(g);}\n'
  source+='return 0;}';(out/'main.c').write_text(source)

@@ -1,0 +1,2 @@
+- [x] graph-guidance: corregir mensajes y verificar cuatro regresiones acotadas sobre el candidato final congelado.
+- [ ] Verificar resultados globales de CI tras publicación; no integrar mientras fallen checks.

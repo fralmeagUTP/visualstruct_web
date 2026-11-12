@@ -62,6 +62,11 @@
     let zoom = 1, panX = 0, panY = 0, queued = false, stageRepainted = false;
     const memories = new Map();
     const memoryPanels = new Map();
+    // Text results belong to the same visual panel, but never to its zoom/pan viewport.
+    let inlineResults = null;
+    // Consume only the removal records caused by our own direct-child transfers.
+    // Checking current parentage is insufficient when several redraws are batched.
+    const transferredResults = new WeakMap();
     root.classList.add("classroom-workspace");
     visual?.classList.add("classroom-visual"); stage?.classList.add("classroom-stage");
     if (code) { code.classList.add("classroom-source"); code.parentElement.classList.add("classroom-code"); addCodeActions(code.parentElement,code,"Código C",options.getCodeText); }
@@ -69,6 +74,24 @@
     const indicator = document.createElement("output"); indicator.setAttribute("aria-live", "polite");
     function refresh() {
       queued = false;
+      if (stage && visual && stage !== visual) {
+        const fresh = Array.from(stage.querySelectorAll('.viz-out, .hier-traversal-summary, .hier-current-result'));
+        if (fresh.length || inlineResults) {
+          if (!inlineResults) {
+            inlineResults = document.createElement('section');
+            inlineResults.className = 'classroom-inline-results';
+            inlineResults.setAttribute('aria-label', 'Resultados de la operación actual');
+            stage.after(inlineResults);
+          }
+          if (stageRepainted || fresh.length) {
+            fresh.forEach(node => {
+              if (node.parentElement === stage) transferredResults.set(node, (transferredResults.get(node) || 0) + 1);
+            });
+            inlineResults.replaceChildren(...fresh);
+          }
+          inlineResults.hidden = !inlineResults.children.length;
+        }
+      }
       if (stage) {
         Array.from(stage.children).forEach(child => {
           if (!child.matches("svg") && !child.querySelector("svg") && !child.classList.contains("classroom-memory")) child.style.zoom = String(zoom);
@@ -152,14 +175,27 @@
           });
           tabs.append(tab); shell.append(entry.panel); entry.panel.classList.add("classroom-result-panel");
           if(entry.panel.tagName==="DETAILS") entry.panel.open=true;
-          const c=resolve(entry.code,entry.panel); if(c) addCodeActions(entry.panel,c,entry.label,entry.getText,entry.copyLabel || (/consola/i.test(entry.label) ? "Copiar salida" : "Copiar C"));
+          const c=resolve(entry.code,entry.panel);
+          if (/consola/i.test(entry.label)) entry.panel.classList.add('classroom-output-panel');
+          if(c) addCodeActions(entry.panel,c,entry.label,entry.getText,entry.copyLabel || (/consola/i.test(entry.label) ? "Copiar salida" : "Copiar C"));
         });
         function select(index){entries.forEach((entry,i)=>{entry.panel.hidden=i!==index;entry.tab.setAttribute("aria-selected",String(i===index));entry.tab.tabIndex=i===index?0:-1;});}
         select(0);
       }
     }
     const observer=new MutationObserver(records=>{
-      if((records || []).some(record=>record.target===stage && (record.addedNodes.length || Array.from(record.removedNodes).some(node=>!Array.from(memoryPanels.values()).some(panel=>panel.node===node))))) stageRepainted=true;
+      (records || []).forEach(record => {
+        if (record.target !== stage) return;
+        let externalRemoval = false;
+        Array.from(record.removedNodes).forEach(node => {
+          const transfers = transferredResults.get(node) || 0;
+          if (transfers) {
+            if (transfers === 1) transferredResults.delete(node);
+            else transferredResults.set(node, transfers - 1);
+          } else if (!Array.from(memoryPanels.values()).some(panel => panel.node === node)) externalRemoval = true;
+        });
+        if (record.addedNodes.length || externalRemoval) stageRepainted = true;
+      });
       if(!queued){queued=true;queueMicrotask(refresh);}
     });
     if(stage) observer.observe(stage,{childList:true,subtree:true});

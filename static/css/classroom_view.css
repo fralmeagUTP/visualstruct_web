@@ -148,6 +148,55 @@ html[data-didactic-mode="visual"] .didactic-technical,
 html[data-didactic-mode="visual"] :is(#seq-code-region,#hier-code-region,#sorting-code-region,#graph-code-region,#hash-code-region),
 html[data-didactic-mode="visual"] :is(.sequential-mobile-tabs,.hier-mobile-tabs,.sorting-mobile-tabs,.hash-mobile-tabs,.graph-mobile-tabs) { display:none !important; }
 html[data-didactic-mode="visual"] .classroom-workspace { grid-template-columns:minmax(0,1fr) !important; }
+
+/* Results use document flow in every family. Only the drawing and source code
+   retain independent viewports; long output must never disappear behind a bar. */
+.classroom-workspace,
+.graph-primary-workspace.classroom-workspace {
+  height: auto !important;
+  align-items: start !important;
+}
+.classroom-visual { overflow: visible; }
+.classroom-visual > .classroom-stage,
+#graph-visual-state.classroom-stage {
+  height: clamp(300px, 60vh, 620px);
+  min-height: 300px !important;
+  flex: 0 0 auto !important;
+}
+.classroom-workspace > .classroom-code {
+  height: max(620px, calc(100vh - 210px));
+  max-height: none;
+}
+.classroom-inline-results {
+  flex: 0 0 auto;
+  width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box;
+  height: auto; max-height: none; overflow: visible;
+  white-space: normal; overflow-wrap: anywhere; word-break: normal;
+  margin: .35rem 0; padding: .5rem .2rem;
+}
+.classroom-inline-results :is(p, details, .viz-traversals, .viz-out) {
+  height: auto; max-height: none; overflow: visible;
+  max-width: 100%; white-space: normal; overflow-wrap: anywhere;
+}
+.classroom-inline-results[hidden] { display: none; }
+/* Moving results out of the panned viewport must not reveal a prediction. */
+.classroom-visual:has(> .graph-practice-hidden) > .classroom-inline-results,
+.classroom-visual:has(> .hier-practice-hidden) > .classroom-inline-results,
+.classroom-visual:has(> .seq-practice-hidden) > .classroom-inline-results {
+  display: none !important;
+}
+.classroom-output-panel {
+  height: auto; max-height: none; overflow: visible;
+}
+/* Every registered stdout <pre> wraps, including unclassed console nodes.
+   The output-panel marker excludes C source/history readers. */
+.classroom-output-panel pre,
+.classroom-output-panel .console-screen,
+.classroom-output-panel .console-line {
+  height: auto !important; min-height: 0 !important; max-height: none !important;
+  overflow: visible !important; white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important; word-break: normal !important;
+}
 html[data-didactic-mode="visual"] .classroom-visual { display:flex !important; }
 /* Explicit grid position prevents Pila controls from being auto-placed after results. */
 .is-stack-pilot { grid-template-areas:"header" "prepare" "execute" "prediction" "workspace" "understand" "reflect" !important; }

@@ -1,0 +1,1 @@
+Formalizar la decisión actual sobre predicción y sustituir la expectativa histórica de ocultar todo el gráfico por verificaciones causales del estado previo, ocultación de ayudas y avance posterior a una decisión. No cambiar resultados para conseguir verde.

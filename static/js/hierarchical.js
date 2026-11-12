@@ -1798,15 +1798,15 @@ function formatHierResult(lastExecution) {
 
   const result = lastExecution.result;
   if (Array.isArray(result)) {
-    return `<p><strong>Resultado:</strong> ${hEscape(result.join(" -> "))}</p>`;
+    return `<p class="hier-current-result"><strong>Resultado:</strong> ${hEscape(result.join(" -> "))}</p>`;
   }
   if (typeof result === "boolean") {
-    return `<p><strong>Resultado:</strong> ${result ? "Verdadero" : "Falso"}</p>`;
+    return `<p class="hier-current-result"><strong>Resultado:</strong> ${result ? "Verdadero" : "Falso"}</p>`;
   }
   if (result === null) {
     return "";
   }
-  return `<p><strong>Resultado:</strong> ${hEscape(JSON.stringify(result))}</p>`;
+  return `<p class="hier-current-result"><strong>Resultado:</strong> ${hEscape(JSON.stringify(result))}</p>`;
 }
 
 function layoutHierMemoryGraph(state) {

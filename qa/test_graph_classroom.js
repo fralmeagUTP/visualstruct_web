@@ -21,7 +21,7 @@ let active=0;
 for(const c of fixtures)for(const step of c.steps){const f=step.pedagogy;if(!f)continue;const tokens=new Set(String(f.source?.line_text||f.instruction_event?.statement||'').match(/[A-Za-z_]\w*/g)||[]);const scoped=[...new Map((f.variables||[]).map(v=>[v.name,v])).values()];const vars=scoped.filter(v=>tokens.has(v.name));const ids=new Set((f.memory_state?.heap_nodes||[]).map(n=>n.id));const relevant=vars.filter(v=>ids.has(v.value));if(!relevant.length)continue;const html=ctx.gGraphMemoryMarkup(f),first=html.match(/data-graph-live-node="([^"]+)"/)[1];assert.ok(relevant.some(v=>v.value===first)||vars.some(v=>v.value&&typeof v.value==='object'&&Object.values(v.value).includes(first)));for(const v of vars.slice(0,6))assert.ok(html.includes(`<code>${v.name}</code>`));active++;}
 console.log(`PASS ${active} real active-line pointer frames prioritize relevant reservations and variables without inventing scope`);
 const src=fs.readFileSync('static/js/graph.js','utf8');const invalidate=src.slice(src.indexOf('  function invalidateTrace(message) {'),src.indexOf('  function buildSelectionKey'));
-const clearCtx=vm.createContext({model:{console_stdout:'persisted output'},currentPedagogyFrame:{old:true},visualState:{querySelector(){return null;}},pageState:{},gById:id=>panels[id],tracePlayer:{clear(){}},stepNavigation:{},simStep:{},updateGraphStepKind(){},refreshGraphPrintfConsole(){},setSimulationButtonsState(){}});vm.runInContext(invalidate+'\ninvalidateTrace("reset");',clearCtx);assert.equal(clearCtx.currentPedagogyFrame,null);assert.match(panels['graph-live-memory'].textContent,/Prepara una traza/);assert.equal(clearCtx.pageState.traceCursor,-1);assert.equal(clearCtx.pageState.consolePrefix,'persisted output');
+const clearCtx=vm.createContext({gGraphResultPanel:ctx.gGraphResultPanel,model:{console_stdout:'persisted output'},currentPedagogyFrame:{old:true},visualState:{querySelector(){return null;}},pageState:{},gById:id=>panels[id],tracePlayer:{clear(){}},stepNavigation:{},simStep:{},updateGraphStepKind(){},refreshGraphPrintfConsole(){},setSimulationButtonsState(){}});vm.runInContext(invalidate+'\ninvalidateTrace("reset");',clearCtx);assert.equal(clearCtx.currentPedagogyFrame,null);assert.match(panels['graph-live-memory'].textContent,/Prepara una traza/);assert.equal(clearCtx.pageState.traceCursor,-1);assert.equal(clearCtx.pageState.consolePrefix,'persisted output');
 console.log('PASS invalidation clears stale live memory and source frame after reset/input changes');
 const oldState={last_operation:{name:'remove_edge'},last_result:{result:true}};
 const oldCopy=JSON.stringify(oldState);assert.doesNotMatch(ctx.gGraphPresentedResult(oldState,{operation:'run_bfs',pending:true}),/true/);assert.match(ctx.gGraphPresentedResult(oldState,{operation:'run_bfs'}),/pendiente/);
@@ -39,3 +39,19 @@ console.log(`PASS ${duplicates} real recursive frames: compact homonyms use late
 assert.doesNotMatch(ctx.gGraphPresentedResult(oldState,{idle:true}),/pendiente|true/);
 assert.match(ctx.gGraphPresentedResult(oldState,{idle:true}),/Sin ejecución actual/);
 console.log('PASS reset/selection invalidation is idle, not a fictitious running operation');
+// The same result formatter publishes outside the zoom/pan viewport, without truncating any algorithm output.
+const standaloneResult={innerHTML:'',textContent:''};
+const surface={innerHTML:'',querySelector(){return null;},parentElement:{querySelector:s=>s==='#graph-current-result'?standaloneResult:null}};
+const originalSvg=ctx.renderGraphSvg,originalViewport=ctx.gMaintainGraphImageViewport;
+ctx.renderGraphSvg=()=>'<svg></svg>';ctx.gMaintainGraphImageViewport=()=>{};
+for(const c of fixtures){
+ const state=c.steps.at(-1).state_after;if(!state)continue;
+ ctx.renderGraphState(state,surface,null,null,{operation:c.operation});
+ assert.equal(standaloneResult.innerHTML,ctx.gGraphPresentedResult(state,{operation:c.operation}));
+ assert.doesNotMatch(surface.innerHTML,/graph-current-result/);
+ assert.equal(ctx.gGraphResultPanel(surface),standaloneResult);
+}
+ctx.renderGraphState({suspended:true},surface);
+assert.equal(standaloneResult.textContent,'');
+ctx.renderGraphSvg=originalSvg;ctx.gMaintainGraphImageViewport=originalViewport;
+console.log('PASS graph result is separate from panning, exact for all six algorithms, and cleared on suspended history');

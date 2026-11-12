@@ -282,6 +282,7 @@ class GraphMachine:
         self.program = program; self.record_events=record_events; self.callback = callback; self.fail_allocation = fail_allocation
         self.frames = []; self.heap = {}; self.retired = []; self.events = []
         self.serial = 0; self.frame_serial = 0; self.allocations = 0; self.attempts = 0; self.frees = 0
+        self.diagnostic_status = None
         self.stdout = ''; self.returned = UNINIT; self.root_function = None; self.evaluations = {}
         vhead = NULL; ahead = NULL
         for i, vertex in enumerate(vertices):
@@ -313,7 +314,7 @@ class GraphMachine:
             frames.append(dict(id=f['id'], function=f['function'], parameters={n:self.encoded(c['value']) for n,c in f['parameter_cells'].items()},parameter_types={n:c['type'] for n,c in f['parameter_cells'].items()},status=f.get('status','active'),
                 scopes=[dict(id=s['id'], variables={n:dict(type=v['type'],value=self.encoded(v['value']))
                      for n,v in s['variables'].items()}) for s in f['scopes']]))
-        return dict(external=self.encoded(getattr(self,'external',{})), frames=frames, heap_nodes=self._snapshot_heap(),
+        return dict(external=self.encoded(getattr(self,'external',{})), diagnostic_status=self.diagnostic_status, frames=frames, heap_nodes=self._snapshot_heap(),
                     retired_objects=self.encoded(self.retired), graph=deepcopy(self.graph),
                     allocations=self.allocations, allocation_attempts=self.attempts, frees=self.frees,
                     console_stdout=self.stdout, returned=self.encoded(self.returned))
@@ -330,6 +331,10 @@ class GraphMachine:
         old = self.snapshot() if self.callback else None
         if change:
             change()
+        # Normal mode still executes and counts every instruction. Avoid
+        # encoding an event that has no consumer; trace/observers are unchanged.
+        if not (self.record_events or self.callback or self.event_observer):
+            return
         fn = name if phase=='function_exit' else self.frames[-1]['function'] if self.frames else self.root_function
         event = dict(function=fn, pos=tok.pos, line_index=tok.line, phase=phase,
                      name=name, value=self.encoded(value), C_executed=True, source_role='canonical')
@@ -626,7 +631,16 @@ class GraphMachine:
                 if kind=='for':self.pop_scope(node)
         elif kind=='return':
             value=self.eval(d['value']) if d['value'] else None
-            self.emit(node,'return','',value,lambda:self.frames[-1].__setitem__('status','returning'))
+            def returning():
+                # Observe the actual private C cell before its scope expires.
+                # It is never a caller argument or a public output parameter.
+                if len(self.frames) == 1 and not self.program.caller_output:
+                    for scope in self.frames[-1]['scopes']:
+                        cell = scope['variables'].get('diagnostico')
+                        if cell is not None:
+                            self.diagnostic_status = self.read(Reference(cell, 'value', cell['type'], 'private:diagnostico', scope))
+                self.frames[-1]['status'] = 'returning'
+            self.emit(node,'return','',value,returning)
             raise Control('return',value)
         elif kind=='break':
             self.emit(node,'break');raise Control('break')
@@ -751,7 +765,7 @@ class BookSession:
         else:raise ValueError('Extra caller argument')
         start=len(m.events);start_t=len(self.transitions);start_count=m.event_count
         def prepare():
-            m.external=external;m.root_function=function;m.returned=UNINIT
+            m.external=external;m.root_function=function;m.returned=UNINIT;m.diagnostic_status=None
         m.host_event('caller_prepare',prepare,called_function=function,arguments=m.encoded(args))
         returned=m.invoke(function,args)
         def publish():
@@ -759,7 +773,7 @@ class BookSession:
             if 'grafo' in external:m.graph=external['grafo']['value']
             external['result']={'type':fn['type'],'value':deepcopy(returned)}
         m.host_event('caller_receipt',publish,called_function=function,returned=m.encoded(returned),return_type=fn['type'])
-        status=external.get('estado',{}).get('value')
+        status=m.diagnostic_status if state_pointer else None
         ownership='owned' if function in OWNED_RESULTS else 'borrowed' if function in BORROWED_RESULTS else 'none'
         items=None
         if fn['type'] in {'ListaVertice','ListaArco'}:items=self._list(returned,'struct NodoV' if fn['type']=='ListaVertice' else 'struct NodoA')

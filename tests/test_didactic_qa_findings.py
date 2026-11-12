@@ -289,7 +289,7 @@ def test_graph_002_rejects_fractional_weight_without_mutation() -> None:
     assert state["edges"] == []
     header = (ROOT / "docs/tads_C/tad_grafo.h").read_text(encoding="utf-8")
     assert "int origen, destino, costo;" in header
-    assert "GrafoEstado *estado" in header and "int *salida" in header
+    assert "GrafoEstado" not in header and "int *salida" in header
     finding = json.loads((ROOT / "docs/qa/findings/GRAPH-002.json").read_text(encoding="utf-8"))
     assert finding["severity"] == "high"
 
@@ -364,7 +364,7 @@ def test_graph_006_reports_disconnection_without_publishing_partial_mst() -> Non
     asymmetric = adapter.execute("run_prim", {"start": 1})
     assert asymmetric['success'] is False and asymmetric['c_status'] == 6
     source = (ROOT / "docs/tads_C/tad_grafo.c").read_text(encoding="utf-8")
-    assert "ListaArco grafo_prim(Grafo g, int inicio, GrafoEstado *estado)" in source
+    assert "ListaArco grafo_prim(Grafo g, int inicio)" in source
     finding = json.loads((ROOT / "docs/qa/findings/GRAPH-006.json").read_text(encoding="utf-8"))
     assert finding["severity"] == "high"
 

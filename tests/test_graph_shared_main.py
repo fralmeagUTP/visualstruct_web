@@ -54,7 +54,7 @@ def test_seeded_random_graph_and_multiple_resets_export_exact_topology_without_a
  adapter,valid=GraphStructureService._rebuild_adapter('graph',history)
  main=build_graph_main(valid)
  assert 'generate_random_graph(' not in main and 'Operación();' not in main
- for a,b,w in adapter.graph._g._arcos:assert f'grafo_insertar_arco(g, {a}, {b}, {w}, &estado_' in main
+ for a,b,w in adapter.graph._g._arcos:assert f'grafo_insertar_arco(g, {a}, {b}, {w});' in main
  assert main.count('g = grafo_crear();')==3
  assert main.count('grafo_destruir(&g);')==3
 

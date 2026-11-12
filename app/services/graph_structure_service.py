@@ -7,7 +7,7 @@ from typing import Any
 
 from app.adapters.base_adapter import BaseAdapter
 from app.adapters.graph_adapter import GraphAdapter
-from app.domain.graph.educational_capacity import MAX_VERTICES, GraphCapacityError
+from app.domain.graph.educational_capacity import MAX_VERTICES, MAX_COMPARISON_EDGES, GraphCapacityError
 from app.services.observability import observe_replay
 from app.domain.graph import PesoNegativoError, TADError, VerticeNoEncontradoError
 from app.services.c_code_service import CCodeService
@@ -256,8 +256,8 @@ class GraphStructureService:
                 or any(not isinstance(node, dict) for node in nodes)
                 or any(not isinstance(edge, dict) for edge in edges)):
             raise ValueError("Los vértices y las aristas deben ser listas de objetos JSON.")
-        if not nodes or len(nodes) > MAX_VERTICES or len(edges) > 300:
-            raise ValueError(f"La comparación requiere entre 1 y {MAX_VERTICES} vértices y máximo 300 aristas.")
+        if not nodes or len(nodes) > MAX_VERTICES or len(edges) > MAX_COMPARISON_EDGES:
+            raise ValueError(f"La comparación requiere entre 1 y {MAX_VERTICES} vértices y máximo {MAX_COMPARISON_EDGES} aristas.")
         immutable = deepcopy({"directed": bool(graph_state.get("directed", False)), "nodes": nodes, "edges": edges})
 
         def execute_copy(operation: str) -> dict[str, Any]:

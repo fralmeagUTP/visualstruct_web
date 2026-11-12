@@ -248,3 +248,6 @@
 #graph-visual-state .viz-stage.graph-local-pan { overflow: auto; overscroll-behavior: contain; }
 #graph-visual-state .graph-local-pan .viz-stage-center { overflow: visible; display: block; width: max-content; min-width: 100%; height: auto; min-height: 100%; }
 .graph-image-pan-note { font-weight: 600; }
+
+/* Preserve canonical trace indices while showing only the selected algorithm. */
+.graph-learning-shell #op-pseudocode .code-line.graph-code-excluded { display: none !important; }

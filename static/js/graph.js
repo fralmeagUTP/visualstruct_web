@@ -20,7 +20,7 @@ function gBookStatusMarkup(record) {
   if (!record || record.source_contract !== 'graph-book/v1') return '';
   const states=['Correcto','No se pudo reservar memoria','No existe el elemento o la ruta','Peso negativo no permitido','Ciclo negativo alcanzable','Grafo desconectado','Argumento o simetría no válidos','Resultado fuera de rango'];
   const status=record.c_status;
-  const text=Number.isInteger(status) ? `${record.c_status_name} (${status}): ${states[status] || 'estado registrado'}` : 'Esta función no entrega GrafoEstado.';
+  const text=Number.isInteger(status) ? `${record.c_status_name} (${status}): ${states[status] || 'estado registrado'}` : 'Esta función no requiere un diagnóstico adicional.';
   const returned=record.c_return;
   const value=typeof returned==='object' ? gTeachingValue(returned) : String(returned ?? 'void');
   const ownership=record.ownership==='borrowed'?' Lista prestada del grafo: no se libera como resultado propio.':record.ownership==='owned'?(returned==='NULL'?' No hay nodos devueltos que liberar.':' Lista propia: el caller conserva el contenido y libera los nodos después de recibirlos.'):'';
@@ -30,6 +30,18 @@ function gBookFunctionLine(source, symbol) {
   if (!/^[A-Za-z_]\w*$/.test(symbol || '')) return -1;
   const pattern=new RegExp('^\\s*(?:static\\s+)?(?:void|int|long\\s+long|size_t|Grafo|ListaVertice|ListaArco)\\s*\\**\\s*'+symbol+'\\s*\\(');
   return String(source).replaceAll('\r\n','\n').split('\n').findIndex(line=>pattern.test(line));
+}
+// Keep every canonical row in place: the player indexes by source line.
+function gApplyGraphCodeScope(model, operationName) {
+  const code=gById('op-pseudocode');
+  if(!code)return;
+  const scope=model.didactic?.operation_code_scopes?.[operationName];
+  code.dataset.operation=operationName || '';
+  code.querySelectorAll('.code-line').forEach(row=>{
+    const line=Number(row.dataset.line);
+    const excluded=Boolean(scope && !scope.ranges.some(([start,end])=>line>=start && line<=end));
+    row.classList.toggle('graph-code-excluded',excluded);
+  });
 }
 function gFocusBookFunction(model, operationName) {
   const code=gById('op-pseudocode'), symbol=model.didactic?.operation_functions?.[operationName];
@@ -114,6 +126,17 @@ function gTeachingValue(value) {
   if (typeof value === "object") return Object.entries(value).map(([key,item]) => `${key}: ${gTeachingValue(item)}`).join(" · ");
   return String(value);
 }
+// A TAD receipt survives the void stdout helper; the machine's last return does not.
+// Use the safe display snapshot, never a future result or a retired raw pointer.
+function gGraphReturnMarkup(frame) {
+  const st=frame.memory_display || frame.memory_state || {};
+  const cell=st.external?.result;
+  const received=cell && Object.prototype.hasOwnProperty.call(cell,'value');
+  const typed=(value,type)=>value===null && type==='void' ? 'void (sin valor)' : gTeachingValue(value);
+  const result=received ? typed(cell.value,cell.type) : 'Pendiente de recepción del TAD.';
+  const last=st.returned===null ? 'void (sin valor)' : st.returned==='sin inicializar' || st.returned===undefined ? 'Todavía no hay un retorno completado.' : gTeachingValue(st.returned);
+  return `<p data-graph-return><strong>Resultado recibido del TAD (celda actual):</strong> <span data-graph-tad-return>${gEscape(result)}</span><br><strong>Último retorno de función:</strong> <span data-graph-last-return>${gEscape(last)}</span></p>`;
+}
 function gGraphNodeFields(node) {
   if (node.fields !== undefined) return node.fields;
   if (node.items !== undefined) return node.items;
@@ -173,12 +196,12 @@ function renderGraphPedagogy(frame,level){
     const st=frame.memory_display || frame.memory_state;
     if(representation)representation.innerHTML+=`<div data-graph-instruction-memory><h4>Memoria C por instrucción</h4><p data-graph-heads>${frame.instruction_event?.origin === "caller" ? "Cabezas del caller C (retira incidentes tras el retorno):" : "Cabezas C (arcos conservados por esta función):"} ${gEscape(JSON.stringify(st.graph))}</p>${(st.heap_nodes||[]).map(n=>`<div data-graph-memory-node="${gEscape(n.id)}" data-graph-memory-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(n.kind)} · ${n.borrowed?"prestado":"propio"}: <code>${gEscape(JSON.stringify(n.fields||n.items))}</code></div>`).join("")}<p data-graph-retired>Retiradas (sólo registro histórico): ${gEscape(JSON.stringify(st.retired_objects||[]))}</p></div>`;
     if(aux)aux.innerHTML+=`<div data-graph-variables>${(frame.variables||[]).map(v=>`<div data-graph-variable="${gEscape(v.name)}" data-graph-scope="${gEscape(v.scope)}">${gEscape(v.type)} ${gEscape(v.name)} (${gEscape(v.scope)}): ${gEscape(JSON.stringify(v.previous))} → ${gEscape(JSON.stringify(v.value))}</div>`).join("")}</div><div data-graph-frames>${(frame.call_stack||[]).map(f=>`<div data-graph-frame="${gEscape(f.frame_id)}">${gEscape(f.function)}: ${gEscape(f.scope_status)}</div>`).join("")}</div>`;
-    if(traversal)traversal.innerHTML+=`<p data-graph-return>${frame.instruction_event?.origin === "caller" ? "Retorno C registrado (identidades retiradas no utilizables):" : "Retorno al caller:"} ${gEscape(JSON.stringify(st.returned))}</p>`;
+    if(traversal)traversal.innerHTML+=frame.book_instruction_model ? gGraphReturnMarkup(frame) : `<p data-graph-return>${frame.instruction_event?.origin === "caller" ? "Retorno C registrado (identidades retiradas no utilizables):" : "Retorno al caller:"} ${gEscape(JSON.stringify(st.returned))}</p>`;
   }else if(frame.memory_state && (frame.numeric_algorithm || frame.query_operation || frame.construction_operation)){
     const st=frame.memory_display || frame.memory_state;
     if(representation)representation.innerHTML+=`<div data-graph-instruction-memory><h4>Memoria C por instrucción</h4><p data-graph-heads>${frame.construction_operation ? "Cabezas del caller propietario:" : "Grafo prestado:"} ${gEscape(JSON.stringify(st.graph))}</p>${(st.heap_nodes||[]).map(n=>`<div data-graph-memory-node="${gEscape(n.id)}" data-graph-memory-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(n.kind)} · ${n.borrowed?"prestado":"propio"}: <code>${gEscape(JSON.stringify(n.fields||n.items))}</code></div>`).join("")}<p data-graph-retired>Retiradas (sólo registro histórico): ${gEscape(JSON.stringify(st.retired_objects||[]))}</p></div>`;
     if(aux)aux.innerHTML+=`<div data-graph-variables>${(frame.variables||[]).map(v=>`<div data-graph-variable="${gEscape(v.name)}" data-graph-scope="${gEscape(v.scope)}">${gEscape(v.type)} ${gEscape(v.name)} (${gEscape(v.scope)}): ${gEscape(JSON.stringify(v.previous))} → ${gEscape(JSON.stringify(v.value))}</div>`).join("")}</div><div data-graph-frames>${(frame.call_stack||[]).map(f=>`<div data-graph-frame="${gEscape(f.frame_id)}">${gEscape(f.function)}: ${gEscape(f.scope_status)}</div>`).join("")}</div>`;
-    if(traversal)traversal.innerHTML+=`<p data-graph-return>Retorno al caller: ${gEscape(frame.query_operation ? JSON.stringify(st.returned) : frame.construction_operation ? JSON.stringify(st.returned) : st.returned)}</p>`;
+    if(traversal)traversal.innerHTML+=frame.book_instruction_model ? gGraphReturnMarkup(frame) : `<p data-graph-return>Retorno al caller: ${gEscape(frame.query_operation ? JSON.stringify(st.returned) : frame.construction_operation ? JSON.stringify(st.returned) : st.returned)}</p>`;
   }else if(frame.memory_state){
     const st=frame.memory_display || frame.memory_state;
     if(representation)representation.innerHTML+=`<div data-bfs-memory><h4>Reservas y enlaces C (identidades simbólicas)</h4>${st.heap_nodes.map(n=>`<div data-bfs-node="${gEscape(n.id)}" data-bfs-kind="${gEscape(n.kind)}"><strong>${gEscape(n.id)}</strong> ${gEscape(JSON.stringify(n))}</div>`).join("")}<p>Retiradas: ${gEscape(JSON.stringify(st.freed_nodes))}</p></div>`;
@@ -197,7 +220,7 @@ function renderGraphPedagogy(frame,level){
 
 }
 
-function enhanceGraphCodeNavigation(activeLine=null){const code=gById("op-pseudocode"),list=gById("graph-function-list"),hide=gById("graph-hide-comments");if(!code||!list)return;const raw=String(code.dataset.rawCode||code.textContent||"");const rows=raw.replaceAll("\r\n","\n").split("\n"),functions=[];rows.forEach((row,index)=>{const match=row.match(/^\s*(?:static\s+)?(?:void|bool|int|double|size_t|Grafo|Lista\w*)\s*\**\s*([A-Za-z_]\w*)\s*\(/);if(match&&!['if','for','while','switch'].includes(match[1]))functions.push({name:match[1],line:index});});window.CCodeNavigation?.markComments(code, rows);const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0];list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${gEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>';list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>window.CCodeNavigation?.revealLine(code,code.querySelector(`.code-line[data-line="${button.dataset.line}"]`))));code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));}
+function enhanceGraphCodeNavigation(activeLine=null){const code=gById("op-pseudocode"),list=gById("graph-function-list"),hide=gById("graph-hide-comments");if(!code||!list)return;const raw=String(code.dataset.rawCode||code.textContent||"");const rows=raw.replaceAll("\r\n","\n").split("\n"),functions=[];rows.forEach((row,index)=>{const match=row.match(/^\s*(?:static\s+)?(?:void|bool|int|double|size_t|Grafo|Lista\w*)\s*\**\s*([A-Za-z_]\w*)\s*\(/);if(match&&!['if','for','while','switch'].includes(match[1])&&!code.querySelector(`.code-line[data-line="${index}"]`)?.classList.contains('graph-code-excluded'))functions.push({name:match[1],line:index});});window.CCodeNavigation?.markComments(code, rows);const active=[...functions].reverse().find((item)=>Number.isInteger(activeLine)&&item.line<=activeLine)||functions[0];list.innerHTML=functions.length?functions.map((item)=>`<li><button type="button" class="${active?.line===item.line?'is-active':''}" data-line="${item.line}">${gEscape(item.name)}</button></li>`).join(""):'<li>Sin funciones detectadas</li>';list.querySelectorAll("button").forEach((button)=>button.addEventListener("click",()=>window.CCodeNavigation?.revealLine(code,code.querySelector(`.code-line[data-line="${button.dataset.line}"]`))));code.classList.toggle("hide-hier-comments",Boolean(hide?.checked));}
 
 function initGraphResponsiveWorkspace(){const workspace=document.querySelector(".graph-primary-workspace"),tabs=[...document.querySelectorAll("[data-graph-tab]")];if(!workspace||!tabs.length)return;let saved="visual";try{saved=sessionStorage.getItem("graph-active-tab")||"visual";}catch(_error){/* optional */}const activate=(name)=>{const value=name==="code"?"code":"visual";workspace.dataset.activeTab=value;tabs.forEach((tab)=>{const active=tab.dataset.graphTab===value;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));});try{sessionStorage.setItem("graph-active-tab",value);}catch(_error){/* optional */}};tabs.forEach((tab)=>tab.addEventListener("click",()=>activate(tab.dataset.graphTab)));activate(saved);}
 
@@ -772,8 +795,13 @@ function gGraphRoutes(positions, edges, nodeRadius=26) {
     return {edge,loop:false,point,control:[p0,c,p2],d:`M ${p0.x} ${p0.y} Q ${c.x} ${c.y} ${p2.x} ${p2.y}`};
   });
 }
+const gGraphWeightLabelCache=new Map();
 function gPlaceGraphWeightLabels(positions, edges, nodeRadius=26, routes=gGraphRoutes(positions,edges,nodeRadius)) {
+  const cacheKey=JSON.stringify([[...positions].map(([id,p])=>[id,p.x,p.y]),edges.map(e=>[e.source,e.target,e.weight]),nodeRadius]);
+  const cached=gGraphWeightLabelCache.get(cacheKey);
+  if(cached)return cached.map((label,i)=>({...label,edge:edges[i],box:{...label.box},midpoint:{...label.midpoint}}));
   const nodes=[...positions.values()],placed=[];
+  const dense=edges.length>60;
   const overlaps=(a,b)=>a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
   const inside=(p,b)=>p.x>b.left&&p.x<b.right&&p.y>b.top&&p.y<b.bottom;
   const nodeBoxes=nodes.map(n=>({left:n.x-nodeRadius-8,right:n.x+nodeRadius+8,top:n.y-nodeRadius-8,bottom:n.y+nodeRadius+8}));
@@ -787,7 +815,7 @@ function gPlaceGraphWeightLabels(positions, edges, nodeRadius=26, routes=gGraphR
         const box={left:x-width/2,right:x+width/2,top:y-height/2,bottom:y+height/2};
         const conflicts=nodeBoxes.filter(b=>overlaps(box,b)).length+placed.filter(p=>overlaps(box,p.box)).length;
         let crossings=0;
-        routes.forEach((other,j)=>{if(!other||j===index)return;for(let k=1;k<30;k++)if(inside(other.point(k/30),box)){crossings++;break;}});
+        if(!dense)routes.forEach((other,j)=>{if(!other||j===index)return;for(let k=1;k<30;k++)if(inside(other.point(k/30),box)){crossings++;break;}});
         const score=conflicts*100000+crossings*600+Math.abs(offset)*2+Math.abs(t-.5)*30;
         if(!best||score<best.score)best={edge,x,y:y+5,box,midpoint:anchor,shifted:Math.abs(offset)>12,score};
       }
@@ -803,19 +831,22 @@ function gPlaceGraphWeightLabels(positions, edges, nodeRadius=26, routes=gGraphR
     }
     placed.push(best);
   });
+  if(gGraphWeightLabelCache.size>=16)gGraphWeightLabelCache.delete(gGraphWeightLabelCache.keys().next().value);
+  gGraphWeightLabelCache.set(cacheKey,placed.map(({edge,...label})=>({...label,box:{...label.box},midpoint:{...label.midpoint}})));
   return placed;
 }
 
-function renderGraphSvg(state, simulation, traceDebug) {
+function renderGraphSvg(state, simulation, traceDebug, geometryReplay = false) {
   const nodes = Array.isArray(state.nodes) ? state.nodes : [];
   const edges = Array.isArray(state.edges) ? state.edges : [];
 
   if (!nodes.length) {
+    gAdaptiveGraphPositions([], [], {replay: geometryReplay || Boolean(traceDebug)});
     return "<p class=\"viz-empty\">Grafo vacío. Crea vértices para iniciar.</p>";
   }
 
   const nodeRadius = 26;
-  const positions = gAdaptiveGraphPositions(nodes, edges);
+  const positions = gAdaptiveGraphPositions(nodes, edges, {replay: geometryReplay || Boolean(traceDebug)});
   const routes=gGraphRoutes(positions,edges,nodeRadius);
   const weightLabels=gPlaceGraphWeightLabels(positions,edges,nodeRadius,routes);
   const geometry=[...[...positions.values()].flatMap(p=>[{x:p.x-nodeRadius-20,y:p.y-nodeRadius-24},{x:p.x+nodeRadius+20,y:p.y+nodeRadius+20}]),...routes.filter(Boolean).flatMap(r=>r.control),...weightLabels.flatMap(p=>[{x:p.box.left,y:p.box.top},{x:p.box.right,y:p.box.bottom}])];
@@ -823,7 +854,13 @@ function renderGraphSvg(state, simulation, traceDebug) {
   const width=Math.max(...geometry.map(p=>p.x))-left+16,height=Math.max(...geometry.map(p=>p.y))-top+16;
   const opName = state.last_operation && state.last_operation.name ? state.last_operation.name : "";
   const useSimulation = simulation && simulation.sourceOperation === opName;
-  const highlights = traceDebug
+  // Publication shows the caller's retained result, not the freed result list.
+  // Earlier playback frames must continue to use only their current C progress.
+  const publishedMst = traceDebug?.stage === "api_publication"
+    && (opName === "run_prim" || opName === "run_kruskal");
+  const highlights = publishedMst
+    ? getDefaultHighlights(state)
+    : traceDebug
     ? getTraceDebugHighlights(traceDebug)
     : useSimulation
       ? getSimulationHighlights(simulation)
@@ -1004,12 +1041,16 @@ function gMaintainGraphImageViewport(container, previous={left:0,top:0}) {
   }
 }
 
+function gGraphResultPanel(container) {
+  return container?.parentElement?.querySelector('#graph-current-result') || container?.querySelector('.graph-current-result');
+}
+
 function renderGraphState(state, container, simulation, traceDebug, presentation = {}) {
   if (!state || !container) {
     return;
   }
 
-  if(state.suspended){container.innerHTML=`<div role="status"><h4>Historial suspendido — no es un grafo vacío</h4><p>${gEscape(state.suspension_reason || "Este historial pertenece a otra versión del C.")}</p><p>Exporta el historial original o confirma Restablecer grafo para empezar con el libro.</p></div>`;return;}
+  if(state.suspended){const result=gGraphResultPanel(container);if(result)result.textContent='';container.innerHTML=`<div role="status"><h4>Historial suspendido — no es un grafo vacío</h4><p>${gEscape(state.suspension_reason || "Este historial pertenece a otra versión del C.")}</p><p>Exporta el historial original o confirma Restablecer grafo para empezar con el libro.</p></div>`;return;}
   const oldStage=container.querySelector(".viz-stage");
   const imageViewport={left:oldStage?.scrollLeft||0,top:oldStage?.scrollTop||0};
   const metadata = state.metadata || {};
@@ -1019,12 +1060,15 @@ function renderGraphState(state, container, simulation, traceDebug, presentation
   let html = "";
   html += "<div class=\"viz-canvas\">";
   html += `<div class=\"viz-meta\"><strong>Grafo</strong> | Tipo: ${graphType} | Ponderado: ${weighted} | Vértices: ${metadata.vertices_count ?? 0} | Aristas: ${metadata.edges_count ?? 0}<span class="graph-image-pan-note" hidden> · Imagen ampliada: desplázala dentro del panel.</span></div>`;
-  html += `<div class=\"viz-stage\"><div class="viz-stage-center">${renderGraphSvg(state.asymmetric_pairs?.length ? {...state,directed:true,edges:state.c_arcs||state.edges} : state, simulation, traceDebug)}</div></div>`;
+  html += `<div class=\"viz-stage\"><div class="viz-stage-center">${renderGraphSvg(state.asymmetric_pairs?.length ? {...state,directed:true,edges:state.c_arcs||state.edges} : state, simulation, traceDebug, presentation.geometryReplay)}</div></div>`;
 
 
 
   if(state.asymmetric_pairs?.length)html += '<p class="graph-policy">La política solicita un grafo no dirigido, pero existen arcos sin inversa del mismo peso. Se muestran los arcos reales; no se inventa simetría.</p>';
-  html += `<div class="viz-traversals graph-current-result">${gGraphPresentedResult(state, presentation)}</div>`;
+  const resultPanel = container.parentElement?.querySelector('#graph-current-result');
+  const resultMarkup = gGraphPresentedResult(state, presentation);
+  if (resultPanel) resultPanel.innerHTML = resultMarkup;
+  else html += `<div class="viz-traversals graph-current-result">${resultMarkup}</div>`;
   if (traceDebug && traceDebug.note) {
     html += `<details class="viz-sim-note"><summary>Explicación de este paso</summary><p>${gEscape(String(traceDebug.note))}</p></details>`;
   }
@@ -1079,6 +1123,7 @@ function updateGraphDidacticPanel(model, operationName) {
   renderGraphDidacticCode(recordBox, didactic.record || "Estructura no documentada.", codeTitle);
   pseudoTitle.textContent = selectedLabel ? `${codeTitle}: ${selectedLabel}` : codeTitle;
   renderGraphDidacticCode(pseudoBox, opMap[selectedOp] || fallback, codeTitle);
+  gApplyGraphCodeScope(model, selectedOp);
   gFocusBookFunction(model, selectedOp);
 }
 
@@ -1544,7 +1589,7 @@ function initGraphPage(model) {
   renderGraphHistory(pageState.actionHistory, historyBox, model.didactic, model.main_c);
   renderGraphState(pageState.graphState, visualState, pageState.simulation, null, {operation:getTargetSelection()?.operation?.name});
   const capacityPolicy = gById("graph-capacity-policy");
-  if (capacityPolicy && pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)) capacityPolicy.textContent = "Sesión anterior: se conservan todos los vértices. Elimina vértices o limpia para volver al límite de 15; las inserciones y algoritmos están bloqueados mientras lo supere.";
+  if (capacityPolicy && pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)) capacityPolicy.textContent = `Sesión anterior: se conservan todos los vértices. Elimina vértices o limpia para volver al límite de ${Number(controls.dataset.vertexLimit)}; las inserciones y algoritmos están bloqueados mientras lo supere.`;
 
   if (modeSelect) {
     modeSelect.value = pageState.graphState && pageState.graphState.directed ? "true" : "false";
@@ -1557,25 +1602,26 @@ function initGraphPage(model) {
       renderState: (stateSnapshot, stepMeta) => {
         pageState.graphState = stateSnapshot;
         pageState.simulation = null;
-        renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null, {pending:true});
+        renderGraphState(stateSnapshot, visualState, null, stepMeta ? stepMeta.debug : null, {pending:true,geometryReplay:true});
         if(stepMeta?.pedagogy){currentPedagogyFrame=stepMeta.pedagogy;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");}
         updateGraphStepKind(stepMeta || null);
       },
       onCursorChange: (event) => {
         const cursor = event && Number.isInteger(event.cursor) ? event.cursor : -1;
+        gApplyGraphCodeScope(model,event?.trace?.operation_name || getTargetSelection()?.operation?.name);
         pageState.traceCursor = cursor;
         if(event?.trace?.book_instruction_model && pageState.bookFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.bookFinalMessage.text:"Operación preparada: resultado pendiente hasta completar las llamadas C.",done?pageState.bookFinalMessage.success:true);}
         if(cursor<0 && event?.trace?.book_instruction_model){currentPedagogyFrame=event.trace.steps[0]?.pedagogy?.initial_frame || null;if(currentPedagogyFrame)renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");gFocusBookFunction(model,event.trace.operation_name);}
         if((event?.trace?.bfs_instruction_model || event?.trace?.dfs_instruction_model) && pageState.bfsFinalMessage)showGraphMessage(cursor===event.trace.steps.length-1?pageState.bfsFinalMessage:`${event?.trace?.dfs_instruction_model ? "DFS" : "BFS"} preparado: resultado pendiente hasta completar la traza.`,true);
         if(event?.trace?.numeric_instruction_model && pageState.numericFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.numericFinalMessage.text:"Algoritmo preparado: resultado pendiente hasta completar la traza.",done?pageState.numericFinalMessage.success:true);}
         if((event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model) && pageState.vertexFinalMessage){const done=cursor===event.trace.steps.length-1;showGraphMessage(done?pageState.vertexFinalMessage.text:"Operación preparada: resultado pendiente hasta completar la traza.",done?pageState.vertexFinalMessage.success:true);}
-        if(cursor<0 && (event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,null);}
+        if(cursor<0 && (event?.trace?.vertex_instruction_model || event?.trace?.neighbor_instruction_model || event?.trace?.construction_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,null,{geometryReplay:true});}
         if(cursor<0 && event?.trace?.numeric_instruction_model && event.trace.execution_started){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,{graph_memory:currentPedagogyFrame.memory_state,graph_progress:{mode:"path",nodes:[],edges:[]}});}
         if(cursor<0 && (event?.trace?.bfs_instruction_model || event?.trace?.dfs_instruction_model)){const first=event.trace.steps[0];currentPedagogyFrame=first.pedagogy.initial_frame;renderGraphPedagogy(currentPedagogyFrame,learningLevel?.value||"intermediate");renderGraphState(first.state_snapshot,visualState,null,{bfs_memory:currentPedagogyFrame.memory_state,graph_progress:{mode:"traversal",nodes:[],edges:[]}});}
         pageState.traceTotalSteps = event && event.trace && Array.isArray(event.trace.steps)
           ? event.trace.steps.length
           : 0;
-        const resultPanel=visualState.querySelector('.graph-current-result');
+        const resultPanel=gGraphResultPanel(visualState);
         if(resultPanel)resultPanel.innerHTML=gGraphPresentedResult(event?.step?.state_after || pageState.graphState,{operation:event?.trace?.operation_name || getTargetSelection()?.operation?.name,pending:pageState.traceTotalSteps>0 && cursor<pageState.traceTotalSteps-1});
         refreshGraphPrintfConsole(cursor);
         const step=event?.step;
@@ -1677,8 +1723,8 @@ function initGraphPage(model) {
     pageState.consoleTrace = null;
     pageState.consoleRawStdout = null;
     pageState.consoleFallbackMessage = "";
-    tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
-    const currentResult=visualState.querySelector('.graph-current-result');
+    tracePlayer?.clear(message || "Pulsa Ejecutar operación para preparar la traza; después usa Siguiente paso o Paso anterior para recorrerla.");
+    const currentResult=gGraphResultPanel(visualState);
     if(currentResult)currentResult.innerHTML=gGraphPresentedResult(pageState.graphState,{idle:true});
     // Al cambiar operación o entrada la navegación pertenece a la traza previa.
     // Restáurase explícitamente el único botón de entrada al modo paso a paso.
@@ -1794,7 +1840,7 @@ function initGraphPage(model) {
     }
     if (!pageState.simulation || !pageState.simulation.steps.length) {
       setSimulationButtonsState();
-      showSimulationStatus("Usa Reproducir o Siguiente paso para ejecutar.");
+      showSimulationStatus("Pulsa Ejecutar operación para preparar la traza; después usa Siguiente paso o Paso anterior para recorrerla.");
       return;
     }
     setSimulationButtonsState();
@@ -1861,8 +1907,8 @@ function initGraphPage(model) {
   function repaint() {
     const policy = gById("graph-capacity-policy");
     if (policy) policy.textContent = pageState.graphState.nodes.length > Number(controls.dataset.vertexLimit)
-      ? "Sesión anterior: se conservan todos los vértices. Elimina vértices o limpia para volver al límite de 15; las inserciones y algoritmos están bloqueados mientras lo supere."
-      : "Límite educativo: 15 vértices. No se truncan grafos ni se cambia el C descargable.";
+      ? `Sesión anterior: se conservan todos los vértices. Elimina vértices o limpia para volver al límite de ${Number(controls.dataset.vertexLimit)}; las inserciones y algoritmos están bloqueados mientras lo supere.`
+      : "Límite educativo: 30 vértices. No se truncan grafos ni se cambia el C descargable.";
     renderGraphState(pageState.graphState, visualState, pageState.simulation, pageState.finalTraceDebug, {operation:pageState.lastTraceOperation || getTargetSelection()?.operation?.name,pending:pageState.traceTotalSteps>0 && pageState.traceCursor<pageState.traceTotalSteps-1});
     refreshSimulationStatus();
   }
@@ -1880,6 +1926,8 @@ function initGraphPage(model) {
       const payload = target.payload || {};
       const data = await executeGraphOperation(controls, operationName, payload, options?.finalOnly ? "normal" : "step");
       if(data.preserve_session){showGraphMessage(data.message,false);return null;}
+      if(data.success || data.execution_started || data.execution_trace?.execution_started)
+        gAdaptiveGraphPositions.beginExecution(); // New execution, same geometric anchors.
       if(Array.isArray(data.history))model.history=data.history;
       pageState.traceUnavailableReason=data.trace_unavailable_reason || "";
       pageState.consoleRawStdout=typeof data.console_stdout==="string"?data.console_stdout:null;
@@ -2313,7 +2361,7 @@ function initGraphPage(model) {
   setSimulationButtonsState();
 
   updateStepModePanelVisibility();
-  invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+  invalidateTrace("Pulsa Ejecutar operación para preparar la traza; después usa Siguiente paso o Paso anterior para recorrerla.");
   refreshGraphPrintfConsole(-1);
   refreshSimulationStatus();
   focusGraphSectionByHash();

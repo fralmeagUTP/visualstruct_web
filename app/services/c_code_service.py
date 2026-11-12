@@ -724,6 +724,7 @@ class CCodeService:
         One source/line coordinate system is shared by the restricted interpreter
         and the code viewer. Downloaded C/H are never rewritten to fit a snippet.
         """
+        from app.services.graph_code_scope import graph_algorithm_code_scopes
         from app.domain.graph.book_source import canonical_source, HASHES
         c_text = canonical_source()
         h_text = cls._safe_read(cls._DOCS_TADS_C / "tad_grafo.h")
@@ -733,6 +734,7 @@ class CCodeService:
             "operations": {operation: c_text for operation in operations},
             "default_operation": c_text,
             "code_title": "Código C canónico del libro — tad_grafo.c",
+            "operation_code_scopes": graph_algorithm_code_scopes(),
             "source_contract": "graph-book/v1",
             "source_hashes": dict(HASHES),
             "operation_functions": {**cls._GRAPH_OPERATION_MAP,

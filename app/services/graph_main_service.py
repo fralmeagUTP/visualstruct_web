@@ -37,25 +37,22 @@ def _directed(value: Any) -> bool:
 
 
 def _vertices_call(function: str, args: str, index: str, label: str) -> list[str]:
-    return [f'GrafoEstado estado_{index};',
-            f'ListaVertice lista_{index} = {function}({args}, &estado_{index});',
-            f'printf("{label}: estado=%d", (int)estado_{index});',
-            f'if (estado_{index} == GRAFO_OK) {{',
-            f'    for (ListaVertice it = lista_{index}; it != NULL; it = it->sig) printf(" %d", it->dato);',
-            f'    if (lista_{index} == NULL) printf(" (lista vacia valida)");', '}',
+    return [f'ListaVertice lista_{index} = {function}({args});',
+            f'printf("{label}:");',
+            f'for (ListaVertice it = lista_{index}; it != NULL; it = it->sig) printf(" %d", it->dato);',
+            f'if (lista_{index} == NULL) printf(" (sin resultado)");',
             'printf("\\n");', f'grafo_liberar_vertices(&lista_{index});']
 
 
 def _arcs_call(function: str, args: str, index: str, label: str) -> list[str]:
-    return [f'GrafoEstado estado_{index};',
-            f'ListaArco lista_{index} = {function}({args}, &estado_{index});',
-            f'printf("{label}: estado=%d", (int)estado_{index});',
-            f'if (estado_{index} == GRAFO_OK) {{', '    long long total = 0;',
-            f'    for (ListaArco it = lista_{index}; it != NULL; it = it->sig) {{',
-            '        printf(" %d->%d(%d)", it->origen, it->destino, it->costo);',
-            '        total = total + (long long)it->costo;', '    }',
-            f'    if (lista_{index} == NULL) printf(" (sin arcos; resultado valido)");',
-            '    printf(" | costo=%lld", total);', '}', 'printf("\\n");',
+    return [f'ListaArco lista_{index} = {function}({args});',
+            f'printf("{label}:");', f'long long total_{index} = 0;',
+            f'for (ListaArco it = lista_{index}; it != NULL; it = it->sig) {{',
+            '    printf(" %d->%d(%d)", it->origen, it->destino, it->costo);',
+            f'    total_{index} = total_{index} + (long long)it->costo;', '}',
+            f'if (lista_{index} == NULL) printf(" (sin arcos devueltos)");',
+            f'if (lista_{index} != NULL) printf(" | costo=%lld", total_{index});',
+            'printf("\\n");',
             f'grafo_liberar_arcos(&lista_{index});']
 
 
@@ -68,14 +65,12 @@ def caller_output_program(operation: str, *, inverse: bool = False) -> tuple[str
     if operation in _ALGORITHMS or operation == 'neighbors':
         function, label = _ALGORITHMS.get(operation, ('grafo_sucesores', 'Vecinos'))
         vertices = operation in {'run_bfs', 'run_dfs', 'neighbors'}
-        block = (_vertices_call if vertices else _arcs_call)(function, '', 'result', label)[2:-1]
+        block = (_vertices_call if vertices else _arcs_call)(function, '', 'result', label)[1:-1]
         typ = 'ListaVertice' if vertices else 'ListaArco'
-        params = f'GrafoEstado estado_result, {typ} lista_result'
-        values = ('status', 'returned')
+        params = f'{typ} lista_result'
+        values = ('returned',)
     elif operation in {'insert_vertex', 'insert_edge'}:
-        label = 'insert_edge inverso' if inverse else operation
-        block = [f'printf("{label}: estado=%d\\n", (int)estado_result);']
-        params, values = 'GrafoEstado estado_result', ('status',)
+        return '', ()
     elif operation in {'exists_vertex', 'exists_edge'}:
         block = [f'printf("{operation}: %d\\n", returned);']
         params, values = 'int returned', ('returned',)
@@ -97,16 +92,12 @@ def caller_output_program(operation: str, *, inverse: bool = False) -> tuple[str
 
 def _insert_call(operation: str, payload: dict[str, Any], index: str, directed: bool) -> list[str]:
     if operation == 'insert_vertex':
-        return [f'GrafoEstado estado_{index};',
-                f'g = grafo_insertar_vertice(g, {_integer(payload,"vertex")}, &estado_{index});',
-                *_output_lines(operation, index)]
+        return [f'g = grafo_insertar_vertice(g, {_integer(payload,"vertex")});']
     a, b, cost = _integer(payload,'origin'), _integer(payload,'target'), _weight(payload)
-    block = [f'GrafoEstado estado_{index};', f'g = grafo_insertar_arco(g, {a}, {b}, {cost}, &estado_{index});',
-             *_output_lines(operation, index)]
+    block = [f'g = grafo_insertar_arco(g, {a}, {b}, {cost});']
     if not directed and a != b:
-        block += [f'if (estado_{index} == GRAFO_OK) {{',
-                  f'    g = grafo_insertar_arco(g, {b}, {a}, {cost}, &estado_{index});',
-                  *['    '+line for line in _output_lines(operation, index, inverse=True)], '}']
+        block += [f'if (grafo_existe_arco(g, {a}, {b})) {{',
+                  f'    g = grafo_insertar_arco(g, {b}, {a}, {cost});', '}']
     return block
 
 
@@ -120,14 +111,12 @@ def _output_lines(operation: str, index: str, *, inverse: bool = False) -> list[
 def build_graph_main(history: list[dict[str, Any]]) -> str:
     """Emit chronological recorded calls using exact book signatures.
 
-    Numeric statuses are GrafoEstado from the canonical header. A NULL list is
-    interpreted only together with that status. Borrowed lists are not freed.
+    Public calls require only their educational inputs. NULL can mean an empty
+    result or a failure; detailed diagnostics belong to the visualizer. Borrowed lists are not freed.
     The undirected policy is two real calls, not a new transactional C routine.
     """
-    lines = ['/* main.c: llamador de la app; tad_grafo.c/h son los originales del libro. */',
+    lines = ['/* main.c: llamador de la app; tad_grafo.c/h ofrecen la interfaz educativa sin estados de salida. */',
              '#include "tad_grafo.h"', '#include <stdio.h>', '',
-             '/* GrafoEstado: 0 OK, 1 MEMORIA, 2 NO_EXISTE, 3 PESO_NEGATIVO,',
-             '   4 CICLO_NEGATIVO, 5 DESCONECTADO, 6 ARGUMENTO, 7 RANGO. */',
              'int main(void) {', '    Grafo g = grafo_crear();']
     directed = False
     for number, step in enumerate(history, 1):

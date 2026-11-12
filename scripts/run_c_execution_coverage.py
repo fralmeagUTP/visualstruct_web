@@ -95,6 +95,14 @@ def collect_execution_coverage(*, compiler: str, gcov: str, selected: set[str] |
             check = CHECKS[structure_id]
             executable = work / (f"{structure_id}.exe" if os.name == "nt" else structure_id)
             sources = [TAD_DIR / source for source in check.tad_sources]
+            if structure_id == "graph":
+                _run([compiler, "-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror",
+                      "-I", str(TAD_DIR), "-c", str(TAD_DIR / "tad_grafo.c"),
+                      "-o", str(work / "original_graph.o")], cwd=ROOT)
+                observed = work / "observed_graph.c"
+                _run([sys.executable, str(ROOT / "tests" / "_graph_private_diagnostic_observer.py"),
+                      str(TAD_DIR / "tad_grafo.c"), str(observed)], cwd=ROOT)
+                sources = [observed if source.name == "tad_grafo.c" else source for source in sources]
             _run([
                 compiler, "-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror",
                 "--coverage", "-fcondition-coverage", "-O0", "-I", str(TAD_DIR), "-I", str(HARNESS_DIR),
@@ -112,6 +120,9 @@ def collect_execution_coverage(*, compiler: str, gcov: str, selected: set[str] |
                 source_reports.append(_summarize_gcov(report_path))
             results.append({
                 "structure_id": structure_id,
+                "qa_source_note": ("Graph coverage measures a private-diagnostic observer derivative; "
+                                   "original C is separately compiled, not attributed these line counts."
+                                   if structure_id == "graph" else "Original C source"),
                 "arguments": list(check.arguments),
                 "sources": source_reports,
                 "executed_lines": sum(len(report["executed_lines"]) for report in source_reports),

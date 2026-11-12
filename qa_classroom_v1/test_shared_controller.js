@@ -2,16 +2,24 @@
 const fs=require('node:fs'),vm=require('node:vm'),test=require('node:test'),assert=require('node:assert/strict');
 const source=fs.readFileSync('static/js/classroom_view.js','utf8');
 function fixture(){
+ const autoMutations=arguments[0] || false;
+ const pendingRecords=[], microtasks=[], observed=[];
+ function record(target,addedNodes,removedNodes){
+  if(!autoMutations)return;
+  if(observed.some(root=>{for(let n=target;n;n=n.parentElement)if(n===root)return true;return false;})) pendingRecords.push({target,addedNodes,removedNodes});
+ }
  class Node{
   constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.style={setProperty(k,v){this[k]=v}};this.attrs={};this.listeners={};this.textContent='';this.scrollLeft=0;this.scrollTop=0;const set=new Set();this.classList={add:(...x)=>x.forEach(v=>set.add(v)),contains:x=>set.has(x),remove:x=>set.delete(x)};}
-  append(...ns){ns.forEach(n=>{if(n.parentElement)n.parentElement.children=n.parentElement.children.filter(x=>x!==n);this.children.push(n);n.parentElement=this;});}
+  append(...ns){ns.forEach(n=>{if(n.parentElement){const old=n.parentElement;old.children=old.children.filter(x=>x!==n);record(old,[],[n]);}this.children.push(n);n.parentElement=this;record(this,[n],[]);});}
   prepend(n){this.append(n);this.children.unshift(this.children.pop());}
   insertBefore(n,old){this.append(n);this.children.pop();this.children.splice(Math.max(0,this.children.indexOf(old)),0,n);}
   before(n){this.parentElement.insertBefore(n,this);}
+  after(n){const p=this.parentElement;p.append(n);p.children.pop();p.children.splice(p.children.indexOf(this)+1,0,n);}
+  replaceChildren(...ns){const old=[...this.children];for(const n of old)n.parentElement=null;this.children=[];if(old.length)record(this,[],old);this.append(...ns);}
   get firstChild(){return this.children[0]||null;}
   setAttribute(k,v){this.attrs[k]=v;} getAttribute(k){return this.attrs[k]||null;}
   addEventListener(k,fn){this.listeners[k]=fn;}
-  querySelectorAll(sel){return this.children.flatMap(n=>[...((sel==='svg'&&n.tagName==='SVG')||(sel.startsWith('.')&&n.classList.contains(sel.slice(1)))?[n]:[]),...n.querySelectorAll(sel)]);}
+  querySelectorAll(sel){const selectors=sel.split(',').map(s=>s.trim());return this.children.flatMap(n=>[...(selectors.some(s=>(s==='svg'&&n.tagName==='SVG')||(s.startsWith('.')&&n.classList.contains(s.slice(1))))?[n]:[]),...n.querySelectorAll(sel)]);}
   querySelector(sel){return this.querySelectorAll(sel)[0]||null;}
   matches(sel){return sel==='svg'&&this.tagName==='SVG';}
  }
@@ -20,8 +28,8 @@ function fixture(){
  Node.prototype.focus=function(){this.focused=true;};Node.prototype.showModal=function(){this.open=true;};Node.prototype.close=function(){this.open=false;this.listeners.close?.();};
  const root=new Node(),visual=new Node(),stage=new Node(),svg=new Node('svg');svg.attrs.viewBox='-20 5 900 450';root.append(visual);visual.append(stage);stage.append(svg);
  let mutation;const copied=[];const document={body:new Node('body'),activeElement:new Node('button'),createComment:()=>new Node('comment'),createElement:t=>new Node(t),querySelector:()=>null};
- const ctx={window:{scrollX:10,scrollY:120,scrollTo(x,y){this.restored=[x,y]}},document,navigator:{clipboard:{writeText:async t=>copied.push(t)}},queueMicrotask:fn=>fn(),MutationObserver:class{constructor(fn){mutation=fn}observe(){}disconnect(){}}};
- vm.createContext(ctx);vm.runInContext(source,ctx);return{...ctx,root,visual,stage,svg,Node,copied,mutate:records=>mutation(records),api:ctx.window.ClassroomView};
+ const ctx={window:{scrollX:10,scrollY:120,scrollTo(x,y){this.restored=[x,y]}},document,navigator:{clipboard:{writeText:async t=>copied.push(t)}},queueMicrotask:fn=>autoMutations?microtasks.push(fn):fn(),MutationObserver:class{constructor(fn){mutation=fn}observe(node){observed.push(node)}disconnect(){observed.length=0}}};
+ vm.createContext(ctx);vm.runInContext(source,ctx);return{...ctx,root,visual,stage,svg,Node,copied,mutate:records=>mutation(records),flush:()=>{let turns=0;while(pendingRecords.length||microtasks.length){assert.ok(++turns<50,'observer must settle');if(pendingRecords.length)mutation(pendingRecords.splice(0));while(microtasks.length)microtasks.shift()();}},api:ctx.window.ClassroomView};
 }
 test('mount starts natural size; zoom and local pan survive twenty redraw/back notifications',()=>{const f=fixture(),c=f.api.mount(f);assert.equal(f.svg.style.width,'900px');c.setZoom(1.4);f.stage.scrollLeft=130;f.stage.scrollTop=40;f.stage.listeners.scroll();for(let i=0;i<20;i++){f.svg.style.width='3px';f.mutate();assert.equal(f.svg.style.width,'1260px');assert.equal(f.stage.scrollLeft,130);assert.equal(f.stage.scrollTop,40);}assert.equal(f.svg.attrs.viewBox,'-20 5 900 450');assert.equal(f.api.mount(f),c);});
 test('zoom is explicit bounded and never fitted to viewport',()=>{const f=fixture();assert.equal(f.api.clampZoom(.01),.5);assert.equal(f.api.clampZoom(9),2.5);assert.equal(f.api.clampZoom(1),1);});
@@ -54,4 +62,51 @@ test('export materializes closed auxiliary details as a static block retaining a
  const document={createElement:tag=>({tag,attrs:{},style:{},children:[],setAttribute(k,v){this.attrs[k]=v},appendChild(n){details.children.shift();this.children.push(n)}})};
  const ctx={document};vm.createContext(ctx);vm.runInContext(runtime.slice(a,b)+';this.prepare=prepareClassroomExportClone',ctx);ctx.prepare(clone);
  assert.equal(replacement.tag,'div');assert.equal(replacement.attrs.class,'classroom-memory');assert.equal(replacement.children[0],heading);assert.equal(replacement.children[1],evidence);assert.equal(replacement.style.zoom,'1');
+});
+
+test('inline operation results share the visual panel without its zoom/pan, preserve nodes, and clear on reset',()=>{
+ for(const cls of ['viz-out','hier-traversal-summary','hier-current-result']) {
+  const f=fixture(),r=new f.Node(cls.includes('summary')?'details':'p');r.classList.add(cls);r.textContent=Array.from({length:30},(_,i)=>i+1).join(' -> ');r.open=true;f.stage.append(r);
+  const c=f.api.mount(f),panel=f.visual.children.find(n=>n.className==='classroom-inline-results');
+  assert.equal(r.parentElement,panel);assert.equal(panel.parentElement,f.visual);assert.equal(panel.children.length,1);assert.equal(r.textContent.endsWith('30'),true);assert.equal(r.open,true);
+  c.setZoom(1.5);assert.equal(r.style.zoom,undefined);f.stage.scrollLeft=99;f.stage.listeners.scroll();
+  const next=new f.Node('p');next.classList.add(cls);next.textContent='Segundo resultado';f.stage.append(next);f.mutate([{target:f.stage,addedNodes:[next],removedNodes:[]}]);
+  assert.equal(panel.children.length,1);assert.equal(panel.children[0],next);assert.equal(f.stage.scrollLeft,99);
+  f.mutate([{target:f.stage,addedNodes:[f.svg],removedNodes:[]}]);assert.equal(panel.children.length,0);assert.equal(panel.hidden,true);
+ }
+});
+test('printf panels across all families grow naturally; C source readers retain scrolling',()=>{
+ for(const key of ['graph','hierarchical','sequential','hash','sorting']) {
+  const f=fixture(),panel=new f.Node('section'),out=new f.Node('pre');out.textContent='Salida larga\n'.repeat(100);panel.append(out);f.root.append(panel);
+  f.api.mount({...f,key,results:[{label:'Consola C (printf)',panel,code:out,getText:()=>out.textContent}]});
+  assert.ok(panel.classList.contains('classroom-output-panel'));assert.ok(!out.classList.contains('classroom-code-scroll'));assert.equal(out.textContent.split('\n').length,101);
+ }
+ const css=fs.readFileSync('static/css/classroom_view.css','utf8');
+ assert.match(css,/\.classroom-output-panel\s*\{\s*height: auto; max-height: none; overflow: visible/);
+ assert.match(css,/\.classroom-inline-results\s*\{[\s\S]*?height: auto; max-height: none; overflow: visible/);
+ assert.match(css,/\.classroom-code-scroll\s*\{[\s\S]*?overflow-x: auto !important; overflow-y: auto !important/);
+});
+test('moved results remain hidden for all existing concealed practice-stage classes',()=>{
+ const css=fs.readFileSync('static/css/classroom_view.css','utf8');
+ for(const cls of ['graph-practice-hidden','hier-practice-hidden','seq-practice-hidden'])
+  assert.ok(css.includes(`.classroom-visual:has(> .${cls}) > .classroom-inline-results`));
+ assert.match(css,/\.classroom-visual:has\(> \.seq-practice-hidden\) > \.classroom-inline-results\s*\{\s*display: none !important/);
+});
+
+// Deliver mutations produced by DOM transfers themselves, not just renderer notifications.
+test('observer delivery after direct and nested result transfers preserves output and real resets',()=>{
+ for(const nested of [false,true])for(const cls of ['viz-out','hier-traversal-summary','hier-current-result']){
+  const f=fixture(true),r=new f.Node();r.classList.add(cls);r.textContent='Complete result';
+  const wrapper=new f.Node();if(nested){wrapper.append(r);f.stage.append(wrapper);}else f.stage.append(r);
+  f.api.mount(f);f.flush();
+  const panel=f.visual.children.find(n=>n.className==='classroom-inline-results');
+  assert.equal(panel.children[0],r);assert.equal(panel.hidden,false);
+  // A second renderer frame, followed by its own observer transfer delivery.
+  const next=new f.Node();next.classList.add(cls);next.textContent='Replacement';
+  const frame=new f.Node();frame.append(new f.Node('svg'));if(nested)frame.append(next);
+  f.stage.replaceChildren(frame,...(nested?[]:[next]));f.flush();
+  assert.equal(panel.children.length,1);assert.equal(panel.children[0],next);assert.equal(panel.hidden,false);
+  f.stage.replaceChildren(new f.Node('svg'));f.flush();
+  assert.equal(panel.children.length,0);assert.equal(panel.hidden,true);
+ }
 });

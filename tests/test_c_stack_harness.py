@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+from _graph_private_diagnostic_observer import write_observed_graph
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -70,6 +71,11 @@ def test_additional_harnesses_emit_canonical_state(
     executable = tmp_path / f"{name}_harness.exe"
     tad_sources = [str(C_TADS / tad_source)]
     if name == "graph":
+        original = subprocess.run([gcc, "-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror",
+            "-I", str(C_TADS), "-c", str(C_TADS / tad_source), "-o", str(tmp_path / "original.o")],
+            capture_output=True, text=True)
+        assert original.returncode == 0, original.stderr
+        tad_sources[0] = str(write_observed_graph(C_TADS / tad_source, tmp_path / "observed_graph.c"))
         tad_sources.append(str(C_TADS / "tad_cola.c"))
     compile_result = subprocess.run(
         [gcc, "-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-I", str(C_TADS), "-I", str(HARNESS), str(HARNESS / source), *tad_sources, "-o", str(executable)],

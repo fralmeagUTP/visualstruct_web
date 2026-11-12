@@ -12,6 +12,9 @@ export UBSAN_OPTIONS="halt_on_error=1:print_stacktrace=1"
 export VISUALESTRUCT_QA_EVENTS="1"
 strict_flags=(-std=c17 -Wall -Wextra -Wpedantic -Werror -fno-omit-frame-pointer -g)
 requested="${1:-all}"
+if [[ "$requested" == "all" || "$requested" == "graph" ]]; then
+    python3 "$root/tests/_graph_private_diagnostic_observer.py" "$tad_dir/tad_grafo.c" "$tmp_dir/observed_graph.c"
+fi
 
 run_case() {
     local structure_id="$1"
@@ -22,13 +25,21 @@ run_case() {
     fi
     local sources=()
     while [[ "$1" != "--" ]]; do
-        sources+=("$tad_dir/$1")
+        if [[ "$1" == "tad_grafo.c" ]]; then
+            sources+=("$tmp_dir/observed_graph.c")
+        else
+            sources+=("$tad_dir/$1")
+        fi
         shift
     done
     shift
     local sanitizer
     for sanitizer in address undefined; do
         local executable="$tmp_dir/${structure_id}_${sanitizer}"
+        if [[ "$structure_id" == "graph" ]]; then
+            gcc "${strict_flags[@]}" "-fsanitize=$sanitizer" -I "$tad_dir" \
+                -c "$tad_dir/tad_grafo.c" -o "$tmp_dir/original_graph_$sanitizer.o"
+        fi
         timeout 60s gcc "${strict_flags[@]}" "-fsanitize=$sanitizer" \
             -I "$tad_dir" -I "$harness_dir" \
             "$harness_dir/$harness" "${sources[@]}" -o "$executable"
@@ -61,7 +72,7 @@ if [[ "$requested" == "all" || "$requested" == "graph" ]]; then
         executable="$tmp_dir/graph_book_$sanitizer"
         gcc "${strict_flags[@]}" "-fsanitize=$sanitizer" -I "$tad_dir" \
             -Dmalloc=book_qa_malloc -Dcalloc=book_qa_calloc -Dfree=book_qa_free \
-            -c "$tad_dir/tad_grafo.c" -o "$graph_object"
+            -c "$tmp_dir/observed_graph.c" -o "$graph_object"
         gcc "${strict_flags[@]}" "-fsanitize=$sanitizer" -I "$tad_dir" \
             "$harness_dir/graph_book_contract.c" "$graph_object" -o "$executable"
         "$executable"

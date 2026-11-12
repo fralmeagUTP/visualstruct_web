@@ -1,5 +1,6 @@
 """Educational application capacity; downloadable C algorithms stay unbounded."""
-MAX_VERTICES = 15
+MAX_VERTICES = 30
+MAX_COMPARISON_EDGES = MAX_VERTICES * MAX_VERTICES
 
 class GraphCapacityError(ValueError):
     """Reject before any graph, query outcome, history or RNG mutation."""

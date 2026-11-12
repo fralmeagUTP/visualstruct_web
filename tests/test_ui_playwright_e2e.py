@@ -254,7 +254,8 @@ def test_playwright_global_didactic_switch_visual_default_and_persistence() -> N
             _wait_didactic_mode(page, "visual")
             assert page.is_checked("#didactic-mode-switch") is False
 
-            assert page.locator("#seq-code-region").is_visible()
+            assert page.locator("#seq-code-region").count() == 1
+            assert page.locator("#seq-code-region").is_hidden()
 
             initial_url = page.url
             page.locator('label[for="didactic-mode-switch"]').click()
@@ -434,14 +435,14 @@ def test_playwright_other_sequential_structures_show_canonical_final_state(
                 page.fill(f"#field-{name}", value)
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Modo rápido")
-            assert "Tamano: 1" in (page.text_content("#visual-state") or "")
+            assert "Tamaño: 1" in (page.text_content("#visual-state") or "")
 
             page.select_option("#operation-select", remove_operation)
             for name, value in remove_payload.items():
                 page.fill(f"#field-{name}", value)
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Modo rápido")
-            assert "Tamano: 0" in (page.text_content("#visual-state") or "")
+            assert "Tamaño: 0" in (page.text_content("#visual-state") or "")
             browser.close()
 
 
@@ -637,7 +638,11 @@ def test_playwright_graph_execute_completes_algorithms_across_phases() -> None:
             _assert_graph_fixture(page.evaluate("() => window.GRAPH_VIEW_MODEL.visual_state"),
                                   result_data["history"], vertices, edges, expected_history)
             _wait_status_contains(page, "#graph-message-box", "grafo_bfs")
-            result_text = page.text_content("#graph-visual-state") or ""
+            # The current result is a sibling of the scrollable drawing so it
+            # remains readable without the graph viewport's internal scrollbar.
+            result_panel = page.locator("#graph-visual-region > #graph-current-result")
+            assert result_panel.is_visible()
+            result_text = result_panel.text_content() or ""
             assert ("Recorrido" in result_text) or ("BFS" in result_text)
 
             # 3) Shortest path phase (Dijkstra).
@@ -779,7 +784,7 @@ def test_playwright_graph_export_jpg_captures_full_canvas_and_result_block() -> 
                     scrollHeight: target.scrollHeight,
                     nativeWidth: Math.max(...Array.from(target.querySelectorAll('svg'), svg => svg.viewBox.baseVal.width)),
                     nativeHeight: Math.max(...Array.from(target.querySelectorAll('svg'), svg => svg.viewBox.baseVal.height)),
-                    resultText: target.querySelector('.graph-current-result').textContent,
+                    resultText: target.closest('#graph-visual-region').querySelector('#graph-current-result').textContent,
                   };
                   // Observe the actual scene passed to the rasterizer, not an
                   // independently rebuilt expected graph or zoomed pixel size.
@@ -845,6 +850,9 @@ def test_playwright_graph_guided_level_and_mobile_context() -> None:
             browser=p.chromium.launch(headless=True)
             page=browser.new_page(viewport={"width":1280,"height":900})
             page.goto(f"{base_url}/graph/graph/construccion",wait_until="networkidle")
+            # Code tabs and scope panels belong to the technical view.
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
             page.select_option("#graph-operation-select", "insert_vertex")
             page.fill("#g-op-field-vertex", "1")
             _enable_manual_mode(page, "graph")
@@ -919,6 +927,9 @@ def test_playwright_hierarchical_guided_level_and_mobile_context() -> None:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(viewport={"width": 1280, "height": 900})
             page.goto(f"{base_url}/hierarchical/avl", wait_until="networkidle")
+            # Mobile source tabs belong to the explicitly enabled technical view.
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
             assert page.locator("#hier-guided-example").count() == 1
             assert page.locator("#hier-compare-kind").count() == 1
             page.fill("#h-field-value", "30")
@@ -1159,13 +1170,16 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(viewport={"width": 1280, "height": 900})
             page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
+            # Code tabs and scope panels belong to the technical view.
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
             expected = {
                 "seleccion": "Mínimo provisional",
                 "insercion": "Clave:",
                 "burbuja": "Pasada:",
                 "shell": "Intervalo:",
                 "quicksort": "Pivote local:",
-                "mergesort": "Division/fusion activa",
+                "mergesort": "División/fusión activa",
                 "heapsort": "hijos:",
                 "counting_sort": "Frecuencias",
                 "binsort": "Frecuencias",  # The real C wrapper delegates Counting; no invented urnas.
@@ -1174,7 +1188,7 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
             local_names = {
                 "seleccion": {"i", "j", "indice_menor"},
                 "insercion": {"i", "j", "clave"},
-                "burbuja": {"i", "j", "hubo_intercambio"},
+                "burbuja": {"i", "pasada", "j", "hubo_intercambio"},
                 "shell": {"intervalo", "i", "j", "temporal"},
                 "quicksort": {"primero", "ultimo", "i", "j", "pivote"},
                 "mergesort": {"izquierda", "medio", "derecha", "i", "j", "k"},
@@ -1207,7 +1221,7 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
                         assert current == seen["cursor"] + 1 and total == seen["total"]
                     seen["cursor"] = current
                     frame = _sorting_frame_observation(page)
-                    active = bool(frame["stack"].strip()) and "Sin llamadas activas." not in frame["stack"]
+                    active = page.locator("#sorting-call-stack li strong").count() > 0
                     seen["active_scope"] |= active
                     seen["family"] |= active and marker in frame["text"]
                     for field in ("countLive", "heapChildren", "radixLive", "radixCounts"):
@@ -1217,18 +1231,35 @@ def test_playwright_sorting_specific_strategy_views_and_zero_axis() -> None:
                 _finish_manual_trace(page, "sorting", observe=observe_frame)
                 assert seen["cursor"] == seen["total"]
                 assert seen["active_scope"] and seen["family"], algorithm
-                page.wait_for_function("() => (document.querySelector('#sorting-call-stack')?.textContent || '').includes('Sin llamadas activas.')")
+                page.wait_for_function("() => document.querySelector('#sorting-call-stack') && document.querySelectorAll('#sorting-call-stack li strong').length === 0")
                 final = _sorting_frame_observation(page)
-                assert "Sin llamadas activas." in final["stack"]
+                assert page.locator("#sorting-call-stack li strong").count() == 0
+                assert "No hay una función en ejecución en este punto." in final["stack"]
                 assert not (set(final["variables"]) & local_names[algorithm]), algorithm
                 assert [int(text.split("]", 1)[1]) for text in page.locator(".sorting-item-label").all_text_contents()] == [-3, 0, 1, 2, 5]
                 assert page.locator(".sorting-zero-axis").count() == 5
                 assert page.locator(".sorting-item-bar.is-negative").count() == 1
                 assert page.locator(".sorting-item-bar.is-zero").count() == 1
                 if algorithm == "burbuja":
-                    strategy = page.text_content("#sorting-strategy-view") or ""
-                    assert "Retorno void al caller" in strategy
-                    assert "j: —" in strategy and "hubo_intercambio: —" in strategy
+                    # Return narration is a separate card, not the strategy values.
+                    assert page.text_content("#sorting-pedagogy-phase") == "Volver de una función"
+                    narration = page.text_content("#sorting-pedagogy-narration") or ""
+                    assert "Retorno void a la función que llamó; retirar locales, sin printf propio del TAD." in narration
+                    # Observe each rendered label/value pair, not a substring that
+                    # could accidentally match another active variable or panel.
+                    strategy_values = page.locator("#sorting-strategy-view .sorting-cue-row").evaluate("""row =>
+                        Array.from(row.querySelectorAll('strong'), label => ({
+                            label: label.textContent.trim(),
+                            value: label.nextSibling?.nodeType === Node.TEXT_NODE
+                                ? label.nextSibling.textContent.trim() : null
+                        }))
+                    """)
+                    assert strategy_values == [
+                        {"label": "Pasada:", "value": "—"},
+                        {"label": "j:", "value": "—"},
+                        {"label": "¿Hubo intercambio? (hubo_intercambio):", "value": "—"},
+                        {"label": "Vecinos:", "value": "—"},
+                    ]
                 elif algorithm == "heapsort":
                     assert seen["heapChildren"]
                     assert final["heapN"] == "0" and final["suffixCount"] == 5
@@ -1306,6 +1337,9 @@ def test_playwright_sorting_accessibility_keyboard_responsive_and_export() -> No
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(viewport={"width": 1366, "height": 900}, accept_downloads=True)
             page.goto(f"{base_url}/sorting/visualizador", wait_until="networkidle")
+            # Code tabs and scope panels belong to the technical view.
+            page.locator('label[for="didactic-mode-switch"]').click()
+            _wait_didactic_mode(page, "full")
             page.fill("#sorting-manual-values", "3,-1,2,0")
             page.click("#sorting-create-array")
             _advance_once(page, "sorting")

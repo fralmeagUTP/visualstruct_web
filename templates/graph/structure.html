@@ -40,7 +40,7 @@
         <button class="btn secondary" id="graph-reset-button" type="button">Restablecer grafo</button>
         <span id="graph-sim-counter" class="graph-sim-counter">Paso: 0/0</span>
       </div>
-      <p class="graph-control-explanation">Ejecutar operación completa la ejecución desde el punto actual. Paso a paso revela una instrucción y habilita Anterior y Siguiente.</p>
+      <p class="graph-control-explanation">Ejecutar operación inicia la llamada seleccionada. Para revisar instrucción a instrucción, activa Paso a paso antes de ejecutarla. Después, Paso anterior y Siguiente paso recorren esa misma llamada sin volver a ejecutarla.</p>
       <p id="graph-step-metadata" class="graph-step-metadata">Función: — · Fase: — · Concepto: — · Vértice: — · Arista: —</p>
       <p id="graph-sim-status" class="message" aria-live="polite">Elige una operación o algoritmo y ejecuta.</p>
     </div>
@@ -56,8 +56,9 @@
       <h3 id="graph-visual-title"><span>2</span> Visualizar y ejecutar</h3>
       <p class="graph-visual-help">El lienzo se actualiza con cada instrucción: vértice, arista, peso, auxiliar y decisión activa.</p>
       <div id="graph-visual-state" role="img" aria-label="Estado visual de {{ model.name }}"></div>
+      <section id="graph-current-result" class="viz-traversals graph-current-result classroom-inline-results" aria-label="Resultado de la operación actual"></section>
       <section class="graph-live-memory-panel" aria-label="Memoria actual"><h4>Memoria C actual</h4><div id="graph-live-memory">Prepara una traza para observar las reservas y los campos.</div></section>
-      <div class="graph-state-legend" aria-label="Leyenda de estados"><span>○ No descubierto</span><span>◇ Frontera</span><span>▶ Activo</span><span>● Cerrado</span><span>✓ MST</span><span>＋ Aceptado</span><span>× Rechazado</span></div>
+      <div class="graph-state-legend" aria-label="Leyenda de estados"><span>○ No descubierto</span><span>◇ Frontera</span><span>▶ Activo</span><span>● Cerrado</span><span class="graph-mst-legend">✓ Árbol de expansión mínima (amarillo)</span><span>＋ Aceptado</span><span>× Rechazado</span></div>
     </section>
     <section id="graph-code-region" class="graph-stage graph-code-stage didactic-technical" aria-labelledby="op-pseudocode-title">
       <div class="graph-code-toolbar"><h3><span>3</span> Relacionar con código</h3><label><input id="graph-hide-comments" type="checkbox"> Ocultar documentación extensa</label></div>

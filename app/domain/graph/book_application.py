@@ -150,7 +150,7 @@ def execute_book_operation(adapter, operation, payload):
     success = failed is None
     # An absent cost is a real int-returning query, not an invented GrafoEstado.
     if operation == 'edge_weight' and primary['returned'] != 1:success = False
-    status_text = outcome['status_name'] or 'sin salida GrafoEstado'
+    status_text = outcome['status_name'] or 'sin diagnóstico adicional'
     message = f"{outcome['function']}: {status_text}."
     if operation == 'edge_weight':
         message = f"grafo_costo_arco: retorno {primary['returned']}; " + (f"costo {primary['output']}." if success else 'no escribe la salida porque no existe el arco.')

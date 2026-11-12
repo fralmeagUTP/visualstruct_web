@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -15,6 +16,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS_DIR = ROOT / "tests" / "conformance" / "c_harnesses"
 TAD_DIR = ROOT / "docs" / "tads_C"
+sys.path.insert(0, str(ROOT / "tests"))
+from _graph_private_diagnostic_observer import write_observed_graph
 
 
 @dataclass(frozen=True)
@@ -133,7 +136,7 @@ def _graph_book_regressions(compiler, flags, output_dir, environment):
     executable = output_dir / "graph-book-regressions"
     common = [compiler, *flags, "-I", str(TAD_DIR)]
     commands = [
-        [*common, "-Dmalloc=book_qa_malloc", "-Dcalloc=book_qa_calloc", "-Dfree=book_qa_free", "-c", str(TAD_DIR / "tad_grafo.c"), "-o", str(graph_object)],
+        [*common, "-Dmalloc=book_qa_malloc", "-Dcalloc=book_qa_calloc", "-Dfree=book_qa_free", "-c", str(output_dir / "observed_graph.c"), "-o", str(graph_object)],
         [*common, str(HARNESS_DIR / "graph_book_contract.c"), str(graph_object), "-o", str(executable)],
         [str(executable)],
     ]
@@ -165,13 +168,20 @@ def run_checks(
             flags = ["-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror"]
             if sanitizers:
                 flags.extend(["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-g"])
+            if structure_id == "graph":
+                original = subprocess.run([compiler, *flags, "-I", str(TAD_DIR),
+                    "-c", str(TAD_DIR / "tad_grafo.c"), "-o", str(output_dir / "original_graph.o")],
+                    capture_output=True, text=True, timeout=60)
+                if original.returncode:
+                    raise RuntimeError(original.stderr)
+                write_observed_graph(TAD_DIR / "tad_grafo.c", output_dir / "observed_graph.c")
             command = [
                 compiler,
                 *flags,
                 "-I", str(TAD_DIR),
                 "-I", str(HARNESS_DIR),
                 str(HARNESS_DIR / registered[structure_id]),
-                *(str(TAD_DIR / source) for source in check.tad_sources),
+                *(str(output_dir / "observed_graph.c" if source == "tad_grafo.c" else TAD_DIR / source) for source in check.tad_sources),
                 "-o", str(executable),
             ]
             try:

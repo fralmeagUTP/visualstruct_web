@@ -1,0 +1,3 @@
+Decisión explícita de Francisco comunicada por coordinación el 2026-11-12: durante predicción conservar visible el estado ANTERIOR del gráfico; nunca revelar el resultado del siguiente paso antes de responder u omitir. Esta decisión resuelve la ambigüedad previa; no se alteran documentos históricos.
+
+Alcance autorizado: copia aislada head4c7244a31128cadea6cba48716f947b7e73db4a6, documentación aditiva y pruebas causales; investigar runtime antes de adaptar expectativas. Máximo8 pruebas/ejecución,120s,2GiB agregados del árbol. No publicación/VPS/sesiones operativas, RBT pendiente no se declara resuelto.
