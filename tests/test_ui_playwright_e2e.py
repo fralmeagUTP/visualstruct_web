@@ -435,14 +435,14 @@ def test_playwright_other_sequential_structures_show_canonical_final_state(
                 page.fill(f"#field-{name}", value)
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Modo rápido")
-            assert "Tamano: 1" in (page.text_content("#visual-state") or "")
+            assert "Tamaño: 1" in (page.text_content("#visual-state") or "")
 
             page.select_option("#operation-select", remove_operation)
             for name, value in remove_payload.items():
                 page.fill(f"#field-{name}", value)
             page.click("#seq-sim-execute")
             _wait_status_contains(page, "#seq-sim-status", "Modo rápido")
-            assert "Tamano: 0" in (page.text_content("#visual-state") or "")
+            assert "Tamaño: 0" in (page.text_content("#visual-state") or "")
             browser.close()
 
 
