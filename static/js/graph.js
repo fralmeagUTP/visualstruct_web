@@ -1723,7 +1723,7 @@ function initGraphPage(model) {
     pageState.consoleTrace = null;
     pageState.consoleRawStdout = null;
     pageState.consoleFallbackMessage = "";
-    tracePlayer?.clear(message || "Usa Reproducir o Siguiente paso para ejecutar.");
+    tracePlayer?.clear(message || "Pulsa Ejecutar operación para preparar la traza; después usa Siguiente paso o Paso anterior para recorrerla.");
     const currentResult=gGraphResultPanel(visualState);
     if(currentResult)currentResult.innerHTML=gGraphPresentedResult(pageState.graphState,{idle:true});
     // Al cambiar operación o entrada la navegación pertenece a la traza previa.
@@ -1840,7 +1840,7 @@ function initGraphPage(model) {
     }
     if (!pageState.simulation || !pageState.simulation.steps.length) {
       setSimulationButtonsState();
-      showSimulationStatus("Usa Reproducir o Siguiente paso para ejecutar.");
+      showSimulationStatus("Pulsa Ejecutar operación para preparar la traza; después usa Siguiente paso o Paso anterior para recorrerla.");
       return;
     }
     setSimulationButtonsState();
@@ -2361,7 +2361,7 @@ function initGraphPage(model) {
   setSimulationButtonsState();
 
   updateStepModePanelVisibility();
-  invalidateTrace("Usa Reproducir o Siguiente paso para ejecutar.");
+  invalidateTrace("Pulsa Ejecutar operación para preparar la traza; después usa Siguiente paso o Paso anterior para recorrerla.");
   refreshGraphPrintfConsole(-1);
   refreshSimulationStatus();
   focusGraphSectionByHash();

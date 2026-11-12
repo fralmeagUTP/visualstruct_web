@@ -75,7 +75,7 @@ int main(void){RBT root=NULL;
  # Public-file content assertions and actual HTTP manual, separate from Doxygen warning count.
  for blob in [raw,header]:
   text=blob.decode('utf-8-sig');assert 'Retorna void. Duplicado, arbol NULL o fallo de malloc' in text and 'nuevo_n es otro local' in text and 'rotacion aislada no garantiza' in text and 'no comprueba globalmente orden' in text
- manual=client.get('/help/hierarchical/red_black');assert manual.status_code==200;body=manual.data.decode('utf-8');assert 'la aplicacion rechaza duplicados' in body and 'altura negra uniforme' in body and 'no certifica' in body
+ manual=client.get('/help/hierarchical/red_black');assert manual.status_code==200;body=manual.data.decode('utf-8');assert 'la aplicación rechaza duplicados' in body and 'altura negra uniforme' in body and 'no certifica' in body
  doxygen=Path(resolve_doxygen());warn=tmp_path/'warnings.log';cfg=tmp_path/'Doxyfile'
  cfg.write_text('\n'.join(['PROJECT_NAME = "RBT insertion public C H documentation"','INPUT = "'+(tmp_path/'tad_rojo_negro.c').as_posix()+'" "'+(tmp_path/'tad_rojo_negro.h').as_posix()+'"','OUTPUT_DIRECTORY = "'+(tmp_path/'doxygen').as_posix()+'"','EXTRACT_ALL = NO','WARN_IF_UNDOCUMENTED = YES','WARN_IF_DOC_ERROR = YES','WARN_NO_PARAMDOC = YES','WARN_LOGFILE = "'+warn.as_posix()+'"','GENERATE_XML = YES','GENERATE_HTML = NO','GENERATE_LATEX = NO','QUIET = YES','HAVE_DOT = NO']),encoding='utf-8')
  docs=subprocess.run([str(doxygen),str(cfg)],capture_output=True,text=True,timeout=30);assert docs.returncode==0 and warn.read_text(encoding='utf-8')=='',(docs.stderr,warn.read_text(encoding='utf-8'))

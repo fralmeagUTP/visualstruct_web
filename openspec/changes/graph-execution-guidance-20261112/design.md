@@ -1,0 +1,2 @@
+# Diseño
+Corregir únicamente las tres instrucciones genéricas sin traza; mantener mensajes específicos correctos de invalidación. Explicar que activar Paso a paso es opcional y precede a Ejecutar operación para revisar instrucciones. La prueba observa inicio, modo sinPOST, ejecución una vez, contador0→1→0 y nueva entrada que invalida sinPOST. No exige igualdad de mensajes reset/prev porque representan eventos distintos. Mantener versiónexacta de assets, con rechazo de scope1 y organic1 para graph.js.

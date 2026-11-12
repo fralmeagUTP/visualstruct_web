@@ -13,7 +13,7 @@ EXPECTED_SCRIPT_VERSIONS = {
     'counting_runtime.js': '20261111graph2',
     'sequential.js': '20261111graph2',
     'hierarchical.js': '20261111graph2',
-    'graph.js': '20261112organic1',
+    'graph.js': '20261112guidance1',
     'graph_layout.js': '20261112organic1',
     'hash.js': '20261111graph2',
     'sorting.js': '20261111graph2',
@@ -65,5 +65,13 @@ def test_graph_cache_identity_rejects_previous_scope_release():
     urls = ['/static/js/' + script + '?v=' + version
             for script, version in EXPECTED_SCRIPT_VERSIONS.items()]
     urls[list(EXPECTED_SCRIPT_VERSIONS).index('graph.js')] = '/static/js/graph.js?v=20261111scope1'
+    with pytest.raises(AssertionError, match=r'graph\.js'):
+        _assert_script_versions(urls)
+
+
+def test_graph_cache_identity_rejects_previous_organic_release():
+    urls = ['/static/js/' + script + '?v=' + version
+            for script, version in EXPECTED_SCRIPT_VERSIONS.items()]
+    urls[list(EXPECTED_SCRIPT_VERSIONS).index('graph.js')] = '/static/js/graph.js?v=20261112organic1'
     with pytest.raises(AssertionError, match=r'graph\.js'):
         _assert_script_versions(urls)
