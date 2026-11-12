@@ -853,7 +853,13 @@ function renderGraphSvg(state, simulation, traceDebug) {
   const width=Math.max(...geometry.map(p=>p.x))-left+16,height=Math.max(...geometry.map(p=>p.y))-top+16;
   const opName = state.last_operation && state.last_operation.name ? state.last_operation.name : "";
   const useSimulation = simulation && simulation.sourceOperation === opName;
-  const highlights = traceDebug
+  // Publication shows the caller's retained result, not the freed result list.
+  // Earlier playback frames must continue to use only their current C progress.
+  const publishedMst = traceDebug?.stage === "api_publication"
+    && (opName === "run_prim" || opName === "run_kruskal");
+  const highlights = publishedMst
+    ? getDefaultHighlights(state)
+    : traceDebug
     ? getTraceDebugHighlights(traceDebug)
     : useSimulation
       ? getSimulationHighlights(simulation)

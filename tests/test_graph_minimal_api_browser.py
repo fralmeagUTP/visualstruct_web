@@ -44,15 +44,33 @@ def test_mst_yellow_controls_and_download(app, tmp_path, algorithm):
             with page.expect_response(lambda response: response.url.endswith('/operate')):
                 page.locator('#graph-sim-play').click()
             expect(page.locator('#graph-visual-state .viz-graph-edge.mst')).to_have_count(2)
-            # Enter a real trace and verify navigation does not issue another mutation.
+            # Mode selection does not mutate; execute prepares the real trace.
+            posts = []
+            page.on('request', lambda req: posts.append(req.url) if req.method == 'POST' and req.url.endswith('/operate') else None)
+            page.locator('#graph-sim-step').click()
+            expect(page.locator('#graph-step-toggle')).to_be_checked()
+            assert posts == []
             with page.expect_response(lambda response: response.url.endswith('/operate')) as traced:
-                page.locator('#graph-sim-step').click()
+                page.locator('#graph-sim-play').click()
             assert traced.value.status == 200, traced.value.text()
+            assert len(posts) == 1
             expect(page.locator('#graph-sim-next')).to_be_visible()
             page.locator('#graph-sim-next').click()
             page.locator('#graph-sim-prev').click()
-            page.locator('#graph-sim-play').click()
+            assert len(posts) == 1
+            steps = traced.value.json()['execution_trace']['steps']
+            # Traverse actual controls, bounded by the returned real trace.
+            for _ in range(len(steps)):
+                if page.locator('#graph-sim-next').is_disabled():
+                    break
+                page.locator('#graph-sim-next').click()
+            expect(page.locator('#graph-sim-next')).to_be_disabled()
             expect(page.locator('#graph-visual-state .viz-graph-edge.mst')).to_have_count(2)
+            page.locator('#graph-sim-prev').click()
+            expect(page.locator('#graph-visual-state .viz-graph-edge.mst')).to_have_count(0)
+            page.locator('#graph-sim-next').click()
+            expect(page.locator('#graph-visual-state .viz-graph-edge.mst')).to_have_count(2)
+            assert len(posts) == 1
             page.locator('#graph-visual-region').screenshot(path=str(tmp_path/f'{algorithm}-yellow.png'))
             assert not errors
             context.close(); browser.close()
